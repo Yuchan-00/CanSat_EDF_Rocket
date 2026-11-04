@@ -1,0 +1,6 @@
+[
+ {"t0": 8.0, "t1": 9.28, "cam": "orbit", "note": "still 6: indoor demo - the person pushes the hovering vehicle with the padded pole",
+  "params": {"radius": 5.0, "height": -0.45, "deg_per_s": 0.0, "lens": 30.0, "tgt_dz": -0.55, "fstop": 4.0, "kind": "push"}},
+ {"t0": 9.3, "t1": 10.6, "cam": "closeup", "note": "still 7: vanes correcting the push (from below)",
+  "params": {"mode": "vanes"}}
+]

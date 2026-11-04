@@ -1,0 +1,57 @@
+[
+ {
+  "t0": 0.4,
+  "t1": 1.8,
+  "cam": "orbit",
+  "note": "still 1 r1: vehicle on the pad (outdoor, slab set into the lawn)",
+  "params": {
+   "radius": 3.0,
+   "height": -0.02,
+   "deg_per_s": 0.0,
+   "lens": 45.0,
+   "azimuth_deg": 210.0
+  }
+ },
+ {
+  "t0": 4.4,
+  "t1": 5.7,
+  "cam": "orbit",
+  "note": "still 2 r1: lift-off - the wall jet flattens the grass around the slab, clippings fly, sand blows off the joints",
+  "params": {
+   "radius": 3.1,
+   "height": -0.25,
+   "deg_per_s": 0.0,
+   "lens": 40.0,
+   "azimuth_deg": 60.0
+  }
+ },
+ {
+  "t0": 14.5,
+  "t1": 15.72,
+  "cam": "closeup",
+  "note": "still 3 r1: vanes deflected during the gust correction (from below)",
+  "params": {
+   "mode": "vanes",
+   "azimuth_deg": 200.0
+  }
+ },
+ {
+  "t0": 15.75,
+  "t1": 17.0,
+  "cam": "wide",
+  "note": "still 4 r1: telephoto establishing shot - the windsock streaming in the gust in the foreground, the vehicle hovering at 8 m behind it",
+  "params": {
+   "mode": "tele"
+  }
+ },
+ {
+  "t0": 39.8,
+  "t1": 43.2,
+  "cam": "spectator",
+  "note": "still 5 r1: landing in the field (locked-off tripod, slow pan)",
+  "params": {
+   "locked": true,
+   "azimuth_deg": 210.0
+  }
+ }
+]

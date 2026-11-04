@@ -1,0 +1,14 @@
+propulsion_module cand 0 []: [176.2, 176.2, 190.0] fits=True 6 h 52 min, 346.6 g
+intake_module cand 0 []: [120.0, 119.9, 163.4] fits=True 7 h 07 min, 175.6 g
+intake_module cand 1 [('x', 180.0)]: [120.0, 119.9, 163.4] fits=True 6 h 06 min, 151.4 g
+avionics_module cand 0 []: [120.0, 120.0, 200.0] fits=True 2 h 49 min, 124.8 g
+payload_module cand 0 []: [138.3, 120.0, 198.4] fits=True 5 h 38 min, 199.1 g
+nose_cone cand 0 []: [126.0, 120.0, 155.0] fits=True 1 h 32 min, 70.9 g
+avionics_tray cand 0 [('y', 90.0)]: [160.0, 100.0, 2.0] fits=True 0 h 45 min, 41.4 g
+piston cand 0 [('x', 180.0)]: [116.6, 116.6, 2.4] fits=True 0 h 34 min, 29.3 g
+vane cand 0 [('x', -90.0)]: [46.0, 32.0, 5.0] fits=True 0 h 09 min, 4.0 g
+vane_horn cand 0 [('y', 90.0)]: [17.0, 8.0, 3.0] fits=True 0 h 02 min, 0.4 g
+latch_arm cand 0 []: [10.2, 13.3, 3.0] fits=True 0 h 01 min, 0.3 g
+launch_pad cand 0 [('x', 180.0)]: [190.0, 190.0, 114.0] fits=True 5 h 30 min, 202.0 g
+**합계 (수량 반영)**: 30 h 32 min, PLA 1184 g (발사대 제외 기체만: 25 h 02 min, 982 g)
+

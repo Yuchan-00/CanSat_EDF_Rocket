@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.pyc
+cad/exports/**/*.stl
+cad/exports/**/*.step
+cad/exports/**/*.f3d
+sim/out/
+.pio/
+# ground station flight logs (tools/ground_station.py)
+logs/
+# Bambu Studio CLI status file written to the working directory when slicing
+/result.json
+# Blender pipeline (render/): downloaded CC0 assets stay local (re-create: python render/fetch_assets.py)
+render/assets/*
+!render/assets/CREDITS.md
+!render/assets/manifest.json
+render/human/build/
+# control-change history archives (before / after comparisons; large binaries)
+history/
+# Python profiler dumps (cProfile -o)
+prof.out
+*.prof
+# stray MSVC object from a '-o nul' typo; git on Windows cannot index a file named "nul"
+firmware/atmega128_fc/nul
+# leftover duplicate exports with a garbled name (byte-identical to the real file)
+cad/exports/print/*-----*
+# public repo (2026-11-04, user decision): keep the uncropped real photos local (README uses the cropped docs/images/edf_photo.jpg)
+docs/실물사진/
+# public repo (2026-11-04, user decision): retired mirroring script, not published
+tools/sync_to_video.py

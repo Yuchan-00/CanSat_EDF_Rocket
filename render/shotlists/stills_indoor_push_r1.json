@@ -1,0 +1,27 @@
+[
+ {
+  "t0": 8.0,
+  "t1": 9.28,
+  "cam": "orbit",
+  "note": "still 6 r1: indoor demo on the stage - the operator pushes the hovering vehicle with the 2.33 m padded pole (profile, one side of the action line)",
+  "params": {
+   "radius": 4.2,
+   "height": -0.45,
+   "deg_per_s": 0.0,
+   "lens": 30.0,
+   "tgt_dz": -0.5,
+   "fstop": 2.8,
+   "kind": "push",
+   "event_t": 9.15
+  }
+ },
+ {
+  "t0": 9.3,
+  "t1": 10.6,
+  "cam": "closeup",
+  "note": "still 7 r1: vanes correcting the push (from below, light-linked fill + bore light)",
+  "params": {
+   "mode": "vanes"
+  }
+ }
+]

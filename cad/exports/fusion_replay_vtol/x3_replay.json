@@ -1,0 +1,172 @@
+{
+ "preset": "BUDGET_90mm_6S",
+ "script_version": "0.9.6",
+ "recorded_calls": 381,
+ "parts": {
+  "propulsion_module": {
+   "replay_volume_mm3": 278983.43990367,
+   "twin_volume_mm3": 278983.8842515567,
+   "replay_minus_twin_mm3": 0.011267800092363747,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "intake_module": {
+   "replay_volume_mm3": 366196.0451953502,
+   "twin_volume_mm3": 96176.30176373072,
+   "replay_minus_twin_mm3": 165600.85094790885,
+   "twin_minus_replay_mm3": 96133.22672872707,
+   "replay_valid": true,
+   "replay_solids": 5,
+   "slice_x3": "FAIL",
+   "status": "FAIL"
+  },
+  "avionics_module": {
+   "replay_volume_mm3": 45432.55541806134,
+   "twin_volume_mm3": 45432.59573668314,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "avionics_logo": {
+   "replay_volume_mm3": 680.9928771867297,
+   "twin_volume_mm3": 680.992877076233,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 20,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "avionics_tray": {
+   "status": "NOT_VERIFIED",
+   "reason": "through_cut"
+  },
+  "top_cap": {
+   "replay_volume_mm3": 27506.090731505574,
+   "twin_volume_mm3": 27506.061524352142,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "carrier": {
+   "replay_volume_mm3": 79800.0,
+   "twin_volume_mm3": 79800.0,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "gps": {
+   "replay_volume_mm3": 9437.400000000007,
+   "twin_volume_mm3": 9437.400000000005,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 2,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "gps_ground_plane": {
+   "replay_volume_mm3": 1280.0000000000182,
+   "twin_volume_mm3": 1280.0000000000182,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "misc_electronics": {
+   "replay_volume_mm3": 7200.0,
+   "twin_volume_mm3": 7200.0,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "esc": {
+   "replay_volume_mm3": 27540.00000000001,
+   "twin_volume_mm3": 27540.000000000007,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "battery": {
+   "replay_volume_mm3": 194565.0,
+   "twin_volume_mm3": 194565.0,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "servo_cover_1": {
+   "replay_volume_mm3": 2569.484814933973,
+   "twin_volume_mm3": 2569.484814933973,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "wire_cover": {
+   "replay_volume_mm3": 1674.5835064905943,
+   "twin_volume_mm3": 1674.5835064905946,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "vane_coupler_1": {
+   "replay_volume_mm3": 711.854653776653,
+   "twin_volume_mm3": 711.8546646585158,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "servo_horn_1": {
+   "replay_volume_mm3": 226.8880168670376,
+   "twin_volume_mm3": 226.88801686703783,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "hinge_bushing_1": {
+   "replay_volume_mm3": 54.92289356638355,
+   "twin_volume_mm3": 54.92289356638355,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  }
+ },
+ "ok": false
+}

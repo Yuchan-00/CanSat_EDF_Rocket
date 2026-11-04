@@ -1,0 +1,20 @@
+{
+ "title_ko": "CanSat EDF 기체 · 현장 비행",
+ "subtitle_ko": "5 m 이륙, 8 m 호버링, 돌풍 3회",
+ "shots": [
+  {"t0": 0.4, "t1": 1.8, "cam": "orbit", "note": "still 1 r2: vehicle on the pad (outdoor, slab set into the lawn)",
+   "params": {"radius": 3.0, "height": -0.02, "deg_per_s": 0.0, "lens": 45.0, "azimuth_deg": 210.0}},
+  {"t0": 4.4, "t1": 5.7, "cam": "orbit",
+   "note": "still 2 r2: lift-off - the wall jet flattens the grass around the slab, clippings fly",
+   "params": {"radius": 3.1, "height": -0.25, "deg_per_s": 0.0, "lens": 40.0, "azimuth_deg": 60.0, "fstop": 5.6}},
+  {"t0": 22.5, "t1": 23.9, "cam": "closeup",
+   "note": "still 3 r2: vanes at the strongest gust correction (from below, near the axis)",
+   "params": {"mode": "vanes", "azimuth_deg": 200.0}},
+  {"t0": 6.0, "t1": 7.2, "cam": "wide",
+   "note": "still 4 r2: telephoto establishing shot - the climbing vehicle over the pad and the field, windsock behind",
+   "params": {"mode": "tele", "dist": 24.0, "azimuth_deg": 40.0}},
+  {"t0": 39.8, "t1": 43.2, "cam": "spectator",
+   "note": "still 5 r2: landing in the field (locked-off 75 mm, lower-third composition with lead room)",
+   "params": {"locked": true, "compose_t": 42.9, "dist": 18.0, "lens": 75.0, "azimuth_deg": 45.0}}
+ ]
+}

@@ -1,0 +1,348 @@
+{
+ "total_bytes": 125015958,
+ "assets": [
+  {
+   "id": "alps_field",
+   "kind": "hdri",
+   "res": "4k",
+   "name": "Alps Field",
+   "authors": [
+    "Andreas Mischok"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/alps_field",
+   "why": "outdoor field: open mown meadow to the horizon, mountains, clear sky with a visible sun (~30 deg) for crisp shadows",
+   "dimensions_mm": null,
+   "files": [
+    {
+     "rel": "alps_field_4k.hdr",
+     "bytes": 26520861,
+     "md5": "7fe5641832c0e8e5dfc1d7f71a5e6615"
+    }
+   ],
+   "bytes": 26520861
+  },
+  {
+   "id": "meadow_2",
+   "kind": "hdri",
+   "res": "4k",
+   "name": "Meadow 2",
+   "authors": [
+    "Sergej Majboroda"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/meadow_2",
+   "why": "outdoor alternative: lush summer meadow with trees, partly cloudy, visible sun (~40 deg)",
+   "dimensions_mm": null,
+   "files": [
+    {
+     "rel": "meadow_2_4k.hdr",
+     "bytes": 25792146,
+     "md5": "dee90c8900792fce8be43dbfc1118e76"
+    }
+   ],
+   "bytes": 25792146
+  },
+  {
+   "id": "school_hall",
+   "kind": "hdri",
+   "res": "4k",
+   "name": "School Hall",
+   "authors": [
+    "Dimitrios Savva",
+    "Jarod Guest"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/school_hall",
+   "why": "indoor demo hall: school auditorium with a light wooden floor, stage and ceiling lights (projected onto the hall box)",
+   "dimensions_mm": null,
+   "files": [
+    {
+     "rel": "school_hall_4k.hdr",
+     "bytes": 26026945,
+     "md5": "aa26139e09ebc81137abb429bc31a39c"
+    }
+   ],
+   "bytes": 26026945
+  },
+  {
+   "id": "studio_small_09",
+   "kind": "hdri",
+   "res": "2k",
+   "name": "Studio Small 09",
+   "authors": [
+    "Sergej Majboroda"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/studio_small_09",
+   "why": "studio softboxes for the vehicle-reveal turntable reflections",
+   "dimensions_mm": null,
+   "files": [
+    {
+     "rel": "studio_small_09_2k.hdr",
+     "bytes": 6312947,
+     "md5": "b056fea247bc84b81d2e0987d44c87d8"
+    }
+   ],
+   "bytes": 6312947
+  },
+  {
+   "id": "leafy_grass",
+   "kind": "texture",
+   "res": "2k",
+   "name": "Leafy Grass",
+   "authors": [
+    "Charlotte Baglioni"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/leafy_grass",
+   "why": "lawn soil / grass base under the instanced grass blades",
+   "dimensions_mm": [
+    2000,
+    2000
+   ],
+   "files": [
+    {
+     "rel": "leafy_grass_diff_2k.jpg",
+     "bytes": 4766204,
+     "md5": "8014f4dace676a62ed71b3dd76119dae"
+    },
+    {
+     "rel": "leafy_grass_nor_gl_2k.jpg",
+     "bytes": 6047262,
+     "md5": "ea5e91abe01dc5e5d7028c68c3bc9194"
+    },
+    {
+     "rel": "leafy_grass_rough_2k.jpg",
+     "bytes": 2274652,
+     "md5": "b5c551ed91162aab5afbfb03b73ae3f5"
+    }
+   ],
+   "bytes": 13088118
+  },
+  {
+   "id": "concrete_floor_worn_001",
+   "kind": "texture",
+   "res": "2k",
+   "name": "Concrete Floor Worn 001",
+   "authors": [
+    "Dimitrios Savva",
+    "Rico Cilliers"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/concrete_floor_worn_001",
+   "why": "concrete launch slab under the pad (outdoor)",
+   "dimensions_mm": [
+    3000,
+    3000.000238418579
+   ],
+   "files": [
+    {
+     "rel": "concrete_floor_worn_001_diff_2k.jpg",
+     "bytes": 482906,
+     "md5": "6a3645f19f2ac4b7f60f43419c5d09ec"
+    },
+    {
+     "rel": "concrete_floor_worn_001_nor_gl_2k.jpg",
+     "bytes": 870609,
+     "md5": "210fbc9fe40492177e79fdb4afda268e"
+    },
+    {
+     "rel": "concrete_floor_worn_001_rough_2k.jpg",
+     "bytes": 735249,
+     "md5": "169cac76d6499d7d70d1dbb237fcc976"
+    }
+   ],
+   "bytes": 2088764
+  },
+  {
+   "id": "plywood",
+   "kind": "texture",
+   "res": "2k",
+   "name": "Plywood",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/plywood",
+   "why": "plywood blast board under the pad (indoor demo)",
+   "dimensions_mm": [
+    499.999940395355,
+    499.999940395355
+   ],
+   "files": [
+    {
+     "rel": "plywood_diff_2k.jpg",
+     "bytes": 4009658,
+     "md5": "ce20176e90b0984ca7dec366832e8198"
+    },
+    {
+     "rel": "plywood_nor_gl_2k.jpg",
+     "bytes": 2836023,
+     "md5": "ed5dbe559ec897ff2c744fca23f98152"
+    },
+    {
+     "rel": "plywood_rough_2k.jpg",
+     "bytes": 3316046,
+     "md5": "e2a088861afd9580f3695ee0c25abf46"
+    }
+   ],
+   "bytes": 10161727
+  },
+  {
+   "id": "rectangular_parquet",
+   "kind": "texture",
+   "res": "2k",
+   "name": "Rectangular Parquet",
+   "authors": [
+    "Jenelle van Heerden",
+    "Sergej Majboroda"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/rectangular_parquet",
+   "why": "sports-hall maple strip floor",
+   "dimensions_mm": [
+    2250,
+    2250
+   ],
+   "files": [
+    {
+     "rel": "rectangular_parquet_diff_2k.jpg",
+     "bytes": 2724071,
+     "md5": "4c04a911fc190497aa9f9b8dcbc68a73"
+    },
+    {
+     "rel": "rectangular_parquet_nor_gl_2k.jpg",
+     "bytes": 1818095,
+     "md5": "a5913a4f40106cb42bb6a74df94f72e4"
+    },
+    {
+     "rel": "rectangular_parquet_rough_2k.jpg",
+     "bytes": 1816212,
+     "md5": "1e6d53cbdf6dfba2cf35d57c9efbd538"
+    }
+   ],
+   "bytes": 6358378
+  },
+  {
+   "id": "korean_fire_extinguisher_01",
+   "kind": "model",
+   "res": "2k",
+   "name": "Korean Fire Extinguisher 01",
+   "authors": [
+    "UM JOORIN"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "why": "Korean ABC fire extinguisher beside the launch area (safety cue)",
+   "dimensions_mm": [
+    279.957577586174,
+    367.44324862957,
+    659.2507164176169
+   ],
+   "files": [
+    {
+     "rel": "korean_fire_extinguisher_01_2k.gltf",
+     "bytes": 7450,
+     "md5": "de07c456b7178c3ae66a821521f0be90"
+    },
+    {
+     "rel": "korean_fire_extinguisher_01.bin",
+     "bytes": 279480,
+     "md5": "e4b0452f70679815817e0b6f87ba5e52"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_body_arm_2k.jpg",
+     "bytes": 720892,
+     "md5": "0679561241ad0e3a62e51ed7cf38eaec"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_body_diff_2k.jpg",
+     "bytes": 404041,
+     "md5": "91f1645c12b43b23f5da72acdd54dde4"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_body_nor_gl_2k.jpg",
+     "bytes": 317767,
+     "md5": "4a1e979ba241d7103d2a5be88476ae45"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_glass_arm_2k.jpg",
+     "bytes": 211879,
+     "md5": "ab1b4a1e4ba059c8f108725c841ba207"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_glass_diff_2k.jpg",
+     "bytes": 509469,
+     "md5": "0f4348f1c2c88c7839d0cee49a73fba7"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_glass_nor_gl_2k.jpg",
+     "bytes": 113323,
+     "md5": "bf20d7e75579babcf8df4a10c98a2eae"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_paper_arm_2k.jpg",
+     "bytes": 864091,
+     "md5": "2db3b0ac1615c16c07dc4fd633103091"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_paper_diff_2k.jpg",
+     "bytes": 594598,
+     "md5": "3345d9c1f285a68d7480e66f9de6a424"
+    },
+    {
+     "rel": "textures/korean_fire_extinguisher_01_paper_nor_gl_2k.jpg",
+     "bytes": 1454217,
+     "md5": "7063929e828c996a08a9e2d56fad2c31"
+    }
+   ],
+   "bytes": 5477207
+  },
+  {
+   "id": "plastic_crate_01",
+   "kind": "model",
+   "res": "1k",
+   "name": "Plastic Crate 01",
+   "authors": [
+    "PierreB3D"
+   ],
+   "license": "CC0 1.0",
+   "page": "https://polyhaven.com/a/plastic_crate_01",
+   "why": "field-gear crate near the operator",
+   "dimensions_mm": [
+    298.00063371658325,
+    408.00413489341736,
+    264.1694247722626
+   ],
+   "files": [
+    {
+     "rel": "plastic_crate_01_1k.gltf",
+     "bytes": 2793,
+     "md5": "af44f97630da80a640c5e6d70e72c56b"
+    },
+    {
+     "rel": "plastic_crate_01.bin",
+     "bytes": 789920,
+     "md5": "68c6e126a29ad4b72c21aa85f89a48c1"
+    },
+    {
+     "rel": "textures/plastic_crate_01_arm_1k.jpg",
+     "bytes": 993636,
+     "md5": "a0c021fba58dc9fb16df94b1fdda2308"
+    },
+    {
+     "rel": "textures/plastic_crate_01_diff_1k.jpg",
+     "bytes": 518288,
+     "md5": "0250b2750da634e95ef44b6ffb11681e"
+    },
+    {
+     "rel": "textures/plastic_crate_01_nor_gl_1k.jpg",
+     "bytes": 884228,
+     "md5": "95f73143467ebbf4c55fb599269edc7b"
+    }
+   ],
+   "bytes": 3188865
+  }
+ ]
+}

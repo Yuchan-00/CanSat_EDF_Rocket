@@ -1,0 +1,189 @@
+X3 replay (Fusion script feature calls from a mock run, rebuilt in OCC) vs the CadQuery twin - preset BUDGET_90mm_6S
+script B:\0)AI_Cad\CanSat_EDF_Rocket\cad\fusion360\CanSatEDFRocket\CanSatEDFRocket.py v0.9.6; 448 recorded calls
+
+== payload_module: replay V 143877.92 mm3 (valid True, 1 solid(s)), twin V 143877.93 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== payload_module: V fusion 144036 mm3, cadquery 144036 mm3, dV -0.00 %
+   bbox fusion [[-115.55, -60.0, 517.9], [78.26, 59.99, 716.3]]
+   bbox cq     [[-115.55, -60.0, 517.9], [78.26, 59.99, 716.3]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 198 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== avionics_module: replay V 96837.36 mm3 (valid True, 1 solid(s)), twin V 96839.82 mm3, dV -0.0025 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== avionics_module: V fusion 96893 mm3, cadquery 96763 mm3, dV +0.13 %
+   bbox fusion [[-60.0, -60.0, 332.9], [60.0, 60.0, 532.9]]
+   bbox cq     [[-60.0, -59.98, 332.9], [60.0, 59.98, 532.9]]
+   Z bands where the sections differ (z0..z1, integrated dV mm3, mean area fusion / cq mm2):
+        422.4 ..    422.4  dV      +3.2   A     484.7 /     481.5
+   centroid shift 0.019 mm (<= 0.1), inertia diagonal max |d| 0.139 % (<= 1)
+   X3 PASS: |dV| 0.13 % (<= 0.5: True); max |band dV| 3.2 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 200 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== avionics_logo: replay V 680.99 mm3 (valid True, 20 solid(s)), twin V 680.99 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== avionics_logo: V fusion 681 mm3, cadquery 681 mm3, dV -0.00 %
+   bbox fusion [[14.57, -58.16, 335.95], [31.6, 58.16, 456.97]]
+   bbox cq     [[14.57, -58.16, 335.95], [31.6, 58.16, 456.97]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 121 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== gps_pod_lid: replay V 4215.37 mm3 (valid True, 1 solid(s)), twin V 4215.37 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== gps_pod_lid: V fusion 4216 mm3, cadquery 4216 mm3, dV -0.00 %
+   bbox fusion [[-115.55, -49.31, 687.3], [-46.99, 15.42, 700.3]]
+   bbox cq     [[-115.55, -49.31, 687.3], [-46.99, 15.42, 700.3]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 13 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== gps: replay V 9437.40 mm3 (valid True, 2 solid(s)), twin V 9437.40 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== gps_ground_plane: replay V 1942.40 mm3 (valid True, 1 solid(s)), twin V 1942.40 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== piston: replay V 24306.77 mm3 (valid True, 1 solid(s)), twin V 24306.77 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== piston: V fusion 24296 mm3, cadquery 24296 mm3, dV -0.00 %
+   bbox fusion [[-58.3, -58.28, 548.9], [58.3, 58.28, 551.3]]
+   bbox cq     [[-58.3, -58.28, 548.9], [58.3, 58.28, 551.3]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 2 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== gns: replay V 37500.00 mm3 (valid True, 1 solid(s)), twin V 37500.00 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== propulsion_module: replay V 320360.24 mm3 (valid True, 1 solid(s)), twin V 320358.66 mm3, dV +0.0005 %; boolean replay - twin 0.0128 mm3, twin - replay 0.0000 mm3
+
+== propulsion_module: V fusion 320117 mm3, cadquery 320117 mm3, dV +0.00 %
+   bbox fusion [[-123.4, -123.4, 0.0], [123.4, 123.4, 190.0]]
+   bbox cq     [[-123.4, -123.4, 0.0], [123.4, 123.4, 190.0]]
+   sections agree at every slice
+   centroid shift 0.001 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 190 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== intake_module: replay V 374472.62 mm3 (valid True, 5 solid(s)), twin V 104452.87 mm3, dV +258.5087 %; boolean replay - twin 165600.8509 mm3, twin - replay 104409.7995 mm3
+
+== intake_module: V fusion 374362 mm3, cadquery 104397 mm3, dV +258.59 %
+   bbox fusion [[-62.75, -60.32, 175.0], [68.95, 60.32, 347.9]]
+   bbox cq     [[-62.75, -60.0, 175.0], [68.95, 60.0, 347.9]]
+   Z bands where the sections differ (z0..z1, integrated dV mm3, mean area fusion / cq mm2):
+        210.5 ..    326.5  dV +270025.3   A    2606.2 /     298.3
+   centroid shift 6.771 mm (<= 0.1), inertia diagonal max |d| 284.771 % (<= 1)
+   X3 FAIL: |dV| 258.59 % (<= 0.5: False); max |band dV| 270025.3 mm3 (<= 250: False); bands above 20 mm3 differ by at most 88.55 % of their volume (<= 3: False); NaN slice areas 0 (= 0: True); 173 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 FAIL: boolean differences < 1 mm3 (False); slices FAIL
+
+== servo_cover_1: replay V 2576.88 mm3 (valid True, 1 solid(s)), twin V 2576.88 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== servo_cover_1: V fusion 2577 mm3, cadquery 2577 mm3, dV +0.00 %
+   bbox fusion [[47.4, 8.15, 24.35], [97.4, 9.35, 67.45]]
+   bbox cq     [[47.4, 8.15, 24.35], [97.4, 9.35, 67.45]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 43 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== servo_cover_2: replay V 2576.88 mm3 (valid True, 1 solid(s)), twin V 2576.88 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== servo_cover_2: V fusion 2577 mm3, cadquery 2577 mm3, dV +0.00 %
+   bbox fusion [[-9.35, 47.4, 24.35], [-8.15, 97.4, 67.45]]
+   bbox cq     [[-9.35, 47.4, 24.35], [-8.15, 97.4, 67.45]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 43 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== servo_cover_3: replay V 2576.88 mm3 (valid True, 1 solid(s)), twin V 2576.88 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== servo_cover_3: V fusion 2577 mm3, cadquery 2577 mm3, dV +0.00 %
+   bbox fusion [[-97.4, -9.35, 24.35], [-47.4, -8.15, 67.45]]
+   bbox cq     [[-97.4, -9.35, 24.35], [-47.4, -8.15, 67.45]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 43 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== servo_cover_4: replay V 2576.88 mm3 (valid True, 1 solid(s)), twin V 2576.88 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== servo_cover_4: V fusion 2577 mm3, cadquery 2577 mm3, dV +0.00 %
+   bbox fusion [[8.15, -97.4, 24.35], [9.35, -47.4, 67.45]]
+   bbox cq     [[8.15, -97.4, 24.35], [9.35, -47.4, 67.45]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 43 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== wire_cover: replay V 1674.58 mm3 (valid True, 1 solid(s)), twin V 1674.58 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== wire_cover: V fusion 1675 mm3, cadquery 1675 mm3, dV -0.00 %
+   bbox fusion [[68.95, -15.3, 175.0], [70.55, 15.3, 209.7]]
+   bbox cq     [[68.95, -15.3, 175.0], [70.55, 15.3, 209.7]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 35 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== vane_1: replay V 3313.00 mm3 (valid True, 1 solid(s)), twin V 3262.53 mm3, dV +1.5471 %; boolean replay - twin 50.4744 mm3, twin - replay 0.0000 mm3
+
+== vane_1: V fusion 3313 mm3, cadquery 3262 mm3, dV +1.55 %
+   bbox fusion [[13.0, -2.5, 14.6], [59.5, 2.5, 46.6]]
+   bbox cq     [[13.0, -2.5, 14.6], [59.5, 2.5, 46.6]]
+   Z bands where the sections differ (z0..z1, integrated dV mm3, mean area fusion / cq mm2):
+         15.1 ..     15.1  dV     +19.6   A      90.0 /      70.4
+         46.1 ..     46.1  dV     +19.7   A      90.0 /      70.3
+   centroid shift 0.037 mm (<= 0.1), inertia diagonal max |d| 4.976 % (<= 1)
+   X3 FAIL: |dV| 1.55 % (<= 0.5: False); max |band dV| 19.7 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 32 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 FAIL: boolean differences < 1 mm3 (False); slices FAIL
+
+== vane_coupler_1: replay V 711.85 mm3 (valid True, 1 solid(s)), twin V 711.85 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== vane_coupler_1: V fusion 712 mm3, cadquery 712 mm3, dV -0.00 %
+   bbox fusion [[53.0, -5.32, 31.0], [66.5, 5.32, 43.0]]
+   bbox cq     [[53.0, -5.32, 31.0], [66.5, 5.32, 43.0]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.001 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 12 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== vane_coupler_3: replay V 711.85 mm3 (valid True, 1 solid(s)), twin V 711.85 mm3, dV -0.0007 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== vane_coupler_3: V fusion 712 mm3, cadquery 712 mm3, dV +0.00 %
+   bbox fusion [[-66.5, -5.32, 31.0], [-53.0, 5.32, 43.0]]
+   bbox cq     [[-66.5, -5.32, 31.0], [-53.0, 5.32, 43.0]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.002 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 12 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== launch_pad: replay V 272363.96 mm3 (valid True, 1 solid(s)), twin V 272363.96 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== launch_pad: V fusion 272322 mm3, cadquery 272322 mm3, dV +0.00 %
+   bbox fusion [[-95.0, -94.97, -110.0], [95.0, 94.97, 4.0]]
+   bbox cq     [[-95.0, -94.97, -110.0], [95.0, 94.97, 4.0]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 114 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== servo_vane_1: replay V 6822.17 mm3 (valid True, 1 solid(s)), twin V 6822.17 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== servo_horn_1: replay V 226.89 mm3 (valid True, 1 solid(s)), twin V 226.89 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== hinge_bushing_1: replay V 54.92 mm3 (valid True, 1 solid(s)), twin V 54.92 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== hinge_bushing_3: replay V 54.92 mm3 (valid True, 1 solid(s)), twin V 54.92 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+RESULT: differences / unmodelled parts above

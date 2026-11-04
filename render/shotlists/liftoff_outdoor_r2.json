@@ -1,0 +1,27 @@
+{
+ "title_ko": "CanSat EDF 기체 · 현장 이륙",
+ "subtitle_ko": "지면 효과 · 배기 흐름이 잔디를 눕힘",
+ "shots": [
+  {
+   "t0": 3.4,
+   "t1": 5.8,
+   "cam": "orbit",
+   "note": "lift-off: the wall jet lays the grass down around the slab, clippings fly (0.5x around the lift-off); ends as the nose rises out of the frame (the follow lags a 2 m/s climb)",
+   "slow": [
+    {
+     "a": 4.2,
+     "b": 5.4,
+     "factor": 0.5
+    }
+   ],
+   "params": {
+    "radius": 3.0,
+    "height": -0.3,
+    "deg_per_s": 4.0,
+    "lens": 35.0,
+    "azimuth_deg": 60.0,
+    "fstop": 5.6
+   }
+  }
+ ]
+}

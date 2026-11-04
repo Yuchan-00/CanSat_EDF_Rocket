@@ -1,0 +1,21 @@
+# Flight-simulation video renderer (tools/sim_video.py, tools/test_sim_video.py) and the campaign dispersion
+# animation (tools/campaign_video.py, tools/test_campaign_video.py).
+# Versions verified in .venv on 2026-10-20 (Windows 11, Python 3.12.10, Intel UHD 750 / OpenGL 4.5):
+#   pip install -r requirements-video.txt
+# imageio-ffmpeg bundles its own ffmpeg (7.1 essentials on Windows, libx264 encoder present); no system
+# ffmpeg is needed.  PyVista renders off-screen through VTK's OpenGL window: a desktop GPU driver on
+# Windows; on a headless Linux box use an OSMesa / EGL build of VTK or run under xvfb.
+# Korean overlays (--lang ko, the default) need a Korean font file, not a pip package: Malgun Gothic
+# (C:\Windows\Fonts\malgun.ttf + malgunbd.ttf, shipped with Windows) is used directly; elsewhere one of
+# NanumGothic / Noto Sans CJK KR found by matplotlib's font manager (e.g. Debian/Ubuntu: apt install
+# fonts-nanum or fonts-noto-cjk).  Without one the renderer warns and Hangul cannot render (--lang en works).
+pyvista==0.49.1
+vtk==9.6.2
+imageio==2.38.1
+imageio-ffmpeg==0.6.0
+pillow==12.3.0
+# shared with the rest of the project (sim/run_scenarios.py, sim/test_sim.py) - pinned to what was tested
+matplotlib==3.11.2
+numpy==2.5.4
+scipy==1.18.1
+pytest==9.1.1

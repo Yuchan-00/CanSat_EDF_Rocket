@@ -1,0 +1,1544 @@
+{
+  "provisional": true,
+  "version": "v0.9",
+  "source": {
+    "kind": "CadQuery twin STL (cad/exports/cadquery/stl) - NOT the Fusion 360 path",
+    "why": "make_print_files.py makes print files only from a Fusion run of the current params.json and script; the v0.9 Fusion GUI run has not been made",
+    "replaced_by": "python tools/make_print_files.py after the Fusion run (then delete this folder)",
+    "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+    "preset": "BUDGET_90mm_6S",
+    "stl_sha256": {
+      "propulsion_module": "4f8b7f39600f8556b1d49b5e117c107a070605ced2d356141132953bb2d45f88",
+      "intake_module": "b51180cf75882265d9e7dcce0d3af1513154291c58867ea03446d3d95bc2503a",
+      "avionics_module": "48c0eef7d4ec0ada0b12cc7c6b3191af6afcb9cabc4a0c094c70d83452955ec0",
+      "avionics_logo": "dfa66903e5485ad1549f9a45c87d4d59d4f223ef10f78dd9a2ddcbbe0cdcdc7a",
+      "avionics_tray": "c60bbce83fe8683a4b0219d8b3dcc4cfb38b077733239a4e2c3795742fab29ba",
+      "payload_module": "4363003e5db06dae12cfb9c8dff562bd30a59b2c170e0e72d37f0c9e6a750f57",
+      "piston": "a97311649628d24cfda2b8e8d09de9ce525e8cbf8255cf57ffdaca4974fc3e72",
+      "nose_cone": "16de74cd0762da488aaad549c0761000f1f520abe35a21bdb7799726c7a1f725",
+      "vane": "1f1a4adf3782fce0a463ad763032e27f9713e5319ebce4cddd92eecdd9a26063",
+      "vane_coupler": "d8e4ec8b5743c202cfe83679c56954550f8a7476ee3e24d706a98357d25ee715",
+      "servo_cover": "e981a541762a713f4c51b08358579d5482e2f984be15d5ad438a60a39dd75826",
+      "wire_cover": "6f9fd56244cccb3c21cc3a16b70ea522ff7412a4d43404da9b6333b6a8c241a3",
+      "latch_arm": "34ad3b377b5e97859129c45e949f31cb9900a41ecb9cad22e47c07a606217683",
+      "gps_pod_lid": "87b37de27caeae4dcc577deda3c1cfbe8c62f94f5bc61042df06e037d6bfc31f",
+      "launch_pad": "09d5be050819e2e04de5b6d3d07de1440dede4d83573c4ebc505551f6d0ae7bc"
+    }
+  },
+  "machine": "Bambu Lab P2S 0.4 nozzle",
+  "process_base": "0.20mm Standard @BBL P2S",
+  "filament": "Bambu PLA Matte @BBL P2S",
+  "parts": {
+    "propulsion_module": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "upright, exhaust exit on the bed, turned 45 deg on the plate (v0.9: the fins on the axes span 246.8 mm; axis-aligned the P2S plate refuses it - its wrap-detection zone - so the fins print diagonally, 176.2 mm); no support: the fin-root fairings' keels are 45 deg, each servo pocket's ceiling bridges its width onto the service-side lintel and the lintel bridges the opening length (40 mm); the lead pipes rise at 33 deg from vertical",
+      "rotations": [
+        [
+          "z",
+          45.0
+        ]
+      ],
+      "extents_mm": [
+        176.2,
+        176.2,
+        190.0
+      ],
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "support_type": "normal(auto)",
+        "wall_loops": "4",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 34656.05859375,
+      "filament_mm": 110081.49,
+      "filament_g": 346.85788665605014,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "normal(auto)",
+        "wall_loops": "4"
+      },
+      "support_time_s": 0.0,
+      "part_g": 346.79038120438486,
+      "removed_g": 0.06747999227562573,
+      "feature_g": {
+        "Inner wall": 191.22220012564716,
+        "Outer wall": 111.86409400841167,
+        "Sparse infill": 17.218954373267653,
+        "Internal solid infill": 16.329792340485326,
+        "Bridge": 4.443322387085091,
+        "Top surface": 3.449160318346451,
+        "Floating vertical shell": 1.9947285069034442,
+        "Overhang wall": 0.2681291441429127,
+        "Skirt": 0.06747999227562573
+      },
+      "part_z_centroid_plate_mm": 86.7454874371395,
+      "part_z_centroid_design_mm": 86.7454874371395,
+      "print_file": "propulsion_module.3mf",
+      "print_file_stl": "propulsion_module.stl"
+    },
+    "intake_module": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "normal(auto)",
+      "why": "printed flipped (SPEC 5.1 / 12): the spigot stands on the bed; the 45 deg floor wedges keep supports out of the closed lead channels only in this orientation (upright, the channel roofs would need support inside); v0.6.2: every window ceiling is a 45 deg truncated gable whose flat is bridged, and the part is a Bambu project with a support blocker over each window opening (snug supports, shrunk 0.5 mm), so no support inside the windows - checked on the sliced G-code; supports stay under the bulkhead inside the spigot, under the shelf ledge, the spigot step and the lead bulges",
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        131.7,
+        120.0,
+        172.9
+      ],
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "support_type": "normal(auto)",
+        "support_style": "snug",
+        "support_expansion": "-0.5",
+        "wall_loops": "4",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 17682.560546875,
+      "filament_mm": 66446.9,
+      "filament_g": 209.36881676334414,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "snug",
+        "support_type": "normal(auto)",
+        "wall_loops": "4"
+      },
+      "support_time_s": 5907.019714355469,
+      "window_support_without_blockers": {
+        "status": "FAIL",
+        "reason": "support inside the window openings: window 45 deg 16923.6 mm at design z [210.25, 326.6]; window 135 deg 12782.2 mm at design z [210.25, 326.6]; window 225 deg 16468 mm at design z [210.25, 326.6]; window 315 deg 12796 mm at design z [210.25, 326.6]",
+        "support_path_mm_in_openings": 58969.8,
+        "support_interface_path_mm_in_openings": 1019.6,
+        "windows_with_support": [
+          45.0,
+          135.0,
+          225.0,
+          315.0
+        ]
+      },
+      "window_blockers": {
+        "count": 4,
+        "r_mm": [
+          56.7,
+          60.3
+        ],
+        "z_design_mm": [
+          208.9,
+          326.9
+        ],
+        "sectors_deg": [
+          [
+            8.594,
+            81.406
+          ],
+          [
+            98.594,
+            171.406
+          ],
+          [
+            188.594,
+            261.406
+          ],
+          [
+            278.594,
+            351.406
+          ]
+        ]
+      },
+      "window_support": {
+        "status": "PASS",
+        "gcode_check": "support extrusion inside the window openings",
+        "probe": "window sectors up to the strut faces, r 57.00..60.00, Z 209.90..326.90 (design frame), grown by 0.2 mm (half the support line width) across the faces and 0.1 mm in Z",
+        "probe_tolerances": {
+          "support_line_width_mm": 0.4,
+          "support_line_width_from": "support_line_width",
+          "grow_mm": 0.2,
+          "grow_z_mm": 0.1,
+          "support_object_xy_distance_mm": 0.35,
+          "hugging_support_centre_inside_face_mm": 0.55
+        },
+        "registration": {
+          "slicer_placement": {
+            "arrange_rotation_z_deg": 135.153,
+            "model_to_plate_shift": [
+              278.821,
+              102.67,
+              -0.0
+            ],
+            "mesh_vs_model_bounds_mm": 0.0
+          },
+          "axis_predicted_xy": [
+            100.0,
+            100.0
+          ],
+          "ring_samples": 6338,
+          "ring_fit_centre_xy": [
+            100.0,
+            100.0
+          ],
+          "ring_fit_centre_offset": 0.0,
+          "ring_outer_perimeter_r": 59.788,
+          "expected_r": 59.8,
+          "ring_fit_rms": 0.0041,
+          "wall_samples_in_openings_mid_window": 0,
+          "wall_samples_per_strut_mid_window": [
+            82405,
+            82477,
+            75466,
+            82018
+          ],
+          "strut_faces": [
+            {
+              "face_theta_deg": 8.594,
+              "samples": 1745,
+              "wall_offset_error_mm": -0.0
+            },
+            {
+              "face_theta_deg": 81.406,
+              "samples": 1311,
+              "wall_offset_error_mm": -0.0
+            },
+            {
+              "face_theta_deg": 98.594,
+              "samples": 1311,
+              "wall_offset_error_mm": -0.0
+            },
+            {
+              "face_theta_deg": 171.406,
+              "samples": 1311,
+              "wall_offset_error_mm": 0.0
+            },
+            {
+              "face_theta_deg": 188.594,
+              "samples": 1311,
+              "wall_offset_error_mm": 0.0003
+            },
+            {
+              "face_theta_deg": 261.406,
+              "samples": 1468,
+              "wall_offset_error_mm": -0.0001
+            },
+            {
+              "face_theta_deg": 278.594,
+              "samples": 1311,
+              "wall_offset_error_mm": -0.0
+            },
+            {
+              "face_theta_deg": 351.406,
+              "samples": 1312,
+              "wall_offset_error_mm": -0.0003
+            }
+          ],
+          "strut_face_offset_error_max_mm": 0.0003
+        },
+        "nearest_support_outside_openings": {
+          "bead_gap_mm": 0.467,
+          "side": "bore side",
+          "window_theta_deg": 315.0,
+          "r_design": 56.333,
+          "z_design": 232.08
+        },
+        "windows": [
+          {
+            "theta_deg": 45.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.2
+          },
+          {
+            "theta_deg": 135.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.2
+          },
+          {
+            "theta_deg": 225.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.2
+          },
+          {
+            "theta_deg": 315.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.2
+          }
+        ],
+        "support_path_mm_whole_part": 612752.7,
+        "max_bridge_length_in_gcode": "10",
+        "bridge_no_support_in_gcode": "0"
+      },
+      "part_g": 130.1470355458596,
+      "removed_g": 79.22175389897502,
+      "feature_g": {
+        "Support": 72.22040365367577,
+        "Inner wall": 69.47269549766378,
+        "Outer wall": 31.499472360005054,
+        "Internal solid infill": 16.198820033308465,
+        "Bridge": 7.288900174808909,
+        "Support interface": 5.234453461071823,
+        "Top surface": 3.5109605896065417,
+        "Support transition": 1.728913303335145,
+        "Sparse infill": 1.5446690029586883,
+        "Overhang wall": 0.41298638664405735,
+        "Floating vertical shell": 0.2185315009069052,
+        "Skirt": 0.03798348089228522
+      },
+      "part_z_centroid_plate_mm": 87.56179385052143,
+      "part_z_centroid_design_mm": 260.33820004596294,
+      "print_file": "intake_module.3mf",
+      "print_file_stl": "intake_module.stl"
+    },
+    "avionics_module": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "upright",
+      "rotations": [],
+      "extents_mm": [
+        120.0,
+        120.0,
+        200.0
+      ],
+      "class": "B_shell",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 60829.2197265625,
+      "filament_mm": 39244.55,
+      "filament_g": 303.74,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 0.0,
+      "part_g": 123.9174975215769,
+      "removed_g": 178.9200918069583,
+      "feature_g": {
+        "Outer wall": 72.46996137430092,
+        "Inner wall": 50.41071394023765,
+        "Top surface": 0.26550953289120877,
+        "Internal solid infill": 0.250827982160206,
+        "Overhang wall": 0.1778012061525219,
+        "Bridge": 0.03807060380973514,
+        "Skirt": 0.03690548839615561,
+        "Sparse infill": 0.003813273993747891,
+        "Floating vertical shell": 0.002805799070585009
+      },
+      "part_z_centroid_plate_mm": 102.06956793519629,
+      "part_z_centroid_design_mm": 434.96956183168066,
+      "two_colour": true,
+      "filament_g_by_colour": {
+        "#FFFFFF": 228.11,
+        "#F99963": 75.63
+      },
+      "part_g_by_tool": {
+        "0": 122.43052185012112,
+        "1": 0.9024106714648034
+      },
+      "purge_g_by_tool": {
+        "0": 79.22884129316179,
+        "1": 56.592042458897986
+      },
+      "prime_tower_g_by_tool": {
+        "0": 26.448040800187087,
+        "1": 18.13214383535851
+      },
+      "swaps": 576,
+      "swap_z_range_plate_mm": [
+        3.4,
+        124.2
+      ],
+      "swaps_by_direction": {
+        "T0->T1": 288,
+        "T1->T0": 288
+      },
+      "flush_volumes_mm3": {
+        "white_to_orange": 150.0,
+        "orange_to_white": 210.0
+      },
+      "orange_features_g": {
+        "Outer wall|T1": 0.9024106714648034,
+        "Prime tower|T1": 18.13214383535851,
+        "_e_only|T1": 4.986014631929062
+      },
+      "prep_time_s": 448.0107421875,
+      "prime_tower_xy_mm": [
+        20.0,
+        205.0
+      ],
+      "prime_tower_refused": [],
+      "settings_in_project": {
+        "flush_volumes_matrix": [
+          "0",
+          "150",
+          "210",
+          "0"
+        ],
+        "flush_multiplier": [
+          "1"
+        ],
+        "enable_prime_tower": "1",
+        "filament_colour": [
+          "#FFFFFF",
+          "#F99963"
+        ],
+        "wall_generator": "classic",
+        "wall_loops": "3",
+        "detect_thin_wall": "1"
+      },
+      "part_path_mm_by_tool": {
+        "0": 1208727.065481591,
+        "1": 8148.913123143586
+      },
+      "part_layers_by_tool": {
+        "0": {
+          "layers_with_part": 1000,
+          "changes_in": 288,
+          "empty_layers": 0,
+          "empty_layer_z_mm": [],
+          "dab_layers_path_lt_0.4_mm": []
+        },
+        "1": {
+          "layers_with_part": 574,
+          "changes_in": 288,
+          "empty_layers": 2,
+          "empty_layer_z_mm": [
+            14.2,
+            124.2
+          ],
+          "dab_layers_path_lt_0.4_mm": []
+        }
+      },
+      "runs": {
+        "two_colour": {
+          "ok": true,
+          "main_predication_s": 12677.0,
+          "total_predication_s": 61277.23046875,
+          "filament_change_times": 576,
+          "feature_type_times_s": {
+            "Bridge": 6.157353401184082,
+            "Custom": 397.8536376953125,
+            "Flush": 41898.07421875,
+            "Gap infill": 1822.3243408203125,
+            "Inner wall": 831.8987426757812,
+            "Internal solid infill": 23.513978958129883,
+            "Outer wall": 4764.46142578125,
+            "Overhang wall": 125.09051513671875,
+            "Prime tower": 6279.8701171875,
+            "Sparse infill": 0.593492329120636,
+            "Top surface": 44.25127029418945,
+            "Travel": 5024.828125,
+            "Undefined": 5023.2587890625
+          },
+          "slice_info_used": {
+            "1": {
+              "used_m": 72.39,
+              "used_g": 228.11
+            },
+            "2": {
+              "used_m": 24.0,
+              "used_g": 75.63
+            }
+          },
+          "flush_volumes_matrix": [
+            "0",
+            "150",
+            "210",
+            "0"
+          ],
+          "flush_multiplier": [
+            "1"
+          ],
+          "enable_prime_tower": "1",
+          "filament_colour": [
+            "#FFFFFF",
+            "#F99963"
+          ],
+          "wall_generator": "classic",
+          "wall_loops": "3",
+          "detect_thin_wall": "1",
+          "cli_wall_s": 14.1,
+          "part_g_by_tool": {
+            "0": 122.43052185012112,
+            "1": 0.9024106714648034
+          },
+          "part_path_mm_by_tool": {
+            "0": 1208727.065481591,
+            "1": 8148.913123143586
+          },
+          "part_layers_by_tool": {
+            "0": {
+              "layers_with_part": 1000,
+              "changes_in": 288,
+              "empty_layers": 0,
+              "empty_layer_z_mm": [],
+              "dab_layers_path_lt_0.4_mm": []
+            },
+            "1": {
+              "layers_with_part": 574,
+              "changes_in": 288,
+              "empty_layers": 2,
+              "empty_layer_z_mm": [
+                14.2,
+                124.2
+              ],
+              "dab_layers_path_lt_0.4_mm": []
+            }
+          },
+          "prime_tower_g_by_tool": {
+            "0": 26.448040800187087,
+            "1": 18.13214383535851
+          },
+          "purge_g_by_tool": {
+            "0": 79.22884129316179,
+            "1": 56.592042458897986
+          },
+          "other_g_by_tool": {
+            "0": 15.609653998088149,
+            "1": 4.986014631929063
+          },
+          "feature_g_by_tool": {
+            "Bridge|T0": 0.034622867958966366,
+            "Floating vertical shell|T0": 0.0026676942795603354,
+            "Gap infill|T0": 34.704285695970015,
+            "Inner wall|T0": 10.56172131353759,
+            "Internal solid infill|T0": 0.14848558904371328,
+            "Outer wall|T0": 76.59213356321978,
+            "Outer wall|T1": 0.9024106714648034,
+            "Overhang wall|T0": 0.13535488926170444,
+            "Prime tower|T0": 26.448040800187087,
+            "Prime tower|T1": 18.13214383535851,
+            "Sparse infill|T0": 0.003333199935784869,
+            "Top surface|T0": 0.24791703691402223,
+            "_e_only|T0": 15.609653998088145,
+            "_e_only|T1": 4.986014631929062
+          },
+          "part_z_centroid_plate_mm_by_tool": {
+            "0": 102.23080093088213,
+            "1": 75.47402481179924
+          },
+          "changes": 576,
+          "change_z_range_mm": [
+            3.4,
+            124.2
+          ],
+          "changes_by_direction": {
+            "T0->T1": 288,
+            "T1->T0": 288
+          },
+          "tower_xy": [
+            20.0,
+            205.0
+          ],
+          "time_s": 60829.2197265625
+        },
+        "two_colour_cli_default_flush": {
+          "ok": true,
+          "main_predication_s": 12677.08984375,
+          "total_predication_s": 65339.44921875,
+          "filament_change_times": 576,
+          "feature_type_times_s": {
+            "Bridge": 6.157353401184082,
+            "Custom": 397.8536376953125,
+            "Flush": 45960.203125,
+            "Gap infill": 1822.3243408203125,
+            "Inner wall": 831.8987426757812,
+            "Internal solid infill": 23.513978958129883,
+            "Outer wall": 4764.46142578125,
+            "Overhang wall": 125.09051513671875,
+            "Prime tower": 6279.8701171875,
+            "Sparse infill": 0.593492329120636,
+            "Top surface": 44.25127029418945,
+            "Travel": 5024.8271484375,
+            "Undefined": 5023.2578125
+          },
+          "slice_info_used": {
+            "1": {
+              "used_m": 80.78,
+              "used_g": 254.52
+            },
+            "2": {
+              "used_m": 39.57,
+              "used_g": 124.67
+            }
+          },
+          "flush_volumes_matrix": [
+            "0",
+            "280",
+            "280",
+            "0"
+          ],
+          "flush_multiplier": [
+            "1"
+          ],
+          "enable_prime_tower": "1",
+          "filament_colour": [
+            "#FFFFFF",
+            "#F99963"
+          ],
+          "wall_generator": "classic",
+          "wall_loops": "3",
+          "detect_thin_wall": "1",
+          "cli_wall_s": 14.1,
+          "part_g_by_tool": {
+            "0": 122.43052185012112,
+            "1": 0.9024106714648034
+          },
+          "part_path_mm_by_tool": {
+            "0": 1208727.065481591,
+            "1": 8148.913123143586
+          },
+          "part_layers_by_tool": {
+            "0": {
+              "layers_with_part": 1000,
+              "changes_in": 288,
+              "empty_layers": 0,
+              "empty_layer_z_mm": [],
+              "dab_layers_path_lt_0.4_mm": []
+            },
+            "1": {
+              "layers_with_part": 574,
+              "changes_in": 288,
+              "empty_layers": 2,
+              "empty_layer_z_mm": [
+                14.2,
+                124.2
+              ],
+              "dab_layers_path_lt_0.4_mm": []
+            }
+          },
+          "prime_tower_g_by_tool": {
+            "0": 26.448040800187087,
+            "1": 18.13214383535851
+          },
+          "purge_g_by_tool": {
+            "0": 105.63842480872515,
+            "1": 105.63842480872515
+          },
+          "other_g_by_tool": {
+            "0": 15.609653998088149,
+            "1": 4.986014631929063
+          },
+          "feature_g_by_tool": {
+            "Bridge|T0": 0.034622867958966366,
+            "Floating vertical shell|T0": 0.0026676942795603354,
+            "Gap infill|T0": 34.704285695970015,
+            "Inner wall|T0": 10.56172131353759,
+            "Internal solid infill|T0": 0.14848558904371328,
+            "Outer wall|T0": 76.59213356321978,
+            "Outer wall|T1": 0.9024106714648034,
+            "Overhang wall|T0": 0.13535488926170444,
+            "Prime tower|T0": 26.448040800187087,
+            "Prime tower|T1": 18.13214383535851,
+            "Sparse infill|T0": 0.003333199935784869,
+            "Top surface|T0": 0.24791703691402223,
+            "_e_only|T0": 15.609653998088145,
+            "_e_only|T1": 4.986014631929062
+          },
+          "part_z_centroid_plate_mm_by_tool": {
+            "0": 102.23080093088213,
+            "1": 75.47402481179924
+          },
+          "changes": 576,
+          "change_z_range_mm": [
+            3.4,
+            124.2
+          ],
+          "changes_by_direction": {
+            "T0->T1": 288,
+            "T1->T0": 288
+          },
+          "tower_xy": [
+            20.0,
+            205.0
+          ],
+          "time_s": 64891.4384765625
+        },
+        "single_colour_control": {
+          "ok": true,
+          "main_predication_s": 9067.8564453125,
+          "total_predication_s": 9515.8671875,
+          "filament_change_times": 0,
+          "feature_type_times_s": {
+            "Bridge": 6.212539196014404,
+            "Custom": 397.580078125,
+            "Flush": 26.0,
+            "Gap infill": 1798.837646484375,
+            "Inner wall": 837.8754272460938,
+            "Internal solid infill": 23.39749526977539,
+            "Outer wall": 4421.37060546875,
+            "Overhang wall": 125.0556640625,
+            "Sparse infill": 0.5423502326011658,
+            "Top surface": 44.29274368286133,
+            "Travel": 1831.01220703125,
+            "Undefined": 1829.4432373046875
+          },
+          "slice_info_used": {
+            "1": {
+              "used_m": 39.13,
+              "used_g": 123.3
+            }
+          },
+          "flush_volumes_matrix": [
+            "0",
+            "150",
+            "210",
+            "0"
+          ],
+          "flush_multiplier": [
+            "1"
+          ],
+          "enable_prime_tower": "1",
+          "filament_colour": [
+            "#FFFFFF",
+            "#F99963"
+          ],
+          "wall_generator": "classic",
+          "wall_loops": "3",
+          "detect_thin_wall": "1",
+          "cli_wall_s": 12.1,
+          "part_g_by_tool": {
+            "0": 123.30228242715461
+          },
+          "part_path_mm_by_tool": {
+            "0": 1217117.282465555
+          },
+          "part_layers_by_tool": {
+            "0": {
+              "layers_with_part": 1000,
+              "changes_in": 0,
+              "empty_layers": 0,
+              "empty_layer_z_mm": [],
+              "dab_layers_path_lt_0.4_mm": []
+            }
+          },
+          "prime_tower_g_by_tool": {
+            "0": 0
+          },
+          "purge_g_by_tool": {
+            "0": 0.0
+          },
+          "other_g_by_tool": {
+            "0": 11.266426894544765
+          },
+          "feature_g_by_tool": {
+            "Bridge|T0": 0.03435233003157923,
+            "Floating vertical shell|T0": 0.0026584620861379695,
+            "Gap infill|T0": 35.68829383287736,
+            "Inner wall|T0": 10.627429606933466,
+            "Internal solid infill|T0": 0.14911139311730243,
+            "Outer wall|T0": 76.41386898288125,
+            "Overhang wall|T0": 0.13531717275820093,
+            "Sparse infill|T0": 0.003333168426592301,
+            "Top surface|T0": 0.2479174780427182,
+            "_e_only|T0": 11.26642689454476
+          },
+          "part_z_centroid_plate_mm_by_tool": {
+            "0": 102.04070719053496
+          },
+          "changes": 0,
+          "change_z_range_mm": null,
+          "changes_by_direction": {},
+          "tower_xy": [
+            20.0,
+            205.0
+          ],
+          "time_s": 9067.8564453125
+        }
+      },
+      "inlay_print_check": {
+        "status": "PASS",
+        "orange_part_path_mm": 8148.913123143586,
+        "single_pass_path_mm": 8107.790839093692,
+        "path_ratio": 1.0050719468306475,
+        "path_ratio_max": 1.15,
+        "orange_part_g": 0.9024106714648034,
+        "solid_g": 0.8921813039338699,
+        "g_rel": 0.011465570378833778,
+        "g_rel_tol": 0.1,
+        "layer_height_mm": 0.2,
+        "inlay_depth_mm": 0.42,
+        "inlay_volume_mm3": 681.0544304838701,
+        "per_layer_info": {
+          "layers_with_part": 574,
+          "changes_in": 288,
+          "empty_layers": 2,
+          "empty_layer_z_mm": [
+            14.2,
+            124.2
+          ],
+          "dab_layers_path_lt_0.4_mm": []
+        }
+      },
+      "added_vs_single_colour": {
+        "flush_150_210": {
+          "time_s": 51761.36328125,
+          "purge_g": 135.82088375205979,
+          "prime_tower_g": 44.58018463554559,
+          "filament_g": 180.44,
+          "swaps": 576
+        },
+        "flush_280_cli_default": {
+          "time_s": 55823.58203125,
+          "purge_g": 211.2768496174503,
+          "prime_tower_g": 44.58018463554559,
+          "filament_g": 255.89,
+          "swaps": 576
+        }
+      },
+      "single_colour_control": {
+        "time_s": 9067.8564453125,
+        "filament_g": 123.3,
+        "part_g": 123.30228242715461
+      },
+      "single_colour_slice": {
+        "time_s": 10477.9404296875,
+        "filament_g": 123.65640831867096,
+        "part_g": 123.61950371267493,
+        "note": "the white body (with the pocket) sliced alone, pipeline settings (slice_one) - information; the table grams are mass_basis (reviewfix F3)"
+      },
+      "mass_basis": {
+        "pipeline_plain_module_g": 124.78925809861039,
+        "resolved_white_g": 122.43052185012112,
+        "resolved_orange_g": 0.9024106714648034,
+        "resolved_single_colour_control_g": 123.30228242715461,
+        "livery_delta_resolved_g": 0.030650094431322827,
+        "module_total_g": 124.81990819304171,
+        "avionics_module_g": 123.9174975215769,
+        "inlay_g": 0.9024106714648034,
+        "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
+        "pipeline_plain_module_time_s": 10485.73828125
+      },
+      "inlay_part_g": 0.9024106714648034,
+      "inlay_part_z_centroid_design_mm": 408.37401870828364,
+      "print_file": "avionics_module.3mf",
+      "print_file_stl": "avionics_module.stl",
+      "print_file_stl_inlay": "avionics_logo.stl"
+    },
+    "avionics_tray": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "flat",
+      "rotations": [
+        [
+          "y",
+          90.0
+        ]
+      ],
+      "extents_mm": [
+        160.0,
+        100.0,
+        2.0
+      ],
+      "class": "C_flat_plate",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 2943.930908203125,
+      "filament_mm": 11555.61,
+      "filament_g": 36.410794072841135,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 0.0,
+      "part_g": 36.36039540291242,
+      "removed_g": 0.05040582251617809,
+      "feature_g": {
+        "Internal solid infill": 19.469686530786813,
+        "Bridge": 5.4515883485274195,
+        "Top surface": 4.058685041558601,
+        "Bottom surface": 3.8941809037248865,
+        "Inner wall": 1.4873744517082779,
+        "Sparse infill": 1.11978814819419,
+        "Outer wall": 0.797421726736975,
+        "Floating vertical shell": 0.0816702516761128,
+        "Skirt": 0.05040582251617809
+      },
+      "part_z_centroid_plate_mm": 1.012967668490748,
+      "part_z_centroid_design_mm": null,
+      "print_file": "avionics_tray.3mf",
+      "print_file_stl": "avionics_tray.stl"
+    },
+    "payload_module": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "normal(auto)",
+      "why": "upright; the bulkhead 15 mm above the bed and (v0.6) the four COM-board bosses under it need short supports inside the skirt",
+      "rotations": [],
+      "extents_mm": [
+        193.8,
+        120.0,
+        198.4
+      ],
+      "class": "B_shell",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "support_type": "normal(auto)",
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 22520.466796875,
+      "filament_mm": 86109.01,
+      "filament_g": 271.3225377912734,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "normal(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 7444.348693847656,
+      "part_g": 171.137756927699,
+      "removed_g": 100.18475392320549,
+      "feature_g": {
+        "Support": 91.72049283727078,
+        "Outer wall": 80.91305411174267,
+        "Inner wall": 61.05778694498801,
+        "Internal solid infill": 15.080433949655268,
+        "Bridge": 7.043490103783157,
+        "Support interface": 6.3150589830319515,
+        "Sparse infill": 3.436119892400899,
+        "Top surface": 3.2894293505488315,
+        "Support transition": 2.1102822003165467,
+        "Overhang wall": 0.21244411395796076,
+        "Floating vertical shell": 0.10499846050399549,
+        "Skirt": 0.038919902586207714
+      },
+      "part_z_centroid_plate_mm": 94.67967207214501,
+      "part_z_centroid_design_mm": 612.5796964862075,
+      "print_file": "payload_module.3mf",
+      "print_file_stl": "payload_module.stl"
+    },
+    "piston": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "flat, spring recess facing up",
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        116.6,
+        116.6,
+        2.4
+      ],
+      "class": "C_flat_plate",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 1917.0572509765625,
+      "filament_mm": 8002.11,
+      "filament_g": 25.21400249387291,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 0.0,
+      "part_g": 25.17810977393863,
+      "removed_g": 0.03589650103174939,
+      "feature_g": {
+        "Internal solid infill": 13.631792235930188,
+        "Bridge": 3.2728896712228908,
+        "Top surface": 2.797920196983433,
+        "Bottom surface": 2.7249347610363976,
+        "Sparse infill": 1.3531494190739963,
+        "Inner wall": 0.8776751045508885,
+        "Outer wall": 0.4752178612044798,
+        "Floating vertical shell": 0.04453052394240811,
+        "Skirt": 0.03589650103174939
+      },
+      "part_z_centroid_plate_mm": 1.1702430786702143,
+      "part_z_centroid_design_mm": 550.1297447142986,
+      "print_file": "piston.3mf",
+      "print_file_stl": "piston.stl"
+    },
+    "nose_cone": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "tree(auto)",
+      "why": "base down; the anchor bar spans the bore 4 mm above the skirt and needs supports",
+      "rotations": [],
+      "extents_mm": [
+        126.0,
+        120.0,
+        155.0
+      ],
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "4",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 5667.9912109375,
+      "filament_mm": 22531.48,
+      "filament_g": 70.99487421575654,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "4"
+      },
+      "support_time_s": 605.564338684082,
+      "part_g": 67.78640178026907,
+      "removed_g": 3.2084763741321964,
+      "feature_g": {
+        "Outer wall": 37.62490823446145,
+        "Inner wall": 28.243645137120538,
+        "Support": 2.8484957280106626,
+        "Internal solid infill": 0.8038024957779069,
+        "Bridge": 0.38464742846808037,
+        "Sparse infill": 0.3728749639408902,
+        "Support interface": 0.3226504768279491,
+        "Top surface": 0.2313968302691087,
+        "Overhang wall": 0.0932321717785567,
+        "Skirt": 0.037330169293584466,
+        "Floating vertical shell": 0.023474442990589723,
+        "Bottom surface": 0.00842007549312329
+      },
+      "part_z_centroid_plate_mm": 58.98174574895291,
+      "part_z_centroid_design_mm": 760.2817335419217,
+      "print_file": "nose_cone.3mf",
+      "print_file_stl": "nose_cone.stl"
+    },
+    "vane": {
+      "quantity": 4,
+      "supports": true,
+      "support_type_used": "tree(auto)",
+      "why": "flat; the D5 shaft stands 1 mm proud of the 3 mm plate -> supports on build plate",
+      "rotations": [
+        [
+          "x",
+          -90.0
+        ]
+      ],
+      "extents_mm": [
+        46.5,
+        32.0,
+        5.0
+      ],
+      "class": "D_small_keep",
+      "settings": "5 walls, 5 top / 5 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "5",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid"
+      },
+      "ok": true,
+      "time_s": 559.6382446289062,
+      "filament_mm": 1285.73,
+      "filament_g": 4.051231416019927,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 112.48966598510742,
+      "part_g": 3.5646482835837023,
+      "removed_g": 0.4865748140092616,
+      "feature_g": {
+        "Internal solid infill": 1.3981880602553969,
+        "Inner wall": 0.9443428528604935,
+        "Bridge": 0.47153840675155895,
+        "Support interface": 0.3983763617801812,
+        "Outer wall": 0.27161699119582017,
+        "Top surface": 0.22015327904836907,
+        "Sparse infill": 0.17036446954105539,
+        "Support": 0.07253334205207229,
+        "Overhang wall": 0.06421252051553729,
+        "Floating vertical shell": 0.024231703415571706,
+        "Skirt": 0.015665110177008133
+      },
+      "part_z_centroid_plate_mm": 2.5316053039067175,
+      "part_z_centroid_design_mm": null,
+      "print_file": "vane.3mf",
+      "print_file_stl": "vane.stl"
+    },
+    "vane_coupler": {
+      "quantity": 4,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "upright, flange on the bed, D-bore vertical",
+      "rotations": [
+        [
+          "y",
+          90.0
+        ]
+      ],
+      "extents_mm": [
+        12.0,
+        10.6,
+        13.5
+      ],
+      "class": "D_small_keep",
+      "settings": "5 walls, 5 top / 5 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "5",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid"
+      },
+      "ok": true,
+      "time_s": 371.75048828125,
+      "filament_mm": 293.86,
+      "filament_g": 0.9259291327974114,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "part_g": 0.9211242330043711,
+      "removed_g": 0.004798944555653852,
+      "feature_g": {
+        "Inner wall": 0.6060817452494858,
+        "Outer wall": 0.29390382120933584,
+        "Top surface": 0.011804005228942318,
+        "Overhang wall": 0.009334661316596295,
+        "Skirt": 0.004798944555653852
+      },
+      "part_z_centroid_plate_mm": 7.2804772933853386,
+      "part_z_centroid_design_mm": null,
+      "print_file": "vane_coupler.3mf",
+      "print_file_stl": "vane_coupler.stl"
+    },
+    "servo_cover": {
+      "quantity": 4,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "flat",
+      "rotations": [
+        [
+          "x",
+          90.0
+        ]
+      ],
+      "extents_mm": [
+        50.0,
+        43.1,
+        1.2
+      ],
+      "class": "C_flat_plate",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 290.8689270019531,
+      "filament_mm": 1091.17,
+      "filament_g": 3.4381885654207833,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 0.0,
+      "part_g": 3.4193228459903318,
+      "removed_g": 0.018864931700653495,
+      "feature_g": {
+        "Internal solid infill": 2.0537336607092858,
+        "Top surface": 0.5509471491495022,
+        "Bottom surface": 0.5133911219635952,
+        "Inner wall": 0.18751111044340849,
+        "Outer wall": 0.11373980372453982,
+        "Skirt": 0.018864931700653495
+      },
+      "part_z_centroid_plate_mm": 0.6000055483748342,
+      "part_z_centroid_design_mm": null,
+      "print_file": "servo_cover.3mf",
+      "print_file_stl": "servo_cover.stl"
+    },
+    "wire_cover": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "flat",
+      "rotations": [
+        [
+          "y",
+          90.0
+        ]
+      ],
+      "extents_mm": [
+        34.7,
+        30.6,
+        1.6
+      ],
+      "class": "B_shell",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 224.1349334716797,
+      "filament_mm": 711.05,
+      "filament_g": 2.2404611375335173,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 0.0,
+      "part_g": 2.2268482525776156,
+      "removed_g": 0.013611277987053702,
+      "feature_g": {
+        "Internal solid infill": 1.399046748771265,
+        "Top surface": 0.2630709419508106,
+        "Bottom surface": 0.23310270644553707,
+        "Inner wall": 0.20985245136006775,
+        "Outer wall": 0.12177540404995078,
+        "Skirt": 0.013611277987053702
+      },
+      "part_z_centroid_plate_mm": 0.7999734566132853,
+      "part_z_centroid_design_mm": null,
+      "print_file": "wire_cover.3mf",
+      "print_file_stl": "wire_cover.stl"
+    },
+    "latch_arm": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "flat",
+      "rotations": [],
+      "extents_mm": [
+        10.2,
+        13.3,
+        3.0
+      ],
+      "class": "D_small_keep",
+      "settings": "5 walls, 5 top / 5 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "5",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid"
+      },
+      "ok": true,
+      "time_s": 85.28327178955078,
+      "filament_mm": 87.5,
+      "filament_g": 0.27570543496826205,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "part_g": 0.27106690371197134,
+      "removed_g": 0.0046236274082066065,
+      "feature_g": {
+        "Inner wall": 0.14562241173346246,
+        "Outer wall": 0.048062263300562735,
+        "Internal solid infill": 0.0400594010262297,
+        "Top surface": 0.01667724846067106,
+        "Sparse infill": 0.008862527575160364,
+        "Bottom surface": 0.0060610452639571375,
+        "Floating vertical shell": 0.005722006351927595,
+        "Skirt": 0.0046236274082066065
+      },
+      "part_z_centroid_plate_mm": 1.5011379799199933,
+      "part_z_centroid_design_mm": 707.3011257728888,
+      "print_file": "latch_arm.3mf",
+      "print_file_stl": "latch_arm.stl"
+    },
+    "gps_pod_lid": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "flat: lid top face on the bed, the three ground-plane posts up",
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        68.6,
+        64.7,
+        13.0
+      ],
+      "class": "B_shell",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 749.537109375,
+      "filament_mm": 1771.9,
+      "filament_g": 5.583113831088728,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 0.0,
+      "part_g": 5.560800942972247,
+      "removed_g": 0.022322782002236585,
+      "feature_g": {
+        "Internal solid infill": 3.0179845885996306,
+        "Top surface": 0.7678811655024171,
+        "Bottom surface": 0.7200796407703534,
+        "Inner wall": 0.6237787257092409,
+        "Outer wall": 0.4310768223913886,
+        "Skirt": 0.022322782002236585
+      },
+      "part_z_centroid_plate_mm": 1.5507354509369788,
+      "part_z_centroid_design_mm": 698.7492523420318,
+      "print_file": "gps_pod_lid.3mf",
+      "print_file_stl": "gps_pod_lid.stl"
+    },
+    "launch_pad": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "normal(auto)",
+      "why": "flipped: stands on the fin-locator ribs, legs up; grid supports fill the 4 mm gap under the plate",
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        190.0,
+        190.0,
+        114.0
+      ],
+      "class": "E_ground_equipment",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "overrides": {
+        "brim_type": "no_brim",
+        "skirt_loops": "0",
+        "support_type": "normal(auto)",
+        "support_on_build_plate_only": "1",
+        "wall_loops": "3",
+        "top_shell_layers": "4",
+        "bottom_shell_layers": "4",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "top_shell_thickness": "0"
+      },
+      "ok": true,
+      "time_s": 18777.119140625,
+      "filament_mm": 53645.75,
+      "filament_g": 169.03342671941311,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "normal(auto)",
+        "wall_loops": "3"
+      },
+      "support_time_s": 2767.4334106445312,
+      "part_g": 141.19613556741928,
+      "removed_g": 27.837281793699713,
+      "feature_g": {
+        "Sparse infill": 43.47764209864055,
+        "Inner wall": 35.553527881940774,
+        "Internal solid infill": 25.299680966915798,
+        "Outer wall": 18.778476998650394,
+        "Support": 14.450730172357881,
+        "Bridge": 12.382459777166803,
+        "Support interface": 10.02077130647861,
+        "Top surface": 5.2706188615529195,
+        "Support transition": 3.365780314863223,
+        "Overhang wall": 0.2599752267994097,
+        "Floating vertical shell": 0.10810699989677158,
+        "Bottom surface": 0.06564675594283825
+      },
+      "part_z_centroid_plate_mm": 36.65479397546866,
+      "part_z_centroid_design_mm": -32.65479397546866,
+      "print_file": "launch_pad.3mf",
+      "print_file_stl": "launch_pad.stl"
+    }
+  },
+  "totals": {
+    "time_s": 170942.39012908936,
+    "filament_g": 1474.7030155730945,
+    "part_g": 1083.0952219451,
+    "vehicle_part_g": 941.8990863776808,
+    "filament_g_by_colour": {
+      "Ivory White": {
+        "hex": "#FFFFFF",
+        "code": "11100",
+        "filament_g": 1230.039588853681,
+        "parts": [
+          "propulsion_module",
+          "intake_module",
+          "avionics_module",
+          "avionics_tray",
+          "payload_module",
+          "piston",
+          "nose_cone",
+          "vane",
+          "vane_coupler",
+          "servo_cover",
+          "wire_cover",
+          "latch_arm",
+          "gps_pod_lid"
+        ],
+        "with_spare_g": 1353.043547739049,
+        "rolls_1kg": 2
+      },
+      "Mandarin Orange": {
+        "hex": "#F99963",
+        "code": "11300",
+        "filament_g": 75.63,
+        "parts": [
+          "avionics_module"
+        ],
+        "with_spare_g": 83.193,
+        "rolls_1kg": 1
+      },
+      "Charcoal": {
+        "hex": "#000000",
+        "code": "11101",
+        "filament_g": 169.03342671941311,
+        "parts": [
+          "launch_pad"
+        ],
+        "with_spare_g": 185.93676939135443,
+        "rolls_1kg": 1
+      }
+    },
+    "spare_fraction": 0.1,
+    "two_colour_waste_g": {
+      "purge": 135.82088375205979,
+      "prime_tower": 44.58018463554559
+    }
+  }
+}

@@ -1,0 +1,583 @@
+{
+  "source": {
+    "fusion_report": "cad/exports/fusion360_report.json",
+    "params_sha256": "5ec0ed291081cc36c0f90961add86cad059c94969e255079a65635b62e80fb2d",
+    "script_version": "0.6.3",
+    "generator_version": "CanSatEDFRocket.py 0.6.3; Fusion 2705.1.30",
+    "preset": "BUDGET_90mm_6S",
+    "preset_sliced": "BUDGET_90mm_6S",
+    "containment_unanswered": {},
+    "allow_unanswered": false,
+    "stl_sha256": {
+      "propulsion_module": "e39e0628f30a77ed71cc7db93a9efd1ef3fef5779642169eb2581a0c7e1ea114",
+      "intake_module": "025a122d0966beb24d7955e3c31bed9cf522733db234dca51c70451676b8fd7f",
+      "avionics_module": "799c770d74807bd25aa3bbd5cade6880cc7af7d3d1664ecda046414602d44e74",
+      "payload_module": "17a92d5111f2bbf12036f38fa91223ddba05659a816d380556f16e5357cea721",
+      "nose_cone": "3ff3eb5df642b34fd77875570bcf13b8f8b285ac05fd0b16141be95168772cfc",
+      "avionics_tray": "4d0a74d9753e95491bc3090287390086666a9b76dd61a00385e7917f9ec5f05d",
+      "piston": "b08fd0f923320e757b714515febc2faa40c76ec6a863e28f579c2c1a80d8cfe2",
+      "vane": "4a486a006de146b0c816ee0f0664beefca57b3e8f9b91e25d9b9a634dc11976d",
+      "vane_horn": "7ed3a1e4b8c4ed19dcd3e93486e8abc0c5a09729f70c95ddb31f105aa376b1f7",
+      "latch_arm": "2552f45dfa3ef342a8d178dfb9fad22627b180206cb636ad5a7eebebf15dfe0e",
+      "launch_pad": "0ee5477d6053cb04235ecca97367a08db1d8c81ca04521f492585cca79516786"
+    },
+    "stl_sha256_how": {
+      "propulsion_module": "hashed when the STL was read for slicing",
+      "intake_module": "hashed when the STL was read for slicing",
+      "avionics_module": "hashed when the STL was read for slicing",
+      "payload_module": "hashed when the STL was read for slicing",
+      "nose_cone": "hashed when the STL was read for slicing",
+      "avionics_tray": "hashed when the STL was read for slicing",
+      "piston": "hashed when the STL was read for slicing",
+      "vane": "hashed when the STL was read for slicing",
+      "vane_horn": "hashed when the STL was read for slicing",
+      "latch_arm": "hashed when the STL was read for slicing",
+      "launch_pad": "hashed when the STL was read for slicing"
+    }
+  },
+  "machine": "Bambu Lab P2S 0.4 nozzle",
+  "process_base": "0.20mm Standard @BBL P2S",
+  "filament": "Bambu PLA Matte @BBL P2S",
+  "overrides": "wall_loops 5, top/bottom 5 layers, 15 % gyroid, tree(auto) supports where listed (except launch_pad: normal(auto), intake_module: normal(auto) / snug / support_expansion -0.5 mm), auto brim; intake_module: Bambu project with a support blocker over every window opening",
+  "parts": {
+    "propulsion_module": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "support_style_used": "default",
+      "why": "upright, exhaust exit on the bed; pod undersides are 45 deg chamfers",
+      "chosen_candidate": 0,
+      "rotations": [],
+      "extents_mm": [
+        176.2,
+        176.2,
+        190.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 28431.42578125,
+      "filament_mm": 117419.32,
+      "filament_g": 369.9787965060292,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "print_file": "propulsion_module.stl"
+    },
+    "intake_module": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "normal(auto)",
+      "support_style_used": "snug",
+      "why": "printed flipped (SPEC 5.1 / 12): the spigot stands on the bed; the 45 deg floor wedges keep supports out of the closed lead channels only in this orientation (upright, the channel roofs would need support inside); v0.6.2: every window ceiling is a 45 deg truncated gable whose flat is bridged, and the part is a Bambu project with a support blocker over each window opening (snug supports, shrunk 0.5 mm), so no support inside the windows - checked on the sliced G-code; supports stay under the bulkhead inside the spigot, under the shelf ledge, the spigot step and the lead bulges",
+      "chosen_candidate": 0,
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        127.9,
+        120.0,
+        172.9
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 17172.029296875,
+      "filament_mm": 68117.75,
+      "filament_g": 214.63353020353526,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "snug",
+        "support_type": "normal(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 6117.267822265625,
+      "window_support_without_blockers": {
+        "status": "FAIL",
+        "reason": "support inside the window openings: window 45 deg 12524.4 mm at design z [210.25, 326.6]; window 135 deg 16796.9 mm at design z [210.25, 326.6]; window 225 deg 12512.1 mm at design z [210.25, 326.6]; window 315 deg 16396 mm at design z [210.25, 326.6]",
+        "support_path_mm_in_openings": 58229.4,
+        "support_interface_path_mm_in_openings": 947.3,
+        "windows_with_support": [
+          45.0,
+          135.0,
+          225.0,
+          315.0
+        ]
+      },
+      "window_blockers": {
+        "count": 4,
+        "r_mm": [
+          56.7,
+          60.3
+        ],
+        "z_design_mm": [
+          208.9,
+          326.9
+        ],
+        "sectors_deg": [
+          [
+            8.594,
+            81.406
+          ],
+          [
+            98.594,
+            171.406
+          ],
+          [
+            188.594,
+            261.406
+          ],
+          [
+            278.594,
+            351.406
+          ]
+        ]
+      },
+      "window_support": {
+        "status": "PASS",
+        "gcode_check": "support extrusion inside the window openings",
+        "probe": "window sectors up to the strut faces, r 57.00..60.00, Z 209.90..326.90 (design frame), grown by 0.2 mm (half the support line width) across the faces and 0.1 mm in Z",
+        "probe_tolerances": {
+          "support_line_width_mm": 0.4,
+          "support_line_width_from": "support_line_width",
+          "grow_mm": 0.2,
+          "grow_z_mm": 0.1,
+          "support_object_xy_distance_mm": 0.35,
+          "hugging_support_centre_inside_face_mm": 0.55
+        },
+        "registration": {
+          "slicer_placement": {
+            "arrange_rotation_z_deg": 45.0,
+            "model_to_plate_shift": [
+              100.849,
+              -80.171,
+              -0.0
+            ],
+            "mesh_vs_model_bounds_mm": 0.0
+          },
+          "axis_predicted_xy": [
+            100.0,
+            100.0
+          ],
+          "ring_samples": 6685,
+          "ring_fit_centre_xy": [
+            100.0,
+            100.0
+          ],
+          "ring_fit_centre_offset": 0.0,
+          "ring_outer_perimeter_r": 59.774,
+          "expected_r": 59.8,
+          "ring_fit_rms": 0.0102,
+          "wall_samples_in_openings_mid_window": 0,
+          "wall_samples_per_strut_mid_window": [
+            79570,
+            80802,
+            79280,
+            80821
+          ],
+          "strut_faces": [
+            {
+              "face_theta_deg": 8.594,
+              "samples": 1311,
+              "wall_offset_error_mm": -0.0001
+            },
+            {
+              "face_theta_deg": 81.406,
+              "samples": 1311,
+              "wall_offset_error_mm": -0.0001
+            },
+            {
+              "face_theta_deg": 98.594,
+              "samples": 1311,
+              "wall_offset_error_mm": 0.0
+            },
+            {
+              "face_theta_deg": 171.406,
+              "samples": 1316,
+              "wall_offset_error_mm": -0.0001
+            },
+            {
+              "face_theta_deg": 188.594,
+              "samples": 1311,
+              "wall_offset_error_mm": -0.0002
+            },
+            {
+              "face_theta_deg": 261.406,
+              "samples": 1311,
+              "wall_offset_error_mm": 0.0
+            },
+            {
+              "face_theta_deg": 278.594,
+              "samples": 1437,
+              "wall_offset_error_mm": 0.0
+            },
+            {
+              "face_theta_deg": 351.406,
+              "samples": 1311,
+              "wall_offset_error_mm": -0.0001
+            }
+          ],
+          "strut_face_offset_error_max_mm": 0.0002
+        },
+        "nearest_support_outside_openings": {
+          "bead_gap_mm": 0.461,
+          "side": "bore side",
+          "window_theta_deg": 315.0,
+          "r_design": 56.339,
+          "z_design": 282.65
+        },
+        "windows": [
+          {
+            "theta_deg": 45.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.1
+          },
+          {
+            "theta_deg": 135.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.1
+          },
+          {
+            "theta_deg": 225.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.1
+          },
+          {
+            "theta_deg": 315.0,
+            "support_samples": 0,
+            "support_path_mm": 0.0,
+            "support_interface_path_mm": 0.0,
+            "support_z_design": null,
+            "ceiling_overhang_path_mm": 159.1
+          }
+        ],
+        "support_path_mm_whole_part": 634306.1,
+        "max_bridge_length_in_gcode": "10",
+        "bridge_no_support_in_gcode": "0",
+        "required": true
+      },
+      "print_file": "intake_module.3mf"
+    },
+    "avionics_module": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "support_style_used": "default",
+      "why": "upright",
+      "chosen_candidate": 0,
+      "rotations": [],
+      "extents_mm": [
+        120.0,
+        120.0,
+        200.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 10422.2294921875,
+      "filament_mm": 39848.83,
+      "filament_g": 125.56044580715808,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "print_file": "avionics_module.stl"
+    },
+    "payload_module": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "tree(auto)",
+      "support_style_used": "default",
+      "why": "upright; the bulkhead 15 mm above the bed and (v0.6) the four COM-board bosses under it need short supports inside the skirt",
+      "chosen_candidate": 0,
+      "rotations": [],
+      "extents_mm": [
+        138.3,
+        120.0,
+        198.4
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 20348.8515625,
+      "filament_mm": 63313.68,
+      "filament_g": 199.49629352961549,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 7349.560363769531,
+      "print_file": "payload_module.stl"
+    },
+    "nose_cone": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "tree(auto)",
+      "support_style_used": "default",
+      "why": "base down; the anchor bar spans the bore 4 mm above the skirt and needs supports",
+      "chosen_candidate": 0,
+      "rotations": [],
+      "extents_mm": [
+        126.0,
+        120.0,
+        155.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 5505.478515625,
+      "filament_mm": 22495.97,
+      "filament_g": 70.88298507294829,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 598.145336151123,
+      "print_file": "nose_cone.stl"
+    },
+    "avionics_tray": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "support_style_used": "default",
+      "why": "flat",
+      "chosen_candidate": 0,
+      "rotations": [
+        [
+          "y",
+          90.0
+        ]
+      ],
+      "extents_mm": [
+        160.0,
+        100.0,
+        2.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 2722.810546875,
+      "filament_mm": 13152.18,
+      "filament_g": 41.4414572306386,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "print_file": "avionics_tray.stl"
+    },
+    "piston": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "support_style_used": "default",
+      "why": "flat, spring recess facing up",
+      "chosen_candidate": 0,
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        116.6,
+        116.6,
+        2.4
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 2047.5113525390625,
+      "filament_mm": 9303.73,
+      "filament_g": 29.31530201688307,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "print_file": "piston.stl"
+    },
+    "vane": {
+      "quantity": 4,
+      "supports": true,
+      "support_type_used": "tree(auto)",
+      "support_style_used": "default",
+      "why": "flat; the D5 shaft stands 1 mm proud of the 3 mm plate -> supports on build plate",
+      "chosen_candidate": 0,
+      "rotations": [
+        [
+          "x",
+          -90.0
+        ]
+      ],
+      "extents_mm": [
+        46.0,
+        32.0,
+        5.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 551.4791259765625,
+      "filament_mm": 1281.02,
+      "filament_g": 4.0363905863204925,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 108.51890563964844,
+      "print_file": "vane.stl"
+    },
+    "vane_horn": {
+      "quantity": 4,
+      "supports": false,
+      "support_type_used": "none",
+      "support_style_used": "default",
+      "why": "flat on its 8 x 17 face; the D-bore prints vertical (round)",
+      "chosen_candidate": 0,
+      "rotations": [
+        [
+          "y",
+          90.0
+        ]
+      ],
+      "extents_mm": [
+        17.0,
+        8.0,
+        3.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 120.84492492675781,
+      "filament_mm": 142.2,
+      "filament_g": 0.4480607183141355,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "print_file": "vane_horn.stl"
+    },
+    "latch_arm": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "support_style_used": "default",
+      "why": "flat",
+      "chosen_candidate": 0,
+      "rotations": [],
+      "extents_mm": [
+        10.2,
+        13.3,
+        3.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 85.20170593261719,
+      "filament_mm": 87.48,
+      "filament_g": 0.2756424165831265,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0,
+      "print_file": "latch_arm.stl"
+    },
+    "launch_pad": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "normal(auto)",
+      "support_style_used": "default",
+      "why": "flipped: stands on the fin-locator ribs, legs up; grid supports fill the 4 mm gap under the plate",
+      "chosen_candidate": 0,
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        190.0,
+        190.0,
+        114.0
+      ],
+      "fits_bed": true,
+      "ok": true,
+      "time_s": 19815.533203125,
+      "filament_mm": 64121.68,
+      "filament_g": 202.04223628909384,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "normal(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 2780.0106811523438,
+      "print_file": "launch_pad.stl"
+    }
+  },
+  "totals": {
+    "time_s": 109240.36766052246,
+    "filament_g": 1271.5644942910235,
+    "vehicle_only_time_s": 89424.83445739746,
+    "vehicle_only_filament_g": 1069.5222580019297
+  }
+}

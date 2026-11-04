@@ -1,0 +1,6 @@
+# Hardware configuration built by the Fusion 360 script (v0.9 CAD-2; first non-comment line; # lines are comments).
+# Values: rocket (ballistic launch + CanSat deployment, params.json mission.config default) or vtol (the light VTOL
+# airframe, configs.vtol), optionally followed by the VTOL power source: battery (default), tether or hybrid.
+# Examples:   vtol          vtol tether          rocket
+# The VTOL build writes cad/exports/fusion_vtol*/ and cad/exports/fusion360_report_vtol*.json (the rocket keeps fusion/).
+rocket

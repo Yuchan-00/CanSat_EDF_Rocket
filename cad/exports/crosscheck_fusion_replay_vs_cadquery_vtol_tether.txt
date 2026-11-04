@@ -1,0 +1,52 @@
+X3 replay (Fusion script feature calls from a mock run, rebuilt in OCC) vs the CadQuery twin - preset BUDGET_90mm_6S
+script B:\0)AI_Cad\CanSat_EDF_Rocket\cad\fusion360\CanSatEDFRocket\CanSatEDFRocket.py v0.9.6; 390 recorded calls
+
+== propulsion_module: replay V 278983.44 mm3 (valid True, 1 solid(s)), twin V 278983.88 mm3, dV -0.0002 %; boolean replay - twin 0.0113 mm3, twin - replay 0.0000 mm3
+
+== propulsion_module: V fusion 280971 mm3, cadquery 280974 mm3, dV -0.00 %
+   bbox fusion [[-123.4, -123.4, 0.0], [123.4, 123.4, 182.0]]
+   bbox cq     [[-123.4, -123.4, 0.0], [123.4, 123.4, 182.0]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.001 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 182 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== avionics_module: replay V 45432.56 mm3 (valid True, 1 solid(s)), twin V 45432.60 mm3, dV -0.0001 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== avionics_module: V fusion 45449 mm3, cadquery 45413 mm3, dV +0.08 %
+   bbox fusion [[-60.0, -60.0, 324.1], [60.0, 60.0, 474.1]]
+   bbox cq     [[-60.0, -60.0, 324.1], [60.0, 60.0, 474.1]]
+   sections agree at every slice
+   centroid shift 0.014 mm (<= 0.1), inertia diagonal max |d| 0.086 % (<= 1)
+   X3 PASS: |dV| 0.08 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 150 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== avionics_logo: replay V 680.99 mm3 (valid True, 20 solid(s)), twin V 680.99 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== avionics_logo: V fusion 681 mm3, cadquery 681 mm3, dV -0.00 %
+   bbox fusion [[14.57, -58.16, 327.15], [31.6, 58.16, 448.17]]
+   bbox cq     [[14.57, -58.16, 327.15], [31.6, 58.16, 448.17]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 121 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== tether_eyebolt: replay V 1266.28 mm3 (valid True, 1 solid(s)), twin V 1266.28 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== tether_load_washer: replay V 1560.98 mm3 (valid True, 1 solid(s)), twin V 1560.98 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== tether_nut: replay V 94.49 mm3 (valid True, 1 solid(s)), twin V 94.49 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== tether_cap_bank: replay V 18954.00 mm3 (valid True, 1 solid(s)), twin V 18954.00 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== tether_bus_clamp: replay V 24000.00 mm3 (valid True, 1 solid(s)), twin V 24000.00 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== tether_xt90: replay V 18000.00 mm3 (valid True, 1 solid(s)), twin V 18000.00 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+RESULT: all replayed parts match the twin

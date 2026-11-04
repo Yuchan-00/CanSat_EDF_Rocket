@@ -1,0 +1,50 @@
+[
+ {
+  "t0": 2.2,
+  "t1": 5.4,
+  "cam": "spectator",
+  "note": "lift-off (spectator, operator mid-ground front three-quarter, 0.5x around the lift-off)",
+  "slow": [
+   {
+    "a": 2.7,
+    "b": 3.6,
+    "factor": 0.5
+   }
+  ],
+  "params": {
+   "fstop": 2.8
+  }
+ },
+ {
+  "t0": 8.1,
+  "t1": 10.3,
+  "cam": "orbit",
+  "note": "push #1 (profile orbit on the same side, 0.25x around the push)",
+  "slow": [
+   {
+    "a": 8.85,
+    "b": 9.55,
+    "factor": 0.25
+   }
+  ],
+  "params": {
+   "radius": 4.2,
+   "height": -0.45,
+   "deg_per_s": 6.0,
+   "lens": 30.0,
+   "tgt_dz": -0.5,
+   "fstop": 2.8,
+   "kind": "push",
+   "event_t": 9.1
+  }
+ },
+ {
+  "t0": 10.3,
+  "t1": 11.8,
+  "cam": "closeup",
+  "note": "vanes recovering (from below)",
+  "params": {
+   "mode": "vanes"
+  }
+ }
+]

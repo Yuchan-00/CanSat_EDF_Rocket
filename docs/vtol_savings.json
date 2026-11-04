@@ -1,0 +1,149 @@
+{
+ "rocket_mass_g": 2599.2108709226136,
+ "vtol_battery_mass_g": 1653.699819990231,
+ "total_saving_g": 945.5110509323827,
+ "geometry_steps": [
+  {
+   "step": "duct wall 2.4 -> 1.6 mm (vane_section_od 94.8 -> 93.2)",
+   "module": "propulsion_module",
+   "removed_solid_mm3": 20885.8205321203,
+   "saving_g": 22.54709780287733
+  },
+  {
+   "step": "fairing wall / floor / top 1.6 -> 1.2 mm",
+   "module": "propulsion_module",
+   "removed_solid_mm3": 8087.929274381371,
+   "saving_g": 8.731250567425928
+  },
+  {
+   "step": "fin span 76 -> 76.8 mm (footprint 246.8; fix round, a cost)",
+   "module": "propulsion_module",
+   "removed_solid_mm3": -572.2541684017051,
+   "saving_g": -0.6177717884348601
+  },
+  {
+   "step": "EDF section 100 -> 92 mm",
+   "module": "propulsion_module",
+   "removed_solid_mm3": 10994.414527397486,
+   "saving_g": 11.868920316219954
+  },
+  {
+   "step": "intake bulkhead 2.0 -> 1.2 mm",
+   "module": "intake_module",
+   "removed_solid_mm3": 8477.634658120252,
+   "saving_g": 10.80660689655365
+  },
+  {
+   "step": "avionics windows (14)",
+   "module": "avionics_module",
+   "removed_solid_mm3": 28037.13162260264,
+   "saving_g": 35.63246210141232
+  },
+  {
+   "step": "avionics tube 200 -> 150 mm (+ tray 160 -> 112, battery / ESC at the tray bottom)",
+   "module": "avionics_module",
+   "removed_solid_mm3": 24373.900890274672,
+   "saving_g": 30.976852818857324,
+   "note": "measured without windows on both sides (the windows are their own step)"
+  },
+  {
+   "step": "tray lightening holes",
+   "module": "avionics_tray",
+   "removed_solid_mm3": 11600.0,
+   "saving_g": 14.025952497339022
+  },
+  {
+   "step": "tray 160 -> 112 mm, no NAV holes",
+   "module": "avionics_tray",
+   "removed_solid_mm3": 10319.999999999996,
+   "saving_g": 12.478261187287815,
+   "note": "measured without the lightening holes on both sides (their own step); the VTOL tray has no NAV holes"
+  },
+  {
+   "step": "tray 100 -> 107.5 wide at the new tray plane (fix round, a cost)",
+   "module": "avionics_tray",
+   "removed_solid_mm3": -1680.0,
+   "saving_g": -2.031344844442203
+  }
+ ],
+ "whole_part_groups": {
+  "payload chain (decision 2: CanSat, chute pack, payload module, piston, spring, release servo, latch arm)": {
+   "parts": {
+    "cansat_payload": 350.0,
+    "chute_pack": 100.0,
+    "payload_module": 171.137756927699,
+    "piston": 25.17810977393863,
+    "spring": 10.0,
+    "servo_release": 13.4,
+    "latch_arm": 0.27106690371197134
+   },
+   "saving_g": 669.9869336053496
+  },
+  "nose cone + GPS pod lid -> top cap (architect a)": {
+   "parts": {
+    "nose_cone": 67.78640178026907,
+    "gps_pod_lid": 5.560800942972247,
+    "top_cap": -35.15343805026615
+   },
+   "saving_g": 38.19376467297517
+  },
+  "four boards + radio box -> one carrier PCB (architect e, ASSUMED masses)": {
+   "parts": {
+    "nav": 40.0,
+    "fcu": 20.0,
+    "com": 20.0,
+    "gns": 26.6,
+    "radio_log": 20.0,
+    "carrier": -50.0
+   },
+   "saving_g": 76.6
+  },
+  "misc electronics 40 -> 25 g (UBEC / buzzer / wiring; ASSUMED)": {
+   "parts": {
+    "misc_electronics": 15.0
+   },
+   "saving_g": 15.0
+  },
+  "GPS ground plane 50 -> 40 mm and the shorter GPS lead (architect f)": {
+   "parts": {
+    "gps_ground_plane": 1.6,
+    "gps_lead": 2.167897425579743
+   },
+   "saving_g": 3.767897425579743
+  },
+  "servo / motor leads (architect f: the stack is shorter above the bulkhead, the leads end there - ~0)": {
+   "parts": {
+    "servo_leads": 0.3517073310564527,
+    "motor_leads": 0.0887999999999991
+   },
+   "saving_g": 0.4405073310564518
+  }
+ },
+ "other_part_changes_g": {
+  "servo_cover_4": 0.009638189368608163,
+  "launch_pad": 141.19613556741928,
+  "servo_cover_2": 0.009638189368608163,
+  "servo_cover_3": 0.009638189368608163,
+  "avionics_logo": 0.00023386122723600966,
+  "servo_cover_1": 0.009638189368608163
+ },
+ "printed_module_change_g_reports": {
+  "propulsion_module": 45.61586359457192,
+  "intake_module": 7.549220490284881,
+  "avionics_module": 66.17709570204613,
+  "avionics_tray": 22.140981491816998
+ },
+ "printed_module_change_g_steps": {
+  "propulsion_module": 42.529496898088354,
+  "intake_module": 10.80660689655365,
+  "avionics_module": 66.60931492026964,
+  "avionics_tray": 24.472868840184635
+ },
+ "printed_module_residual_g": {
+  "propulsion_module": 3.086366696483566,
+  "intake_module": -3.2573864062687683,
+  "avionics_module": -0.4322192182235085,
+  "avionics_tray": -2.331887348367637
+ },
+ "method": "Method (measured on the CadQuery solids, converted with the slicer): for every printed geometry step the module is built twice - the VTOL configuration with and without that one override (params deep copy, everything else equal) - and the solid-volume difference is converted to printed grams with that module's effective density in the VTOL slicer table (part grams / solid volume of the exact sliced solid).  Steps that remove whole parts / placeholders are read from the CAD reports (rocket vs VTOL battery).  The sum of the steps is compared with the reports' total difference; the residual (interaction between steps, e.g. the windows on the shorter tube) is reported, not hidden."
+}

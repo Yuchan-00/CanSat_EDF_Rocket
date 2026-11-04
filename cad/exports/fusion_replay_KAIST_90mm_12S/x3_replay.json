@@ -1,0 +1,78 @@
+{
+ "preset": "KAIST_90mm_12S",
+ "script_version": "0.9.6",
+ "recorded_calls": 223,
+ "parts": {
+  "payload_module": {
+   "replay_volume_mm3": 249865.6771158725,
+   "twin_volume_mm3": 249865.7010248297,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "avionics_module": {
+   "replay_volume_mm3": 164711.84838343714,
+   "twin_volume_mm3": 164714.14085017785,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "gps_pod_lid": {
+   "replay_volume_mm3": 4215.369309118953,
+   "twin_volume_mm3": 4215.369309118956,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "gps": {
+   "replay_volume_mm3": 9437.39999999997,
+   "twin_volume_mm3": 9437.399999999974,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 2,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "gps_ground_plane": {
+   "replay_volume_mm3": 1942.3999999998894,
+   "twin_volume_mm3": 1942.3999999998903,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "piston": {
+   "replay_volume_mm3": 39567.18137471835,
+   "twin_volume_mm3": 39567.18137471835,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "gns": {
+   "replay_volume_mm3": 37500.0,
+   "twin_volume_mm3": 37500.0,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  }
+ },
+ "ok": true
+}

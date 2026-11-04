@@ -1,0 +1,382 @@
+{
+ "assumed": {
+  "one_leg_dynamic": 2.0,
+  "ground_friction": 0.5,
+  "touchdown_g": 20.0,
+  "tether_working_N": 100.0,
+  "tether_proof_N": 300.0
+ },
+ "material_mpa": {
+  "bending": 53.0,
+  "tensile": 30.0
+ },
+ "vtol_mass_kg": 1.653699819990231,
+ "duct_1p6": {
+  "wall_mm": 1.6000000000000014,
+  "lateral_tip_load_N": 16.217255339707197,
+  "bending_mpa": 0.13842644088285222,
+  "touchdown_axial_mpa": 0.7044367769371814,
+  "boss_bearing_mpa": 0.08416782246990982,
+  "factor_min": 75.23741197959389,
+  "note": "4 perimeters (class A) print the 1.6 mm wall solid; the fins / fairings stiffen it locally"
+ },
+ "clock_seat_sections": {
+  "vtol": {
+   "stl": "cad/exports/cadquery/stl_vtol/propulsion_module.stl",
+   "mass_kg": 1.653699819990231,
+   "lateral_tip_load_N": 16.217255339707197,
+   "touchdown_axial_N": 324.34510679414393,
+   "sections": {
+    "fan floor + 2": {
+     "area_mm2": 2428.0756216383916,
+     "centroid_mm": [
+      -1.7310639873244955,
+      -0.00010343512612965631
+     ],
+     "I_min_mm4": 3050646.45824975,
+     "Z_min_mm3": 38669.81672752279,
+     "z_mm": 98.8,
+     "bending_mpa": 0.041434507922626845,
+     "axial_mpa": 0.13358113886720122,
+     "factor": 396.76260024021497
+    },
+    "under the rim (bundle run)": {
+     "area_mm2": 3083.0834167932903,
+     "centroid_mm": [
+      -2.5979610579959025,
+      -0.00040204614004224877
+     ],
+     "I_min_mm4": 3908852.9039996783,
+     "Z_min_mm3": 49009.852560925814,
+     "z_mm": 106.9,
+     "bending_mpa": 0.0353729812522813,
+     "axial_mpa": 0.10520153461546451,
+     "factor": 503.79493221013394
+    },
+    "bend top / cylinder start": {
+     "area_mm2": 2211.9004098135815,
+     "centroid_mm": [
+      -2.0839846479192117,
+      0.04449071555101936
+     ],
+     "I_min_mm4": 3366027.4936736696,
+     "Z_min_mm3": 42477.26420788101,
+     "z_mm": 122.04999999999998,
+     "bending_mpa": 0.04659706907028233,
+     "axial_mpa": 0.14663639707968573,
+     "factor": 361.4382312680427
+    },
+    "tab band low": {
+     "area_mm2": 934.7813443299597,
+     "centroid_mm": [
+      3.8360472861104697,
+      0.04410077891551455
+     ],
+     "I_min_mm4": 1407755.9529811349,
+     "Z_min_mm3": 19163.884387199836,
+     "z_mm": 134.04999999999998,
+     "bending_mpa": 0.11343854066140063,
+     "axial_mpa": 0.34697430448468214,
+     "factor": 152.7490633022936
+    },
+    "tab band mid": {
+     "area_mm2": 935.4235257836845,
+     "centroid_mm": [
+      3.829879533839895,
+      0.044863681958034286
+     ],
+     "I_min_mm4": 1408921.647196014,
+     "Z_min_mm3": 19178.14639024625,
+     "z_mm": 147.2,
+     "bending_mpa": 0.12447396830900129,
+     "axial_mpa": 0.346736101727196,
+     "factor": 152.85399973060544
+    },
+    "deck": {
+     "area_mm2": 2472.8538571009294,
+     "centroid_mm": [
+      -2.132780351930524,
+      -0.02628230452675956
+     ],
+     "I_min_mm4": 3797043.8420998864,
+     "Z_min_mm3": 47887.13176675212,
+     "z_mm": 166.5,
+     "bending_mpa": 0.05638619216563665,
+     "axial_mpa": 0.13116226252625887,
+     "factor": 404.0796413479778
+    },
+    "spigot mid": {
+     "area_mm2": 1836.9434932845986,
+     "centroid_mm": [
+      -4.931417193678955,
+      -0.0355233122698626
+     ],
+     "I_min_mm4": 2436216.68099071,
+     "Z_min_mm3": 38436.56678809459,
+     "z_mm": 174.5,
+     "bending_mpa": 0.07362548982016384,
+     "axial_mpa": 0.17656781930411453,
+     "factor": 300.16794798102234
+    }
+   },
+   "factor_min": 152.7490633022936
+  },
+  "rocket": {
+   "stl": "cad/exports/cadquery/stl/propulsion_module.stl",
+   "mass_kg": 2.599210870922614,
+   "lateral_tip_load_N": 25.48955128733325,
+   "touchdown_axial_N": 509.791025746665,
+   "sections": {
+    "fan floor + 2": {
+     "area_mm2": 2896.9248906945027,
+     "centroid_mm": [
+      -2.406670991775863,
+      -0.002698717617714774
+     ],
+     "I_min_mm4": 3656439.0697444403,
+     "Z_min_mm3": 45955.25103911817,
+     "z_mm": 106.8,
+     "bending_mpa": 0.05923771529764727,
+     "axial_mpa": 0.1759766114006666,
+     "factor": 301.1763868968285
+    },
+    "under the rim (bundle run)": {
+     "area_mm2": 1433.3147927619875,
+     "centroid_mm": [
+      0.6028215984497491,
+      0.033855098389479615
+     ],
+     "I_min_mm4": 1899099.4610247626,
+     "Z_min_mm3": 24797.922512619,
+     "z_mm": 114.9,
+     "bending_mpa": 0.11810462918513549,
+     "axial_mpa": 0.35567275822521954,
+     "factor": 149.01338034564702
+    },
+    "bend top / cylinder start": {
+     "area_mm2": 2224.26308855108,
+     "centroid_mm": [
+      -2.1123561806142757,
+      0.04449612508628569
+     ],
+     "I_min_mm4": 3386699.027979328,
+     "Z_min_mm3": 42722.83550314308,
+     "z_mm": 130.04999999999998,
+     "bending_mpa": 0.07759120165780695,
+     "axial_mpa": 0.22919547079241914,
+     "factor": 231.24366208790295
+    },
+    "tab band low": {
+     "area_mm2": 934.7205144794538,
+     "centroid_mm": [
+      3.836268389645581,
+      0.04413796523850553
+     ],
+     "I_min_mm4": 1407631.6593556583,
+     "Z_min_mm3": 19162.245543242752,
+     "z_mm": 142.04999999999998,
+     "bending_mpa": 0.18895440788475332,
+     "axial_mpa": 0.5453940700451705,
+     "factor": 97.1774408834523
+    },
+    "tab band mid": {
+     "area_mm2": 935.3965069341289,
+     "centroid_mm": [
+      3.8300304961474847,
+      0.0448751228460643
+     ],
+     "I_min_mm4": 1408868.5018435447,
+     "Z_min_mm3": 19177.460257082515,
+     "z_mm": 155.2,
+     "bending_mpa": 0.20628270411005648,
+     "axial_mpa": 0.544999924596217,
+     "factor": 97.24771987678159
+    },
+    "deck": {
+     "area_mm2": 2472.8538571020035,
+     "centroid_mm": [
+      -2.1327803519514608,
+      -0.02628230452366789
+     ],
+     "I_min_mm4": 3797043.842100908,
+     "Z_min_mm3": 47887.13176675237,
+     "z_mm": 174.5,
+     "bending_mpa": 0.09288354794988599,
+     "axial_mpa": 0.20615493482663844,
+     "factor": 257.0881945880617
+    },
+    "spigot mid": {
+     "area_mm2": 1836.9434932848533,
+     "centroid_mm": [
+      -4.931417193685212,
+      -0.03552331226888329
+     ],
+     "I_min_mm4": 2436216.6809908845,
+     "Z_min_mm3": 38436.566788093805,
+     "z_mm": 182.5,
+     "bending_mpa": 0.12102649894785304,
+     "axial_mpa": 0.2775213432586585,
+     "factor": 190.97630249865992
+    }
+   },
+   "factor_min": 97.1774408834523
+  },
+  "note": "M geometry (STL slices), E loads (one leg 2 W x friction 0.5 bent from the fin TE; 20 g touchdown); the rocket's flight loads are not in this table"
+ },
+ "keyway_pad": {
+  "F_touchdown_N": 72.373077,
+  "pad_w_mm": 6.4,
+  "pad_t_mm": 3.0,
+  "span_mm": 6.790221402214016,
+  "1tab_point": {
+   "sigma_mpa": 6.398817921738058,
+   "factor": 8.282779827184713
+  },
+  "1tab_uniform": {
+   "sigma_mpa": 4.265878614492038,
+   "factor": 12.42416974077707
+  },
+  "2tab_point": {
+   "sigma_mpa": 3.199408960869029,
+   "factor": 16.565559654369427
+  },
+  "2tab_uniform": {
+   "sigma_mpa": 2.132939307246019,
+   "factor": 24.84833948155414
+  },
+  "note": "judge fix: 1.2 mm gave a factor 1.2 (one tab, point load); C18 grades the one-tab point-load factor (PASS >= 5, WARN 3-5, FAIL < 3)"
+ },
+ "fins_solid": {
+  "root_u_mm": 97.39999999999999,
+  "chord_at_root_mm": 70.02570694087404,
+  "Z_out_of_plane_mm3": 67.22467866323908,
+  "free_leg_mm": 26.000000000000014,
+  "touchdown, leg 100 N/mm (ASSUMED)": {
+   "vertical_N": 121.99712447394847,
+   "lateral_N": 60.99856223697424,
+   "stress_mpa": 23.591970236201274,
+   "factor": 2.2465270797380397
+  },
+  "touchdown, leg 350 N/mm (ASSUMED)": {
+   "vertical_N": 228.2357209765647,
+   "lateral_N": 114.11786048828235,
+   "stress_mpa": 44.13653485141674,
+   "factor": 1.2008192346413609
+  },
+  "calibration case (one leg 2 W, mu 0.5)": {
+   "lateral_N": 16.217255339707197,
+   "stress_mpa": 6.272229889630701,
+   "factor": 8.449945383478372
+  },
+  "in_plane_one_leg": {
+   "load_N": 32.434510679414394,
+   "stress_mpa": 0.4299378726108091,
+   "factor": 123.27362481038503
+  }
+ },
+ "hinge_bushing": {
+  "side_load_N": 2.945873786446844,
+  "length_mm": 7.0,
+  "projected_bearing_mpa": 0.08416782246990982,
+  "printed_bore_behind_mpa": 0.07013985205825819,
+  "tilt_deg": 0.8184554616886115
+ },
+ "coupler_socket": {
+  "stall_torque_Nm": 0.1765197,
+  "flank_force_at_stall_N": 22.0649625,
+  "flank_area_mm2": 1.4400000000000006,
+  "bearing_at_stall_mpa": 15.322890624999994,
+  "bearing_at_hinge_moment_mpa": 1.0100869319848114,
+  "jaw_at_arm_tip_mm": 1.3042156108742273,
+  "note": "PLA compressive yield ~50-60 MPa (not measured): the stall case is the servo pushing a jammed vane, the flight case is the hinge moment"
+ },
+ "load_washer": {
+  "d_t_mm": [
+   32.0,
+   2.0
+  ],
+  "mass_g": 4.214642894331557,
+  "cases": {
+   "working": {
+    "load_N": 100.0,
+    "plate_stress_mpa": 19.72482317472961,
+    "factor_6061_t6_240mpa": 12.167409455283492
+   },
+   "proof": {
+    "load_N": 300.0,
+    "plate_stress_mpa": 59.17446952418883,
+    "factor_6061_t6_240mpa": 4.055803151761164
+   }
+  },
+  "note": "ring load at the nut corners, simply supported at the washer edge (conservative: the hub carries the inner part directly)"
+ },
+ "fairing_1p2": {
+  "servo_stall_Nm": 0.1765197,
+  "case_couple_force_N": 7.6747695652173915,
+  "wall_bearing_mpa": 0.28425072463768114,
+  "hinge_moment_kgcm": 0.11865623282634775,
+  "note": "the vane hinge moment (0.12 kgf cm) is 15 x below the stall torque used here"
+ },
+ "top_cap": {
+  "rib_Z_mm3": 71.80800000000002,
+  "flange_w_mm": 19.2,
+  "cases": {
+   "working": {
+    "load_N": 100.0,
+    "rib_moment_Nmm": 1237.4999999999998,
+    "rib_stress_mpa": 17.23345588235293,
+    "rib_factor": 3.075413333333335,
+    "annulus_shear_mpa": 0.2326826653390283,
+    "skirt_screw_bearing_mpa": 6.9444444444444455,
+    "spigot_tear_out_mpa": 1.0416666666666667
+   },
+   "proof": {
+    "load_N": 300.0,
+    "rib_moment_Nmm": 3712.4999999999995,
+    "rib_stress_mpa": 51.700367647058805,
+    "rib_factor": 1.0251377777777781,
+    "annulus_shear_mpa": 0.6980479960170849,
+    "skirt_screw_bearing_mpa": 20.833333333333336,
+    "spigot_tear_out_mpa": 3.125
+   }
+  },
+  "verdict": "working load factor >= 3; proof (no bungee) only ~1.1 on the ribs: the bungee shock section is mandatory (tether report)",
+  "ring": [
+   2.0,
+   3.0
+  ]
+ },
+ "avionics_windows": {
+  "windows": 14,
+  "net_section_mm2": 179.06544869576092,
+  "hang": {
+   "working": {
+    "load_N": 100.0,
+    "net_tension_mpa": 0.5584550270772998,
+    "factor": 53.71963460872828
+   },
+   "proof": {
+    "load_N": 300.0,
+    "net_tension_mpa": 1.6753650812318994,
+    "factor": 17.90654486957609
+   }
+  },
+  "touchdown_compression_N": 10.79779596511285,
+  "touchdown_compression_mpa": 0.060300834380722555,
+  "strut_w_mm": 6.527801287016873,
+  "note": "the battery / tray hang on the tray stops below the windows; only the cap, GPS and switch sit above them. Do not carry the vehicle by the windowed band"
+ },
+ "intake_bulkhead_1p2": {
+  "inlet_velocity_mps": 12.525510592148258,
+  "window_q_pa": 96.09415455133616,
+  "design_dp_pa": 960.9415455133616,
+  "clamped_plate_stress_mpa": 1.7304154880831857,
+  "carrier_on_foam_touchdown_N": 9.80665
+ },
+ "tray_holes": {
+  "net_section_mm2": 75.0,
+  "battery_touchdown_N": 68.450417,
+  "stress_mpa": 0.9126722266666667,
+  "factor": 32.870508297999116
+ }
+}

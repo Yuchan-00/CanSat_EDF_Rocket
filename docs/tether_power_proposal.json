@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "title": "v0.9 tether (wired) power proposal for TEST and DEMO flights",
+    "status": "PROPOSAL - not merged. params.json and cad/ were NOT edited; the CAD / sim / firmware rounds merge this.",
+    "date": "2026-10-27",
+    "role": "tether power study (user 2026-10-27: '테스트, 시연용 유선 전원'); the competition flight stays battery-powered",
+    "report_ko": "docs/유선전원_검토.md (copy: B:/Video/문서/유선전원_검토.md)",
+    "params_json_sha256_prefix_read": "5608f2eee5224e2f",
+    "computation": {
+      "script": "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/v09/tether/tether_calc.py",
+      "output": "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/v09/tether/tether_calc_out.json",
+      "log": "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/v09/tether/run_log.txt",
+      "check": "the script reproduces the sizing report hover point: P(26.22 N) = 1822 W (sizing_report.md: 1822 W)"
+    },
+    "naming_note": "the firmware already has fcu_bench_tether / fcu_bench_hover (a MECHANICAL restraint on the load-cell rig). Name the new power source 'wired' in code (PWR_SRC_WIRED, PWR_SRC_WIRED_BUFFER) to avoid the collision."
+  },
+
+  "model_assumptions": {
+    "power_vs_thrust": "electrical input P = 2264 W (T / T_ref)^1.5 (proxy table 30.30 N @ 22.2 V / 102 A; the two proxy points give exponent 1.578). P1 'proxy efficiency': T_ref = 30.30 N. P2 'proxy full power' (pessimistic): T_ref = T_max of the thrust table (the fan absorbs 2264 W at full throttle but makes only T_max). Thrust ~ u^2, power ~ u^3, T_max ~ V^2.",
+    "thrust_table_kgf": [2.0, 2.3, 2.6, 3.09],
+    "vtol_light_mass_g_with_battery": [1500, 1650, 1800],
+    "vtol_light_note": "range from the v0.9 task (the mass-model round gives the real number); 1650 g is the reference below",
+    "battery_g": 349.0,
+    "onboard_kit_battery_less_g_ASSUMED": {"xt90s_plug": 7.0, "power_lead_10awg_pair_0.25m": 34.1, "esc_cap_bank_4x1000uF_35V_low_esr": 25.0, "bus_clamp_brake_chopper_tvs": 20.0, "hardpoint_eyebolt_plate_cable_boot": 15.0, "total": 101.1},
+    "hybrid_extra_g_ASSUMED": {"ideal_diode_D1_D2_board": 15.0, "buffer_lead_xt60": 6.0, "buffer_pack_6S_650mAh_120C_GNB": 100.0, "total": 121.0},
+    "mass_delta_vs_battery_vtol_g": {"battery_less": -247.9, "hybrid_650": -126.9},
+    "wire_model": "tinned 0.08 mm strands (10 AWG 1050, 12 AWG 680, 14 AWG 400), rho 1.75e-8 Ohm m x 1.02 lay, silicone 1.20 g/cm3 ASSUMED, ODs 5.5 / 4.5 / 3.5 mm (vendor listings); natural convection 10 W/m2K ASSUMED. Weigh and measure the real wire.",
+    "connector_loop_resistance_mohm_ASSUMED": 1.0
+  },
+
+  "key_results": {
+    "hover_power_W_P1": {"ROCKET_2674g": 1822, "VTOL1650_battery": 883, "VTOL1650_battery_less_1402g": 692, "VTOL1650_hybrid_1523g": 783},
+    "TW1.3_peak_power_W_P1": {"VTOL1650_battery": 1309, "VTOL1650_battery_less": 1026, "VTOL1650_hybrid": 1161},
+    "hover_power_W_P2_at_2.0kgf": {"VTOL1650_battery": 1697, "VTOL1650_battery_less": 1329, "VTOL1650_hybrid": 1505},
+    "TW_and_hover_throttle_table": {
+      "note": "T/W and u_hover = sqrt(W / T_max) at 22.2 V; overhead feed = lifted tether ~0 (the gantry carries it)",
+      "rows": [
+        {"config": "ROCKET_battery", "W_kgf": 2.674, "TW": [0.75, 0.86, 0.97, 1.16], "u_hover": [null, null, null, 0.93]},
+        {"config": "VTOL1500_battery", "W_kgf": 1.500, "TW": [1.33, 1.53, 1.73, 2.06], "u_hover": [0.87, 0.81, 0.76, 0.70]},
+        {"config": "VTOL1650_battery", "W_kgf": 1.650, "TW": [1.21, 1.39, 1.58, 1.87], "u_hover": [0.91, 0.85, 0.80, 0.73]},
+        {"config": "VTOL1800_battery", "W_kgf": 1.800, "TW": [1.11, 1.28, 1.44, 1.72], "u_hover": [0.95, 0.89, 0.83, 0.76]},
+        {"config": "VTOL1650_battery_less_overhead", "W_kgf": 1.402, "TW": [1.43, 1.64, 1.85, 2.20], "u_hover": [0.84, 0.78, 0.73, 0.67]},
+        {"config": "VTOL1650_battery_less_12AWG_hanging_1.5m", "W_kgf": 1.555, "TW": [1.29, 1.48, 1.67, 1.99], "u_hover": [0.88, 0.82, 0.77, 0.71]},
+        {"config": "VTOL1650_battery_less_12AWG_hanging_3m", "W_kgf": 1.708, "TW": [1.17, 1.35, 1.52, 1.81], "u_hover": [0.92, 0.86, 0.81, 0.74]},
+        {"config": "VTOL1650_hybrid650_overhead", "W_kgf": 1.523, "TW": [1.31, 1.51, 1.71, 2.03], "u_hover": [0.87, 0.81, 0.77, 0.70]},
+        {"config": "VTOL1650_hybrid650_12AWG_hanging_1.5m", "W_kgf": 1.676, "TW": [1.19, 1.37, 1.55, 1.84], "u_hover": [0.92, 0.85, 0.80, 0.74]}
+      ]
+    },
+    "supply_limited_TW_battery_less": {
+      "note": "one RSP-1500-24 at rated power (60 A at 25.2 V) on the recommended 8.5 m 10 AWG route: V_esc 21.69 V, 1301 W at the ESC. T/W available = thrust at 1301 W / weight; P1 / P2.",
+      "VTOL1650_battery_less_1402g": {"T_max_2.0": [1.36, 0.99], "T_max_2.3": [1.52, 1.13], "T_max_2.6": [1.52, 1.28], "T_max_3.09": [1.52, 1.52]},
+      "VTOL1500_battery_less_1252g": {"T_max_2.0": [1.52, 1.10], "T_max_2.3": [1.71, 1.27], "T_max_2.6": [1.71, 1.44], "T_max_3.09": [1.71, 1.71]},
+      "VTOL1800_battery_less_1552g": {"T_max_2.0": [1.23, 0.89], "T_max_2.3": [1.38, 1.02], "T_max_2.6": [1.38, 1.16], "T_max_3.09": [1.38, 1.38]},
+      "conclusion": "with the proxy efficiency one 1.5 kW supply gives T/W >= 1.3 for every VTOL-light case up to 1.65 kg; with a weak fan (P2, T_max <= 2.3 kgf) it does not even reach 1.3 and at 2.0 kgf it cannot hover. Buy the supply only AFTER the thrust test."
+    },
+    "lifted_tether_g": {
+      "note": "two conductors + 3 g/m strength member, vertical segment x 1.10 (ASSUMED); only for a hanging (bottom/side) exit - the recommended overhead feed puts ~0 on the vehicle",
+      "10AWG": {"1.5m": 230, "3m": 460, "10m": 1535},
+      "12AWG_od4.5": {"1.5m": 153, "3m": 306, "10m": 1019},
+      "12AWG_od3.6": {"1.5m": 130, "3m": 260, "10m": 868},
+      "14AWG": {"1.5m": 93, "3m": 186, "10m": 620},
+      "conclusion": "a 10 m low-voltage tether weighs 0.6-1.5 kg = 1.8-4.4 x the 349 g battery: no tethered field flights at 10 m"
+    },
+    "tether_electrical_ref": {
+      "note": "VTOL1650 battery-less + 12 AWG hanging 1.5 m (1555 g): hover 808 W, T/W1.3 1198 W (P1); supply 25.2 V",
+      "rows": [
+        {"wire": "10AWG", "L_m": 3, "R_mohm": 21.3, "hover": {"I": 33.0, "V_esc": 24.50, "loss_W": 23}, "TW1.3": {"I": 49.6, "V_esc": 24.14, "loss_W": 52}},
+        {"wire": "10AWG", "L_m": 5, "R_mohm": 34.8, "hover": {"I": 33.6, "V_esc": 24.03, "loss_W": 39}, "TW1.3": {"I": 51.2, "V_esc": 23.42, "loss_W": 91}},
+        {"wire": "10AWG", "L_m": 10, "R_mohm": 68.6, "hover": {"I": 35.5, "V_esc": 22.76, "loss_W": 87}, "TW1.3": {"I": 56.1, "V_esc": 21.35, "loss_W": 216}},
+        {"wire": "12AWG", "L_m": 3, "R_mohm": 32.3, "hover": {"I": 33.5, "V_esc": 24.12, "loss_W": 36}, "TW1.3": {"I": 50.9, "V_esc": 23.56, "loss_W": 84}},
+        {"wire": "12AWG", "L_m": 5, "R_mohm": 53.2, "hover": {"I": 34.6, "V_esc": 23.36, "loss_W": 64}, "TW1.3": {"I": 53.6, "V_esc": 22.35, "loss_W": 153}},
+        {"wire": "12AWG", "L_m": 10, "R_mohm": 105.4, "hover": {"I": 38.2, "V_esc": 21.18, "loss_W": 154}, "TW1.3": {"I": 65.5, "V_esc": 18.30, "loss_W": 452}},
+        {"wire": "14AWG", "L_m": 3, "R_mohm": 54.3, "hover": {"I": 34.7, "V_esc": 23.32, "loss_W": 65}, "TW1.3": {"I": 53.8, "V_esc": 22.28, "loss_W": 157}},
+        {"wire": "14AWG", "L_m": 5, "R_mohm": 89.8, "hover": {"I": 36.9, "V_esc": 21.88, "loss_W": 122}, "TW1.3": {"I": 60.6, "V_esc": 19.76, "loss_W": 330}},
+        {"wire": "14AWG", "L_m": 10, "R_mohm": 178.6, "hover": {"I": 49.3, "V_esc": 16.40, "loss_W": 434}, "TW1.3": null}
+      ]
+    },
+    "conductor_temperature_rise_K": {
+      "note": "lumped model, still air 10 W/m2K ASSUMED; [60 s, 120 s, steady]",
+      "10AWG": {"40A": [6.8, 12.3, 35.7], "50A": [10.7, 19.6, 60.6], "60A": [15.6, 28.7, 97.4]},
+      "12AWG": {"40A": [15.7, 28.2, 77.0], "50A": [25.0, 45.7, 145.0], "60A": [36.9, 68.9, 278.5]},
+      "14AWG": {"40A": [45.3, 82.7, 262.4], "50A": [74.6, 143.5, 976.5], "60A": [114.9, 236.2, "runaway"]}
+    },
+    "recommended_route": {
+      "geometry_m": {"floor": 0.5, "mast": 3.5, "boom": 1.5, "drop_max": 3.0, "total": 8.5},
+      "wire": "2 x 10 AWG silicone (1050 x 0.08) + Dyneema 2 mm strength member + 0.3-0.5 m bungee shock section near the vehicle",
+      "R_loop_mohm": 58.5,
+      "VTOL1650_battery_less": {"hover_P1": {"P_W": 692, "I_A": 29.5, "V_esc": 23.48, "loss_W": 51}, "TW1.3_P1": {"P_W": 1026, "I_A": 45.5, "V_esc": 22.54, "loss_W": 121}, "hover_P2_2.3kgf": {"P_W": 1077, "I_A": 48.1, "V_esc": 22.38}},
+      "VTOL1650_hybrid650": {"hover_P1": {"P_W": 783, "I_A": 33.7, "V_esc": 23.23, "loss_W": 67}, "TW1.3_P1": {"P_W": 1161, "I_A": 52.5, "V_esc": 22.13, "loss_W": 161}, "hover_P2_2.3kgf": {"P_W": 1220, "I_A": 55.6, "V_esc": 21.95}},
+      "12AWG_same_route": "R 89.8 mOhm: hover 22.4 V, T/W1.3 peak 20.8 V (battery-less) - not recommended for the 8.5 m route"
+    },
+    "hybrid_crossover": {
+      "rule": "I_x = (V_supply - V_buffer_ocv) / R_loop. Below I_x the tether alone carries the load and the buffer is idle; above it the buffer shares. Choose V_buffer so that 1.2 x I_hover(measured) <= I_x <= 0.9 x I_supply_rated.",
+      "rec_route_10AWG_8.5m_R59.5mohm": {"3.75V_cell": 45.4, "3.80V_cell": 40.3, "3.85V_cell": 35.3, "3.90V_cell": 30.3},
+      "recommended": "buffer stored at 3.80 V/cell (22.8 V) -> I_x 40 A > hover 33.7 A (P1) and < 60 A (RSP-1500-24 at 25.2 V). Re-set after the thrust test: in the P2 2.3 kgf case the hover is 55.6 A > I_x and the buffer would drain in hover."
+    },
+    "falls_VTOL1650": {
+      "battery_less_1402g": {"1.5m": {"E_J": 20.6, "v_mps": 5.42}, "3m": {"E_J": 41.2, "v_mps": 7.67}},
+      "hybrid_1523g": {"1.5m": {"E_J": 22.4, "v_mps": 5.42}, "3m": {"E_J": 44.8, "v_mps": 7.67}},
+      "battery_1650g": {"1.5m": {"E_J": 24.3, "v_mps": 5.42}, "3m": {"E_J": 48.5, "v_mps": 7.67}},
+      "reference": "FAA 14 CFR 107.120 Category 2 limit 11 ft-lb = 14.9 J (not a Korean rule, a scale for 'can injure'); the vehicle's own parachute landing is 37 J (sizing report)"
+    },
+    "buffer_landing_6S_650mAh": {
+      "note": "landing time = (h - flare)/v_descent + flare/v_touch + 1 s; buffer at 21.5 V under load ASSUMED",
+      "config": "VTOL1650 hybrid 1523 g",
+      "demo_3m_8.9s": {"P1": {"I_A": 36.4, "Ah": 0.090, "pct": 14, "C": 56}, "P2_2.3kgf": {"I_A": 56.7, "Ah": 0.141, "pct": 22, "C": 87}, "P2_2.0kgf": {"I_A": 70.0, "Ah": 0.173, "pct": 27, "C": 108}},
+      "demo_1.5m_5.2s": {"P1": {"I_A": 36.4, "Ah": 0.052, "pct": 8}, "P2_2.0kgf": {"I_A": 70.0, "Ah": 0.100, "pct": 15}},
+      "field_10m_19.3s": {"P1": {"I_A": 36.4, "Ah": 0.196, "pct": 30}, "P2_2.0kgf": {"I_A": 70.0, "Ah": 0.376, "pct": 58}},
+      "conclusion": "650 mAh is enough in energy; in the pessimistic thrust case (C rate ~100) use the 6S 1100 mAh 100C (211 g) instead"
+    },
+    "regen_risk": {
+      "rotor_energy_J_at_hover_ASSUMED": 116.5,
+      "bus_voltage_if_2pct_regenerates_into_blocked_bus": {"0.88mF": 77.0, "4.0mF": 42.4},
+      "conclusion": "a tethered bus that cannot sink current (supply, or a diode-blocked bus) must have a brake-chopper clamp; the bench test measures whether the SkyWalker V2 regenerates on throttle reductions"
+    },
+    "lc_damping": {"note": "loop L 0.6 uH/m ASSUMED; with a 4 mF bank at the ESC: 8.5 m -> f0 1.1 kHz, zeta 0.82, 50 A step -> 1.8 V; with the ESC's own ~0.88 mF ASSUMED: zeta 0.38, 3.8 V"}
+  },
+
+  "recommendation": {
+    "i_bench_thrust_test": {
+      "power": "the flight-type 6S 2200 70C LiPo (fully charged), preferably two in parallel; NOT a bench supply (220 W was ~10 % of the 2264 W full power; even a 1.5 kW / 60 A supply cannot reach full throttle, 102-124 A by the proxy)",
+      "instruments": ["inline watt meter >= 150 A (V, A, W, peak)", "load cell >= 5 kg + logger", "V at the ESC pads", "bidirectional current (Hall clamp or shunt + scope) for regeneration on throttle step-downs", "IR thermometer (motor, ESC, caps)"],
+      "steps": ["sweep 0-100 % in 10 % steps, 3 s each (>= 80 %: 2 s), rest between steps; fresh pack and ~23 V pack", "regen check: 80 % -> 50 % steps and KILL from 80 %; record negative current and V_esc overshoot", "tether rehearsal: the same pack on the ground through the real 8.5 m 10 AWG pair: steady 30 / 40 / 50 A, V drop, ESC input ripple (scope, AC), cap temperature after 60 s"],
+      "decision": "fit T(P) at 1.3-1.7 kgf; buy one RSP-1500-24 only if the supply-limited T/W (table above) >= 1.3 for the measured mass"
+    },
+    "ii_tethered_test_flights": {
+      "vehicle": "battery-less (wired) variant; fall prevented mechanically by the belayed catch line (slack <= 0.3 m)",
+      "ground_power_start": "the user's 6S 2200 packs in parallel on the ground (no mains, absorbs regeneration), 100 A fuse + disconnect at the pack: 3.4 / 6.7 min to 80 % with 1 / 2 packs at the P1 hover (31.5 A at 22 V; P2 2.3 kgf: 2.2 / 4.3 min at 49 A); 2 x CNHL 6S 4000: 12.2 / 7.8 min",
+      "ground_power_later": "Mean Well RSP-1500-24 at 25.2 V, remote ON/OFF to an E-stop",
+      "rig": "overhead gantry (pulley/ring >= 1.0 m above the vehicle top at the highest test altitude), tether = 2 x 10 AWG + Dyneema strength member + bungee shock section, held over the pulley by a handler (belay)",
+      "profile": "demo-like heights: hover 1.0-1.5 m, alt_max 2.0 m while tethered"
+    },
+    "iii_public_demo": {
+      "vehicle": "hybrid (tether + 6S 650 mAh buffer behind ideal diodes) so a tether cut / supply trip ends in a powered landing",
+      "ground_power": "RSP-1500-24 at 25.2 V (CC 105-135 % for 5 s then latch-off: the buffer takes the peaks before the limit); SE-1500-24 only for the hybrid (it shuts down at 105-125 %; no CC phase stated)",
+      "rig": "same gantry + belayed catch line; spectators behind a barrier; indoor fully enclosed hall; hover 1.5 m, alt_max 2.0 m",
+      "fallback": "the battery VTOL demo profile without a tether (40 s flight limit, no leash)"
+    },
+    "competition": "battery (no tether) unless the rules allow otherwise",
+    "not_recommended": [
+      "tethered field flights at 10 m: the lifted tether alone is 0.6-1.5 kg",
+      "high-voltage tether + onboard DC-DC: a 384 V -> 24 V Vicor BCM4414 module is USD 950 (DigiKey) plus a HV ground supply and lethal-voltage handling; ~179 g at 3 m, ~290 g at 10 m onboard (ASSUMED) - no gain over the 349 g battery below ~10 m",
+      "bottom / fin-tip tether exit: in the jet's mixing layer below ~0.4 m (8-12 m/s at the fin-tip radius 0.5-1.5 m below), 0.5-1 N/m drag, flutter, ground wall jet; moment ~0.38 N m vs ~0.075 N m for the top axis",
+      "a buffer pack directly on the bus without D2: the tether would charge a 650 mAh pack at up to ~40 A (60 C) whenever the load is light",
+      "server-PSU series stacks for a first build: open-frame mains and output-ground isolation hazards"
+    ]
+  },
+
+  "cad": {
+    "config_switch": {
+      "proposed_params_key": "power.source",
+      "values": ["battery", "wired", "wired_buffer"],
+      "applies_to": "mission.config 'vtol' only (the rocket configuration stays battery-powered)"
+    },
+    "top_entry": {
+      "location": "top cap of the VTOL configuration (above the avionics module, top at ~Z 533 + cap in today's layout), on the vehicle axis",
+      "hardpoint": "M5 stainless eye bolt (or a printed-in eye with a metal insert) through the top cap into a load plate (>= 30 mm dia, 2 mm aluminium or 4 mm printed rib plate) that hands the load to the avionics module tube / joint screws",
+      "design_load_N_ASSUMED": {"working": 100, "proof": 300, "note": "catch-line arrest of the 1523 g hybrid with a bungee shock section (600 N/m ASSUMED): 60-90 N peak for 0.1-0.3 m slack (computed); WITHOUT a shock section (Dyneema only) 498-851 N - the bungee is mandatory"},
+      "cable_boot": "stiff boot / spring guard >= 100 mm long that makes the cable leave UPWARD within +-15 deg of the axis even when slack (a slack cable must never fall down the side past the intake windows)",
+      "strain_relief": "strength member tied to the hardpoint; the two conductors pass a gland / clamp boss (2 x dia 5.8 mm, or one oval 12 x 6.5 mm for 10 AWG OD 5.5) offset <= 25 mm from the axis, then a 100 mm service loop to the XT90-S inside the bay; the connector never carries load",
+      "connector": "XT90-S (anti-spark) between tether and vehicle; the live tether end carries the female (shielded contacts)"
+    },
+    "inside_avionics_bay": {
+      "power_lead": "2 x 10 AWG, ~0.25 m, top entry -> ESC input, kept >= 100 mm from the LoRa box where possible",
+      "cap_bank": "4 x 1000 uF 35 V low-ESR (or 50 V) within 50 mm of the ESC power pads (~25 g)",
+      "bus_clamp": "brake chopper (comparator + MOSFET + 1-2 Ohm >= 50 W aluminium-clad resistor), on at ~26.6 V, off at ~26.0 V (ASSUMED values) + 26 V-standoff TVS; must stay below the RSP-1500-24 OVP minimum 27.6 V; ~20 g",
+      "hybrid_power_board": "D1 (tether) and D2 (buffer) ideal diodes, LM74700-Q1 (3.2-65 V, 20 mV forward regulation, <0.75 us reverse blocking) + 60 V MOSFETs; D2 = two FETs in series so one shorted FET does not open a charge path; ~15 g; dividers for V_tether (before D1) and V_buffer (before D2) to the FCU ADC",
+      "battery_bay": {"wired": "empty (main pack removed)", "wired_buffer": "6S 650 mAh 120C (GNB, 63 x 30 x 31 mm, 100 g; replace the XT30 with an XT60) strapped in the battery slot; alternative 6S 1100 mAh 100C (CNHL, 211 g)"}
+    },
+    "keep_out_checks": [
+      "no tether hardware or cable path below the top of the avionics module",
+      "cable boot exit axis within 15 deg of the vehicle axis; boot top >= 100 mm above the top cap",
+      "every point of the cable path >= 200 mm from every intake window (window tops at Z 326.9 vs the top entry above Z ~533: >= 206 mm vertical in today's stack - re-check on the shortened v0.9 stack)",
+      "GPS pod off-axis so the hardpoint can sit on the axis (the GPS is not used under the gantry / indoors)"
+    ],
+    "mass_properties": {
+      "battery_less": "-349 g battery at the battery CG (Z ~455 mm today) + ~101 g kit (cap bank / clamp near the ESC, hardpoint at the top): CG moves down; vane lever arm shrinks accordingly - recompute",
+      "hybrid": "-349 g + 101 g + 121 g (buffer in the battery slot)"
+    },
+    "not_built": "no bottom / fin exit (reasons in recommendation.not_recommended)"
+  },
+
+  "sim": {
+    "new_module": "sim/tether.py (or inside sim6dof as an external force like the v0.8 pole pushes)",
+    "mechanics": {
+      "attachment_body_m": "top on the axis, from the CAD top-entry point",
+      "pulley_world_m": "above the hover point, height h_p (3.5-4.0 m)",
+      "modes": {
+        "belay": "strength member length L_s set by the handler with slack s in [0, 0.3] m; taut -> spring k_b (bungee 600 N/m ASSUMED) + damping c (zeta 0.3 ASSUMED) in series with Dyneema (EA ~3e5 N ASSUMED)",
+        "cable_tension": "power cable over the pulley: tension at the vehicle T_c = 0.5-2.0 N (handler / balancer, random walk tau 2 s ASSUMED), direction from the attachment toward the pulley"
+      },
+      "lateral_restoring": "T_c * dx / L_drop (~0.5 N/m at 1 N, 2 m)",
+      "events": {"jerk": "20 N for 0.2 s at 30 deg from vertical (snag / handler slip)", "cut": "tension -> 0 and power -> 0 at t_cut"}
+    },
+    "power": {
+      "bus": "V_esc = V_s - I R_loop (V_s 25.2 V, R_loop 58.5 mOhm on the recommended route); T_max(V) = T_max(22.2) (V/22.2)^2; P(u) from the thrust model",
+      "supply": "rated 60 A at 25.2 V; overload 105-135 % -> constant current (V falls) and latch-off after 5 s (RSP-1500-24 datasheet); SE-1500-24: shut down at 105-125 % (no constant-current phase stated in the datasheet)",
+      "buffer": "OCV(SOC) 6S LiPo, R_int 0.03 Ohm ASSUMED for 650 mAh, discharge-only through D2; supplies when the bus falls below its terminal voltage",
+      "clamp": "bus clamp at 26.6 V (no regeneration into the supply)"
+    },
+    "plant_spread": "thrust model P1 and P2 at T_max 2.0 / 2.3 / 2.6 / 3.09 kgf",
+    "scenarios": [
+      {"id": "W1", "desc": "wired hover 1.5 m 60 s, demo pushes (battery-less and hybrid)", "pass": "same criteria as the demo profile"},
+      {"id": "W2", "desc": "tether cut / unplug at 2.0 m (hybrid)", "pass": "LAND starts <= 0.1 s after V_tether < threshold, touchdown <= 1.0 m/s, buffer >= 3.4 V/cell"},
+      {"id": "W3", "desc": "tether cut at 2.0 m (battery-less) with the belay slack 0.1 / 0.3 m", "pass": "arrest load <= proof load, no ground contact faster than 1 m/s"},
+      {"id": "W4", "desc": "supply current limit: weak plant (P2, 2.0-2.3 kgf) or long thin tether", "pass": "SUPPLY_LIMIT rule lands before the 5 s latch"},
+      {"id": "W5", "desc": "jerk 20 N 0.2 s at 30 deg", "pass": "tilt < tilt_abort, no ABORT"},
+      {"id": "W6", "desc": "cable clearance", "pass": "min distance cable polyline - intake windows >= 0.2 m in every run"}
+    ],
+    "metrics_to_log": ["tether tension and direction", "V_esc, I, supply state", "buffer SOC / Ah", "min cable-window distance", "time from power loss to LAND"]
+  },
+
+  "firmware": {
+    "note": "params_gen.h will be STALE after the CAD round merges power.* into params.json - expected; the firmware round regenerates it",
+    "build_profiles": "power source at build time: battery (today), wired (battery-less), wired_buffer (hybrid); orthogonal to the field / demo profiles",
+    "adc": "V_bus stays on PF0/ADC0 (47k/4.7k, 2.56 V ref: 28.2 V full scale). New: V_tether before D1 and V_buffer before D2 on two free ADC pins (PF4-PF7 are the JTAG pins - choose with the pin map), same divider",
+    "rules_ASSUMED_thresholds": [
+      {"id": "W_ARM", "rule": "ARM gate: V_tether in [24.6, 25.6] V at idle; wired_buffer also V_buffer rest in [3.72, 3.92] V/cell", "else": "refuse ARM with a reason code"},
+      {"id": "W_LOST", "rule": "wired_buffer: V_tether < 20.0 V or < V_buffer - 0.5 V for >= 40 ms while POWERED", "action": "LAND (new reason TETHER_LOST), UP disabled, telemetry flag, ground alarm"},
+      {"id": "W_SAG", "rule": "V_bus < 21.0 V for >= 0.3 s while the tether is present (supply in current limit or a long thin tether)", "action": "freeze the throttle ceiling at the present u and warn; if it lasts >= 2.0 s -> LAND (the RSP latches off after 5 s)"},
+      {"id": "W_BUF", "rule": "wired_buffer: V_buffer under load < 3.4 V/cell", "action": "LAND (if not already); never ABORT for it"},
+      {"id": "W_D2", "rule": "wired_buffer: V_buffer rising above 3.95 V/cell while tethered (D2 shorted -> charging)", "action": "alarm, land, the ground cuts the supply"},
+      {"id": "I8_map", "rule": "battery: unchanged (v_cell = V_bus / 6); wired: I8 replaced by W_SAG; wired_buffer: I8 on V_buffer"},
+      {"id": "V2_endurance", "rule": "wired profiles: max_flight_s 180, land_reserve_s from the buffer (wired_buffer) - limited by the 10 AWG heating (40-50 A: +12-20 K in 120 s, computed) and the motor temperature (measure on the tether bench)"},
+      {"id": "slew", "rule": "wired profiles: throttle down-slew limit du/dt >= -2.0 /s ASSUMED (no regeneration); KILL / ABORT still cut at once (coast)"}
+    ],
+    "telemetry_ground_station": ["V_tether, V_buffer, V_bus", "flags TETHER_OK, SUPPLY_LIMIT, BUFFER_LOW", "red 'TETHER LOST - LANDING' banner + beeps", "log fields for all three voltages"],
+    "kill": "unchanged; the supply remote ON/OFF E-stop is a ground-side cut (hybrid: lands on the buffer; battery-less: falls into the belay)"
+  },
+
+  "ground_equipment": {
+    "supply": {"model": "Mean Well RSP-1500-24", "setpoint_V": 25.2, "datasheet": {"rated": "24 V 63 A 1512 W", "adjust": "20-26.4 V", "overload": "105-135 % constant current, shut down after 5 s, re-power to recover", "ovp": "27.6-32.4 V", "remote_sense": "0.3 V", "current_sharing": "up to 6000 W or 3+1 units", "efficiency_24V": "90 %", "mass": "3.0 kg", "ac": "8 A / 230 VAC"}},
+    "alternative_supply": {"model": "Mean Well SE-1500-24", "datasheet": {"rated": "24 V 62.5 A 1500 W", "adjust": "21.6-26.4 V", "overload": "105-125 %: shut down, re-power to recover", "input": "180-264 VAC", "mass": "3.3 kg"}, "use": "hybrid only"},
+    "fuse": "100 A (ANL / MIDI) at the supply or ground-pack output, ASSUMED",
+    "e_stop": "mushroom button on the RSP remote ON/OFF (or a battery disconnect for a ground pack)",
+    "gantry": "two 3.5-4 m light stands + crossbar or a boom stand, pulley / smooth ring at 3.5-4.0 m, sandbags",
+    "tether": "2 x 10 AWG silicone, Dyneema 2 mm, 0.3-0.5 m bungee shock section near the vehicle, spiral wrap or ties every 0.3 m, XT90-S both ends",
+    "ppe": "eye and ear protection, gloves for the handler"
+  },
+
+  "costs_krw": {
+    "rate": "1 USD = 1,340.7 KRW (the project's price research, open.er-api.com 2026-10-12)",
+    "items": [
+      {"item": "Mean Well RSP-1500-24", "krw": 632265, "source": "element14 Korea (1+), https://kr.element14.com/mean-well/rsp-1500-24/power-supply-ac-dc-24v-63a/dp/3002756"},
+      {"item": "Mean Well SE-1500-24", "krw": 268073, "source": "Jameco USD 199.95 x 1340.7, excl. shipping / import (ASSUMED ~+20 %)", "url": "https://www.jameco.com/z/SE-1500-24-MEAN-WELL-AC-to-DC-Power-Supply-Single-Output-24-Volt-62-5-Amp-1-5kw_2103353.html"},
+      {"item": "2nd CNHL 6S 2200 70C (ground bank / thrust test)", "krw": 40207, "source": "docs/budget/price_research_2026-10-13.json (USD 29.99)"},
+      {"item": "2 x CNHL 6S 4000 70C XT90 (ground bank)", "krw": 163538, "source": "docs/budget/price_research_2026-10-13.json (USD 60.99 each, 611 g)"},
+      {"item": "buffer 6S 1100 mAh 100C CNHL", "krw": 36186, "source": "RaceDayQuads USD 26.99, 211 g"},
+      {"item": "buffer 6S 650 mAh 120C GNB (HV)", "krw": 45000, "source": "ASSUMED price; 100 g, 63 x 30 x 31 mm from Pyrodrone listing"},
+      {"item": "XT90-S pairs x2", "krw": 10000, "source": "ASSUMED (Gator-RC USD 2.25 / pair)"},
+      {"item": "10 AWG silicone 2 x 9 m", "krw": 90000, "source": "ASSUMED ~5,000 KRW/m"},
+      {"item": "Dyneema 2 mm + bungee + ties", "krw": 20000, "source": "ASSUMED"},
+      {"item": "gantry (2 light stands + crossbar) + pulley", "krw": 130000, "source": "ASSUMED"},
+      {"item": "vehicle kit: caps, TVS, brake chopper, hardpoint", "krw": 30000, "source": "ASSUMED"},
+      {"item": "D1 / D2 ideal-diode board (LM74700-Q1 x2 + 6 FETs + PCB)", "krw": 50000, "source": "ASSUMED"},
+      {"item": "100 A fuse + holder + E-stop", "krw": 20000, "source": "ASSUMED"},
+      {"item": "watt meter >= 150 A", "krw": 20000, "source": "ASSUMED"}
+    ],
+    "kits": {
+      "i_thrust_test": {"krw": 60207, "contents": "watt meter + optional 2nd 6S 2200"},
+      "ii_battery_less_ground_lipo": {"krw": 340207, "contents": "2nd pack, cable, XT90-S, fuse/E-stop, gantry, Dyneema/bungee, vehicle kit"},
+      "iii_hybrid_RSP": {"krw": 1027265, "contents": "RSP-1500-24 + ii without the 2nd pack + buffer 650 + D1/D2 board"},
+      "iii_hybrid_SE_estimate": {"krw": 663073, "contents": "as above with SE-1500-24 (excl. import)"}
+    }
+  },
+
+  "regulations_kr": {
+    "sources": [
+      "항공안전법 시행령 제24조 (via nepla.ai quoting the article): https://www.nepla.ai/wiki/it-정보-방송통신/로봇-드론/-일문일답-드론-구매-후-신고를-해야-하는-드론은-gy380o1e8rxk",
+      "항공안전법 시행규칙 (2025-01-19 text on nepla.ai) 제306조, 제308조: https://www.nepla.ai/law/%ED%95%AD%EA%B3%B5%EC%95%88%EC%A0%84%EB%B2%95%20%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99/20250119",
+      "MOLIT drone FAQ (search snippet; the page did not load here): https://www.molit.go.kr/USR/policyTarget/dtl.jsp?idx=584",
+      "조종자 증명 classes (news): https://www.segye.com/view/20240607510803"
+    ],
+    "findings": {
+      "registration": "시행령 제24조 (non-commercial): no registration for 3호 '계류식 무인비행장치' and for 5호 unmanned powered devices with MTOW <= 2 kg",
+      "operator_certificate": "시행규칙 제306조 ① 4호: the certificate covers 무인비행장치 except powered <= 250 g and small airships - NO tethered exemption found; classes by MTOW: 4종 250 g-2 kg (KOTSA online education), 3종 2-7 kg (6 h flight training + written test; practical test reported inconsistently)",
+      "flight_approval": "시행규칙 제308조 ① excludes devices of 시행령 제24조 1-4호 (which include 계류식 무인비행장치, non-commercial) and unmanned powered devices <= 25 kg from that paragraph; MOLIT FAQ: flights in a fully enclosed indoor space need no approval",
+      "mass_effect": "VTOL-light 1.5-1.8 kg with battery, wired 1.25-1.55 kg, hybrid 1.37-1.67 kg: all <= 2 kg -> no registration, 4종; the rocket configuration 2.67 kg -> registration + 3종"
+    },
+    "uncertain": [
+      "whether a power-tethered vehicle on a belayed catch line legally counts as '계류식 무인비행장치' (no definition found) - ask the 지방항공청 / 드론원스톱",
+      "whether the lifted tether counts toward MTOW",
+      "which approval rules (150 m, 관제권, 비행금지구역) still apply to 계류식 devices outdoors - the 308조 paragraphs were read only partly",
+      "the current 3종 practical-test requirement",
+      "venue rules / liability insurance for a public indoor demo"
+    ]
+  },
+
+  "measurements_needed": [
+    "thrust, current and V_esc vs throttle on the flight LiPo (decides the supply)",
+    "whether the SkyWalker 100A V2 regenerates on throttle step-downs (sizes the brake chopper)",
+    "ESC input ripple and cap temperature through the real 8.5 m tether",
+    "real wire OD and g/m of the bought 10 AWG / 12 AWG",
+    "XT90-S contact resistance (connector loop 1 mOhm ASSUMED)",
+    "motor temperature after 120-180 s at hover current",
+    "edf.wire_exit position on the real housing (still ASSUMED from the drawing - motor-lead task)"
+  ]
+}

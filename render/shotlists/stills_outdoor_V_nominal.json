@@ -1,0 +1,12 @@
+[
+ {"t0": 0.4, "t1": 1.8, "cam": "orbit", "note": "still 1: vehicle on the pad (outdoor)",
+  "params": {"radius": 3.0, "height": -0.02, "deg_per_s": 0.0, "lens": 45.0, "azimuth_deg": 160.0}},
+ {"t0": 4.4, "t1": 5.7, "cam": "orbit", "note": "still 2: lift-off with ground effect (grass flattened, dust)",
+  "params": {"radius": 3.1, "height": -0.25, "deg_per_s": 0.0, "lens": 40.0, "azimuth_deg": 120.0}},
+ {"t0": 14.5, "t1": 15.72, "cam": "closeup", "note": "still 3: vanes deflected during the gust correction (from below)",
+  "params": {"mode": "vanes", "azimuth_deg": 200.0}},
+ {"t0": 15.75, "t1": 17.0, "cam": "wide", "note": "still 4: wide with the windsock in the gust",
+  "params": {"dist": 12.0, "azimuth_deg": 100.0}},
+ {"t0": 41.8, "t1": 43.2, "cam": "orbit", "note": "still 5: landing in the field",
+  "params": {"radius": 3.4, "height": 0.9, "deg_per_s": 0.0, "lens": 40.0, "azimuth_deg": 150.0, "follow_s": 0.05}}
+]

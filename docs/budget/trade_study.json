@@ -1,0 +1,208 @@
+{
+ "rows": [
+  {
+   "name": "wall 2.0 / envelope h 200",
+   "error": "ValueError('tab keyway too close to the outer skin')"
+  },
+  {
+   "name": "wall 2.0 / envelope h 150",
+   "error": "ValueError('tab keyway too close to the outer skin')"
+  },
+  {
+   "name": "wall 1.6 / envelope h 200",
+   "error": "ValueError('intake wire channel does not overlap the propulsion wire slot radially')"
+  },
+  {
+   "name": "wall 1.6 / envelope h 150",
+   "error": "ValueError('intake wire channel does not overlap the propulsion wire slot radially')"
+  },
+  {
+   "name": "wall 1.2 / envelope h 200",
+   "printed_g": 966,
+   "printed_by_part": {
+    "propulsion_module": 361,
+    "intake_module": 127,
+    "avionics_module": 124,
+    "avionics_tray": 41,
+    "payload_module": 191,
+    "piston": 32,
+    "nose_cone": 70,
+    "latch_arm": 0,
+    "vane_1": 4,
+    "vane_horn_1": 0,
+    "vane_2": 4,
+    "vane_horn_2": 0,
+    "vane_3": 4,
+    "vane_horn_3": 0,
+    "vane_4": 4,
+    "vane_horn_4": 0
+   },
+   "non_printed_g": {
+    "edf": 369,
+    "battery": 349,
+    "servos": 67,
+    "esc": 92,
+    "nav": 40,
+    "fcu": 20,
+    "com": 20,
+    "radio_log": 20,
+    "misc": 40,
+    "chute_pack": 100,
+    "hardware": 70
+   },
+   "dry_g": 2153,
+   "design_thrust_N": 28.48,
+   "tw_min": 1.25,
+   "max_total_g": 2324,
+   "payload_max_g": 171,
+   "pla_kg_with_waste": 1.16,
+   "cost_krw": 312139,
+   "vehicle_h_mm": 906,
+   "body_od": 120.0
+  },
+  {
+   "name": "wall 1.2 / envelope h 150",
+   "printed_g": 937,
+   "printed_by_part": {
+    "propulsion_module": 361,
+    "intake_module": 127,
+    "avionics_module": 124,
+    "avionics_tray": 41,
+    "payload_module": 162,
+    "piston": 32,
+    "nose_cone": 70,
+    "latch_arm": 0,
+    "vane_1": 4,
+    "vane_horn_1": 0,
+    "vane_2": 4,
+    "vane_horn_2": 0,
+    "vane_3": 4,
+    "vane_horn_3": 0,
+    "vane_4": 4,
+    "vane_horn_4": 0
+   },
+   "non_printed_g": {
+    "edf": 369,
+    "battery": 349,
+    "servos": 67,
+    "esc": 92,
+    "nav": 40,
+    "fcu": 20,
+    "com": 20,
+    "radio_log": 20,
+    "misc": 40,
+    "chute_pack": 100,
+    "hardware": 70
+   },
+   "dry_g": 2124,
+   "design_thrust_N": 28.48,
+   "tw_min": 1.25,
+   "max_total_g": 2324,
+   "payload_max_g": 200,
+   "pla_kg_with_waste": 1.12,
+   "cost_krw": 312139,
+   "vehicle_h_mm": 856,
+   "body_od": 120.0
+  }
+ ],
+ "bom": [
+  [
+   "EDF 90mm 6S 1450KV (Hobbyocean)",
+   83400,
+   "https://ko.aliexpress.com/item/1005007300026404.html"
+  ],
+  [
+   "ESC Hobbywing SkyWalker 100A V2 (5V/7A BEC)",
+   51300,
+   "https://ko.aliexpress.com/item/1005012523818954.html"
+  ],
+  [
+   "LiPo CNHL G+Plus 6S 2200mAh 70C",
+   49579,
+   "CNHL global store (USD 29.99 + USD 6.99 shipping)"
+  ],
+  [
+   "MG90S x5",
+   13932,
+   "AliExpress 5-pack (price_research electronics)"
+  ],
+  [
+   "ATmega128 minimum-system board (check 16 MHz crystal)",
+   10688,
+   "AliExpress (price_research electronics)"
+  ],
+  [
+   "MPU-6050 GY-521",
+   2572,
+   "AliExpress"
+  ],
+  [
+   "MS5611 GY-63",
+   6753,
+   "AliExpress XRY"
+  ],
+  [
+   "I2C level shifter 4ch",
+   1761,
+   "AliExpress"
+  ],
+  [
+   "AMS1117 3.3 V module",
+   660,
+   "Mechasolution"
+  ],
+  [
+   "OpenLog clone + microSD (card ASSUMED owned)",
+   3980,
+   "AliExpress"
+  ],
+  [
+   "SBUS receiver FlySky FS-A8S V2",
+   11830,
+   "AliExpress"
+  ],
+  [
+   "NPN inverter + resistors, divider resistors (ASSUMED)",
+   1000,
+   "ASSUMED"
+  ],
+  [
+   "XT60 + 12 AWG silicone wire",
+   7800,
+   "RCbank"
+  ],
+  [
+   "M3/M2 screws (M3 kit 340 pcs)",
+   9680,
+   "DeviceMart"
+  ],
+  [
+   "Ripstop nylon 1 x 1.5 m x2 + cord (DIY 1.4 m chute)",
+   18204,
+   "AliExpress ripstop; cord ASSUMED"
+  ],
+  [
+   "Compression spring OD 40 (ASSUMED)",
+   3000,
+   "ASSUMED"
+  ]
+ ],
+ "optional_if_not_owned": [
+  [
+   "FlySky FS-i6X transmitter + iA6B",
+   77061,
+   "AliExpress (new-user price; regular 117,957)"
+  ],
+  [
+   "LiPo charger iMAX B6AC clone",
+   31400,
+   "AliExpress"
+  ],
+  [
+   "USBasp ISP programmer",
+   4400,
+   "DeviceMart"
+  ]
+ ],
+ "_note": "cost_krw = the v0.3 trade-study list 'bom' (one ATmega128 board); the v0.6.3 bill of materials is docs/budget/bom.json (tools/budget_bom.py). non_printed_g counts every params.electronics entry with a mass_g."
+}

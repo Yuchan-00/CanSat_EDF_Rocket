@@ -1,0 +1,358 @@
+{
+  "generator": "vtol_sizing",
+  "config": "vtol_tether",
+  "power_source": "tether",
+  "preset": "BUDGET_90mm_6S",
+  "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+  "cad_report": "cad/exports/cadquery_report_vtol_tether.json",
+  "source": "cadquery_report_vtol_tether.json",
+  "mass_g": 1405.7998199902308,
+  "cad_mass_g": 1405.7998199902308,
+  "weight_N": 13.786186804707196,
+  "lead_drag": {
+    "area_mm2": 325.0,
+    "cd_ASSUMED": 1.0,
+    "cd_band_ASSUMED": [
+      0.8,
+      1.2
+    ],
+    "drag_over_thrust": 0.032029324048061296,
+    "drag_over_thrust_band": [
+      0.025623459238449036,
+      0.03843518885767356
+    ],
+    "hover_drag_N": 0.4561731626020846,
+    "thrust_for_tw_1p3_kgf": 1.8880114980652993,
+    "thrust_for_tw_1p3_kgf_band": [
+      1.875599103154655,
+      1.9005892736613428
+    ],
+    "label": "E (Cd ASSUMED, drag area from Layout.ml_jet_drag)"
+  },
+  "com_mm": [
+    2.9137589482148667,
+    -0.220952322316183,
+    219.7939997482211
+  ],
+  "inertia_diag_kg_m2": [
+    0.029262760920716273,
+    0.02953248056701805,
+    0.0032223051792708264
+  ],
+  "printed_mass_g": 565.5964402019343,
+  "vane_lever_arm_mm": 182.7939997482211,
+  "vehicle_h_mm": 475.29999999999995,
+  "footprint_d_mm": 246.8,
+  "tip_over": {
+    "cg_height_mm": 219.7939997482211,
+    "fin_tip_r_mm": 123.4,
+    "angle_toward_a_fin_deg": 29.31137020304883,
+    "angle_between_fins_deg": 21.652798149014412
+  },
+  "tw_table": [
+    {
+      "thrust_kgf": 2.0,
+      "thrust_N": 19.6133,
+      "tw": 1.4226776611864258,
+      "tw_ok_1p3": true,
+      "u_hover": 0.8383912630717925,
+      "hover_possible": true,
+      "mass_for_tw_1p3_g": 1538.4615384615383,
+      "hover_power_W_P1": 694.7425981059463,
+      "hover_current_A_P1": 31.294711626393976,
+      "tw1p3_power_W_P1": 1029.766968268905,
+      "hover_power_W_P2": 1334.1868445531254,
+      "hover_current_A_P2": 60.09850651140205,
+      "tw1p3_power_W_P2": 1977.5691684450483
+    },
+    {
+      "thrust_kgf": 2.3,
+      "thrust_N": 22.555294999999997,
+      "tw": 1.6360793103643896,
+      "tw_ok_1p3": true,
+      "u_hover": 0.7818038840011162,
+      "hover_possible": true,
+      "mass_for_tw_1p3_g": 1769.230769230769,
+      "hover_power_W_P1": 694.7425981059463,
+      "hover_current_A_P1": 31.294711626393976,
+      "tw1p3_power_W_P1": 1029.766968268905,
+      "hover_power_W_P2": 1081.8570849015318,
+      "hover_current_A_P2": 48.732301121690625,
+      "tw1p3_power_W_P2": 1603.5589201763535
+    },
+    {
+      "thrust_kgf": 2.6,
+      "thrust_N": 25.49729,
+      "tw": 1.8494809595423536,
+      "tw_ok_1p3": true,
+      "u_hover": 0.7353177805940647,
+      "hover_possible": true,
+      "mass_for_tw_1p3_g": 2000.0,
+      "hover_power_W_P1": 694.7425981059463,
+      "hover_current_A_P1": 31.294711626393976,
+      "tw1p3_power_W_P1": 1029.766968268905,
+      "hover_power_W_P2": 900.1225163609688,
+      "hover_current_A_P2": 40.54605929553914,
+      "tw1p3_power_W_P2": 1334.1868445531252
+    },
+    {
+      "thrust_kgf": 3.09,
+      "thrust_N": 30.302548499999997,
+      "tw": 2.198036986533028,
+      "tw_ok_1p3": true,
+      "u_hover": 0.6745008510410427,
+      "hover_possible": true,
+      "mass_for_tw_1p3_g": 2376.923076923077,
+      "hover_power_W_P1": 694.7425981059463,
+      "hover_current_A_P1": 31.294711626393976,
+      "tw1p3_power_W_P1": 1029.766968268905,
+      "hover_power_W_P2": 694.7425981059463,
+      "hover_current_A_P2": 31.294711626393976,
+      "tw1p3_power_W_P2": 1029.766968268905
+    }
+  ],
+  "vane_authority_at_hover": {
+    "thrust_N": 13.786186804707196,
+    "q_e_Pa": 1358.653060169457,
+    "force_per_vane_N": 1.092693624987048,
+    "lever_arm_mm": 182.7939997482211,
+    "M_pitch_Nm": 0.39947567642153053,
+    "M_roll_Nm": 0.12238168599854939,
+    "I_xx_kg_m2": 0.029262760920716273,
+    "I_zz_kg_m2": 0.0032223051792708264,
+    "alpha_pitch_rad_s2": 13.65133240516365,
+    "alpha_roll_rad_s2": 37.979545446481595
+  },
+  "vane_authority_at_thrust_nominal": {
+    "thrust_N": 30.302548499999997,
+    "q_e_Pa": 2986.36967811875,
+    "force_per_vane_N": 2.4017810026703823,
+    "lever_arm_mm": 182.7939997482211,
+    "M_pitch_Nm": 0.8780623119948242,
+    "M_roll_Nm": 0.26899947229908283,
+    "I_xx_kg_m2": 0.029262760920716273,
+    "I_zz_kg_m2": 0.0032223051792708264,
+    "alpha_pitch_rad_s2": 30.00613354200659,
+    "alpha_roll_rad_s2": 83.48044562307862
+  },
+  "targets_g": {
+    "vtol_battery": 1650.0,
+    "vtol_battery_stretch": 1550.0,
+    "vtol_tether": 1400.0
+  },
+  "parts_g": {
+    "propulsion_module": 301.17451760981294,
+    "intake_module": 122.59781505557473,
+    "avionics_module": 57.740401819530774,
+    "avionics_logo": 0.9021768102375674,
+    "avionics_tray": 14.219413911095419,
+    "top_cap": 35.15343805026615,
+    "vane_1": 3.5646482835837023,
+    "vane_2": 3.5646482835837023,
+    "vane_3": 3.5646482835837023,
+    "vane_4": 3.5646482835837023,
+    "vane_coupler_1": 0.9211242330043711,
+    "vane_coupler_2": 0.9211242330043711,
+    "vane_coupler_3": 0.9211242330043711,
+    "vane_coupler_4": 0.9211242330043711,
+    "servo_cover_1": 3.4096846566217236,
+    "servo_cover_2": 3.4096846566217236,
+    "servo_cover_3": 3.4096846566217236,
+    "servo_cover_4": 3.4096846566217236,
+    "wire_cover": 2.2268482525776156,
+    "edf_unit": 369.0,
+    "esc": 92.0,
+    "misc_electronics": 25.0,
+    "carrier": 50.0,
+    "gps": 17.0,
+    "gps_ground_plane": 2.9,
+    "servo_vane_1": 13.4,
+    "servo_vane_2": 13.4,
+    "servo_vane_3": 13.4,
+    "servo_vane_4": 13.4,
+    "servo_horn_1": 1.0,
+    "servo_horn_2": 1.0,
+    "servo_horn_3": 1.0,
+    "servo_horn_4": 1.0,
+    "hinge_bushing_1": 0.4668445953142603,
+    "hinge_bushing_2": 0.4668445953142603,
+    "hinge_bushing_3": 0.4668445953142603,
+    "hinge_bushing_4": 0.4668445953142603,
+    "tether_cap_bank": 25.0,
+    "tether_bus_clamp": 20.0,
+    "tether_xt90": 7.0,
+    "tether_eyebolt": 6.0,
+    "tether_load_washer": 4.214642894331557,
+    "tether_nut": 0.6,
+    "joint_screws_inserts": 40.0,
+    "vane_drive_hardware": 3.0,
+    "servo_leads": 26.4192179017237,
+    "motor_leads": 52.04729819320114,
+    "gps_lead": 2.2694853121146243,
+    "tether_boot": 4.1853571056684435,
+    "tether_power_lead": 34.1
+  },
+  "top_cap": {
+    "z_skirt_bottom": 459.09999999999997,
+    "z_plate": [
+      474.09999999999997,
+      475.29999999999995
+    ],
+    "z_under": 462.09999999999997,
+    "rib_thetas_deg": [
+      22.5,
+      112.5,
+      202.5,
+      292.5
+    ],
+    "rib_t_h": [
+      1.6,
+      12.0
+    ],
+    "ring_r": [
+      54.49999999999999,
+      56.49999999999999
+    ],
+    "hub_d": 16.0,
+    "holes": {
+      "gland 1": [
+        -25.0,
+        3.600000000000003,
+        5.8
+      ],
+      "gland 2": [
+        -25.0,
+        -3.599999999999997,
+        5.8
+      ],
+      "GPS lead": [
+        -23.78314155840196,
+        -28.343644395402183,
+        8.0
+      ],
+      "arming switch": [
+        2.4492935982947065e-15,
+        40.0,
+        6.5
+      ]
+    },
+    "clearance_mm": {
+      "rim ring bottom -> skirt joint screw (z)": 2.8999999999999773,
+      "gland 1 hole -> rim ring": 26.34212993936345,
+      "gland 1 hole -> spigot bore": 28.84212993936345,
+      "gland 1 hole -> hub": 14.357870060636547,
+      "gland 1 hole -> ribs": 9.193052126167874,
+      "gland 2 hole -> rim ring": 26.34212993936345,
+      "gland 2 hole -> spigot bore": 28.84212993936345,
+      "gland 2 hole -> hub": 14.357870060636547,
+      "gland 2 hole -> ribs": 2.54111949208661,
+      "GPS lead hole -> rim ring": 13.499999999999993,
+      "GPS lead hole -> spigot bore": 15.999999999999993,
+      "GPS lead hole -> hub": 25.0,
+      "GPS lead hole -> ribs": 12.284698689696253,
+      "arming switch hole -> rim ring": 11.249999999999993,
+      "arming switch hole -> spigot bore": 13.749999999999993,
+      "arming switch hole -> hub": 28.75,
+      "arming switch hole -> ribs": 11.257337294603593,
+      "gland 1 hole -> gland 2 hole": 1.4000000000000008,
+      "gland 1 hole -> GPS lead hole": 25.06681344342595,
+      "gland 1 hole -> arming switch hole": 38.00835141850293,
+      "gland 2 hole -> GPS lead hole": 17.873548038845918,
+      "gland 2 hole -> arming switch hole": 44.10892955485622,
+      "GPS lead hole -> arming switch hole": 65.11360654107958,
+      "ribs / hub bottom -> highest bay part": 5.0,
+      "arming-switch body -> bay parts": 9.171172340081595,
+      "arming-switch body -> ribs": 5.668502529771749,
+      "GPS ground plane -> cap edge": 3.3519638469258126,
+      "GPS ground plane -> tether eye": 3.0,
+      "GPS ground plane -> gland 1 hole": 35.1,
+      "GPS ground plane -> gland 2 hole": 35.1,
+      "GPS ground plane -> GPS lead hole": 33.717580843717485,
+      "GPS ground plane -> arming switch hole": 20.603720883753123,
+      "GPS board -> cap edge": 8.829598399074492,
+      "GPS board -> tether eye": 12.100000000000001,
+      "GPS board -> gland 1 hole": 23.736253490309032,
+      "GPS board -> gland 2 hole": 16.880040444852487,
+      "GPS board -> GPS lead hole": 1.7831415584019545,
+      "GPS board -> arming switch hole": 58.85,
+      "GPS ground plane -> GPS board": 2.1000000000000014
+    },
+    "tether_mm": {
+      "boot base (cap top) -> nearest intake window": 167.5140591114668,
+      "free cable start (boot top) -> nearest intake window": 263.3267172164647,
+      "required (free cable)": 200.0,
+      "boot top z": 575.3,
+      "cone half angle deg": 15.0
+    },
+    "gps_boot_shadow_deg": {
+      "azimuth_width": 20.609692937532067,
+      "elevation_top": 73.19497906246215
+    },
+    "gps_lead_mm": 253.89706242292485,
+    "gps_lead_g": 2.2694853121146243
+  },
+  "tether_items_g": {
+    "tether_boot": 4.1853571056684435,
+    "tether_power_lead": 34.1
+  },
+  "legal": {
+    "takeoff_mass_kg": 1.4057998199902308,
+    "operator_certificate": "4종 (250 g 초과 ~ 2 kg 이하)",
+    "aircraft_registration_required": false
+  },
+  "warnings": [],
+  "tether_supply": {
+    "supply": "Mean Well RSP-1500-24",
+    "v_set": 25.2,
+    "rated_A": 60.0,
+    "r_loop_ohm": 0.059500000000000004,
+    "v_esc_at_limit": 21.63,
+    "p_at_limit_W": 1297.8,
+    "rows": [
+      {
+        "thrust_kgf": 2.0,
+        "tw_supply_P1": 1.3642944352639448,
+        "hover_W_P1": 694.7425981059463,
+        "hover_tether_A_P1": 29.644019328669838,
+        "hover_v_esc_P1": 23.436180849944144,
+        "tw_supply_P2": 0.9817345541979224,
+        "hover_W_P2": 1334.1868445531254,
+        "hover_tether_A_P2": 62.028329722041725,
+        "hover_v_esc_P2": 21.509314381538516
+      },
+      {
+        "thrust_kgf": 2.3,
+        "tw_supply_P1": 1.51677988623579,
+        "hover_W_P1": 694.7425981059463,
+        "hover_tether_A_P1": 29.644019328669838,
+        "hover_v_esc_P1": 23.436180849944144,
+        "tw_supply_P2": 1.1289947373276106,
+        "hover_W_P2": 1081.8570849015318,
+        "hover_tether_A_P2": 48.48023435401794,
+        "hover_v_esc_P2": 22.31542605593593
+      },
+      {
+        "thrust_kgf": 2.6,
+        "tw_supply_P1": 1.51677988623579,
+        "hover_W_P1": 694.7425981059463,
+        "hover_tether_A_P1": 29.644019328669838,
+        "hover_v_esc_P1": 23.436180849944144,
+        "tw_supply_P2": 1.276254920457299,
+        "hover_W_P2": 900.1225163609688,
+        "hover_tether_A_P2": 39.38088663365517,
+        "hover_v_esc_P2": 22.856837245297516
+      },
+      {
+        "thrust_kgf": 3.09,
+        "tw_supply_P1": 1.51677988623579,
+        "hover_W_P1": 694.7425981059463,
+        "hover_tether_A_P1": 29.644019328669838,
+        "hover_v_esc_P1": 23.436180849944144,
+        "tw_supply_P2": 1.51677988623579,
+        "hover_W_P2": 694.7425981059463,
+        "hover_tether_A_P2": 29.644019328669838,
+        "hover_v_esc_P2": 23.436180849944144
+      }
+    ]
+  }
+}

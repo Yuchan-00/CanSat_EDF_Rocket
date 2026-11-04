@@ -1,0 +1,98 @@
+{
+ "preset": "BUDGET_90mm_6S",
+ "script_version": "0.9.6",
+ "recorded_calls": 390,
+ "parts": {
+  "propulsion_module": {
+   "replay_volume_mm3": 278983.43990367,
+   "twin_volume_mm3": 278983.8842515567,
+   "replay_minus_twin_mm3": 0.011267800092363747,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "avionics_module": {
+   "replay_volume_mm3": 45432.55541806134,
+   "twin_volume_mm3": 45432.59573668314,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "avionics_logo": {
+   "replay_volume_mm3": 680.9928771867297,
+   "twin_volume_mm3": 680.992877076233,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 20,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "tether_eyebolt": {
+   "replay_volume_mm3": 1266.27734911331,
+   "twin_volume_mm3": 1266.2773491133123,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "tether_load_washer": {
+   "replay_volume_mm3": 1560.9788497524285,
+   "twin_volume_mm3": 1560.9788497524285,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "tether_nut": {
+   "replay_volume_mm3": 94.49303295303804,
+   "twin_volume_mm3": 94.49303295303847,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "tether_cap_bank": {
+   "replay_volume_mm3": 18954.0,
+   "twin_volume_mm3": 18954.0,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "tether_bus_clamp": {
+   "replay_volume_mm3": 24000.0,
+   "twin_volume_mm3": 24000.0,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "tether_xt90": {
+   "replay_volume_mm3": 18000.0,
+   "twin_volume_mm3": 18000.0,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  }
+ },
+ "ok": true
+}

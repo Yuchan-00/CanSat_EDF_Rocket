@@ -1,0 +1,115 @@
+{
+  "provisional": true,
+  "source": {
+    "kind": "CadQuery twin STL (cad/exports/cadquery/stl) - NOT the Fusion 360 path",
+    "why": "make_print_files.py makes print files only from a Fusion run of the current params.json and script; the v0.8 Fusion GUI run has not been made",
+    "replaced_by": "python tools/make_print_files.py after the Fusion run of CanSatEDFRocket.py 0.8.1 (then delete this folder)",
+    "construction_check": "cad/fusion360/replay_x3.py: the Fusion script's recorded feature calls, rebuilt in OCC, equal these solids (boolean differences < 1 mm^3)",
+    "params_sha256": "5608f2eee5224e2f9fc6c5e469e9ba02f93887058c6b59fc30a15e63d8f2d716",
+    "cadquery_report_params_sha256": "5608f2eee5224e2f9fc6c5e469e9ba02f93887058c6b59fc30a15e63d8f2d716",
+    "preset": "BUDGET_90mm_6S",
+    "stl_sha256": {
+      "payload_module": "4363003e5db06dae12cfb9c8dff562bd30a59b2c170e0e72d37f0c9e6a750f57",
+      "avionics_module": "87c11c748d3459238083f71ef2bf7e525cf220fdc680bda11f4c33fb47bb4e19",
+      "gps_pod_lid": "87b37de27caeae4dcc577deda3c1cfbe8c62f94f5bc61042df06e037d6bfc31f"
+    }
+  },
+  "machine": "Bambu Lab P2S 0.4 nozzle",
+  "process_base": "0.20mm Standard @BBL P2S",
+  "filament": "Bambu PLA Matte @BBL P2S",
+  "parts": {
+    "payload_module": {
+      "quantity": 1,
+      "supports": true,
+      "support_type_used": "normal(auto)",
+      "why": "upright; the bulkhead 15 mm above the bed and (v0.6) the four COM-board bosses under it need short supports inside the skirt; v0.8: the GPS pod's floor rises at 45 deg and its raceway is a vertical tunnel (no support there; 1.2 m of support in the connector pocket's ceiling), its corner bosses bridge 5 mm; normal(auto) supports (the CLI refuses tree(auto) on this part); v0.8.1: pod walls / floor 1.2 mm",
+      "rotations": [],
+      "extents_mm": [
+        193.8,
+        120.0,
+        198.4
+      ],
+      "print_file_stl": "payload_module.stl",
+      "print_file": "payload_module.3mf",
+      "ok": true,
+      "time_s": 22599.794921875,
+      "filament_mm": 88034.82,
+      "filament_g": 277.39060960517327,
+      "settings_in_gcode": {
+        "enable_support": "1",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "normal(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 7413.635986328125
+    },
+    "avionics_module": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "upright; v0.8: + the GPS lead hole; v0.8.1: + four 45-deg diamond GNS bosses on the -x wall",
+      "rotations": [],
+      "extents_mm": [
+        120.0,
+        120.0,
+        200.0
+      ],
+      "print_file_stl": "avionics_module.stl",
+      "print_file": "avionics_module.3mf",
+      "ok": true,
+      "time_s": 10436.841796875,
+      "filament_mm": 39605.26,
+      "filament_g": 124.79297640378412,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0
+    },
+    "gps_pod_lid": {
+      "quantity": 1,
+      "supports": false,
+      "support_type_used": "none",
+      "why": "flat: lid top face on the bed, the three ground-plane posts up",
+      "rotations": [
+        [
+          "x",
+          180.0
+        ]
+      ],
+      "extents_mm": [
+        68.6,
+        64.7,
+        13.0
+      ],
+      "print_file_stl": "gps_pod_lid.stl",
+      "print_file": "gps_pod_lid.3mf",
+      "ok": true,
+      "time_s": 755.4627685546875,
+      "filament_mm": 1771.52,
+      "filament_g": 5.58191648177115,
+      "settings_in_gcode": {
+        "enable_support": "0",
+        "filament_density": "1.31",
+        "sparse_infill_density": "15%",
+        "sparse_infill_pattern": "gyroid",
+        "support_style": "default",
+        "support_type": "tree(auto)",
+        "wall_loops": "5"
+      },
+      "support_time_s": 0.0
+    }
+  },
+  "totals": {
+    "time_s": 33792.09948730469,
+    "filament_g": 407.7655024907285
+  }
+}

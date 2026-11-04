@@ -1,0 +1,11 @@
+{
+    "autodeskProduct": "Fusion",
+    "type": "script",
+    "author": "CanSat EDF Rocket project",
+    "description": {
+        "": "Builds the CanSat EDF Rocket assembly from params.json / cad/layout.py and exports STL, STEP, f3d, a preview image and the mass-properties report."
+    },
+    "version": "0.1.0",
+    "supportedOS": "windows|mac",
+    "editEnabled": true
+}

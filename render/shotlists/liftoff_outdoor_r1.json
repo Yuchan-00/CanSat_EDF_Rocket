@@ -1,0 +1,23 @@
+[
+ {
+  "t0": 3.4,
+  "t1": 7.2,
+  "cam": "orbit",
+  "note": "lift-off: the wall jet lays the grass down around the slab, clippings fly (0.5x around the lift-off)",
+  "slow": [
+   {
+    "a": 4.2,
+    "b": 5.4,
+    "factor": 0.5
+   }
+  ],
+  "params": {
+   "radius": 3.0,
+   "height": -0.3,
+   "deg_per_s": 4.0,
+   "lens": 35.0,
+   "azimuth_deg": 60.0,
+   "fstop": 4.0
+  }
+ }
+]

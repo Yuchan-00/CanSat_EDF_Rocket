@@ -1,0 +1,2445 @@
+{
+  "generator": "cadquery",
+  "preset": "BUDGET_90mm_6S",
+  "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+  "tolerance_mm3": 1.0,
+  "runtime_s": 295.1832387447357,
+  "summary": {
+    "PASS": 24,
+    "WARN": 2,
+    "FAIL": 1,
+    "N/A": 9
+  },
+  "checks": [
+    {
+      "id": "C1",
+      "title": "printed parts fit the bed in print orientation",
+      "status": "PASS",
+      "measured": "worst extent/limit = 0.722 (limits 248x248x252)",
+      "detail": "propulsion_module(upright) 176.2x176.2x182.0; intake_module(upright) 131.7x120.0x172.1; avionics_module(upright) 120.0x120.0x150.0; avionics_logo(upright) 17.0x116.3x121.0; avionics_tray(flat) 107.5x112.0x2.0; top_cap(flat) 120.0x120.0x16.2; vane(flat) 32.0x46.5x5.0; vane_coupler(upright) 13.5x10.6x12.0; servo_cover(flat) 42.3x50.8x1.2; wire_cover(flat) 30.6x34.7x1.6",
+      "values": {
+        "worst_ratio": 0.722222223015873,
+        "fails": []
+      }
+    },
+    {
+      "id": "C2",
+      "title": "payload envelope does not intersect any printed body",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - no CanSat payload in the VTOL configuration",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C3",
+      "title": "EDF clears propulsion/intake modules; shelf retains the lip",
+      "status": "PASS",
+      "measured": "edf x prop 0.000, edf x intake 0.000 mm^3; shelf_id 104.0 < lip_od 112.0 -> True",
+      "detail": "",
+      "values": {
+        "edf_prop": 0.0,
+        "edf_intake": 0.0,
+        "shelf_id": 104.0,
+        "lip_od": 112.0
+      }
+    },
+    {
+      "id": "C4",
+      "title": "vanes at d=0/+-25deg clear the module and each other; shafts pass the bore",
+      "status": "PASS",
+      "measured": "max vane x module 0.000 (), vane x vane 0.000 (), shaft x module 0.000 mm^3",
+      "detail": "vane_r_out 43.0 vs duct_r 45.0; TE offset 22.4 mm",
+      "values": {
+        "vane_module": 0.0,
+        "vane_vane": 0.0,
+        "shaft_module": 0.0
+      }
+    },
+    {
+      "id": "C5",
+      "title": "(v0.9 direct drive) servo + ears + horn + coupler in the fin-root fairing: clear, floating, ear tab captured, slides out to the service side (after the vane is pushed in), cover seated, cover screws (tap, material, screwdriver path), set-screw key path, connector bay",
+      "status": "PASS",
+      "measured": "max x (module / cover) 0.000 mm^3 (); servo -> module min gap 0.300 mm (float 0.3); ear-slot walls / floor min fill 1.000 (fin 1 slot inner); slide-out sweep x module 0.000 mm^3; cover x module max 0.000, gap max 0.000 mm; screws: tap clear max 0.0000, tap material min 1.000, cover hole clear max 0.0000, screwdriver x anything max 0.000 mm^3 (-); connector x (module, servo) 0.000 mm^3; removal: sweep x vane installed 109.5 mm^3 (blocked: push the vane in first), x vane pushed 7.5 mm in 0.000 mm^3, pushed vane x module / bushing / other vanes 0.000 mm^3; set-screw key O2.5 x 30 x anything (cover off) 0.000 mm^3",
+      "detail": "pocket u 52.70..92.80, |v| 6.55 (+ open to the service side +v), z 30.70..65.85; ear slot u 71.70..74.80, z 25.95..30.70; cover screws (u, z) (49.65, 51.77), (95.10, 48.27), tap O1.6 x 6, clear O2.2; screwdriver O6 x 60",
+      "values": {
+        "intersection": 0.0,
+        "servo_gap": 0.29999999999999716,
+        "slot_fill": 1.0,
+        "sweep": 0.0,
+        "covers": [
+          {
+            "fin": 1,
+            "x_module": 0.0,
+            "gap": 0.0
+          },
+          {
+            "fin": 2,
+            "x_module": 0.0,
+            "gap": 0.0
+          },
+          {
+            "fin": 3,
+            "x_module": 0.0,
+            "gap": 0.0
+          },
+          {
+            "fin": 4,
+            "x_module": 0.0,
+            "gap": 0.0
+          }
+        ],
+        "screws": [
+          {
+            "fin": 1,
+            "screw": 1,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          },
+          {
+            "fin": 1,
+            "screw": 2,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          },
+          {
+            "fin": 2,
+            "screw": 1,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          },
+          {
+            "fin": 2,
+            "screw": 2,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          },
+          {
+            "fin": 3,
+            "screw": 1,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          },
+          {
+            "fin": 3,
+            "screw": 2,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          },
+          {
+            "fin": 4,
+            "screw": 1,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          },
+          {
+            "fin": 4,
+            "screw": 2,
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0,
+            "driver": 0.0,
+            "driver_hit": "wire_cover"
+          }
+        ],
+        "connector": 0.0,
+        "removal": [
+          {
+            "fin": 1,
+            "installed": 109.45583332076984,
+            "pushed": 0.0,
+            "pushed_vane_x": 0.0,
+            "key": 0.0,
+            "key_hit": "wire_cover"
+          },
+          {
+            "fin": 2,
+            "installed": 109.45583332076984,
+            "pushed": 0.0,
+            "pushed_vane_x": 0.0,
+            "key": 0.0,
+            "key_hit": "wire_cover"
+          },
+          {
+            "fin": 3,
+            "installed": 109.45583332076984,
+            "pushed": 0.0,
+            "pushed_vane_x": 0.0,
+            "key": 0.0,
+            "key_hit": "wire_cover"
+          },
+          {
+            "fin": 4,
+            "installed": 109.45583332076984,
+            "pushed": 0.0,
+            "pushed_vane_x": 0.0,
+            "key": 0.0,
+            "key_hit": "wire_cover"
+          }
+        ]
+      }
+    },
+    {
+      "id": "C6",
+      "title": "adjacent modules do not intersect (spigot/skirt laps, nose skirt vs payload)",
+      "status": "PASS",
+      "measured": "max common volume 0.000 mm^3 (propulsion_module x intake_module)",
+      "detail": "spigot OD 117.2 vs tube ID 117.6; top cap skirt over the avionics spigot",
+      "values": {
+        "propulsion_module x intake_module": 0.0,
+        "intake_module x avionics_module": 0.0,
+        "avionics_module x top_cap": 0.0
+      }
+    },
+    {
+      "id": "C7",
+      "title": "electronics clear tube and tray; tray clears tube and sits in the rail slot (v0.5d: on the tray stops)",
+      "status": "PASS",
+      "measured": "max common volume 0.000 mm^3 (buffer_pack x tube); tray x [13.60,15.60] in slot [13.40,15.80] -> True; tray stop under the tray footprint: slab filled +y 1.000, -y 1.000 (>= 0.95), top z +y 344.100, -y 344.100 vs z_tray_bottom 344.100 -> True",
+      "detail": "tray stop (SPEC 5.2): block x tray_x +- rail_gap/2, Z 342.10..344.10; probes x 13.60..15.60, |y| 51.959..53.75, slab 0.1 mm under the tray",
+      "values": {
+        "buffer_pack x tube": 0.0,
+        "buffer_pack x tray": 0.0,
+        "esc x tube": 0.0,
+        "esc x tray": 0.0,
+        "misc_electronics x tube": 0.0,
+        "misc_electronics x tray": 0.0,
+        "tray x tube": 0.0,
+        "tray_x": [
+          13.6,
+          15.6
+        ],
+        "slot": [
+          13.4,
+          15.799999999999999
+        ],
+        "tray_stop": {
+          "+y": {
+            "filled": 1.0,
+            "top_z": 344.09999999999997
+          },
+          "-y": {
+            "filled": 1.0,
+            "top_z": 344.09999999999997
+          }
+        }
+      }
+    },
+    {
+      "id": "C8",
+      "title": "exhaust path D(duct_id-2), exit -> EDF housing bottom, meets nothing but vanes/shafts (and, tabs, the EDF motor/hub; v0.9 the motor-lead bundle, quantified); x propulsion_module = 0",
+      "status": "PASS",
+      "measured": "path x module 0.000 mm^3, x other components max 0.000 (-); vanes inside the path 11910 mm^3, EDF motor/hub allowed, motor-lead envelope inside the path 9678 mm^3 (allowed, quantified: worst corner 325.0 mm^2 = 6.0 % of the jet annulus, E; duct-wall window under the rim 439 mm^2, E) (allowed)",
+      "detail": "D88 Z 0..112.9; other components tested (bbox overlap): none; liner bore r 45.00 Z 108.0..111.9; EDF motor/hub inside the path 29360 mm^3 (the EDF's own tail, allowed); motor leads (clock mount, worst drag corner ribbon12x5_turned S28 od3.6 row): bundle 25.0 mm + single leads 0.0 mm in the jet (drag in C33)",
+      "values": {
+        "module": 0.0,
+        "vanes": 11909.631819645834,
+        "others": {},
+        "edf_unit": 29360.303922837786,
+        "motor_lead_legs": {
+          "worst-drag corner envelope (grown)": 9678.338498764042
+        },
+        "motor_lead_blockage": {
+          "annulus_mm2": 5383.048326091404,
+          "projected_mm2": 325.0,
+          "projected_pct": 6.037471341744025,
+          "drag_area_mm2": 325.0,
+          "drag_area_pct": 6.037471341744025,
+          "bundle_len_in_jet_mm": 25.0,
+          "single_leads_len_in_jet_mm": 0.0,
+          "worst_corner": {
+            "S": 28.0,
+            "sec": "ribbon12x5_turned",
+            "od": 3.6,
+            "singles": "row",
+            "area_mm2": 325.0,
+            "u_c": 32.5,
+            "bundle_len_in_jet_mm": 25.0,
+            "single_leads_len_in_jet_mm": 0.0
+          }
+        },
+        "duct_window_mm2_E": 438.8172412160904
+      }
+    },
+    {
+      "id": "C9",
+      "title": "inlet area ratio (minimum opening of the built band) >= minimum; v0.6.1 band: windows clear through, struts >= 0.95 x design section and window_wall_t deep, band window_wall_t thick; v0.6.2: gussets solid under the gable, bridge flat at z_window_bottom, lower edges >= 35 deg",
+      "status": "PASS",
+      "measured": "ratio layout 5.969 (min, r 57.00) / 6.234 (outer), measured min 5.975 / outer 6.229 >= 2.00; windows clear max 0.0000 mm^3 (< 0.01); strut section min 52.65 >= 50.02 mm^2, depth err 0.0000; band ring err 0.0000 mm, ring void 0.000 mm^3; v0.6.2 gable: gusset void max 0.0000 mm^3 (< 0.01), bridge above / below z_window_bottom 0.0000 / 0.0000 mm^3, lower edges 16 sloped min 38.83 deg (>= 35), flat edges off the bridge 0, missing 0",
+      "detail": "band r 57.00..60.00 (window_wall_t 3), Z 196.90..322.90; windows (radial sectors) 8.59..81.41, 98.59..171.41, 188.59..261.41, 278.59..351.41 deg x Z 201.90..318.90; struts 18 at body_r / 17.10 inner face, design section 52.65 mm^2; opening probes (r_mean, mm^2) over Z [200.5, 322.9]: (57.060, 31351.5), (57.780, 31687.2), (58.500, 32021.3), (59.220, 32353.8), (59.940, 32684.7); layout area min 31323.4 / outer 32712.2 mm^2 (square windows 33899.8), fan annulus 5247.2 mm^2; window probes x intake (mm^3, above the lower boundary): 45 0.0000, 135 0.0000, 225 0.0000, 315 0.0000; strut sections (mm^2) / radial material: 0 52.65 / 57.000..60.000; 90 52.65 / 57.000..60.000; 180 52.65 / 57.000..60.000; 270 52.65 / 57.000..60.000; gable (slope 45 deg, bridge 20 mm, h 23.83 / 25.61 at r_band_in / body_r, layout edge slope min 38.83 deg): gusset void per window 45 0.0000, 135 0.0000, 225 0.0000, 315 0.0000; lower edges per window (surface/side: z span, min slope) 45 outer+ 201.90..227.51 38.83, outer- 201.90..227.51 38.83, inner+ 201.90..225.73 38.83, inner- 201.90..225.73 38.83; 135 outer+ 201.90..227.51 38.83, outer- 201.90..227.51 38.83, inner+ 201.90..225.73 38.83, inner- 201.90..225.73 38.83; 225 outer+ 201.90..227.51 38.83, outer- 201.90..227.51 38.83, inner+ 201.90..225.73 38.83, inner- 201.90..225.73 38.83; 315 outer+ 201.90..227.51 38.83, outer- 201.90..227.51 38.83, inner+ 201.90..225.73 38.83, inner- 201.90..225.73 38.83",
+      "values": {
+        "layout": 5.9694992604728085,
+        "layout_outer": 6.234166402492312,
+        "measured": 5.974844898401545,
+        "measured_outer": 6.228925315267498,
+        "required": 2.0,
+        "window_probe_mm3": {
+          "45": 0.0,
+          "135": 0.0,
+          "225": 0.0,
+          "315": 0.0
+        },
+        "struts": {
+          "0": {
+            "section_mm2": 52.65000000001225,
+            "radial": [
+              [
+                57.0,
+                60.0
+              ]
+            ]
+          },
+          "90": {
+            "section_mm2": 52.65000000001205,
+            "radial": [
+              [
+                57.0,
+                60.0
+              ]
+            ]
+          },
+          "180": {
+            "section_mm2": 52.65000000001199,
+            "radial": [
+              [
+                57.0,
+                60.0
+              ]
+            ]
+          },
+          "270": {
+            "section_mm2": 52.65000000001217,
+            "radial": [
+              [
+                57.0,
+                60.0
+              ]
+            ]
+          }
+        },
+        "strut_section_min_mm2": 52.65000000001199,
+        "strut_section_required_mm2": 50.0175,
+        "strut_depth_err_mm": 0.0,
+        "ring_radial_err_mm": 7.105427357601002e-15,
+        "ring_void_mm3": 0.0,
+        "gable": {
+          "gusset_void": {
+            "45": 0.0,
+            "135": 0.0,
+            "225": 0.0,
+            "315": 0.0
+          },
+          "edges": {
+            "45": {
+              "outer+": [
+                201.9,
+                227.50988104458634,
+                38.82834373236755
+              ],
+              "outer-": [
+                201.9,
+                227.50988104458628,
+                38.82834373236755
+              ],
+              "inner+": [
+                201.90000000000003,
+                225.72938699235704,
+                38.82834373236756
+              ],
+              "inner-": [
+                201.9,
+                225.72938699235704,
+                38.82834373236755
+              ]
+            },
+            "135": {
+              "outer+": [
+                201.9,
+                227.5098810445864,
+                38.828343732367536
+              ],
+              "outer-": [
+                201.90000000000003,
+                227.50988104458634,
+                38.82834373236756
+              ],
+              "inner+": [
+                201.9,
+                225.729386992357,
+                38.828343732367536
+              ],
+              "inner-": [
+                201.9,
+                225.72938699235698,
+                38.82834373236757
+              ]
+            },
+            "225": {
+              "outer+": [
+                201.9,
+                227.50988104458634,
+                38.82834373236755
+              ],
+              "outer-": [
+                201.9,
+                227.50988104458634,
+                38.82834373236754
+              ],
+              "inner+": [
+                201.9,
+                225.729386992357,
+                38.82834373236755
+              ],
+              "inner-": [
+                201.90000000000003,
+                225.72938699235698,
+                38.82834373236755
+              ]
+            },
+            "315": {
+              "outer+": [
+                201.9,
+                227.50988104458628,
+                38.82834373236757
+              ],
+              "outer-": [
+                201.9,
+                227.50988104458634,
+                38.82834373236756
+              ],
+              "inner+": [
+                201.9,
+                225.72938699235698,
+                38.82834373236756
+              ],
+              "inner-": [
+                201.9,
+                225.72938699235698,
+                38.828343732367564
+              ]
+            }
+          },
+          "missing": [],
+          "flat_off_bridge": 0,
+          "n_sloped": 16,
+          "slope_min_deg": 38.828343732367536,
+          "gusset_void_max": 0.0,
+          "bridge_above_max": 0.0,
+          "bridge_below_void_max": 0.0,
+          "ok": true
+        }
+      }
+    },
+    {
+      "id": "C10",
+      "title": "minimum designed wall/feature >= printer.min_feature (1.2)",
+      "status": "WARN",
+      "measured": "min designed 1.20 (body.wall); min derived 0.97 (spigot ring outside the keyway (spigot_od/2 - keyway corner r))",
+      "detail": "designed: body.wall=1.2, body.spigot_wall=1.6, propulsion_module.cone_wall=1.2, propulsion_module.sleeve_wall=1.6, propulsion_module.web_t=1.6, pod.wall_tangential=4.7, pod.wall_radial=2, pod.floor_t=2, fin.t=2.4, vane.t=3, vane.shaft_d=5, vane_drive.fairing.wall=1.2, vane_drive.fairing.floor_t=1.2, vane_drive.fairing.top_t=1.2, vane_drive.fairing.outer_block=4.6, vane_drive.cover.t=1.2, coupler socket jaw ((flange_d - collar relief)/2)=2.4, coupler hub wall at the flat (set-screw thread)=3.4, servo_leads.fin_route.pipe.wall=1.2, intake_module.shelf_t=2.4, intake_module.bulkhead_t=1.2, intake_module.strut_w=18, intake_module.window_wall_t (band / strut thickness)=3, avionics_module.tray_t=2, avionics_module.rail_w=2, payload_module.bulkhead_t=2, payload_module.piston_t=2.4, payload_module.latch_arm_t=3, payload_module.latch_arm_w=6, payload_module.latch_lug_h=4, payload_module.latch_lug_w=10, nose.wall=1.2, nose.anchor_bar_w=8, nose.anchor_bar_h=4, launch_pad.plate_t=5, launch_pad.fin_locator_rib_w=3, launch_pad.fin_locator_rib_h=4, launch_pad.foot_t=5, spigot shoulder ring (=body.wall)=1.2, intake_module.wire_channel.wall=1.2, propulsion_module.liner_wall=1.6, propulsion_module.tab_screw.floor_t=1.2, propulsion_module.clock_keyways.pad_t=3, propulsion_module.clock_keyways.col_wall=1.2, propulsion_module.lead_passage.wall=1.2; intake band (v0.6.1): band thickness = strut thickness window_wall_t 3 (body.wall 1.2), strut_w 18 at body_r, strut inner face 17.10, shelf ledge past the band 5.00 mm; v0.6.2 window gussets: wedges standing on the ring below each window and joined to the struts, the full band thickness 3 deep everywhere (their thin edge is the bridge end, which lies on the ring: no free feature thinner than the band) - no new minimum feature; DERIVED BELOW MIN: spigot ring outside the keyway (spigot_od/2 - keyway corner r)=0.97",
+      "values": {
+        "designed": {
+          "body.wall": 1.2,
+          "body.spigot_wall": 1.6,
+          "propulsion_module.cone_wall": 1.2,
+          "propulsion_module.sleeve_wall": 1.6,
+          "propulsion_module.web_t": 1.6,
+          "pod.wall_tangential": 4.7,
+          "pod.wall_radial": 2.0,
+          "pod.floor_t": 2.0,
+          "fin.t": 2.4,
+          "vane.t": 3.0,
+          "vane.shaft_d": 5.0,
+          "vane_drive.fairing.wall": 1.2,
+          "vane_drive.fairing.floor_t": 1.2,
+          "vane_drive.fairing.top_t": 1.2,
+          "vane_drive.fairing.outer_block": 4.6,
+          "vane_drive.cover.t": 1.2,
+          "coupler socket jaw ((flange_d - collar relief)/2)": 2.4,
+          "coupler hub wall at the flat (set-screw thread)": 3.4,
+          "servo_leads.fin_route.pipe.wall": 1.2,
+          "intake_module.shelf_t": 2.4,
+          "intake_module.bulkhead_t": 1.2,
+          "intake_module.strut_w": 18.0,
+          "intake_module.window_wall_t (band / strut thickness)": 3.0,
+          "avionics_module.tray_t": 2.0,
+          "avionics_module.rail_w": 2.0,
+          "payload_module.bulkhead_t": 2.0,
+          "payload_module.piston_t": 2.4,
+          "payload_module.latch_arm_t": 3.0,
+          "payload_module.latch_arm_w": 6.0,
+          "payload_module.latch_lug_h": 4.0,
+          "payload_module.latch_lug_w": 10.0,
+          "nose.wall": 1.2,
+          "nose.anchor_bar_w": 8.0,
+          "nose.anchor_bar_h": 4.0,
+          "launch_pad.plate_t": 5.0,
+          "launch_pad.fin_locator_rib_w": 3.0,
+          "launch_pad.fin_locator_rib_h": 4.0,
+          "launch_pad.foot_t": 5.0,
+          "spigot shoulder ring (=body.wall)": 1.2,
+          "intake_module.wire_channel.wall": 1.2,
+          "propulsion_module.liner_wall": 1.6,
+          "propulsion_module.tab_screw.floor_t": 1.2,
+          "propulsion_module.clock_keyways.pad_t": 3.0,
+          "propulsion_module.clock_keyways.col_wall": 1.2,
+          "propulsion_module.lead_passage.wall": 1.2
+        },
+        "derived": {
+          "hinge boss wall (boss_od-bore_d)/2": 3.0,
+          "piston under recess (piston_t-recess_depth)": 1.4,
+          "pod wall outside ear hole (pod_w/2-(pitch/2+d/2))": 1.5999999999999996,
+          "pod wall inside ear hole ((pitch/2-d/2)-cavity_w/2)": 1.299999999999999,
+          "shaft D-flat remaining (shaft_d-d_flat_depth)": 4.0,
+          "spring seat boss wall beside bulkhead holes": 22.0,
+          "anchor bar wall beside tether eye ((bar_w-eye_d)/2)": 2.0,
+          "intake strut inner face (strut_w x r_band_in / body_r)": 17.1,
+          "intake shelf ledge past the band (r_band_in - shelf_id/2)": 5.0,
+          "fairing pocket -> duct (inner wall)": 6.100000000000001,
+          "fairing floor under the ear slot": 1.2,
+          "fairing lintel (service-side strip over the opening)": 1.2,
+          "servo cover screw inner screw -> pocket": 2.2499999999999973,
+          "servo cover screw inner screw -> duct": 2.250000000000007,
+          "servo cover screw outer screw -> pocket / outer face": 1.4999999999999998,
+          "servo cover screw tap end -> far side": 9.5,
+          "servo cover screw clear hole -> cover edge": 1.199999999999997,
+          "coupler hub wall around the D-bore ((hub_d - bore_d)/2)": 2.4,
+          "lead pipe fin 1: tunnel -> duct bore": 4.929491474572579,
+          "lead pipe fin 1: tunnel -> hinge bore": 20.549999999999997,
+          "lead pipe fin 1: tunnel -> inner cover-screw tap hole": 8.51518779192207,
+          "lead pipe fin 1: pipe top -> EDF shoulder": 12.0,
+          "lead pipe fin 2: tunnel -> duct bore": 4.929491474572579,
+          "lead pipe fin 2: tunnel -> hinge bore": 20.549999999999997,
+          "lead pipe fin 2: tunnel -> inner cover-screw tap hole": 8.51518779192207,
+          "lead pipe fin 2: pipe top -> EDF shoulder": 12.0,
+          "lead pipe fin 3: tunnel -> duct bore": 4.929491474572579,
+          "lead pipe fin 3: tunnel -> hinge bore": 20.549999999999997,
+          "lead pipe fin 3: tunnel -> inner cover-screw tap hole": 8.51518779192207,
+          "lead pipe fin 3: pipe top -> EDF shoulder": 12.0,
+          "lead pipe fin 4: tunnel -> duct bore": 4.929491474572579,
+          "lead pipe fin 4: tunnel -> hinge bore": 20.549999999999997,
+          "lead pipe fin 4: tunnel -> inner cover-screw tap hole": 8.51518779192207,
+          "lead pipe fin 4: pipe top -> EDF shoulder": 12.0,
+          "motor-lead groove tap hole -> groove": 1.1999999999999993,
+          "motor-lead groove tap hole -> pad outer face": 1.2,
+          "motor-lead groove tap end -> skin": 3.5500000000000043,
+          "motor-lead groove side wall": 4.0,
+          "motor-lead groove roof land": 1.2,
+          "motor-lead groove clear hole -> cover edge": 1.1999999999999988,
+          "lip-pocket wall beside the slit, inside the gate ((gate_w - slit_w)/2)": 4.0,
+          "tie anchor wall inside its tunnel (inner face)": 1.2,
+          "tie anchor tunnel -> strut face": 1.1999999999999957,
+          "tie anchor wall above / below its tunnel ((h - tunnel_h)/2)": 1.2000000000000002,
+          "coupler socket jaw beside the arm slot (flange_d/2 - slot half width)": 3.225,
+          "coupler socket jaw at the horn arm tips": 1.3042156108742273,
+          "sleeve tooth between two keyways (min, at the bore)": 6.4185374362276,
+          "spigot ring outside the keyway (spigot_od/2 - keyway corner r)": 0.9652882370354803,
+          "lip-pocket wall beside the wire channel (wire_ch_r0 - lip_pocket_id/2)": 1.2000000000000028,
+          "entry slot -> web (min over columns)": 19.108589654473757,
+          "deck notch -> joint hole (min over columns)": 19.947575352782884,
+          "deck (skirt seat) outside the servo-lead notch corners": 1.3548808510034718,
+          "servo-lead rebate floor over the joint holes": 1.25,
+          "spigot ring inside the servo-lead rebate": 5.449999999999996,
+          "lip-pocket wall beside the servo channel (sl_ch_r0 - lip_pocket_id/2)": 1.2000000000000028,
+          "servo bulge outer wall (sl_bulge_r_out - sl_ch_r1)": 1.2000000000000028,
+          "servo bulge floor / roof": 1.1999999999999886
+        },
+        "min_feature": 1.2
+      }
+    },
+    {
+      "id": "C11",
+      "title": "nose cone / chute pack",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - no nose cone or chute in the VTOL configuration (top cap: C30)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C12",
+      "title": "thrust-to-weight at nominal thrust (>=1.30 PASS, 1.15-1.30 WARN)",
+      "status": "PASS",
+      "measured": "T/W = 2.024 (30.3 N / 1527 g)",
+      "detail": "printed 566 g of 1527 g",
+      "values": {
+        "tw": 2.0238409512124327,
+        "mass_g": 1526.7998199902308
+      }
+    },
+    {
+      "id": "C13",
+      "title": "static stability margin",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - hover vehicle: no ballistic coast; the CG / tip-over / vane authority are in C32 and the sizing report",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C14",
+      "title": "every placeholder lies inside its module zone and clears the structure",
+      "status": "PASS",
+      "measured": "max outside-zone 0.000 mm^3 (), max  x structure 0.000 mm^3 ()",
+      "detail": "zones: bore cylinder of the module (EDF: body_r over housing (tabs: motor)..lip; servos/arms/pushrods: footprint radius over the module; CanSat: payload envelope; chute: nose inner void); edf_unit: out 0.00,  x struct 0.00; buffer_pack: out 0.00,  x struct 0.00; esc: out 0.00,  x struct 0.00; misc_electronics: out 0.00,  x struct 0.00; carrier: out 0.00,  x struct 0.00; gps: out 0.00,  x struct 0.00; gps_ground_plane: out 0.00,  x struct 0.00; servo_vane_1: out 0.00,  x struct 0.00; servo_horn_1: out 0.00,  x struct 0.00; servo_vane_2: out 0.00,  x struct 0.00; servo_horn_2: out 0.00,  x struct 0.00; servo_vane_3: out 0.00,  x struct 0.00; servo_horn_3: out 0.00,  x struct 0.00; servo_vane_4: out 0.00,  x struct 0.00; servo_horn_4: out 0.00,  x struct 0.00; hinge_bushing_1: out 0.00,  x struct 0.00; hinge_bushing_2: out 0.00,  x struct 0.00; hinge_bushing_3: out 0.00,  x struct 0.00; hinge_bushing_4: out 0.00,  x struct 0.00; tether_cap_bank: out 0.00,  x struct 0.00; tether_bus_clamp: out 0.00,  x struct 0.00; tether_xt90: out 0.00,  x struct 0.00; hybrid_diode_board: out 0.00,  x struct 0.00; tether_eyebolt: out 0.00,  x struct 0.00; tether_load_washer: out 0.00,  x struct 0.00; tether_nut: out 0.00,  x struct 0.00",
+      "values": {
+        "worst_outside": [
+          0.0,
+          ""
+        ],
+        "worst_intersect": [
+          0.0,
+          ""
+        ]
+      }
+    },
+    {
+      "id": "C15",
+      "title": "release latch",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - no payload release in the VTOL configuration",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C16",
+      "title": "D2 probes along every joint screw axis pass both the spigot and the outer tube (v0.5d: propulsion holes blind)",
+      "status": "PASS",
+      "measured": "max probe x wall 0.000 mm^3 () over 12 probes; blind holes (propulsion_module): floor r 49.75..51.60 (bore -> hole bottom, depth 7 from the spigot OD) filled min 1.0000 >= 0.95",
+      "detail": "propulsion_module/intake_module th45 z174.5: 0.000/0.000; propulsion_module/intake_module th135 z174.5: 0.000/0.000; propulsion_module/intake_module th225 z174.5: 0.000/0.000; propulsion_module/intake_module th315 z174.5: 0.000/0.000; intake_module/avionics_module th45 z331.6: 0.000/0.000; intake_module/avionics_module th135 z331.6: 0.000/0.000; intake_module/avionics_module th225 z331.6: 0.000/0.000; intake_module/avionics_module th315 z331.6: 0.000/0.000; avionics_module/top_cap th45 z466.6: 0.000/0.000; avionics_module/top_cap th135 z466.6: 0.000/0.000; avionics_module/top_cap th225 z466.6: 0.000/0.000; avionics_module/top_cap th315 z466.6: 0.000/0.000; blind-hole floor fill: propulsion_module th45 1.0000; propulsion_module th135 1.0000; propulsion_module th225 1.0000; propulsion_module th315 1.0000; blind-hole probes start 0.2 mm past the hole bottom",
+      "values": {
+        "worst": [
+          0.0,
+          ""
+        ],
+        "blind_floor_fill_min": 1.0
+      }
+    },
+    {
+      "id": "C17",
+      "title": "all presets build without exceptions",
+      "status": "PASS",
+      "measured": "BUDGET_90mm_6S: ok (53 parts); KAIST_90mm_12S: ok (48 parts, 3.6 s)",
+      "detail": "",
+      "values": {
+        "BUDGET_90mm_6S": "ok (53 parts)",
+        "KAIST_90mm_12S": "ok (48 parts, 3.6 s)"
+      }
+    },
+    {
+      "id": "C18",
+      "title": "(clock mount) EDF tabs slide down EVERY keyway, seat without interference, floor + floor pad carry the tab (pad bending factor >= 5 PASS, 3-5 WARN, < 3 FAIL, E)",
+      "status": "PASS",
+      "measured": "25 keyways: tab sweep (floor -> out of the top) x module max 0.000, seated tab x (module|intake) 0.000 mm^3; floor fill under the tab min 1.0000 (24.75 deg), sleeve teeth fill min 1.0000; floor pad (E, 1 tab, point load 72.4 N at 20 g) bending factor 8.28 (PASS >= 5, WARN >= 3; uniform 12.42, 2 tabs 16.57 / 24.85)",
+      "detail": "clock mount: keyways kw 4 (tabs <= 3.6 thick) r 49.25..57.60, floor z 123.65 (tab bottom 126.05 - floor_drop 2.4: the foam pad), pad 3 x 6.4 over span 6.79 mm (sleeve -> skin), 45 deg corbel; keyways at 24.75, 37.75, 50.75, 63.50, 76.50, 89.50, 102.50, 115.50, 128.50, 141.50, 153.50, 166.50, 179.50, 191.75, 204.75, 217.75, 230.75, 243.50, 256.50, 269.50, 282.50, 295.50, 308.50, 321.50, 333.50",
+      "values": {
+        "sweep": 0.0,
+        "seat": 0.0,
+        "floor_fill": [
+          [
+            24.75,
+            1.0
+          ],
+          [
+            37.75,
+            1.0
+          ],
+          [
+            50.75,
+            1.0
+          ],
+          [
+            63.5,
+            1.0
+          ],
+          [
+            76.5,
+            1.0
+          ],
+          [
+            89.5,
+            1.0
+          ],
+          [
+            102.5,
+            1.0
+          ],
+          [
+            115.5,
+            1.0
+          ],
+          [
+            128.5,
+            1.0
+          ],
+          [
+            141.5,
+            1.0
+          ],
+          [
+            153.5,
+            1.0
+          ],
+          [
+            166.5,
+            1.0
+          ],
+          [
+            179.5,
+            1.0
+          ],
+          [
+            191.75,
+            1.0
+          ],
+          [
+            204.75,
+            1.0
+          ],
+          [
+            217.75,
+            1.0
+          ],
+          [
+            230.75,
+            1.0
+          ],
+          [
+            243.5,
+            1.0
+          ],
+          [
+            256.5,
+            1.0
+          ],
+          [
+            269.5,
+            1.0
+          ],
+          [
+            282.5,
+            1.0
+          ],
+          [
+            295.5,
+            1.0
+          ],
+          [
+            308.5,
+            1.0
+          ],
+          [
+            321.5,
+            1.0
+          ],
+          [
+            333.5,
+            1.0
+          ]
+        ],
+        "teeth_fill": [
+          [
+            24.75,
+            1.0
+          ],
+          [
+            24.75,
+            1.0
+          ],
+          [
+            37.75,
+            1.0
+          ],
+          [
+            37.75,
+            1.0
+          ],
+          [
+            50.75,
+            1.0
+          ],
+          [
+            50.75,
+            1.0
+          ],
+          [
+            63.5,
+            1.0
+          ],
+          [
+            63.5,
+            1.0
+          ],
+          [
+            76.5,
+            1.0
+          ],
+          [
+            76.5,
+            1.0
+          ],
+          [
+            89.5,
+            1.0
+          ],
+          [
+            89.5,
+            1.0
+          ],
+          [
+            102.5,
+            1.0
+          ],
+          [
+            102.5,
+            1.0
+          ],
+          [
+            115.5,
+            1.0
+          ],
+          [
+            115.5,
+            1.0
+          ],
+          [
+            128.5,
+            1.0
+          ],
+          [
+            128.5,
+            1.0
+          ],
+          [
+            141.5,
+            1.0
+          ],
+          [
+            141.5,
+            1.0
+          ],
+          [
+            153.5,
+            1.0
+          ],
+          [
+            153.5,
+            1.0
+          ],
+          [
+            166.5,
+            1.0
+          ],
+          [
+            166.5,
+            1.0
+          ],
+          [
+            179.5,
+            1.0
+          ],
+          [
+            179.5,
+            1.0
+          ],
+          [
+            191.75,
+            1.0
+          ],
+          [
+            191.75,
+            1.0
+          ],
+          [
+            204.75,
+            1.0
+          ],
+          [
+            204.75,
+            1.0
+          ],
+          [
+            217.75,
+            1.0
+          ],
+          [
+            217.75,
+            1.0
+          ],
+          [
+            230.75,
+            1.0
+          ],
+          [
+            230.75,
+            1.0
+          ],
+          [
+            243.5,
+            1.0
+          ],
+          [
+            243.5,
+            1.0
+          ],
+          [
+            256.5,
+            1.0
+          ],
+          [
+            256.5,
+            1.0
+          ],
+          [
+            269.5,
+            1.0
+          ],
+          [
+            269.5,
+            1.0
+          ],
+          [
+            282.5,
+            1.0
+          ],
+          [
+            282.5,
+            1.0
+          ],
+          [
+            295.5,
+            1.0
+          ],
+          [
+            295.5,
+            1.0
+          ],
+          [
+            308.5,
+            1.0
+          ],
+          [
+            308.5,
+            1.0
+          ],
+          [
+            321.5,
+            1.0
+          ],
+          [
+            321.5,
+            1.0
+          ],
+          [
+            333.5,
+            1.0
+          ],
+          [
+            333.5,
+            1.0
+          ]
+        ],
+        "pad": {
+          "touchdown_g": 20.0,
+          "F_N": 72.373077,
+          "pad_w_mm": 6.4,
+          "pad_t_mm": 3.0,
+          "span_mm": 6.790221402214016,
+          "sb_mpa": 53.0,
+          "1tab_point_factor": 8.282779827184713,
+          "1tab_uniform_factor": 12.42416974077707,
+          "2tab_point_factor": 16.565559654369427,
+          "2tab_uniform_factor": 24.84833948155414,
+          "factor_status": 8.282779827184713
+        }
+      }
+    },
+    {
+      "id": "C19",
+      "title": "(tabs) tab screws: clear hole, open head tunnel to the outside, tap hole with material, axis through the tab slot",
+      "status": "N/A",
+      "measured": "not applicable: propulsion_module.tab_mount 'clock_keyways' - no tab screws; the EDF is held axially by the intake shelf / foam pads (C35) and turned by the keyway walls (C35 bearing)",
+      "detail": "",
+      "values": {
+        "applicable": false,
+        "reason": "no tab screws, see C35"
+      }
+    },
+    {
+      "id": "C20",
+      "title": "(tabs, v0.9) three 12 AWG motor leads: slot -> open groove past the lip (cover) -> gate -> bulkhead hole; groove open, walls / roof solid, cover seated and screwed",
+      "status": "PASS",
+      "measured": "3 leads (O4.3 + 0.4) x (prop/intake/edf/cover) max 0.000 mm^3; groove open (cover off) x intake 0.0000 mm^3; side walls / roof missing max 0.000 mm^3; cover x intake 0.000 mm^3, gap 0.000 mm, covers the opening True; screws tap clear max 0.0000, material min 1.000, cover holes clear max 0.0000; skin stray 0.000 mm^3; leg E -> band 2.48 mm",
+      "detail": "groove 22 x 11 (r 57.95..68.95), Z 167.0..200.5, gate 6 mm over the lip, bulkhead hole r 41..53.2 x 22; sections (have vs need, mm): lead passage (fan, clock mount): widest bundle / lead stack, any orientation 14.4x26.5 vs 13.8x13.8; intake groove: leads side by side 22.0x11.0 vs 13.7x5.1; gate over the lip: leads side by side (laid in) 14.0x6.0 vs 13.7x5.1; intake groove, cover on: bullet + leads 22.0x11.0 vs 18.6x10.0; intake interior (straight up at the hole radius): bullet + leads 22.0x12.2 vs 18.6x10.0; bulkhead hole: bullet + leads 20.0x12.2 vs 18.6x10.0; per leg x (prop/intake/edf/cover): A 0.000/0.000/0.000/0.000; B 0.000/0.000/0.000/0.000; C 0.000/0.000/0.000/0.000; D 0.000/0.000/0.000/0.000; E 0.000/0.000/0.000/0.000",
+      "values": {
+        "per_leg": {
+          "A": {
+            "prop": 0.0,
+            "intake": 0.0,
+            "edf": 0.0,
+            "cover": 0.0
+          },
+          "B": {
+            "prop": 0.0,
+            "intake": 0.0,
+            "edf": 0.0,
+            "cover": 0.0
+          },
+          "C": {
+            "prop": 0.0,
+            "intake": 0.0,
+            "edf": 0.0,
+            "cover": 0.0
+          },
+          "D": {
+            "prop": 0.0,
+            "intake": 0.0,
+            "edf": 0.0,
+            "cover": 0.0
+          },
+          "E": {
+            "prop": 0.0,
+            "intake": 0.0,
+            "edf": 0.0,
+            "cover": 0.0
+          }
+        },
+        "open": 0.0,
+        "walls_missing": {
+          "side wall +": 0.0,
+          "side wall -": 0.0,
+          "roof wedge": 0.0
+        },
+        "seat": {
+          "cover x intake": 0.0,
+          "cover gap": 0.0
+        },
+        "covers_opening": true,
+        "screws": [
+          {
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0
+          },
+          {
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0
+          },
+          {
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0
+          },
+          {
+            "tap_clear": 0.0,
+            "tap_material": 1.0,
+            "hole_clear": 0.0
+          }
+        ],
+        "skin_stray": 0.0,
+        "leg_e_band_gap_mm": 2.477643628300214,
+        "sections": {
+          "lead passage (fan, clock mount): widest bundle / lead stack, any orientation": {
+            "have_w": 14.4,
+            "have_h": 26.5,
+            "need_w": 13.8,
+            "need_h": 13.8,
+            "margin_w": 0.5999999999999996,
+            "margin_h": 12.7
+          },
+          "intake groove: leads side by side": {
+            "have_w": 22.0,
+            "have_h": 11.0,
+            "need_w": 13.7,
+            "need_h": 5.1,
+            "margin_w": 8.3,
+            "margin_h": 5.9
+          },
+          "gate over the lip: leads side by side (laid in)": {
+            "have_w": 14.0,
+            "have_h": 6.0,
+            "need_w": 13.7,
+            "need_h": 5.1,
+            "margin_w": 0.3000000000000007,
+            "margin_h": 0.9000000000000004
+          },
+          "intake groove, cover on: bullet + leads": {
+            "have_w": 22.0,
+            "have_h": 11.0,
+            "need_w": 18.6,
+            "need_h": 10.0,
+            "margin_w": 3.3999999999999986,
+            "margin_h": 1.0
+          },
+          "intake interior (straight up at the hole radius): bullet + leads": {
+            "have_w": 22.0,
+            "have_h": 12.200000000000003,
+            "need_w": 18.6,
+            "need_h": 10.0,
+            "margin_w": 3.3999999999999986,
+            "margin_h": 2.200000000000003
+          },
+          "bulkhead hole: bullet + leads": {
+            "have_w": 20.0,
+            "have_h": 12.200000000000003,
+            "need_w": 18.6,
+            "need_h": 10.0,
+            "margin_w": 1.3999999999999986,
+            "margin_h": 2.200000000000003
+          }
+        }
+      }
+    },
+    {
+      "id": "C21",
+      "title": "(clock mount) outer skin on the solid: every keyway (centre/corners) -> outer surface >= 0.8 mm, skin over the keyways intact, blister walls >= lead_passage.wall",
+      "status": "PASS",
+      "measured": "25 keyways -> outer surface min 0.965 mm >= 0.8; skin void over the keyways max 0.000 mm^3; blister walls min 1.200 mm >= 1.2 (floor u62.0 (from the fan floor down))",
+      "detail": "keyway Z 123.65..177.0; per keyway min: 24.75: 0.965; 37.75: 0.965; 50.75: 0.965; 63.50: 0.965; 76.50: 0.965; 89.50: 0.965; 102.50: 0.965; 115.50: 0.965; 128.50: 0.965; 141.50: 0.965; 153.50: 0.965; 166.50: 0.965; 179.50: 0.965; 191.75: 0.965; 204.75: 0.965; 217.75: 0.965; 230.75: 0.965; 243.50: 0.965; 256.50: 0.965; 269.50: 0.965; 282.50: 0.965; 295.50: 0.965; 308.50: 0.965; 321.50: 0.965; 333.50: 0.965; blister walls: side -1 u67.8 z101.8 1.200; side -1 u67.8 z131.8 1.200; side -1 u67.8 z161.8 1.200; side -1 u71.5 z101.8 1.200; side -1 u71.5 z131.8 1.200; side -1 u71.5 z161.8 1.200; side +1 u67.8 z101.8 1.200; side +1 u67.8 z131.8 1.200; side +1 u67.8 z161.8 1.200; side +1 u71.5 z101.8 1.200; side +1 u71.5 z131.8 1.200; side +1 u71.5 z161.8 1.200; outer z101.8 1.316; outer z131.8 1.316; outer z161.8 1.316; floor u62.0 (from the fan floor down) 1.200; floor u67.8 (from the fan floor down) 1.200; floor u73.5 (from the fan floor down) 1.200",
+      "values": {
+        "keyway_min_mm": 0.9652882370354732,
+        "skin_void_mm3": 0.0,
+        "blister_walls_mm": {
+          "side -1 u67.8 z101.8": 1.2000000000000064,
+          "side -1 u67.8 z131.8": 1.2000000000000064,
+          "side -1 u67.8 z161.8": 1.2000000000000064,
+          "side -1 u71.5 z101.8": 1.2000000000000064,
+          "side -1 u71.5 z131.8": 1.2000000000000064,
+          "side -1 u71.5 z161.8": 1.2000000000000064,
+          "side +1 u67.8 z101.8": 1.2000000000000064,
+          "side +1 u67.8 z131.8": 1.2000000000000064,
+          "side +1 u67.8 z161.8": 1.2000000000000064,
+          "side +1 u71.5 z101.8": 1.200000000000009,
+          "side +1 u71.5 z131.8": 1.200000000000009,
+          "side +1 u71.5 z161.8": 1.200000000000009,
+          "outer z101.8": 1.3160976785518415,
+          "outer z131.8": 1.3160976785518415,
+          "outer z161.8": 1.3160976785518415,
+          "floor u62.0 (from the fan floor down)": 1.2000000000000028,
+          "floor u67.8 (from the fan floor down)": 1.2000000000000028,
+          "floor u73.5 (from the fan floor down)": 1.2000000000000028
+        }
+      }
+    },
+    {
+      "id": "C22",
+      "title": "COM board",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - no COM board: the carrier PCB (C25) holds the COM ATmega128A",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C23",
+      "title": "(tabs, v0.9 direct drive) vane-servo leads: connector bay in the fairing -> pocket -> closed lead pipe on the duct -> entry slot -> straight column -> deck notch -> rebate -> servo channel past the lip -> shelf notch -> bulkhead hole; proxies clear, pipe wall / bulge closed, deck seat and sleeve intact",
+      "status": "PASS",
+      "measured": "max proxy x (prop/intake/edf; outside run also linkage) 0.000 mm^3 (); bundle legs R- 0.000/R+ 0.000/B 0.000/U 0.000/D 0.000/E 0.000; bulge missing max 0.000, deck seat void 0.000, sleeve void 0.000, lead-pipe wall void 0.000 mm^3 (< 0.5); bundle leg E -> band 2.58 mm (>= 0.4); leads 26.4 g at z 204.1",
+      "detail": "ribbon 3.6 x 1.3 mm (ASSUMED), bundle 2 x 2 = 7.2 x 2.6, proxies 0.2 mm off the walls; columns -20, 70, 160, 250 deg; entry slot r 52.55..54.95 open into the annulus above Z 109.05; lead pipe O7.2 (tunnel O4.8) from the pocket's inner top corner to the slot bottom; deck notch r 55.60..58.60; rebate r 55.20.., Z 177.0.., theta 67.63..342.37; channel r 57.95..61.55 at 180 deg, Z 174.25..200.50; bulkhead hole r 50..56; per lead (W window, O outside, X crossing, S slot, C column, N notch) mm^3: lead 1 (fin 0, column -20 deg): K 0.000/P 0.000/T 0.000/S 0.000/C 0.000/N 0.000; lead 2 (fin 90, column 70 deg): K 0.000/P 0.000/T 0.000/S 0.000/C 0.000/N 0.000; lead 3 (fin 180, column 160 deg): K 0.000/P 0.000/T 0.000/S 0.000/C 0.000/N 0.000; lead 4 (fin 270, column 250 deg): K 0.000/P 0.000/T 0.000/S 0.000/C 0.000/N 0.000; bulge closure missing mm^3: outer wall 0.000, side walls 0.000, floor wedge 0.000, roof 0.000; route length per lead (to the FCU, bay legs estimated) 550, 501, 411, 461 mm, extension 580, 530, 441, 491 mm",
+      "values": {
+        "worst": [
+          0.0,
+          ""
+        ],
+        "bundle": {
+          "R-": 0.0,
+          "R+": 0.0,
+          "B": 0.0,
+          "U": 0.0,
+          "D": 0.0,
+          "E": 0.0
+        },
+        "bulge_holes": {
+          "outer wall": 0.0,
+          "side walls": 0.0,
+          "floor wedge": 0.0,
+          "roof": 0.0
+        },
+        "deck_seat_void": 0.0,
+        "sleeve_void": 0.0,
+        "lead_mass_g": 26.4192179017237,
+        "lead_com_mm": [
+          -19.327337339838223,
+          -1.4648148490424138,
+          204.1295045395497
+        ],
+        "leg_e_band_gap_mm": 2.580793831589197,
+        "route_len_mm": [
+          550.4960293231378,
+          500.8420423373901,
+          411.4648657630443,
+          461.118852748792
+        ],
+        "extension_len_mm": [
+          579.9960293231378,
+          530.3420423373901,
+          440.9648657630443,
+          490.618852748792
+        ]
+      }
+    },
+    {
+      "id": "C24",
+      "title": "radio / logger box",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - the LoRa module and OpenLog sit on the carrier PCB (C25)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C25",
+      "title": "(v0.9 CAD-2) carrier PCB on the intake bulkhead (the FCU rules): inside the spigot bore, clear of tray / stops / rails / ESC / misc / rising lead bundles, seated on the foam tape, lead holes uncovered, a cable-tie pair of vent holes open",
+      "status": "PASS",
+      "measured": "clearance avionics_tray 2.00, buffer_pack 4.00, esc 4.00, misc_electronics 93.00, rails + tray stop +y 16.96, rails + tray stop -y 16.96, motor-lead bundle (C20 leg E) 6.60, servo-lead bundle (C23 leg E) 13.70 (>= 2); avionics_module 7.14, intake spigot 5.34 (>= 1), radial to spigot ID 5.34; seat: fcu x intake 0.000 mm^3, bulkhead top under the board z 324.100 (Layout 324.100), foam gap 3.000 (foam_t 3), bulkhead under the footprint 0.9409 solid (>= 0.5; Layout 0.9409); lead-hole columns motor-lead hole 0.0000, servo-lead hole 0.0000 mm^3; vent holes reachable 90, 270 deg, tie runs across the board 90/270; cable hole covered by the board",
+      "detail": "board x -38.00..38.00 y -35.00..35.00 z 327.10..342.10 (20 g) on 3 mm foam on the intake bulkhead (top z 324.10); rising bundles = C20 / C23 leg E footprints from the bulkhead up to the tray bottom z 344.10; probes inset 0.05 mm; vent holes Ø8 at r 40: 90 deg x intake 0.0000 x fcu 0.0000; 270 deg x intake 0.0000 x fcu 0.0000; cable hole Ø20: board over it 4634.3 mm^3, open through the bulkhead 0.0000 mm^3 of material; Layout box clearances: intake spigot bore (radial) 5.34, avionics_tray 2.00, esc 4.00, misc_electronics 93.00, buffer_pack 4.00, tether_cap_bank 68.00, tether_bus_clamp 8.12, tether_xt90 70.00, hybrid_diode_board 8.00, rail x16.8 y+1 16.96, rail x12.4 y+1 16.96, rail x16.8 y-1 16.96, rail x12.4 y-1 16.96, tray stop +y 16.96, tray stop -y 16.96, motor-lead hole (plan) 3.00, servo-lead hole (plan) 12.00, vent hole 90 deg (plan) 1.00, vent hole 270 deg (plan) 1.00, joint screw room in the spigot bore (radial) 7.50",
+      "values": {
+        "clearance": {
+          "avionics_tray": 2.0,
+          "buffer_pack": 4.0,
+          "esc": 4.0,
+          "misc_electronics": 93.0,
+          "rails + tray stop +y": 16.95858144300997,
+          "rails + tray stop -y": 16.95858144300997,
+          "motor-lead bundle (C20 leg E)": 6.600000000000001,
+          "servo-lead bundle (C23 leg E)": 13.700000000000003
+        },
+        "avionics_module": 7.137634587642033,
+        "intake_spigot": 5.3376345876420315,
+        "bore_radial": 5.337634587642036,
+        "seat_volume": 0.0,
+        "seat_z": 324.09999999999997,
+        "foam_gap": 3.0,
+        "seat_fill": 0.94094750651147,
+        "lead_hole_columns": {
+          "motor-lead hole": 0.0,
+          "servo-lead hole": 0.0
+        },
+        "vent_holes": {
+          "90": {
+            "intake": 0.0,
+            "fcu": 0.0
+          },
+          "270": {
+            "intake": 0.0,
+            "fcu": 0.0
+          }
+        },
+        "vent_reachable": [
+          90.0,
+          270.0
+        ],
+        "tie_pairs": [
+          [
+            90.0,
+            270.0
+          ]
+        ],
+        "cable_hole_covered": true,
+        "min_clear": 2.0
+      }
+    },
+    {
+      "id": "C26",
+      "title": "GPS pod",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - no GPS pod: the GPS sits on the top cap (C30)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C27",
+      "title": "GNS board",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - the GNS ATmega128A is on the carrier PCB (C25)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C28",
+      "title": "(v0.9 direct drive) coupler alignment and hinge moment: servo axis on the hinge axis, servo floats >= print tolerance, coupler clears the fairing at 0/+-max deflection, D-bore clears the shaft, shaft engagement, hinge moment << servo torque; (fix round) set-screw axial retention, horn socket, foam pad, hinge bushing",
+      "status": "PASS",
+      "measured": "axis offset 0.0000 mm (< 0.01); float 0.3 >= tolerance 0.2; coupler -> module min gap 0.300 mm (coupler_1 d=+0 x propulsion_module); coupler x shaft 0.000 mm^3; engagement 6.50 of 8.0 mm; hinge moment 0.119 kgf cm vs servo 1.8 kgf cm (x15.2, >= 2); retention (set screw): inward stop 0.3 mm (< 3.25 = half the engagement; stop found True), outward free 2.00 mm (vane root -> duct wall), coupler / shaft x horn at the outward stop 0.000 mm^3, horn arms engaged 1.80 of 1.8 mm at both stops; foam 3 mm compressed 0.40..0.50 (limits 0.15..0.5); bushing O6/5.1 in a O6 bore, tilt 0.82 deg; set-screw thread 3.40 mm; lost motion est. 0.65 deg (socket) + 1 deg gear (ASSUMED) p-p",
+      "detail": "worst vane side load 2.95 N (thrust_peak 37.2 N, exhaust q 3663 Pa, 77.3 m/s, d_cmd 20 deg); CP offset 0.1 chord and bearing mu 0.3 ASSUMED",
+      "values": {
+        "axis_offset": 7.814491675534345e-15,
+        "coupler_gap": 0.29999999999999716,
+        "coupler_shaft": 0.0,
+        "engagement": 6.5,
+        "hinge_moment_kgcm": 0.11865623282634775,
+        "servo_torque_kgcm": 1.8,
+        "margin": 15.1698731463545,
+        "inward_stop_mm": 0.29999999999999716,
+        "inward_stop_found": true,
+        "outward_free_mm": 2.00390625,
+        "horn_x_at_outward_stop": 0.0,
+        "arm_engagement_mm": [
+          1.7999999999999972,
+          1.7999999999999972
+        ],
+        "foam_compression": [
+          0.39999999999999997,
+          0.5
+        ],
+        "bushing_tilt_deg": 0.8184554616886115,
+        "set_screw_thread_mm": 3.4,
+        "deadband_pp_deg": {
+          "socket": 0.6510813973185968,
+          "gear_backlash_ASSUMED": 1.0,
+          "total": 1.6510813973185967
+        }
+      }
+    },
+    {
+      "id": "C29",
+      "title": "(v0.9) 5.5 mm bullets single file: straight up through the intake + bulkhead hole, up the groove with the cover on, joint zone in the avionics bay; (fix round) the leads move interior -> groove through the lip-pocket slit, plenum leads tied off the EDF throat; (2026-10-29 photo round) leads from the motor's front ring behind a stator vane, under the housing rim, up the lead notch",
+      "status": "WARN",
+      "measured": "straight up through the intake x intake max 0.0000 mm^3; groove (cover on) max 0.0000 mm^3; joint zone x (avionics / intake) 0.000 mm^3, gap to the avionics module 2.88 mm (>= 1), min gap to the bay 4.00 mm (carrier, >= 2); lip slit: bare-lead probe x intake 0.0000 mm^3, lip-pocket wall ring 98.3 % material (< 100 %: open); plenum: leads 3.00 mm outside the EDF throat (>= 3), 3 tie anchors, max free span 31.4 mm (<= 40), tunnels x intake 0.0000 mm^3, anchor wall fill 1.000; CLOCK MOUNT lead passage (every generosity-box corner x e in {-8.04, +0.00, +8.04} deg, c29_clock_grid_13e119834312a36b.json): 864 grown envelopes x module max 0.0000 mm^3 (S35 ribbon12x5_turned od4.3 R15 gap2 inset0 early1 e+8.04), x intake max 0.0000; 432 drop-in sweeps x module max 0.0000; 1008 raw envelope x EDF tests max 0.0000 (TE inset 0 / 3, hub ends at the TE - A; protrusion 30 / 36; nominal + 3 hover seats); negative controls (must collide) e + 6 deg 3590, wall + 3 mm 725, drop-in e + 6 4899 mm^3; hovering tab -> leads min 0.55 mm (>= 0.5); clearances vane_1 d=+0 51.0, vane_1 d=+25 51.7, vane_1 d=-25 51.7, vane_coupler_1 54.6, servo_horn_1 57.1, servo_vane_1 40.1, fin_1 plate 7.6, intake module 4.0 mm; jet free span without the RTV bond 27.4 mm (<= 40 ASSUMED); exit azimuth not an input (coverage C34); WARN: bond gap TE inset 3 + rim gap 2 = 5 mm > bond_gap_max_ASSUMED 3.6 (the optional RTV bond of the bundle to the stator TE needs a thicker RTV bead or a shim there; the limit is not raised)",
+      "detail": "bullet O8 + 2 x 1 = O10 x 22 (ASSUMED) beside 2 leads O4.3; pass (i) at r 47.10 Z 145.0..346.1; pass (ii) at r 63.45 Z 167.0..194.5; joint zone 42.0..54.5 x -12.5..12.5 x 326.1..370.1; lead route 288 mm + slack -> 348 mm per lead, 52.0 g (ASSUMED g/m and bullets); gaps avionics_tray 26.40, buffer_pack 28.40, esc 17.40, misc_electronics 66.58, carrier 4.00",
+      "values": {
+        "interior_pass": {
+          "bullet": 0.0,
+          "lead 1": 0.0,
+          "lead 2": 0.0
+        },
+        "groove_pass": {
+          "bullet x prop": 0.0,
+          "bullet x intake": 0.0,
+          "bullet x edf": 0.0,
+          "bullet x cover": 0.0,
+          "lead 1 x prop": 0.0,
+          "lead 1 x intake": 0.0,
+          "lead 1 x edf": 0.0,
+          "lead 1 x cover": 0.0,
+          "lead 2 x prop": 0.0,
+          "lead 2 x intake": 0.0,
+          "lead 2 x edf": 0.0,
+          "lead 2 x cover": 0.0
+        },
+        "zone_x_module": 0.0,
+        "zone_gap_module": 2.8848857642229215,
+        "zone_gaps": {
+          "avionics_tray": 26.4,
+          "buffer_pack": 28.4,
+          "esc": 17.4,
+          "misc_electronics": 66.5759716414263,
+          "carrier": 4.0
+        },
+        "route_mm": 287.7234071459562,
+        "lead_mm": 347.7234071459562,
+        "mass_g": 52.04729819320114,
+        "assembly_sequence": {
+          "slit x intake": 0.0,
+          "wall ring fraction": 0.9833414867201746
+        },
+        "plenum": {
+          "throat clear mm": 3.000000000000007,
+          "max free span mm": 31.350000000000023,
+          "tunnels open (max x intake)": 0.0,
+          "anchor inner wall fill (min)": 1.0,
+          "anchors": 3
+        },
+        "free_spans": [
+          31.349999999999994,
+          31.349999999999994,
+          31.349999999999966,
+          31.350000000000023
+        ],
+        "anchor_z": [
+          228.85,
+          260.2,
+          291.54999999999995
+        ],
+        "lower_route": {},
+        "clock_grid": {
+          "fingerprint": "13e119834312a36b5b71c4d7f1f6613ac674172c1bb33bda48fe96ac83ee7e36",
+          "E_design_deg": 8.04001677203659,
+          "e_values_deg": [
+            -8.04001677203659,
+            0.0,
+            8.04001677203659
+          ],
+          "module_envelopes": 864,
+          "dropin_sweeps": 432,
+          "grown_x_module_max": [
+            0.0,
+            "S35 ribbon12x5_turned od4.3 R15 gap2 inset0 early1 e+8.04"
+          ],
+          "grown_x_intake_max": [
+            0.0,
+            "S35 ribbon12x5_turned od4.3 R15 gap2 inset0 early1 e+8.04"
+          ],
+          "dropin_x_module_max": [
+            0.0,
+            "S35 ribbon12x5_turned od4.3 R15 gap2 inset0 early0 e+8.04"
+          ],
+          "raw_x_edf_tests": 1008,
+          "raw_x_edf_max": [
+            0.0,
+            "S35 ribbon12x5_turned od4.3 R15 gap0 inset3 early0 e+8.04 tabs 89.5 prot 36"
+          ],
+          "edf_assumption": "with the stator TE inset into the housing the hub ends at the TE (hub bottom raised by the inset) - ASSUMED",
+          "hover_tab_gap_min_mm": 0.5475440380644666,
+          "negative_control_e_plus6_mm3": 3589.7916833315926,
+          "negative_control_wall_plus3_mm3": 725.2320867905144,
+          "negative_control_dropin_e_plus6_mm3": 4898.723512236395,
+          "clearances_mm": {
+            "vane_1 d=+0": 51.00000000000001,
+            "vane_1 d=+25": 51.72601432012541,
+            "vane_1 d=-25": 51.72601432012541,
+            "vane_coupler_1": 54.62337632677735,
+            "servo_horn_1": 57.14048524638689,
+            "servo_vane_1": 40.05633964450471,
+            "fin_1 plate": 7.6000000000000085,
+            "intake module": 4.0
+          },
+          "runtime_s": 670.0590040683746,
+          "from_cache": "c29_clock_grid_13e119834312a36b.json"
+        }
+      }
+    },
+    {
+      "id": "C30",
+      "title": "VTOL top cap: fit, open holes, ribs / hub / ring, clearances, tether path, GPS sky",
+      "status": "PASS",
+      "measured": "max cap overlap 0.0000 mm^3 (avionics_module); holes open; min rib/hub/ring fill 1.000; min clearance margin 0.20 mm; free tether cable 263.3 mm (>= 200), boot base 167.5 mm (reported); hardpoint stack: D32 x 2 washer recess open (0.0000 mm^3), M5 x 16 end z 459.3 / jam nut bottom 459.4, min 9.53 mm to avionics_tray (>= 3)",
+      "detail": "GPS patch top z 485.90 = vehicle top; boot shadow on the patch 20.6 deg azimuth up to 73.2 deg elevation (tether variants only)",
+      "values": {
+        "overlap_mm3": {
+          "avionics_module": 0.0,
+          "avionics_tray": 0.0,
+          "buffer_pack": 0.0,
+          "esc": 0.0,
+          "misc_electronics": 0.0,
+          "carrier": 0.0,
+          "gps": 0.0,
+          "gps_ground_plane": 0.0
+        },
+        "hole_probe_mm3": {
+          "gland 1": 0.0,
+          "gland 2": 0.0,
+          "GPS lead": 0.0,
+          "arming switch": 0.0,
+          "hardpoint": 0.0
+        },
+        "fill": {
+          "rib 22.5": 1.0,
+          "rib 112.5": 1.0,
+          "rib 202.5": 1.0,
+          "rib 292.5": 1.0,
+          "hub": 1.0,
+          "rim ring": 1.0
+        },
+        "clearance_mm": {
+          "rim ring bottom -> skirt joint screw (z)": 2.8999999999999773,
+          "gland 1 hole -> rim ring": 26.34212993936345,
+          "gland 1 hole -> spigot bore": 28.84212993936345,
+          "gland 1 hole -> hub": 14.357870060636547,
+          "gland 1 hole -> ribs": 9.193052126167874,
+          "gland 2 hole -> rim ring": 26.34212993936345,
+          "gland 2 hole -> spigot bore": 28.84212993936345,
+          "gland 2 hole -> hub": 14.357870060636547,
+          "gland 2 hole -> ribs": 2.54111949208661,
+          "GPS lead hole -> rim ring": 13.499999999999993,
+          "GPS lead hole -> spigot bore": 15.999999999999993,
+          "GPS lead hole -> hub": 25.0,
+          "GPS lead hole -> ribs": 12.284698689696253,
+          "arming switch hole -> rim ring": 11.249999999999993,
+          "arming switch hole -> spigot bore": 13.749999999999993,
+          "arming switch hole -> hub": 28.75,
+          "arming switch hole -> ribs": 11.257337294603593,
+          "gland 1 hole -> gland 2 hole": 1.4000000000000008,
+          "gland 1 hole -> GPS lead hole": 25.06681344342595,
+          "gland 1 hole -> arming switch hole": 38.00835141850293,
+          "gland 2 hole -> GPS lead hole": 17.873548038845918,
+          "gland 2 hole -> arming switch hole": 44.10892955485622,
+          "GPS lead hole -> arming switch hole": 65.11360654107958,
+          "ribs / hub bottom -> highest bay part": 5.0,
+          "arming-switch body -> bay parts": 9.171172340081595,
+          "arming-switch body -> ribs": 5.668502529771749,
+          "GPS ground plane -> cap edge": 3.3519638469258126,
+          "GPS ground plane -> tether eye": 3.0,
+          "GPS ground plane -> gland 1 hole": 35.1,
+          "GPS ground plane -> gland 2 hole": 35.1,
+          "GPS ground plane -> GPS lead hole": 33.717580843717485,
+          "GPS ground plane -> arming switch hole": 20.603720883753123,
+          "GPS board -> cap edge": 8.829598399074492,
+          "GPS board -> tether eye": 12.100000000000001,
+          "GPS board -> gland 1 hole": 23.736253490309032,
+          "GPS board -> gland 2 hole": 16.880040444852487,
+          "GPS board -> GPS lead hole": 1.7831415584019545,
+          "GPS board -> arming switch hole": 58.85,
+          "GPS ground plane -> GPS board": 2.1000000000000014
+        },
+        "tether_mm": {
+          "boot base (cap top) -> nearest intake window": 167.5140591114668,
+          "free cable start (boot top) -> nearest intake window": 263.3267172164647,
+          "required (free cable)": 200.0,
+          "boot top z": 575.3,
+          "cone half angle deg": 15.0
+        },
+        "gps_patch_top_z": 485.9,
+        "vehicle_top_z": 485.9
+      }
+    },
+    {
+      "id": "C31",
+      "title": "VTOL avionics windows open, struts / rail ribs material, tray lightening holes open",
+      "status": "PASS",
+      "measured": "14 windows, max wall in a window 0.0000 mm^3; min strut fill 1.000 (6.53 mm at the bore); rail clearance 3.4 deg; tray holes 2 open",
+      "detail": "",
+      "values": {
+        "window_probe_mm3": {
+          "-44.0": 0.0,
+          "-22.0": 0.0,
+          "0.0": 0.0,
+          "22.0": 0.0,
+          "44.0": 0.0,
+          "136.0": 0.0,
+          "158.0": 0.0,
+          "180.0": 0.0,
+          "202.0": 0.0,
+          "224.0": 0.0,
+          "90.0": 0.0,
+          "112.0": 0.0,
+          "248.0": 0.0,
+          "270.0": 0.0
+        },
+        "strut_fill": {
+          "11.0": 1.0,
+          "33.0": 1.0,
+          "101.0": 1.0,
+          "124.0": 1.0,
+          "147.0": 1.0,
+          "169.0": 1.0,
+          "191.0": 1.0,
+          "213.0": 1.0,
+          "236.0": 1.0,
+          "259.0": 1.0,
+          "327.0": 1.0,
+          "349.0": 1.0
+        },
+        "rib_probe_mm3": {
+          "75.6": 1.0112215808688249e-05,
+          "-75.6": 1.0112215808688263e-05
+        },
+        "tray_hole_probe_mm3": {
+          "y+18": 0.0,
+          "y-18": 0.0
+        },
+        "open_area_mm2": 23296.0
+      }
+    },
+    {
+      "id": "C32",
+      "title": "VTOL fin legs: solid fin plates (no lightening hole), footprint / tip-over with the CG offset",
+      "status": "PASS",
+      "measured": "fin plate fill min 1.000; footprint D246.8; tip-over 27.5 deg toward a fin, 20.2 deg between fins with the CG 2.32 mm off the axis (centred: 28.0 / 20.6; CG 232.5 mm)",
+      "detail": "",
+      "values": {
+        "fin_fill": {
+          "0": 1.0,
+          "90": 1.0,
+          "180": 1.0,
+          "270": 1.0
+        },
+        "tip_over": {
+          "cg_height_mm": 232.50949245681193,
+          "fin_tip_r_mm": 123.4,
+          "angle_toward_a_fin_deg": 27.956278971568786,
+          "angle_between_fins_deg": 20.570284788543493,
+          "cg_lateral_offset_mm": 2.318505317712411,
+          "cg_xy_mm": [
+            2.3095623800247838,
+            -0.20344168952056924
+          ],
+          "angle_toward_a_fin_with_offset_deg": 27.510402180138826,
+          "angle_between_fins_with_offset_deg": 20.185495519023622
+        }
+      }
+    },
+    {
+      "id": "C33",
+      "title": "(fix round) lateral CG (+ lead drag in the jet, E): standing vane trim in a hover <= 5 % of the pitch authority (WARN <= 10 %), worst end of the Cd band",
+      "status": "FAIL",
+      "measured": "CG (+2.31, -0.20) mm -> 2.32 mm off the axis; trim 10.6 % of the hover pitch authority 0.479 N m (2.12 of 20 deg); with the motor-lead drag in the jet (E, Cd 1: D 0.495 N at u 32.5 mm, worst azimuth -5.23 deg of -8.04..+8.04) trim 10.6 % (Cd 0.8-1.2: 10.0-11.2 %; CG alone 7.5 %; status from the worst end 11.2 %)",
+      "detail": "W 14.97 N, q_exit 1524 Pa at hover, vane force 1.226 N each, lever 195.5 mm (CG z 232.5 - hinge 37)",
+      "values": {
+        "cg_xy_mm": [
+          2.3095623800247838,
+          -0.20344168952056924
+        ],
+        "offset_mm": 2.318505317712411,
+        "trim_fraction": 0.10600075359873759,
+        "trim_deg": 2.120015071974752,
+        "authority_Nm": 0.47939408272837253,
+        "trim_fraction_cg_only": 0.07480937079592603,
+        "trim_fraction_cd_band": [
+          0.09976246986809419,
+          0.11223903971887549
+        ],
+        "trim_fraction_status": 0.11223903971887549,
+        "lead_drag_N": 0.495436898370123,
+        "lead_drag": {
+          "cd_ASSUMED": 1.0,
+          "cd_band_ASSUMED": [
+            0.8,
+            1.2
+          ],
+          "area_mm2": 325.0,
+          "centroid_u_mm": 32.5,
+          "xy_mm": [
+            32.5,
+            0.0
+          ],
+          "azimuth_range_deg": [
+            -8.04001677203659,
+            8.04001677203659
+          ]
+        },
+        "worst_azimuth_deg": -5.226010901823785
+      }
+    },
+    {
+      "id": "C34",
+      "title": "(wire09c clock mount) clock coverage: every exit azimuth 0-360 deg within E_cov of the lead passage, every seat clear, sleeve teeth >= sleeve_min",
+      "status": "PASS",
+      "measured": "coverage 100.000 % of 0-360 deg (gaps none), worst residual 6.50 deg <= E_cov 7.5 (passage takes E_design 8.04 = E_cov + tab play 0.54); 25 keyways, 25 seats (3 with one tab hovering in the passage), 28 seat positions, largest gap 13.00 deg; EDF at every seat x module max 0.000 mm^3; min sleeve tooth 6.42 mm >= 1.2",
+      "detail": "keyways 24.75, 37.75, 50.75, 63.50, 76.50, 89.50, 102.50, 115.50, 128.50, 141.50, 153.50, 166.50, 179.50, 191.75, 204.75, 217.75, 230.75, 243.50, 256.50, 269.50, 282.50, 295.50, 308.50, 321.50, 333.50; hover seats 166.50/346.50, 179.50/359.50, 191.75/11.75; nominal (drawn) seat 89.50/269.50",
+      "values": {
+        "recheck": {
+          "coverage": 1.0,
+          "worst_residual_deg": 6.5,
+          "gaps": [],
+          "seats": 28
+        },
+        "layout_coverage": 1.0,
+        "layout_worst_residual_deg": 6.5,
+        "keyways": [
+          24.75,
+          37.75,
+          50.75,
+          63.5,
+          76.5,
+          89.5,
+          102.5,
+          115.5,
+          128.5,
+          141.5,
+          153.5,
+          166.5,
+          179.5,
+          191.75,
+          204.75,
+          217.75,
+          230.75,
+          243.5,
+          256.5,
+          269.5,
+          282.5,
+          295.5,
+          308.5,
+          321.5,
+          333.5
+        ],
+        "configs": [
+          {
+            "a": 24.75,
+            "b": 204.75,
+            "b_state": "keyway"
+          },
+          {
+            "a": 37.75,
+            "b": 217.75,
+            "b_state": "keyway"
+          },
+          {
+            "a": 50.75,
+            "b": 230.75,
+            "b_state": "keyway"
+          },
+          {
+            "a": 63.5,
+            "b": 243.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 76.5,
+            "b": 256.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 89.5,
+            "b": 269.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 102.5,
+            "b": 282.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 115.5,
+            "b": 295.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 128.5,
+            "b": 308.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 141.5,
+            "b": 321.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 153.5,
+            "b": 333.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 166.5,
+            "b": 346.5,
+            "b_state": "hover"
+          },
+          {
+            "a": 179.5,
+            "b": 359.5,
+            "b_state": "hover"
+          },
+          {
+            "a": 191.75,
+            "b": 11.75,
+            "b_state": "hover"
+          },
+          {
+            "a": 204.75,
+            "b": 24.75,
+            "b_state": "keyway"
+          },
+          {
+            "a": 217.75,
+            "b": 37.75,
+            "b_state": "keyway"
+          },
+          {
+            "a": 230.75,
+            "b": 50.75,
+            "b_state": "keyway"
+          },
+          {
+            "a": 243.5,
+            "b": 63.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 256.5,
+            "b": 76.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 269.5,
+            "b": 89.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 282.5,
+            "b": 102.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 295.5,
+            "b": 115.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 308.5,
+            "b": 128.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 321.5,
+            "b": 141.5,
+            "b_state": "keyway"
+          },
+          {
+            "a": 333.5,
+            "b": 153.5,
+            "b_state": "keyway"
+          }
+        ],
+        "edf_seat_x_module_max": 0.0,
+        "min_tooth_mm": 6.4185374362276
+      }
+    },
+    {
+      "id": "C35",
+      "title": "(wire09c clock mount) axial retention: lip on the intake shelf (up), foam pads under the tabs (down), keyway walls and sleeve teeth (torque)",
+      "status": "PASS",
+      "measured": "foam compression 3..46 % (band 0..50 %, stack +-0.5 mm A); largest lift 1.00 mm, keyway engagement left 41.3 mm (>= 30); shelf over the lip 100.0 % material, lip -> shelf gap clear (0.000 mm^3); shelf bending at 37.2 N thrust factor 177.5, keyway bearing at 1.01 N m on one tab factor 107 (>= 5); sleeve teeth (measured, 26 pieces, min width 5.30 mm): tangential bending at 1.01 N m on ONE tab, fixed-fixed uniform, worst factor 5.9 (tooth at 19.40 deg, w 5.30 x t 1.60, span 42.2 mm; >= 5); foam preload 2.57 N vs EDF weight 3.62 N (A); at rest under the weight (A, reported): 2 pads 42 %, sag 0.38, spin-up travel 1.38 mm; 1 pad (hover seat) bottoms (> 50 %), travel <= 3.40 mm",
+      "detail": "lip on the shelf (thrust), nominal 17 %; lip on the shelf, stack + tol 31 %; lip on the shelf, stack - tol 3 %; drawn position (lip_stop_gap under the shelf) 31 %; drawn position, stack + tol 46 %; teeth 19.4: 5.30 mm f 5.9, 31.2: 7.30 mm f 11.3, 44.2: 7.30 mm f 11.6, 57.1: 7.08 mm f 10.6, 70.0: 7.30 mm f 11.3, 83.0: 7.30 mm f 11.3, 96.0: 7.30 mm f 11.3, 109.0: 7.30 mm f 11.3, 122.0: 7.30 mm f 11.3, 135.0: 7.30 mm f 11.6, 147.5: 6.43 mm f 8.8, 160.0: 7.30 mm f 11.3, 173.0: 7.30 mm f 11.3, 185.6: 6.65 mm f 9.4, 198.2: 7.30 mm f 11.3, 211.2: 7.30 mm f 11.3, 224.2: 7.30 mm f 11.6, 237.1: 7.08 mm f 10.6, 250.0: 7.30 mm f 11.3, 263.0: 7.30 mm f 11.3, 276.0: 7.30 mm f 11.3, 289.0: 7.30 mm f 11.3, 302.0: 7.30 mm f 11.3, 315.0: 7.30 mm f 11.6, 327.5: 6.43 mm f 8.8, 339.7: 6.82 mm f 9.9",
+      "values": {
+        "foam_compression": {
+          "lip on the shelf (thrust), nominal": 0.17142857142857149,
+          "lip on the shelf, stack + tol": 0.3142857142857143,
+          "lip on the shelf, stack - tol": 0.02857142857142858,
+          "drawn position (lip_stop_gap under the shelf)": 0.3142857142857143,
+          "drawn position, stack + tol": 0.4571428571428572
+        },
+        "compression_band": [
+          0.0,
+          0.5
+        ],
+        "compression_ok": true,
+        "static_weight_A": {
+          "2 pads (two-tab seat)": {
+            "stress_kpa": 74.45789814814813,
+            "compression": 0.4222894907407406,
+            "beyond_curve_bottoms": false,
+            "sag_below_drawn_mm": 0.3780132175925921,
+            "travel_to_shelf_mm": 1.378013217592592
+          },
+          "1 pad (hover seat)": {
+            "stress_kpa": 148.91579629629626,
+            "compression": NaN,
+            "beyond_curve_bottoms": true,
+            "sag_below_drawn_mm": 2.4,
+            "travel_to_shelf_mm": 3.4
+          }
+        },
+        "lift_max_mm": 1.0,
+        "engaged_after_lift_mm": 41.3,
+        "shelf_fill_over_lip": 1.0,
+        "lip_to_shelf_gap_material_mm3": 0.0,
+        "thrust_peak_N": 37.1672035,
+        "shelf_sigma_mpa": 0.29859024292034386,
+        "shelf_factor": 177.50077658813194,
+        "motor_torque_Nm_E": 0.6716249602237672,
+        "torque_design_Nm": 1.0074374403356507,
+        "tab_force_N": 18.99033817786335,
+        "bearing_mpa": 0.2805901031008176,
+        "bearing_factor": 106.91752727009344,
+        "foam_preload_N_A": 2.568857142857143,
+        "edf_weight_N": 3.61865385,
+        "foam_holds_edf_up_at_rest": false,
+        "ok": true,
+        "teeth_bending": {
+          "torque_design_Nm": 1.0074374403356507,
+          "tab_force_N": 18.99033817786335,
+          "z_mid": 144.725,
+          "teeth": [
+            {
+              "mid_deg": 339.724,
+              "w_mm": 6.819076458726422,
+              "t_mm": 1.6019581926798665,
+              "sides": [
+                333.5,
+                null
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 9.864563787448192,
+              "factor_point": 6.576375858298795
+            },
+            {
+              "mid_deg": 19.401,
+              "w_mm": 5.2980220156133875,
+              "t_mm": 1.6004020116745252,
+              "sides": [
+                null,
+                24.75
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 5.948838701982024,
+              "factor_point": 3.9658924679880156
+            },
+            {
+              "mid_deg": 327.5,
+              "w_mm": 6.42901157728176,
+              "t_mm": 1.600402011674511,
+              "sides": [
+                321.5,
+                333.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 8.759777838020463,
+              "factor_point": 5.839851892013641
+            },
+            {
+              "mid_deg": 315.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.6500000000000015,
+              "sides": [
+                308.5,
+                321.5
+              ],
+              "anchored_mid": true,
+              "z_top": 175.71346610995116,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.638294235251049,
+              "factor_point": 7.758862823500699
+            },
+            {
+              "mid_deg": 302.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.600402011674504,
+              "sides": [
+                295.5,
+                308.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.2884542463973,
+              "factor_point": 7.525636164264866
+            },
+            {
+              "mid_deg": 289.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.6004020116745181,
+              "sides": [
+                282.5,
+                295.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397402,
+              "factor_point": 7.525636164264934
+            },
+            {
+              "mid_deg": 276.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.600402011674511,
+              "sides": [
+                269.5,
+                282.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397352,
+              "factor_point": 7.525636164264901
+            },
+            {
+              "mid_deg": 263.0,
+              "w_mm": 7.298185544774911,
+              "t_mm": 1.6004020116745181,
+              "sides": [
+                256.5,
+                269.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397327,
+              "factor_point": 7.525636164264884
+            },
+            {
+              "mid_deg": 250.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.600402011674511,
+              "sides": [
+                243.5,
+                256.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397352,
+              "factor_point": 7.525636164264901
+            },
+            {
+              "mid_deg": 237.125,
+              "w_mm": 7.080892052901642,
+              "t_mm": 1.600402011674504,
+              "sides": [
+                230.75,
+                243.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 10.626264544228562,
+              "factor_point": 7.08417636281904
+            },
+            {
+              "mid_deg": 224.25,
+              "w_mm": 7.29818554477496,
+              "t_mm": 1.6500000000000015,
+              "sides": [
+                217.75,
+                230.75
+              ],
+              "anchored_mid": true,
+              "z_top": 175.27099263206037,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.638294235251129,
+              "factor_point": 7.758862823500752
+            },
+            {
+              "mid_deg": 211.25,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.600402011674504,
+              "sides": [
+                204.75,
+                217.75
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.2884542463973,
+              "factor_point": 7.525636164264866
+            },
+            {
+              "mid_deg": 198.25,
+              "w_mm": 7.298185544774911,
+              "t_mm": 1.600402011674511,
+              "sides": [
+                191.75,
+                204.75
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397276,
+              "factor_point": 7.52563616426485
+            },
+            {
+              "mid_deg": 185.625,
+              "w_mm": 6.646305069155054,
+              "t_mm": 1.6004020116745252,
+              "sides": [
+                179.5,
+                191.75
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 9.361926340040249,
+              "factor_point": 6.2412842266935
+            },
+            {
+              "mid_deg": 173.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.600402011674511,
+              "sides": [
+                166.5,
+                179.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397352,
+              "factor_point": 7.525636164264901
+            },
+            {
+              "mid_deg": 160.0,
+              "w_mm": 7.29818554477496,
+              "t_mm": 1.6004020116745181,
+              "sides": [
+                153.5,
+                166.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397478,
+              "factor_point": 7.525636164264985
+            },
+            {
+              "mid_deg": 147.5,
+              "w_mm": 6.429011577281735,
+              "t_mm": 1.600402011674511,
+              "sides": [
+                141.5,
+                153.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 8.759777838020396,
+              "factor_point": 5.839851892013597
+            },
+            {
+              "mid_deg": 135.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.6500000000000015,
+              "sides": [
+                128.5,
+                141.5
+              ],
+              "anchored_mid": true,
+              "z_top": 175.71346610995116,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.638294235251049,
+              "factor_point": 7.758862823500699
+            },
+            {
+              "mid_deg": 122.0,
+              "w_mm": 7.298185544774911,
+              "t_mm": 1.600402011674504,
+              "sides": [
+                115.5,
+                128.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397224,
+              "factor_point": 7.525636164264816
+            },
+            {
+              "mid_deg": 109.0,
+              "w_mm": 7.298185544774911,
+              "t_mm": 1.6004020116744968,
+              "sides": [
+                102.5,
+                115.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397174,
+              "factor_point": 7.525636164264783
+            },
+            {
+              "mid_deg": 96.0,
+              "w_mm": 7.298185544774911,
+              "t_mm": 1.600402011674511,
+              "sides": [
+                89.5,
+                102.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397276,
+              "factor_point": 7.52563616426485
+            },
+            {
+              "mid_deg": 83.0,
+              "w_mm": 7.298185544774911,
+              "t_mm": 1.6004020116745252,
+              "sides": [
+                76.5,
+                89.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397373,
+              "factor_point": 7.525636164264916
+            },
+            {
+              "mid_deg": 70.0,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.6004020116745181,
+              "sides": [
+                63.5,
+                76.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397402,
+              "factor_point": 7.525636164264934
+            },
+            {
+              "mid_deg": 57.125,
+              "w_mm": 7.080892052901642,
+              "t_mm": 1.6004020116745181,
+              "sides": [
+                50.75,
+                63.5
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 10.626264544228658,
+              "factor_point": 7.084176362819103
+            },
+            {
+              "mid_deg": 44.25,
+              "w_mm": 7.298185544774911,
+              "t_mm": 1.6500000000000015,
+              "sides": [
+                37.75,
+                50.75
+              ],
+              "anchored_mid": true,
+              "z_top": 175.27099263206037,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.638294235250973,
+              "factor_point": 7.758862823500647
+            },
+            {
+              "mid_deg": 31.25,
+              "w_mm": 7.2981855447749355,
+              "t_mm": 1.6004020116745181,
+              "sides": [
+                24.75,
+                37.75
+              ],
+              "anchored_mid": false,
+              "z_top": 165.8,
+              "z_floor": 123.64999999999998,
+              "span_mm": 42.150000000000034,
+              "factor": 11.288454246397402,
+              "factor_point": 7.525636164264934
+            }
+          ],
+          "keyway_floors": {
+            "24.75": 123.64999999999998,
+            "37.75": 123.64999999999998,
+            "50.75": 123.64999999999998,
+            "63.5": 123.64999999999998,
+            "76.5": 123.64999999999998,
+            "89.5": 123.64999999999998,
+            "102.5": 123.64999999999998,
+            "115.5": 123.64999999999998,
+            "128.5": 123.64999999999998,
+            "141.5": 123.64999999999998,
+            "153.5": 123.64999999999998,
+            "166.5": 123.64999999999998,
+            "179.5": 123.64999999999998,
+            "191.75": 123.64999999999998,
+            "204.75": 123.64999999999998,
+            "217.75": 123.64999999999998,
+            "230.75": 123.64999999999998,
+            "243.5": 123.64999999999998,
+            "256.5": 123.64999999999998,
+            "269.5": 123.64999999999998,
+            "282.5": 123.64999999999998,
+            "295.5": 123.64999999999998,
+            "308.5": 123.64999999999998,
+            "321.5": 123.64999999999998,
+            "333.5": 123.64999999999998
+          },
+          "z_deck_bottom": 165.8,
+          "keyway_sides_found": 50,
+          "worst": {
+            "mid_deg": 19.401,
+            "w_mm": 5.2980220156133875,
+            "t_mm": 1.6004020116745252,
+            "sides": [
+              null,
+              24.75
+            ],
+            "anchored_mid": false,
+            "z_top": 165.8,
+            "z_floor": 123.64999999999998,
+            "span_mm": 42.150000000000034,
+            "factor": 5.948838701982024,
+            "factor_point": 3.9658924679880156
+          },
+          "ok": true,
+          "factor_min": 5.948838701982024,
+          "w_min_mm": 5.2980220156133875
+        }
+      }
+    },
+    {
+      "id": "C36",
+      "title": "(livery) YUCHAN inlay: zone and 3 mm clearance, strokes / gaps / islands, depth, union = plain module",
+      "status": "PASS",
+      "measured": "2 copies at 67, 293 deg; footprint + 3 mm outside the wall material: 67 deg 0.0000 mm^3, 293 deg 0.0000 mm^3; nearest void of the skin band (BRep, no volume tolerance) 67 deg 3.051, 293 deg 3.051 mm (>= 3); nearest feature 3.05 mm; stroke 2.20 (>= 1.6), white gap 1.84 (>= 1.2), smallest island 8.46 mm^2 (>= 3.0); depth 0.42 (measured 0.420) <= line 0.42, white behind 0.78 >= 0.78; white + inlay - plain +0.0000 mm^3, white x inlay 0.0000, inlay outer area -0.020 %",
+      "detail": "distances (BRep, inlay -> feature) joint screw hole (lower skirt) 13.73, lightening window 6.57, part lower end (z_avionics_bottom) 3.05, visible skin upper end (spigot step) 10.93, joint screw axis (on the skin) 15.66; inlay 680.99 mm^3, white body 45432.69, plain 46113.69; logo cad/livery/yuchan_logo_polygons.json (polygons_s_z_cad, sha256 8d550d1df560), 10 islands / copy, area 810.8 mm^2; per layer (information, layer 0.2 mm): 578 layers with orange, chords < one line 4 (min 0.116 mm at print z 72.5), white gaps < one line 3 (min 0.148 mm) - single-layer specks / bridged wedge tips expected there",
+      "values": {
+        "copies_deg": [
+          67.0,
+          293.0
+        ],
+        "logo_file": "cad/livery/yuchan_logo_polygons.json",
+        "logo_file_sha256": "8d550d1df5603c6f92b69c52e08d544a423aa4c7abb107edabc278af527ca8c1",
+        "union": {
+          "plain_mm3": 46113.687432409584,
+          "white_mm3": 45432.694567656275,
+          "inlay_mm3": 680.9928770762792,
+          "white_plus_inlay_minus_plain_mm3": 1.2322969269007444e-05,
+          "white_x_inlay_mm3": 0.0,
+          "plain_x_inlay_minus_inlay_mm3": -4.638422979041934e-11
+        },
+        "outer_area": {
+          "inlay_outer_faces_mm2": 1621.3592545689376,
+          "polygons_mm2": 1621.676,
+          "rel": -0.00019531979943121502
+        },
+        "depth": {
+          "design_mm": 0.42,
+          "measured_mm": 0.4200135627913823,
+          "line_w_mm": 0.42,
+          "wall_mm": 1.2,
+          "white_behind_mm": 0.78,
+          "white_behind_min_mm": 0.78
+        },
+        "polygons": {
+          "min_stroke_mm": 2.196,
+          "min_white_gap_mm": 1.84,
+          "min_island_gap_mm": 1.761,
+          "islands": 10,
+          "smallest_island_mm2": 8.456,
+          "counters": 1,
+          "smallest_counter_mm2": 14.419,
+          "area_mm2_per_copy": 810.838,
+          "s_mm": [
+            -9.197,
+            9.197
+          ],
+          "print_z_mm": [
+            3.051,
+            124.066
+          ],
+          "corner_sliver_k": 0.25
+        },
+        "clearance_containment": {
+          "67": {
+            "grown_shell_mm3": 1003.1455906100449,
+            "outside_material_mm3": 2.9103830456733704e-11
+          },
+          "293": {
+            "grown_shell_mm3": 1003.1455906132048,
+            "outside_material_mm3": 3.5697667044587433e-11
+          }
+        },
+        "clearance_void_band": {
+          "sector_half_width_deg": 13.523162334508793,
+          "n_voids_67": 2,
+          "67": {
+            "min_mm": 3.0505999999999744,
+            "void_z_mm": [
+              318.1,
+              324.1
+            ],
+            "void_azimuth_deg": 67.0,
+            "void_mm3": 71.29
+          },
+          "n_voids_293": 2,
+          "293": {
+            "min_mm": 3.0505999999999744,
+            "void_z_mm": [
+              318.1,
+              324.1
+            ],
+            "void_azimuth_deg": 293.0,
+            "void_mm3": 71.29
+          }
+        },
+        "layer_chords": {
+          "layer_h_mm": 0.2,
+          "line_w_mm": 0.42,
+          "layers_with_orange": 578,
+          "chords_below_line_w": 4,
+          "white_gaps_below_line_w": 3,
+          "min_chord_mm": 0.116,
+          "min_chord_print_z_mm": 72.5,
+          "min_white_gap_mm": 0.148,
+          "min_white_gap_print_z_mm": 100.5,
+          "note": "information only (no threshold): single-layer orange specks or a bridged white wedge tip are expected where a chord / gap is below one line width; the slicer drops or merges them"
+        },
+        "distances_mm": {
+          "joint screw hole (lower skirt)": 13.728,
+          "vent slot": null,
+          "lightening window": 6.57,
+          "part lower end (z_avionics_bottom)": 3.051,
+          "visible skin upper end (spigot step)": 10.934,
+          "joint screw axis (on the skin)": 15.663
+        },
+        "clearance_min_reported_mm": 3.051,
+        "clearance_required_mm": 3.0,
+        "fails": [],
+        "ok": true
+      }
+    },
+    {
+      "id": "X1",
+      "title": "(extra) adjacent vanes both deflected (mechanical and commanded limits)",
+      "status": "PASS",
+      "measured": "at +-25deg 0.000 mm^3 (); at +-20deg 0.000 mm^3 ()",
+      "detail": "inner corners near vane_r_in 13; not required by SPEC C4 (which deflects one vane at a time)",
+      "values": {
+        "mech": [
+          0.0,
+          ""
+        ],
+        "cmd": [
+          0.0,
+          ""
+        ]
+      }
+    },
+    {
+      "id": "X2",
+      "title": "launch pad",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - the VTOL vehicle stands on its fins (no launch pad)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    }
+  ]
+}

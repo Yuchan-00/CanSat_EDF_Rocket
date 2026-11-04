@@ -1,0 +1,441 @@
+[    0.000s] INFO  CanSatEDFRocket.py v0.1.0 started 2026-10-12T21:42:23
+[    0.000s] INFO  project root: B:\0)AI_Cad\CanSat_EDF_Rocket
+[    0.000s] INFO  export root: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports
+[    0.002s] INFO  layout loaded: preset=KAIST_90mm_12S vehicle_h=941 mm footprint=238 mm
+[    1.088s] INFO  design created: type=parametric, units=mm, preset=KAIST_90mm_12S
+[    1.168s] INFO  user parameters added: 127
+[    1.213s] FEAT  inertia_probe box_pod-profile 'probe_cube' theta=0 u=[25,35] v=[15,25] z=[5,15]
+[    1.217s] FEAT  inertia_probe extrude 'probe_cube' op=NewBody full_length_mm=10 sketch=probe_cube
+[    1.234s] INFO  inertia probe: {'ok': True, 'mass_kg': 0.00785, 'density_kg_cm3': 0.00785, 'xx_ratio': 0.9999999999999998, 'xy_ratio': -1.0, 'convention': 'tensor'}
+[    1.254s] INFO  === component propulsion_module (printed) start
+[    1.274s] FEAT  propulsion_module revolve_z-profile 'exhaust_duct' pts_rz=[[45,0],[49,0],[49,90],[45,90]]
+[    1.277s] FEAT  propulsion_module revolve 'exhaust_duct' op=NewBody sketch=exhaust_duct
+[    1.295s] FEAT  propulsion_module revolve_z-profile 'shoulder_ring' pts_rz=[[45,90],[49,90],[50.8,108],[45,108]]
+[    1.297s] FEAT  propulsion_module revolve 'shoulder_ring' op=Join sketch=shoulder_ring
+[    1.316s] FEAT  propulsion_module revolve_z-profile 'cone_shell' pts_rz=[[47,90],[49,90],[60,200],[58,200]]
+[    1.318s] FEAT  propulsion_module revolve 'cone_shell' op=Join sketch=cone_shell
+[    1.337s] FEAT  propulsion_module revolve_z-profile 'sleeve' pts_rz=[[47,90],[49,90],[49,200],[47,200]]
+[    1.339s] FEAT  propulsion_module revolve 'sleeve' op=Join sketch=sleeve
+[    1.359s] FEAT  propulsion_module revolve_z-profile 'spigot_ring' pts_rz=[[47,199],[49,199],[49,200],[57.8,200],[57.8,215],[47,215]]
+[    1.361s] FEAT  propulsion_module revolve 'spigot_ring' op=Join sketch=spigot_ring
+[    1.382s] FEAT  propulsion_module revolve_z-profile 'deck' pts_rz=[[47,198],[59.8,198],[60,200],[47,200]]
+[    1.384s] FEAT  propulsion_module revolve 'deck' op=Join sketch=deck
+[    1.435s] FEAT  propulsion_module prism-profile 'web_45' theta=45 pts_rz=[[48,108],[49.8,108],[59,200],[48,200]] width=2
+[    1.438s] FEAT  propulsion_module extrude 'web_45' op=Join full_length_mm=2 sketch=web_45
+[    1.506s] FEAT  propulsion_module prism-profile 'web_135' theta=135 pts_rz=[[48,108],[49.8,108],[59,200],[48,200]] width=2
+[    1.510s] FEAT  propulsion_module extrude 'web_135' op=Join full_length_mm=2 sketch=web_135
+[    1.589s] FEAT  propulsion_module prism-profile 'web_225' theta=225 pts_rz=[[48,108],[49.8,108],[59,200],[48,200]] width=2
+[    1.595s] FEAT  propulsion_module extrude 'web_225' op=Join full_length_mm=2 sketch=web_225
+[    1.692s] FEAT  propulsion_module prism-profile 'web_315' theta=315 pts_rz=[[48,108],[49.8,108],[59,200],[48,200]] width=2
+[    1.698s] FEAT  propulsion_module extrude 'web_315' op=Join full_length_mm=2 sketch=web_315
+[    1.747s] FEAT  propulsion_module radial_cyl-profile 'hinge_boss_0' theta=0 z=37 r0=45 r1=52 d=12
+[    1.752s] FEAT  propulsion_module revolve 'hinge_boss_0' op=Join sketch=hinge_boss_0
+[    1.832s] FEAT  propulsion_module radial_cyl-profile 'hinge_boss_90' theta=90 z=37 r0=45 r1=52 d=12
+[    1.838s] FEAT  propulsion_module revolve 'hinge_boss_90' op=Join sketch=hinge_boss_90
+[    1.918s] FEAT  propulsion_module radial_cyl-profile 'hinge_boss_180' theta=180 z=37 r0=45 r1=52 d=12
+[    1.923s] FEAT  propulsion_module revolve 'hinge_boss_180' op=Join sketch=hinge_boss_180
+[    2.005s] FEAT  propulsion_module radial_cyl-profile 'hinge_boss_270' theta=270 z=37 r0=45 r1=52 d=12
+[    2.011s] FEAT  propulsion_module revolve 'hinge_boss_270' op=Join sketch=hinge_boss_270
+[    2.056s] FEAT  propulsion_module radial_cyl-profile 'hinge_bore_0' theta=0 z=37 r0=-53 r1=53 d=5.4
+[    2.062s] FEAT  propulsion_module revolve 'hinge_bore_0' op=Cut sketch=hinge_bore_0
+[    2.109s] FEAT  propulsion_module radial_cyl-profile 'hinge_bore_90' theta=90 z=37 r0=-53 r1=53 d=5.4
+[    2.114s] FEAT  propulsion_module revolve 'hinge_bore_90' op=Cut sketch=hinge_bore_90
+[    2.242s] FEAT  propulsion_module box_pod-profile 'pod_24_box' theta=24 u=[46,65.5] v=[-16.5,16.5] z=[2,38.5]
+[    2.248s] FEAT  propulsion_module extrude 'pod_24_box' op=Join full_length_mm=36.5 sketch=pod_24_box
+[    2.378s] FEAT  propulsion_module prism-profile 'pod_24_wedge' theta=24 pts_rz=[[49,1],[49,2],[66.5,19.5],[66.5,1]] width=35
+[    2.385s] FEAT  propulsion_module extrude 'pod_24_wedge' op=Cut full_length_mm=35 sketch=pod_24_wedge
+[    2.527s] FEAT  propulsion_module box_pod-profile 'pod_24_cavity' theta=24 u=[50,63.5] v=[-11.8,11.8] z=[20.5,39.5]
+[    2.534s] FEAT  propulsion_module extrude 'pod_24_cavity' op=Cut full_length_mm=19 sketch=pod_24_cavity
+[    2.725s] FEAT  propulsion_module cyl_z-profile 'pod_24_ear_hole' x=57.54 y=10.29 z=[32.5,39.5] d=1.8
+[    2.736s] FEAT  propulsion_module extrude 'pod_24_ear_hole' op=Cut full_length_mm=7 sketch=pod_24_ear_hole
+[    2.824s] FEAT  propulsion_module cyl_z-profile 'pod_24_ear_hole' x=46.15 y=35.87 z=[32.5,39.5] d=1.8
+[    2.832s] FEAT  propulsion_module extrude 'pod_24_ear_hole' op=Cut full_length_mm=7 sketch=pod_24_ear_hole
+[    2.902s] FEAT  propulsion_module box_pod-profile 'pod_114_box' theta=114 u=[46,65.5] v=[-16.5,16.5] z=[2,38.5]
+[    2.910s] FEAT  propulsion_module extrude 'pod_114_box' op=Join full_length_mm=36.5 sketch=pod_114_box
+[    3.093s] FEAT  propulsion_module prism-profile 'pod_114_wedge' theta=114 pts_rz=[[49,1],[49,2],[66.5,19.5],[66.5,1]] width=35
+[    3.105s] FEAT  propulsion_module extrude 'pod_114_wedge' op=Cut full_length_mm=35 sketch=pod_114_wedge
+[    3.203s] FEAT  propulsion_module box_pod-profile 'pod_114_cavity' theta=114 u=[50,63.5] v=[-11.8,11.8] z=[20.5,39.5]
+[    3.214s] FEAT  propulsion_module extrude 'pod_114_cavity' op=Cut full_length_mm=19 sketch=pod_114_cavity
+[    3.313s] FEAT  propulsion_module cyl_z-profile 'pod_114_ear_hole' x=-10.29 y=57.54 z=[32.5,39.5] d=1.8
+[    3.324s] FEAT  propulsion_module extrude 'pod_114_ear_hole' op=Cut full_length_mm=7 sketch=pod_114_ear_hole
+[    3.418s] FEAT  propulsion_module cyl_z-profile 'pod_114_ear_hole' x=-35.87 y=46.15 z=[32.5,39.5] d=1.8
+[    3.430s] FEAT  propulsion_module extrude 'pod_114_ear_hole' op=Cut full_length_mm=7 sketch=pod_114_ear_hole
+[    3.505s] FEAT  propulsion_module box_pod-profile 'pod_204_box' theta=204 u=[46,65.5] v=[-16.5,16.5] z=[2,38.5]
+[    3.514s] FEAT  propulsion_module extrude 'pod_204_box' op=Join full_length_mm=36.5 sketch=pod_204_box
+[    3.710s] FEAT  propulsion_module prism-profile 'pod_204_wedge' theta=204 pts_rz=[[49,1],[49,2],[66.5,19.5],[66.5,1]] width=35
+[    3.719s] FEAT  propulsion_module extrude 'pod_204_wedge' op=Cut full_length_mm=35 sketch=pod_204_wedge
+[    3.804s] FEAT  propulsion_module box_pod-profile 'pod_204_cavity' theta=204 u=[50,63.5] v=[-11.8,11.8] z=[20.5,39.5]
+[    3.814s] FEAT  propulsion_module extrude 'pod_204_cavity' op=Cut full_length_mm=19 sketch=pod_204_cavity
+[    3.898s] FEAT  propulsion_module cyl_z-profile 'pod_204_ear_hole' x=-57.54 y=-10.29 z=[32.5,39.5] d=1.8
+[    3.907s] FEAT  propulsion_module extrude 'pod_204_ear_hole' op=Cut full_length_mm=7 sketch=pod_204_ear_hole
+[    3.988s] FEAT  propulsion_module cyl_z-profile 'pod_204_ear_hole' x=-46.15 y=-35.87 z=[32.5,39.5] d=1.8
+[    3.998s] FEAT  propulsion_module extrude 'pod_204_ear_hole' op=Cut full_length_mm=7 sketch=pod_204_ear_hole
+[    4.093s] FEAT  propulsion_module box_pod-profile 'pod_294_box' theta=294 u=[46,65.5] v=[-16.5,16.5] z=[2,38.5]
+[    4.103s] FEAT  propulsion_module extrude 'pod_294_box' op=Join full_length_mm=36.5 sketch=pod_294_box
+[    4.306s] FEAT  propulsion_module prism-profile 'pod_294_wedge' theta=294 pts_rz=[[49,1],[49,2],[66.5,19.5],[66.5,1]] width=35
+[    4.316s] FEAT  propulsion_module extrude 'pod_294_wedge' op=Cut full_length_mm=35 sketch=pod_294_wedge
+[    4.423s] FEAT  propulsion_module box_pod-profile 'pod_294_cavity' theta=294 u=[50,63.5] v=[-11.8,11.8] z=[20.5,39.5]
+[    4.435s] FEAT  propulsion_module extrude 'pod_294_cavity' op=Cut full_length_mm=19 sketch=pod_294_cavity
+[    4.528s] FEAT  propulsion_module cyl_z-profile 'pod_294_ear_hole' x=10.29 y=-57.54 z=[32.5,39.5] d=1.8
+[    4.537s] FEAT  propulsion_module extrude 'pod_294_ear_hole' op=Cut full_length_mm=7 sketch=pod_294_ear_hole
+[    4.624s] FEAT  propulsion_module cyl_z-profile 'pod_294_ear_hole' x=35.87 y=-46.15 z=[32.5,39.5] d=1.8
+[    4.635s] FEAT  propulsion_module extrude 'pod_294_ear_hole' op=Cut full_length_mm=7 sketch=pod_294_ear_hole
+[    4.726s] FEAT  propulsion_module prism-profile 'fin_45' theta=45 pts_rz=[[48,0],[48,90],[119,40],[119,0]] width=3
+[    4.737s] FEAT  propulsion_module extrude 'fin_45' op=Join full_length_mm=3 sketch=fin_45
+[    4.837s] FEAT  propulsion_module prism-profile 'fin_135' theta=135 pts_rz=[[48,0],[48,90],[119,40],[119,0]] width=3
+[    4.848s] FEAT  propulsion_module extrude 'fin_135' op=Join full_length_mm=3 sketch=fin_135
+[    4.950s] FEAT  propulsion_module prism-profile 'fin_225' theta=225 pts_rz=[[48,0],[48,90],[119,40],[119,0]] width=3
+[    4.962s] FEAT  propulsion_module extrude 'fin_225' op=Join full_length_mm=3 sketch=fin_225
+[    5.062s] FEAT  propulsion_module prism-profile 'fin_315' theta=315 pts_rz=[[48,0],[48,90],[119,40],[119,0]] width=3
+[    5.073s] FEAT  propulsion_module extrude 'fin_315' op=Join full_length_mm=3 sketch=fin_315
+[    5.172s] FEAT  propulsion_module radial_cyl-profile 'spigot_hole_45' theta=45 z=207.5 r0=-58.8 r1=58.8 d=2.5
+[    5.183s] FEAT  propulsion_module revolve 'spigot_hole_45' op=Cut sketch=spigot_hole_45
+[    5.283s] FEAT  propulsion_module radial_cyl-profile 'spigot_hole_135' theta=135 z=207.5 r0=-58.8 r1=58.8 d=2.5
+[    5.297s] FEAT  propulsion_module revolve 'spigot_hole_135' op=Cut sketch=spigot_hole_135
+[    5.359s] INFO  === component propulsion_module done in 4.10s: 42 features, 42 sketches, 1 bodies
+[    5.359s] INFO  === component intake_module (printed) start
+[    5.568s] FEAT  intake_module revolve_z-profile 'intake_body' pts_rz=[[58,200],[60,200],[60,300],[57.8,300],[57.8,315],[55.8,315],[55.8,300],[0,300],[0,297],[58,297],[58,222],[52,222],[52,219],[55.25,219],[55.25,215],[58,215]]
+[    5.579s] FEAT  intake_module revolve 'intake_body' op=NewBody sketch=intake_body
+[    5.677s] FEAT  intake_module through_cut-profile 'window_90' theta_normal=90 length=130
+[    5.688s] FEAT  intake_module extrude 'window_90' op=Cut full_length_mm=130 sketch=window_90
+[    5.883s] FEAT  intake_module through_cut-profile 'window_0' theta_normal=0 length=130
+[    5.894s] FEAT  intake_module extrude 'window_0' op=Cut full_length_mm=130 sketch=window_0
+[    6.146s] FEAT  intake_module cyl_z-profile 'cable_hole' x=0 y=0 z=[296,301] d=20
+[    6.159s] FEAT  intake_module extrude 'cable_hole' op=Cut full_length_mm=5 sketch=cable_hole
+[    6.268s] FEAT  intake_module cyl_z-profile 'vent_hole_45' x=28.28 y=28.28 z=[296,301] d=8
+[    6.280s] FEAT  intake_module extrude 'vent_hole_45' op=Cut full_length_mm=5 sketch=vent_hole_45
+[    6.392s] FEAT  intake_module cyl_z-profile 'vent_hole_135' x=-28.28 y=28.28 z=[296,301] d=8
+[    6.409s] FEAT  intake_module extrude 'vent_hole_135' op=Cut full_length_mm=5 sketch=vent_hole_135
+[    6.556s] FEAT  intake_module cyl_z-profile 'vent_hole_225' x=-28.28 y=-28.28 z=[296,301] d=8
+[    6.569s] FEAT  intake_module extrude 'vent_hole_225' op=Cut full_length_mm=5 sketch=vent_hole_225
+[    6.674s] FEAT  intake_module cyl_z-profile 'vent_hole_315' x=28.28 y=-28.28 z=[296,301] d=8
+[    6.686s] FEAT  intake_module extrude 'vent_hole_315' op=Cut full_length_mm=5 sketch=vent_hole_315
+[    6.941s] FEAT  intake_module radial_cyl-profile 'skirt_hole_45' theta=45 z=207.5 r0=-61 r1=61 d=3.2
+[    6.954s] FEAT  intake_module revolve 'skirt_hole_45' op=Cut sketch=skirt_hole_45
+[    7.066s] FEAT  intake_module radial_cyl-profile 'spigot_hole_45' theta=45 z=307.5 r0=-58.8 r1=58.8 d=2.5
+[    7.079s] FEAT  intake_module revolve 'spigot_hole_45' op=Cut sketch=spigot_hole_45
+[    7.362s] FEAT  intake_module radial_cyl-profile 'skirt_hole_135' theta=135 z=207.5 r0=-61 r1=61 d=3.2
+[    7.374s] FEAT  intake_module revolve 'skirt_hole_135' op=Cut sketch=skirt_hole_135
+[    7.491s] FEAT  intake_module radial_cyl-profile 'spigot_hole_135' theta=135 z=307.5 r0=-58.8 r1=58.8 d=2.5
+[    7.504s] FEAT  intake_module revolve 'spigot_hole_135' op=Cut sketch=spigot_hole_135
+[    7.560s] INFO  === component intake_module done in 2.20s: 12 features, 12 sketches, 1 bodies
+[    7.560s] INFO  === component avionics_module (printed) start
+[    7.786s] FEAT  avionics_module revolve_z-profile 'avionics_tube' pts_rz=[[58,300],[60,300],[60,500],[57.8,500],[57.8,515],[55.8,515],[55.8,500],[56.8,500],[56.8,498],[58,498]]
+[    7.799s] FEAT  avionics_module revolve 'avionics_tube' op=NewBody sketch=avionics_tube
+[    8.080s] FEAT  avionics_module box_pod-profile 'rail_x22.3_y+1' theta=0 u=[21.3,23.3] v=[47.34,60] z=[318,498]
+[    8.094s] FEAT  avionics_module extrude 'rail_x22.3_y+1' op=Join full_length_mm=180 sketch=rail_x22.3_y+1
+[    8.217s] FEAT  avionics_module box_pod-profile 'rail_x22.3_y-1' theta=0 u=[21.3,23.3] v=[-60,-47.34] z=[318,498]
+[    8.231s] FEAT  avionics_module extrude 'rail_x22.3_y-1' op=Join full_length_mm=180 sketch=rail_x22.3_y-1
+[    8.374s] FEAT  avionics_module box_pod-profile 'rail_x27.7_y+1' theta=0 u=[26.7,28.7] v=[47.34,60] z=[318,498]
+[    8.395s] FEAT  avionics_module extrude 'rail_x27.7_y+1' op=Join full_length_mm=180 sketch=rail_x27.7_y+1
+[    8.543s] FEAT  avionics_module box_pod-profile 'rail_x27.7_y-1' theta=0 u=[26.7,28.7] v=[-60,-47.34] z=[318,498]
+[    8.560s] FEAT  avionics_module extrude 'rail_x27.7_y-1' op=Join full_length_mm=180 sketch=rail_x27.7_y-1
+[    8.693s] FEAT  avionics_module revolve_z-profile 'rail_clip' pts_rz=[[60,317],[70,317],[70,499],[60,499]]
+[    8.708s] FEAT  avionics_module revolve 'rail_clip' op=Cut sketch=rail_clip
+[    9.029s] FEAT  avionics_module through_cut-profile 'vent_slot_60' theta_normal=60 length=130
+[    9.044s] FEAT  avionics_module extrude 'vent_slot_60' op=Cut full_length_mm=130 sketch=vent_slot_60
+[    9.437s] FEAT  avionics_module through_cut-profile 'vent_slot_120' theta_normal=120 length=130
+[    9.454s] FEAT  avionics_module extrude 'vent_slot_120' op=Cut full_length_mm=130 sketch=vent_slot_120
+[    9.808s] FEAT  avionics_module radial_cyl-profile 'skirt_hole_45' theta=45 z=307.5 r0=-61 r1=61 d=3.2
+[    9.825s] FEAT  avionics_module revolve 'skirt_hole_45' op=Cut sketch=skirt_hole_45
+[    9.983s] FEAT  avionics_module radial_cyl-profile 'spigot_hole_45' theta=45 z=507.5 r0=-58.8 r1=58.8 d=2.5
+[    9.999s] FEAT  avionics_module revolve 'spigot_hole_45' op=Cut sketch=spigot_hole_45
+[   10.357s] FEAT  avionics_module radial_cyl-profile 'skirt_hole_135' theta=135 z=307.5 r0=-61 r1=61 d=3.2
+[   10.373s] FEAT  avionics_module revolve 'skirt_hole_135' op=Cut sketch=skirt_hole_135
+[   10.531s] FEAT  avionics_module radial_cyl-profile 'spigot_hole_135' theta=135 z=507.5 r0=-58.8 r1=58.8 d=2.5
+[   10.549s] FEAT  avionics_module revolve 'spigot_hole_135' op=Cut sketch=spigot_hole_135
+[   10.625s] INFO  === component avionics_module done in 3.06s: 12 features, 12 sketches, 1 bodies
+[   10.625s] INFO  === component avionics_tray (printed) start
+[   11.032s] FEAT  avionics_tray box_pod-profile 'tray_plate' theta=0 u=[23.5,26.5] v=[-50,50] z=[320,495]
+[   11.062s] FEAT  avionics_tray extrude 'tray_plate' op=NewBody full_length_mm=175 sketch=tray_plate
+[   11.448s] FEAT  avionics_tray through_cut-profile 'fc_holes_and_strap_slots' theta_normal=0 length=70
+[   11.468s] FEAT  avionics_tray extrude 'fc_holes_and_strap_slots' op=Cut full_length_mm=70 sketch=fc_holes_and_strap_slots
+[   11.721s] INFO  === component avionics_tray done in 1.10s: 2 features, 2 sketches, 1 bodies
+[   11.721s] INFO  === component payload_module (printed) start
+[   12.049s] FEAT  payload_module revolve_z-profile 'payload_tube_bulkhead' pts_rz=[[58,500],[60,500],[60,736],[57.8,736],[57.8,751],[55.8,751],[55.8,736],[56.8,736],[56.8,734],[58,734],[58,518],[15,518],[15,526],[0,526],[0,515],[58,515]]
+[   12.067s] FEAT  payload_module revolve 'payload_tube_bulkhead' op=NewBody sketch=payload_tube_bulkhead
+[   12.499s] FEAT  payload_module cyl_z-profile 'bulkhead_hole_45' x=28.28 y=28.28 z=[514,519] d=6
+[   12.519s] FEAT  payload_module extrude 'bulkhead_hole_45' op=Cut full_length_mm=5 sketch=bulkhead_hole_45
+[   12.703s] FEAT  payload_module cyl_z-profile 'bulkhead_hole_135' x=-28.28 y=28.28 z=[514,519] d=6
+[   12.726s] FEAT  payload_module extrude 'bulkhead_hole_135' op=Cut full_length_mm=5 sketch=bulkhead_hole_135
+[   12.915s] FEAT  payload_module cyl_z-profile 'bulkhead_hole_225' x=-28.28 y=-28.28 z=[514,519] d=6
+[   12.936s] FEAT  payload_module extrude 'bulkhead_hole_225' op=Cut full_length_mm=5 sketch=bulkhead_hole_225
+[   13.106s] FEAT  payload_module cyl_z-profile 'bulkhead_hole_315' x=28.28 y=-28.28 z=[514,519] d=6
+[   13.125s] FEAT  payload_module extrude 'bulkhead_hole_315' op=Cut full_length_mm=5 sketch=bulkhead_hole_315
+[   13.560s] FEAT  payload_module radial_cyl-profile 'skirt_hole_45' theta=45 z=507.5 r0=-61 r1=61 d=3.2
+[   13.579s] FEAT  payload_module revolve 'skirt_hole_45' op=Cut sketch=skirt_hole_45
+[   14.021s] FEAT  payload_module radial_cyl-profile 'skirt_hole_135' theta=135 z=507.5 r0=-61 r1=61 d=3.2
+[   14.040s] FEAT  payload_module revolve 'skirt_hole_135' op=Cut sketch=skirt_hole_135
+[   14.472s] FEAT  payload_module box_pod-profile 'release_pod_box' theta=12 u=[58.5,76.5] v=[-16.5,16.5] z=[694.5,731]
+[   14.492s] FEAT  payload_module extrude 'release_pod_box' op=Join full_length_mm=36.5 sketch=release_pod_box
+[   14.954s] FEAT  payload_module prism-profile 'release_pod_wedge' theta=12 pts_rz=[[60,693.5],[60,694.5],[77.5,712],[77.5,693.5]] width=35
+[   14.976s] FEAT  payload_module extrude 'release_pod_wedge' op=Cut full_length_mm=35 sketch=release_pod_wedge
+[   15.457s] FEAT  payload_module box_pod-profile 'release_pod_cavity' theta=12 u=[61,74.5] v=[-11.8,11.8] z=[713,732]
+[   15.479s] FEAT  payload_module extrude 'release_pod_cavity' op=Cut full_length_mm=19 sketch=release_pod_cavity
+[   15.969s] FEAT  payload_module cyl_z-profile 'release_pod_ear_hole' x=69.18 y=0.392 z=[725,732] d=1.8
+[   15.993s] FEAT  payload_module extrude 'release_pod_ear_hole' op=Cut full_length_mm=7 sketch=release_pod_ear_hole
+[   16.198s] FEAT  payload_module cyl_z-profile 'release_pod_ear_hole' x=63.36 y=27.78 z=[725,732] d=1.8
+[   16.224s] FEAT  payload_module extrude 'release_pod_ear_hole' op=Cut full_length_mm=7 sketch=release_pod_ear_hole
+[   16.319s] INFO  === component payload_module done in 4.60s: 12 features, 12 sketches, 1 bodies
+[   16.319s] INFO  === component piston (printed) start
+[   16.773s] FEAT  piston revolve_z-profile 'piston' pts_rz=[[0,533.5],[20.5,533.5],[20.5,532],[57.5,532],[57.5,536],[0,536]]
+[   16.795s] FEAT  piston revolve 'piston' op=NewBody sketch=piston
+[   16.881s] INFO  === component piston done in 0.56s: 1 features, 1 sketches, 1 bodies
+[   16.881s] INFO  === component nose_cone (printed) start
+[   17.278s] FEAT  nose_cone revolve_z-spline 'nose_outer' pts_rz=[[60,751],[59.57,758.9],[58.79,766.8],[57.8,774.8],[56.62,782.7],[55.29,790.6],[53.82,798.5],[52.22,806.4],[50.49,814.3],[48.65,822.2],[46.69,830.2],[44.62,838.1],[42.43,846],[40.12,853.9],[37.68,861.8],[35.12,869.8],[32.41,877.7],[29.55,885.6],[26.53,893.5],[23.31,901.4],[19.86,909.3],[16.12,917.2],[11.97,925.2],[7.164,933.1],[0,941]]
+[   17.306s] FEAT  nose_cone revolve 'nose_solid' op=NewBody sketch=nose_outer
+[   17.435s] FEAT  nose_cone shell 'nose_shell' wall=2
+[   17.645s] FEAT  nose_cone revolve_z-profile 'nose_skirt' pts_rz=[[58,736],[60,736],[60,751],[58,751]]
+[   17.667s] FEAT  nose_cone revolve 'nose_skirt' op=Join sketch=nose_skirt
+[   18.166s] FEAT  nose_cone box_pod-profile 'latch_lug' theta=0 u=[59,66] v=[-5,5] z=[736,740]
+[   18.189s] FEAT  nose_cone extrude 'latch_lug' op=Join full_length_mm=4 sketch=latch_lug
+[   18.756s] FEAT  nose_cone box_pod-profile 'anchor_bar' theta=0 u=[-58.56,58.56] v=[-4,4] z=[755,759]
+[   18.782s] FEAT  nose_cone extrude 'anchor_bar' op=Join full_length_mm=4 sketch=anchor_bar
+[   19.018s] FEAT  nose_cone cyl_z-profile 'tether_eye' x=0 y=0 z=[754,760] d=4
+[   19.041s] FEAT  nose_cone extrude 'tether_eye' op=Cut full_length_mm=6 sketch=tether_eye
+[   19.158s] INFO  nose_cone: tip blunt r=3.0 mm not applied (optional in SPEC 5.4)
+[   19.158s] INFO  === component nose_cone done in 2.28s: 6 features, 5 sketches, 1 bodies
+[   19.158s] INFO  === component vane_1 (printed) start
+[   19.586s] FEAT  vane_1 prism-profile 'vane_plate' theta=0 pts_rz=[[13,14.6],[13,46.6],[43,46.6],[43,14.6]] width=3
+[   19.623s] FEAT  vane_1 extrude 'vane_plate' op=NewBody full_length_mm=3 sketch=vane_plate
+[   19.748s] FEAT  vane_1 fillet 'vane_edge_rounds' radius=1.4 edges=4
+[   19.962s] FEAT  vane_1 radial_cyl-profile 'vane_shaft' theta=0 z=37 r0=20 r1=59 d=5
+[   19.988s] FEAT  vane_1 revolve 'vane_shaft' op=Join sketch=vane_shaft
+[   20.508s] FEAT  vane_1 box_pod-profile 'vane_d_flat' theta=0 u=[55.5,60] v=[-3.5,3.5] z=[33.5,35.5]
+[   20.531s] FEAT  vane_1 extrude 'vane_d_flat' op=Cut full_length_mm=2 sketch=vane_d_flat
+[   20.626s] INFO  === component vane_1 done in 1.47s: 4 features, 3 sketches, 1 bodies
+[   20.626s] INFO  === component vane_2 (printed) start
+[   21.050s] FEAT  vane_2 prism-profile 'vane_plate' theta=90 pts_rz=[[13,14.6],[13,46.6],[43,46.6],[43,14.6]] width=3
+[   21.075s] FEAT  vane_2 extrude 'vane_plate' op=NewBody full_length_mm=3 sketch=vane_plate
+[   21.236s] FEAT  vane_2 fillet 'vane_edge_rounds' radius=1.4 edges=4
+[   21.459s] FEAT  vane_2 radial_cyl-profile 'vane_shaft' theta=90 z=37 r0=20 r1=59 d=5
+[   21.491s] FEAT  vane_2 revolve 'vane_shaft' op=Join sketch=vane_shaft
+[   22.097s] FEAT  vane_2 box_pod-profile 'vane_d_flat' theta=90 u=[55.5,60] v=[-3.5,3.5] z=[33.5,35.5]
+[   22.124s] FEAT  vane_2 extrude 'vane_d_flat' op=Cut full_length_mm=2 sketch=vane_d_flat
+[   22.227s] INFO  === component vane_2 done in 1.60s: 4 features, 3 sketches, 1 bodies
+[   22.227s] INFO  === component vane_3 (printed) start
+[   22.694s] FEAT  vane_3 prism-profile 'vane_plate' theta=180 pts_rz=[[13,14.6],[13,46.6],[43,46.6],[43,14.6]] width=3
+[   22.719s] FEAT  vane_3 extrude 'vane_plate' op=NewBody full_length_mm=3 sketch=vane_plate
+[   22.840s] FEAT  vane_3 fillet 'vane_edge_rounds' radius=1.4 edges=4
+[   23.067s] FEAT  vane_3 radial_cyl-profile 'vane_shaft' theta=180 z=37 r0=20 r1=59 d=5
+[   23.092s] FEAT  vane_3 revolve 'vane_shaft' op=Join sketch=vane_shaft
+[   23.637s] FEAT  vane_3 box_pod-profile 'vane_d_flat' theta=180 u=[55.5,60] v=[-3.5,3.5] z=[33.5,35.5]
+[   23.662s] FEAT  vane_3 extrude 'vane_d_flat' op=Cut full_length_mm=2 sketch=vane_d_flat
+[   23.777s] INFO  === component vane_3 done in 1.55s: 4 features, 3 sketches, 1 bodies
+[   23.777s] INFO  === component vane_4 (printed) start
+[   24.230s] FEAT  vane_4 prism-profile 'vane_plate' theta=270 pts_rz=[[13,14.6],[13,46.6],[43,46.6],[43,14.6]] width=3
+[   24.255s] FEAT  vane_4 extrude 'vane_plate' op=NewBody full_length_mm=3 sketch=vane_plate
+[   24.370s] FEAT  vane_4 fillet 'vane_edge_rounds' radius=1.4 edges=4
+[   24.581s] FEAT  vane_4 radial_cyl-profile 'vane_shaft' theta=270 z=37 r0=20 r1=59 d=5
+[   24.606s] FEAT  vane_4 revolve 'vane_shaft' op=Join sketch=vane_shaft
+[   25.224s] FEAT  vane_4 box_pod-profile 'vane_d_flat' theta=270 u=[55.5,60] v=[-3.5,3.5] z=[33.5,35.5]
+[   25.253s] FEAT  vane_4 extrude 'vane_d_flat' op=Cut full_length_mm=2 sketch=vane_d_flat
+[   25.385s] INFO  === component vane_4 done in 1.61s: 4 features, 3 sketches, 1 bodies
+[   25.385s] INFO  === component vane_horn_1 (printed) start
+[   25.915s] FEAT  vane_horn_1 prism-profile 'horn_plate' theta=0 pts_rz=[[55.5,32],[55.5,49],[58.5,49],[58.5,32]] width=8
+[   25.946s] FEAT  vane_horn_1 extrude 'horn_plate' op=NewBody full_length_mm=8 sketch=horn_plate
+[   26.521s] FEAT  vane_horn_1 through_circle-profile 'horn_d_bore' theta_normal=0 z=37 d=5.4 flat_z=35.3 length=121
+[   26.551s] FEAT  vane_horn_1 extrude 'horn_d_bore' op=Cut full_length_mm=121 sketch=horn_d_bore
+[   26.816s] FEAT  vane_horn_1 radial_cyl-profile 'horn_pin_hole' theta=0 z=47 r0=54.5 r1=59.5 d=1.6
+[   26.841s] FEAT  vane_horn_1 revolve 'horn_pin_hole' op=Cut sketch=horn_pin_hole
+[   26.944s] INFO  === component vane_horn_1 done in 1.56s: 3 features, 3 sketches, 1 bodies
+[   26.944s] INFO  === component vane_horn_2 (printed) start
+[   27.421s] FEAT  vane_horn_2 prism-profile 'horn_plate' theta=90 pts_rz=[[55.5,32],[55.5,49],[58.5,49],[58.5,32]] width=8
+[   27.447s] FEAT  vane_horn_2 extrude 'horn_plate' op=NewBody full_length_mm=8 sketch=horn_plate
+[   27.945s] FEAT  vane_horn_2 through_circle-profile 'horn_d_bore' theta_normal=90 z=37 d=5.4 flat_z=35.3 length=121
+[   27.972s] FEAT  vane_horn_2 extrude 'horn_d_bore' op=Cut full_length_mm=121 sketch=horn_d_bore
+[   28.223s] FEAT  vane_horn_2 radial_cyl-profile 'horn_pin_hole' theta=90 z=47 r0=54.5 r1=59.5 d=1.6
+[   28.249s] FEAT  vane_horn_2 revolve 'horn_pin_hole' op=Cut sketch=horn_pin_hole
+[   28.353s] INFO  === component vane_horn_2 done in 1.41s: 3 features, 3 sketches, 1 bodies
+[   28.353s] INFO  === component vane_horn_3 (printed) start
+[   28.841s] FEAT  vane_horn_3 prism-profile 'horn_plate' theta=180 pts_rz=[[55.5,32],[55.5,49],[58.5,49],[58.5,32]] width=8
+[   28.867s] FEAT  vane_horn_3 extrude 'horn_plate' op=NewBody full_length_mm=8 sketch=horn_plate
+[   29.382s] FEAT  vane_horn_3 through_circle-profile 'horn_d_bore' theta_normal=180 z=37 d=5.4 flat_z=35.3 length=121
+[   29.409s] FEAT  vane_horn_3 extrude 'horn_d_bore' op=Cut full_length_mm=121 sketch=horn_d_bore
+[   29.654s] FEAT  vane_horn_3 radial_cyl-profile 'horn_pin_hole' theta=180 z=47 r0=54.5 r1=59.5 d=1.6
+[   29.681s] FEAT  vane_horn_3 revolve 'horn_pin_hole' op=Cut sketch=horn_pin_hole
+[   29.787s] INFO  === component vane_horn_3 done in 1.43s: 3 features, 3 sketches, 1 bodies
+[   29.787s] INFO  === component vane_horn_4 (printed) start
+[   30.281s] FEAT  vane_horn_4 prism-profile 'horn_plate' theta=270 pts_rz=[[55.5,32],[55.5,49],[58.5,49],[58.5,32]] width=8
+[   30.308s] FEAT  vane_horn_4 extrude 'horn_plate' op=NewBody full_length_mm=8 sketch=horn_plate
+[   30.818s] FEAT  vane_horn_4 through_circle-profile 'horn_d_bore' theta_normal=270 z=37 d=5.4 flat_z=35.3 length=121
+[   30.846s] FEAT  vane_horn_4 extrude 'horn_d_bore' op=Cut full_length_mm=121 sketch=horn_d_bore
+[   31.096s] FEAT  vane_horn_4 radial_cyl-profile 'horn_pin_hole' theta=270 z=47 r0=54.5 r1=59.5 d=1.6
+[   31.123s] FEAT  vane_horn_4 revolve 'horn_pin_hole' op=Cut sketch=horn_pin_hole
+[   31.235s] INFO  === component vane_horn_4 done in 1.45s: 3 features, 3 sketches, 1 bodies
+[   31.235s] INFO  === component latch_arm (printed) start
+[   31.844s] FEAT  latch_arm cyl_z-profile 'latch_hub' x=67.41 y=8.706 z=[740.5,743.5] d=6
+[   31.873s] FEAT  latch_arm extrude 'latch_hub' op=NewBody full_length_mm=3 sketch=latch_hub
+[   32.132s] FEAT  latch_arm latch_arm-profile 'latch_arm_plate' axis=[67.41,8.706] tip=[62.89,-0.2134] lug_centre=[63,0] len=10
+[   32.164s] FEAT  latch_arm extrude 'latch_arm_plate' op=Join full_length_mm=3 sketch=latch_arm_plate
+[   32.295s] INFO  === component latch_arm done in 1.06s: 2 features, 2 sketches, 1 bodies
+[   32.295s] INFO  === component launch_pad (printed) start
+[   32.869s] FEAT  launch_pad revolve_z-profile 'pad_plate' pts_rz=[[51,-5],[120,-5],[120,0],[51,0]]
+[   32.901s] FEAT  launch_pad revolve 'pad_plate' op=NewBody sketch=pad_plate
+[   33.619s] FEAT  launch_pad box_pod-profile 'leg_0' theta=0 u=[90,110] v=[-10,10] z=[-110,-4]
+[   33.650s] FEAT  launch_pad extrude 'leg_0' op=Join full_length_mm=106 sketch=leg_0
+[   34.359s] FEAT  launch_pad box_pod-profile 'foot_0' theta=0 u=[80,120] v=[-20,20] z=[-110,-105]
+[   34.392s] FEAT  launch_pad extrude 'foot_0' op=Join full_length_mm=5 sketch=foot_0
+[   34.742s] FEAT  launch_pad box_pod-profile 'leg_90' theta=0 u=[-10,10] v=[90,110] z=[-110,-4]
+[   34.773s] FEAT  launch_pad extrude 'leg_90' op=Join full_length_mm=106 sketch=leg_90
+[   35.065s] FEAT  launch_pad box_pod-profile 'foot_90' theta=0 u=[-20,20] v=[80,120] z=[-110,-105]
+[   35.097s] FEAT  launch_pad extrude 'foot_90' op=Join full_length_mm=5 sketch=foot_90
+[   35.464s] FEAT  launch_pad box_pod-profile 'leg_180' theta=0 u=[-110,-90] v=[-10,10] z=[-110,-4]
+[   35.501s] FEAT  launch_pad extrude 'leg_180' op=Join full_length_mm=106 sketch=leg_180
+[   35.820s] FEAT  launch_pad box_pod-profile 'foot_180' theta=0 u=[-120,-80] v=[-20,20] z=[-110,-105]
+[   35.854s] FEAT  launch_pad extrude 'foot_180' op=Join full_length_mm=5 sketch=foot_180
+[   36.148s] FEAT  launch_pad box_pod-profile 'leg_270' theta=0 u=[-10,10] v=[-110,-90] z=[-110,-4]
+[   36.178s] FEAT  launch_pad extrude 'leg_270' op=Join full_length_mm=106 sketch=leg_270
+[   36.448s] FEAT  launch_pad box_pod-profile 'foot_270' theta=0 u=[-20,20] v=[-120,-80] z=[-110,-105]
+[   36.477s] FEAT  launch_pad extrude 'foot_270' op=Join full_length_mm=5 sketch=foot_270
+[   37.199s] FEAT  launch_pad box_pod-profile 'fin_rib_45-1' theta=45 u=[55,115] v=[-4.7,-1.7] z=[-1,4]
+[   37.231s] FEAT  launch_pad extrude 'fin_rib_45-1' op=Join full_length_mm=5 sketch=fin_rib_45-1
+[   37.522s] FEAT  launch_pad box_pod-profile 'fin_rib_45+1' theta=45 u=[55,115] v=[1.7,4.7] z=[-1,4]
+[   37.553s] FEAT  launch_pad extrude 'fin_rib_45+1' op=Join full_length_mm=5 sketch=fin_rib_45+1
+[   37.843s] FEAT  launch_pad box_pod-profile 'fin_rib_135-1' theta=135 u=[55,115] v=[-4.7,-1.7] z=[-1,4]
+[   37.873s] FEAT  launch_pad extrude 'fin_rib_135-1' op=Join full_length_mm=5 sketch=fin_rib_135-1
+[   38.151s] FEAT  launch_pad box_pod-profile 'fin_rib_135+1' theta=135 u=[55,115] v=[1.7,4.7] z=[-1,4]
+[   38.181s] FEAT  launch_pad extrude 'fin_rib_135+1' op=Join full_length_mm=5 sketch=fin_rib_135+1
+[   38.462s] FEAT  launch_pad box_pod-profile 'fin_rib_225-1' theta=225 u=[55,115] v=[-4.7,-1.7] z=[-1,4]
+[   38.493s] FEAT  launch_pad extrude 'fin_rib_225-1' op=Join full_length_mm=5 sketch=fin_rib_225-1
+[   38.774s] FEAT  launch_pad box_pod-profile 'fin_rib_225+1' theta=225 u=[55,115] v=[1.7,4.7] z=[-1,4]
+[   38.806s] FEAT  launch_pad extrude 'fin_rib_225+1' op=Join full_length_mm=5 sketch=fin_rib_225+1
+[   39.096s] FEAT  launch_pad box_pod-profile 'fin_rib_315-1' theta=315 u=[55,115] v=[-4.7,-1.7] z=[-1,4]
+[   39.138s] FEAT  launch_pad extrude 'fin_rib_315-1' op=Join full_length_mm=5 sketch=fin_rib_315-1
+[   39.421s] FEAT  launch_pad box_pod-profile 'fin_rib_315+1' theta=315 u=[55,115] v=[1.7,4.7] z=[-1,4]
+[   39.451s] FEAT  launch_pad extrude 'fin_rib_315+1' op=Join full_length_mm=5 sketch=fin_rib_315+1
+[   39.578s] INFO  === component launch_pad done in 7.28s: 17 features, 17 sketches, 1 bodies
+[   39.578s] INFO  === component edf_unit (placeholder) start
+[   40.147s] FEAT  edf_unit revolve_z-profile 'edf_housing_and_lip' pts_rz=[[45.5,109],[46.25,109],[46.25,215],[55,215],[55,219],[0,219],[0,215],[45.5,215]]
+[   40.177s] FEAT  edf_unit revolve 'edf_housing_and_lip' op=NewBody sketch=edf_housing_and_lip
+[   40.458s] FEAT  edf_unit revolve_z-profile 'edf_hub' pts_rz=[[0,109],[21,109],[21,179],[0,179]]
+[   40.489s] FEAT  edf_unit revolve 'edf_hub' op=NewBody sketch=edf_hub
+[   40.616s] INFO  === component edf_unit done in 1.04s: 2 features, 2 sketches, 2 bodies
+[   40.616s] INFO  === component battery (placeholder) start
+[   41.288s] FEAT  battery box_pod-profile 'battery' theta=0 u=[-26.5,23.5] v=[-36,36] z=[330,438]
+[   41.318s] FEAT  battery extrude 'battery' op=NewBody full_length_mm=108 sketch=battery
+[   41.450s] INFO  === component battery done in 0.83s: 1 features, 1 sketches, 1 bodies
+[   41.450s] INFO  === component esc (placeholder) start
+[   42.133s] FEAT  esc box_pod-profile 'esc' theta=0 u=[26.5,46.5] v=[-22.5,22.5] z=[330,430]
+[   42.165s] FEAT  esc extrude 'esc' op=NewBody full_length_mm=100 sketch=esc
+[   42.299s] INFO  === component esc done in 0.85s: 1 features, 1 sketches, 1 bodies
+[   42.299s] INFO  === component fc (placeholder) start
+[   42.992s] FEAT  fc box_pod-profile 'fc' theta=0 u=[26.5,41.5] v=[-25,25] z=[440,490]
+[   43.026s] FEAT  fc extrude 'fc' op=NewBody full_length_mm=50 sketch=fc
+[   43.165s] INFO  === component fc done in 0.87s: 1 features, 1 sketches, 1 bodies
+[   43.165s] INFO  === component misc_electronics (placeholder) start
+[   43.269s] ERROR === component misc_electronics FAILED after 0.10s: AttributeError: 'Layout' object has no attribute 'misc_x'. Did you mean: 'esc_x'?
+Traceback (most recent call last):
+  File "C:/Users/yc012/AppData/Roaming/Autodesk/Autodesk Fusion 360/API/Scripts/CanSatEDFRocket/CanSatEDFRocket.py", line 1266, in build_component
+    fn(self, cb)
+    ~~^^^^^^^^^^
+  File "C:/Users/yc012/AppData/Roaming/Autodesk/Autodesk Fusion 360/API/Scripts/CanSatEDFRocket/CanSatEDFRocket.py", line 1052, in build_misc_electronics
+    cb.box_xy(L.misc_x[0], L.misc_x[1], L.misc_y[0], L.misc_y[1], L.misc_z[0], L.misc_z[1], ctx.NEW, "misc_electronics")
+              ^^^^^^^^
+AttributeError: 'Layout' object has no attribute 'misc_x'. Did you mean: 'esc_x'?
+
+[   43.269s] INFO  === component servo_vane_1 (placeholder) start
+[   43.975s] FEAT  servo_vane_1 box_pod-profile 'case' theta=24 u=[50.5,63] v=[-11.5,11.5] z=[20.5,43]
+[   44.009s] FEAT  servo_vane_1 extrude 'case' op=NewBody full_length_mm=22.5 sketch=case
+[   44.763s] FEAT  servo_vane_1 box_pod-profile 'ears' theta=24 u=[50.5,63] v=[-16.25,16.25] z=[38.5,41]
+[   44.797s] FEAT  servo_vane_1 extrude 'ears' op=Join full_length_mm=2.5 sketch=ears
+[   45.553s] FEAT  servo_vane_1 cyl_z-profile 'boss' x=54.08 y=18.06 z=[42,48] d=6
+[   45.586s] FEAT  servo_vane_1 extrude 'boss' op=Join full_length_mm=6 sketch=boss
+[   45.723s] INFO  === component servo_vane_1 done in 2.45s: 3 features, 3 sketches, 1 bodies
+[   45.723s] INFO  === component servo_vane_2 (placeholder) start
+[   46.481s] FEAT  servo_vane_2 box_pod-profile 'case' theta=114 u=[50.5,63] v=[-11.5,11.5] z=[20.5,43]
+[   46.516s] FEAT  servo_vane_2 extrude 'case' op=NewBody full_length_mm=22.5 sketch=case
+[   47.312s] FEAT  servo_vane_2 box_pod-profile 'ears' theta=114 u=[50.5,63] v=[-16.25,16.25] z=[38.5,41]
+[   47.348s] FEAT  servo_vane_2 extrude 'ears' op=Join full_length_mm=2.5 sketch=ears
+[   48.151s] FEAT  servo_vane_2 cyl_z-profile 'boss' x=-18.06 y=54.08 z=[42,48] d=6
+[   48.186s] FEAT  servo_vane_2 extrude 'boss' op=Join full_length_mm=6 sketch=boss
+[   48.330s] INFO  === component servo_vane_2 done in 2.61s: 3 features, 3 sketches, 1 bodies
+[   48.330s] INFO  === component servo_vane_3 (placeholder) start
+[   49.115s] FEAT  servo_vane_3 box_pod-profile 'case' theta=204 u=[50.5,63] v=[-11.5,11.5] z=[20.5,43]
+[   49.151s] FEAT  servo_vane_3 extrude 'case' op=NewBody full_length_mm=22.5 sketch=case
+[   50.006s] FEAT  servo_vane_3 box_pod-profile 'ears' theta=204 u=[50.5,63] v=[-16.25,16.25] z=[38.5,41]
+[   50.043s] FEAT  servo_vane_3 extrude 'ears' op=Join full_length_mm=2.5 sketch=ears
+[   50.876s] FEAT  servo_vane_3 cyl_z-profile 'boss' x=-54.08 y=-18.06 z=[42,48] d=6
+[   50.914s] FEAT  servo_vane_3 extrude 'boss' op=Join full_length_mm=6 sketch=boss
+[   51.068s] INFO  === component servo_vane_3 done in 2.74s: 3 features, 3 sketches, 1 bodies
+[   51.068s] INFO  === component servo_vane_4 (placeholder) start
+[   51.898s] FEAT  servo_vane_4 box_pod-profile 'case' theta=294 u=[50.5,63] v=[-11.5,11.5] z=[20.5,43]
+[   51.936s] FEAT  servo_vane_4 extrude 'case' op=NewBody full_length_mm=22.5 sketch=case
+[   52.817s] FEAT  servo_vane_4 box_pod-profile 'ears' theta=294 u=[50.5,63] v=[-16.25,16.25] z=[38.5,41]
+[   52.855s] FEAT  servo_vane_4 extrude 'ears' op=Join full_length_mm=2.5 sketch=ears
+[   53.729s] FEAT  servo_vane_4 cyl_z-profile 'boss' x=18.06 y=-54.08 z=[42,48] d=6
+[   53.769s] FEAT  servo_vane_4 extrude 'boss' op=Join full_length_mm=6 sketch=boss
+[   53.928s] INFO  === component servo_vane_4 done in 2.86s: 3 features, 3 sketches, 1 bodies
+[   53.928s] INFO  === component servo_release (placeholder) start
+[   54.820s] FEAT  servo_release box_pod-profile 'case' theta=12 u=[61.5,74] v=[-11.5,11.5] z=[713,735.5]
+[   54.860s] FEAT  servo_release extrude 'case' op=NewBody full_length_mm=22.5 sketch=case
+[   55.779s] FEAT  servo_release box_pod-profile 'ears' theta=12 u=[61.5,74] v=[-16.25,16.25] z=[731,733.5]
+[   55.821s] FEAT  servo_release extrude 'ears' op=Join full_length_mm=2.5 sketch=ears
+[   56.761s] FEAT  servo_release cyl_z-profile 'boss' x=67.41 y=8.706 z=[734.5,740.5] d=6
+[   56.803s] FEAT  servo_release extrude 'boss' op=Join full_length_mm=6 sketch=boss
+[   56.968s] INFO  === component servo_release done in 3.04s: 3 features, 3 sketches, 1 bodies
+[   56.968s] INFO  === component servo_arm_1 (placeholder) start
+[   57.893s] FEAT  servo_arm_1 box_pod-profile 'servo_arm' theta=24 u=[56.75,70.75] v=[-8,-3] z=[48,50]
+[   57.935s] FEAT  servo_arm_1 extrude 'servo_arm' op=NewBody full_length_mm=2 sketch=servo_arm
+[   58.115s] INFO  === component servo_arm_1 done in 1.15s: 1 features, 1 sketches, 1 bodies
+[   58.116s] INFO  === component servo_arm_2 (placeholder) start
+[   59.030s] FEAT  servo_arm_2 box_pod-profile 'servo_arm' theta=114 u=[56.75,70.75] v=[-8,-3] z=[48,50]
+[   59.073s] FEAT  servo_arm_2 extrude 'servo_arm' op=NewBody full_length_mm=2 sketch=servo_arm
+[   59.263s] INFO  === component servo_arm_2 done in 1.15s: 1 features, 1 sketches, 1 bodies
+[   59.263s] INFO  === component servo_arm_3 (placeholder) start
+[   60.215s] FEAT  servo_arm_3 box_pod-profile 'servo_arm' theta=204 u=[56.75,70.75] v=[-8,-3] z=[48,50]
+[   60.259s] FEAT  servo_arm_3 extrude 'servo_arm' op=NewBody full_length_mm=2 sketch=servo_arm
+[   60.438s] INFO  === component servo_arm_3 done in 1.18s: 1 features, 1 sketches, 1 bodies
+[   60.438s] INFO  === component servo_arm_4 (placeholder) start
+[   61.380s] FEAT  servo_arm_4 box_pod-profile 'servo_arm' theta=294 u=[56.75,70.75] v=[-8,-3] z=[48,50]
+[   61.424s] FEAT  servo_arm_4 extrude 'servo_arm' op=NewBody full_length_mm=2 sketch=servo_arm
+[   61.606s] INFO  === component servo_arm_4 done in 1.17s: 1 features, 1 sketches, 1 bodies
+[   61.606s] INFO  === component pushrod_1 (placeholder) start
+[   62.418s] FEAT  pushrod_1 radial_cyl-profile 'pushrod' theta=0 z=0 r0=0 r1=25.8 d=1.5
+[   62.463s] FEAT  pushrod_1 revolve 'pushrod' op=NewBody sketch=pushrod
+[   62.654s] FEAT  pushrod_1 move 'pushrod' A=[66.87,23.75,49] B=[57,0,47] d=1.5 length_mm=25.8
+[   62.795s] INFO  === component pushrod_1 done in 1.19s: 2 features, 1 sketches, 1 bodies
+[   62.795s] INFO  === component pushrod_2 (placeholder) start
+[   63.623s] FEAT  pushrod_2 radial_cyl-profile 'pushrod' theta=0 z=0 r0=0 r1=25.8 d=1.5
+[   63.667s] FEAT  pushrod_2 revolve 'pushrod' op=NewBody sketch=pushrod
+[   63.846s] FEAT  pushrod_2 move 'pushrod' A=[-23.75,66.87,49] B=[3.49e-15,57,47] d=1.5 length_mm=25.8
+[   63.975s] INFO  === component pushrod_2 done in 1.18s: 2 features, 1 sketches, 1 bodies
+[   63.975s] INFO  === component pushrod_3 (placeholder) start
+[   64.807s] FEAT  pushrod_3 radial_cyl-profile 'pushrod' theta=0 z=0 r0=0 r1=25.8 d=1.5
+[   64.851s] FEAT  pushrod_3 revolve 'pushrod' op=NewBody sketch=pushrod
+[   65.029s] FEAT  pushrod_3 move 'pushrod' A=[-66.87,-23.75,49] B=[-57,6.98e-15,47] d=1.5 length_mm=25.8
+[   65.163s] INFO  === component pushrod_3 done in 1.19s: 2 features, 1 sketches, 1 bodies
+[   65.163s] INFO  === component pushrod_4 (placeholder) start
+[   65.988s] FEAT  pushrod_4 radial_cyl-profile 'pushrod' theta=0 z=0 r0=0 r1=25.8 d=1.5
+[   66.032s] FEAT  pushrod_4 revolve 'pushrod' op=NewBody sketch=pushrod
+[   66.213s] FEAT  pushrod_4 move 'pushrod' A=[23.75,-66.87,49] B=[-1.047e-14,-57,47] d=1.5 length_mm=25.8
+[   66.345s] INFO  === component pushrod_4 done in 1.18s: 2 features, 1 sketches, 1 bodies
+[   66.345s] INFO  === component cansat_payload (placeholder) start
+[   67.177s] FEAT  cansat_payload revolve_z-profile 'cansat_can_and_chute_block' pts_rz=[[0,536],[41.5,536],[41.5,711],[0,711]]
+[   67.222s] FEAT  cansat_payload revolve 'cansat_can_and_chute_block' op=NewBody sketch=cansat_can_and_chute_block
+[   67.407s] INFO  === component cansat_payload done in 1.06s: 1 features, 1 sketches, 1 bodies
+[   67.407s] INFO  === component spring (placeholder) start
+[   68.235s] FEAT  spring revolve_z-profile 'spring_tube' pts_rz=[[18.4,518],[20,518],[20,532],[18.4,532]]
+[   68.280s] FEAT  spring revolve 'spring_tube' op=NewBody sketch=spring_tube
+[   68.464s] INFO  === component spring done in 1.06s: 1 features, 1 sketches, 1 bodies
+[   68.464s] INFO  === component chute_pack (placeholder) start
+[   69.430s] FEAT  chute_pack cyl_z-profile 'chute_pack' x=0 y=0 z=[765,835] d=80
+[   69.476s] FEAT  chute_pack extrude 'chute_pack' op=NewBody full_length_mm=70 sketch=chute_pack
+[   69.665s] INFO  === component chute_pack done in 1.20s: 1 features, 1 sketches, 1 bodies
+[   69.733s] WARN  misc_electronics: placeholder has zero volume; density undefined
+[   69.978s] INFO  exported STL propulsion_module: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\propulsion_module.stl (357884 bytes)
+[   70.086s] INFO  exported STL intake_module: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\intake_module.stl (309084 bytes)
+[   70.199s] INFO  exported STL avionics_module: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\avionics_module.stl (218684 bytes)
+[   70.277s] INFO  exported STL avionics_tray: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\avionics_tray.stl (35484 bytes)
+[   70.382s] INFO  exported STL payload_module: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\payload_module.stl (237084 bytes)
+[   70.449s] INFO  exported STL piston: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\piston.stl (33484 bytes)
+[   70.604s] INFO  exported STL nose_cone: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\nose_cone.stl (945984 bytes)
+[   70.680s] INFO  exported STL vane: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\vane.stl (44484 bytes)
+[   70.749s] INFO  exported STL vane_horn: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\vane_horn.stl (18284 bytes)
+[   70.812s] INFO  exported STL latch_arm: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\latch_arm.stl (8084 bytes)
+[   70.920s] INFO  exported STL launch_pad: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\stl\launch_pad.stl (46884 bytes)
+[   71.227s] INFO  exported STEP: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\CanSatEDFRocket.step (1364471 bytes)
+[   71.771s] INFO  exported f3d: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\CanSatEDFRocket.f3d (1185089 bytes)
+[   74.630s] INFO  exported preview: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion\preview.png (392634 bytes)
+[   74.633s] INFO  report written: B:\0)AI_Cad\CanSat_EDF_Rocket\cad\exports\fusion360_report.json
+[   74.633s] INFO  finished in 74.6s: 37/38 components OK, 1 failed, 0 optional features skipped

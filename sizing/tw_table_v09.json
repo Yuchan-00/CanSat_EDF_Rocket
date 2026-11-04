@@ -1,0 +1,791 @@
+{
+  "generator": "vtol_sizing.tw_table_all",
+  "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+  "thrust_table_kgf": [
+    2.0,
+    2.3,
+    2.6,
+    3.09
+  ],
+  "tw_target": 1.3,
+  "power_model": "P = P_nom (T/T_ref)^1.5; P1 T_ref = edf.thrust_nominal_N, P2 T_ref = T_max",
+  "voltage_condition": "T_max at 22.2 V at the ESC; loaded_pack = full throttle at 3.7 V/cell OCV",
+  "configs": {
+    "vtol_battery": {
+      "config": "vtol_battery",
+      "source": "cadquery_report_vtol.json",
+      "mass_g": 1653.699819990231,
+      "cad_mass_g": 1653.699819990231,
+      "weight_N": 16.217255339707197,
+      "lead_drag": {
+        "area_mm2": 325.0,
+        "cd_ASSUMED": 1.0,
+        "cd_band_ASSUMED": [
+          0.8,
+          1.2
+        ],
+        "drag_over_thrust": 0.032029324048061296,
+        "drag_over_thrust_band": [
+          0.025623459238449036,
+          0.03843518885767356
+        ],
+        "hover_drag_N": 0.5366151468739582,
+        "thrust_for_tw_1p3_kgf": 2.220945137488898,
+        "thrust_for_tw_1p3_kgf_band": [
+          2.206343929736913,
+          2.235740889304543
+        ],
+        "label": "E (Cd ASSUMED, drag area from Layout.ml_jet_drag)"
+      },
+      "com_mm": [
+        1.324558926616389,
+        -0.18783018005066282,
+        245.324093839456
+      ],
+      "inertia_diag_kg_m2": [
+        0.03550573095386363,
+        0.035800920490461435,
+        0.003311703676669542
+      ],
+      "printed_mass_g": 565.5964402019343,
+      "vane_lever_arm_mm": 208.324093839456,
+      "vehicle_h_mm": 475.29999999999995,
+      "footprint_d_mm": 246.8,
+      "tip_over": {
+        "cg_height_mm": 245.324093839456,
+        "fin_tip_r_mm": 123.4,
+        "angle_toward_a_fin_deg": 26.702765175440867,
+        "angle_between_fins_deg": 19.579476872248367
+      },
+      "tw_table": [
+        {
+          "thrust_kgf": 2.0,
+          "thrust_N": 19.6133,
+          "tw": 1.2094093352515543,
+          "tw_ok_1p3": false,
+          "u_hover": 0.9093128779441735,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 1538.4615384615383,
+          "hover_power_W_P1": 886.387702346755,
+          "hover_current_A_P1": 39.92737397958356,
+          "tw1p3_power_W_P1": null,
+          "hover_power_W_P2": 1702.222974190461,
+          "hover_current_A_P2": 76.67671054911986,
+          "tw1p3_power_W_P2": null
+        },
+        {
+          "thrust_kgf": 2.3,
+          "thrust_N": 22.555294999999997,
+          "tw": 1.3908207355392872,
+          "tw_ok_1p3": true,
+          "u_hover": 0.8479386308777794,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 1769.230769230769,
+          "hover_power_W_P1": 886.387702346755,
+          "hover_current_A_P1": 39.92737397958356,
+          "tw1p3_power_W_P1": 1313.8287179236177,
+          "hover_power_W_P2": 1380.287920112811,
+          "hover_current_A_P2": 62.17513153661311,
+          "tw1p3_power_W_P2": 2045.9014758959781
+        },
+        {
+          "thrust_kgf": 2.6,
+          "thrust_N": 25.49729,
+          "tw": 1.5722321358270206,
+          "tw_ok_1p3": true,
+          "u_hover": 0.7975201516600913,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 2000.0,
+          "hover_power_W_P1": 886.387702346755,
+          "hover_current_A_P1": 39.92737397958356,
+          "tw1p3_power_W_P1": 1313.8287179236177,
+          "hover_power_W_P2": 1148.4217770480047,
+          "hover_current_A_P2": 51.730710677838054,
+          "tw1p3_power_W_P2": 1702.2229741904612
+        },
+        {
+          "thrust_kgf": 3.09,
+          "thrust_N": 30.302548499999997,
+          "tw": 1.868537422963651,
+          "tw_ok_1p3": true,
+          "u_hover": 0.731558565852331,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 2376.923076923077,
+          "hover_power_W_P1": 886.387702346755,
+          "hover_current_A_P1": 39.92737397958356,
+          "tw1p3_power_W_P1": 1313.8287179236177,
+          "hover_power_W_P2": 886.387702346755,
+          "hover_current_A_P2": 39.92737397958356,
+          "tw1p3_power_W_P2": 1313.8287179236177
+        }
+      ],
+      "vane_authority_at_hover": {
+        "thrust_N": 16.217255339707197,
+        "q_e_Pa": 1598.2391582942591,
+        "force_per_vane_N": 1.2853801979844552,
+        "lever_arm_mm": 208.324093839456,
+        "M_pitch_Nm": 0.5355513299685843,
+        "M_roll_Nm": 0.143962582174259,
+        "I_xx_kg_m2": 0.03550573095386363,
+        "I_zz_kg_m2": 0.003311703676669542,
+        "alpha_pitch_rad_s2": 15.083517944313922,
+        "alpha_roll_rad_s2": 43.47085253685404
+      },
+      "vane_authority_at_thrust_nominal": {
+        "thrust_N": 30.302548499999997,
+        "q_e_Pa": 2986.36967811875,
+        "force_per_vane_N": 2.4017810026703823,
+        "lever_arm_mm": 208.324093839456,
+        "M_pitch_Nm": 1.000697701964255,
+        "M_roll_Nm": 0.26899947229908283,
+        "I_xx_kg_m2": 0.03550573095386363,
+        "I_zz_kg_m2": 0.003311703676669542,
+        "alpha_pitch_rad_s2": 28.18411774889433,
+        "alpha_roll_rad_s2": 81.22691477324615
+      }
+    },
+    "vtol_hybrid": {
+      "config": "vtol_hybrid",
+      "source": "cadquery_report_vtol_hybrid.json",
+      "mass_g": 1526.7998199902308,
+      "cad_mass_g": 1526.7998199902308,
+      "weight_N": 14.972791454707197,
+      "lead_drag": {
+        "area_mm2": 325.0,
+        "cd_ASSUMED": 1.0,
+        "cd_band_ASSUMED": [
+          0.8,
+          1.2
+        ],
+        "drag_over_thrust": 0.032029324048061296,
+        "drag_over_thrust_band": [
+          0.025623459238449036,
+          0.03843518885767356
+        ],
+        "hover_drag_N": 0.4954368983701229,
+        "thrust_for_tw_1p3_kgf": 2.0505164208981164,
+        "thrust_for_tw_1p3_kgf_band": [
+          2.03703566635132,
+          2.0641767907764184
+        ],
+        "label": "E (Cd ASSUMED, drag area from Layout.ml_jet_drag)"
+      },
+      "com_mm": [
+        2.3095623800247838,
+        -0.20344168952056924,
+        232.50949245681193
+      ],
+      "inertia_diag_kg_m2": [
+        0.03220349794216582,
+        0.03248627915780368,
+        0.0032519401267280404
+      ],
+      "printed_mass_g": 565.5964402019343,
+      "vane_lever_arm_mm": 195.50949245681193,
+      "vehicle_h_mm": 475.29999999999995,
+      "footprint_d_mm": 246.8,
+      "tip_over": {
+        "cg_height_mm": 232.50949245681193,
+        "fin_tip_r_mm": 123.4,
+        "angle_toward_a_fin_deg": 27.956278971568786,
+        "angle_between_fins_deg": 20.570284788543493
+      },
+      "tw_table": [
+        {
+          "thrust_kgf": 2.0,
+          "thrust_N": 19.6133,
+          "tw": 1.3099294182604742,
+          "tw_ok_1p3": true,
+          "u_hover": 0.8737275948458509,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 1538.4615384615383,
+          "hover_power_W_P1": 786.3426893421271,
+          "hover_current_A_P1": 35.42084186225798,
+          "tw1p3_power_W_P1": 1165.5391931225372,
+          "hover_power_W_P2": 1510.0960762892535,
+          "hover_current_A_P2": 68.0223457787952,
+          "tw1p3_power_W_P2": 2238.306766440732
+        },
+        {
+          "thrust_kgf": 2.3,
+          "thrust_N": 22.555294999999997,
+          "tw": 1.5064188309995452,
+          "tw_ok_1p3": true,
+          "u_hover": 0.8147551832860008,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 1769.230769230769,
+          "hover_power_W_P1": 786.3426893421271,
+          "hover_current_A_P1": 35.42084186225798,
+          "tw1p3_power_W_P1": 1165.5391931225372,
+          "hover_power_W_P2": 1224.497262647444,
+          "hover_current_A_P2": 55.157534353488465,
+          "tw1p3_power_W_P2": 1814.9841930633143
+        },
+        {
+          "thrust_kgf": 2.6,
+          "thrust_N": 25.49729,
+          "tw": 1.7029082437386165,
+          "tw_ok_1p3": true,
+          "u_hover": 0.7663097937493966,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 2000.0,
+          "hover_power_W_P1": 786.3426893421271,
+          "hover_current_A_P1": 35.42084186225798,
+          "tw1p3_power_W_P1": 1165.5391931225372,
+          "hover_power_W_P2": 1018.8014412565917,
+          "hover_current_A_P2": 45.89195681335999,
+          "tw1p3_power_W_P2": 1510.0960762892535
+        },
+        {
+          "thrust_kgf": 3.09,
+          "thrust_N": 30.302548499999997,
+          "tw": 2.0238409512124327,
+          "tw_ok_1p3": true,
+          "u_hover": 0.7029295655375941,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 2376.923076923077,
+          "hover_power_W_P1": 786.3426893421271,
+          "hover_current_A_P1": 35.42084186225798,
+          "tw1p3_power_W_P1": 1165.5391931225372,
+          "hover_power_W_P2": 786.3426893421271,
+          "hover_current_A_P2": 35.42084186225798,
+          "tw1p3_power_W_P2": 1165.5391931225372
+        }
+      ],
+      "vane_authority_at_hover": {
+        "thrust_N": 14.972791454707197,
+        "q_e_Pa": 1475.5950443287998,
+        "force_per_vane_N": 1.1867439490398368,
+        "lever_arm_mm": 195.50949245681193,
+        "M_pitch_Nm": 0.46403941430594237,
+        "M_roll_Nm": 0.13291532229246172,
+        "I_xx_kg_m2": 0.03220349794216582,
+        "I_zz_kg_m2": 0.0032519401267280404,
+        "alpha_pitch_rad_s2": 14.409596595354627,
+        "alpha_roll_rad_s2": 40.872622838291704
+      },
+      "vane_authority_at_thrust_nominal": {
+        "thrust_N": 30.302548499999997,
+        "q_e_Pa": 2986.36967811875,
+        "force_per_vane_N": 2.4017810026703823,
+        "lever_arm_mm": 195.50949245681193,
+        "M_pitch_Nm": 0.9391419696489987,
+        "M_roll_Nm": 0.26899947229908283,
+        "I_xx_kg_m2": 0.03220349794216582,
+        "I_zz_kg_m2": 0.0032519401267280404,
+        "alpha_pitch_rad_s2": 29.162731680129944,
+        "alpha_roll_rad_s2": 82.7196878835953
+      }
+    },
+    "vtol_tether": {
+      "config": "vtol_tether",
+      "source": "cadquery_report_vtol_tether.json",
+      "mass_g": 1405.7998199902308,
+      "cad_mass_g": 1405.7998199902308,
+      "weight_N": 13.786186804707196,
+      "lead_drag": {
+        "area_mm2": 325.0,
+        "cd_ASSUMED": 1.0,
+        "cd_band_ASSUMED": [
+          0.8,
+          1.2
+        ],
+        "drag_over_thrust": 0.032029324048061296,
+        "drag_over_thrust_band": [
+          0.025623459238449036,
+          0.03843518885767356
+        ],
+        "hover_drag_N": 0.4561731626020846,
+        "thrust_for_tw_1p3_kgf": 1.8880114980652993,
+        "thrust_for_tw_1p3_kgf_band": [
+          1.875599103154655,
+          1.9005892736613428
+        ],
+        "label": "E (Cd ASSUMED, drag area from Layout.ml_jet_drag)"
+      },
+      "com_mm": [
+        2.9137589482148667,
+        -0.220952322316183,
+        219.7939997482211
+      ],
+      "inertia_diag_kg_m2": [
+        0.029262760920716273,
+        0.02953248056701805,
+        0.0032223051792708264
+      ],
+      "printed_mass_g": 565.5964402019343,
+      "vane_lever_arm_mm": 182.7939997482211,
+      "vehicle_h_mm": 475.29999999999995,
+      "footprint_d_mm": 246.8,
+      "tip_over": {
+        "cg_height_mm": 219.7939997482211,
+        "fin_tip_r_mm": 123.4,
+        "angle_toward_a_fin_deg": 29.31137020304883,
+        "angle_between_fins_deg": 21.652798149014412
+      },
+      "tw_table": [
+        {
+          "thrust_kgf": 2.0,
+          "thrust_N": 19.6133,
+          "tw": 1.4226776611864258,
+          "tw_ok_1p3": true,
+          "u_hover": 0.8383912630717925,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 1538.4615384615383,
+          "hover_power_W_P1": 694.7425981059463,
+          "hover_current_A_P1": 31.294711626393976,
+          "tw1p3_power_W_P1": 1029.766968268905,
+          "hover_power_W_P2": 1334.1868445531254,
+          "hover_current_A_P2": 60.09850651140205,
+          "tw1p3_power_W_P2": 1977.5691684450483
+        },
+        {
+          "thrust_kgf": 2.3,
+          "thrust_N": 22.555294999999997,
+          "tw": 1.6360793103643896,
+          "tw_ok_1p3": true,
+          "u_hover": 0.7818038840011162,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 1769.230769230769,
+          "hover_power_W_P1": 694.7425981059463,
+          "hover_current_A_P1": 31.294711626393976,
+          "tw1p3_power_W_P1": 1029.766968268905,
+          "hover_power_W_P2": 1081.8570849015318,
+          "hover_current_A_P2": 48.732301121690625,
+          "tw1p3_power_W_P2": 1603.5589201763535
+        },
+        {
+          "thrust_kgf": 2.6,
+          "thrust_N": 25.49729,
+          "tw": 1.8494809595423536,
+          "tw_ok_1p3": true,
+          "u_hover": 0.7353177805940647,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 2000.0,
+          "hover_power_W_P1": 694.7425981059463,
+          "hover_current_A_P1": 31.294711626393976,
+          "tw1p3_power_W_P1": 1029.766968268905,
+          "hover_power_W_P2": 900.1225163609688,
+          "hover_current_A_P2": 40.54605929553914,
+          "tw1p3_power_W_P2": 1334.1868445531252
+        },
+        {
+          "thrust_kgf": 3.09,
+          "thrust_N": 30.302548499999997,
+          "tw": 2.198036986533028,
+          "tw_ok_1p3": true,
+          "u_hover": 0.6745008510410427,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 2376.923076923077,
+          "hover_power_W_P1": 694.7425981059463,
+          "hover_current_A_P1": 31.294711626393976,
+          "tw1p3_power_W_P1": 1029.766968268905,
+          "hover_power_W_P2": 694.7425981059463,
+          "hover_current_A_P2": 31.294711626393976,
+          "tw1p3_power_W_P2": 1029.766968268905
+        }
+      ],
+      "vane_authority_at_hover": {
+        "thrust_N": 13.786186804707196,
+        "q_e_Pa": 1358.653060169457,
+        "force_per_vane_N": 1.092693624987048,
+        "lever_arm_mm": 182.7939997482211,
+        "M_pitch_Nm": 0.39947567642153053,
+        "M_roll_Nm": 0.12238168599854939,
+        "I_xx_kg_m2": 0.029262760920716273,
+        "I_zz_kg_m2": 0.0032223051792708264,
+        "alpha_pitch_rad_s2": 13.65133240516365,
+        "alpha_roll_rad_s2": 37.979545446481595
+      },
+      "vane_authority_at_thrust_nominal": {
+        "thrust_N": 30.302548499999997,
+        "q_e_Pa": 2986.36967811875,
+        "force_per_vane_N": 2.4017810026703823,
+        "lever_arm_mm": 182.7939997482211,
+        "M_pitch_Nm": 0.8780623119948242,
+        "M_roll_Nm": 0.26899947229908283,
+        "I_xx_kg_m2": 0.029262760920716273,
+        "I_zz_kg_m2": 0.0032223051792708264,
+        "alpha_pitch_rad_s2": 30.00613354200659,
+        "alpha_roll_rad_s2": 83.48044562307862
+      }
+    },
+    "rocket": {
+      "config": "rocket",
+      "source": "sizing_report.json (flight mass = CAD + 10 g hardware balance)",
+      "mass_g": 2609.2108709226136,
+      "cad_mass_g": 2599.2108709226136,
+      "weight_N": 25.587617787333247,
+      "lead_drag": {
+        "area_mm2": 325.0,
+        "cd_ASSUMED": 1.0,
+        "cd_band_ASSUMED": [
+          0.8,
+          1.2
+        ],
+        "drag_over_thrust": 0.032029324048061296,
+        "drag_over_thrust_band": [
+          0.025623459238449036,
+          0.03843518885767356
+        ],
+        "hover_drag_N": 0.8466724479256084,
+        "thrust_for_tw_1p3_kgf": 3.5042116630894866,
+        "thrust_for_tw_1p3_kgf_band": [
+          3.4811738484059833,
+          3.5275564297842568
+        ],
+        "label": "E (Cd ASSUMED, drag area from Layout.ml_jet_drag)"
+      },
+      "com_mm": [
+        1.949363268259227,
+        -0.4939028118290835,
+        386.5260402257128
+      ],
+      "inertia_diag_kg_m2": [
+        0.13317890525471596,
+        0.13395091447591206,
+        0.005078991361663135
+      ],
+      "printed_mass_g": 941.8990863776808,
+      "vane_lever_arm_mm": 349.52604022571285,
+      "vehicle_h_mm": 856.3,
+      "footprint_d_mm": 246.8,
+      "tip_over": {
+        "cg_height_mm": 386.5260402257128,
+        "fin_tip_r_mm": 123.4,
+        "angle_toward_a_fin_deg": 17.705892963813106,
+        "angle_between_fins_deg": 12.721098043875626
+      },
+      "tw_table": [
+        {
+          "thrust_kgf": 2.0,
+          "thrust_N": 19.6133,
+          "tw": 0.7665152795001205,
+          "tw_ok_1p3": false,
+          "u_hover": null,
+          "hover_possible": false,
+          "mass_for_tw_1p3_g": 1538.4615384615383,
+          "hover_power_W_P1": null,
+          "hover_current_A_P1": null,
+          "tw1p3_power_W_P1": null,
+          "hover_power_W_P2": null,
+          "hover_current_A_P2": null,
+          "tw1p3_power_W_P2": null
+        },
+        {
+          "thrust_kgf": 2.3,
+          "thrust_N": 22.555294999999997,
+          "tw": 0.8814925714251385,
+          "tw_ok_1p3": false,
+          "u_hover": null,
+          "hover_possible": false,
+          "mass_for_tw_1p3_g": 1769.230769230769,
+          "hover_power_W_P1": null,
+          "hover_current_A_P1": null,
+          "tw1p3_power_W_P1": null,
+          "hover_power_W_P2": null,
+          "hover_current_A_P2": null,
+          "tw1p3_power_W_P2": null
+        },
+        {
+          "thrust_kgf": 2.6,
+          "thrust_N": 25.49729,
+          "tw": 0.9964698633501566,
+          "tw_ok_1p3": false,
+          "u_hover": null,
+          "hover_possible": false,
+          "mass_for_tw_1p3_g": 2000.0,
+          "hover_power_W_P1": null,
+          "hover_current_A_P1": null,
+          "tw1p3_power_W_P1": null,
+          "hover_power_W_P2": null,
+          "hover_current_A_P2": null,
+          "tw1p3_power_W_P2": null
+        },
+        {
+          "thrust_kgf": 3.09,
+          "thrust_N": 30.302548499999997,
+          "tw": 1.184266106827686,
+          "tw_ok_1p3": false,
+          "u_hover": 0.9189150192462386,
+          "hover_possible": true,
+          "mass_for_tw_1p3_g": 2376.923076923077,
+          "hover_power_W_P1": 1756.7197030964187,
+          "hover_current_A_P1": 79.13151815749634,
+          "tw1p3_power_W_P1": null,
+          "hover_power_W_P2": 1756.7197030964187,
+          "hover_current_A_P2": 79.13151815749634,
+          "tw1p3_power_W_P2": null
+        }
+      ],
+      "vane_authority_at_hover": {
+        "thrust_N": 25.587617787333247,
+        "q_e_Pa": 2521.704928395181,
+        "force_per_vane_N": 2.028075437457274,
+        "lever_arm_mm": 349.52604022571285,
+        "M_pitch_Nm": 1.4177303538669423,
+        "M_roll_Nm": 0.22714444899521466,
+        "I_xx_kg_m2": 0.13317890525471596,
+        "I_zz_kg_m2": 0.005078991361663135,
+        "alpha_pitch_rad_s2": 10.645307161486368,
+        "alpha_roll_rad_s2": 44.72235387319803
+      },
+      "vane_authority_at_thrust_nominal": {
+        "thrust_N": 30.302548499999997,
+        "q_e_Pa": 2986.36967811875,
+        "force_per_vane_N": 2.4017810026703823,
+        "lever_arm_mm": 349.52604022571285,
+        "M_pitch_Nm": 1.6789700067054418,
+        "M_roll_Nm": 0.26899947229908283,
+        "I_xx_kg_m2": 0.13317890525471596,
+        "I_zz_kg_m2": 0.005078991361663135,
+        "alpha_pitch_rad_s2": 12.60687646811835,
+        "alpha_roll_rad_s2": 52.96316790958233
+      }
+    }
+  },
+  "supply_limited": {
+    "vtol_tether": {
+      "supply": "Mean Well RSP-1500-24",
+      "v_set": 25.2,
+      "rated_A": 60.0,
+      "r_loop_ohm": 0.059500000000000004,
+      "v_esc_at_limit": 21.63,
+      "p_at_limit_W": 1297.8,
+      "rows": [
+        {
+          "thrust_kgf": 2.0,
+          "tw_supply_P1": 1.3642944352639448,
+          "hover_W_P1": 694.7425981059463,
+          "hover_tether_A_P1": 29.644019328669838,
+          "hover_v_esc_P1": 23.436180849944144,
+          "tw_supply_P2": 0.9817345541979224,
+          "hover_W_P2": 1334.1868445531254,
+          "hover_tether_A_P2": 62.028329722041725,
+          "hover_v_esc_P2": 21.509314381538516
+        },
+        {
+          "thrust_kgf": 2.3,
+          "tw_supply_P1": 1.51677988623579,
+          "hover_W_P1": 694.7425981059463,
+          "hover_tether_A_P1": 29.644019328669838,
+          "hover_v_esc_P1": 23.436180849944144,
+          "tw_supply_P2": 1.1289947373276106,
+          "hover_W_P2": 1081.8570849015318,
+          "hover_tether_A_P2": 48.48023435401794,
+          "hover_v_esc_P2": 22.31542605593593
+        },
+        {
+          "thrust_kgf": 2.6,
+          "tw_supply_P1": 1.51677988623579,
+          "hover_W_P1": 694.7425981059463,
+          "hover_tether_A_P1": 29.644019328669838,
+          "hover_v_esc_P1": 23.436180849944144,
+          "tw_supply_P2": 1.276254920457299,
+          "hover_W_P2": 900.1225163609688,
+          "hover_tether_A_P2": 39.38088663365517,
+          "hover_v_esc_P2": 22.856837245297516
+        },
+        {
+          "thrust_kgf": 3.09,
+          "tw_supply_P1": 1.51677988623579,
+          "hover_W_P1": 694.7425981059463,
+          "hover_tether_A_P1": 29.644019328669838,
+          "hover_v_esc_P1": 23.436180849944144,
+          "tw_supply_P2": 1.51677988623579,
+          "hover_W_P2": 694.7425981059463,
+          "hover_tether_A_P2": 29.644019328669838,
+          "hover_v_esc_P2": 23.436180849944144
+        }
+      ]
+    },
+    "vtol_hybrid": {
+      "supply": "Mean Well RSP-1500-24",
+      "v_set": 25.2,
+      "rated_A": 60.0,
+      "r_loop_ohm": 0.059500000000000004,
+      "v_esc_at_limit": 21.63,
+      "p_at_limit_W": 1297.8,
+      "rows": [
+        {
+          "thrust_kgf": 2.0,
+          "tw_supply_P1": 1.2561731056007057,
+          "hover_W_P1": 786.3426893421271,
+          "hover_tether_A_P1": 33.920821705571726,
+          "hover_v_esc_P1": 23.18171110851848,
+          "tw_supply_P2": 0.9039313743031876,
+          "hover_W_P2": 1510.0960762892535,
+          "hover_tether_A_P2": 72.24938532799673,
+          "hover_v_esc_P2": 20.901161572984194,
+          "buffer_A_P1": 0.0,
+          "buffer_s_P1": null,
+          "buffer_A_P2": 25.89614959399274,
+          "buffer_s_P2": 72.28873903455738
+        },
+        {
+          "thrust_kgf": 2.3,
+          "tw_supply_P1": 1.3965739732984246,
+          "hover_W_P1": 786.3426893421271,
+          "hover_tether_A_P1": 33.920821705571726,
+          "hover_v_esc_P1": 23.18171110851848,
+          "tw_supply_P2": 1.0395210804486654,
+          "hover_W_P2": 1224.497262647444,
+          "hover_tether_A_P2": 55.99402593714744,
+          "hover_v_esc_P2": 21.868355456739728,
+          "buffer_A_P1": 0.0,
+          "buffer_s_P1": null,
+          "buffer_A_P2": 13.369885837773019,
+          "buffer_s_P2": 140.01615441705323
+        },
+        {
+          "thrust_kgf": 2.6,
+          "tw_supply_P1": 1.3965739732984246,
+          "hover_W_P1": 786.3426893421271,
+          "hover_tether_A_P1": 33.920821705571726,
+          "hover_v_esc_P1": 23.18171110851848,
+          "tw_supply_P2": 1.1751107865941437,
+          "hover_W_P2": 1018.8014412565917,
+          "hover_tether_A_P2": 45.26672583752076,
+          "hover_v_esc_P2": 22.506629812667512,
+          "buffer_A_P1": 0.0,
+          "buffer_s_P1": null,
+          "buffer_A_P2": 4.348139285542658,
+          "buffer_s_P2": 430.5289865539278
+        },
+        {
+          "thrust_kgf": 3.09,
+          "tw_supply_P1": 1.3965739732984246,
+          "hover_W_P1": 786.3426893421271,
+          "hover_tether_A_P1": 33.920821705571726,
+          "hover_v_esc_P1": 23.18171110851848,
+          "tw_supply_P2": 1.3965739732984246,
+          "hover_W_P2": 786.3426893421271,
+          "hover_tether_A_P2": 33.920821705571726,
+          "hover_v_esc_P2": 23.18171110851848,
+          "buffer_A_P1": 0.0,
+          "buffer_s_P1": null,
+          "buffer_A_P2": 0.0,
+          "buffer_s_P2": null
+        }
+      ],
+      "buffer_v": 22.799999999999997,
+      "crossover_A": 40.33613445378155,
+      "note": "hover is carried by the tether alone only while the tether current stays below the crossover; above it the buffer discharges at buffer_A (endurance buffer_s)"
+    }
+  },
+  "loaded_pack": {
+    "vtol_battery": {
+      "v_loaded": 20.364000000000004,
+      "r_pack_ohm_ASSUMED": 0.018000000000000002,
+      "exponent": 1.610983672014751,
+      "thrust_factor": 0.8701705994536016,
+      "tw": {
+        "2": 1.0523924462406269,
+        "2.3": 1.2102513131767207,
+        "2.6": 1.3681101801128148,
+        "3.09": 1.6259463294417684
+      },
+      "tmax_22v2_for_tw_1p3_kgf": 2.4705612523994844
+    },
+    "rocket": {
+      "v_loaded": 20.364000000000004,
+      "r_pack_ohm_ASSUMED": 0.018000000000000002,
+      "exponent": 1.610983672014751,
+      "thrust_factor": 0.8701705994536016,
+      "tw": {
+        "2": 0.666999060252965,
+        "2.3": 0.7670489192909096,
+        "2.6": 0.8670987783288543,
+        "3.09": 1.0305135480908307
+      },
+      "tmax_22v2_for_tw_1p3_kgf": 3.8980564665472373
+    }
+  },
+  "vane_authority_vtol_vs_rocket": {
+    "vane_authority_at_hover": {
+      "thrust_N": {
+        "rocket": 25.587617787333247,
+        "vtol_battery": 16.217255339707197,
+        "ratio_vtol_over_rocket": 0.6337930898645554
+      },
+      "lever_arm_mm": {
+        "rocket": 349.52604022571285,
+        "vtol_battery": 208.324093839456,
+        "ratio_vtol_over_rocket": 0.5960188079403952
+      },
+      "M_pitch_Nm": {
+        "rocket": 1.4177303538669423,
+        "vtol_battery": 0.5355513299685843,
+        "ratio_vtol_over_rocket": 0.37775260190193205
+      },
+      "I_xx_kg_m2": {
+        "rocket": 0.13317890525471596,
+        "vtol_battery": 0.03550573095386363,
+        "ratio_vtol_over_rocket": 0.26660176313925926
+      },
+      "alpha_pitch_rad_s2": {
+        "rocket": 10.645307161486368,
+        "vtol_battery": 15.083517944313922,
+        "ratio_vtol_over_rocket": 1.4169171180785225
+      },
+      "M_roll_Nm": {
+        "rocket": 0.22714444899521466,
+        "vtol_battery": 0.143962582174259,
+        "ratio_vtol_over_rocket": 0.6337930898645554
+      },
+      "I_zz_kg_m2": {
+        "rocket": 0.005078991361663135,
+        "vtol_battery": 0.003311703676669542,
+        "ratio_vtol_over_rocket": 0.6520396355990478
+      },
+      "alpha_roll_rad_s2": {
+        "rocket": 44.72235387319803,
+        "vtol_battery": 43.47085253685404,
+        "ratio_vtol_over_rocket": 0.9720162015646048
+      }
+    },
+    "vane_authority_at_thrust_nominal": {
+      "thrust_N": {
+        "rocket": 30.302548499999997,
+        "vtol_battery": 30.302548499999997,
+        "ratio_vtol_over_rocket": 1.0
+      },
+      "lever_arm_mm": {
+        "rocket": 349.52604022571285,
+        "vtol_battery": 208.324093839456,
+        "ratio_vtol_over_rocket": 0.5960188079403952
+      },
+      "M_pitch_Nm": {
+        "rocket": 1.6789700067054418,
+        "vtol_battery": 1.000697701964255,
+        "ratio_vtol_over_rocket": 0.5960188079403953
+      },
+      "I_xx_kg_m2": {
+        "rocket": 0.13317890525471596,
+        "vtol_battery": 0.03550573095386363,
+        "ratio_vtol_over_rocket": 0.26660176313925926
+      },
+      "alpha_pitch_rad_s2": {
+        "rocket": 12.60687646811835,
+        "vtol_battery": 28.18411774889433,
+        "ratio_vtol_over_rocket": 2.2356146520646423
+      },
+      "M_roll_Nm": {
+        "rocket": 0.26899947229908283,
+        "vtol_battery": 0.26899947229908283,
+        "ratio_vtol_over_rocket": 1.0
+      },
+      "I_zz_kg_m2": {
+        "rocket": 0.005078991361663135,
+        "vtol_battery": 0.003311703676669542,
+        "ratio_vtol_over_rocket": 0.6520396355990478
+      },
+      "alpha_roll_rad_s2": {
+        "rocket": 52.96316790958233,
+        "vtol_battery": 81.22691477324615,
+        "ratio_vtol_over_rocket": 1.5336490995386667
+      }
+    }
+  },
+  "warnings": []
+}

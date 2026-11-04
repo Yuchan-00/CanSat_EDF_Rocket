@@ -1,0 +1,72 @@
+{
+  "_doc": [
+    "Per-vehicle calibration and firmware configuration of the ATmega128 flight computer.",
+    "Numbers that params.json does not hold live here (and only here); tools/gen_firmware_params.py",
+    "turns them into src/params_gen.h. Edit after the bench procedure in firmware/README.md, then re-run",
+    "  .venv/Scripts/python.exe tools/gen_firmware_params.py",
+    "Never type these numbers into a .c/.h file.",
+    "imu_fail_kill_s / baro_fail_kill_s are also read by sim/onboard.py (interlock I9): keep the key names."
+  ],
+  "servo_signs": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "servo_trims_us": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "release_servo": {
+    "_doc": "latched = pwm_center + sign*latched_offset_deg*pwm_us_per_deg; released = latched + sign*mission.deploy_servo_travel_deg*pwm_us_per_deg",
+    "sign": 1,
+    "latched_offset_deg": -45.0
+  },
+  "esc_us": {
+    "_doc": "ESC pulse: off (boot, every state except POWERED) and the throttle range u = 0..1 -> min..max",
+    "off": 1000.0,
+    "min": 1000.0,
+    "max": 2000.0
+  },
+  "imu_mounting": {
+    "_doc": "body axis = sign * IMU (MPU-6050 chip) axis; one of +x,-x,+y,-y,+z,-z each; must form a proper rotation (det = +1)",
+    "body_x": "+x",
+    "body_y": "+y",
+    "body_z": "+z"
+  },
+  "i2c_addr": {
+    "mpu6050": 104,
+    "ms5611": 119
+  },
+  "link": {
+    "_doc": [
+      "LoRa ground-link firmware settings that params.json flight_computer.link does not hold (SPEC 10.3).",
+      "aux_wait_max_s: lora_uart - a reply waits at most this long for the module's AUX = ready, then it is sent anyway (counted).",
+      "sx127x_spi_hz_max: SPI clock limit through the BSS138 level shifter (10k pull-up rise time); the generator picks the fastest AVR divider below it.",
+      "sx127x_pa_boost: true for RFM95/96 and Ra-01/Ra-02 (antenna on the PA_BOOST pin, 2..17 dBm); false = RFO pin (0..15 dBm).",
+      "sx127x_tx_timeout_factor / _margin_s: TxDone must arrive within factor x time-on-air(TELEM) + margin, else the radio is forced back to RX (counted).",
+      "nonce_seed_adc_conversions: battery-ADC conversions whose LSB noise seeds the LAUNCH nonce at boot (not a security feature)."
+    ],
+    "aux_wait_max_s": 0.05,
+    "sx127x_spi_hz_max": 500000,
+    "sx127x_pa_boost": true,
+    "sx127x_tx_timeout_factor": 2.0,
+    "sx127x_tx_timeout_margin_s": 0.05,
+    "nonce_seed_adc_conversions": 64
+  },
+  "pad_still": {
+    "_doc": "arming gate outside the estimator (reported as 'aligned'): the pad average must have run its full window and the vehicle must have been still this long",
+    "duration_s": 2.0,
+    "rate_dps": 3.0,
+    "accel_tol_g": 0.05
+  },
+  "_vbat_scale_doc": "measured pack voltage / logged pack voltage (divider tolerance); 1.0 until calibrated",
+  "vbat_scale": 1.0,
+  "battery_filter_hz": 2.0,
+  "arm_switch_debounce_s": 0.02,
+  "imu_fail_kill_s": 0.1,
+  "baro_fail_kill_s": 0.5,
+  "ground_baro_tau_s": 1.0
+}

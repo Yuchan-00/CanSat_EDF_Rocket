@@ -1,0 +1,44 @@
+{
+ "fingerprint": "2f4ed2515cd00dd6a37be5b39cf4ef56ea9bedd46482fd6e8b5f5552c93b0d5c",
+ "E_design_deg": 8.04001677203659,
+ "e_values_deg": [
+  -8.04001677203659,
+  0.0,
+  8.04001677203659
+ ],
+ "module_envelopes": 648,
+ "dropin_sweeps": 324,
+ "grown_x_module_max": [
+  0.0,
+  "S35 ribbon12x5_h od4.3 R15 gap2 inset0 early1 e+8.04"
+ ],
+ "grown_x_intake_max": [
+  0.0,
+  "S35 ribbon12x5_h od4.3 R15 gap2 inset0 early1 e+8.04"
+ ],
+ "dropin_x_module_max": [
+  0.0,
+  "S35 ribbon12x5_h od4.3 R15 gap2 inset0 early0 e+8.04"
+ ],
+ "raw_x_edf_tests": 756,
+ "raw_x_edf_max": [
+  0.0,
+  "S35 ribbon12x5_h od4.3 R15 gap0 inset3 early0 e+8.04 tabs 89.7 prot 36"
+ ],
+ "edf_assumption": "with the stator TE inset into the housing the hub ends at the TE (hub bottom raised by the inset) - ASSUMED",
+ "hover_tab_gap_min_mm": 0.5499999999999972,
+ "negative_control_e_plus6_mm3": 3589.7916779949114,
+ "negative_control_wall_plus3_mm3": 725.2320867903627,
+ "negative_control_dropin_e_plus6_mm3": 4384.1881560751435,
+ "clearances_mm": {
+  "vane_1 d=+0": 51.00000000000001,
+  "vane_1 d=+25": 51.72601432012541,
+  "vane_1 d=-25": 51.72601432012541,
+  "vane_coupler_1": 54.62337632677735,
+  "servo_horn_1": 57.14048524638689,
+  "servo_vane_1": 40.05633964450471,
+  "fin_1 plate": 7.6000000000000085,
+  "intake module": 4.0
+ },
+ "runtime_s": 333.5025155544281
+}
