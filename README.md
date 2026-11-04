@@ -21,6 +21,8 @@
   <sub>왼쪽: 로켓 구성(탄도 발사 + 캔위성 사출) · 오른쪽: VTOL 배터리 구성. CadQuery 형상을 PyVista(VTK)로 그린 렌더(색은 화면용), 2026-11-04.</sub>
 </p>
 
+> **English summary.** A 3D-printed launch vehicle powered by a single 90 mm electric ducted fan (EDF): it climbs vertically, cuts the motor, opens the nose cone at apogee to release a CanSat (Ø66 × 115 mm, 350 g) and descends on its own parachute. The same propulsion module also forms a lighter VTOL test vehicle in battery, tethered and hybrid power configurations. Attitude is held by four exhaust vanes driven directly by MG90S servos, and all flight computing runs on four ATmega128A chips (NAV · FCU · COM · GNS). Design values come from one source (`params.json`) and are checked by CadQuery geometry checks, a Fusion 360 cross-check, Bambu Studio slicing, a 6-DOF flight simulation and a 4-chip simavr co-simulation. **Not flown yet:** EDF thrust has not been measured and nothing has been printed or flight-tested. The rest of this README and the documentation are in Korean.
+
 로켓은 수직으로 올라가 모터를 끄고, 정점에서 노즈콘을 열어 캔위성을 내보낸 뒤 자체 낙하산으로 내려옵니다.
 VTOL은 같은 추진·흡입 모듈에 짧은 전자부를 얹은 시험용 기체로, 배터리·유선·하이브리드 세 가지 전원 구성이 있습니다.
 자세는 배기구의 베인 4개(MG90S 직접 구동)로 잡고, 비행 계산은 모두 ATmega128A 칩 4개가 합니다.
