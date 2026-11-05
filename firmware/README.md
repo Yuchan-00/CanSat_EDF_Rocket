@@ -1,5 +1,7 @@
 # CanSat EDF Rocket — ATmega128 비행 컴퓨터 펌웨어 (v0.9: NAV · FCU · COM · GNS 네 칩)
 
+> **2026-11-06: 기체 무선이 ESP8266(ESP-NOW 브리지)으로 바뀌었습니다. 0.10절이 무선에 관해 0절의 나머지와 1~15절보다
+> 우선합니다(LoRa 설명은 예비 무선의 설명으로 유효).**
 > **v0.9 펌웨어 (2026-10-29)는 바로 아래 0절에 있습니다. 0절이 1~15절보다 우선합니다.** 1~15절은 v0.6.3(세 칩, 2026-10-16)
 > 때의 설명과 수치입니다. 배선·퓨즈·LoRa 설정·로그 형식처럼 바뀌지 않은 부분은 그대로 유효하고, 칩 개수·시간·크기·검증 수치는
 > 0절의 값이 맞습니다. v0.7~v0.8.1(GPS, GNS 칩)은 `B:\Video\펌웨어\v0.8.1_4칩\README_v0.8.1_4칩.md`에 있습니다.
@@ -133,6 +135,97 @@ VTOL 빌드는 `-D FC_VCFG=<n>`으로 기체 구성을 고릅니다(`platformio.
 * 최종 이미지 78개(PlatformIO 환경 75개 + 지상 브리지 3개)의 해시: `B:\Video\펌웨어\v0.9\구현\FINAL_HASHES.txt`.
 * 칩에 올리는 HEX: `B:\Video\펌웨어\v0.9\구현\HEX_비행이미지\` (안내 `B:\Video\펌웨어\v0.9\README.md`).
 * 퓨즈, ISP 순서, 배선은 5절, 7절, 4절 그대로입니다. GNS를 구울 때는 glink 커넥터를 뽑습니다(PE0/PE1 = ISP 핀).
+* 2026-11-06 라운드의 새 해시는 0.10절과 `docs/v0.9_펌웨어_결과.md` 11장에 있습니다(위 목록은 그 전 것).
+
+## 0.10 2026-11-06 펌웨어 라운드: ESP8266 무선(ESP-NOW 브리지), 헤더 재생성, NEO-7M
+
+표시: **M** 측정(시뮬레이터·호스트), **E** 추정, **A** 가정. 결과 전체와 합격 기준 재판정: `docs/v0.9_펌웨어_결과.md` 11장.
+**이번 라운드는 제어를 바꾸지 않았습니다.** 시뮬레이션의 링크 모델도 LoRa(lora_uart) 그대로입니다(비관적인 쪽, E).
+다만 지상국은 링크 지연 `t_link`를 실제로 잰 왕복 시간으로 씁니다. ESP에서는 약 0.06 s(E)라서 assist RELEASE 앞당김 규칙이
+시뮬레이션하지 않은 값(시뮬레이션은 약 0.50 s)에서 돕니다. ESP-NOW 링크 모델(왕복 약 60 ms)로 assist·링크 손실 시나리오를 다시
+돌리는 일은 제어 관련이라 다음 라운드입니다(검토 LB-6).
+
+### 0.10.1 무엇이 바뀌었나
+
+* 기체 무선이 **ESP8266(ESP-12E) + ESP-NOW**입니다 (사용자 결정 2026-11-05: Wi-Fi 채택, 로켓도 ESP). COM 백엔드는
+  `params.json` `flight_computer.link.vehicle_radio`(`esp_bridge` 기본 / `lora_uart` / `sx127x`)가 정합니다.
+  `flight_computer.link.radio`는 이제 **링크 모델**(시뮬레이션·지상국 응답 대기)이고 `lora_uart` 그대로입니다.
+* 새 백엔드 `src/hal/esp_bridge.c`: USART1 **38400 8N1**(U2X 0, UBRR 25, 오차 +0.16 %), ESP 리셋 PC6(COM 찬 부팅 때만:
+  부팅하자마자 L, 2 ms 뒤 해제), 해제 뒤 **400 ms 동안 받은 바이트 버림**(ESP8266 ROM의 74880 baud 부팅 글자), 바쁨 신호(AUX)
+  없음 → 응답을 바로 UART로 보냄. 검토 반영(2026-11-06): PC6은 **오픈 드레인**(L로 몰거나 입력 Hi-Z; H로 몰지 않음 - 손으로
+  RST-GND를 붙여도 핀 단락 없음, F1). COM만 리셋될 때(워치독·저전압·외부 리셋)는 ESP를 리셋하지 않고 창도 열지 않습니다
+  (비행 중 COM 재시작의 링크 손실이 LoRa 때와 같음, F2). 프레임 규약(CRC, 논스, TELEM, 명령)은 그대로입니다. ESP는 바이트를 그대로 옮기는 브리지
+  (`firmware/esp_bridge`)만 돌립니다.
+* LoRa는 예비로 남습니다: `com_lora_uart`, `com_sx127x`(+ `_ballistic`)는 늘 빌드됩니다. 되돌리기: `vehicle_radio`를
+  `lora_uart`(또는 `sx127x`)로 고치고 헤더 생성 → 빌드.
+* 헤더 3개(`params_gen.h`, `gains.h`, `bridge_config_gen.h`)를 지금 `params.json`으로 다시 만들었습니다(그 전에 params 해시가
+  낡은 CAD 보고서 5개·검사 보고서 5개를 다시 만듦: 값은 같고 해시·시간만 다름, M). `gains.h`는 내용이 같았습니다(M). 바뀐 것은 해시·설정 표시(`FC_PARAMS_TAG`)와 위 ESP 매크로, 로직 배터리 핀(`LOGIC_BAT_*`, 아직 읽지 않음),
+  핀 설명 글입니다. 기체 상수(믹서 레버, 호버 스로틀 등)는 바뀌지 않았습니다(M, 헤더 비교).
+* GPS: MON-VER의 `00070000`(u-blox 7, NEO-7M)을 UNKNOWN 대신 7로 읽습니다 (`core/gps_ubx.c`, `sim/gps_nav.py`; 보고만,
+  동작에 쓰지 않음).
+
+### 0.10.2 빌드 환경
+
+| 환경 | 무선 | 비고 |
+|---|---|---|
+| `com`, `com_wired`, `com_wired_buffer`, `com_ballistic` | `vehicle_radio` (= esp_bridge) | 비행 이미지 |
+| `com_esp_bridge`, `com_esp_bridge_ballistic` | esp_bridge 고정 | `com` / `com_ballistic`과 같은 이미지(M, 해시) |
+| `com_lora_uart`, `com_sx127x` (+ `_ballistic`) | LoRa 고정 | 예비 |
+| `com_simbench_esp`, `com_simbench_esp_ballistic` | esp_bridge | 단일 칩 벤치(`run_com_simbench.py`) |
+| `com_cosim*` | lora_uart 고정 | 4칩 공동 시뮬레이션은 LoRa 타이밍 그대로 |
+
+### 0.10.3 VTOL 캐리어 배선 (rev 2c, `pcb/vtol_carrier/spec/carrier_spec.json`, 읽기만 함)
+
+| ESP-12E 핀 | 넷 | COM | 경로 |
+|---|---|---|---|
+| 21 RXD0 (GPIO3) | ESP_RXD0 | PD3 TXD1 | Q4 (BSS138) → 1 kΩ (3.3 V 쪽) → RXD0 |
+| 22 TXD0 (GPIO1) | ESP_TXD0 | PD2 RXD1 | Q11 (BSS138) |
+| 1 RST | ESP_RST | PC6 | Q5 (BSS138, 비반전). LV 쪽 10 kΩ 풀업 = RST 풀업. PC6을 L로 몰면 리셋, 입력(Hi-Z)이면 동작 (오픈 드레인) |
+| 3 EN / 18 GPIO0 / 17 GPIO2 / 16 GPIO15 | | | 10 kΩ 풀업 + 100 nF / 10 kΩ 풀업 / 10 kΩ 풀업 / 10 kΩ 풀다운 |
+| 8 VCC | +3V3 | | U6 AMS1117-3.3, 100 µF 탄탈 + 10 µF + 100 nF |
+
+* PC3/PC4/PC5(M0/M1/AUX)는 이 기판에서 연결되지 않습니다. esp_bridge 빌드는 이 핀을 건드리지 않습니다.
+* ESP 굽기: J26(COM 리셋 고정) + J3 1-2(IO0-GND) → 3.3 V USB-UART로 굽기 → 둘 다 빼고 J3 5-6으로 ESP 리셋(J26을 빼서 생긴
+  COM 외부 리셋은 ESP를 리셋하지 않음) 또는 로직 전원을 껐다 켬 (`firmware/esp_bridge/README.md`).
+
+### 0.10.4 로켓 COM 보드 배선 (손배선, 통신·로거 상자)
+
+SPEC 10.3 규칙(MCU → 3.3 V 부품 신호는 BSS138 채널로)과 캐리어 rev 2c의 결정(ESP TX → COM RX 방향도 채널로, 직결은 V_IH 여유가
+0.3 V뿐 - rev-1 검토 E2)을 따릅니다. 이 두 번째 것은 SPEC 10.3의 "모듈 → MCU 직결" 규칙의 예외이고 SPEC 10.7에 적었습니다
+(LoRa 예비 결선은 10.3 그대로). 레벨시프터 2(상자 안 BSS138 4채널, HV 5 V / LV = AMS1117 #2의 3.3 V)를 이렇게 씁니다.
+
+| 신호 | COM | 레벨시프터 2 | ESP-12E | 비고 |
+|---|---|---|---|---|
+| COM → ESP 데이터 | PD3 TXD1 | ch1 (HV ← PD3, LV → 1 kΩ →) | 21 RXD0 | 1 kΩ: 굽는 USB-UART가 이김 |
+| ESP 리셋 | PC6 | ch2 (HV ← PC6, LV →) | 1 RST | 시프터의 LV 10 kΩ 풀업이 RST 풀업(A: 모듈의 LV 풀업 값 확인; 없으면 RST에 10 kΩ → 3.3 V를 따로 답니다). 비반전, PC6 오픈 드레인 |
+| ESP → COM 데이터 | PD2 RXD1 | ch3 (LV ← TXD0, HV →) | 22 TXD0 | |
+| OpenLog 로그선 | (FCU PE1) | ch4 | — | 4.10의 "어느 채널?" 문제: ESP 빌드에서는 ch4 |
+| 전원 | — | — | 8 VCC ← AMS1117 #2 3.3 V | 100 µF + 10 µF + 100 nF를 핀 가까이. **5 V 금지** |
+| 부팅 핀 | — | — | 3 EN 10 kΩ↑ + 100 nF, 18 GPIO0 10 kΩ↑, 17 GPIO2 10 kΩ↑, 16 GPIO15 10 kΩ↓ | 플래시에서 부팅 |
+| 굽기 헤더 | — | — | IO0, GND, TXD0, RXD0, RST, GND (3.3 V 전용) | 굽는 동안 COM을 리셋 상태로(COM ISP 헤더의 RESET-GND 점퍼) |
+
+* M0/M1/AUX(PC3/PC4/PC5)는 연결하지 않습니다. LoRa로 돌아가려면 4.2절 결선과 `vehicle_radio`를 되돌립니다.
+* AMS1117 #2(1 A)는 ESP 송신 피크(약 400 mA, A)를 감당합니다(E). 5 V 로직 UBEC의 여유는 계산하지 않았습니다(4.1, 미검증).
+* **사용자 결정이 필요한 것 (로켓)**: (1) 거리: 로켓은 정점 140-150 m + 낙하산 표류라 Wi-Fi(PCB 안테나 100-300 m, A)의 끝이나
+  밖일 수 있습니다(E, 캐리어 spec `esp12e.range.rocket_need`). ESP-NOW 1 Mbps + 지상 고이득 안테나 계획(1 km에서 약 −84 dBm,
+  E)으로 1 km 지상 시험을 통과해야 합니다. (2) 상자 맞춤: ESP-12E(24 × 16 × 3 mm, A)가 30 × 20 × 15 mm 상자에 OpenLog·
+  시프터·AMS1117과 함께 들어가는지 CAD로 확인하지 않았습니다. (3) 안테나 방향: PCB 안테나 끝을 동체 벽 쪽, ESC·모터선·배터리에서
+  멀리(4.3절). (4) 무게: params의 상자 무게(20 g, A)는 고치지 않았습니다(비행 질량에 들어가는 값). 이 결정 전까지 로켓도 LoRa를
+  고를 수 있습니다(`vehicle_radio`).
+
+### 0.10.5 검증 (M, 시뮬레이터·호스트; 실기 없음)
+
+* 0.8절의 명령 그대로 + 새 시험: `PY tools/esp_bridge_test/run_esp_bridge_test.py` (COM의 ESP 백엔드를 simavr에서, 두 경우.
+  찬 부팅: 리셋 유지·해제, PC6을 H로 몰지 않음, 부팅 창 바이트 16개 버림, 창 끝에 걸친 묶음은 앞만 버리고 뒤는 그대로, 창 뒤
+  프레임 그대로, USART1 비트 26.00 µs = UBRR 25, 응답 즉시 송신. 따뜻한 부팅(워치독 리셋): PC6 건드리지 않음, 창 없음 - 23개 검사
+  통과), 프로젝트 루트에서 `PY -m pytest tools/test_esp_bridge.py` (ESP 브리지 휴대형 부분 호스트 시험 2,264,897 검사 실패 0,
+  설정 생성기).
+* COM 벤치 `com_simbench_esp`: 통과. 메인 루프 최대 945 µs, 상향 → IL_CMD ≤ 238 µs, 스택 여유 2625 B(비행 `com_esp_bridge`),
+  flash 11318 B / RAM 1151 B. 벤치의 가짜 지상국 바이트는 부팅 창을 거치지 않습니다(창은 위 simavr 시험이 핀에서 잼,
+  `docs/v0.9_펌웨어_결과.md` 11.9절 F2). 응답 창 80 ms는 lora_uart 모델의 대기(590.6 ms) 기준으로 여유 27.8 ms(도착) / 106.4 ms(다음 요청 전).
+* 합격 기준 22개: 20개 통과, 19번 이번에 판정 안 함, 21번(탄도 해시) 사용자 재선언 대기 - `docs/v0.9_펌웨어_결과.md` 11.3절.
+* HEX 해시: `docs/v0.9_펌웨어_결과.md` 11.4절, 전체 값 `firmware/atmega128_fc/HEX_HASHES_2026-11-06.txt`.
+* 독립 검토 반영(PC6 오픈 드레인, COM만 리셋될 때 ESP 그대로, 시험 추가, 문서): `docs/v0.9_펌웨어_결과.md` 11.9절.
 
 `firmware/atmega128_fc/` 는 ATmega128A(16 MHz, 5 V) **세 개**에 올라가는 베어메탈 C99 펌웨어입니다 (avr-libc, Arduino 미사용,
 PlatformIO `atmelavr` + `ATmega128` 보드). 소스 트리는 하나이고, 빌드 환경이 칩의 역할(`-D FC_ROLE_NAV / FC_ROLE_FCU /
@@ -212,8 +305,9 @@ FC_ROLE_COM`)을 정합니다 (`platformio.ini`). 시뮬레이션의 참조 구�
 | 공통 | 전원 | ESC BEC → 서보 5개, 별도 5 V 3 A UBEC → 세 보드 + 통신·로거 상자 | — | 로직과 서보 전원 분리 | 서보 전류로 로직이 떨어지면 브라운아웃(4.0 V) 리셋 |
 | 공통 | 프로그래머 | USBasp | 칩마다 6핀 ISP | 5 V | MOSI→PE0(PDI), MISO←PE1(PDO), SCK→PB1. 칩마다 뺄 것은 7.3 |
 
-**모듈 형식 선택**: COM 펌웨어는 두 형식을 모두 지원하며 `params.json` `flight_computer.link.radio`(`lora_uart` 기본 /
-`sx127x`)로 컴파일 때 고릅니다. 어느 쪽인지 모르면: 핀이 `M0 M1 RXD TXD AUX VCC GND` 이면 형식 A(Ebyte UART),
+**모듈 형식 선택**: COM 펌웨어는 세 백엔드를 지원하며 `params.json` `flight_computer.link.vehicle_radio`(`esp_bridge` 기본 /
+`lora_uart` / `sx127x`)로 컴파일 때 고릅니다(2026-11-06; `flight_computer.link.radio`는 이제 시뮬레이션의 링크 모델이고 COM
+빌드를 바꾸지 않습니다, 0.10절). LoRa 모듈이면 형식 A 또는 B입니다. 어느 쪽인지 모르면: 핀이 `M0 M1 RXD TXD AUX VCC GND` 이면 형식 A(Ebyte UART),
 `NSS SCK MOSI MISO DIO0 RESET 3.3V` 이면 형식 B(SX127x SPI)입니다. 두 백엔드는 항상 함께 컴파일·시험됩니다
 (`com_lora_uart`, `com_sx127x` 환경). NAV와 FCU는 무선 형식과 무관합니다.
 
@@ -385,6 +479,7 @@ SPI 모드 0, MSB 먼저, 2 MHz(F_CPU/8), 바이트 사이 4 µs 간격. 틱마�
 **어느 시프터 채널을 쓸지는 소스에 정해져 있지 않습니다(미검증).** 형식 A(lora_uart) 결선이면 레벨시프터 2의 ch4가 비어
 있습니다. 형식 B(sx127x)이면 레벨시프터 2의 네 채널을 무선이 모두 쓰므로 채널이 하나 모자랍니다. 레벨시프터 1의 빈 ch3는
 NAV 보드(트레이) 위에 있어 FCU(베이 바닥) → 상자(격벽 아래) 경로에서 벗어납니다. 결선 전에 정하십시오(15절).
+2026-11-06: ESP 빌드(기본)에서는 레벨시프터 2의 ch4입니다(0.10.4). 형식 B(sx127x)로 돌아갈 때만 미정입니다.
 
 로그선은 FCU를 프로그래밍할 때 뽑아야 합니다(`board.h`: "unplug the OpenLog while programming the FCU", 7.3). 그러므로 로그선에는
 **적어도 FCU 쪽 끝에 빼고 꽂는 커넥터가 있어야 합니다.** OpenLog의 5 V는 이 선이 아니라 로직 UBEC에서 받습니다(4.1).
@@ -604,7 +699,7 @@ IL_STAT의 radio ok 플래그가 꺼져 FCU 로그에 `T` "COM boot: radio sx127
 | `fcu_bench_tether` | FCU | 로드셀 계류 추력시험의 0–50 % 구간: ESC 스로틀 50 % 제한 (`FC_THROTTLE_LIMIT=0.5f`). 100 % 추력은 이 빌드로 잴 수 없음 → `fcu` (10절 9단계) |
 | `fcu_bench_hover` | FCU | 계류 호버: ESC 스로틀을 호버 스로틀(`FC_HOVER_THROTTLE` 0.915, CAD 질량 2.586 kg) + 5 %로 제한 |
 | `fcu_bench_vanes` | FCU | 베인 방향·트림 시험(9.3): SAFE + 아밍 플러그 제거 + NAV 정렬 완료 시 자세제어가 베인을 구동, ESC는 항상 1000 µs. **비행 금지** |
-| `com` | COM | 비행, 무선 = `params.json` `link.radio` (현재 `lora_uart`) |
+| `com` | COM | 비행, 무선 = `params.json` `flight_computer.link.vehicle_radio` (현재 `esp_bridge`; `link.radio`는 시뮬레이션 링크 모델) |
 | `com_lora_uart`, `com_sx127x` | COM | 같은 비행 펌웨어, 백엔드 강제 (두 백엔드가 항상 컴파일되게; 가진 모듈에 맞는 쪽을 올려도 됨) |
 | `nav_simbench`, `fcu_simbench`, `fcu_simbench_micro`, `com_simbench`, `com_simbench_sx127x` | 각 칩 | simavr 단독 측정 빌드(가짜 센서·가짜 상대 칩·가짜 지상국). **기체에 올리지 말 것** |
 | `nav_cosim`, `fcu_cosim`, `com_cosim`, `com_cosim_sx127x` | 각 칩 | 세 칩 co-simulation 빌드(진짜 SPI·USART 경로). **기체에 올리지 말 것** |
@@ -1054,7 +1149,8 @@ NAV의 부팅·링크 결과입니다:
   약 4 사이클 늦어 여유가 조금 더 있으나 측정하지 않았습니다. FCU 인터럽트를 늘리거나 길게 만들지 마십시오(측정 한계 58 사이클, `nlink_spi.h`의 설계 목표 약 50 사이클).
 * **보드 질량·크기는 가정값**: NAV 40 g, FCU 20 g, COM 20 g, 통신·로거 상자 20 g, 보드 50 × 50 × 15 mm. 달고 재서 `params.json`에
   넣고 무게중심·게인을 다시 계산하십시오.
-* **OpenLog 레벨시프터 채널 미정**(4.10): 형식 B(sx127x)이면 레벨시프터 2에 빈 채널이 없습니다.
+* **OpenLog 레벨시프터 채널 미정**(4.10): 형식 B(sx127x)이면 레벨시프터 2에 빈 채널이 없습니다. 2026-11-06: ESP 빌드(기본)에서는
+  ch4로 정해졌습니다(0.10.4). 형식 B로 돌아갈 때만 미정입니다.
 * **배선 경로 미정**: 사출 서보선(페이로드 모듈 → FCU PE5), ESC 신호선, 아밍 스위치·부저·LED, 5 V 분배, ilink·nlink·로그선의 길이와
   경로는 CAD에 없습니다. nlink 2 MHz를 보드 사이 선으로 보낸 신호 품질은 확인하지 않았습니다.
 * **NAV 재부팅 = 비행 종료**: 비행 중 NAV가 리셋되면(브라운아웃, 워치독) EST_VALID가 없어 I9 → ABORT입니다(설계상 안전 쪽).

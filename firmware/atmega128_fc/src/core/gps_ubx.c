@@ -273,8 +273,8 @@ static bool py_space(uint8_t c)
     return c == 0x20u || (c >= 0x09u && c <= 0x0Du) || (c >= 0x1Cu && c <= 0x1Fu);
 }
 
-/* "00040007" (u-blox 6) / "00080000" (u-blox 8): '0' everywhere but at 3 and 7 - compared without string tables (a
- * string literal is .data, i.e. RAM, on the AVR) */
+/* "00040007" (u-blox 6) / "00070000" (u-blox 7, NEO-7M: 2026-11-06, report only) / "00080000" (u-blox 8): '0' everywhere
+ * but at 3 and 7 - compared without string tables (a string literal is .data, i.e. RAM, on the AVR) */
 uint8_t ubx_monver_module(const uint8_t *pl)
 {
     const uint8_t *hw = pl + 30;
@@ -293,6 +293,8 @@ uint8_t ubx_monver_module(const uint8_t *pl)
             return UBX_MODULE_UNKNOWN;
     if (hw[3] == (uint8_t)'4' && hw[7] == (uint8_t)'7')
         return UBX_MODULE_UBLOX6;
+    if (hw[3] == (uint8_t)'7' && hw[7] == (uint8_t)'0')
+        return UBX_MODULE_UBLOX7;
     if (hw[3] == (uint8_t)'8' && hw[7] == (uint8_t)'0')
         return UBX_MODULE_UBLOX8;
     return UBX_MODULE_UNKNOWN;

@@ -1173,3 +1173,32 @@ def test_vtol_gns_link_cut_in_the_hover_lands(tmp_path):
     assert gsm.parse_command("sim gns off") == gsm.Action("sim", False, sub="gns")
     nogps = gsm.VirtualVehicle(None, None, 1, mode="vtol", gps=False)
     assert nogps.set_gns(False, 1.0).startswith("practice: this vehicle has no GNS board")
+
+
+# --------------------------------------------------------------------------- #
+# 2026-11-06: the ground ESP-NOW bridge (firmware/esp_bridge) as the default ground hardware
+# --------------------------------------------------------------------------- #
+def test_link_hw_default_and_baud_follow_the_vehicle_radio():
+    lk = P["flight_computer"]["link"]
+    ap = gsm.build_arg_parser(P)
+    a = ap.parse_args(["--port", "COM9"])
+    assert a.link_hw == lk["vehicle_radio"] == "esp_bridge"
+    assert gsm.serial_baud(P, a.link_hw, a.baud) == lk["esp_bridge"]["uart_baud"]
+    a = ap.parse_args(["--port", "COM9", "--link-hw", "lora_uart"])
+    assert gsm.serial_baud(P, a.link_hw, a.baud) == lk["uart_baud"]          # the Ebyte / SX127x bridge baud, unchanged
+    a = ap.parse_args(["--port", "COM9", "--baud", "115200"])
+    assert gsm.serial_baud(P, a.link_hw, a.baud) == 115200
+    assert a.radio == lk["radio"] == "lora_uart"                            # the link MODEL stays the LoRa one
+    old = {**P, "flight_computer": {**P["flight_computer"], "link": {k: v for k, v in lk.items() if k != "vehicle_radio"}}}
+    assert gsm.default_link_hw(old) == lk["radio"]
+
+
+def test_serial_transport_releases_dtr_rts_for_the_esp(tmp_path):
+    pytest.importorskip("serial")
+    tr = gsm.SerialTransport("loop://", 38400, release_lines=True)
+    assert tr.ser.is_open and tr.ser.dtr is False and tr.ser.rts is False and "DTR / RTS released" in tr.desc
+    st = gsm.GroundStation(P, tr, gsm.ground_params(P, None, mode="ballistic"), log=None)
+    st.step(0.0)
+    st.step(0.01)
+    assert st.tap.stats["wrong_type"] == 1                                   # the same byte path as the LoRa ports
+    tr.close()

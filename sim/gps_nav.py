@@ -51,8 +51,8 @@ default), send CFG-PRT (the receiver changes its baud rate: that ACK is not chec
 again with its ACK checked; then CFG-RATE, CFG-MSG x 3, CFG-NAV5, each ACK-ACK checked (NAK or ``CFG_ACK_TIMEOUT_S``
 without an answer: retry, ``CFG_TRIES`` in all); then poll MON-VER (``CFG_VER_TIMEOUT_S``, ``CFG_TRIES``).  Result:
 CFG_OK (every frame acknowledged), VER_OK (MON-VER answered) and the module class from hwVersion ("00040007" u-blox 6,
-"00080000" u-blox 8 / M8; anything else 'unknown' - clones often answer "00040007" as well, so a fake is NOT reliably
-detected).  The configurator never blocks: one call per NAV tick, its actions (UART baud, bytes to send) are returned.
+"00070000" u-blox 7 / NEO-7M (2026-11-06), "00080000" u-blox 8 / M8; anything else 'unknown' - clones often answer
+"00040007" as well, so a fake is NOT reliably detected).  The module class is reported only: nothing depends on it.  The configurator never blocks: one call per NAV tick, its actions (UART baud, bytes to send) are returned.
 
 Part 2 - NAV GPS-aided horizontal estimator (``NavGpsFilter``)
 =============================================================
@@ -216,7 +216,9 @@ GPS_BAUD = 38400                               # params flight_computer.nav.gps.
 GPS_BAUD_DEFAULT = 9600                        # NEO-6 factory default (data sheet)
 HW_UBLOX6 = "00040007"                          # MON-VER hwVersion: u-blox 6 (NEO-6M)
 HW_UBLOX8 = "00080000"                          # u-blox 8 / M8 (NEO-M8N)
-MODULE_UNKNOWN, MODULE_UBLOX6, MODULE_UBLOX8 = 0, 6, 8
+HW_UBLOX7 = "00070000"                          # u-blox 7 (NEO-7M, the user's part 2026-11-05; report only - A: u-blox 7
+                                                # protocol spec not on disk, the string from the u-blox convention)
+MODULE_UNKNOWN, MODULE_UBLOX6, MODULE_UBLOX7, MODULE_UBLOX8 = 0, 6, 7, 8
 
 # --------------------------------------------------------------------------- #
 # configurator timing (ASSUMED: the data sheet gives no command latency; u-blox answers a CFG within ~10-100 ms)
@@ -446,7 +448,7 @@ class MonVer:
 
     @property
     def module(self) -> int:
-        return {HW_UBLOX6: MODULE_UBLOX6, HW_UBLOX8: MODULE_UBLOX8}.get(self.hw, MODULE_UNKNOWN)
+        return {HW_UBLOX6: MODULE_UBLOX6, HW_UBLOX7: MODULE_UBLOX7, HW_UBLOX8: MODULE_UBLOX8}.get(self.hw, MODULE_UNKNOWN)
 
 
 def mon_ver_payload(sw: str, hw: str, ext: Sequence[str] = ()) -> bytes:

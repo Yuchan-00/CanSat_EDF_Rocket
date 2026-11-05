@@ -36,6 +36,12 @@
 /* the module's UART delivers one byte every 10 / LINK_UART_BAUD s (Timer1 counts) */
 #define SB_RADIO_BYTE ((uint32_t)((COM_T1_COUNTS_PER_US * 10000000UL + LINK_UART_BAUD / 2u) / LINK_UART_BAUD))
 #define SB_BURST_GAP_TICKS 0u                /* the next burst frame starts at the next tick after the previous one */
+#elif FC_LINK_RADIO == FC_RADIO_ESP_BRIDGE
+/* 2026-11-06: the ESP bridge delivers the bytes over USART1 at ESP_UART_BAUD, like a transparent module at its baud */
+#define SB_RADIO_NAME "esp_bridge"
+#define SB_BACKEND_FLAG 0u
+#define SB_RADIO_BYTE ((uint32_t)((COM_T1_COUNTS_PER_US * 10000000UL + ESP_UART_BAUD / 2u) / ESP_UART_BAUD))
+#define SB_BURST_GAP_TICKS 0u
 #else
 #define SB_RADIO_NAME "sx127x"
 #define SB_BACKEND_FLAG IL_STAT_SX127X

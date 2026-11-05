@@ -2,7 +2,7 @@
 
 **사용자 결정 4 (2026-11-05): "이 배터리로 진행, 질량은 나중에 결정".** 그래서 `params.json` `configs.vtol.logic_power.in_flight_mass_model` = **false** 입니다. 아래 부품(스위치 보호 칼라 포함)은 CAD 고체로 모양·간섭 검사(C37-C39, C41)에만 쓰고, 시뮬레이션·펌웨어 헤더·질량 목표가 읽는 질량(보고서 parts / totals)에는 넣지 않았습니다(C40이 확인).
 
-params sha256 `9317ddab0b59cd92…`, 만든 명령: `python cad/cadquery/build_rocket.py --config vtol`.
+params sha256 `48acb76920091978…`, 만든 명령: `python cad/cadquery/build_rocket.py --config vtol`.
 
 표시: M = 도구로 잰 값(CadQuery 질량 특성, 슬라이서), E = 추정, A = 가정(산 물건으로 재야 함).
 

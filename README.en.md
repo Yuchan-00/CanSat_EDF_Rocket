@@ -25,6 +25,7 @@
 
 The rocket climbs vertically, cuts the motor, opens the nose cone at apogee to release the CanSat, and descends on its own parachute.
 The VTOL is a test vehicle with a short electronics section on the same propulsion and intake modules, with three power configurations: battery, tethered and hybrid.
+**User decision 2026-11-05: from now on only the battery configuration is used.** Tethered and hybrid were not deleted, but they are no longer fitted with the logic battery of carrier PCB rev 2c (1S, on the −x face of the 6S pack) or the top-cap switch. The user will decide the mass of the logic power parts later (`configs.vtol.logic_power.in_flight_mass_model` = false; [docs/v0.9_하드웨어_변경.md](docs/v0.9_하드웨어_변경.md) (Korean) chapter 19).
 Attitude is held by 4 vanes in the exhaust (MG90S direct drive), and all flight computing is done by 4 ATmega128A chips.
 
 > **No real flight or thrust tests yet.** The numbers below come from CAD, the slicer and simulation.
@@ -36,12 +37,12 @@ Attitude is held by 4 vanes in the exhaust (MG90S direct drive), and all flight 
 | Rocket configuration mass | **2,599.2 g** | M | `cad/exports/cadquery_report.json` |
 | VTOL mass (battery / tethered / hybrid) | **1,653.7 / 1,405.8 / 1,526.8 g** | M | `cadquery_report_vtol*.json` |
 | Body | Ø120 mm, wall 1.2 mm | Design | `params.json` `body` |
-| Height (rocket / VTOL battery / tethered·hybrid) | 856.3 / 485.9 / 500.3 mm (excluding launch pad) | Design | CadQuery report `vehicle_h_mm` |
+| Height (rocket / VTOL battery / tethered·hybrid) | 856.3 / 492.5 / 500.3 mm (excluding launch pad; VTOL battery includes the 2026-11-05 switch guard collar) | Design | CadQuery report `vehicle_h_mm` |
 | Propulsion | 90 mm 12-blade EDF, 6S, 100 A ESC | Part | [Budget](docs/budget/예산안.md) (Korean) |
 | EDF thrust | 2.14–3.09 kgf (22.2 V) - **not measured yet** | A | 3.09 = seller's thrust table (proxy value), 2.14 = design lower bound (battery VTOL T/W 1.3), `params.json`. Flying within the acceptance criteria needs about 2.6 kgf or more ([results document](docs/v0.9_시뮬레이션_제어_결과.md) (Korean)) |
 | Flight computer | ATmega128A × 4 (NAV · FCU · COM · GNS), 16 MHz, 250 Hz control tick | Design | `params.json` `flight_computer` |
 | Budget (rocket / VTOL battery) | KRW 421,232 / KRW 375,192 | M + A | 2026-10-13 retail prices, some lines estimated ([rocket](docs/budget/예산안.md), [VTOL](docs/budget/예산안_vtol.md) (Korean)) |
-| Print time (rocket / VTOL) | 47 h 29 min / 32 h 41 min | M + A | Bambu Studio slice, logo purge volume is an assumed value ([provisional print plan](cad/exports/print/provisional_v09_cadquery/print_plan_provisional.md) (Korean): CadQuery STL slice, before the Fusion run) |
+| Print time (rocket / VTOL) | 47 h 29 min / 34 h 46 min | M + A | Bambu Studio slice, logo purge volume is an assumed value ([provisional print plan](cad/exports/print/provisional_v09_cadquery/print_plan_provisional.md) (Korean): CadQuery STL slice, before the Fusion run) |
 
 <sub>M = value measured with a tool (CadQuery, slicer) · E = estimate · A = assumption (input not measured yet) · Design = `params.json` input value · Part = purchased-part specification from the budget. Masses are CAD totals with printed parts entered at slicer values, and some electronics masses are assumed values. Rocket print time includes the launch pad.</sub>
 
@@ -119,15 +120,40 @@ Attitude is held by 4 vanes in the exhaust (MG90S direct drive), and all flight 
 |:-:|:-:|
 | <sub>The real EDF (2026-10-29): the position where the motor lead bundle exits was set from this photo</sub> | <sub>The rocket just before the change to white (2026-11-04 morning, black PLA). The gallery above shows it as it is now</sub> |
 
+## Avionics carrier PCB and logic power (2026-11-04 to 11-05)
+
+A carrier PCB that holds the VTOL's 4 chips, sensors, radio and logger on one board was made with KiCad 10 (kicad-cli) and Freerouting. **It has never been manufactured or powered (NOT_VERIFIED).**
+
+| <img src="docs/images/pcb_carrier.jpg" width="400"> | <img src="docs/images/pcb_top.jpg" width="400"> |
+|:-:|:-:|
+| <sub>Carrier PCB rev 2c: 76 × 70 mm, 4 layers, ATmega128A × 4, ESP-12E (kicad-cli render)</sub> | <sub>Top side of the same board (kicad-cli render)</sub> |
+
+<p align="center">
+  <img src="docs/images/pcb_schematic.jpg" width="800" alt="8 schematic sheets"><br>
+  <sub>8 schematic sheets (power, NAV, FCU, COM, GNS, level shifters, connectors, top level)</sub>
+</p>
+
+* **Checks (M, kicad-cli 10.0.6)**: ERC 0 errors · 0 warnings, DRC 0 errors · 0 warnings · 0 unconnected · 0 schematic mismatches. 162 parts (152 mounted), 100 nets.
+* **Parts chosen by the user**: BMP280, GY-521, NEO-7M (leads only), ESP-12E radio (instead of LoRa PLM100, 2026-11-05), 1S 4200 mAh logic battery (Devicemart 16021596). All parts are ones found at JLCPCB (LCSC) or Devicemart.
+* **How it got here**: rev 1 (PLM100 + 2S, 2 layers) was remade after an independent review found decoupling, crystal, silkscreen and GND problems. rev 2 could not be fully routed on 2 layers (63 unconnected), so it moved to 4 layers and the unused 5th chip site was removed. rev 1 is in [`pcb/vtol_carrier/archive/`](pcb/vtol_carrier/archive/).
+* **Logic power (CAD)**: the 1S pack sits on the −x face of the 6S pack (position A), the switch (MTS-102) is on the top cap, and a guard collar printed in one piece with the cap surrounds the lever (checks C37–C41). The logic power parts, about 94 g, are not in the flight mass until the user decides (with them: 1,747.7 g, T/W 1.23 (E)).
+* **Wi-Fi range**: extended with ESP-NOW at 1 Mbps and an external antenna at the ground station (calculation E). A ground radio test of 1 km or more is needed before flight; if it fails, the link goes back to LoRa.
+* Details: [PCB README](pcb/vtol_carrier/README_ko.md) (Korean), [hardware changes chapter 19](docs/v0.9_하드웨어_변경.md) (Korean), [build guide chapter 3 step 14](docs/제작가이드.md) (Korean).
+
+| <img src="docs/images/vtol_logic_power.jpg" width="400"> | <img src="docs/images/vtol_switch_collar.jpg" width="400"> |
+|:-:|:-:|
+| <sub>Logic power: 1S pack (position A) and switch wires (image from before the collar)</sub> | <sub>Top-cap switch guard collar: 2.14 mm higher than the lever in both end positions (M)</sub> |
+
 ## Verification approach
 
 Design values come from one place (`params.json` → `cad/layout.py`), and pass/fail is decided with fixed tools and criteria.
 
-* **Geometry checks C1–C36** (CadQuery): all four configurations. FAIL / WARN - rocket 0 / 5, VTOL battery 0 / 3, tethered 1 / 2, hybrid 1 / 2.
+* **Geometry checks C1–C41** (CadQuery): all four configurations (C37–C40 logic power and C41 switch guard collar apply to the VTOL battery only; N/A elsewhere). FAIL / WARN - rocket 0 / 5, VTOL battery 0 / 3 (on 2026-11-05 the guard collar turned the C39 lever WARN into PASS), tethered 1 / 2, hybrid 1 / 2.
 * **Fusion 360 cross-check**: the same specification is also built with a Fusion script. In this round, a simulated run (replay) of the script was used to check boolean differences against the CadQuery geometry (logo 0.0000 mm³). A Fusion GUI run (0.9.6) still has to be done by a person.
 * **Slicing**: real slicing with the Bambu Studio CLI; weight, time and the number of color changes are counted from the G-code.
 * **6-DOF simulation + campaign**: 500 runs under field conditions, 18 % pass, 13 % emergency stop ([results document](docs/v0.9_시뮬레이션_제어_결과.md) (Korean)).
 * **4-chip co-simulation** (simavr): the NAV · FCU · COM · GNS firmware runs together instruction by instruction. All 22 acceptance criteria pass (2026-10-29, [firmware results](docs/v0.9_펌웨어_결과.md) (Korean)). Because the headers were regenerated on 11-04, row 21 (ballistic image hash) is waiting for the user to re-declare it with the new hash ([hardware changes 18.8](docs/v0.9_하드웨어_변경.md) (Korean)).
+* **Firmware round (2026-11-06)**: the vehicle radio was changed to ESP8266 Wi-Fi (ESP-NOW bridge, [firmware/esp_bridge](firmware/esp_bridge/README.md) (Korean)). This applies to both the VTOL and the rocket; LoRa stays as a fallback. The headers were regenerated and every HEX was rebuilt. Control was not changed. 20 of the 22 acceptance criteria pass, row 19 was not judged this time, and row 21 is waiting for the user to re-declare the new hashes (M, simulator). The ESP8266 firmware was compiled with arduino-cli and the core `esp8266:esp8266` 3.1.2; all 5 variants built, nothing was flashed (M, [firmware results section 11.10](docs/v0.9_펌웨어_결과.md) (Korean)).
 * **Independent review**: in every round a different reviewer reruns everything on a copy to find defects, and what was fixed and what was left is recorded in the documents.
 
 > **Still open**
@@ -147,6 +173,7 @@ Design values come from one place (`params.json` → `cad/layout.py`), and pass/
 | [`tools/`](tools/) | Ground station, print-file generation, budget, simulation video tools |
 | [`docs/`](docs/) | Specification, change documents, build guide, budget, testing, safety and regulations |
 | [`render/`](render/) | Blender render pipeline (for simulation videos) |
+| [`pcb/`](pcb/) | VTOL carrier PCB: KiCad project, generator scripts, Gerber · BOM · CPL, check reports |
 
 <sub>`sim/out/` and the STL · STEP · F3D files are generated files, so they are not in the repository. How to regenerate them is described in the technical details below.</sub>
 

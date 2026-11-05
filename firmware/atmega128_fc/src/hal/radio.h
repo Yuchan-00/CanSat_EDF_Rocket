@@ -5,6 +5,10 @@
  *
  *   FC_RADIO_LORA_UART  hal/lora_uart.c  Ebyte E22/E220/E32-class transparent module on the COM's USART1
  *   FC_RADIO_SX127X     hal/sx127x.c     SX1276/77/78 on the COM's SPI (Ra-01/Ra-02, RFM95/96)
+ *   FC_RADIO_ESP_BRIDGE hal/esp_bridge.c ESP8266 (ESP-12E) running the transparent UART <-> ESP-NOW bridge of
+ *                                        firmware/esp_bridge on the COM's USART1, RST from PC6 (2026-11-06; params
+ *                                        flight_computer.link.vehicle_radio selects the backend of the plain envs, and
+ *                                        link.radio stays the link model of sim/link_model.py)
  *
  * The vehicle never transmits on its own: the COM calls radio_send() only with a TELEM built
  * from an FCU snapshot, and the FCU's supervisor produces a snapshot only as the reply to a
@@ -15,7 +19,7 @@
  *
  * Invariant: every function returns within a bounded time (no waiting on the radio in the
  * COM main loop); radio_service() does at most one short step (<= ~0.25 ms) per call; the
- * only ISR work is moving UART bytes (lora_uart).
+ * only ISR work is moving UART bytes (lora_uart, esp_bridge).
  */
 #ifndef FC_RADIO_H
 #define FC_RADIO_H

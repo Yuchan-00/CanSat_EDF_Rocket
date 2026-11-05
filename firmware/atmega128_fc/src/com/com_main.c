@@ -10,7 +10,9 @@
  * interlocks I1-I10, the nonce and every state change stay on the FCU: a dead COM is a lost radio
  * link for the FCU (I1p / I1).  The COM has no part in the NAV <-> FCU nlink.
  *
- * Boot: radio pins safe (Ebyte M0/M1 low = normal mode; SX127x deselected and held in reset),
+ * Boot: radio pins safe (Ebyte M0/M1 low = normal mode; SX127x deselected and held in reset; 2026-11-06 ESP bridge:
+ * on a cold boot the ESP-12E held in reset through PC6 (open-drain) until radio_init releases it, after a COM-only reset it
+ * keeps running, hal/esp_bridge.h),
  * status LED off, watchdog (WDT_TIMEOUT), COM time base (Timer2 tick + free-running Timer1,
  * src/com/com_timer.c), ilink USART0, interrupts on, radio_init (SX127x: ~12 ms with the
  * watchdog kicked), decoders; the boot IL_STAT (IL_STAT_BOOT) is the first costly job once the COM
@@ -49,8 +51,8 @@
 #if ILINK_USART != ILINK_USART_COM
 #error "the COM's ilink runs on USART0 (platformio.ini [com_common] -D ILINK_USART=0)"
 #endif
-#if FC_LINK_RADIO != FC_RADIO_LORA_UART && FC_LINK_RADIO != FC_RADIO_SX127X
-#error "FC_LINK_RADIO must be FC_RADIO_LORA_UART or FC_RADIO_SX127X"
+#if FC_LINK_RADIO != FC_RADIO_LORA_UART && FC_LINK_RADIO != FC_RADIO_SX127X && FC_LINK_RADIO != FC_RADIO_ESP_BRIDGE
+#error "FC_LINK_RADIO must be FC_RADIO_LORA_UART, FC_RADIO_SX127X or FC_RADIO_ESP_BRIDGE"
 #endif
 
 #define COM_LED_UPLINK_TICKS 25u             /* 100 ms on after each forwarded uplink */

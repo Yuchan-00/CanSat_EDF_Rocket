@@ -5564,6 +5564,14 @@ static void test_gps_ubx(void)
         CHECK(ubx_monver_module(pl) == UBX_MODULE_UBLOX6, "hw 00040007 -> u-blox 6");
         memcpy(pl + 30, " 00080000\t", 10);
         CHECK(ubx_monver_module(pl) == UBX_MODULE_UBLOX8, "hw ' 00080000\\t' (stripped) -> u-blox 8");
+        memset(pl + 30, 0, 10);
+        memcpy(pl + 30, "00070000", 8);                /* 2026-11-06: NEO-7M (sim/gps_nav.py HW_UBLOX7) */
+        CHECK(ubx_monver_module(pl) == UBX_MODULE_UBLOX7 && UBX_MODULE_UBLOX7 == 7u, "hw 00070000 -> u-blox 7");
+        memcpy(pl + 30, "00070001", 8);
+        CHECK(ubx_monver_module(pl) == UBX_MODULE_UNKNOWN, "hw 00070001 -> unknown");
+        memcpy(pl + 30, "00040000", 8);
+        CHECK(ubx_monver_module(pl) == UBX_MODULE_UNKNOWN, "hw 00040000 -> unknown");
+        memset(pl + 30, 0, 10);
         memcpy(pl + 30, "0004000700", 10);
         CHECK(ubx_monver_module(pl) == UBX_MODULE_UNKNOWN, "hw 0004000700 (no NUL, 10 chars) -> unknown");
         memset(pl + 30, 0, 10);

@@ -108,6 +108,8 @@ def test_ubx_messages_pack_unpack_and_decode():
                                                         gn.mon_ver_payload("7.03 (45969)", gn.HW_UBLOX6)))[0])
     assert (mv.sw, mv.hw, mv.module) == ("7.03 (45969)", "00040007", 6)
     assert gn.MonVer("x", "00080000").module == 8 and gn.MonVer("x", "12345678").module == 0
+    assert gn.MonVer("x", "00070000").module == gn.MODULE_UBLOX7 == 7          # NEO-7M (2026-11-06, report only)
+    assert gn.MonVer("x", "00070001").module == 0
 
 
 def test_ubx_parser_good_bad_checksum_partial_and_resync():

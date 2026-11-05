@@ -1,5 +1,8 @@
 # 지상 브리지 (USB ↔ LoRa, SX127x 모듈용)
 
+> 2026-11-06: 기본 무선은 ESP8266(ESP-NOW)입니다(`firmware/esp_bridge/README.md`). 이 브리지는 **LoRa 예비** 장비로 남습니다.
+> 쓰려면 기체를 `flight_computer.link.vehicle_radio` = `sx127x`로 빌드하고, 지상국을 `--link-hw sx127x --radio sx127x`로 실행합니다.
+
 지상 LoRa 모듈이 **SX1276 계열(SPI)** 일 때만 필요합니다.
 Ebyte E22/E220/E32 같은 UART 투명 모듈이면 USB-UART 어댑터만 쓰고 이 브리지는 필요 없습니다.
 

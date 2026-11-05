@@ -2,7 +2,7 @@
   "generator": "cadquery",
   "generator_version": "cadquery 2.8.0",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292",
+  "params_sha256": "48acb7692009197802c7c7f5ec293ba65686581309365763a1678884e4382bde",
   "parts": {
     "propulsion_module": {
       "kind": "printed",
@@ -1847,7 +1847,7 @@
     "thrust_to_weight_nominal": 1.868537422963651,
     "inertia_convention": "standard tensor about the part COM, I_xy = -sum(m x y); kg*m^2",
     "cadquery_version": "2.8.0",
-    "build_time_s": 6.886957883834839,
+    "build_time_s": 6.60466194152832,
     "mass_model": {
       "mode": "slicer_part_g",
       "table": "cad/exports/print/provisional_v09_cadquery_vtol/slicer_part_masses.json",
@@ -3854,7 +3854,7 @@
       "wire_cover": 0.05
     },
     "step_file": "cad/exports/cadquery/CanSatEDFRocket_vtol.step",
-    "total_time_s": 14.889554738998413
+    "total_time_s": 14.340385437011719
   },
   "config": "vtol",
   "power_source": "battery"

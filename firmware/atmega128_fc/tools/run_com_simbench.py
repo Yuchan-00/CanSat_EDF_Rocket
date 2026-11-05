@@ -81,21 +81,24 @@ from sim import link_proto as lp  # noqa: E402
 
 # envs per mission mode (platformio.ini): the plain envs fly params.json's mode (vtol), *_ballistic pin the ballistic one
 MODES = {
-    "vtol": {"bench": {"com_simbench": "com_lora_uart", "com_simbench_sx127x": "com_sx127x"},   # bench -> flight build
-             "flight": ("com", "com_lora_uart", "com_sx127x"),
+    "vtol": {"bench": {"com_simbench": "com_lora_uart", "com_simbench_sx127x": "com_sx127x",   # bench -> flight build
+                       "com_simbench_esp": "com_esp_bridge"},
+             "flight": ("com", "com_lora_uart", "com_sx127x", "com_esp_bridge"),
              "cosim": ("com_cosim", "com_cosim_sx127x", "fcu_cosim"), "foreign": ("fcu_cosim",),
-             "radio": {"com_simbench": "lora_uart", "com_simbench_sx127x": "sx127x"},
+             "radio": {"com_simbench": "lora_uart", "com_simbench_sx127x": "sx127x", "com_simbench_esp": "esp_bridge"},
              # v0.8: SNAP3 -> TELEM3 (the GPS FCU; an ONB_NO_GPS FCU's SNAP2 -> TELEM2 is accepted too); v0.9 RP1: the
              # power builds' TELEM5 (47 B) is the longest reply - the window check uses it, the bench sends all four
              "accept": il.ACCEPT_COM_VTOL | il.ACCEPT_COM_GPS, "telem_bytes": lp.TELEM5_FRAME_BYTES,
              "snap_bytes": il.SNAP3_FRAME_BYTES,
              "start": "ON with the nonce read back from TELEM3 -> POWERED"},
     "ballistic": {"bench": {"com_simbench_ballistic": "com_lora_uart_ballistic",
-                            "com_simbench_sx127x_ballistic": "com_sx127x_ballistic"},
-                  "flight": ("com_ballistic", "com_lora_uart_ballistic", "com_sx127x_ballistic"),
+                            "com_simbench_sx127x_ballistic": "com_sx127x_ballistic",
+                            "com_simbench_esp_ballistic": "com_esp_bridge_ballistic"},
+                  "flight": ("com_ballistic", "com_lora_uart_ballistic", "com_sx127x_ballistic", "com_esp_bridge_ballistic"),
                   "cosim": ("com_cosim_ballistic", "com_cosim_sx127x_ballistic", "fcu_cosim_ballistic"),
                   "foreign": ("fcu_cosim_ballistic",),
-                  "radio": {"com_simbench_ballistic": "lora_uart", "com_simbench_sx127x_ballistic": "sx127x"},
+                  "radio": {"com_simbench_ballistic": "lora_uart", "com_simbench_sx127x_ballistic": "sx127x",
+                            "com_simbench_esp_ballistic": "esp_bridge"},
                   "accept": il.ACCEPT_COM, "telem_bytes": lp.TELEM_FRAME_BYTES, "snap_bytes": il.SNAP_FRAME_BYTES,
                   "start": "ARM + LAUNCH with the nonce read back from TELEM -> POWERED"},
 }
@@ -329,6 +332,28 @@ def reply_window_check(p: dict, win_ticks: int, tick_hz: int, cl_max_us: dict, p
         r["pass"] = r["margin_arrive_ms"] > 0 and r["margin_off_air_worst_ms"] > 0
         ok = ok and r["pass"]
         out["radios"][radio] = r
+    if "esp_bridge" in cl_max_us:
+        # 2026-11-06: the ESP bridge backend has no link model of its own (sim/link_model.py RADIOS); its window is checked
+        # against the lora_uart model (the ground's longest timeout, the pessimistic case) with its own measured
+        # uplink -> IL_CMD time and a radio start of 0 (no busy line: the reply goes to the UART at once)
+        cfg = lm.LinkConfig.from_params(p, radio="lora_uart")
+        rt = lm.round_trip(cfg, telem_bytes=MODES[MODE]["telem_bytes"])
+        up = lm.hop_timing(cfg, "up", lp.CMD_FRAME_BYTES)
+        down = lm.hop_timing(cfg, "down", MODES[MODE]["telem_bytes"])
+        arrive_bound = rt["reply_timeout_s"] - rt["uplink_s"] - down.arrival
+        air_bound = rt["reply_timeout_s"] + up.air_start - rt["uplink_s"] - down.air_end
+        cl = cl_max_us["esp_bridge"] * 1e-6
+        r = {"model": "lora_uart (the ESP bridge has no link model; pessimistic)",
+             "reply_timeout_ms": round(rt["reply_timeout_s"] * 1e3, 1), "uplink_at_com_ms": round(rt["uplink_s"] * 1e3, 1),
+             "bound_arrive_before_timeout_ms": round(arrive_bound * 1e3, 1),
+             "bound_off_air_before_next_request_ms": round(air_bound * 1e3, 1),
+             "uplink_to_il_cmd_ms": round(cl * 1e3, 2), "radio_start_idle_ms": 0.0, "radio_start_worst_ms": 0.0,
+             "_doc": "start = 0: no busy line, radio_send hands the frame to the UART at once"}
+        r["margin_arrive_ms"] = round((arrive_bound - (w + cl)) * 1e3, 1)
+        r["margin_off_air_worst_ms"] = round((air_bound - (w + cl)) * 1e3, 1)
+        r["pass"] = r["margin_arrive_ms"] > 0 and r["margin_off_air_worst_ms"] > 0
+        ok = ok and r["pass"]
+        out["radios"]["esp_bridge"] = r
     out["pass"] = ok
     return out
 

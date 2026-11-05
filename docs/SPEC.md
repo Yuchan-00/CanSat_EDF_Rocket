@@ -1229,7 +1229,9 @@ dropped silently.
   (0.01 deg), throttle u16 (x1000), V_cell u16 (mV), loop_max u16 (us).
 
 Radio backends (compile-time `flight_computer.link.radio`, env `com`; `com_lora_uart` and `com_sx127x` always build
-both):
+both). **2026-11-06: superseded for the backend choice by §10.7** - the COM backend is `flight_computer.link.vehicle_radio`
+(default `esp_bridge`, the ESP8266 Wi-Fi bridge); `link.radio` stays the link model (`lora_uart`) and the two LoRa
+backends below stay buildable as the fallback:
 * `lora_uart` (default): Ebyte E22 / E220 / E32-class transparent UART module, M0 = M1 = 0
   (normal mode), COM USART1 at `link.uart_baud` 8N1. Channel, air rate and address are set
   beforehand with the vendor's configuration tool; the MCU only moves bytes.
@@ -1528,6 +1530,56 @@ vane scope, stack paint, real TWI / IMU lead, weights and thrust ≥ 2.6 kgf at 
 calibration) come before the first powered flight, as a checklist in `docs/v0.9_펌웨어_결과.md` §7; no GPIO-stamp
 measurement build exists yet; `FC_COMPUTE_DELAY_S_MEASURED` stays 4.71 ms until then; the `gains.h` / `vtol_gains.json`
 STALE build warnings (not re-tuned); 5 pre-existing `sim/test_vtol_scenarios.py` failures.
+
+### 10.7 Vehicle radio = ESP8266 Wi-Fi bridge (ESP-NOW), firmware round 2026-11-06
+
+User decisions 2026-11-05: Wi-Fi (ESP8266) for the vehicle link where the range allows ("가능하면 wifi방식을 채택"), the
+rocket uses the ESP too; range plan E / A in `pcb/vtol_carrier/spec/carrier_spec.json` `radio_decision_2026_11_05`.
+Korean round report: `docs/v0.9_펌웨어_결과.md` §11; wiring and build: `firmware/README.md` §0.10,
+`firmware/esp_bridge/README.md`. Labels: M measured (simulation / host), E estimated, A assumed.
+
+* **Selection.** `flight_computer.link.vehicle_radio` (`esp_bridge` | `lora_uart` | `sx127x`) is the COM backend of the
+  plain envs (`com`, `com_wired`, `com_wired_buffer`, `com_ballistic`; `params_gen.h` `FC_LINK_RADIO`,
+  `FC_RADIO_ESP_BRIDGE` = 3); `com_esp_bridge`, `com_lora_uart`, `com_sx127x` (and their `_ballistic` twins) force one
+  each, so all three always compile. `flight_computer.link.radio` keeps its meaning as the **link model** of
+  `sim/link_model.py` (sim timing, the ground's reply timeout, the generator's link budget): it stays `lora_uart`, the
+  pessimistic case for the ESP bridge, because the model has no Wi-Fi entry and an ESP-NOW model changes the assist /
+  link-loss timing (control-relevant, next round). The four-core co-simulation keeps its lora_uart COMs.
+* **Bridge.** Both ends run one sketch, `firmware/esp_bridge` (roles `vehicle_esp12e` / `ground_esp07s`): a
+  byte-transparent UART <-> ESP-NOW bridge. The frame protocol of §10.3 (sync, LEN, CRC, nonce, TELEM v1-v5, the
+  command set) is unchanged; the COM and the ground station see the bytes they saw over a transparent LoRa module.
+  UART -> air: a complete frame at the buffer start goes out as one packet at once, other bytes after
+  `idle_flush_bytes` (3) byte times of silence, an incomplete frame after the longest frame + that gap, <= 250 B per
+  packet (`src/bridge_core.h`, the ground_bridge rule). ESP-NOW unicast between two locally administered MACs set by
+  the sketch (`link.esp_bridge.mac_*`), fixed channel, 802.11b PHY, TX power per end, 1 Mbps (ESP-NOW default, A).
+  Compiled on this PC with arduino-cli and the core esp8266:esp8266 3.1.2 (`firmware/esp_bridge/build_arduino_cli.py`,
+  2026-11-06: 5 role / flag variants exit 0, no warnings in the bridge source, deterministic .bin, M); the PlatformIO
+  environments are not built (platform espressif8266 not installed). Run-time behaviour on hardware (1 Mbps, the
+  rate-limit call, TX power, range) is A - nothing flashed. The portable part is host-tested (zig c++).
+* **COM backend `hal/esp_bridge.c`.** USART1 at `link.esp_bridge.uart_baud` = 38400 8N1, U2X 0 (UBRR 25, +0.16 %;
+  the ESP's 80 MHz divider +0.016 %; limit `uart_max_error` 0.2 %). The ESP's RST is PC6 (`com.pins.lora_reset`, a
+  BSS138 channel, non-inverting), used **open-drain**: driven low to hold the ESP in reset, released to an input (Hi-Z,
+  the channel's pull-ups raise RST), never driven high - a manual RST-GND short (carrier J3 5-6, the rocket's flash
+  header) cannot short a driven pin (review F1). Only on a **cold COM boot** (PORF, or no reset flag): held low from
+  `radio_pins_safe`, released by `radio_init` after `reset_hold_ms` (2 ms); the RX interrupt drops every byte for `boot_discard_ms` (400 ms = `ESP_BOOT_TICKS` 100 COM ticks) after the release (the ESP8266
+  ROM's 74880-baud boot log), then all bytes go to the link decoder, which skips non-frames. After a COM watchdog /
+  brown-out / external reset the ESP is left running and no window opens (review F2: a COM restart costs the link what
+  it cost with the Ebyte module, co-simulation row 18; a hung ESP needs its own watchdog or a power cycle, A). No busy line:
+  `radio_send` hands the reply to the UART at once (the ground's one-request-at-a-time polling paces the frames); no
+  RSSI; IL_STAT shows "not sx127x" (protocol unchanged). The reply window D5 (§10.4) holds with radio start 0 against
+  the lora_uart model's timeout (checked by `run_com_simbench.py`).
+* **Wiring.** VTOL carrier rev 2c: ESP-12E U7 (Q4 COM PD3 -> 1 kOhm -> RXD0, Q11 TXD0 -> COM PD2, Q5 COM PC6 -> RST,
+  straps, J3 flash header, J26 COM reset hold). Rocket COM board (hand-wired): the same nets through the comms box's
+  BSS138 board (ch1 TX, ch2 RST, ch3 ESP TX -> COM RX, ch4 the OpenLog line), ESP-12E on the box's AMS1117 3.3 V
+  (`firmware/README.md` §0.10). Open for the user: the rocket's range (apogee 140-150 m + drift) and the box fit.
+  **Amends §10.3:** the ESP's TXD0 -> COM RXD1 also goes through a BSS138 channel (direct 3.3 V drive leaves <= 0.3 V
+  over V_IH 3.0 V, carrier rev-1 review E2); the LoRa fallback wiring keeps the §10.3 rule (module -> MCU direct).
+* **Ground.** `tools/ground_station.py --link-hw esp_bridge` (default from `vehicle_radio`): serial at 38400 with DTR /
+  RTS released (an ESP board's auto-reset); `--link-hw lora_uart` / `sx127x` keep the LoRa hardware at
+  `link.uart_baud` 9600 (Ebyte module / `firmware/ground_bridge`).
+* **Not in this round (control-relevant):** an ESP-NOW link model; the logic-battery telemetry (FCU PF3,
+  `flight_computer.logic_battery_monitor`; TELEM v1-v5 have no free field and a longer battery-build reply changes the
+  sim's link timing); any onboard low-battery action; the BMP280 driver; tether `bec_min_v`.
 
 ## 11. Sizing (`sizing/sizing.py`)
 
@@ -2052,3 +2104,15 @@ round's scratch folder, copies in `B:\Video\펌웨어\v0.9\구현\`).
 
 pytest (whole project): step 0 1167 passed / 6 failed; final 1216 passed / 5 failed (the pre-existing
 `sim/test_vtol_scenarios.py` ones), 8 skipped, 2 xfailed. Open: §10.6.8.
+
+**2026-11-06 firmware round (§10.7; no control change)** — the vehicle radio is the ESP8266 Wi-Fi bridge (ESP-NOW), VTOL and
+rocket (`flight_computer.link.vehicle_radio` = `esp_bridge`; `link.radio` stays the lora_uart link model; LoRa backends kept
+as the fallback); COM backend `hal/esp_bridge.c` (USART1 38400 U2X 0, ESP reset on PC6 - open-drain, cold COM boot only -
+400 ms boot-log drop, no busy line);
+bridge sketch `firmware/esp_bridge` (compiled with arduino-cli + core esp8266:esp8266 3.1.2, all 5 variants, M; not flashed); ground station
+`--link-hw`; NEO-7M MON-VER `00070000` -> u-blox 7 (report only); headers regenerated, every image rebuilt (vehicle
+constants unchanged), CAD reports re-made for the params hash only. Acceptance: 20 of 22 PASS, row 19 not re-judged, row
+21 (ballistic hashes nav c1757ef8 / fcu 6c5b873c / com efc294a6, after the independent-review fixes; full values in
+`firmware/atmega128_fc/HEX_HASHES_2026-11-06.txt`) awaiting the user's re-declaration. Stopped (control
+procedure): the logic-battery telemetry (no free TELEM field; a longer battery-build reply changes the sim's link timing).
+Korean report: `docs/v0.9_펌웨어_결과.md` §11.

@@ -1520,3 +1520,78 @@ def test_bridge_config_follows_link_proto_after_rp1(monkeypatch):
     rp1 = gbc.render(p)
     assert "#define LINK_LEN_MAX              42\n" in rp1 and "#define LINK_MAX_FRAME_BYTES      47 " in rp1
     assert "v0.9: the TELEM5 frame of the power builds" in rp1 and "TELEM4 41 B = " in rp1 and "TELEM5 47 B = " in rp1
+
+
+# --------------------------------------------------------------------------- #
+# 2026-11-06: the ESP8266 bridge backend (link.vehicle_radio, link.esp_bridge) and the logic-battery pin
+# --------------------------------------------------------------------------- #
+def test_esp_bridge_backend_macros(base, header):
+    lk = BASE["flight_computer"]["link"]
+    assert lk["vehicle_radio"] == "esp_bridge" and lk["radio"] == "lora_uart"     # backend vs the sim's link model
+    m = macros(header)
+    assert m["FC_RADIO_LORA_UART"] == "1" and m["FC_RADIO_SX127X"] == "2" and m["FC_RADIO_ESP_BRIDGE"] == "3"
+    assert m["FC_LINK_RADIO"] == "FC_RADIO_ESP_BRIDGE"
+    assert m["ESP_UART_BAUD"] == "38400UL" and m["ESP_UART_UBRR"] == "25" and m["ESP_UART_U2X"] == "0"
+    assert abs(F_CPU / (16 * 26) / 38400 - 1) <= lk["esp_bridge"]["uart_max_error"]
+    assert m["ESP_RESET_HOLD_MS"] == "2U" and m["ESP_BOOT_TICKS"] == "100UL"           # 400 ms at 250 Hz
+    # the LoRa backend macros stay (fallback) and the link budget is still the LoRa model's
+    assert m["LINK_UART_BAUD"] == "9600UL" and "lora_uart (selected)" in header
+    assert base["vradio"] == "esp_bridge" and base["radio"] == "lora_uart"
+
+
+def test_vehicle_radio_defaults_to_the_link_model(tmp_path):
+    d = derive_with(tmp_path, lambda p: p["flight_computer"]["link"].pop("vehicle_radio"))
+    m = macros(gfp.render(d))
+    assert d["vradio"] == "lora_uart" and m["FC_LINK_RADIO"] == "FC_RADIO_LORA_UART"
+    assert m["ESP_UART_UBRR"] == "25"                                    # the esp_bridge block still generates its macros
+    d = derive_with(tmp_path, fc_set("link.vehicle_radio", "sx127x"))
+    assert macros(gfp.render(d))["FC_LINK_RADIO"] == "FC_RADIO_SX127X"
+
+
+@pytest.mark.parametrize("mut, needles", [
+    (fc_set("link.vehicle_radio", "wifi"), ("vehicle_radio 'wifi'",)),
+    (fc_set("link.radio", "esp_bridge"), ("link.radio 'esp_bridge'",)),          # the link MODEL has no Wi-Fi
+    (fc_set("link.esp_bridge.uart_baud", 57600), ("uart_baud 57600", "exceed uart_max_error")),
+    (fc_set("link.esp_bridge.uart_baud", 115200), ("uart_baud 115200",)),        # +8.5 % with U2X 0
+    (fc_set("link.esp_bridge.uart_max_error", 0.05), ("uart_max_error",)),
+    (fc_set("link.esp_bridge.reset_hold_ms", 0), ("reset_hold_ms",)),
+    (fc_set("link.esp_bridge.reset_hold_ms", 2.5), ("reset_hold_ms",)),
+    (fc_set("link.esp_bridge.boot_discard_ms", 0), ("boot_discard_ms",)),
+    (lambda p: p["flight_computer"]["link"].pop("esp_bridge"), ("needs flight_computer.link.esp_bridge",)),
+])
+def test_esp_bridge_refusals(tmp_path, mut, needles):
+    refused(tmp_path, mut, needles=needles)
+
+
+def test_logic_battery_pin_and_scale(base, header):
+    m = macros(header)
+    assert base["fcu_pins"]["logic_bat_adc"] == ("F", 3) and m["LOGIC_BAT_ADC_CHANNEL"] == "3"
+    assert float(m["LOGIC_BAT_V_PER_COUNT"].rstrip("f")) == pytest.approx(2.56 / 1024 * 2, rel=1e-7)
+    for name in ("LOGIC_BAT_ADC_CHANNEL", "LOGIC_BAT_V_PER_COUNT"):      # no firmware source reads it (telemetry: next round)
+        for root, _, files in os.walk(os.path.join(ROOT, "firmware", "atmega128_fc", "src")):
+            for fn in files:
+                if fn.endswith((".c", ".h")) and fn != "params_gen.h":
+                    with open(os.path.join(root, fn), encoding="utf-8", errors="replace") as f:
+                        assert name not in f.read(), (fn, name)
+
+
+@pytest.mark.parametrize("mut, needles", [
+    (fcu("logic_bat_adc", "PF2/ADC2"), ("PF2 on the FCU",)),                   # = v_buffer_adc
+    (fcu("logic_bat_adc", "PF4/ADC4"), ("PF0..PF3",)),                         # a JTAG pin
+    (fc_set("logic_battery_monitor.r_bottom_ohm", 470000), ("full 1S cell",)),  # 3.8 V at the pin > 2.56 V
+    (fc_set("logic_battery_monitor.vref_v", 5.0), ("2.56 V",)),
+])
+def test_logic_battery_refusals(tmp_path, mut, needles):
+    refused(tmp_path, mut, needles=needles)
+
+
+def test_platformio_builds_every_com_backend():
+    ini = _ini()
+    envs = re.findall(r"^\[env:(\w+)\]", ini, re.M)
+    for e in ("com_esp_bridge", "com_esp_bridge_ballistic", "com_simbench_esp", "com_simbench_esp_ballistic"):
+        assert e in envs, e
+    default = [e.strip() for e in re.search(r"^default_envs\s*=\s*(.*)$", ini, re.M).group(1).split(",")]
+    assert {"com", "com_lora_uart", "com_sx127x", "com_esp_bridge"} <= set(default)
+    assert "+<hal/esp_bridge.c>" in _section(ini, "com_common") and "-<hal/esp_bridge.c>" in _section(ini, "fcu_common")
+    for env in ("com_cosim_cl", "com_cosim_cl_wired", "com_cosim_cl_wired_buffer", "com_cosim"):  # the co-simulation keeps
+        assert "-D FC_LINK_RADIO=FC_RADIO_LORA_UART" in _section(ini, f"env:{env}"), env      # the LoRa link timing

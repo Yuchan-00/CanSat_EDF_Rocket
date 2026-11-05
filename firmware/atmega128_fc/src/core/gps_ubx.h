@@ -32,7 +32,8 @@
  * (CFG-PRT, ACK checked); else 9600 (the factory default) CFG-PRT (no ACK expected: the receiver switches), settle, back
  * to 38400, CFG-PRT with its ACK checked (UBX_CFG_TRIES in all); then CFG-RATE, CFG-MSG x 3, CFG-NAV5, each ACK-ACK
  * checked (NAK or timeout: retry, UBX_CFG_TRIES in all); then poll MON-VER.  cfg_ok = every frame acknowledged, ver_ok =
- * MON-VER answered, module from hwVersion ("00040007" u-blox 6, "00080000" u-blox 8; clones often answer "00040007" too:
+ * MON-VER answered, module from hwVersion ("00040007" u-blox 6, "00070000" u-blox 7 / NEO-7M, "00080000" u-blox 8;
+ * the module class is reported only (the GNS bench / debugger), nothing depends on it; clones often answer "00040007" too:
  * a fake is NOT reliably detected).
  *
  * Invariant: every function here gives exactly the bytes, messages, counters, epochs, times and actions of the Python
@@ -82,6 +83,7 @@
 #define UBX_BAUD_DEFAULT 9600UL        /* NEO-6 factory default (data sheet) */
 #define UBX_MODULE_UNKNOWN 0u
 #define UBX_MODULE_UBLOX6 6u
+#define UBX_MODULE_UBLOX7 7u           /* NEO-7M, hwVersion "00070000" (2026-11-06; report only, as the others) */
 #define UBX_MODULE_UBLOX8 8u
 #define UBX_ITOW_LEAK_MS 1             /* offset leak per epoch (5 ms/s at 5 Hz) */
 #define UBX_ITOW_JUMP_MS 1000          /* |D - O| above this re-learns the offset */

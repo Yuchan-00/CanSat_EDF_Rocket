@@ -978,10 +978,12 @@
         50.0,
         15.0
       ],
-      "note": "ASSUMED mass (bare board + ilink/radio wiring) - weigh it. Mounted horizontally under the payload bulkhead on payload_module.com_mount: dims = x length x y width x z height, components hanging down (solder wires or right-angle headers: no straight pin headers on the hanging side)"
+      "note": "ASSUMED mass (bare board + ilink/radio wiring) - weigh it. Mounted horizontally under the payload bulkhead on payload_module.com_mount: dims = x length x y width x z height, components hanging down (solder wires or right-angle headers: no straight pin headers on the hanging side)",
+      "model_note_2026_11_06": "the COM's radio is now the ESP8266 Wi-Fi bridge (flight_computer.link.vehicle_radio = esp_bridge, an ESP-12E on UART1 + RESET, firmware/README.md 0.10.4); LoRa (lora_uart / sx127x) stays the selectable fallback. Mass not re-estimated"
     },
     "radio_log": {
       "items": "LoRa module + antenna (user-owned), OpenLog clone + microSD, 2nd BSS138 4-ch level shifter (radio signals), 2nd AMS1117-3.3 module (radio 3.3 V)",
+      "items_note_2026_11_06": "esp_bridge build (the default since 2026-11-06): an ESP-12E (PCB antenna) + 100 uF / 100 nF on the radio 3.3 V instead of the LoRa module; level shifter 2 channels per firmware/README.md 0.10.4; mass and box fit not re-estimated (user decision, A)",
       "mass_g": 20.0,
       "dims_lwh": [
         30.0,
@@ -2442,7 +2444,8 @@
       "nlink_miso": "PB3/MISO (output: FCU -> NAV state bytes)",
       "v_tether_adc": "PF1/ADC1 (V_tether before D1; divider 47k/4.7k + 100 nF, internal 2.56 V ref, 0.0275 V/count, 28.1 V full scale; ASSUMED until the v0.9 carrier PCB is routed)",
       "v_buffer_adc": "PF2/ADC2 (V_buffer before D2, hybrid build; divider 47k/4.7k + 100 nF, internal 2.56 V ref; ASSUMED until the v0.9 carrier PCB is routed)",
-      "buf_isign": "PC3 (buffer-current sign, digital input, high = the buffer discharges; telemetry PF_BUF_SHARE only; ASSUMED until the v0.9 carrier PCB is routed)"
+      "buf_isign": "PC3 (buffer-current sign, digital input, high = the buffer discharges; telemetry PF_BUF_SHARE only; ASSUMED until the v0.9 carrier PCB is routed)",
+      "logic_bat_adc": "PF3/ADC3 (logic battery monitor, VTOL carrier rev 2c: 1S pack after the switch through 47k / 47k + 100 nF, internal 2.56 V ref; flight_computer.logic_battery_monitor; NOT read by the firmware yet)"
     },
     "nav": {
       "role": "NAV: MPU-6050 + MS5611 (I2C 400 kHz via the 3.3 V level shifter), pad alignment / gyro-only attitude estimator, tilt, altitude filter, sensor health; at the end of every tick it pushes the navigation frame to the FCU as the nlink SPI master and receives the FCU's state bytes in the same exchange. No flight decisions: commands, interlocks, control and outputs stay on the FCU",
@@ -2479,7 +2482,7 @@
       "schedule_note": "v0.8 NAV tick order (architect 2026-10-21, after the v0.7.1 integration measured IMU -> vane 5.2 ms > 4.71 ms and NAV tick -> vane 4.7 ms > 4.0 ms): IMU read -> gyro prediction of the quaternion -> PUBLISH the nlink frame -> then the Mahony correction / bias learning, the VTOL altitude filter and the GPS fusion; their results enter the frame of the NEXT tick (a 4 ms delay on slow corrections)."
     },
     "com": {
-      "role": "COM: LoRa radio driver, uplink frame decoding (forwards decoded CMDs to the FCU), TELEM building from the FCU's reply snapshot, 1 Hz status to the FCU. No flight decisions: the onboard supervisor (commands, interlocks I1-I10) stays on the FCU",
+      "role": "COM: radio driver (2026-11-06: the ESP8266 Wi-Fi bridge, LoRa as the fallback), uplink frame decoding (forwards decoded CMDs to the FCU), TELEM building from the FCU's reply snapshot, 1 Hz status to the FCU. No flight decisions: the onboard supervisor (commands, interlocks I1-I10) stays on the FCU",
       "mcu": "ATmega128A",
       "f_cpu_hz": 16000000,
       "tick_hz": 250,
@@ -2487,17 +2490,17 @@
         "ilink_rx": "PE0/RXD0 (from FCU PD3/TXD1 through 1 kOhm; ISP PDI: unplug the ilink connector to program the COM)",
         "ilink_tx": "PE1/TXD0 (to FCU PD2/RXD1, direct; ISP PDO)",
         "led": "PC0",
-        "link_uart_rx": "PD2/RXD1 (module TXD, direct)",
-        "link_uart_tx": "PD3/TXD1 (to module RXD through a BSS138 channel)",
-        "link_m0": "PC3 (lora_uart: low = normal mode)",
-        "link_m1": "PC4 (lora_uart: low = normal mode)",
-        "link_aux": "PC5 (lora_uart: module busy, input)",
+        "link_uart_rx": "PD2/RXD1 (lora_uart: module TXD, direct; esp_bridge: ESP-12E TXD0 through a BSS138 channel - VTOL carrier Q11, rocket COM board firmware/README.md 0.10)",
+        "link_uart_tx": "PD3/TXD1 (to the module RXD / the ESP-12E RXD0 through a BSS138 channel; esp_bridge: + 1 kOhm on the 3.3 V side)",
+        "link_m0": "PC3 (lora_uart: low = normal mode; esp_bridge: unused)",
+        "link_m1": "PC4 (lora_uart: low = normal mode; esp_bridge: unused)",
+        "link_aux": "PC5 (lora_uart: module busy, input; esp_bridge: unused)",
         "lora_spi_nss": "PB0 (sx127x)",
         "lora_spi_sck": "PB1/SCK (sx127x)",
         "lora_spi_mosi": "PB2/MOSI (sx127x)",
         "lora_spi_miso": "PB3/MISO (sx127x)",
         "lora_dio0": "PE7/INT7 (sx127x)",
-        "lora_reset": "PC6 (sx127x)"
+        "lora_reset": "PC6 (sx127x RESET; esp_bridge: ESP-12E RST through a BSS138 channel - non-inverting, low = ESP in reset; VTOL carrier Q5)"
       }
     },
     "ilink": {
@@ -2517,7 +2520,11 @@
     },
     "link": {
       "radio": "lora_uart",
+      "radio_note": "the link MODEL of sim/link_model.py (its RADIOS: the sim's link timing, the ground station's reply timeout and practice link, the generator's link budget) and a LoRa fallback backend. 2026-11-06: the COM is built for vehicle_radio; the model stays lora_uart - sim/link_model.py has no Wi-Fi model and the LoRa timing is the pessimistic case for the ESP-NOW bridge (E); an ESP-NOW link model changes the assist / link-loss timing (control-relevant, next round)",
+      "vehicle_radio": "esp_bridge",
+      "vehicle_radio_note": "the COM backend the plain com / com_wired / com_wired_buffer / com_ballistic envs build (FC_LINK_RADIO; tools/gen_firmware_params.py): esp_bridge = the ESP8266 (VTOL carrier: ESP-12E U7 soldered; rocket: an ESP-12E on the hand-wired COM board, firmware/README.md 0.10) running firmware/esp_bridge, a transparent UART <-> ESP-NOW bridge - the frame protocol is unchanged. User 2026-11-05: Wi-Fi adopted for the vehicle link, the rocket uses the ESP too. Fallback: lora_uart (Ebyte) or sx127x - set this key back, regenerate, rebuild; the envs com_lora_uart / com_sx127x / com_esp_bridge always build all three",
       "uart_baud": 9600,
+      "uart_baud_note": "2026-11-06: the LoRa backends (lora_uart, sx127x COM) and the Nano + SX1276 ground bridge only; the ESP bridge runs at link.esp_bridge.uart_baud",
       "vehicle_id": 90,
       "poll_hz": 2.0,
       "lora_uart_air_rate_bps": 2400,
@@ -2531,10 +2538,40 @@
         "tx_power_dbm": 14,
         "preamble_symbols": 8
       },
+      "esp_bridge": {
+        "uart_baud": 38400,
+        "uart_max_error": 0.002,
+        "uart_note": "the same 8N1 baud on the COM's USART1 (U2X 0: UBRR 25, +0.16 %), on both ESPs' UART0 and on the ground PC's serial port; 38400 because it is within 0.2 % on the 16 MHz AVR with U2X 0 (57600 is not: +2.1 % with U2X 0, -0.8 % with U2X 1) and well inside the BSS138 channels' 10k pull-up rise time (carrier spec level_shifting.speed_note: fine up to 115200); a 47-byte TELEM v5 is 12.2 ms on the wire (E)",
+        "reset_hold_ms": 2,
+        "boot_discard_ms": 400,
+        "boot_note": "the COM holds the ESP's RST low (PC6) from its first instructions, for reset_hold_ms in radio_init, then releases it and drops every UART byte for boot_discard_ms (the ESP8266 ROM boot log at 74880 baud; the bridge sketch is up after ~100-300 ms, A); the ESP sends no ready byte - a request before the bridge is up is a lost packet for the ground. 2026-11-06 review: only on a cold COM boot (power-on, or no reset flag); after a COM watchdog / brown-out / external reset the ESP is left running and no window opens (as the Ebyte module, which a COM reset does not touch). PC6 is open-drain: driven low to hold RST, released to input (Hi-Z) - the Q5 pull-ups raise RST, so a manual RST-GND short never shorts a driven-high pin",
+        "espnow_channel": 1,
+        "phy_mode": "11b",
+        "bit_rate_note": "ESP-NOW frames at 1 Mbps (the ESP-NOW default, A: Espressif ESP-NOW user guide, not on disk); 802.11b PHY (WiFi.setPhyMode); sensitivity ~-98 dBm at 1 Mbps vs ~-72 dBm at 802.11n high rates (A, pcb/vtol_carrier/spec/carrier_spec.json radio_decision_2026_11_05)",
+        "tx_power_dbm_vehicle": 20.0,
+        "tx_power_dbm_ground": 20.0,
+        "tx_power_note": "WiFi.setOutputPower 0..20.5 dBm (A); a high-gain ground antenna raises the ground EIRP: check the Korean 2.4 GHz EIRP limit and lower tx_power_dbm_ground if needed (the receiving gain is not limited) - A",
+        "mac_vehicle": "02:CA:5A:00:00:01",
+        "mac_ground": "02:CA:5A:00:00:02",
+        "mac_note": "locally administered station MACs the bridge sketch sets itself (wifi_set_macaddr, A), so each end knows its peer without reading a module; 5A = link.vehicle_id 90. Unicast ESP-NOW: the MAC layer ACKs and retries each packet",
+        "idle_flush_bytes": 3,
+        "range_plan": "ground = an ESP-07S-class module (u.FL) + 8-9 dBi omni or 12-14 dBi directional 2.4 GHz antenna; link budget (E): 20 dBm - 2 dBi (vehicle, in the PLA body) + 8 dBi - free-space loss - 10 dB margin ~ -84 dBm at 1 km; ground range test >= 1 km (>= 2x the largest slant range) before flight, else fall back to LoRa (vehicle_radio)",
+        "regulatory_note": "2.4 GHz Wi-Fi is licence-exempt in Korea for certified modules: check the KC certification of the ESP-12E and the ground module (A)"
+      },
       "sim_packet_loss": 0.05,
       "frequency_note": "Korea: KC-certified module in the 920 MHz band (920.9-923.3 MHz used here for sx127x); 433 MHz legality not verified - check rra.go.kr"
     },
-    "model_note": "SBUS removed in v0.4; the LoRa module is the only radio; v0.6: the radio moved to the COM ATmega128A (flight_computer.com)",
+    "model_note": "SBUS removed in v0.4; the LoRa module is the only radio; v0.6: the radio moved to the COM ATmega128A (flight_computer.com); 2026-11-06: the vehicle radio is the ESP8266 Wi-Fi bridge (link.vehicle_radio), LoRa the fallback; the sim keeps the LoRa link model (link.radio)",
+    "logic_battery_monitor": {
+      "pin": "flight_computer.pins.logic_bat_adc (FCU PF3/ADC3)",
+      "applies_to_note": "the VTOL carrier (rev 2c) only; the rocket's hand-wired FCU has no PF3 divider (its logic runs from the 5 V logic UBEC, electronics misc) - PF3 unconnected there",
+      "r_top_ohm": 47000,
+      "r_bottom_ohm": 47000,
+      "vref_v": 2.56,
+      "ground_warn_below_v_ASSUMED": 3.6,
+      "source": "pcb/vtol_carrier/spec/carrier_spec.json rev 2c (VBAT_LOGIC_SW -> 47k / 47k -> FCU PF3, populated; 2.10 V at 4.2 V, 1.50 V at 3.0 V); 1S DTP105565P 3.0-4.2 V",
+      "status": "2026-11-06: pin and scale here and in params_gen.h (LOGIC_BAT_*); NOT read by the firmware and NOT in the telemetry: TELEM v1-v5 have no free byte or bit, and a new TELEM type lengthens the battery build's reply, which changes sim/link_model.py's link timing of every battery flight (the RP1 precedent: TUNE pair comparison + comparison videos) - a control-procedure change for the next round; no onboard action (ARM refusal / LAND) without a control round"
+    },
     "architecture_v081": "v0.8.1 (architect 2026-10-21 20:30, after the v0.8 integration measured the 3-chip GPS build: NAV mandatory work 98.7 % mean / 119.5 % max of the 4 ms tick, FCU time-critical 83.3 % (89.2 % with ISRs), FCU background starved (no ilink CMD decoded in position hold -> V1 LAND), FCU stack free 436 B, IMU->vane up to 16.4 ms; the no-GPS v0.8 build passes timing): FOUR ATmega128A. GNS (GPS navigation + station keeping) = a 4th board: NEO-6M on its USART1 (PD2/PD3, 38400, level-shifted), UBX parsing, the GPS-aided horizontal filter (gps_nav) and the position controller (position_ctrl) at 50 Hz; NAV keeps the attitude / altitude estimators (the passing no-GPS v0.8 load) and links to the GNS over glink; the FCU no longer runs the position controller (RAM / background back to the no-GPS build) and takes the tilt setpoint + GPS status from the nlink rotating slot that the NAV fills from the GNS. Every flight computation stays on ATmega128A boards.",
     "gns": {
       "role": "GNS: GPS receiver driver + UBX + gps_nav filter + position controller (50 Hz); no safety decisions (the FCU supervisor keeps V11-V15 on the slot data)",

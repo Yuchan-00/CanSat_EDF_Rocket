@@ -29,11 +29,19 @@ modules - nothing is re-implemented here:
   selected radio backend (``--radio``, default ``flight_computer.link.radio``);
 * ``params.json`` (through ``cad/layout.py``) every number.
 
-Radio hardware (the bytes on the serial port are the bytes on air):
-* ``lora_uart``: an Ebyte E22 / E220 / E32-class module in transparent mode
+Radio hardware (the bytes on the serial port are the bytes on air), ``--link-hw`` (default
+``flight_computer.link.vehicle_radio``, the COM backend the vehicle is built with):
+* ``esp_bridge`` (2026-11-06, the default): the ground ESP8266 (ESP-07S class, external
+  antenna) running ``firmware/esp_bridge`` (role ground) on a 3.3 V USB-UART, serial at
+  ``link.esp_bridge.uart_baud`` 8N1; the port is opened with DTR / RTS released so a board with
+  the usual auto-reset wiring is not reset or put into its download mode;
+* ``lora_uart`` (LoRa fallback): an Ebyte E22 / E220 / E32-class module in transparent mode
   (M0 = M1 = 0) on a USB-UART adapter, UART at ``link.uart_baud`` 8N1;
-* ``sx127x``: the USB <-> LoRa bridge in ``firmware/ground_bridge`` (Arduino Nano
+* ``sx127x`` (LoRa fallback): the USB <-> LoRa bridge in ``firmware/ground_bridge`` (Arduino Nano
   + SX1276-class module), same bytes, serial at ``link.uart_baud``.
+The link MODEL (``--radio``: reply timeout, default link delay, the practice link) stays
+``flight_computer.link.radio`` (lora_uart): ``sim.link_model`` has no Wi-Fi model and the LoRa
+timing is the pessimistic case for the ESP bridge (longer reply timeout, same 2 Hz polling).
 
 Modes::
 
@@ -296,20 +304,26 @@ def clip_cols(text: str, cols: int) -> str:
 # transports: read(now) -> [(t_arrival, bytes)], write(bytes, now)
 # --------------------------------------------------------------------------- #
 class SerialTransport:
-    """A transparent LoRa module on a USB-UART adapter, or the SX127x bridge (same bytes).  ``port`` is a port
-    name (COM5, /dev/ttyUSB0) or a pyserial URL (loop://, socket://host:port); ``ser`` injects an open
-    serial-like object (in_waiting / read / write / close) instead."""
+    """A transparent LoRa module on a USB-UART adapter, the SX127x bridge or the ground ESP-NOW bridge (same bytes).
+    ``port`` is a port name (COM5, /dev/ttyUSB0) or a pyserial URL (loop://, socket://host:port); ``ser`` injects an open
+    serial-like object (in_waiting / read / write / close) instead.  ``release_lines`` (the ESP bridge): DTR and RTS are
+    set inactive before the port opens - an ESP8266 board with the usual DTR / RTS auto-reset transistors would
+    otherwise be reset (or put into its download mode) when the station opens the port."""
 
-    def __init__(self, port: str, baud: int, ser=None):
+    def __init__(self, port: str, baud: int, ser=None, release_lines: bool = False):
         if ser is None:
             try:
                 import serial  # pyserial
             except ImportError as exc:  # pragma: no cover - environment
                 raise SystemExit("pyserial is missing: .venv/Scripts/python.exe -m pip install pyserial") from exc
             ser = serial.serial_for_url(port, baudrate=baud, bytesize=8, parity="N", stopbits=1, timeout=0,
-                                        write_timeout=1.0)
+                                        write_timeout=1.0, do_not_open=release_lines)
+            if release_lines:
+                ser.dtr = False
+                ser.rts = False
+                ser.open()
         self.ser = ser
-        self.desc = f"{port} @ {baud} 8N1"
+        self.desc = f"{port} @ {baud} 8N1" + (" (DTR / RTS released)" if release_lines else "")
 
     def read(self, now: float) -> list[tuple[float, bytes]]:
         n = self.ser.in_waiting
@@ -1835,15 +1849,42 @@ def list_ports() -> list[str]:
     return [f"{x.device}  {x.description}" for x in lpm.comports()]
 
 
+LINK_HW = ("esp_bridge", "lora_uart", "sx127x")     # ground radio hardware (2026-11-06; --radio is the link MODEL)
+
+
+def default_link_hw(p: dict) -> str:
+    """the ground hardware that matches the vehicle's COM backend: flight_computer.link.vehicle_radio (else link.radio)"""
+    lk = p["flight_computer"]["link"]
+    hw = str(lk.get("vehicle_radio", lk["radio"]))
+    return hw if hw in LINK_HW else str(lk["radio"])
+
+
+def serial_baud(p: dict, link_hw: str, baud: int | None = None) -> int:
+    """--baud, else the UART baud of that hardware: link.esp_bridge.uart_baud for the ESP bridge (the same on both ESPs and
+    the COM, firmware/esp_bridge), link.uart_baud for the LoRa module / the SX127x bridge"""
+    if baud is not None:
+        return int(baud)
+    lk = p["flight_computer"]["link"]
+    if link_hw == "esp_bridge":
+        return int(lk["esp_bridge"]["uart_baud"])
+    return int(lk["uart_baud"])
+
+
 def build_arg_parser(p: dict) -> argparse.ArgumentParser:
     lk = p["flight_computer"]["link"]
     ap = argparse.ArgumentParser(description="CanSat EDF Rocket LoRa ground station (SPEC 8.8 / 10.3)")
     src = ap.add_mutually_exclusive_group()
-    src.add_argument("--port", help="serial port of the ground LoRa module or the SX127x bridge (e.g. COM5)")
+    src.add_argument("--port", help="serial port of the ground ESP bridge, the ground LoRa module or the SX127x bridge "
+                                    "(e.g. COM5)")
     src.add_argument("--sim", action="store_true", help="practice mode: in-process virtual vehicle")
     src.add_argument("--replay", metavar="CSV", help="replay a ground-station log")
     src.add_argument("--list-ports", action="store_true", help="list serial ports and exit")
-    ap.add_argument("--baud", type=int, default=int(lk["uart_baud"]), help="serial baud (default link.uart_baud)")
+    ap.add_argument("--link-hw", choices=LINK_HW, default=default_link_hw(p),
+                    help="the ground radio hardware on --port: esp_bridge (ground ESP8266, firmware/esp_bridge), "
+                         "lora_uart (Ebyte module on a USB-UART) or sx127x (firmware/ground_bridge); default "
+                         "flight_computer.link.vehicle_radio. Sets the default --baud (and releases DTR / RTS for the ESP)")
+    ap.add_argument("--baud", type=int, default=None,
+                    help="serial baud (default: link.esp_bridge.uart_baud for --link-hw esp_bridge, else link.uart_baud)")
     ap.add_argument("--mode", choices=tuple(lp.MISSION_MODES), default=lp.mission_mode(p),
                     help="the vehicle build: vtol (ON / OFF / UP / DOWN / KILL) or ballistic (ARM ... KILL); "
                          "default params.json mission.mode")
@@ -1936,7 +1977,7 @@ def main(argv: list[str] | None = None) -> int:
         vv = VirtualVehicle(a.radio, a.loss, a.seed, mode=a.mode, profile=a.profile, gps=gps, power=a.power)
         transport = SimTransport(vv)
     else:
-        transport = SerialTransport(a.port, a.baud)
+        transport = SerialTransport(a.port, serial_baud(p, a.link_hw, a.baud), release_lines=a.link_hw == "esp_bridge")
     log = None
     if not a.no_log:
         path = a.log or os.path.join(DEFAULT_LOG_DIR, f"gs_{'sim_' if a.sim else ''}{datetime.now():%Y%m%d_%H%M%S}.csv")
@@ -1945,7 +1986,8 @@ def main(argv: list[str] | None = None) -> int:
                        radio=lt["radio"], profile=a.profile, gps=gps, power=a.power)
     prof = (f" ({st.profile} profile: hover {st.hover_m:g} m, step {st.step_m:g} m; GPS position hold "
             f"{'ON (TELEM v3)' if st.gps else 'OFF (TELEM v2)'})" if st.vtol else "")
-    st.say(0.0, f"start: {a.mode} build{prof}, {transport.desc}, radio model {lt['radio']}: reply timeout "
+    hw = "" if (a.sim or a.replay) else f" ({a.link_hw})"
+    st.say(0.0, f"start: {a.mode} build{prof}, {transport.desc}{hw}, radio model {lt['radio']}: reply timeout "
                 f"{lt['reply_timeout_s']:.3f} s, nominal RTT {lt['t_link_default_s']:.3f} s, poll {lt['poll_hz']:.1f} Hz "
                 f"(achievable {lt['max_poll_hz']:.2f} Hz)" + (f", mass {vv.mass_source}" if vv else "")
                 + (f", vertical gains {vv.vgains_source}" if vv is not None and vv.vtol else "")

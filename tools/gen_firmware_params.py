@@ -164,6 +164,10 @@ TIMER13_PRESCALERS = {1: 1, 8: 2, 64: 3, 256: 4, 1024: 5}     # ATmega128 Timer1
 ADC_PRESCALERS = {2: 1, 4: 2, 8: 3, 16: 4, 32: 5, 64: 6, 128: 7}
 ADC_CLK_MAX_HZ = 200_000                     # ATmega128 datasheet: 50..200 kHz for 10-bit resolution
 UART_MAX_ERR = 0.02                          # baud error limit
+# 2026-11-06: COM radio backends (params flight_computer.link.vehicle_radio; FC_LINK_RADIO): the two LoRa ones of
+# sim/link_model.py RADIOS and the ESP8266 Wi-Fi bridge (hal/esp_bridge.c, firmware/esp_bridge)
+VEHICLE_RADIOS = tuple(lm.RADIOS) + ("esp_bridge",)
+ESP_UART_CLK_HZ = 80_000_000                 # ESP8266 UART clock (= firmware/esp_bridge/gen_esp_bridge_config.py; A)
 ILINK_MAX_ERR = 0.01                         # ilink (U2X = 0): both chips run the same UBRR from 16 MHz crystals,
                                              # so they agree with each other; the tighter limit keeps the frames
                                              # readable by a USB-UART tap at the nominal ILINK_BAUD
@@ -205,7 +209,9 @@ CHIP_SIGNALS = {
                 fixed={"log_tx": "TXD0", "nlink_ss": "SS", "nlink_sck": "SCK", "nlink_mosi": "MOSI",
                        "nlink_miso": "MISO"},
                 # v0.9 (fw09 SPEC 5): the power monitor's inputs (V_tether / V_buffer ADC, the buffer-current sign)
-                gpio=("led", "buzzer", "arm_switch", "buf_isign"), adc=("vbat_adc", "v_tether_adc", "v_buffer_adc")),
+                # 2026-11-06: logic_bat_adc = the carrier's logic-battery monitor (PF3, read by no firmware yet)
+                gpio=("led", "buzzer", "arm_switch", "buf_isign"),
+                adc=("vbat_adc", "v_tether_adc", "v_buffer_adc", "logic_bat_adc")),
     "nav": dict(where="flight_computer.nav.pins", pwm=(),
                 fixed={"i2c_scl": "SCL", "i2c_sda": "SDA", "imu_int": "INT6", "spi_ss": "SS", "spi_sck": "SCK",
                        "spi_mosi": "MOSI", "spi_miso": "MISO"},
@@ -347,6 +353,38 @@ def uart_setting(f_cpu: int, baud: int) -> tuple[int, int, float]:
     if best is None or abs(best[2]) > UART_MAX_ERR:
         raise GenError(f"no UBRR setting reaches {baud} baud within {UART_MAX_ERR:.0%} at {f_cpu} Hz")
     return best
+
+
+def esp_bridge_settings(lk: dict, f_cpu: int, loop_hz: int) -> dict | None:
+    """The COM's ESP bridge backend (hal/esp_bridge.c) from flight_computer.link.esp_bridge: USART1 baud with U2X = 0 (as
+    the ilink: simavr ignores U2X) within uart_max_error on the COM and on the ESP's 80 MHz UART clock, the reset hold
+    and the boot window in COM ticks.  None if the block is absent."""
+    eb = lk.get("esp_bridge")
+    if eb is None:
+        return None
+    baud, max_err = int(eb["uart_baud"]), float(eb["uart_max_error"])
+    if not 0.0 < max_err <= UART_MAX_ERR:
+        raise GenError(f"link.esp_bridge.uart_max_error {max_err} must be in (0, {UART_MAX_ERR}]")
+    if baud <= 0:
+        raise GenError(f"link.esp_bridge.uart_baud {baud} must be > 0")
+    x = f_cpu / (16 * baud) - 1                                  # U2X = 0 (the ilink's rule, without its 1 % limit)
+    ubrr = min((u for u in (math.floor(x), math.ceil(x)) if 0 <= u <= 4095),
+               key=lambda u: (abs(f_cpu / (16 * (u + 1)) / baud - 1.0), u), default=0)
+    err = f_cpu / (16 * (ubrr + 1)) / baud - 1.0
+    esp_div = round(ESP_UART_CLK_HZ / baud)
+    esp_err = ESP_UART_CLK_HZ / esp_div / baud - 1.0
+    if abs(err) > max_err or abs(esp_err) > max_err:
+        raise GenError(f"link.esp_bridge.uart_baud {baud}: COM error {err:+.3%} (UBRR {ubrr}, U2X 0) / ESP error "
+                       f"{esp_err:+.4%} exceed uart_max_error {max_err:.2%}")
+    hold_ms = int(eb["reset_hold_ms"])
+    if hold_ms != eb["reset_hold_ms"] or not 1 <= hold_ms <= 20:
+        raise GenError(f"link.esp_bridge.reset_hold_ms {eb['reset_hold_ms']} must be an integer 1..20 (boot-time busy wait)")
+    boot_s = float(eb["boot_discard_ms"]) / 1e3
+    boot_ticks = ticks_ge(boot_s, loop_hz)
+    if not 1 <= boot_ticks <= 0xFFFF:
+        raise GenError(f"link.esp_bridge.boot_discard_ms {eb['boot_discard_ms']} gives {boot_ticks} COM ticks (1..65535)")
+    return {"baud": baud, "ubrr": ubrr, "err": err, "esp_err": esp_err, "max_err": max_err, "hold_ms": hold_ms,
+            "boot_ms": float(eb["boot_discard_ms"]), "boot_ticks": boot_ticks}
 
 
 def ilink_uart_setting(f_cpu: int, baud: int) -> tuple[int, float]:
@@ -1383,7 +1421,7 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
         raise GenError("flight_computer.nav missing (v0.6.3: the sensors and the estimator run on the NAV ATmega128A, "
                        "SPEC 10.5)")
     fcu_pins, pwm_map = chip_pins("fcu", pins)
-    for key in ("v_tether_adc", "v_buffer_adc"):                 # v0.9 power monitor ADC inputs (fw09 SPEC 5)
+    for key in ("v_tether_adc", "v_buffer_adc", "logic_bat_adc"):   # v0.9 power monitor ADC inputs (fw09 SPEC 5), logic bat
         if fcu_pins[key][0] != "F" or not 0 <= fcu_pins[key][1] <= 3:
             raise GenError(f"flight_computer.pins.{key} = {pins[key]!r}: the power ADC inputs must be PF0..PF3 (PF4-PF7 "
                            "are the JTAG pins)")
@@ -1413,6 +1451,19 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
     v_adc_full = int(bat["cells"]) * LIPO_V_MAX_CELL * r_bot / (r_top + r_bot)
     if v_adc_full >= vref:
         raise GenError(f"full pack gives {v_adc_full:.2f} V at the ADC pin >= Vref {vref} V")
+    # 2026-11-06: the logic-battery monitor (flight_computer.logic_battery_monitor; carrier rev 2c PF3, 47k / 47k): scale
+    # and pin only - no firmware reads it yet (its telemetry needs a TELEM change, params ... .status)
+    lbm = fc.get("logic_battery_monitor")
+    lbat = None
+    if isinstance(lbm, dict):
+        lrt, lrb, lvref = float(lbm["r_top_ohm"]), float(lbm["r_bottom_ohm"]), float(lbm["vref_v"])
+        if abs(lvref - 2.56) > 1e-9:
+            raise GenError("flight_computer.logic_battery_monitor.vref_v: the ATmega128 internal reference is 2.56 V")
+        if LIPO_V_MAX_CELL * lrb / (lrt + lrb) >= lvref:
+            raise GenError(f"logic battery: a full 1S cell gives {LIPO_V_MAX_CELL * lrb / (lrt + lrb):.2f} V at PF"
+                           f"{fcu_pins['logic_bat_adc'][1]} >= Vref {lvref} V")
+        lbat = {"ch": fcu_pins["logic_bat_adc"][1], "v_per_count": lvref / 1024.0 * (lrt + lrb) / lrb,
+                "warn_v": float(lbm["ground_warn_below_v_ASSUMED"]), "r_top": lrt, "r_bot": lrb}
     adc_ps = next((bits for div, bits in sorted(ADC_PRESCALERS.items()) if f_cpu / div <= ADC_CLK_MAX_HZ), None)
     adc_div = next(div for div, bits in ADC_PRESCALERS.items() if bits == adc_ps)
 
@@ -1529,6 +1580,15 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
     radio = str(lk["radio"])
     if radio not in lm.RADIOS:
         raise GenError(f"flight_computer.link.radio {radio!r} not in {lm.RADIOS}")
+    # 2026-11-06: the COM backend the plain envs build (flight_computer.link.vehicle_radio, default link.radio).  link.radio
+    # stays the link MODEL of sim/link_model.py (the budgets below, the ground's reply timeout): the model has no Wi-Fi,
+    # and the LoRa model is the pessimistic case for the ESP-NOW bridge (E, docs/v0.9_펌웨어_결과.md 11장)
+    vradio = str(lk.get("vehicle_radio", radio))
+    if vradio not in VEHICLE_RADIOS:
+        raise GenError(f"flight_computer.link.vehicle_radio {vradio!r} not in {VEHICLE_RADIOS}")
+    esp = esp_bridge_settings(lk, f_cpu, loop_hz) if (vradio == "esp_bridge" or "esp_bridge" in lk) else None
+    if vradio == "esp_bridge" and esp is None:
+        raise GenError("flight_computer.link.vehicle_radio esp_bridge needs flight_computer.link.esp_bridge")
     vid = int(lk["vehicle_id"])
     if not 0 <= vid <= 0xFF:
         raise GenError(f"link.vehicle_id {vid} is not a byte")
@@ -1698,11 +1758,12 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
         smplrt_div=smplrt_div, i2c_hz=i2c_hz, twbr=twbr, ubrr_log=ubrr_log,
         log_baud=int(fc["log_baud"]), log_hz=int(fc["log_hz"]),
         adc_ch=adc_ch, r_top=r_top, r_bot=r_bot, vref=vref, vbat_per_count=vbat_per_count, adc_ps=adc_ps, adc_div=adc_div,
+        lbat=lbat,
         cells=int(bat["cells"]), ms=ms, sp=sp, g0=float(G0),
         sens=sens, imu_idx=imu_idx, imu_sgn=imu_sgn, pad_still=gc, gfs=gfs, afs=afs, dlpf=dlpf,
         pad_still_ticks=ticks_ge(float(gc["duration_s"]), loop_hz),
         arm_debounce_ticks=max(1, ticks_ge(float(cfg["arm_switch_debounce_s"]), loop_hz)),
-        radio=radio, vid=vid, link_baud=link_baud, ubrr_link=ubrr_link, lk=lk, sx=sx, spi=spi, aux_wait_ticks=aux_wait_ticks,
+        radio=radio, vradio=vradio, esp=esp, vid=vid, link_baud=link_baud, ubrr_link=ubrr_link, lk=lk, sx=sx, spi=spi, aux_wait_ticks=aux_wait_ticks,
         seed_conv=seed_conv, budgets=budgets, gps_uart=gps_uart, gns_pins=gns_pins,
     )
 
@@ -2343,6 +2404,12 @@ def _render_one(d: dict, top: dict) -> list[str]:
     define("VBAT_ADC_CHANNEL", str(d["adc_ch"]), pins["vbat_adc"])
     define("VBAT_V_PER_COUNT", cf(d["vbat_per_count"]), f"{d['vref']} V/1024 * ({d['r_top'] / 1e3:g}k+{d['r_bot'] / 1e3:g}k)/{d['r_bot'] / 1e3:g}k x vbat_scale")
     define("VBAT_CELLS", str(d["cells"]), "battery.cells")
+    if d["lbat"] is not None:
+        lb = d["lbat"]
+        define("LOGIC_BAT_ADC_CHANNEL", str(lb["ch"]), pins["logic_bat_adc"])
+        define("LOGIC_BAT_V_PER_COUNT", cf(lb["v_per_count"]),
+               f"2.56 V/1024 * ({lb['r_top'] / 1e3:g}k+{lb['r_bot'] / 1e3:g}k)/{lb['r_bot'] / 1e3:g}k "
+               "(2026-11-06: not read by the firmware yet)")
     _render_v09_power_hw(d, define, w)
     w("")
     w("/* ---- mixer plant (SPEC 8.3-8.5; SI, rad) ---- */")
@@ -2418,10 +2485,21 @@ def _render_one(d: dict, top: dict) -> list[str]:
     w("/* ---- LoRa ground link (SPEC 10.3; flight_computer.link, fc_config link) ---- */")
     w("#define FC_RADIO_LORA_UART                 1")
     w("#define FC_RADIO_SX127X                    2")
-    w("#ifndef FC_LINK_RADIO                      /* a PlatformIO env may force the other backend */")
-    define("FC_LINK_RADIO", "FC_RADIO_LORA_UART" if d["radio"] == "lora_uart" else "FC_RADIO_SX127X",
-           f"flight_computer.link.radio = {d['radio']}")
+    w("#define FC_RADIO_ESP_BRIDGE                3   /* 2026-11-06: ESP8266 Wi-Fi bridge (hal/esp_bridge.c) */")
+    w("#ifndef FC_LINK_RADIO                      /* a PlatformIO env may force another backend */")
+    define("FC_LINK_RADIO", {"lora_uart": "FC_RADIO_LORA_UART", "sx127x": "FC_RADIO_SX127X",
+                             "esp_bridge": "FC_RADIO_ESP_BRIDGE"}[d["vradio"]],
+           f"flight_computer.link.vehicle_radio = {d['vradio']} (link model: link.radio = {d['radio']})")
     w("#endif")
+    es = d["esp"]
+    if es is not None:
+        define("ESP_UART_BAUD", f"{es['baud']}UL", "flight_computer.link.esp_bridge.uart_baud, 8N1 (esp_bridge: COM USART1)")
+        define("ESP_UART_UBRR", str(es["ubrr"]), f"U2X=0, error {es['err'] * 100:+.2f} % (ESP 80 MHz divider "
+                                                 f"{es['esp_err'] * 100:+.3f} %; limit {es['max_err'] * 100:g} %)")
+        define("ESP_UART_U2X", "0", "as the ilink: simavr's USART ignores U2X")
+        define("ESP_RESET_HOLD_MS", f"{es['hold_ms']}U", "link.esp_bridge.reset_hold_ms: PC6 low at boot (ESP RST)")
+        define("ESP_BOOT_TICKS", f"{es['boot_ticks']}UL",
+               f"link.esp_bridge.boot_discard_ms = {es['boot_ms']:g} ms: RX dropped after the reset release (boot log)")
     define("LINK_VEHICLE_ID", str(d["vid"]), "flight_computer.link.vehicle_id")
     define("LINK_POLL_HZ", cf(float(d["lk"]["poll_hz"])),
            f"flight_computer.link.poll_hz: the ground's request rate (informative; achievable "
@@ -2612,7 +2690,11 @@ def main(argv: list[str] | None = None) -> int:
               f"ramp {vp.ramp_ticks}, touchdown {vp.landed_confirm_ticks} ticks; gains {gi['source']}"
               f"{' (STALE params)' if gi['params_stale'] else ''}: " + ", ".join(f"{k} {vp.__dict__[k]:g}" for k in VTOL_GAIN_KEYS)
               + f"; NAV estimator kp {est['kp']:g} ki {est['ki']:g} accel_lpf {est['accel_lpf_hz']:g} Hz ({gi['est_source']})")
-    print(f"  radio {d['radio']} (vehicle id {d['vid']}); sx127x FRF 0x{sx['frf']:06X} = {sx['f_real']:.1f} Hz, "
+    if d["esp"] is not None:
+        es = d["esp"]
+        print(f"  COM backend {d['vradio']}; ESP bridge USART1 {es['baud']} baud UBRR={es['ubrr']} (U2X 0, "
+              f"{es['err'] * 100:+.2f} %), reset hold {es['hold_ms']} ms, boot window {es['boot_ticks']} COM ticks")
+    print(f"  radio model {d['radio']} (vehicle id {d['vid']}); sx127x FRF 0x{sx['frf']:06X} = {sx['f_real']:.1f} Hz, "
           f"MC1 0x{sx['mc1']:02X} MC2 0x{sx['mc2']:02X} MC3 0x{sx['mc3']:02X} PA 0x{sx['pa_config']:02X}, "
           f"ToA CMD {sx['toa_cmd'] * 1e3:.1f} ms / TELEM {sx['toa_tlm'] * 1e3:.1f} ms, SPI F_CPU/{d['spi'][0]}")
     print(f"  ilink {d['il_baud']} baud UBRR={d['il_ubrr']} (U2X 0, {d['il_err'] * 100:+.2f} %), IL_STAT {d['stat_hz']:g} Hz "
