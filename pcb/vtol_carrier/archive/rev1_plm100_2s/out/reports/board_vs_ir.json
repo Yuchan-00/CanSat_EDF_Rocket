@@ -1,0 +1,7 @@
+{
+ "tool": "scripted: routed .kicad_pcb pad nets vs IR nets",
+ "ir_pins": 494,
+ "pins_found_on_board": 494,
+ "mismatches": [],
+ "result": "PASS"
+}

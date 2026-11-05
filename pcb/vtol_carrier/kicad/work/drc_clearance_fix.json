@@ -1,0 +1,129 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-05T12:26:17",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "vtol_carrier.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "공간거리 위반 (구역 공간거리 0.3000 mm; 실제값 0.0000 mm)",
+            "items": [
+                {
+                    "description": "비아 [GND] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 117.55,
+                        "y": 79.55
+                    },
+                    "uuid": "56ba9b02-cc11-40e1-a2ce-39d7ed405fc2"
+                },
+                {
+                    "description": "영역 [+5V] on In2.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "6c57d43b-4f51-53e3-99e1-84cce47fa52c"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "홀 공간거리 위반 (기판의 홀 제약조건 설정 공간거리 0.2500 mm; 실제값 0.0000 mm)",
+            "items": [
+                {
+                    "description": "비아 [GND] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 117.55,
+                        "y": 79.55
+                    },
+                    "uuid": "56ba9b02-cc11-40e1-a2ce-39d7ed405fc2"
+                },
+                {
+                    "description": "영역 [+5V] on In2.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "6c57d43b-4f51-53e3-99e1-84cce47fa52c"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        },
+        {
+            "description": "공간거리 위반 (구역 공간거리 0.3000 mm; 실제값 0.0000 mm)",
+            "items": [
+                {
+                    "description": "비아 [GND] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 122.45,
+                        "y": 79.55
+                    },
+                    "uuid": "26832e7d-9a21-43d7-b27d-b6120d6cef92"
+                },
+                {
+                    "description": "영역 [+5V] on In2.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "6c57d43b-4f51-53e3-99e1-84cce47fa52c"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "홀 공간거리 위반 (기판의 홀 제약조건 설정 공간거리 0.2500 mm; 실제값 0.0000 mm)",
+            "items": [
+                {
+                    "description": "비아 [GND] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 122.45,
+                        "y": 79.55
+                    },
+                    "uuid": "26832e7d-9a21-43d7-b27d-b6120d6cef92"
+                },
+                {
+                    "description": "영역 [+5V] on In2.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "6c57d43b-4f51-53e3-99e1-84cce47fa52c"
+                }
+            ],
+            "severity": "error",
+            "type": "hole_clearance"
+        }
+    ]
+}

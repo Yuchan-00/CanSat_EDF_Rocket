@@ -1,14 +1,14 @@
 {
   "generator": "cadquery",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+  "params_sha256": "9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292",
   "tolerance_mm3": 1.0,
-  "runtime_s": 313.3449938297272,
+  "runtime_s": 148.71351671218872,
   "summary": {
     "PASS": 27,
     "WARN": 5,
     "FAIL": 0,
-    "N/A": 1
+    "N/A": 6
   },
   "checks": [
     {
@@ -704,11 +704,11 @@
       "id": "C17",
       "title": "all presets build without exceptions",
       "status": "PASS",
-      "measured": "BUDGET_90mm_6S: ok (56 parts); KAIST_90mm_12S: ok (48 parts, 4.1 s)",
+      "measured": "BUDGET_90mm_6S: ok (56 parts); KAIST_90mm_12S: ok (48 parts, 1.9 s)",
       "detail": "",
       "values": {
         "BUDGET_90mm_6S": "ok (56 parts)",
-        "KAIST_90mm_12S": "ok (48 parts, 4.1 s)"
+        "KAIST_90mm_12S": "ok (48 parts, 1.9 s)"
       }
     },
     {
@@ -2482,6 +2482,56 @@
         "clearance_required_mm": 3.0,
         "fails": [],
         "ok": true
+      }
+    },
+    {
+      "id": "C37",
+      "title": "(2026-11-05) logic 1S pack at spot A: 6S pack, tube wall, bay solids, >= 2 mm to the servo bundle / GPS lead / carrier plugs / switch lead (MF2-10), strap retention",
+      "status": "N/A",
+      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C38",
+      "title": "(2026-11-05) logic power switch through the top cap: hole open, switch vs cap / ribs / ring, everything below the plate incl. the cap joint screws (M3 length limit), nut bearing, plate strength rule, lead keep-outs to J15 / J14, cap removal",
+      "status": "N/A",
+      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C39",
+      "title": "(2026-11-05) logic power switch reachable from outside (vehicle closed): finger circle free, inside the body edge, below the eye bolt when fitted, lever vs the vehicle top (WARN if it is the top; with the switch collar: the lever envelope under its rim / inside its rim hull / clear of it, else FAIL); tip-over / catch line / GPS sky reported",
+      "status": "N/A",
+      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C40",
+      "title": "(2026-11-05) logic power mass switch honoured (in_flight_mass_model) + pending full-mass numbers (mass, CG, lateral offset, C33 trim)",
+      "status": "N/A",
+      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
+      "detail": "",
+      "values": {
+        "applicable": false
+      }
+    },
+    {
+      "id": "C41",
+      "title": "(2026-11-05 switch collar) protective collar printed with the top cap: FDM wall, bore / notches open, finger reaches and flips the lever both ways, GPS sky shading, rim side load (E), keep-outs",
+      "status": "N/A",
+      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
+      "detail": "",
+      "values": {
+        "applicable": false
       }
     },
     {

@@ -5,7 +5,7 @@
     "kind": "CadQuery twin STL (cad/exports/cadquery/stl) - NOT the Fusion 360 path",
     "why": "make_print_files.py makes print files only from a Fusion run of the current params.json and script; the v0.9 Fusion GUI run has not been made",
     "replaced_by": "python tools/make_print_files.py after the Fusion run (then delete this folder)",
-    "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+    "params_sha256": "9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292",
     "preset": "BUDGET_90mm_6S",
     "stl_sha256": {
       "propulsion_module": "898e8b80a0c768c084b2b940c487b9d6d7052733b8e0234a561fd7a65d6dce93",
@@ -13,11 +13,11 @@
       "avionics_module": "9ad9ee7cc5c33e767b839f0ebfee287bc45bb65dc12795e783f55617e724a580",
       "avionics_logo": "8575b9e0543742537dd2ea45fb1812468109f90cac3383c6f93d8188087187d8",
       "avionics_tray": "4bab65a805101bbc5d4ec02268cf751d82bd2de84585e30746c5c7988dca9169",
-      "top_cap": "7ca026da8fcb6d349f995fe936614663e65daf355b0af2d159867bbb9cde3b3f",
       "vane": "1f1a4adf3782fce0a463ad763032e27f9713e5319ebce4cddd92eecdd9a26063",
       "vane_coupler": "d8e4ec8b5743c202cfe83679c56954550f8a7476ee3e24d706a98357d25ee715",
       "servo_cover": "6cdf043ef6ba6ed4a8a0226d0249bc4177421ec28b8ddb624f4ceb81a9aaeab5",
-      "wire_cover": "433a1aee3ecdb71c0a34cc74f3d8510f63ce74e2f3356e5c96623e6861061a75"
+      "wire_cover": "433a1aee3ecdb71c0a34cc74f3d8510f63ce74e2f3356e5c96623e6861061a75",
+      "top_cap": "73693478070a34437fa0db82d30c64cefd28a73c53fef3e76755efc5745490f1"
     }
   },
   "machine": "Bambu Lab P2S 0.4 nozzle",
@@ -918,19 +918,14 @@
     },
     "top_cap": {
       "quantity": 1,
-      "supports": false,
-      "support_type_used": "none",
-      "why": "flat: plate top face on the bed, skirt / ribs / hub / rim ring up",
-      "rotations": [
-        [
-          "x",
-          180.0
-        ]
-      ],
+      "supports": true,
+      "support_type_used": "tree(auto)",
+      "why": "upright (2026-11-05 switch collar): skirt rim on the bed, top face + collar up; tree supports from the bed inside the skirt under the plate, ribs, hub, washer recess and rim ring; none inside the switch hole or the collar (G-code check); the inner nut's seat under the plate prints on support interface - scrape it flat",
+      "rotations": [],
       "extents_mm": [
         120.0,
         120.0,
-        16.2
+        33.4
       ],
       "class": "A_load_path",
       "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
@@ -940,14 +935,15 @@
         "bottom_shell_layers": "4",
         "sparse_infill_density": "15%",
         "sparse_infill_pattern": "gyroid",
-        "top_shell_thickness": "0"
+        "top_shell_thickness": "0",
+        "elefant_foot_compensation": "0.15"
       },
       "ok": true,
-      "time_s": 2575.51953125,
-      "filament_mm": 11168.28,
-      "filament_g": 35.19034851711248,
+      "time_s": 10107.1884765625,
+      "filament_mm": 20476.09,
+      "filament_g": 64.51850628456322,
       "settings_in_gcode": {
-        "enable_support": "0",
+        "enable_support": "1",
         "filament_density": "1.31",
         "sparse_infill_density": "15%",
         "sparse_infill_pattern": "gyroid",
@@ -955,22 +951,50 @@
         "support_type": "tree(auto)",
         "wall_loops": "4"
       },
-      "support_time_s": 0.0,
-      "part_g": 35.15343805026615,
-      "removed_g": 0.03690548839615561,
+      "support_time_s": 5114.5843505859375,
+      "part_g": 37.77077033659431,
+      "removed_g": 26.747732576471417,
       "feature_g": {
-        "Internal solid infill": 11.094611332156648,
-        "Inner wall": 9.161082436775734,
-        "Outer wall": 8.949296959469416,
-        "Top surface": 2.919125977850136,
-        "Bottom surface": 2.7683710652485027,
-        "Sparse infill": 0.2384356687968293,
-        "Skirt": 0.03690548839615561,
-        "Floating vertical shell": 0.02110517227383903,
-        "Overhang wall": 0.0014094376927503236
+        "Support": 23.172105166810866,
+        "Internal solid infill": 11.048417500957001,
+        "Inner wall": 10.785579348919315,
+        "Outer wall": 9.73379244957426,
+        "Support interface": 3.538721858246009,
+        "Top surface": 2.8848767458966518,
+        "Bridge": 2.752842169310962,
+        "Overhang wall": 0.32840235389443084,
+        "Sparse infill": 0.23685976803974293,
+        "Skirt": 0.03690555141454073
       },
-      "part_z_centroid_plate_mm": 3.8431659504544475,
-      "part_z_centroid_design_mm": 471.45682184251433,
+      "part_z_centroid_plate_mm": 13.157755461008355,
+      "part_z_centroid_design_mm": 472.257761564524,
+      "switch_hole_support": {
+        "status": "PASS",
+        "check": "support extrusion inside the logic switch hole / the collar",
+        "registration": {
+          "slicer_placement": {
+            "arrange_rotation_z_deg": 0.0,
+            "model_to_plate_shift": [
+              -28.0,
+              -28.0,
+              -0.0
+            ],
+            "mesh_vs_model_bounds_mm": 0.0
+          },
+          "collar_outer_wall_samples": 5410,
+          "fit_centre_offset_mm": 0.0058,
+          "fit_r_mm": 12.6629,
+          "expected_r_mm": 12.7
+        },
+        "support_samples_total": 625959,
+        "support_path_mm_total": 282682.0,
+        "support_samples_in_switch_hole": 0,
+        "support_samples_in_collar": 0,
+        "support_samples_in_the_notches (in the collar count)": 0,
+        "support_path_mm_under_the_nut_seat_reported": 450.5,
+        "support_line_width_mm": 0.4,
+        "layer_height_mm": 0.2
+      },
       "print_file": "top_cap.3mf",
       "print_file_stl": "top_cap.stl"
     },
@@ -1198,15 +1222,15 @@
     }
   },
   "totals": {
-    "time_s": 117639.83195495605,
-    "filament_g": 827.3169523499173,
-    "part_g": 565.5964402019343,
-    "vehicle_part_g": 565.5964402019343,
+    "time_s": 125171.50090026855,
+    "filament_g": 856.6451101173681,
+    "part_g": 568.2137724882625,
+    "vehicle_part_g": 568.2137724882625,
     "filament_g_by_colour": {
       "Ivory White": {
         "hex": "#FFFFFF",
         "code": "11100",
-        "filament_g": 751.6869523499174,
+        "filament_g": 781.0151101173681,
         "parts": [
           "propulsion_module",
           "intake_module",
@@ -1218,7 +1242,7 @@
           "servo_cover",
           "wire_cover"
         ],
-        "with_spare_g": 826.8556475849092,
+        "with_spare_g": 859.1166211291049,
         "rolls_1kg": 1
       },
       "Mandarin Orange": {

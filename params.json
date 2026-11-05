@@ -18,7 +18,8 @@
     "v09_wire_note": "v0.9 lead-exit round (user 2026-10-29): the motor leads start at the motor's LOWEST end (side, radial) and follow one of the EDF's own stator vanes to the housing wall - not the housing-side slot read from the drawing (edf.wire_exit.superseded_2026_10_29). edf.wire_exit.motor_exit / stator_vane / housing_exit, motor_leads.lower_route and propulsion_module.wire_slot.low_* / wide_z0_from_lip_front drive Layout._motor_lead_lower: exit -> bend up the motor can -> bend out along the stator vane's trailing edge -> under the housing's rear rim through a printed lead notch (liner + sleeve) -> bend up a lower slot beside the housing into the unchanged 22 mm slot. Everything except the motor bottom height (drawing data) is ASSUMED; C29 checks the new legs. params_gen.h / bridge_config_gen.h may be STALE after this edit. Independent review fix (2026-10-29): RTV bond to the stator trailing edge instead of a cable tie round the vane (motor_leads.lower_route.restraint), RTV / chafe tape 1.0 g ASSUMED in motor_leads, the lead drag in the jet (lower_route.jet_drag, E) in C33 and the T/W-1.3 thrust, side-by-side blockage only. | PHOTO ROUND (user photos 2026-10-29, docs/실물사진/EDF_모터선_출구_2026-10-29_1.jpg / _2.jpg; round 1 archived in history/v0.9_wire_round1): the leads leave the motor side at its FRONT ring (stator / rear-rim level), bundled in heat-shrink, straight out behind one stator vane and under the rear rim; the single leads then bend up the lower slot (one bend; round 1's climb along the can and its two bends are gone, edf.wire_exit.superseded_2026_10_29_round1). New: motor_exit.level 'front_ring' / front_ring_w_ASSUMED, motor_leads.lower_route.bundle (od / shrink length / gap / shrink mass, ASSUMED from the photos); the notch is ~3 mm deeper for the bundle; the jet drag is the bundle's (E). Everything read off the photos is ASSUMED.",
     "v09_fix_note": "v0.9 fix round (2026-10-28, reviewer defects): geometry - lip-pocket slit + strut tie anchors + bulkhead hole 20 x 11 at r 42-53 (motor leads installable and restrained off the EDF throat), coupler with a set screw on a +v D-flat (axial retention, no D-flat play) and a horn socket (no coupler screws), brass hinge bushings, foam pad spec, 22 mm slot / groove slivers removed; VTOL - solid fins (span 76.8, footprint 246.8), tray plane 25 -> 14.6 (lateral CG), side windows moved, gland at 180 deg / GPS patch at 0 deg, eye-bolt load washer + jam nut, tether kit boxes. params_gen.h is STALE after this edit until the firmware round regenerates it.",
     "v09_clock_note": "wire09c (user 2026-10-30, '알아서 여유있게 해주면 안돼?'): the motor-lead passage is made generous so the real EDF fits without measuring - propulsion_module.tab_mount 'clock_keyways' (keyways round the circle, no tab screws; the EDF is clocked to ONE lead passage at lead_passage.theta_deg that leaves the body through a blister), motor_leads.generosity_box (factory sleeve kept up to 35 mm / O12 / 12 x 5 ribbon, lead O up to 4.3, bend R 7-15, TE 0-3, protrusion 30-36, rim gap 0-2, any exit azimuth), edf.axial_retention (lip on the shelf, foam under the tabs). Before-state: history/v0.9_wire_round2/.",
-    "v09_livery_note": "livery round (user decisions 2026-11-04): (1) every printed part of the vehicle changes from Bambu PLA Matte Black ('Charcoal') to WHITE - Bambu PLA Matte 'Ivory White' (#FFFFFF, code 11100; check the name at purchase); the launch pad is not part of the request and stays Black / Charcoal (printer.color_exceptions). (2-4) the word YUCHAN in Bambu PLA Matte 'Mandarin Orange' (#F99963, code 11300) as a FLUSH 2-colour inlay (one outer wall line, 0.42 mm deep, no relief) printed on the P2S with an AMS, on both sides of the avionics_module (azimuth 67 / 293 deg), rocket and vtol (battery / tether / hybrid); 'launch' concept, VERTICAL version (reads along the axis, letter tops to the left seen from outside), chosen by the user knowingly accepting the AMS cost: one swap per orange layer, 578 layers at 0.20 mm (M) -> ~578 swaps, about +14 to +15 h of print time and ~180-260 g purge + prime-tower waste (E before the slice; the sliced values are in the print plans, M). Cost reduced only by legitimate means: Bambu's measured flush pair nearest these colours (150 / 210 mm3 instead of the CLI's 280; an ASSUMED pair for white / Mandarin, A), detect_thin_wall (one orange pass instead of two, review F1), prime tower kept (quality), 0.28 mm layers NOT applied (user decision). New part avionics_logo (the orange inlay, own slicer mass); avionics_module = the white body with the logo pocket; their union is the old module (C36). Before-state: history/v0.9_pre_livery/."
+    "v09_livery_note": "livery round (user decisions 2026-11-04): (1) every printed part of the vehicle changes from Bambu PLA Matte Black ('Charcoal') to WHITE - Bambu PLA Matte 'Ivory White' (#FFFFFF, code 11100; check the name at purchase); the launch pad is not part of the request and stays Black / Charcoal (printer.color_exceptions). (2-4) the word YUCHAN in Bambu PLA Matte 'Mandarin Orange' (#F99963, code 11300) as a FLUSH 2-colour inlay (one outer wall line, 0.42 mm deep, no relief) printed on the P2S with an AMS, on both sides of the avionics_module (azimuth 67 / 293 deg), rocket and vtol (battery / tether / hybrid); 'launch' concept, VERTICAL version (reads along the axis, letter tops to the left seen from outside), chosen by the user knowingly accepting the AMS cost: one swap per orange layer, 578 layers at 0.20 mm (M) -> ~578 swaps, about +14 to +15 h of print time and ~180-260 g purge + prime-tower waste (E before the slice; the sliced values are in the print plans, M). Cost reduced only by legitimate means: Bambu's measured flush pair nearest these colours (150 / 210 mm3 instead of the CLI's 280; an ASSUMED pair for white / Mandarin, A), detect_thin_wall (one orange pass instead of two, review F1), prime tower kept (quality), 0.28 mm layers NOT applied (user decision). New part avionics_logo (the orange inlay, own slicer mass); avionics_module = the white body with the logo pocket; their union is the old module (C36). Before-state: history/v0.9_pre_livery/.",
+    "v09_logic_power_note": "v0.9 logic-power round (user decisions 2026-11-05, configs.vtol.logic_power): the carrier PCB rev 2c's 1S logic pack (devicemart 16021596, 84 g) at spot A on the 6S pack's -x face, an MTS-102 toggle through the VTOL top cap (lead to J15), the leads to J14 / J15 - battery build only (tether / hybrid not maintained with it). in_flight_mass_model false (mass decision deferred by the user): the solids are for geometry / interference (C37-C39) and the pending-mass report; the mass the sim / firmware consume is unchanged (C40). params_gen.h / bridge_config_gen.h go STALE by the params sha only and are NOT regenerated in this round (user decision 4). Switch-collar round (2026-11-05, user: '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'): logic_power.collar, printed with the top cap (battery build); firmware headers / HEX again NOT regenerated (user 2026-11-05: '다음 펌웨어 작업 때 만들자')."
   },
   "payload": {
     "standard": "International CanSat class: can D66 x 115 mm, <= 350 g (budget design). The KAIST classes (650-1000 g, D110 x 200 mm envelope) need the full preset KAIST_90mm_12S.",
@@ -1891,7 +1892,280 @@
           "table": "cad/exports/print/provisional_v09_cadquery_vtol/slicer_part_masses.json"
         }
       },
-      "fix_round_note": "v0.9 fix round (2026-10-28): solid fins, tray plane 25 -> 14.6 + tray 107.5 wide + tray holes to |y| 33 (lateral CG), side windows 90/112/248/270, gland 180 deg / GPS patch 0 deg, eye-bolt load washer recess, tether kit boxes (power.tether_kit_ASSUMED.boxes)"
+      "fix_round_note": "v0.9 fix round (2026-10-28): solid fins, tray plane 25 -> 14.6 + tray 107.5 wide + tray holes to |y| 33 (lateral CG), side windows 90/112/248/270, gland 180 deg / GPS patch 0 deg, eye-bolt load washer recess, tether kit boxes (power.tether_kit_ASSUMED.boxes)",
+      "logic_power": {
+        "note": "v0.9 logic-power round (2026-11-05): the VTOL avionics carrier PCB rev 2c (pcb/vtol_carrier, read-only here) runs from a SEPARATE 1S logic pack through J14 (pack) and J15 (power-switch lead) at the carrier's -x/+y corner. user decision 1 (2026-11-05, '배터리는 A 위치(6S 팩 −x 면)로 해줘'): the pack stands on the -x face of the 6S flight pack (spot A). user decision 2 (2026-11-05, logic power switch: '상단 캡에 구멍 내기'): an MTS-102 toggle through the top cap, operable with the vehicle closed; its lead plugs into J15 and unplugs there when the cap comes off. user decision 3 (2026-11-05, '배터리 구성만 쓰기'): only the battery build carries it (applies_to_power_sources). user decision 4 (2026-11-05, '이 배터리로 진행, 질량은 나중에 결정'): in_flight_mass_model below. Layout._logic_power derives the solids / routes / clearances; check_geometry C37-C40.",
+        "applies_to_power_sources": [
+          "battery"
+        ],
+        "applies_note": "user decision 3 (2026-11-05, '배터리 구성만 쓰기'): the logic pack, the switch, its top-cap hole and the leads exist in the battery build only. Spot A collides with the tether kit boxes (bus clamp ~13,500 mm^3, XT90 190-940 mm^3, PCB review MF2-2) in the tether / hybrid builds; those builds are NOT maintained with the logic-battery carrier (user decision) - not redesigned, not deleted, their CAD / checks / tests stay as they were.",
+        "in_flight_mass_model": false,
+        "in_flight_mass_model_note": "user decision 4 (2026-11-05, '이 배터리로 진행, 질량은 나중에 결정'): false = the pack, switch, leads and ties (and the material the switch hole removes from the top cap) are real CAD solids / lumped items for geometry and interference (C37-C39) and for the pending-mass report (extra.logic_power, cad/exports/logic_power_pending_mass_vtol.json / .md), but they stay OUT of the report's parts / totals - the mass / CG / inertia that the sim, the firmware headers and the mass targets consume (the top cap's mass entry is the cap without the logic switch hole, C40 proves it). true = they join the flight mass model; set it only after the user decides (then re-run the CAD, sizing, sim and firmware chain). Switch-collar round (2026-11-05): the protective collar printed with the cap (logic_power.collar) is behind the same switch - the flight-mass cap is the cap without the hole and without the collar.",
+        "pack": {
+          "model": "DTP105565P 3.7 V 4200 mAh 1S Li-Po, built-in PCM (ASSUMED), Molex 5264-type 2.50 mm 2-pin plug, pin 1 = +",
+          "source": "devicemart no=16021596 (PCB README 9.1 / spec battery_spot_A_assumed)",
+          "dims_xyz": [
+            10.5,
+            55.5,
+            67.0
+          ],
+          "dims_note": "vendor 10.5 x 55.5 x 67 mm: thickness along x, width along y, length along z (the pack stands upright against the 6S pack's -x face) - measure the bought pack",
+          "mass_g": 84.0,
+          "mass_note": "vendor 84 g incl. the PCM and its own lead + plug (ASSUMED: the lead is part of the 84 g) - weigh it",
+          "spot": "A",
+          "spot_note": "user decision 1 (2026-11-05, '배터리는 A 위치(6S 팩 −x 면)로 해줘'): PCB spec candidate A (lateral CG offset 0.84 mm vs 1.34 mm, 3.0 mm to the tube wall, E). x: gap_to_flight_pack off the 6S pack's -x face; y centred; z from the 6S pack's bottom. The PCB workflow assumed x -48.4..-37.9, y -27.75..27.75, z 346.1..413.1 (PCB README 9.1) - Layout reproduces it",
+          "gap_to_flight_pack": 0.5,
+          "z0_from_flight_pack_bottom": 0.0,
+          "lead_exit_ASSUMED": {
+            "end": "top",
+            "y": 22.0,
+            "note": "the PCM end (lead exit) is a 55.5 x 10.5 face; CAD assumes it on TOP with the lead leaving at y = +22, brought over the +y edge and down beside the pack (PCB README 9.1 'lead end +y'); the bottom end sits 2.0 mm over the tray-bottom level (z 344.1) and 3.86 mm from the CAD servo-lead bundle (C37, M) and has no room for a lead bend - turn the pack lead-end up",
+            "pcb_round_difference_note": "review fix (2026-11-05, DP-2): the PCB round (carrier_spec battery_spot_A_assumed, README 9.1) assumed the lead end at +y with a ~6 mm plan drop to J14; this CAD routes the lead from the TOP end (ASSUMED) over the +y edge and down beside the pack: route 95.1 + slack 20 = 115.1 mm needed (Layout, E). If the bought pack's lead is shorter, make a Molex 5264-type 2-pin extension (female-male, ~60 mm, pin 1 = + kept; ~1 g, ASSUMED - not in the pending mass)"
+          }
+        },
+        "retention": {
+          "method": "no new printed part: the 6S pack's LOWER battery strap (avionics_tray strap slots at the 6S bottom + 25, 20 mm wide, y +-(tray_w/2 - 10)) is lengthened to wrap both packs, and one cable tie (or hook-and-loop strap) binds the two packs at tie_z_below_pack_top - the same pattern as the 6S pack and the carrier (strap / cable tie)",
+          "tie_z_below_pack_top": 10.0,
+          "strap_tie_mass_g_ASSUMED": 2.0,
+          "touchdown_g_ASSUMED": 20.0,
+          "friction_mu_ASSUMED": 0.5,
+          "strap_t_ASSUMED": 1.5,
+          "tie_t_ASSUMED": 1.2,
+          "tie_path_ASSUMED": "the tie runs through the avionics tray's two lightening holes pulled to their OUTER edges (|y| = tray_hole_y[1]) and round both packs; the strap through its slots (|y| = tray_w/2 - 10)",
+          "band_note": "review fix (2026-11-05, G3 / DP-10): Layout.lp_band_leads reports in plan (E) each lead's vertical leg against the strap / tie loops (hulls of the packs' corners + the tray anchor points, band thickness strap_t / tie_t): the switch lead runs INSIDE both loops (the strap and the tie hold it against the packs' +y edge - the tie presses it slightly: strain relief), the pack lead runs OUTSIDE both (it crosses over the strap). The lengthened lower strap no longer wraps the 6S pack's -x corners (the 1S pack lies between them): at its lower end the 6S pack is held laterally by the strap's normal force through the 1S pack (friction) and by its upper strap - shake-test",
+          "note": "84 g x 20 g touchdown (sizing/vtol_strength.py TOUCHDOWN_G, ASSUMED) = 16.5 N along z: held by friction on the 6S face and under the strap / tie (mu 0.5, 2 faces) -> >= 16.5 N total normal force from the strap + tie (E); pull both tight and shake-test. The pack bottom is 2.0 mm over the tray-bottom level (z 344.1) and 3.86 mm from the CAD servo-lead bundle (C37, M): if it slips it sits on the leads, never on the fan"
+        },
+        "switch": {
+          "model": "MTS-102 2-position mini toggle, harness version (leads soldered on, Dupont ends)",
+          "source": "devicemart no=13029107 - the vendor page's dimensions are NOT on disk; every size below is ASSUMED from a common MTS-102 (M6 x 0.75 bushing) - measure the bought part before printing the cap",
+          "hole_d": 6.2,
+          "hole_note": "panel hole for the M6 x 0.75 bushing (~6.2, ASSUMED)",
+          "theta_deg": 140.0,
+          "r": 43.0,
+          "position_note": "user decision 2 (2026-11-05, logic power switch: '상단 캡에 구멍 내기'): in the -x/+y quadrant between the ribs at 112.5 / 202.5 deg, directly over J15 (the lead drops straight down beside the 1S pack's +y end), clear of the GPS patch (0 deg) / board (270 deg), the gland (180 deg, r 25), the GPS lead hole (230 deg), the arming switch (90 deg), the hub / hardpoint and the rim ring; the plate strength rule (C30 / sizing/vtol_strength.py top_cap) is checked by C38",
+          "body_xyz_ASSUMED": [
+            8.0,
+            13.0,
+            10.0
+          ],
+          "body_note": "body under the panel: 8 (x) x 13 (y, the lever throws along y) x 10 mm deep (common MTS-102, ASSUMED)",
+          "inner_nut_h_ASSUMED": 2.0,
+          "nut_d_ASSUMED": 9.2,
+          "nut_af_ASSUMED": 8.0,
+          "nut_min_bearing_w_ASSUMED": 0.8,
+          "lock_washer_t_ASSUMED": 0.5,
+          "nut_note": "M6 x 0.75 panel nut 8 AF (9.2 across corners, ASSUMED). CAD stack: the inner nut run down to the body end of the bushing (under the plate), the plate, a lock washer + the outer nut on top. Review fix (2026-11-05, G5): Layout / C38 require (nut_af - hole_d) / 2 >= nut_min_bearing_w (the nut flats bear on the plate round the hole) and the bushing above the plate >= outer nut + lock washer",
+          "cap_joint_screw_max_len": 6.0,
+          "cap_joint_screw_note": "review fix (2026-11-05, G1): the top cap's four M3 joint screws (skirt -> avionics spigot top, z skirt bottom + 7.5, 45/135/225/315 deg) are limited to M3 x 6 (length under the head <= 6 mm; the skirt + spigot walls are 3.0 mm, so 3 mm reaches into the bore): the switch body sits across the 135 deg screw axis, where the project's any-length screw proxy overlaps it. An M3 x 6 keeps >= min_clear_to_tray (2 mm) from the switch body: 2.63 mm in Layout (the screw as a round-ended capsule, conservative) and 3.76 mm on the solids (C38, M); the longest that keeps 2 mm in Layout is 6.7 mm, so M3 x 8 / x 10 must not be used in the battery build's cap (an M3 x 8 leaves 1.03 mm in Layout, which refuses it). Alternative left to the user: move the switch off the 135 deg line (theta >= ~150 deg, the lead then needs a bend to J15)",
+          "lever_top_note": "review fix (2026-11-05, G2 / F1): the lever top (cap top + 15 mm, ASSUMED) is the battery build's highest point (about 4.4 mm over the GPS patch top; the eye bolt is not a part of this build - fitted only for catch-line tests). C39 WARNs on it and C30 names it as its exception: user decision open (accept / a guard collar printed with the cap / never set the vehicle down inverted). DECIDED 2026-11-05 (user: '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'): the protective collar logic_power.collar, printed in one piece with the cap; C39 now judges the lever envelope against it, C30 names the collar as its exception",
+          "lever_throw_deg_ASSUMED": 20.0,
+          "lever_pivot_ASSUMED": "body_end_of_bushing",
+          "lever_throw_note": "switch-collar round (2026-11-05): the lever tilts lever_throw_deg_ASSUMED each side of vertical along vehicle y (body_note: the lever throws along y) - a common MTS-102-class value (A, the vendor page is not on disk: measure both end positions). The pivot is taken at the body end of the bushing (the inner nut's bottom, z plate bottom - inner_nut_h_ASSUMED; A): that is the lowest plausible pivot, so the longest arm and the widest tip sweep (conservative for the collar's plan / finger notch rules); the highest point of the sweep is the vertical mid-throw (lever top = cap top + above_plate_h + lever_h), whatever the pivot",
+          "lugs_h_ASSUMED": 5.0,
+          "lugs_note": "solder lugs + heat shrink of the factory leads below the body (ASSUMED)",
+          "bushing_d": 6.0,
+          "above_plate_h_ASSUMED": 5.0,
+          "lever_h_ASSUMED": 10.0,
+          "lever_d_ASSUMED": 3.0,
+          "lever_note": "outer nut + bushing top 5 mm above the plate top, lever ~10 mm above that (ASSUMED)",
+          "mass_g_ASSUMED": 4.0,
+          "finger_clear_d_ASSUMED": 20.0,
+          "finger_note": "a fingertip needs a 20 mm free circle round the lever (ASSUMED) to throw it with the vehicle closed"
+        },
+        "collar": {
+          "note": "switch-collar round, USER DECISION (2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'): a protective collar round the logic switch lever, printed in ONE piece with the top cap (no separate part, no glue, no screws) - it answers review finding G2 (the lever tip was the battery build's highest point, C39 WARN). A round tube on the plate top, coaxial with the switch, rim h over the plate top, with two finger notches on the lever's throw axis (vehicle y). Battery build only (it exists where logic_power applies). Layout._logic_power derives / checks it (lp_col_*), rocket_geometry.top_cap and the Fusion build_top_cap (0.9.8) build it, C39 (lever envelope inside the collar) and C41 (collar rules) judge it on the solids. Its material is part of the logic-power kit: it stays out of the flight mass model with the switch hole while in_flight_mass_model is false (the cap's flight-mass entry is the cap without the hole and without the collar, C40)",
+          "inner_d": 21.0,
+          "inner_d_note": "the existing finger circle (switch.finger_clear_d_ASSUMED, Ø20 round the lever axis) stays free with 0.5 mm all round - C39's finger-circle rule is unchanged, and (review fix 2026-11-05, F1) Layout now refuses a bore smaller than that circle (it was caught only by C39 on the solids); the lever's tip sweep (|y| <= 7.6 mm, Layout) keeps >= lever_clear_min from the bore",
+          "wall_t": 2.4,
+          "wall_note": "6 lines x 0.4 mm (printer.nozzle_d), >= printer.min_feature 1.2; the top cap's class A_load_path prints 4 wall loops per side, more than the 3 a 2.4 mm wall needs to be all perimeters (docs/print_mass_calibration.json strength.walls_for_full_perimeter: 'duct / fins 2.4 mm -> 3 loops'), so the wall is solid. 2.4 rather than 1.6 / 2.0: the side-load hand calc with C41's method (U notch, governing height, kt_notch 1.3) gives factor 1.47 at 1.6, 2.11 at 2.0 and 2.87 at 2.4 (E; with the old box notch C41 gave 1.07 / - / 2.10); 2.4 also keeps the outer Ø25.8, the GPS sky and every keep-out of the first design",
+          "h": 17.2,
+          "h_note": "rim height over the plate top (z_cap_top), a whole number of 0.2 mm layers: the lever (Ø lever_d, flat end) stands cap top + above_plate_h_ASSUMED + lever_h_ASSUMED = 15.0 over the plate when vertical (A); tilted a few degrees its tip end's upper corner rises to 15.06 (Layout lp_lever_env_top_z: pivot + sqrt(arm^2 + (lever_d / 2)^2)); rim 17.2 -> margin 2.14 >= rim_margin_min. If the bought switch's lever stands higher, Layout refuses the collar: raise h (or measure and correct the switch values) before printing",
+          "rim_margin_min": 2.0,
+          "rim_margin_note": "rim over the lever envelope's top (A): the lever height is ASSUMED (vendor page not on disk) and a flat surface laid on the rim must not touch the lever after print tolerance / lever play / a crumb of grit; 2.0 mm",
+          "plan_margin_min": 1.0,
+          "plan_margin_note": "the lever envelope in plan (lever Ø x tip sweep) lies inside the convex hull of the rim tops by >= this (A): then ANY plane that rests on the rim (an inverted set-down, a tip-over onto the top corner) stays over the rim height above the whole lever - a plane above every rim point is above the rim height over their convex hull. The notches cut the hull with a chord at |y| = sqrt(R_out^2 - (notch_w / 2)^2)",
+          "lever_clear_min": 1.0,
+          "lever_clear_note": "lever envelope (every sampled throw angle) -> collar material, BRep distance (A): the lever never rubs the collar",
+          "notch_w": 17.0,
+          "notch_bottom_h": 5.0,
+          "notch_note": "two finger notches, one on each end of the throw axis. Review fix (2026-11-05, F1 / F2): each is a U slot across the wall - width notch_w, a round bottom of radius notch_w / 2 whose lowest point is notch_bottom_h over the plate top (centre notch_bottom_h + notch_w / 2 = 13.5 mm over the plate), straight sides above the centre up through the rim (was a 16 mm box slot from 5.4 mm). Why notches: in a closed Ø21 cup a fingertip cannot get to the outer side of the thrown lever tip (7.6 mm off the axis, 2.9 mm from the bore), so it could push the lever only one way; through a notch the fingertip comes in from the side and pushes the tip back over centre - both ways, one notch each. notch_w 17 = finger_tip_d_ASSUMED + 2 x finger_path_margin_min: the finger keeps 0.5 mm from the notch sides all along the push (finger_path_note). Why the U: the round bottom follows the round fingertip, so the slot is no deeper than the finger needs (the lowest point 5.0 mm keeps the sphere's lowest point in the wall band 0.87 mm over it, >= one layer, and the whole push >= 0.5 mm), and it removes the box slot's sharp re-entrant corners where the side-load stress peaked (kt_note). The unbroken base ring below (5.0 mm) keeps the arcs' bending root short (side_load) and the notches double as drains down to that height (the cup below them still holds ~5 mm of water round the outer nut: do not fly in rain - the bare switch had the same leak path)",
+          "finger_tip_d_ASSUMED": 16.0,
+          "finger_path_margin_min": 0.5,
+          "finger_path_step_deg": 1.0,
+          "finger_path_past_centre_deg": 2.0,
+          "finger_path_note": "review fix (2026-11-05, independent review F1: the end-position probe alone did not prove that the finger can push the lever back over centre; a 14 mm notch blocked the push and still passed): the fingertip probe (finger_tip_note) is kept on the lever's outboard tip corner (horizontal push, sphere centre level with the corner) while it pushes the lever from the end position to finger_path_past_centre_deg past centre, every finger_path_step_deg, and its distance to the collar material must stay >= finger_path_margin_min at every step (A: 0.5 mm side room each side for a real, soft fingertip; the old 16 mm notch had 0.000). Layout computes it (the U slot surface inside the wall, the plate) and refuses a short collar; C41 measures it on the solids (BRep). The governing step is near centre, where the finger body lies in the notch: room = notch_w / 2 - finger_tip_d / 2 = 0.5 mm (M/E)",
+          "finger_tip_note": "adult index fingertip modelled as a sphere Ø16 (A; the existing Ø20 finger circle = this fingertip + 2 mm each side). Finger-access rule (Layout, C41 on the solids): at each end position the sphere touches the outer corner of the lever's tip end with a horizontal push along the throw axis (the sphere centre level with that corner, finger_tip_d / 2 outboard of it), and the sphere plus the finger behind it (a Ø finger_tip_d cylinder 30 mm outward along the throw axis) meets no solid",
+          "side_load": {
+            "dyn_ASSUMED": 2.0,
+            "mu_ASSUMED": 0.5,
+            "interlayer_fraction_of_tensile_ASSUMED": 0.5,
+            "factor_min": 2.0,
+            "kt_notch_ASSUMED": 1.3,
+            "kt_note": "review fix (2026-11-05, F2): the box notch's sharp 90 deg corner at the notch bottom was the arc's most stressed fibre and sat on a layer boundary; the notch now has a round (U) bottom of radius notch_w / 2 = 8.5 mm, so the arc section grows smoothly below the U's centre and Layout searches the governing height (lp_col_section). A stress-concentration factor is still applied to that nominal stress (A, kt_notch 1.3: a shoulder with fillet radius / narrow width r/d ~ 1.6 (8.5 / ~5.1 mm) is below ~1.2 on Peterson's stepped flat bar in bending charts; rounded up for the layer lines crossing it). C41: factor = interlayer allowed / (kt x nominal) >= factor_min",
+            "plate_root": {
+              "nu_ASSUMED": 0.35,
+              "factor_min": 2.0,
+              "note": "review fix (2026-11-05, F3): the 1.2 mm plate carries the collar's root moment and was not checked. Model (E, Layout lp_col_plate_root, cad/layout.py _annular_plate_boss): Kirchhoff annular plate, the collar a rigid boss (radius ro), clamped at b = the FARTHEST first support seen from the collar axis (rays every 1 deg to the rim ring's inner face, the hub and the four ribs - 50.6 mm here; the panel is really held at 11.5-19 mm on most sides, so this is conservative), nu 0.35 (A, PLA). Cases (C41): (1) the side load (F of the arc case) x rim height h as the boss moment; (2) an inverted set-down: the collar takes the lever-rule share body_r / (body_r + switch r) of the vehicle WITH the logic power x dyn, plus friction mu x that force on its rim (moment). The plate prints flat (layers in its plane), so allowed = printer.bending_mpa (in-layer flexural 53 MPa, the convention of sizing/vtol_strength.py which the C30 / C38 cap strength rule uses), factor >= factor_min; the factor against printer.tensile_mpa is reported too. Nominal stress: no root fillet / Kt (as vtol_strength)"
+            },
+            "note": "hand estimate (E, C41): the whole vehicle WITH the logic power (report extra.logic_power.with_logic_power, M) x dyn 2 x friction 0.5 = the project's leg / ground case (sizing/vtol_strength.py DYN / MU, ASSUMED) pushed horizontally on the rim of ONE arc (an inverted set-down sliding on the floor); cantilever from the governing height of the U notch (review fix 2026-11-05, F2: Layout searches the arc section x arm along the notch, the arc = the annulus part outside the slot's half-width at that height, minimum Z, stress x kt_notch) and from the plate (full ring, arm h); the plate under the collar: plate_root; the cap prints top face up, so the bending stress crosses the layer lines: allowed = interlayer_fraction x printer.tensile_mpa (A, FDM Z strength ~40-60 % of in-layer), factor >= factor_min. Impact is not covered"
+          },
+          "gps_sky": {
+            "receiver_elev_mask_deg_ASSUMED": 5.0,
+            "max_blocked_sky_above_mask_pct": 1.0,
+            "note": "no GPS elevation-mask rule existed (C30 only required the patch top to be the vehicle top except named exceptions). The u-blox 6 (NEO-6M) default minimum satellite elevation is 5 deg (A, receiver description CFG-NAV5 default) and the firmware's CFG-NAV5 sets dynModel only (mask 0x0001, firmware/atmega128_fc/src/core/gps_ubx.h), so the receiver keeps it. Rule set in this round (E, C41): the collar may shade at most max_blocked_sky_above_mask_pct of the sky above that mask, seen from the patch centre (azimuth width x elevation band above the mask, the collar top taken at its nearest point - conservative); its top elevation angle is reported"
+          },
+          "print_note": "the collar stands 17.2 mm up from the plate's top face, so the cap can no longer print top face down without supports under the whole top face (17 mm, ~110 cm^2, the GPS / tape face on support). Battery-build cap prints UPRIGHT (skirt rim on the bed, top face up, collar up - make_v09_print_files), with tree supports from the bed under the plate, ribs, hub, washer recess and rim ring inside the skirt (like the rocket payload module's bulkhead). The switch hole is vertical through the plate: no support is generated inside it (nothing overhangs there; make_v09_print_files measures it on the G-code), but the plate's underside round the hole - the inner nut's seat - prints on support interface: scrape / sand it flat. The tether / hybrid cap (no collar) keeps the top-face-down, no-support plan. Review fix (2026-11-05, F6): printed upright, the hardpoint load path (rib tips, hub, the load-washer recess) also prints on support interface - its proof-load rib factor is only 1.03 (C38, from a top-face-down print), so catch-line / proof loads are applied only with a cap printed top face down (the tether / hybrid cap), never with this collared cap, and the washer recess is faced flat; the skirt mouth (radial clearance 0.2 mm on the avionics spigot) is now the first layer, so this slice sets elefant_foot_compensation (make_v09_print_files COLLAR_CAP_OVERRIDES, A) - check the fit on the spigot on the first print",
+          "in_flight_mass_note": "the collar is part of the logic-power kit: behind in_flight_mass_model (false: the report's top cap mass entry is the cap without the switch hole AND without the collar; the pending-mass report carries the printed cap with both)"
+        },
+        "leads": {
+          "wire_od_ASSUMED": 3.0,
+          "wire_note": "2 conductors side by side / twisted (~24-26 AWG), keep-out diameter (ASSUMED)",
+          "switch_to_J15": {
+            "connector": "JST-PH 2-pin housing (the harness's Dupont ends cut and re-crimped, PCB README 7.1)",
+            "slack_mm": 60.0,
+            "mass_g_per_m_ASSUMED": 5.0,
+            "connector_g_ASSUMED": 0.5,
+            "note": "straight down from the switch lugs to J15; slack 60 mm (as the GPS lead) so the cap lifts off before J15 is unplugged - the top cap is removable and the lead unplugs at J15 (E length)"
+          },
+          "pack_to_J14": {
+            "connector": "the pack's own Molex 5264-type plug into J14 (SPOX 5267-02A vertical)",
+            "slack_mm": 20.0,
+            "vertical_x": -40.0,
+            "vertical_y": 31.8,
+            "over_pack_top": 4.0,
+            "note": "pack top (lead exit) -> up over_pack_top -> to (vertical_x, vertical_y) past the pack's +y end -> down beside it -> J14. The lead is part of the pack's 84 g (ASSUMED); its length is the vendor's (A) - measure; route + slack is what it needs"
+          }
+        },
+        "clearance": {
+          "min_to_leads_plugs": 2.0,
+          "min_to_leads_plugs_note": "PCB mech-fit review MF2-10: >= 2 mm boxes round the pack against the servo leads, the GPS lead / J7 and the J18 6S-sense plug",
+          "gps_lead_od_ASSUMED": 4.0
+        },
+        "carrier_plugs": {
+          "source": "pcb/vtol_carrier/out/reports/board_metrics.json cad_round_envelopes (rev 2c, 2026-11-05): mated plug boxes (ASSUMED plug sizes) in vehicle x / y, z above the carrier board's top face (Layout: fcu_z[0] + electronics.carrier.board_t)",
+          "J7": {
+            "what": "GPS lead (JST-GH) mated vertical plug + lead bend",
+            "x": [
+              -37.8,
+              -28.25
+            ],
+            "y": [
+              -34.79,
+              -28.1
+            ],
+            "z": [
+              0.0,
+              9.0
+            ]
+          },
+          "J8": {
+            "what": "servo 1 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              14.17,
+              21.97
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J9": {
+            "what": "servo 2 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              5.55,
+              13.35
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J10": {
+            "what": "servo 3 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              -3.07,
+              4.73
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J11": {
+            "what": "servo 4 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              -11.69,
+              -3.89
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J14": {
+            "what": "1S logic pack input (SPOX vertical) mated plug + lead bend",
+            "x": [
+              -37.8,
+              -29.31
+            ],
+            "y": [
+              28.8,
+              34.8
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J15": {
+            "what": "logic power-switch lead (JST-PH vertical) mated plug + lead bend",
+            "x": [
+              -37.8,
+              -30.81
+            ],
+            "y": [
+              23.2,
+              28.8
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J18": {
+            "what": "6S sense mated right-angle plug",
+            "x": [
+              -45.24,
+              -31.24
+            ],
+            "y": [
+              -22.78,
+              -12.58
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          }
+        },
+        "charging": "take the pack out to charge it (ASSUMED: no charge port in the docs): cap off, unplug J14, loosen the lower strap and the tie, lift the pack out; charge with a 1S Li-Po charger on its Molex 5264-type lead"
+      }
     }
   },
   "power": {
@@ -2056,7 +2330,11 @@
         "angle_from_vertical_deg": 30.0
       },
       "note": "v0.9 sim plant round (architect decision f; tether proposal sim.mechanics, recommendation ii / iii): overhead anchor (pulley on the gantry) anchor_height_m above the ground (proposal 3.5-4.0 m); the tether from the anchor to the top-cap eye bolt (Vehicle.tether_attach_body_m). Power cable: constant-tension feed tension_n at the vehicle (proposal 0.5-2.0 N, Gauss-Markov sigma / tau 2 s) or slack feed (cable_slack_m paid out, catenary of w_kg_per_m = 2 x 10 AWG silicone + Dyneema from the proposal's 230 g / 1.5 m / 1.10), half the span's cross-flow drag (cable_cd on cable_d_m, ASSUMED). Catch line (Dyneema + bungee shock section): the handler keeps belay_slack_m (0-0.3 m) - first-order follow handler_tau_s, rate limit handler_rate_mps, belay lock above lock_tension_n; taut -> bungee spring k 600 N/m, zeta 0.3 (proposal ASSUMED; Dyneema in series neglected). Snag (proposal W5): 20 N for 0.2 s at 30 deg from the vertical. Battery-less after a cut: no power - the catch line + bungee is the only protection (sim/tether.py)."
-    }
+    },
+    "maintained_sources": [
+      "battery"
+    ],
+    "maintained_note": "user decision 3 (2026-11-05, '배터리 구성만 쓰기'): only the battery build is pursued from now on. The tether / hybrid builds are not maintained with the logic-battery carrier (spot A collides with their kit boxes, PCB review MF2-2): kept, not redesigned, their checks / tests as they were (configs.vtol.logic_power.applies_note)"
   },
   "battery_options_ASSUMED": {
     "note": "v0.9 CAD-2 (user decision 2 / architect item g): lighter 6S packs for the VTOL configuration as ESTIMATES. Masses / dims / C ratings are typical catalogue values for the class (NOT checked against a listing in this round); r_pack is ASSUMED. The default pack (battery.*) is unchanged until the thrust test gives real thrust / current data. sizing/sizing.py --config vtol reports hover current, voltage sag and flight time for each option.",

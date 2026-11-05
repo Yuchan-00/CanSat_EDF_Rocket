@@ -1,5 +1,6 @@
-"""Geometry checks C1-C27 of SPEC section 7 against the CadQuery twin (C24: v0.6.2 radio/log box, C25: v0.6.3 FCU board,
-C26: v0.8 GPS pod, C27: v0.8.1 GNS board; C36: the 2026-11-04 livery - YUCHAN inlay, check_livery).
+"""Geometry checks C1-C41 of SPEC section 7 against the CadQuery twin (C24: v0.6.2 radio/log box, C25: v0.6.3 FCU board,
+C26: v0.8 GPS pod, C27: v0.8.1 GNS board; C28-C35 v0.9 VTOL / clock mount; C36: the 2026-11-04 livery - YUCHAN inlay,
+check_livery; C37-C40: the 2026-11-05 logic power; C41: the 2026-11-05 switch collar).
 
 Invariant: every PASS is backed by a measurement on the solids (boolean intersection volume,
 bounding box, OCC mass properties) or on Layout/params numbers - never by inspection of the
@@ -37,6 +38,22 @@ v0.8.1 (GNS board, electronics.gns / avionics_module.gns_mount): the new row C27
 the -x avionics tube wall on the solids (clearances, seat on the boss tips, blind tap holes, 45 deg boss faces, the GPS /
 glink lead tubes; N/A without electronics.gns); C7 / C14 include the ``gns`` placeholder (avionics zone); C10 lists the
 GNS boss walls (derived, Layout.gns_walls).
+2026-11-05 logic power (user decisions 1-4, params configs.vtol.logic_power; VTOL battery build only, N/A elsewhere): C37 the
+1S logic pack at spot A on the solids (6S pack, bore, bay boxes, >= 2 mm to the servo bundle / GPS lead / carrier plugs /
+switch lead - PCB review MF2-10 - and the strap retention), C38 the MTS-102 switch through the top cap (hole open, switch vs
+the cap, body / lugs >= min_feature from the ribs / ring / plate and >= min_clear_to_tray from everything below the plate,
+the plate strength rule of sizing/vtol_strength.py untouched, the lead keep-outs to J15 / J14 clear, cap removal slack),
+C39 the lever reachable from outside with the vehicle closed (finger circle free, inside the body edge, below the eye bolt
+when fitted; WARN while the lever is the vehicle top; tip-over / catch-line / GPS-sky numbers reported), C40 the named mass
+switch (logic_power.in_flight_mass_model) honoured by the report and the pending full-mass numbers (with C33's trim at the
+full mass).  Review fixes (2026-11-05): C38 also checks the cap joint screws at their length limit and the switch nut
+bearing; C30 names the logic switch lever as its only non-tether exception (measured on the solid, judged in C39); C37
+reports the strap / tie loops against the leads (E).
+Switch-collar round (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘', logic_power.collar): C39
+judges the lever's swept envelope against the collar printed with the top cap (rim margin, inside the rim hull, clear of
+it - PASS or FAIL, no WARN), C30 measures the vehicle top on the solids and names the collar (and the lever inside it) as
+its exceptions, the new row C41 checks the collar's own rules (FDM wall, bore / notches, finger reach both ways, GPS sky
+shading, rim side load by hand, keep-outs).
 
 Writes cad/exports/cadquery_checks.md + .json (``_<preset>`` variants for non-default presets)
 and exits 1 when any C-row FAILs.
@@ -136,6 +153,8 @@ C28_AXIS_TOL = 0.01             # C28: the horn (servo output) centre lies on th
 C28_TORQUE_MARGIN_MIN = 2.0     # C28: servo torque >= 2 x the worst hinge moment
 # v0.9 C20 / C29 (open motor-lead groove, bullets)
 C29_CLEAR_TOL_MM3 = 0.01        # C29: a bullet / lead proxy (already grown by its clearance) meets no material
+FINGER_REACH_MM = 0.05          # C41 (switch collar): the fingertip probe touches the lever end (BRep distance)
+FINGER_PATH_TOL_MM = 1e-6       # C41 (review fix 2026-11-05, F1): numerical tolerance on the finger-path BRep distance
 C33_TRIM_PASS = 0.05            # C33 (v0.9 fix round): standing trim from the lateral CG <= 5 % of the hover pitch authority
 C33_TRIM_WARN = 0.10            # ... WARN up to 10 %
 # v0.8.1 C27 (GNS board)
@@ -238,6 +257,9 @@ class Checker:
         self.shape = {n: p.shape for n, p in parts.items() if p.shape is not None}
         self.prop = self.shape["propulsion_module"]
         self._band_part: cq.Shape | None = None
+        # 2026-11-05: the logic-power solids (in parts once logic_power.in_flight_mass_model is true, else built here)
+        self.logic = ({n: parts.get(n) or q for n, q in rg.logic_power_parts(L).items()}
+                      if getattr(L, "has_logic_power", False) else {})
 
     def _intake_band_part(self) -> cq.Shape:
         """v0.6.1: the intake module's windowed band above the lead notches / channels (rocket_geometry.
@@ -970,6 +992,8 @@ class Checker:
             "launch_pad.plate_t": p["launch_pad"]["plate_t"], "launch_pad.fin_locator_rib_w": p["launch_pad"]["fin_locator_rib_w"],
             "launch_pad.fin_locator_rib_h": p["launch_pad"]["fin_locator_rib_h"], "launch_pad.foot_t": p["launch_pad"]["foot_t"],
             "spigot shoulder ring (=body.wall)": rg.spigot_shoulder_t(L),
+            # switch-collar round (2026-11-05): the protective collar's wall (battery build; its own rules in C41)
+            **({"logic_power.collar.wall_t": L.lp_col_t} if getattr(L, "has_lp_collar", False) else {}),
         }
         derived = {
             "hinge boss wall (boss_od-bore_d)/2": (L.hinge_boss_od - L.hinge_bore_d) / 2,
@@ -2587,7 +2611,10 @@ class Checker:
                 self.c23_servo_leads(), self.c24_radio_log(), self.c25_fcu_board(), self.c26_gps_pod(),
                 self.c27_gns_board(), self.c28_coupler(), self.c29_bullets(), self._guard("C33", self.c33_lateral_cg),
                 self._guard("C34", self.c34_clock_coverage), self._guard("C35", self.c35_axial_retention),
-                self._guard("C36", self.c36_livery), self.x1_vane_pair(), self.x2_pad()]
+                self._guard("C36", self.c36_livery), self._guard("C37", self.c37_logic_pack),
+                self._guard("C38", self.c38_logic_switch), self._guard("C39", self.c39_logic_reach),
+                self._guard("C40", self.c40_logic_mass), self._guard("C41", self.c41_logic_collar), self.x1_vane_pair(),
+                self.x2_pad()]
 
     # ---- v0.9 CAD-2 VTOL configuration ----
     VTOL_NA = {"C2": ("payload envelope does not intersect any printed body", "no CanSat payload in the VTOL configuration"),
@@ -2622,7 +2649,8 @@ class Checker:
                  ("C25", self.c25_fcu_board), ("C26", None), ("C27", None), ("C28", self.c28_coupler), ("C29", self.c29_bullets),
                  ("C30", self.c30_top_cap), ("C31", self.c31_av_windows), ("C32", self.c32_fin_legs), ("C33", self.c33_lateral_cg),
                  ("C34", self.c34_clock_coverage), ("C35", self.c35_axial_retention), ("C36", self.c36_livery),
-                 ("X1", self.x1_vane_pair), ("X2", None)]
+                 ("C37", self.c37_logic_pack), ("C38", self.c38_logic_switch), ("C39", self.c39_logic_reach),
+                 ("C40", self.c40_logic_mass), ("C41", self.c41_logic_collar), ("X1", self.x1_vane_pair), ("X2", None)]
         for cid, fn in order:
             if fn is None:
                 title, why = self.VTOL_NA[cid]
@@ -2637,7 +2665,12 @@ class Checker:
         the hardpoint hole is open (a thin probe through it meets no cap material); (c) the ribs / hub / rim ring are
         material (probes inside them); (d) the Layout clearances (cap_clearance) and the tether-path distances (cap_tether:
         the free cable from the boot top >= min_window_clear from every intake window) - the boot base distance is
-        reported; (e) the GPS patch top is the highest point of the vehicle except the tether boot (open sky)."""
+        reported; (e) the GPS patch top is the highest point of the vehicle (measured on the solids of the build) except
+        the tether parts (open sky) and - VTOL battery build - two named exceptions: the logic switch collar printed with
+        the cap (switch-collar round, user decision 2026-11-05; the cap's material inside the collar cylinder, judged in
+        C39 / C41) and the logic switch (``logic_switch``: its lever inside the collar, judged in C39), each measured on
+        its solid whatever logic_power.in_flight_mass_model is and reported here.  Every other logic-power solid
+        (logic_pack, the lead and retention solids) counts like any solid (review fix 2026-11-05, F5)."""
         L, sh = self.L, self.shape
         cap = sh["top_cap"]
         vols = {n: _v(cap, sh[n]) for n in ("avionics_module", "avionics_tray", "battery", "buffer_pack", "esc",
@@ -2662,8 +2695,32 @@ class Checker:
         tdist = L.cap_tether["free cable start (boot top) -> nearest intake window"]
         treq = L.cap_tether["required (free cable)"]
         # (the tether hardware - eye bolt - stands over the patch by design: the boot shadow is reported below)
-        zmax = max(e["bbox_mm"][1][2] for n, e in self.report["parts"].items()
-                   if e["kind"] != "lumped" and not n.startswith("tether_"))
+        # review fix (2026-11-05, F1 / G2): the logic switch lever (battery build, user decision 2) is a NAMED exception,
+        # measured on its solid whatever logic_power.in_flight_mass_model is and written into the title / detail; it is
+        # judged in C39 (WARN while it is the vehicle top).  No other solid is excepted.
+        # switch-collar round (2026-11-05): the vehicle top is measured on the SOLIDS of this build (the printed top cap
+        # with its collar - not the report's mass-entry bbox, which is the cap without the logic-power kit while
+        # logic_power.in_flight_mass_model is false).  Named exceptions only: the tether parts (tether variants), the logic
+        # switch (``logic_switch`` by name: its lever, judged in C39) and the switch collar - the cap's material inside the
+        # collar's cylinder (Ø 2 lp_col_ro + 0.02 round the switch axis); the rest of the cap counts like any solid, so a
+        # cap feature elsewhere above the patch still fails here.  Review fix (2026-11-05, F5): only logic_switch is
+        # skipped - every other logic_* solid (pack, lead, retention, any later one) is measured like any solid
+        col_top = None
+        tops = {}
+        logic_solids = {k_: q.shape for k_, q in (self.logic or {}).items() if q.shape is not None}
+        for n, s_ in list(sh.items()) + [(k_, v_) for k_, v_ in logic_solids.items() if k_ not in sh]:
+            if n.startswith("tether_") or n == "logic_switch":
+                continue
+            s_eff = s_
+            if n == "top_cap" and getattr(L, "has_lp_collar", False):
+                region = rg._cyl_z(L.lp_col_ro + 0.01, L.z_cap_top - 0.01, L.lp_col_z[1] + 1.0, *L.lp_sw_xy)
+                col_top = br.mp.bbox(s_.intersect(region))[1][2]
+                s_eff = s_.cut(region)
+            tops[n] = br.mp.bbox(s_eff)[1][2]
+        zmax = max(tops.values())
+        lever_top = None
+        if self.logic:
+            lever_top = self.logic["logic_switch"].shape.BoundingBox().zmax
         gps_top = L.cap_patch_z[1]
         fails = []
         # v0.9 fix round: the hardpoint stack (load washer flush in the hub, jam nut, bolt end) keeps
@@ -2696,7 +2753,20 @@ class Checker:
             fails.append(f"free tether cable {tdist:.1f} < {treq:g} mm from an intake window")
         if gps_top < zmax - 1e-6:
             fails.append(f"GPS patch top {gps_top:.2f} below the vehicle top {zmax:.2f}")
-        return Check("C30", "VTOL top cap: fit, open holes, ribs / hub / ring, clearances, tether path, GPS sky",
+        if col_top is not None:
+            lever_txt = (f"; named exceptions (measured on the solids): the logic switch collar of the printed top cap, rim z "
+                         f"{col_top:.2f} = {col_top - gps_top:+.2f} mm over the patch = the vehicle top (user decision "
+                         f"2026-11-05, judged in C39 / C41), and the lever inside it, top z {lever_top:.2f} "
+                         f"({lever_top - gps_top:+.2f}; {col_top - lever_top:.2f} mm under the rim, C39); the rest of the cap "
+                         f"tops out at z {tops['top_cap']:.2f}")
+        else:
+            lever_txt = ("" if lever_top is None else
+                         f"; named exception: logic switch lever top z {lever_top:.2f} = {lever_top - gps_top:+.2f} mm over the "
+                         f"patch (user decision 2, judged in C39)")
+        return Check("C30", "VTOL top cap: fit, open holes, ribs / hub / ring, clearances, tether path, GPS sky"
+                     + ("" if lever_top is None else
+                        " (except the logic switch collar and lever: C39 / C41)" if col_top is not None else
+                        " (except the logic switch lever: C39)"),
                      FAIL if fails else PASS,
                      f"max cap overlap {vols[worst]:.4f} mm^3 ({worst}); holes open; min rib/hub/ring fill "
                      f"{min(probes.values()):.3f}; min clearance margin "
@@ -2704,10 +2774,17 @@ class Checker:
                      f"free tether cable {tdist:.1f} mm (>= {treq:g}), boot base "
                      f"{L.cap_tether['boot base (cap top) -> nearest intake window']:.1f} mm (reported)" + stack_txt,
                      "; ".join(fails) if fails else
-                     f"GPS patch top z {gps_top:.2f} = vehicle top; boot shadow on the patch {L.cap_gps_boot_az_deg:.1f} deg "
-                     f"azimuth up to {L.cap_gps_boot_el_deg:.1f} deg elevation (tether variants only)",
+                     f"GPS patch top z {gps_top:.2f} = vehicle top"
+                     + (" but for the named exceptions" if col_top is not None else "")
+                     + f"; boot shadow on the patch {L.cap_gps_boot_az_deg:.1f} deg "
+                     f"azimuth up to {L.cap_gps_boot_el_deg:.1f} deg elevation (tether variants only)" + lever_txt,
                      {"overlap_mm3": vols, "hole_probe_mm3": holes, "fill": probes, "clearance_mm": dict(L.cap_clearance),
-                      "tether_mm": dict(L.cap_tether), "gps_patch_top_z": gps_top, "vehicle_top_z": zmax})
+                      "tether_mm": dict(L.cap_tether), "gps_patch_top_z": gps_top, "vehicle_top_z": zmax,
+                      "solid_tops_z": tops,
+                      **({} if lever_top is None else {"logic_switch_lever_top_z": lever_top,
+                                                       "vehicle_top_z_with_the_lever": max(zmax, lever_top)}),
+                      **({} if col_top is None else {"logic_switch_collar_top_z": col_top,
+                                                     "vehicle_top_z_with_the_collar": max(zmax, lever_top or zmax, col_top)})})
 
     def c31_av_windows(self) -> Check:
         """v0.9 CAD-2 VTOL: (a) each avionics window is open through the wall (a radial probe at its centre meets no
@@ -2995,6 +3072,652 @@ class Checker:
                         f"{lc['min_white_gap_mm']} mm) - single-layer specks / bridged wedge tips expected there" if lc else ""),
                      r)
 
+    # ---- 2026-11-05 logic power (configs.vtol.logic_power, VTOL battery build) ----
+    def _logic_na(self, cid: str, title: str) -> Check | None:
+        L = self.L
+        if getattr(L, "has_logic_power", False):
+            return None
+        if not getattr(L, "vtol", False):
+            why = "the logic-battery carrier is a VTOL part (configs.vtol.logic_power)"
+        elif L.p.get("logic_power"):
+            why = (f"power.source '{L.power_source}': not maintained with the logic-battery carrier (user decision 3, "
+                   "2026-11-05 '배터리 구성만 쓰기' - spot A collides with the tether kit boxes)")
+        else:
+            why = "no configs.vtol.logic_power in params"
+        return Check(cid, title, NA, f"not applicable: {why}", "", {"applicable": False})
+
+    def _logic_keepouts(self) -> dict[str, cq.Shape]:
+        return rg.logic_lead_keepouts(self.L)
+
+    def c37_logic_pack(self) -> Check:
+        """2026-11-05 user decision 1 (spot A): the 1S logic pack box on the solids - (a) no overlap with the 6S pack (it is
+        strapped against its -x face; the gap is reported), (b) BRep distance >= PLACEHOLDER_BORE_CLEAR_MM to the avionics
+        module (tube wall) and >= min_clear_to_tray to every other flight solid, (c) >= logic_power.clearance
+        .min_to_leads_plugs (PCB review MF2-10) to the servo-lead bundle riser (C25's proxy up to the tray bottom), the
+        GPS lead (its Layout route, Ø gps_lead_od_ASSUMED), every carrier plug box (J7, J8-J11, J14, J15, J18) and the
+        switch lead keep-out, no overlap with its own lead's keep-out, (d) the 6S pack's lower strap wraps it (Layout)."""
+        title = ("(2026-11-05) logic 1S pack at spot A: 6S pack, tube wall, bay solids, >= 2 mm to the servo bundle / GPS "
+                 "lead / carrier plugs / switch lead (MF2-10), strap retention")
+        na = self._logic_na("C37", title)
+        if na:
+            return na
+        L, sh = self.L, self.shape
+        mc = float(L.p["payload_module"]["com_mount"]["min_clear_to_tray"])
+        mlp = float(L.p["logic_power"]["clearance"]["min_to_leads_plugs"])
+        pack = self.logic["logic_pack"].shape
+        fails, d = [], {}
+        v6 = _v(pack, sh["battery"])
+        d["6S pack (gap, strapped)"] = _clearance(pack, sh["battery"])
+        if v6 > INTERSECT_TOL_MM3:
+            fails.append(f"overlaps the 6S pack {v6:.3f} mm^3")
+        lim = {}
+        for n, sol in sh.items():
+            if n in ("battery", "logic_pack"):
+                continue
+            k = f"{n}"
+            d[k] = _clearance(pack, sol)
+            lim[k] = PLACEHOLDER_BORE_CLEAR_MM if n == "avionics_module" else mc
+        for nm, sol in rg.lead_riser_proxies(L, L.z_tray_bottom).items():
+            d[nm], lim[nm] = _clearance(pack, sol), mlp
+        gl = L.gps_lead_polyline
+        gr = 0.5 * float(L.p["logic_power"]["clearance"]["gps_lead_od_ASSUMED"])
+        gps = rg._fuse([rg._cyl_between(2 * gr, a, b, gr, gr) for a, b in zip(gl[:-1], gl[1:])])
+        d["GPS lead (route, OD)"], lim["GPS lead (route, OD)"] = _clearance(pack, gps), mlp
+        for nm, sol in rg.carrier_plug_boxes(L).items():
+            d[f"{nm} plug"], lim[f"{nm} plug"] = _clearance(pack, sol), mlp
+        for nm, sol in self._logic_keepouts().items():
+            if nm.startswith("switch lead"):
+                d[nm], lim[nm] = _clearance(pack, sol), mlp
+            elif nm != "pack lead 0":       # segment 0 leaves the pack's top face (its lead exit)
+                v_ = _v(pack, sol)
+                if v_ > INTERSECT_TOL_MM3:
+                    fails.append(f"own lead keep-out {nm} overlaps the pack {v_:.3f} mm^3")
+        short = {k: round(d[k], 3) for k in lim if d[k] < lim[k] - 1e-6}
+        if short:
+            fails.append(f"short {short}")
+        if not L.lp_strap_wraps_pack:
+            fails.append("the 6S pack's lower strap does not wrap the pack")
+        crit = {k: d[k] for k in d if not k.startswith("rail")}
+        near = sorted(crit, key=crit.get)[:6]
+        return Check("C37", title, FAIL if fails else PASS,
+                     f"pack x {L.lp_pack_x[0]:.1f}..{L.lp_pack_x[1]:.1f} y {L.lp_pack_y[0]:.2f}..{L.lp_pack_y[1]:.2f} z "
+                     f"{L.lp_pack_z[0]:.1f}..{L.lp_pack_z[1]:.1f}; 6S gap {d['6S pack (gap, strapped)']:.2f} mm (strapped, "
+                     f"no overlap {v6:.4f} mm^3); tube wall {d['avionics_module']:.2f} (>= {PLACEHOLDER_BORE_CLEAR_MM:g}); "
+                     + ", ".join(f"{k} {d[k]:.2f}" for k in near if k not in ("6S pack (gap, strapped)", "avionics_module"))
+                     + f" mm (>= {mlp:g} leads / plugs, >= {mc:g} bay solids)",
+                     "; ".join(fails) if fails else
+                     f"strap: lower 6S strap z {L.lp_strap_z[0]:.1f}..{L.lp_strap_z[1]:.1f} inside the pack, slots y +-"
+                     f"{L.lp_strap_slot_y:.2f} > pack +-{L.lp_pack_y[1]:.2f}; tie z {L.lp_tie_z:.1f}; touchdown "
+                     f"{L.lp_retention_E['touchdown_load_N']:.1f} N (E) -> >= "
+                     f"{L.lp_retention_E['normal_force_needed_N (2 faces)']:.1f} N strap + tie normal force (mu "
+                     f"{L.lp_retention_E['friction_mu_ASSUMED']:g}, A); the lengthened strap wraps "
+                     f"{len(L.lp_strap_wraps_flight_pack_corners)} of the 6S pack's -x corners (the 1S pack lies between "
+                     "them); bands vs leads in plan (E, reported): "
+                     + ", ".join(f"{k} {'inside' if v['inside_loop'] else 'outside'} {v['band_gap_mm']:+.2f}"
+                                 for k, v in L.lp_band_leads.items())
+                     + " mm (inside: negative = the band holds the lead; outside: negative = the lead lies over the band); "
+                     "J18 -> 6S sense lead route not modelled (6S lead exit ASSUMED unknown)",
+                     {"clearance_mm": d, "limits_mm": lim, "overlap_6S_mm3": v6, "strap_z_mm": list(L.lp_strap_z),
+                      "tie_z_mm": L.lp_tie_z, "retention_E": dict(L.lp_retention_E),
+                      "band_leads_E": {k: dict(v) for k, v in L.lp_band_leads.items()},
+                      "strap_wraps_6S_corners": [list(c) for c in L.lp_strap_wraps_flight_pack_corners]})
+
+    def c38_logic_switch(self) -> Check:
+        """2026-11-05 user decision 2 (switch through the top cap): (a) the hole is open (thin probe), (b) the switch as
+        mounted does not overlap the cap (bushing in the hole, nuts on the plate faces), (c) its body / lugs keep >=
+        printer.min_feature from the cap (ribs, rim ring, plate) and the switch below the plate keeps >= min_clear_to_tray
+        from every other solid (bay parts, the logic pack) and from the cap joint screws at their limited length
+        (logic_power.switch.cap_joint_screw_max_len; review fix 2026-11-05 G1 - the any-length proxy is reported), the nuts
+        bear on the plate (flats - hole >= 2 x nut_min_bearing_w_ASSUMED) and fit on the bushing, (d) the plate strength rule (sizing/vtol_strength.py top_cap:
+        rib T-section flange min(16 plate_t, ...) on each rib, the plate annulus over the spigot wall) is not cut by the
+        hole, so the rib factor / annulus shear stay as computed, (e) the lead keep-outs (switch -> J15, pack -> J14) do
+        not overlap any flight solid (their last segment enters the plug box inside the carrier envelope and is not
+        checked against the carrier), (f) the Layout rules (cap_clearance for the hole, lp_clearance) hold."""
+        title = ("(2026-11-05) logic power switch through the top cap: hole open, switch vs cap / ribs / ring, everything "
+                 "below the plate incl. the cap joint screws (M3 length limit), nut bearing, plate strength rule, lead "
+                 "keep-outs to J15 / J14, cap removal")
+        na = self._logic_na("C38", title)
+        if na:
+            return na
+        L, sh = self.L, self.shape
+        mf, mc = L.p["printer"]["min_feature"], float(L.p["payload_module"]["com_mount"]["min_clear_to_tray"])
+        cap = sh["top_cap"]
+        sx, sy = L.lp_sw_xy
+        fails = []
+        hole = _v(cap, rg._cyl_z(0.25 * L.lp_sw_hole_d, L.z_cap_plate_bottom - 0.5, L.z_cap_top + 0.5, sx, sy))
+        if hole > INTERSECT_TOL_MM3:
+            fails.append(f"hole blocked {hole:.3f} mm^3")
+        sw = self.logic["logic_switch"].shape
+        v_cap = _v(sw, cap)
+        if v_cap > INTERSECT_TOL_MM3:
+            fails.append(f"switch overlaps the cap {v_cap:.3f} mm^3")
+        body = rg._fuse([rg._box(*L.lp_sw_body[0], *L.lp_sw_body[1], *L.lp_sw_body[2]),
+                         rg._box(*L.lp_sw_lugs[0], *L.lp_sw_lugs[1], *L.lp_sw_lugs[2])])
+        d_cap = _clearance(body, cap)
+        if d_cap < mf - 1e-6:
+            fails.append(f"body / lugs {d_cap:.2f} mm from the cap (< {mf:g})")
+        below = rg.logic_switch_below(L)
+        d = {}
+        for n, sol in list(sh.items()) + [("logic_pack", self.logic["logic_pack"].shape)]:
+            if n in ("top_cap", "logic_switch"):
+                continue
+            d[n] = _clearance(below, sol)
+        short = {k: round(v, 3) for k, v in d.items() if v < mc - 1e-6}
+        if short:
+            fails.append(f"below the plate short {short}")
+        # review fix (2026-11-05, G1): the cap joint screws at their limited length (switch.cap_joint_screw_max_len, head
+        # on the skirt at body_r) keep >= min_clear_to_tray from the switch below the plate; the any-length proxy
+        # (the project rule elsewhere) is reported with the longest screw that would still keep the clearance
+        dj = float(L.p["body"]["joint_hole_outer_d"])
+        scr_d, scr_any = {}, {}
+        for th in L.joint_thetas:
+            scr = rg._radial_cyl(dj, L.body_r - L.lp_cap_screw_max_len, L.body_r, th, L.lp_cap_screw_z)
+            scr_d[f"{th:g}"] = _clearance(below, scr)
+            scr_any[f"{th:g}"] = _v(below, rg._radial_cyl(dj, 0.0, L.body_r, th, L.lp_cap_screw_z))
+        scr_short = {k: round(v, 3) for k, v in scr_d.items() if v < mc - 1e-6}
+        if scr_short:
+            fails.append(f"cap joint screw M3 x {L.lp_cap_screw_max_len:g} short of the switch {scr_short}")
+        th_s = min(scr_d, key=scr_d.get)
+        # (d) strength rule
+        fl = min(16 * L.cap_plate_t, 2 * math.pi * L.cap_rib_r[1] / L.cap_rib_n)
+        edge_rib = min(_pt_seg_dist((sx, sy), (L.cap_rib_r[0] * math.cos(math.radians(t)), L.cap_rib_r[0] * math.sin(math.radians(t))),
+                                    (L.cap_rib_r[1] * math.cos(math.radians(t)), L.cap_rib_r[1] * math.sin(math.radians(t))))
+                       for t in L.cap_rib_thetas) - L.lp_sw_hole_d / 2
+        edge_ring = L.cap_ring_r[0] - (L.lp_sw_r + L.lp_sw_hole_d / 2)
+        if edge_rib < fl / 2 - 1e-9:
+            fails.append(f"hole cuts a rib's T flange (edge {edge_rib:.2f} < {fl / 2:.2f} mm from the rib centre line)")
+        if edge_ring < mf - 1e-9:
+            fails.append(f"hole reaches the plate annulus / rim ring (edge {edge_ring:.2f} mm < {mf:g})")
+        sc_path = os.path.join(br.ROOT, "docs", "vtol_strength_checks.json")
+        rib_f = None
+        try:
+            import json as _json
+            with open(os.path.normpath(sc_path), "r", encoding="utf-8") as f_:
+                tcs = _json.load(f_)["top_cap"]["cases"]
+            rib_f = {c_: tcs[c_]["rib_factor"] for c_ in tcs}
+        except (OSError, KeyError, ValueError):
+            pass
+        # (e) lead keep-outs
+        ko = self._logic_keepouts()
+        lead_d = {}
+        for nm, sol in ko.items():
+            last = (nm.startswith("switch lead") and nm.endswith(str(len(L.lp_switch_lead_polyline) - 2))) or \
+                   (nm.startswith("pack lead") and nm.endswith(str(len(L.lp_pack_lead_polyline) - 2)))
+            for n, s_ in list(sh.items()) + [("logic_pack", self.logic["logic_pack"].shape),
+                                              ("logic_switch", self.logic["logic_switch"].shape)]:
+                if last and n == L.fcu_part:
+                    continue
+                if nm.startswith("pack lead") and n == "logic_pack":
+                    continue          # its own lead (C37 checks it has no overlap)
+                if nm.startswith("switch lead") and n == "logic_switch":
+                    continue          # its own switch (the lead leaves the lugs)
+                v_ = _v(sol, s_)
+                if v_ > INTERSECT_TOL_MM3:
+                    fails.append(f"{nm} overlaps {n} ({v_:.3f} mm^3)")
+                lead_d[f"{nm} -> {n}"] = _clearance(sol, s_)
+        lay_short = {k: v for k, v in L.cap_clearance.items() if "logic" in k and L.cap_limits.get(k) is not None
+                     and v < L.cap_limits[k] - 1e-9}
+        lay_short.update({k: v for k, v in L.lp_clearance.items() if v < L.lp_limits[k] - 1e-9})
+        if lay_short:
+            fails.append(f"Layout rules short {lay_short}")
+        near = sorted(d, key=d.get)[:3]
+        lnear = sorted(lead_d, key=lead_d.get)[:3]
+        return Check("C38", title, FAIL if fails else PASS,
+                     f"hole Ø{L.lp_sw_hole_d:g} at r {L.lp_sw_r:.1f} / {L.lp_sw_theta:g} deg open ({hole:.4f} mm^3); switch x cap "
+                     f"{v_cap:.4f} mm^3; body / lugs -> cap {d_cap:.2f} mm (>= {mf:g}); below the plate: "
+                     + ", ".join(f"{k} {d[k]:.2f}" for k in near) + f" mm (>= {mc:g}); cap joint screw M3 x "
+                     f"{L.lp_cap_screw_max_len:g} (max) at {th_s} deg {scr_d[th_s]:.2f} mm (any length: "
+                     f"{scr_any[th_s]:.1f} mm^3 overlap, longest that keeps {mc:g} mm: {L.lp_cap_screw_critical[1]:.1f} mm); "
+                     f"nut bearing {L.lp_sw_nut_bearing_w:.2f} mm (A); strength rule: hole edge "
+                     f"{edge_rib:.2f} mm from the nearest rib centre line (T flange half width {fl / 2:.2f}) and "
+                     f"{edge_ring:.2f} mm inside the rim ring -> rib Z and annulus untouched"
+                     + (f" (rib factor working {rib_f.get('working', float('nan')):.2f}, proof "
+                        f"{rib_f.get('proof', float('nan')):.2f} unchanged)" if rib_f else ""),
+                     "; ".join(fails) if fails else
+                     "lead keep-outs (Ø %.1f, A): nearest %s mm; switch lead %.0f mm (route %.0f + slack %.0f, E) - slack "
+                     "%.0f mm > skirt engagement %.0f mm (the cap lifts before J15 unplugs); J15 is %.1f mm from the %g deg "
+                     "window's bottom tip (tweezers with the cap off)" % (
+                         L.lp_wire_od, ", ".join(f"{k} {lead_d[k]:.2f}" for k in lnear), L.lp_switch_lead_len_mm,
+                         L.lp_switch_lead_route_mm, L.lp_switch_lead_len_mm - L.lp_switch_lead_route_mm,
+                         L.lp_switch_lead_len_mm - L.lp_switch_lead_route_mm, L.lp_cap_skirt_engagement_mm,
+                         L.lp_j15_window[0], L.lp_j15_window[1]),
+                     {"hole_probe_mm3": hole, "switch_x_cap_mm3": v_cap, "body_to_cap_mm": d_cap, "below_plate_mm": d,
+                      "rib_flange_half_w_mm": fl / 2, "hole_edge_to_rib_cl_mm": edge_rib, "hole_edge_to_ring_mm": edge_ring,
+                      "rib_factor_unchanged": rib_f, "lead_keepout_mm": lead_d,
+                      "cap_joint_screw_max_len_mm": L.lp_cap_screw_max_len, "cap_joint_screw_gap_mm": scr_d,
+                      "cap_joint_screw_any_len_overlap_mm3": scr_any,
+                      "cap_joint_screw_longest_keeping_clearance_mm": L.lp_cap_screw_critical[1],
+                      "nut_bearing_w_mm": L.lp_sw_nut_bearing_w, "bushing_thread_spare_mm": L.lp_sw_thread_spare,
+                      "cap_clearance_logic_mm": {k: v for k, v in L.cap_clearance.items() if "logic" in k},
+                      "layout_clearance_mm": dict(L.lp_clearance)})
+
+    def c39_logic_reach(self) -> Check:
+        """2026-11-05 user decision 2: the lever is reachable from outside with the vehicle closed - (a) a finger circle
+        (Ø finger_clear_d_ASSUMED) round the lever from the cap top to 10 mm over the lever top meets no other solid
+        (GPS patch / board / ground plane, the eye bolt when fitted, the arming switch's area) and stays inside the cap
+        edge, (b) the lever / nut stay inside the body radius (side-down handling never loads it), (c) the lever top is
+        below the eye-bolt top when the eye bolt is fitted (catch-line tests: the line and the hand take the eye, never
+        the lever), (d) review fix 2026-11-05 (G2 / F1): the lever top against the highest OTHER flight solid of this
+        build, measured on the solids (no eye bolt in the battery build's parts: the GPS patch) - WARN when the lever is
+        the vehicle top (an inverted set-down or a tip-over onto the top corner loads it first; a user decision).
+        Switch-collar round (user decision 2026-11-05, logic_power.collar): with the collar, (d) is judged instead against
+        the collar on the solids (``_collar_vs_lever``): the lever's swept envelope (rocket_geometry.logic_lever_positions,
+        every sampled throw angle) under the rim by >= rim_margin_min, inside the rim tops' convex hull in plan by >=
+        plan_margin_min (then no plane resting on the rim - an inverted set-down, a tip-over onto the top corner - reaches
+        it) and >= lever_clear_min from the cap: PASS only if all three hold, FAIL otherwise; the WARN is gone.
+        Reported, not judged: the height of the lever top over the rim-to-eye line, its distance to the catch-line cone
+        and its shadow on the GPS patch."""
+        title = ("(2026-11-05) logic power switch reachable from outside (vehicle closed): finger circle free, inside the "
+                 "body edge, below the eye bolt when fitted, lever vs the vehicle top (WARN if it is the top; with the "
+                 "switch collar: the lever envelope under its rim / inside its rim hull / clear of it, else FAIL); "
+                 "tip-over / catch line / GPS sky reported")
+        na = self._logic_na("C39", title)
+        if na:
+            return na
+        L, sh = self.L, self.shape
+        sx, sy = L.lp_sw_xy
+        fr = L.lp_finger_r
+        z0 = L.z_cap_top + 0.01
+        finger = rg._cyl_z(fr, z0, L.lp_sw_top_z + 10.0, sx, sy)
+        hits = {}
+        for n, s_ in sh.items():
+            if n == "logic_switch":
+                continue
+            v_ = _v(finger, s_)
+            if v_ > 1e-6:
+                hits[n] = v_
+        # the arming switch has no solid: its nut / lever area (Ø as this switch's nut) at its hole
+        ax, ay, _ = L.cap_holes["arming switch"]
+        if math.hypot(ax - sx, ay - sy) < fr + L.lp_sw_nut_d / 2:
+            hits["arming switch area"] = 1.0
+        if getattr(L, "cap_hardpoint", False):     # the eye bolt when fitted (catch-line tests)
+            ey = rg.tether_eyebolt(L)
+            v_ = _v(finger, ey)
+            if v_ > 1e-6:
+                hits["tether eye bolt (when fitted)"] = v_
+        fails = []
+        if hits:
+            fails.append(f"finger circle blocked {hits}")
+        r_out = L.lp_sw_r + max(fr, L.lp_sw_nut_d / 2)
+        if L.lp_sw_r + L.lp_sw_nut_d / 2 > L.body_r - 1e-9:
+            fails.append("the switch nut / lever stands outside the body edge")
+        ex = L.lp_exposure
+        if ex["lever top below the eye-bolt top"] <= 0.0:
+            fails.append("the lever top is not below the eye-bolt top (when fitted)")
+        # (d) the highest other flight solid of this build (geometry; the logic solids and the eye bolt - fitted only for
+        # catch-line tests unless it is a part of this build - excluded)
+        tops = {n: s_.BoundingBox().zmax for n, s_ in sh.items() if not n.startswith("logic_")}
+        top_n = max(tops, key=tops.get)
+        lever_over = L.lp_sw_top_z - tops[top_n]
+        eye_in_build = any(n.startswith("tether_eyebolt") for n in sh)
+        warns = []
+        col = self._collar_vs_lever() if getattr(L, "has_lp_collar", False) else None
+        if col is not None:
+            # switch-collar round (user decision 2026-11-05): the lever envelope (every sampled throw angle, M) against the
+            # collar of the printed cap (M): rim over the envelope top >= rim_margin_min, the envelope in plan inside the
+            # rim tops' convex hull by >= plan_margin_min (then no plane resting on the rim reaches the lever), the
+            # envelope >= lever_clear_min from the cap - PASS only if all three hold, else FAIL (the collar is the design)
+            fails += col["fails"]
+        elif lever_over > 0.0:
+            warns.append(f"the lever top z {L.lp_sw_top_z:.2f} is the vehicle top in this build: {lever_over:+.2f} mm over "
+                         f"the highest other flight solid ({top_n}, z {tops[top_n]:.2f}; eye bolt "
+                         f"{'in the build' if eye_in_build else 'not in this build - fitted only for catch-line tests'}) - "
+                         "an inverted set-down or a tip-over onto the top corner loads it first: user decision (accept / "
+                         "guard collar / never set it down inverted)")
+        # catch-line cone: from the eye top upward within cone_half_angle_deg of the axis - the nearest point of the cone
+        # to the lever top (below the apex: the apex itself)
+        te = L.p["top_cap"]["tether"]
+        apex = (0.0, 0.0, L.z_cap_top + float(te["eye_h_ASSUMED"]))
+        d_cone = math.dist((sx, sy, L.lp_sw_top_z), apex)
+        sh_ = L.lp_gps_lever_shadow_deg
+        return Check("C39", title, FAIL if fails else (WARN if warns else PASS),
+                     f"lever top {ex['lever top above the cap top']:.1f} mm over the cap top (A), {ex['lever top below the eye-bolt top']:.1f} "
+                     f"mm below the eye-bolt top (when fitted), {lever_over:+.2f} mm vs the highest other flight solid "
+                     f"({top_n}); finger circle Ø{2 * fr:g} free (hits {len(hits)}), {L.body_r - L.lp_sw_r - fr:.1f} mm "
+                     f"inside the cap edge; lever axis {L.body_r - L.lp_sw_r:.1f} mm inside the body edge"
+                     + ("" if col is None else
+                        f"; switch collar (M, solids): rim z {col['rim_z']:.2f} over the lever envelope top z "
+                        f"{col['env_top_z']:.2f} by {col['rim_margin']:.2f} mm (>= {col['rim_margin_min']:g}), envelope inside "
+                        f"the rim hull by {col['hull_margin']:.2f} mm (>= {col['plan_margin_min']:g}; {col['n_positions']} "
+                        f"throw angles +-{L.lp_lever_throw_deg:g} deg A), envelope -> cap {col['lever_clear']:.2f} mm "
+                        f"(>= {col['lever_clear_min']:g})"),
+                     "; ".join(fails) if fails else
+                     "".join(w_ + "; " for w_ in warns) +
+                     ("" if col is None else
+                      "the collar rim is the vehicle top and stands over the lever in every position: an inverted set-down "
+                      "or a tip-over onto the top corner rests on the rim, never on the lever; ") +
+                     f"reported: rim -> eye-top line {ex['rim -> eye-top line height at the switch r (tip-over onto the top corner)']:.1f} "
+                     f"mm high at r {L.lp_sw_r:.1f} -> the lever top stands {ex['lever top over that line (information)']:.1f} mm "
+                     + ("over it (inside the collar's rim hull: a plane on the rim stays over it); " if col is not None else
+                        "over it (a tip-over onto the top corner can hit it, like the GPS patch; landing is on the fin legs); ") +
+                     f"catch line: the cone apex (eye top) is {d_cone:.1f} mm from the lever top and the line leaves upward; "
+                     f"GPS patch sky: lever shadow {sh_['azimuth_width']:.1f} deg wide up to {sh_['elevation_top']:.1f} deg "
+                     f"elevation (the eye bolt, when fitted, stands higher)",
+                     {"finger_hits": hits, "exposure_mm": dict(ex), "catch_line_apex_mm": d_cone,
+                      "gps_shadow_deg": dict(sh_), "r_out_mm": r_out, "lever_top_z": L.lp_sw_top_z,
+                      "highest_other_flight_solid": [top_n, tops[top_n]], "lever_over_it_mm": lever_over,
+                      "eye_bolt_in_build": eye_in_build, **({} if col is None else {"collar": col})})
+
+    def _collar_vs_lever(self) -> dict:
+        """Switch-collar round (2026-11-05): the lever envelope against the printed cap's collar, on the solids (M) -
+        the rim top (the cap's material inside the collar cylinder), the rim tops' plan hull (edge samples of the cap's
+        top 0.1 mm slab inside the collar cylinder), the lever positions (rocket_geometry.logic_lever_positions: their
+        exact bboxes and BRep distance to the cap).  Returns the numbers and the failed rules."""
+        L = self.L
+        from layout import _convex_hull_2d, _signed_dist_convex_2d
+        co = L.p["logic_power"]["collar"]
+        cap = self.shape["top_cap"]
+        sx, sy = L.lp_sw_xy
+        region = rg._cyl_z(L.lp_col_ro + 0.01, L.z_cap_top - 0.01, L.lp_col_z[1] + 1.0, sx, sy)
+        rim_z = br.mp.bbox(cap.intersect(region))[1][2]
+        slab = cap.intersect(rg._cyl_z(L.lp_col_ro + 0.01, rim_z - 0.1, rim_z + 0.1, sx, sy))
+        pts = []
+        for e in slab.Edges():
+            for k in range(33):
+                q = e.positionAt(k / 32.0)
+                if q.z > rim_z - 0.05:
+                    pts.append((q.x, q.y))
+        hull = _convex_hull_2d(pts)
+        pos = rg.logic_lever_positions(L)
+        boxes = {a: br.mp.bbox(s_) for a, s_ in pos.items()}
+        env_top = max(b_[1][2] for b_ in boxes.values())
+        corners = [(x, y) for b_ in boxes.values() for x in (b_[0][0], b_[1][0]) for y in (b_[0][1], b_[1][1])]
+        hull_margin = min(-_signed_dist_convex_2d(hull, c) for c in corners) if len(hull) >= 3 else -math.inf
+        lever_clear = min(_clearance(s_, cap) for s_ in pos.values())
+        lever_x_cap = max(_v(s_, cap) for s_ in pos.values())
+        out = {"rim_z": rim_z, "env_top_z": env_top, "rim_margin": rim_z - env_top,
+               "rim_margin_min": float(co["rim_margin_min"]), "hull_points": len(hull), "hull_margin": hull_margin,
+               "plan_margin_min": float(co["plan_margin_min"]), "lever_clear": lever_clear,
+               "lever_clear_min": float(co["lever_clear_min"]), "lever_x_cap_mm3": lever_x_cap,
+               "n_positions": len(pos), "positions_deg": sorted(pos),
+               "envelope_plan_y_mm": [min(b_[0][1] for b_ in boxes.values()) - sy,
+                                      max(b_[1][1] for b_ in boxes.values()) - sy]}
+        fails = []
+        if out["rim_margin"] < out["rim_margin_min"] - 1e-9:
+            fails.append(f"collar rim only {out['rim_margin']:.2f} mm over the lever envelope (< {out['rim_margin_min']:g})")
+        if hull_margin < out["plan_margin_min"] - 1e-9:
+            fails.append(f"lever envelope {hull_margin:.2f} mm inside the collar's rim hull (< {out['plan_margin_min']:g})")
+        if lever_clear < out["lever_clear_min"] - 1e-9 or lever_x_cap > 1e-6:
+            fails.append(f"lever envelope {lever_clear:.2f} mm from the cap (< {out['lever_clear_min']:g})")
+        out["fails"] = fails
+        return out
+
+    def c40_logic_mass(self) -> Check:
+        """2026-11-05 user decision 4 (mass decision deferred): the named switch logic_power.in_flight_mass_model is
+        honoured - false: no logic-power part in the report's parts, the top cap's mass entry measured on the cap without
+        the switch hole (its slicer entry, not a fallback), the pending full-mass numbers (extra.logic_power) = the flight
+        totals + the pending parts; true: the parts are in the report and the cap entry is the printed (holed) cap.
+        Reports both masses / CGs / lateral offsets and C33's trim at each."""
+        title = ("(2026-11-05) logic power mass switch honoured (in_flight_mass_model) + pending full-mass numbers "
+                 "(mass, CG, lateral offset, C33 trim)")
+        na = self._logic_na("C40", title)
+        if na:
+            return na
+        L, rep = self.L, self.report
+        lp = rep["extra"].get("logic_power")
+        fails = []
+        if not lp:
+            return Check("C40", title, FAIL, "report has no extra.logic_power", "", {})
+        names = set(rg.logic_power_parts(L))
+        in_parts = sorted(names & set(rep["parts"]))
+        cap_v = rep["parts"]["top_cap"]["volume_mm3"]
+        v_noh = lp["top_cap"]["flight_model_volume_mm3 (without them)"]
+        v_real = lp["top_cap"]["printed_volume_mm3 (with the switch hole and the collar)"]
+        model = (rep["extra"]["mass_model"]["parts"].get("top_cap") or {}).get("model")
+        if not L.logic_in_flight:
+            if in_parts:
+                fails.append(f"pending parts in the report's parts {in_parts}")
+            if abs(cap_v / v_noh - 1.0) > 1e-9:
+                fails.append(f"top cap mass entry {cap_v:.2f} mm^3 is not the cap without the hole / collar ({v_noh:.2f})")
+            if rep["extra"]["mass_model"]["mode"] == "slicer_part_g" and model != "slicer_part_g":
+                fails.append(f"top cap flight mass from '{model}', not the slicer entry")
+        else:
+            if sorted(names - set(rep["parts"])):
+                fails.append(f"in_flight_mass_model true but {sorted(names - set(rep['parts']))} missing")
+            if abs(cap_v / v_real - 1.0) > 1e-9:
+                fails.append("in_flight_mass_model true but the top cap entry is not the printed (holed, collared) cap")
+        f_, w_ = lp["flight_model"], lp["with_logic_power"]
+        if abs(f_["mass_g"] - rep["totals"]["mass_g"]) > 1e-9:
+            fails.append("flight_model is not the report totals")
+        exp = (rep["totals"]["mass_g"] - (0.0 if L.logic_in_flight else lp["top_cap"]["flight_model_mass_g"])
+               + (0.0 if L.logic_in_flight else lp["top_cap"]["printed_mass_g"] + sum(lp["pending_parts_g"].values())))
+        if not L.logic_in_flight and abs(exp - w_["mass_g"]) > 1e-6:
+            fails.append(f"with_logic_power mass {w_['mass_g']:.4f} != flight + pending {exp:.4f}")
+        rep2 = dict(rep)
+        rep2["totals"] = {**rep["totals"], "mass_g": w_["mass_g"], "com_mm": w_["com_mm"]}
+        c33_full = Checker(L, self.parts, rep2).c33_lateral_cg()
+        c33_now = self.c33_lateral_cg()
+        tf, tn = c33_full.values.get("trim_fraction_status"), c33_now.values.get("trim_fraction_status")
+        d = lp["delta_full_minus_without"]
+        return Check("C40", title, FAIL if fails else PASS,
+                     f"in_flight_mass_model {str(L.logic_in_flight).lower()}: flight model {f_['mass_g']:.2f} g, CG "
+                     f"({f_['com_mm'][0]:+.2f}, {f_['com_mm'][1]:+.2f}, {f_['com_mm'][2]:.1f}) r {f_['lateral_offset_mm']:.2f} mm "
+                     f"(C33 {100 * tn:.1f} % {c33_now.status}); with the logic power {w_['mass_g']:.2f} g "
+                     f"({d['mass_g']:+.2f}), CG ({w_['com_mm'][0]:+.2f}, {w_['com_mm'][1]:+.2f}, {w_['com_mm'][2]:.1f}) r "
+                     f"{w_['lateral_offset_mm']:.2f} mm (C33 {100 * tf:.1f} % -> {c33_full.status} "
+                     f"{'adopted' if L.logic_in_flight else 'if adopted'})",
+                     "; ".join(fails) if fails else
+                     (f"report parts carry none of {sorted(names)}; top cap mass entry = the cap without the hole"
+                      f"{' and the collar' if lp['top_cap'].get('has_collar') else ''} "
+                      if not L.logic_in_flight else
+                      f"report parts carry {sorted(names)} (adopted); top cap mass entry = the printed cap with the hole"
+                      f"{' and the collar' if lp['top_cap'].get('has_collar') else ''} ")
+                     + f"({cap_v:.2f} mm^3, {model}; the printed cap {v_real:.2f} mm^3, "
+                     f"{lp['top_cap']['mass_delta_g (printed - flight model)']:+.3f} g); over the {lp['mass_target_g']:.0f} g "
+                     f"target: without the logic power {lp['over_target_g']['without']:+.1f} g, with it "
+                     f"{lp['over_target_g']['with']:+.1f} g (the flight model is the "
+                     f"{'with' if L.logic_in_flight else 'without'} case); "
+                     f"inertia {', '.join(f'{100 * x:+.2f} %' for x in d['inertia_diag_rel'])} (Ixx, Iyy, Izz). Pending "
+                     f"report: cad/exports/logic_power_pending_mass_vtol.md",
+                     {"in_flight_mass_model": bool(L.logic_in_flight), "parts_in_report": in_parts,
+                      "top_cap_entry_mm3": cap_v, "flight_model": {k: f_[k] for k in ("mass_g", "com_mm", "lateral_offset_mm")},
+                      "with_logic_power": {k: w_[k] for k in ("mass_g", "com_mm", "lateral_offset_mm")},
+                      "c33_trim_now": tn, "c33_status_now": c33_now.status, "c33_trim_full": tf,
+                      "c33_status_full": c33_full.status})
+
+
+    def c41_logic_collar(self) -> Check:
+        """Switch-collar round (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘';
+        params configs.vtol.logic_power.collar): the collar's own rules on the solids (M) and by hand (E) - (a) FDM wall:
+        a whole number of printer.nozzle_d lines, >= min_feature, all perimeters with the cap's class (Layout), the wall
+        measured by radial strip probes on both arcs and on the base ring under both notches = wall_t; the bore and both
+        notches open, the base ring under the notches material; (b) finger access: at each end position the fingertip
+        probe (sphere Ø finger_tip_d + the finger behind it, rocket_geometry.logic_finger_probes) touches the lever at
+        that end position (BRep distance <= FINGER_REACH_MM, no overlap) and meets no other solid (the cap with its collar,
+        the GPS parts, everything; tolerance GPS_CLEAR_TOL_MM3); review fix (2026-11-05, F1): the PUSH - the probe kept on
+        the lever's outboard tip corner from the end position to finger_path_past_centre_deg past centre, every
+        finger_path_step_deg, both sides (rocket_geometry.logic_finger_probes(L, angle)) - keeps >= finger_path_margin_min
+        (BRep distance, FINGER_PATH_TOL_MM numerical) from the cap with its collar at every step; the existing Ø finger
+        circle stays C39's; (c) GPS sky:
+        the share of the sky above the receiver's elevation mask the collar shades, seen from the patch centre (E,
+        Layout.lp_col_gps, rim height from the solid) <= gps_sky.max_blocked_sky_above_mask_pct, the top elevation
+        reported; (d) side load (E): the vehicle WITH the logic power (report extra.logic_power, M) x dyn x mu on one arc's
+        rim, cantilever from the U notch's governing height (Layout lp_col_section: largest arm / arc Z_min, x
+        side_load.kt_notch_ASSUMED, review F2) and from the plate (full ring Z) - interlayer allowed / stress >=
+        side_load.factor_min; review fix (2026-11-05, F3): the plate root (Layout lp_col_plate_root, rigid-boss annular
+        plate clamped at the farthest support) under (1) the side-load moment and (2) an inverted set-down (lever-rule
+        share x vehicle x dyn, plus mu x that on the rim) - printer.bending_mpa / stress >= side_load.plate_root.factor_min
+        (the factor against printer.tensile_mpa reported); (e) keep-outs: the collar >= min_feature from the GPS solids (BRep), >= 1.0 from
+        the eye bolt when fitted, every Layout collar clearance held; the collar adds the Layout volume to the cap (M)."""
+        title = ("(2026-11-05 switch collar) protective collar printed with the top cap: FDM wall, bore / notches open, "
+                 "finger reaches and flips the lever both ways, GPS sky shading, rim side load (E), keep-outs")
+        na = self._logic_na("C41", title)
+        if na:
+            return na
+        L, sh = self.L, self.shape
+        if not getattr(L, "has_lp_collar", False):
+            return Check("C41", title, NA, "not applicable: no configs.vtol.logic_power.collar in params", "",
+                         {"applicable": False})
+        co = L.p["logic_power"]["collar"]
+        mf = float(L.p["printer"]["min_feature"])
+        cap = sh["top_cap"]
+        sx, sy = L.lp_sw_xy
+        ri, ro, t = L.lp_col_ri, L.lp_col_ro, L.lp_col_t
+        z0, z1, zn = L.lp_col_z[0], L.lp_col_z[1], L.lp_col_notch_z0
+        hw = 0.5 * L.lp_col_notch_w
+        fails = []
+        # (a) wall on the solid: radial strips 0.2 mm wide, 1 mm tall, from ri - 0.5 to ro + 0.5
+        def strip(ux: float, uy: float, zc: float) -> float:
+            c = rg._box(ri - 0.5, ro + 0.5, -0.1, 0.1, zc - 0.5, zc + 0.5)
+            ang = math.degrees(math.atan2(uy, ux))
+            c = c.rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), ang).translate(cq.Vector(sx, sy, 0))
+            return _vpos(cap, c) / (0.2 * 1.0)
+        zm_arc, zm_base = 0.5 * (zn + z1), 0.5 * (z0 + zn)
+        walls = {"arc +x": strip(1, 0, zm_arc), "arc -x": strip(-1, 0, zm_arc),
+                 "base under the +y notch": strip(0, 1, zm_base), "base under the -y notch": strip(0, -1, zm_base)}
+        bad_w = {k: round(v, 3) for k, v in walls.items() if abs(v - t) > 0.02}
+        if bad_w:
+            fails.append(f"wall thickness on the solid != {t:g} mm {bad_w}")
+        bore = _v(cap, rg._cyl_z(ri - 0.05, z0 + 0.05, z1 + 0.5, sx, sy))
+        # review fix (2026-11-05, F1 / F2): the notches are U slots - the probe is the slot shrunk by 0.05 mm
+        notch = {nm: _v(cap, rg.logic_collar_slot(L, *sorted((sy + s_ * (ri - 0.5), sy + s_ * (ro + 0.5))), shrink=0.05))
+                 for nm, s_ in (("+y", 1.0), ("-y", -1.0))}
+        if bore > GPS_CLEAR_TOL_MM3:
+            fails.append(f"bore not open ({bore:.3f} mm^3)")
+        blocked = {k: v for k, v in notch.items() if v > GPS_CLEAR_TOL_MM3}
+        if blocked:
+            fails.append(f"finger notch not open {blocked}")
+        lay = {k: v for k, v in L.lp_clearance.items() if k.startswith("collar wall")}
+        short_w = {k: v for k, v in lay.items() if v < L.lp_limits[k] - 1e-9}
+        if short_w:
+            fails.append(f"FDM wall rule short {short_w}")
+        # (b) finger access at both end positions
+        probes = rg.logic_finger_probes(L)
+        pos = rg.logic_lever_positions(L)
+        th = L.lp_lever_throw_deg
+        reach, f_hits = {}, {}
+        for nm, pr_ in probes.items():
+            lever = pos[round(th if nm == "+y" else -th, 6)]
+            reach[nm] = (_clearance(pr_, lever), _v(pr_, lever))
+            for n, s_ in list(sh.items()) + [(k_, q.shape) for k_, q in self.logic.items()
+                                             if q.shape is not None and k_ not in sh]:
+                v_ = _v(pr_, s_)
+                if v_ > GPS_CLEAR_TOL_MM3:
+                    f_hits[f"{nm} probe x {n}"] = round(v_, 3)
+            if getattr(L, "cap_hardpoint", False):
+                v_ = _v(pr_, rg.tether_eyebolt(L))
+                if v_ > GPS_CLEAR_TOL_MM3:
+                    f_hits[f"{nm} probe x tether eye bolt (when fitted)"] = round(v_, 3)
+        far = {k: round(v[0], 3) for k, v in reach.items() if v[0] > FINGER_REACH_MM or v[1] > GPS_CLEAR_TOL_MM3}
+        if far:
+            fails.append(f"fingertip does not reach the lever end (distance, overlap) {far}")
+        # the probes overlap the logic switch solid only where it is the VERTICAL lever model (never: checked)
+        if f_hits:
+            fails.append(f"finger probe blocked {f_hits}")
+        # review fix (2026-11-05, F1): the push from each end position to past centre, on the solids
+        fpl = L.lp_col_finger_path
+        m_fp = float(co["finger_path_margin_min"])
+        path_d = {}
+        for a_deg in fpl["angles_deg"]:
+            for nm, pr_ in rg.logic_finger_probes(L, a_deg).items():
+                path_d[(nm, a_deg)] = (_clearance(pr_, cap), _v(pr_, cap))
+        worst_fp = min(path_d, key=lambda k_: path_d[k_][0])
+        short_fp = {f"{k_[0]} {k_[1]:g} deg": round(v_[0], 4) for k_, v_ in path_d.items()
+                    if v_[0] < m_fp - FINGER_PATH_TOL_MM or v_[1] > GPS_CLEAR_TOL_MM3}
+        if short_fp:
+            fails.append(f"finger path short of {m_fp:g} mm from the collar {short_fp}")
+        # (c) GPS sky (E) with the rim from the solid
+        region = rg._cyl_z(ro + 0.01, z0 - 0.01, z1 + 1.0, sx, sy)
+        col_solid = cap.intersect(region)
+        rim_m = br.mp.bbox(col_solid)[1][2]
+        g = dict(L.lp_col_gps)
+        if abs(rim_m - z1) > 1e-6:
+            fails.append(f"collar rim on the solid z {rim_m:.3f} != Layout {z1:.3f}")
+        if g["blocked_sky_above_mask_pct"] > g["limit_pct"] + 1e-12:
+            fails.append(f"GPS sky shading {g['blocked_sky_above_mask_pct']:.2f} % > {g['limit_pct']:g} %")
+        # (d) side load (E)
+        sl = co["side_load"]
+        lpx = self.report.get("extra", {}).get("logic_power") or {}
+        m_g = float((lpx.get("with_logic_power") or {}).get("mass_g") or self.report["totals"]["mass_g"])
+        F = m_g * 1e-3 * G0 * float(sl["dyn_ASSUMED"]) * float(sl["mu_ASSUMED"])
+        sec = L.lp_col_section
+        kt = float(sl["kt_notch_ASSUMED"])
+        s_arc_nom = F * sec["arc_k_per_mm2"]
+        s_arc = kt * s_arc_nom
+        s_ring = F * sec["ring_arm_mm"] / sec["ring_z_mm3"]
+        allow = float(sl["interlayer_fraction_of_tensile_ASSUMED"]) * float(L.p["printer"]["tensile_mpa"])
+        factor = allow / max(s_arc, s_ring)
+        if factor < float(sl["factor_min"]) - 1e-9:
+            fails.append(f"rim side-load factor {factor:.2f} < {float(sl['factor_min']):g}")
+        # review fix (2026-11-05, F3): the plate root (E)
+        prt, plr = L.lp_col_plate_root, sl["plate_root"]
+        g_dyn = m_g * 1e-3 * G0 * float(sl["dyn_ASSUMED"])
+        n_inv = g_dyn * prt["lever_rule_share"]
+        cases = {"side load (moment F x h)": prt["sigma_per_Nmm_moment"] * F * (z1 - z0),
+                 "inverted set-down (share x W x dyn + mu x it on the rim)":
+                     prt["sigma_per_N_axial"] * n_inv
+                     + prt["sigma_per_Nmm_moment"] * float(sl["mu_ASSUMED"]) * n_inv * (z1 - z0)}
+        s_pl = max(cases.values())
+        bend, tens = float(L.p["printer"]["bending_mpa"]), float(L.p["printer"]["tensile_mpa"])
+        f_pl = bend / s_pl
+        if f_pl < float(plr["factor_min"]) - 1e-9:
+            fails.append(f"plate-root factor {f_pl:.2f} < {float(plr['factor_min']):g}")
+        # (e) keep-outs on the solids + the Layout collar rules + the added volume
+        kd = {}
+        for n in ("gps", "gps_ground_plane"):
+            if n in sh:
+                kd[n] = _clearance(col_solid, sh[n])
+        if getattr(L, "cap_hardpoint", False):
+            kd["tether eye bolt (when fitted)"] = _clearance(col_solid, rg.tether_eyebolt(L))
+        short_k = {k: round(v, 3) for k, v in kd.items() if v < (1.0 if "eye" in k else mf) - 1e-6}
+        if short_k:
+            fails.append(f"collar keep-outs short {short_k}")
+        lay_c = {k: v for k, v in L.lp_clearance.items() if k.startswith("collar") or "finger tip" in k or
+                 "finger path" in k or "lever sweep" in k or "nut driver" in k}
+        short_l = {k: round(v, 3) for k, v in lay_c.items() if v < L.lp_limits[k] - 1e-9}
+        if short_l:
+            fails.append(f"Layout collar rules short {short_l}")
+        # review fix (2026-11-05): adaptive integration (massprops.precise_volume) - the U notches' curved intersections
+        # are under-reported by the default GProp call (~0.05 mm^3)
+        v_hole_only = br.mp.precise_volume(rg.top_cap(L, with_logic_collar=False))
+        v_add = br.mp.precise_volume(cap) - v_hole_only
+        if abs(v_add / L.lp_col_volume_mm3 - 1.0) > 1e-4:
+            fails.append(f"collar adds {v_add:.2f} mm^3 to the cap, Layout {L.lp_col_volume_mm3:.2f}")
+        near_l = sorted(lay_c, key=lambda k: lay_c[k] - L.lp_limits[k])[:3]
+        return Check("C41", title, FAIL if fails else PASS,
+                     f"collar Ø{2 * ri:g} / Ø{2 * ro:g}, wall {t:g} = {t / float(L.p['printer']['nozzle_d']):.0f} x "
+                     f"{float(L.p['printer']['nozzle_d']):g} mm lines (>= {mf:g}; class {L.lp_col_wall['class']} "
+                     f"{L.lp_col_wall['wall_loops_per_side']} loops/side cover {L.lp_col_wall['perimeter_width_mm']:.1f}), "
+                     f"measured {min(walls.values()):.3f}-{max(walls.values()):.3f} mm; rim z {rim_m:.2f} "
+                     f"({z1 - z0:.1f} over the plate), notches {2 * hw:g} wide from z {zn:.2f}, bore / notches open "
+                     f"({bore:.4f} / {max(notch.values()):.4f} mm^3); fingertip Ø{2 * L.lp_col_finger['sphere_r_mm']:g} (A) "
+                     f"reaches the lever end both ways (+y {reach['+y'][0]:.3f}, -y {reach['-y'][0]:.3f} mm, overlap "
+                     f"{max(v[1] for v in reach.values()):.4f}), probes hit nothing; GPS sky (E): collar top "
+                     f"{g['top_elevation_deg']:.2f} deg elevation, {g['azimuth_width_deg']:.1f} deg wide -> "
+                     f"{g['blocked_sky_above_mask_pct']:.2f} % of the sky above the {g['receiver_mask_deg_A']:g} deg mask "
+                     f"(A) (<= {g['limit_pct']:g} %); finger path (push to {-fpl['angles_deg'][-1]:g} deg past centre, "
+                     f"{len(fpl['angles_deg'])} steps x 2) min {path_d[worst_fp][0]:.3f} mm from the collar ({worst_fp[0]} "
+                     f"{worst_fp[1]:g} deg; >= {m_fp:g}); side load (E) {F:.1f} N: arc {s_arc_nom:.2f} MPa x kt {kt:g} = "
+                     f"{s_arc:.2f}, ring {s_ring:.2f} MPa vs interlayer {allow:.1f} MPa (A) -> factor {factor:.2f} "
+                     f"(>= {float(sl['factor_min']):g}); plate root (E) {s_pl:.2f} MPa vs in-layer bending {bend:g} -> "
+                     f"factor {f_pl:.2f} (>= {float(plr['factor_min']):g}; vs tensile {tens:g}: {tens / s_pl:.2f})",
+                     "; ".join(fails) if fails else
+                     f"keep-outs (BRep): " + ", ".join(f"{k} {v:.2f}" for k, v in kd.items())
+                     + f" mm; nearest Layout collar rules: " + ", ".join(f"{k} {lay_c[k]:.2f} (>= {L.lp_limits[k]:g})"
+                                                                      for k in near_l)
+                     + f"; collar material {v_add:.2f} mm^3 (Layout {L.lp_col_volume_mm3:.2f}), out of the flight mass "
+                     f"with the switch hole (C40); load case = {m_g:.1f} g (with the logic power) x g x dyn "
+                     f"{float(sl['dyn_ASSUMED']):g} x mu {float(sl['mu_ASSUMED']):g} on one arc's rim, governing arc at "
+                     f"{sec['arc_z_over_plate_mm']:.2f} mm over the plate (slot half-width {sec['arc_half_width_mm']:.2f}), "
+                     f"arms {sec['arc_arm_mm']:.2f} / {sec['ring_arm_mm']:.1f} mm, Z {sec['arc']['z_min']:.1f} / "
+                     f"{sec['ring_z_mm3']:.0f} mm^3; plate root: boss r {prt['boss_r_mm']:.1f}, clamped at the farthest "
+                     f"support b {prt['b_farthest_support_mm']:.1f} mm (nearest {prt['b_nearest_support_mm']:.1f}), "
+                     + ", ".join(f"{k_} {v_:.2f} MPa" for k_, v_ in cases.items()) + f"; GPS: the collar's nearest point {g['nearest_plan_distance_mm']:.1f} mm "
+                     f"from the patch centre, rim {g['rim_over_patch_top_mm']:.2f} mm over the patch top",
+                     {"walls_mm": walls, "bore_probe_mm3": bore, "notch_probe_mm3": notch,
+                      "finger_reach_mm": {k: v[0] for k, v in reach.items()},
+                      "finger_overlap_lever_mm3": {k: v[1] for k, v in reach.items()}, "finger_hits": f_hits,
+                      "finger_path_mm": {f"{k_[0]} {k_[1]:g}": v_[0] for k_, v_ in path_d.items()},
+                      "finger_path_min_mm": path_d[worst_fp][0], "finger_path_margin_min_mm": m_fp,
+                      "rim_z": rim_m, "gps_sky_E": g, "side_load_E": {"F_N": F, "mass_g": m_g,
+                                                                     "sigma_arc_nominal_mpa": s_arc_nom, "kt_notch_A": kt,
+                                                                     "sigma_arc_mpa": s_arc,
+                                                                     "sigma_ring_mpa": s_ring, "allow_mpa": allow,
+                                                                     "factor": factor},
+                      "plate_root_E": {"cases_mpa": cases, "sigma_mpa": s_pl, "allow_bending_mpa": bend, "factor": f_pl,
+                                       "factor_vs_tensile": tens / s_pl, "inverted_load_N": n_inv, **prt},
+                      "keepout_mm": kd, "layout_mm": lay_c, "collar_added_mm3": v_add,
+                      "collar_volume_mm3_layout": L.lp_col_volume_mm3})
 
 # --------------------------------------------------------------------------- #
 def format_table(checks: list[Check]) -> str:

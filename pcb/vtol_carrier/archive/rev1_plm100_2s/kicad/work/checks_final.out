@@ -1,0 +1,96 @@
+{
+ "erc": {
+  "report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\reports\\erc.json",
+  "kicad_version": "10.0.6",
+  "sheets_checked": [
+   "/",
+   "/Power/",
+   "/NAV/",
+   "/FCU/",
+   "/COM/",
+   "/GNS/",
+   "/Spare_MCU/",
+   "/Level_shift/",
+   "/IO_connectors/"
+  ],
+  "counts": {},
+  "errors": 0,
+  "warnings": 0
+ },
+ "netlist_vs_spec": {
+  "tool": "kicad-cli sch export netlist + scripted comparison",
+  "components": 165,
+  "spec_nets": 107,
+  "netlist_named_nets": 107,
+  "mismatched_nets": [],
+  "extra_nets": [],
+  "single_pin_unconnected_nets": 235,
+  "spec_no_connect_pins": 235,
+  "result": "PASS"
+ },
+ "board_vs_ir": {
+  "tool": "scripted: routed .kicad_pcb pad nets vs IR nets",
+  "ir_pins": 494,
+  "pins_found_on_board": 494,
+  "mismatches": [],
+  "result": "PASS"
+ },
+ "drc": {
+  "report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\reports\\drc.json",
+  "kicad_version": "10.0.6",
+  "violations": {
+   "warning:hole_to_hole": 6
+  },
+  "errors": 0,
+  "warnings": 6,
+  "unconnected": 0,
+  "schematic_parity": {},
+  "parity_count": 0
+ },
+ "fab": [
+  {
+   "status": "PASS",
+   "message": "10 files, 2 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+  },
+  {
+   "status": "PASS",
+   "message": "1 drill file(s)"
+  }
+ ],
+ "bom_cpl": {
+  "bom": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_bom.csv",
+  "cpl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_cpl.csv",
+  "cpl_rows": 136
+ },
+ "step_renders": {
+  "render_top.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "render_bottom.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "render_iso.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "schematic_exports": [
+   "vtol_carrier-COM.svg",
+   "vtol_carrier-FCU.svg",
+   "vtol_carrier-GNS.svg",
+   "vtol_carrier-IO_connectors.svg",
+   "vtol_carrier-Level_shift.svg",
+   "vtol_carrier-NAV.svg",
+   "vtol_carrier-Power.svg",
+   "vtol_carrier-Spare_MCU.svg",
+   "vtol_carrier.svg",
+   "vtol_carrier_schematic.pdf"
+  ]
+ },
+ "step": {
+  "path": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier.step",
+  "exit": 0,
+  "exists": true
+ }
+}

@@ -1,7 +1,7 @@
 {
  "preset": "BUDGET_90mm_6S",
- "script_version": "0.9.6",
- "recorded_calls": 381,
+ "script_version": "0.9.8",
+ "recorded_calls": 394,
  "parts": {
   "propulsion_module": {
    "replay_volume_mm3": 278983.43990367,
@@ -48,8 +48,8 @@
    "reason": "through_cut"
   },
   "top_cap": {
-   "replay_volume_mm3": 27506.090731505574,
-   "twin_volume_mm3": 27506.061524352142,
+   "replay_volume_mm3": 29573.920024488692,
+   "twin_volume_mm3": 29573.81439065509,
    "replay_minus_twin_mm3": 0.0,
    "twin_minus_replay_mm3": 0.0,
    "replay_valid": true,
@@ -160,6 +160,26 @@
   "hinge_bushing_1": {
    "replay_volume_mm3": 54.92289356638355,
    "twin_volume_mm3": 54.92289356638355,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "logic_pack": {
+   "replay_volume_mm3": 39044.25,
+   "twin_volume_mm3": 39044.25,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
+   "slice_x3": "n/a (placeholder: boolean difference only)",
+   "status": "PASS"
+  },
+  "logic_switch": {
+   "replay_volume_mm3": 1795.3424392113038,
+   "twin_volume_mm3": 1795.3424392113036,
    "replay_minus_twin_mm3": 0.0,
    "twin_minus_replay_mm3": 0.0,
    "replay_valid": true,

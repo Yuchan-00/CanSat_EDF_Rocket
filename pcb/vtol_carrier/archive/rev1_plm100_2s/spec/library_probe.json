@@ -1,0 +1,1542 @@
+{
+ "symbols": {
+  "MCU_Microchip_ATmega:ATmega128A-A": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\MCU_Microchip_ATmega.kicad_sym",
+   "footprint_property": "Package_QFP:TQFP-64_14x14mm_P0.8mm",
+   "pins": [
+    [
+     "1",
+     "~{PEN}",
+     "input",
+     1
+    ],
+    [
+     "2",
+     "PE0",
+     "bidirectional",
+     1
+    ],
+    [
+     "3",
+     "PE1",
+     "bidirectional",
+     1
+    ],
+    [
+     "4",
+     "PE2",
+     "bidirectional",
+     1
+    ],
+    [
+     "5",
+     "PE3",
+     "bidirectional",
+     1
+    ],
+    [
+     "6",
+     "PE4",
+     "bidirectional",
+     1
+    ],
+    [
+     "7",
+     "PE5",
+     "bidirectional",
+     1
+    ],
+    [
+     "8",
+     "PE6",
+     "bidirectional",
+     1
+    ],
+    [
+     "9",
+     "PE7",
+     "bidirectional",
+     1
+    ],
+    [
+     "10",
+     "PB0",
+     "bidirectional",
+     1
+    ],
+    [
+     "11",
+     "PB1",
+     "bidirectional",
+     1
+    ],
+    [
+     "12",
+     "PB2",
+     "bidirectional",
+     1
+    ],
+    [
+     "13",
+     "PB3",
+     "bidirectional",
+     1
+    ],
+    [
+     "14",
+     "PB4",
+     "bidirectional",
+     1
+    ],
+    [
+     "15",
+     "PB5",
+     "bidirectional",
+     1
+    ],
+    [
+     "16",
+     "PB6",
+     "bidirectional",
+     1
+    ],
+    [
+     "17",
+     "PB7",
+     "bidirectional",
+     1
+    ],
+    [
+     "18",
+     "PG3",
+     "bidirectional",
+     1
+    ],
+    [
+     "19",
+     "PG4",
+     "bidirectional",
+     1
+    ],
+    [
+     "20",
+     "~{RESET}",
+     "input",
+     1
+    ],
+    [
+     "21",
+     "VCC",
+     "power_in",
+     1
+    ],
+    [
+     "22",
+     "GND",
+     "power_in",
+     1
+    ],
+    [
+     "23",
+     "XTAL2",
+     "output",
+     1
+    ],
+    [
+     "24",
+     "XTAL1",
+     "input",
+     1
+    ],
+    [
+     "25",
+     "PD0",
+     "bidirectional",
+     1
+    ],
+    [
+     "26",
+     "PD1",
+     "bidirectional",
+     1
+    ],
+    [
+     "27",
+     "PD2",
+     "bidirectional",
+     1
+    ],
+    [
+     "28",
+     "PD3",
+     "bidirectional",
+     1
+    ],
+    [
+     "29",
+     "PD4",
+     "bidirectional",
+     1
+    ],
+    [
+     "30",
+     "PD5",
+     "bidirectional",
+     1
+    ],
+    [
+     "31",
+     "PD6",
+     "bidirectional",
+     1
+    ],
+    [
+     "32",
+     "PD7",
+     "bidirectional",
+     1
+    ],
+    [
+     "33",
+     "PG0",
+     "bidirectional",
+     1
+    ],
+    [
+     "34",
+     "PG1",
+     "bidirectional",
+     1
+    ],
+    [
+     "35",
+     "PC0",
+     "bidirectional",
+     1
+    ],
+    [
+     "36",
+     "PC1",
+     "bidirectional",
+     1
+    ],
+    [
+     "37",
+     "PC2",
+     "bidirectional",
+     1
+    ],
+    [
+     "38",
+     "PC3",
+     "bidirectional",
+     1
+    ],
+    [
+     "39",
+     "PC4",
+     "bidirectional",
+     1
+    ],
+    [
+     "40",
+     "PC5",
+     "bidirectional",
+     1
+    ],
+    [
+     "41",
+     "PC6",
+     "bidirectional",
+     1
+    ],
+    [
+     "42",
+     "PC7",
+     "bidirectional",
+     1
+    ],
+    [
+     "43",
+     "PG2",
+     "bidirectional",
+     1
+    ],
+    [
+     "44",
+     "PA7",
+     "bidirectional",
+     1
+    ],
+    [
+     "45",
+     "PA6",
+     "bidirectional",
+     1
+    ],
+    [
+     "46",
+     "PA5",
+     "bidirectional",
+     1
+    ],
+    [
+     "47",
+     "PA4",
+     "bidirectional",
+     1
+    ],
+    [
+     "48",
+     "PA3",
+     "bidirectional",
+     1
+    ],
+    [
+     "49",
+     "PA2",
+     "bidirectional",
+     1
+    ],
+    [
+     "50",
+     "PA1",
+     "bidirectional",
+     1
+    ],
+    [
+     "51",
+     "PA0",
+     "bidirectional",
+     1
+    ],
+    [
+     "52",
+     "VCC",
+     "passive",
+     1
+    ],
+    [
+     "53",
+     "GND",
+     "passive",
+     1
+    ],
+    [
+     "54",
+     "PF7",
+     "bidirectional",
+     1
+    ],
+    [
+     "55",
+     "PF6",
+     "bidirectional",
+     1
+    ],
+    [
+     "56",
+     "PF5",
+     "bidirectional",
+     1
+    ],
+    [
+     "57",
+     "PF4",
+     "bidirectional",
+     1
+    ],
+    [
+     "58",
+     "PF3",
+     "bidirectional",
+     1
+    ],
+    [
+     "59",
+     "PF2",
+     "bidirectional",
+     1
+    ],
+    [
+     "60",
+     "PF1",
+     "bidirectional",
+     1
+    ],
+    [
+     "61",
+     "PF0",
+     "bidirectional",
+     1
+    ],
+    [
+     "62",
+     "AREF",
+     "passive",
+     1
+    ],
+    [
+     "63",
+     "GND",
+     "passive",
+     1
+    ],
+    [
+     "64",
+     "AVCC",
+     "power_in",
+     1
+    ]
+   ]
+  },
+  "Regulator_Linear:AMS1117-3.3": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Regulator_Linear.kicad_sym",
+   "footprint_property": "Package_TO_SOT_SMD:SOT-223-3_TabPin2",
+   "pins": [
+    [
+     "1",
+     "GND",
+     "power_in",
+     1
+    ],
+    [
+     "2",
+     "VO",
+     "power_out",
+     1
+    ],
+    [
+     "3",
+     "VI",
+     "power_in",
+     1
+    ]
+   ]
+  },
+  "Transistor_FET:BSS138": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Transistor_FET.kicad_sym",
+   "footprint_property": "Package_TO_SOT_SMD:SOT-23",
+   "pins": [
+    [
+     "1",
+     "G",
+     "input",
+     1
+    ],
+    [
+     "2",
+     "S",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "D",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Transistor_FET:AO3401A": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Transistor_FET.kicad_sym",
+   "footprint_property": "Package_TO_SOT_SMD:SOT-23",
+   "pins": [
+    [
+     "1",
+     "G",
+     "input",
+     1
+    ],
+    [
+     "2",
+     "S",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "D",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Transistor_BJT:MMBT3904": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Transistor_BJT.kicad_sym",
+   "footprint_property": "Package_TO_SOT_SMD:SOT-23",
+   "pins": [
+    [
+     "1",
+     "B",
+     "input",
+     1
+    ],
+    [
+     "2",
+     "E",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "C",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:Crystal_GND24": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "G",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "G",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:R": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:C": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:C_Polarized": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:LED": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "K",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "A",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:NetTie_2": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "2",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:D_Schottky": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "K",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "A",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:D_Zener": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "K",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "A",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector:AVR-ISP-6": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "MISO",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "VCC",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "SCK",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "MOSI",
+     "passive",
+     1
+    ],
+    [
+     "5",
+     "~{RST}",
+     "passive",
+     1
+    ],
+    [
+     "6",
+     "GND",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_01x02": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_01x03": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_01x04": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "Pin_4",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_01x05": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "Pin_4",
+     "passive",
+     1
+    ],
+    [
+     "5",
+     "Pin_5",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_01x06": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "Pin_4",
+     "passive",
+     1
+    ],
+    [
+     "5",
+     "Pin_5",
+     "passive",
+     1
+    ],
+    [
+     "6",
+     "Pin_6",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_01x08": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "Pin_4",
+     "passive",
+     1
+    ],
+    [
+     "5",
+     "Pin_5",
+     "passive",
+     1
+    ],
+    [
+     "6",
+     "Pin_6",
+     "passive",
+     1
+    ],
+    [
+     "7",
+     "Pin_7",
+     "passive",
+     1
+    ],
+    [
+     "8",
+     "Pin_8",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_01x12": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "Pin_4",
+     "passive",
+     1
+    ],
+    [
+     "5",
+     "Pin_5",
+     "passive",
+     1
+    ],
+    [
+     "6",
+     "Pin_6",
+     "passive",
+     1
+    ],
+    [
+     "7",
+     "Pin_7",
+     "passive",
+     1
+    ],
+    [
+     "8",
+     "Pin_8",
+     "passive",
+     1
+    ],
+    [
+     "9",
+     "Pin_9",
+     "passive",
+     1
+    ],
+    [
+     "10",
+     "Pin_10",
+     "passive",
+     1
+    ],
+    [
+     "11",
+     "Pin_11",
+     "passive",
+     1
+    ],
+    [
+     "12",
+     "Pin_12",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic:Conn_02x03_Odd_Even": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "Pin_4",
+     "passive",
+     1
+    ],
+    [
+     "5",
+     "Pin_5",
+     "passive",
+     1
+    ],
+    [
+     "6",
+     "Pin_6",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Jumper:SolderJumper_2_Open": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Jumper.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "A",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "B",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Jumper:SolderJumper_3_Bridged12": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Jumper.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "A",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "C",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "B",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Device:L": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "2",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Connector_Generic_MountingPin:Conn_01x04_MountingPin": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic_MountingPin.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ],
+    [
+     "2",
+     "Pin_2",
+     "passive",
+     1
+    ],
+    [
+     "3",
+     "Pin_3",
+     "passive",
+     1
+    ],
+    [
+     "4",
+     "Pin_4",
+     "passive",
+     1
+    ],
+    [
+     "MP",
+     "MountPin",
+     "passive",
+     1
+    ]
+   ]
+  },
+  "Mechanical:MountingHole": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Mechanical.kicad_sym",
+   "footprint_property": "",
+   "pins": []
+  },
+  "power:+5V": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\power.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "",
+     "power_in",
+     1
+    ]
+   ]
+  },
+  "power:+3V3": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\power.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "",
+     "power_in",
+     1
+    ]
+   ]
+  },
+  "power:GND": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\power.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "",
+     "power_in",
+     1
+    ]
+   ]
+  },
+  "power:PWR_FLAG": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\power.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "",
+     "power_out",
+     0
+    ]
+   ]
+  }
+ },
+ "footprints": {
+  "Package_QFP:TQFP-64_14x14mm_P0.8mm": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Package_QFP.pretty\\TQFP-64_14x14mm_P0.8mm.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+    "61",
+    "62",
+    "63",
+    "64"
+   ]
+  },
+  "Package_TO_SOT_SMD:SOT-223-3_TabPin2": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Package_TO_SOT_SMD.pretty\\SOT-223-3_TabPin2.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  "Package_TO_SOT_SMD:SOT-23": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Package_TO_SOT_SMD.pretty\\SOT-23.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Crystal.pretty\\Crystal_SMD_3225-4Pin_3.2x2.5mm.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  "Resistor_SMD:R_0603_1608Metric": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Capacitor_SMD:C_0603_1608Metric": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_0603_1608Metric.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Capacitor_SMD:C_0805_2012Metric": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_0805_2012Metric.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Capacitor_SMD:C_1206_3216Metric": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_1206_3216Metric.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Capacitor_SMD:CP_Elec_6.3x5.8": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\CP_Elec_6.3x5.8.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "LED_SMD:LED_0603_1608Metric": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\LED_SMD.pretty\\LED_0603_1608Metric.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Diode_SMD:D_SOD-123": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Diode_SMD.pretty\\D_SOD-123.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "NetTie:NetTie-2_SMD_Pad0.5mm": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\NetTie.pretty\\NetTie-2_SMD_Pad0.5mm.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Jumper.pretty\\SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "MountingHole:MountingHole_3.2mm_M3": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\MountingHole.pretty\\MountingHole_3.2mm_M3.kicad_mod",
+   "pads": []
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x02_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x03_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x04_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x05_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_2x03_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x08_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x02_P2.54mm_Horizontal.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x03_P2.54mm_Horizontal.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x04_P2.54mm_Horizontal.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinSocket_2.54mm.pretty\\PinSocket_1x06_P2.54mm_Horizontal.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ]
+  },
+  "Inductor_SMD:L_0805_2012Metric": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Inductor_SMD.pretty\\L_0805_2012Metric.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Jumper.pretty\\SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinSocket_2.54mm.pretty\\PinSocket_1x04_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinSocket_2.54mm.pretty\\PinSocket_1x06_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ]
+  },
+  "Connector_PinSocket_2.54mm:PinSocket_1x08_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinSocket_2.54mm.pretty\\PinSocket_1x08_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8"
+   ]
+  },
+  "Connector_PinSocket_1.27mm:PinSocket_1x12_P1.27mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinSocket_1.27mm.pretty\\PinSocket_1x12_P1.27mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+   ]
+  },
+  "Connector_JST:JST_GH_SM04B-GHS-TB_1x04-1MP_P1.25mm_Horizontal": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_JST.pretty\\JST_GH_SM04B-GHS-TB_1x04-1MP_P1.25mm_Horizontal.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "MP"
+   ]
+  },
+  "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_JST.pretty\\JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_JST.pretty\\JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Connector_JST:JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_JST.pretty\\JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "MP"
+   ]
+  },
+  "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x06_P2.54mm_Vertical.kicad_mod",
+   "pads": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ]
+  },
+  "Capacitor_SMD:C_0402_1005Metric": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_0402_1005Metric.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  },
+  "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_Tantalum_SMD.pretty\\CP_EIA-3216-18_Kemet-A.kicad_mod",
+   "pads": [
+    "1",
+    "2"
+   ]
+  }
+ },
+ "missing": []
+}

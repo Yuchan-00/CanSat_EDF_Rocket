@@ -1,0 +1,431 @@
+{
+ "freerouting_jar_sha256": "f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7",
+ "unrouted_board_sha256": "317318585992da5b1e5b4657ae2e5ac240c9aaf752f727d01a1bcc9ef81c9dae",
+ "gnd_planes_removed_from_dsn": 2,
+ "final_session": "vtol_carrier_stage2.ses",
+ "vias_shrunk_after_inflation": 0,
+ "neckdowns_widened_to_0.127mm": [
+  {
+   "net": "SPARE_ISP_MISO",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 120.578,
+   "y": 90.852
+  },
+  {
+   "net": "SPARE_ISP_MISO",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 120.578,
+   "y": 91.085
+  },
+  {
+   "net": "FCU_LBAT_ADC",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 114.174,
+   "y": 80.669
+  },
+  {
+   "net": "NLINK_SCK",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 105.336,
+   "y": 100.012
+  },
+  {
+   "net": "NLINK_SCK",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 105.51,
+   "y": 99.838
+  },
+  {
+   "net": "VANE4_PWM",
+   "layer": "B.Cu",
+   "was_mm": 0.1,
+   "x": 106.031,
+   "y": 95.647
+  },
+  {
+   "net": "NAV_LED",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 104.754,
+   "y": 127.058
+  },
+  {
+   "net": "NAV_LED",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 104.694,
+   "y": 127.118
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 87.885,
+   "y": 129.415
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 87.99,
+   "y": 129.519
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 125.741,
+   "y": 105.594
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 125.534,
+   "y": 105.8
+  },
+  {
+   "net": "VANE2_PWM",
+   "layer": "B.Cu",
+   "was_mm": 0.12,
+   "x": 76.255,
+   "y": 91.662
+  },
+  {
+   "net": "VANE2_PWM",
+   "layer": "B.Cu",
+   "was_mm": 0.12,
+   "x": 76.329,
+   "y": 91.736
+  }
+ ],
+ "dangling_vias_removed": [],
+ "segments": 2467,
+ "routed_vias": 189,
+ "gnd_stitching_vias": 122,
+ "silk": {
+  "labels_top": [
+   "J1",
+   "J2",
+   "J3",
+   "J5",
+   "J6",
+   "J8",
+   "J9",
+   "J10",
+   "J11",
+   "J13",
+   "J15",
+   "J17",
+   "J18",
+   "J19",
+   "J20",
+   "J21",
+   "J22",
+   "J23",
+   "J24"
+  ],
+  "labels_bottom_mirrored": [
+   "J7",
+   "J12",
+   "J14",
+   "J16",
+   "J25",
+   "JP1"
+  ],
+  "labels_missed": [],
+  "refs_on_silk": 107,
+  "refs_on_fab_only": [
+   "C11",
+   "C15",
+   "C19",
+   "C22",
+   "C33",
+   "C34",
+   "C35",
+   "C36",
+   "C37",
+   "C38",
+   "C39",
+   "C40",
+   "C43",
+   "C53",
+   "C54",
+   "D3",
+   "D5",
+   "D7",
+   "J6",
+   "J9",
+   "J12",
+   "J13",
+   "J15",
+   "J16",
+   "J19",
+   "J20",
+   "J21",
+   "J22",
+   "J23",
+   "J25",
+   "L1",
+   "L5",
+   "NT1",
+   "Q3",
+   "Q10",
+   "R4",
+   "R5",
+   "R8",
+   "R9",
+   "R10",
+   "R14",
+   "R15",
+   "R16",
+   "R21",
+   "R22",
+   "R25",
+   "R30",
+   "R31",
+   "R32",
+   "R33",
+   "R35",
+   "R36",
+   "R37",
+   "R43",
+   "R44",
+   "R45",
+   "R47",
+   "R52",
+   "R53",
+   "R54",
+   "R56",
+   "U3",
+   "U5",
+   "Y5"
+  ]
+ },
+ "routed_board_sha256": "fc74e0568ef47d13d4fa38a192028633a7b8f494a8fe8f24cce8d3b58d39b0bf",
+ "stage1": {
+  "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier.dsn -do B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage1.ses -mp 40 -mt 4 --gui.enabled=false",
+  "seconds": 252.7,
+  "exit_code": 0,
+  "dsn_sha256": "faeffccc0864edcc727a51671d4c4f72913d0a0fb1067e57739e331470d2f393",
+  "ses_sha256": "fcff0f992ad25a179dbc79a794dae349c59ac1a7baf9c797dca7572da1a7a56e",
+  "passes_unrouted": [
+   [
+    1,
+    118
+   ],
+   [
+    2,
+    83
+   ],
+   [
+    3,
+    77
+   ],
+   [
+    4,
+    68
+   ],
+   [
+    5,
+    113
+   ],
+   [
+    6,
+    90
+   ],
+   [
+    7,
+    72
+   ],
+   [
+    8,
+    54
+   ],
+   [
+    9,
+    50
+   ],
+   [
+    10,
+    49
+   ],
+   [
+    11,
+    46
+   ],
+   [
+    12,
+    43
+   ],
+   [
+    13,
+    42
+   ],
+   [
+    14,
+    42
+   ],
+   [
+    15,
+    42
+   ],
+   [
+    16,
+    42
+   ],
+   [
+    17,
+    42
+   ],
+   [
+    18,
+    42
+   ],
+   [
+    19,
+    41
+   ],
+   [
+    20,
+    41
+   ],
+   [
+    21,
+    41
+   ],
+   [
+    22,
+    40
+   ],
+   [
+    23,
+    40
+   ],
+   [
+    24,
+    40
+   ],
+   [
+    25,
+    40
+   ],
+   [
+    26,
+    40
+   ],
+   [
+    27,
+    40
+   ],
+   [
+    28,
+    40
+   ],
+   [
+    29,
+    40
+   ],
+   [
+    30,
+    40
+   ],
+   [
+    31,
+    40
+   ],
+   [
+    32,
+    40
+   ]
+  ],
+  "unconnected_after_import": 6
+ },
+ "stage2": {
+  "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage2.dsn -do B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage2.ses -mp 20 -mt 4 --gui.enabled=false",
+  "seconds": 204.4,
+  "exit_code": 0,
+  "dsn_sha256": "8054b35304991f8b4e08be42fa923d3f2874eefd3ee1191d35eaa94f70bdb563",
+  "ses_sha256": "856d3da539a7b5526751082fca0df38d3ac4addaa92fbddf09079838d4d35f32",
+  "passes_unrouted": [
+   [
+    1,
+    71
+   ],
+   [
+    2,
+    70
+   ],
+   [
+    3,
+    70
+   ],
+   [
+    4,
+    70
+   ],
+   [
+    5,
+    70
+   ],
+   [
+    6,
+    70
+   ],
+   [
+    7,
+    70
+   ],
+   [
+    8,
+    70
+   ],
+   [
+    9,
+    70
+   ],
+   [
+    10,
+    70
+   ],
+   [
+    11,
+    70
+   ],
+   [
+    12,
+    70
+   ],
+   [
+    13,
+    70
+   ],
+   [
+    14,
+    70
+   ],
+   [
+    15,
+    70
+   ],
+   [
+    16,
+    70
+   ],
+   [
+    17,
+    70
+   ],
+   [
+    18,
+    70
+   ]
+  ],
+  "unconnected_after_import": 6
+ }
+}

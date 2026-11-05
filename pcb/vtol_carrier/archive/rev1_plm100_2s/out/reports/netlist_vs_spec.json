@@ -1,0 +1,11 @@
+{
+ "tool": "kicad-cli sch export netlist + scripted comparison",
+ "components": 165,
+ "spec_nets": 107,
+ "netlist_named_nets": 107,
+ "mismatched_nets": [],
+ "extra_nets": [],
+ "single_pin_unconnected_nets": 235,
+ "spec_no_connect_pins": 235,
+ "result": "PASS"
+}

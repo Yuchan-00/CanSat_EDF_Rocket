@@ -1,0 +1,2058 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-05T07:25:13",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "vtol_carrier_2layer.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [ESP_RXD_SH] on F.Cu, 길이 1.1192 mm",
+                    "pos": {
+                        "x": 87.4711,
+                        "y": 113.9586
+                    },
+                    "uuid": "15a69f91-a602-4d16-917d-638efb75876e"
+                },
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R53 위F.Cu",
+                    "pos": {
+                        "x": 96.1,
+                        "y": 111.825
+                    },
+                    "uuid": "85037f96-f64f-5bef-8e11-95aac9f82200"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [ESP_RXD_SH] on F.Cu, 길이 2.6897 mm",
+                    "pos": {
+                        "x": 102.1103,
+                        "y": 106.625
+                    },
+                    "uuid": "e3cb58f1-9544-4c7d-b470-1ad95531a24e"
+                },
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R53 위F.Cu",
+                    "pos": {
+                        "x": 96.1,
+                        "y": 111.825
+                    },
+                    "uuid": "85037f96-f64f-5bef-8e11-95aac9f82200"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 2 [+3V3]의 R51 위F.Cu",
+                    "pos": {
+                        "x": 114.325,
+                        "y": 88.3
+                    },
+                    "uuid": "6bf8b898-640b-529c-bc00-3e7c59402db1"
+                },
+                {
+                    "description": "패드 2 [+3V3]의 R56 위F.Cu",
+                    "pos": {
+                        "x": 111.325,
+                        "y": 88.3
+                    },
+                    "uuid": "f1a558ed-8096-5a62-a565-e84ea0191629"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+3V3] on F.Cu, 길이 0.9815 mm",
+                    "pos": {
+                        "x": 119.419,
+                        "y": 86.106
+                    },
+                    "uuid": "20ccc473-9954-444f-af89-cec2fd9b0338"
+                },
+                {
+                    "description": "패드 2 [+3V3]의 R51 위F.Cu",
+                    "pos": {
+                        "x": 114.325,
+                        "y": 88.3
+                    },
+                    "uuid": "6bf8b898-640b-529c-bc00-3e7c59402db1"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 7.4885 mm",
+                    "pos": {
+                        "x": 85.8203,
+                        "y": 123.1557
+                    },
+                    "uuid": "f77f6747-4b91-4196-bd63-bc234c73a528"
+                },
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 3.3283 mm",
+                    "pos": {
+                        "x": 82.5514,
+                        "y": 129.8443
+                    },
+                    "uuid": "1aa04b06-59a1-4008-b4d9-6b674a3b8d7d"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 4.6965 mm",
+                    "pos": {
+                        "x": 96.5435,
+                        "y": 117.1185
+                    },
+                    "uuid": "23a76367-7bfb-4daf-a961-a6790502465d"
+                },
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 1.7250 mm",
+                    "pos": {
+                        "x": 93.8375,
+                        "y": 118.7
+                    },
+                    "uuid": "0e5954c6-6682-4b47-a1dc-655b36f9de9f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 0.9290 mm",
+                    "pos": {
+                        "x": 106.4095,
+                        "y": 85.772
+                    },
+                    "uuid": "60a7b064-a58f-4ffc-a9cf-d7c9165fbe8f"
+                },
+                {
+                    "description": "배선 [+5V] on B.Cu, 길이 1.7372 mm",
+                    "pos": {
+                        "x": 107.6384,
+                        "y": 83.6146
+                    },
+                    "uuid": "f1d26410-900d-4a04-b071-6671cfc880a0"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
+                    "pos": {
+                        "x": 110.0,
+                        "y": 105.412
+                    },
+                    "uuid": "fb5b1853-3d54-5be3-8c81-caf309588643"
+                },
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 1.6250 mm",
+                    "pos": {
+                        "x": 108.125,
+                        "y": 110.625
+                    },
+                    "uuid": "f22eaae5-e09e-43fa-b11f-03151e2f5aad"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
+                    "pos": {
+                        "x": 116.4,
+                        "y": 90.088
+                    },
+                    "uuid": "6f8059e5-3d0c-5ac5-82eb-f0dca6a041b5"
+                },
+                {
+                    "description": "배선 [+5V] on B.Cu, 길이 0.1202 mm",
+                    "pos": {
+                        "x": 111.745,
+                        "y": 82.964
+                    },
+                    "uuid": "31c7937a-9053-49d1-bf43-8a6b65938fd0"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on B.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "d0b787b2-6c06-570f-ab7c-0a457b3c4eb7"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "2의 PTH 패드[GND]J25",
+                    "pos": {
+                        "x": 100.0,
+                        "y": 91.54
+                    },
+                    "uuid": "c11aa7fe-fa7b-5ebe-b766-d2799dd3a85d"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[GND]J26",
+                    "pos": {
+                        "x": 100.0,
+                        "y": 106.29
+                    },
+                    "uuid": "6b944e7a-798e-5176-97f6-a0499c9a4491"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "6의 PTH 패드[GND]J20",
+                    "pos": {
+                        "x": 101.24,
+                        "y": 85.43
+                    },
+                    "uuid": "084f9525-b73d-55e4-a9f3-e5086c15e4c6"
+                },
+                {
+                    "description": "영역 [GND] on B.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "d0b787b2-6c06-570f-ab7c-0a457b3c4eb7"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "6의 PTH 패드[GND]J21",
+                    "pos": {
+                        "x": 101.24,
+                        "y": 100.18
+                    },
+                    "uuid": "d1209d1b-701f-50ca-b1ca-e3862118d347"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "6의 PTH 패드[GND]J22",
+                    "pos": {
+                        "x": 101.24,
+                        "y": 114.93
+                    },
+                    "uuid": "3e28aa8f-de6c-5900-a153-e69201718f6f"
+                },
+                {
+                    "description": "영역 [GND] on B.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "d0b787b2-6c06-570f-ab7c-0a457b3c4eb7"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [GND] on F.Cu, 길이 2.2557 mm",
+                    "pos": {
+                        "x": 101.24,
+                        "y": 123.58
+                    },
+                    "uuid": "3bd7b87b-48a9-4019-9cad-a9ca8178c41e"
+                },
+                {
+                    "description": "2의 PTH 패드[GND]J1",
+                    "pos": {
+                        "x": 104.9,
+                        "y": 117.64
+                    },
+                    "uuid": "c397772a-bb92-5a32-978a-6068bdd94a43"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "7의 PTH 패드[GND]J1",
+                    "pos": {
+                        "x": 104.9,
+                        "y": 130.34
+                    },
+                    "uuid": "5d9f2523-dfd2-533a-8307-e34a689363eb"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "6의 PTH 패드[GND]J20",
+                    "pos": {
+                        "x": 101.24,
+                        "y": 85.43
+                    },
+                    "uuid": "084f9525-b73d-55e4-a9f3-e5086c15e4c6"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[GND]J16",
+                    "pos": {
+                        "x": 123.66,
+                        "y": 75.79
+                    },
+                    "uuid": "6d9b82c0-eefa-5c77-ac44-8ea1ebdec555"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [FCU_VBAT_ADC] on F.Cu, 길이 0.5106 mm",
+                    "pos": {
+                        "x": 109.2,
+                        "y": 90.0875
+                    },
+                    "uuid": "d16b07f0-367c-49ac-9a76-0a5f4704d01f"
+                },
+                {
+                    "description": "패드 1 [FCU_VBAT_ADC]의 C49 위F.Cu",
+                    "pos": {
+                        "x": 113.625,
+                        "y": 85.3
+                    },
+                    "uuid": "bc46d560-c508-5a72-bc05-e36f99edfbf1"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "4의 PTH 패드[I2C_SDA_3V3]J2",
+                    "pos": {
+                        "x": 112.45,
+                        "y": 67.0
+                    },
+                    "uuid": "2743c041-1934-55f8-a6a3-ffdca8ef53d1"
+                },
+                {
+                    "description": "배선 [I2C_SDA_3V3] on B.Cu, 길이 0.5572 mm",
+                    "pos": {
+                        "x": 122.4759,
+                        "y": 98.7489
+                    },
+                    "uuid": "076a6427-3b4a-4064-937f-07ac54bae1b3"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 2 [FCU_AVCC]의 L2 위F.Cu",
+                    "pos": {
+                        "x": 108.1,
+                        "y": 85.3375
+                    },
+                    "uuid": "20bb6a19-e11f-5074-878c-fb546b1b404d"
+                },
+                {
+                    "description": "배선 [FCU_AVCC] on F.Cu, 길이 1.4480 mm",
+                    "pos": {
+                        "x": 106.8,
+                        "y": 90.088
+                    },
+                    "uuid": "69eac0d9-d152-54b4-a8c3-0a8675a65c34"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [GNS_LED] on F.Cu, 길이 1.0928 mm",
+                    "pos": {
+                        "x": 81.3123,
+                        "y": 132.532
+                    },
+                    "uuid": "4c5f0de9-8316-4c33-b451-26e86b9f87d8"
+                },
+                {
+                    "description": "배선 [GNS_LED] on F.Cu, 길이 0.9670 mm",
+                    "pos": {
+                        "x": 76.4,
+                        "y": 129.825
+                    },
+                    "uuid": "8c9df43f-5a6a-47b4-9f60-d16966deaa5b"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [GNS_LED_A] on F.Cu, 길이 0.2333 mm",
+                    "pos": {
+                        "x": 76.4,
+                        "y": 128.175
+                    },
+                    "uuid": "b5b86e12-017a-49f0-898b-af9439c80421"
+                },
+                {
+                    "description": "패드 2 [GNS_LED_A]의 D4 위F.Cu",
+                    "pos": {
+                        "x": 78.5875,
+                        "y": 117.9
+                    },
+                    "uuid": "cf250569-8a36-5c56-9aef-69e2c6a40208"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[VS_VTETHER]J18",
+                    "pos": {
+                        "x": 72.8,
+                        "y": 118.95
+                    },
+                    "uuid": "2c7558ce-0e8c-577c-b82c-a857bb9993a0"
+                },
+                {
+                    "description": "패드 1 [VS_VTETHER]의 R34 위F.Cu",
+                    "pos": {
+                        "x": 103.775,
+                        "y": 80.6
+                    },
+                    "uuid": "207d4a10-d28c-5236-9486-a20cf03821f9"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "4의 PTH 패드[VS_BUF_ISIGN]J18",
+                    "pos": {
+                        "x": 72.8,
+                        "y": 113.87
+                    },
+                    "uuid": "16a9e6f4-a9cb-532b-aee4-a371fd58682a"
+                },
+                {
+                    "description": "배선 [VS_BUF_ISIGN] on F.Cu, 길이 0.5887 mm",
+                    "pos": {
+                        "x": 80.4859,
+                        "y": 116.6004
+                    },
+                    "uuid": "3dcf6263-33b9-45e0-ab7d-87b6731cfd0d"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 36 [FCU_BUZ]의 U2 위F.Cu",
+                    "pos": {
+                        "x": 120.4625,
+                        "y": 101.35
+                    },
+                    "uuid": "d04810ee-ad78-5528-9796-a1e71166f3bf"
+                },
+                {
+                    "description": "배선 [FCU_BUZ] on F.Cu, 길이 0.2802 mm",
+                    "pos": {
+                        "x": 119.8981,
+                        "y": 85.5231
+                    },
+                    "uuid": "b553933c-65f3-4d6e-aca1-f27ce267afd7"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 1 [OPENLOG_RXI]의 R41 위F.Cu",
+                    "pos": {
+                        "x": 117.075,
+                        "y": 86.8
+                    },
+                    "uuid": "de191344-643e-5f10-9a3f-c21ba36a8b14"
+                },
+                {
+                    "description": "패드 2 [OPENLOG_RXI]의 Q8 위F.Cu",
+                    "pos": {
+                        "x": 109.9625,
+                        "y": 85.25
+                    },
+                    "uuid": "ee1b04ae-5a30-5758-9879-9a2c3c2b2f37"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[OPENLOG_RXI]J5",
+                    "pos": {
+                        "x": 125.79,
+                        "y": 89.0
+                    },
+                    "uuid": "d8e7d3ba-0e4c-5ff7-8be6-478bf790b7e0"
+                },
+                {
+                    "description": "패드 1 [OPENLOG_RXI]의 R41 위F.Cu",
+                    "pos": {
+                        "x": 117.075,
+                        "y": 86.8
+                    },
+                    "uuid": "de191344-643e-5f10-9a3f-c21ba36a8b14"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 1 [FCU_LOG_TX]의 R40 위F.Cu",
+                    "pos": {
+                        "x": 106.9,
+                        "y": 83.925
+                    },
+                    "uuid": "70c00cc2-1145-5a8c-a75d-83863a3efed0"
+                },
+                {
+                    "description": "배선 [FCU_LOG_TX] on F.Cu, 길이 1.1826 mm",
+                    "pos": {
+                        "x": 111.7924,
+                        "y": 84.2549
+                    },
+                    "uuid": "52b992d6-7574-455c-b21a-53dde285fd9c"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 1 [FCU_LOG_TX]의 R40 위F.Cu",
+                    "pos": {
+                        "x": 106.9,
+                        "y": 83.925
+                    },
+                    "uuid": "70c00cc2-1145-5a8c-a75d-83863a3efed0"
+                },
+                {
+                    "description": "배선 [FCU_LOG_TX] on F.Cu, 길이 0.9707 mm",
+                    "pos": {
+                        "x": 105.1375,
+                        "y": 93.35
+                    },
+                    "uuid": "05e21dad-7c75-4bb0-951c-d72ab16dc252"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [NAV_GLINK_TX] on F.Cu, 길이 1.1676 mm",
+                    "pos": {
+                        "x": 104.675,
+                        "y": 112.5
+                    },
+                    "uuid": "b0668746-a79c-4745-8c2d-fcafc31a6a08"
+                },
+                {
+                    "description": "배선 [NAV_GLINK_TX] on F.Cu, 길이 1.0842 mm",
+                    "pos": {
+                        "x": 122.884,
+                        "y": 117.9057
+                    },
+                    "uuid": "68a871d5-e798-43e6-8836-7d26bd6f6a93"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "4의 PTH 패드[FCU_ISP_MOSI]J20",
+                    "pos": {
+                        "x": 101.24,
+                        "y": 82.89
+                    },
+                    "uuid": "058caf6a-f407-5dc4-af83-3656213a1b44"
+                },
+                {
+                    "description": "배선 [FCU_ISP_MOSI] on F.Cu, 길이 0.2468 mm",
+                    "pos": {
+                        "x": 105.312,
+                        "y": 92.7245
+                    },
+                    "uuid": "7739bbc4-9569-46e9-ad54-3fb99975733b"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "3의 PTH 패드[NLINK_SCK]J20",
+                    "pos": {
+                        "x": 98.7,
+                        "y": 82.89
+                    },
+                    "uuid": "1f67218c-f50b-523a-b098-cc718317e36a"
+                },
+                {
+                    "description": "배선 [NLINK_SCK] on B.Cu, 길이 0.4892 mm",
+                    "pos": {
+                        "x": 106.207,
+                        "y": 98.6623
+                    },
+                    "uuid": "dd198e04-bf69-4c60-b19e-85a6a3368045"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [ESP_GPIO0] on B.Cu, 길이 1.5876 mm",
+                    "pos": {
+                        "x": 107.6792,
+                        "y": 75.7828
+                    },
+                    "uuid": "d783a5dd-dd19-4653-ac27-6c7778314bda"
+                },
+                {
+                    "description": "패드 1 [ESP_GPIO0]의 R51 위F.Cu",
+                    "pos": {
+                        "x": 112.675,
+                        "y": 88.3
+                    },
+                    "uuid": "31d36add-3982-56a6-b249-7660ca3be9a2"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "공간거리 위반 ( 공간거리 0.1300 mm; 실제값 0.1213 mm)",
+            "items": [
+                {
+                    "description": "패드 2 [+5V]의 R42 위F.Cu",
+                    "pos": {
+                        "x": 122.425,
+                        "y": 111.6
+                    },
+                    "uuid": "2ab5d956-91c8-56b5-b3ee-cb4a71393942"
+                },
+                {
+                    "description": "배선 [I2C_SDA_5V] on F.Cu, 길이 0.2748 mm",
+                    "pos": {
+                        "x": 122.234,
+                        "y": 112.2598
+                    },
+                    "uuid": "b0d1304b-e806-4673-93df-cc6ff7121ed5"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "공간거리 위반 ( 공간거리 0.1300 mm; 실제값 0.1213 mm)",
+            "items": [
+                {
+                    "description": "패드 2 [+5V]의 R42 위F.Cu",
+                    "pos": {
+                        "x": 122.425,
+                        "y": 111.6
+                    },
+                    "uuid": "2ab5d956-91c8-56b5-b3ee-cb4a71393942"
+                },
+                {
+                    "description": "배선 [I2C_SDA_5V] on F.Cu, 길이 0.1100 mm",
+                    "pos": {
+                        "x": 122.3118,
+                        "y": 112.3376
+                    },
+                    "uuid": "b7e043e6-082a-45a5-878b-48dfa70f5946"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2941 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [NLINK_SS] on B.Cu, 길이 0.2472 mm",
+                    "pos": {
+                        "x": 105.4882,
+                        "y": 134.4311
+                    },
+                    "uuid": "00ef3e2c-2eb4-48f0-a70d-349122457e3c"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2941 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [NLINK_SS] on B.Cu, 길이 2.6166 mm",
+                    "pos": {
+                        "x": 105.663,
+                        "y": 134.6059
+                    },
+                    "uuid": "02471e98-72a2-4dac-9a4b-114e353a1bde"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2835 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [NLINK_SS] on B.Cu, 길이 0.3319 mm",
+                    "pos": {
+                        "x": 104.6399,
+                        "y": 134.6165
+                    },
+                    "uuid": "060eedf3-0149-414f-8e5d-31bf32beada1"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2941 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [NLINK_SS] on B.Cu, 길이 10.2125 mm",
+                    "pos": {
+                        "x": 108.2796,
+                        "y": 134.6059
+                    },
+                    "uuid": "11a8274c-7f3d-4682-9c2b-b48cd9f01e70"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2835 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [NLINK_SS] on B.Cu, 길이 0.1652 mm",
+                    "pos": {
+                        "x": 104.9718,
+                        "y": 134.6165
+                    },
+                    "uuid": "ea668365-3dce-40fd-b989-b8dbebc7141e"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2900 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [COM_LED] on B.Cu, 길이 1.0635 mm",
+                    "pos": {
+                        "x": 74.6103,
+                        "y": 133.858
+                    },
+                    "uuid": "64df23ef-a7ce-4967-9d60-de2893465233"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2900 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [COM_LED] on B.Cu, 길이 5.6940 mm",
+                    "pos": {
+                        "x": 75.3623,
+                        "y": 134.61
+                    },
+                    "uuid": "7649086b-8229-4f61-8aa8-72d7144de57f"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "기판 모서리 공간거리 위반 (기판 구성 제약 모서리 공간거리 0.3000 mm; 실제값 0.2900 mm)",
+            "items": [
+                {
+                    "description": "세그먼트 (Edge.Cuts)",
+                    "pos": {
+                        "x": 137.0,
+                        "y": 135.0
+                    },
+                    "uuid": "2ef6032b-3b6b-5059-92c6-d23826478927"
+                },
+                {
+                    "description": "배선 [COM_LED] on B.Cu, 길이 2.5672 mm",
+                    "pos": {
+                        "x": 81.0563,
+                        "y": 134.61
+                    },
+                    "uuid": "b562f5c3-b8c6-4dba-a9d1-d61183c7609e"
+                }
+            ],
+            "severity": "error",
+            "type": "copper_edge_clearance"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [ESP_RXD_SH] on F.Cu, 길이 1.1192 mm",
+                    "pos": {
+                        "x": 87.4711,
+                        "y": 113.9586
+                    },
+                    "uuid": "15a69f91-a602-4d16-917d-638efb75876e"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [ESP_RXD_SH] on F.Cu, 길이 2.6897 mm",
+                    "pos": {
+                        "x": 102.1103,
+                        "y": 106.625
+                    },
+                    "uuid": "e3cb58f1-9544-4c7d-b470-1ad95531a24e"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 1.0117 mm",
+                    "pos": {
+                        "x": 91.3418,
+                        "y": 120.9531
+                    },
+                    "uuid": "4d4fda38-2066-4855-8812-abcb49621565"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 0.0712 mm",
+                    "pos": {
+                        "x": 90.2296,
+                        "y": 120.8983
+                    },
+                    "uuid": "849c96a6-d343-427e-821c-bd47d3307c1e"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [+5V] on B.Cu, 길이 1.7372 mm",
+                    "pos": {
+                        "x": 107.6384,
+                        "y": 83.6146
+                    },
+                    "uuid": "f1d26410-900d-4a04-b071-6671cfc880a0"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [GNS_LED] on F.Cu, 길이 1.0928 mm",
+                    "pos": {
+                        "x": 81.3123,
+                        "y": 132.532
+                    },
+                    "uuid": "4c5f0de9-8316-4c33-b451-26e86b9f87d8"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [GNS_LED] on F.Cu, 길이 0.9670 mm",
+                    "pos": {
+                        "x": 76.4,
+                        "y": 129.825
+                    },
+                    "uuid": "8c9df43f-5a6a-47b4-9f60-d16966deaa5b"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [GNS_LED_A] on F.Cu, 길이 0.8238 mm",
+                    "pos": {
+                        "x": 76.235,
+                        "y": 128.34
+                    },
+                    "uuid": "9e25ff9b-653b-4dc8-9e91-1c04e9388ab5"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [VS_BUF_ISIGN] on F.Cu, 길이 0.5887 mm",
+                    "pos": {
+                        "x": 80.4859,
+                        "y": 116.6004
+                    },
+                    "uuid": "3dcf6263-33b9-45e0-ab7d-87b6731cfd0d"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [FCU_BUZ] on F.Cu, 길이 0.7945 mm",
+                    "pos": {
+                        "x": 124.9762,
+                        "y": 86.0849
+                    },
+                    "uuid": "04bd5e8b-d0af-4f56-be5c-49827fe25daf"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [FCU_LOG_TX] on F.Cu, 길이 0.3565 mm",
+                    "pos": {
+                        "x": 104.1668,
+                        "y": 93.35
+                    },
+                    "uuid": "9912cf00-2f99-4398-a447-fc8fd995abce"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [NAV_GLINK_TX] on F.Cu, 길이 1.0842 mm",
+                    "pos": {
+                        "x": 122.884,
+                        "y": 117.9057
+                    },
+                    "uuid": "68a871d5-e798-43e6-8836-7d26bd6f6a93"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [NAV_GLINK_TX] on F.Cu, 길이 1.1676 mm",
+                    "pos": {
+                        "x": 104.675,
+                        "y": 112.5
+                    },
+                    "uuid": "b0668746-a79c-4745-8c2d-fcafc31a6a08"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [COM_LED_A] on F.Cu, 길이 0.1328 mm",
+                    "pos": {
+                        "x": 90.8493,
+                        "y": 108.7888
+                    },
+                    "uuid": "14cd6137-ae56-4bb5-ad17-6577df45f253"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [FCU_ISP_MOSI] on F.Cu, 길이 1.0635 mm",
+                    "pos": {
+                        "x": 106.3755,
+                        "y": 92.7245
+                    },
+                    "uuid": "7f3fdf6e-21b9-47db-af05-a963f8801978"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "세그먼트 of Y2 on F.Silkscreen",
+                    "pos": {
+                        "x": 114.11,
+                        "y": 111.48
+                    },
+                    "uuid": "6aeba4c1-26a5-5e60-9f48-b3c664f7251e"
+                },
+                {
+                    "description": "세그먼트 of D2 on F.Silkscreen",
+                    "pos": {
+                        "x": 114.165,
+                        "y": 107.1
+                    },
+                    "uuid": "6dd79b1e-7386-5eb7-8b97-0ad66fc3a31e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "세그먼트 of D2 on F.Silkscreen",
+                    "pos": {
+                        "x": 114.165,
+                        "y": 109.385
+                    },
+                    "uuid": "1e2b19e7-0a51-5a8e-95ef-52d754e59812"
+                },
+                {
+                    "description": "세그먼트 of Y2 on F.Silkscreen",
+                    "pos": {
+                        "x": 114.11,
+                        "y": 111.48
+                    },
+                    "uuid": "6aeba4c1-26a5-5e60-9f48-b3c664f7251e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "세그먼트 of C47 on F.Silkscreen",
+                    "pos": {
+                        "x": 120.8625,
+                        "y": 81.7725
+                    },
+                    "uuid": "0bc007c7-a352-55f8-84b3-700723c2aabf"
+                },
+                {
+                    "description": "세그먼트 of D6 on F.Silkscreen",
+                    "pos": {
+                        "x": 121.6,
+                        "y": 82.56
+                    },
+                    "uuid": "9c6b8b93-b075-5cd4-91c6-d4aacc083309"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "세그먼트 of C47 on F.Silkscreen",
+                    "pos": {
+                        "x": 120.8625,
+                        "y": 81.7725
+                    },
+                    "uuid": "0bc007c7-a352-55f8-84b3-700723c2aabf"
+                },
+                {
+                    "description": "패드 1 [+5V]의 D6 위F.Cu",
+                    "pos": {
+                        "x": 120.6,
+                        "y": 81.85
+                    },
+                    "uuid": "1e946271-0cd4-5df4-8180-004cbe405600"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "세그먼트 of C47 on F.Silkscreen",
+                    "pos": {
+                        "x": 121.25625,
+                        "y": 81.37875
+                    },
+                    "uuid": "0810540b-b111-534c-bcbf-30848a37603f"
+                },
+                {
+                    "description": "패드 1 [+5V]의 D6 위F.Cu",
+                    "pos": {
+                        "x": 120.6,
+                        "y": 81.85
+                    },
+                    "uuid": "1e946271-0cd4-5df4-8180-004cbe405600"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}

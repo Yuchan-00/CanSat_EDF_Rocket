@@ -1,0 +1,176 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-05T00:01:23",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "vtol_carrier.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "드릴홀이 서로 너무 가깝게 뚫음 (보드 설정 제약 조건 최소 값 0.5000 mm; 실제 값 0.4650 mm)",
+            "items": [
+                {
+                    "description": "비아 [GND] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.562,
+                        "y": 100.948
+                    },
+                    "uuid": "1c84eb11-10e4-4d10-bc0e-9dbeee219add"
+                },
+                {
+                    "description": "비아 [ILINK_C2F] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.993,
+                        "y": 101.58
+                    },
+                    "uuid": "7da7a938-5fbd-40c7-824a-87782525bfd8"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "드릴홀이 서로 너무 가깝게 뚫음 (보드 설정 제약 조건 최소 값 0.5000 mm; 실제 값 0.4529 mm)",
+            "items": [
+                {
+                    "description": "비아 [FCU_VBUF_ADC] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 78.4798,
+                        "y": 87.2964
+                    },
+                    "uuid": "0da806a5-7b37-40b8-8e43-1a0f0382b99a"
+                },
+                {
+                    "description": "비아 [VANE2_PWM] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 77.727,
+                        "y": 87.286
+                    },
+                    "uuid": "9891a39f-2e0e-4ff1-aaf0-56702649b4e0"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "드릴홀이 서로 너무 가깝게 뚫음 (보드 설정 제약 조건 최소 값 0.5000 mm; 실제 값 0.4985 mm)",
+            "items": [
+                {
+                    "description": "비아 [COM_LINK_TX] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 83.2016,
+                        "y": 89.448
+                    },
+                    "uuid": "5a34401d-e463-4608-afa9-74fe2995deaf"
+                },
+                {
+                    "description": "비아 [LORA_UART1_TXD] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 84.0,
+                        "y": 89.4578
+                    },
+                    "uuid": "980b889f-75c6-4572-8312-d3720e2d4cc4"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "드릴홀이 서로 너무 가깝게 뚫음 (보드 설정 제약 조건 최소 값 0.5000 mm; 실제 값 0.4618 mm)",
+            "items": [
+                {
+                    "description": "비아 [SPARE_XTAL2] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 125.076,
+                        "y": 101.592
+                    },
+                    "uuid": "1fdcc177-c29f-468b-9875-6b571ccdb0a6"
+                },
+                {
+                    "description": "비아 [SPARE_LED_A] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 125.024,
+                        "y": 100.832
+                    },
+                    "uuid": "df39c559-405e-486f-b3a7-c4199cbe3d9c"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "드릴홀이 서로 너무 가깝게 뚫음 (보드 설정 제약 조건 최소 값 0.5000 mm; 실제 값 0.4897 mm)",
+            "items": [
+                {
+                    "description": "비아 [RELEASE_PWM] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.996,
+                        "y": 92.0
+                    },
+                    "uuid": "16d342b9-4b7d-4631-90cd-56aca4c25760"
+                },
+                {
+                    "description": "비아 [ESC_PWM] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.625,
+                        "y": 91.3029
+                    },
+                    "uuid": "fdf0eb3d-f40c-4134-b1f4-a89d3526f5f5"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        },
+        {
+            "description": "드릴홀이 서로 너무 가깝게 뚫음 (보드 설정 제약 조건 최소 값 0.5000 mm; 실제 값 0.4761 mm)",
+            "items": [
+                {
+                    "description": "비아 [VANE3_PWM] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 91.9122,
+                        "y": 100.563
+                    },
+                    "uuid": "d7b88cab-7f77-4083-866c-8428063efc36"
+                },
+                {
+                    "description": "비아 [COM_ILINK_RX] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 92.4725,
+                        "y": 101.1
+                    },
+                    "uuid": "db21095b-5ee2-4252-9048-bebd50a06fc0"
+                }
+            ],
+            "severity": "warning",
+            "type": "hole_to_hole"
+        }
+    ]
+}

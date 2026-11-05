@@ -25,6 +25,19 @@ Outputs (cad/exports/print/provisional_v09_cadquery/): <part>.stl / .3mf (orient
 print_plan_provisional.json / .md, slice_log.txt.  Then rebuild the twin report (build_rocket.py --no-export) so the
 masses come from the table.
 
+2026-11-05 (logic power, VTOL battery build): a part whose report mass entry is measured on another solid (the top cap
+without the logic switch hole while logic_power.in_flight_mass_model is false) is sliced from its STL with the volume of
+that STL's solid (report extra.printed_solid_volume_override_mm3); when a re-slice changes a part's solid volume and
+Layout.slicer_variants names the old geometry as still used (the hole-less cap of the tether / hybrid builds and of the
+flight-mass model), the old table entry is kept as '<part>@<variant>' (build_rocket.printed_mass_model picks the entry
+whose solid volume matches); '@' entries of the old table are carried over by every run.  A partial run (--parts) keeps
+the other parts' print-plan entries too (it used to rewrite the plan with the re-sliced parts only).
+
+Switch-collar round (user decision 2026-11-05, logic_power.collar): the battery build's top cap carries the protective
+collar 17.2 mm up from its top face, so it prints UPRIGHT with tree supports inside the skirt (``part_rule``; the tether /
+hybrid cap keeps the flat no-support rule) and its G-code gets ``switch_hole_support_check`` (no support inside the switch
+hole or the collar, registered on the collar's outer wall); anything but PASS fails the run.
+
 Usage: python cad/cadquery/make_v09_print_files.py [--parts a,b] [--no-slice]
 """
 from __future__ import annotations
@@ -66,6 +79,103 @@ PARTS["wire_cover"] = (1, [[("y", 90.0)]], False, "flat")
 # v0.9 CAD-2 VTOL: the top cap prints top face down (skirt, ribs, hub and rim ring up: no overhang); the windowed avionics
 # module keeps make_print_files' "upright", no support (the windows' 45 deg pointed tops need none)
 PARTS["top_cap"] = (1, [[("x", 180.0)]], False, "flat: plate top face on the bed, skirt / ribs / hub / rim ring up")
+# switch-collar round (user decision 2026-11-05, logic_power.collar): the battery build's cap carries the protective
+# collar 17.2 mm up from the top face - top face down it would stand on the collar rim with the whole plate (and the GPS
+# tape face) on 17 mm of support, so it prints UPRIGHT (skirt rim on the bed, collar up) with tree supports from the bed
+# inside the skirt (plate underside, ribs, hub, washer recess, rim ring - like the rocket payload module's bulkhead).
+# The switch hole is vertical: nothing overhangs inside it (switch_hole_support_check measures the G-code)
+TOP_CAP_COLLAR = (1, [[]], True, "upright (2026-11-05 switch collar): skirt rim on the bed, top face + collar up; tree "
+                                 "supports from the bed inside the skirt under the plate, ribs, hub, washer recess and rim ring; "
+                                 "none inside the switch hole or the collar (G-code check); the inner nut's seat under the "
+                                 "plate prints on support interface - scrape it flat")
+# review fix (2026-11-05, F6): printed upright, the skirt mouth that slides over the avionics spigot (radial clearance
+# 0.2 mm) is the FIRST layer - the pipeline profile has elefant_foot_compensation 0, so the collared cap's slice sets it
+# (A: 0.15 mm, a common Bambu PLA value; check the fit on the spigot on the first print).  Only this slice: the hole-less,
+# collar-less cap (tether / hybrid, the flight-mass model) keeps its top-face-down slice untouched
+COLLAR_CAP_OVERRIDES = {"elefant_foot_compensation": "0.15"}
+
+
+def part_rule(L, name: str):
+    """(quantity, orientation candidates, supports, why) of a part - the battery build's collared top cap prints upright."""
+    if name == "top_cap" and getattr(L, "has_lp_collar", False):
+        return TOP_CAP_COLLAR
+    return PARTS[name]
+
+
+def switch_hole_support_check(gcode: str, project_3mf: str, L, mesh, rots) -> dict:
+    """Switch-collar round (2026-11-05): support extrusion of the sliced collared top cap mapped back to the design frame
+    (make_print_files.plate_transform, as the intake window check) - registration: the collar's outer wall in the G-code
+    fits a circle on the predicted switch axis (r lp_col_ro - line / 2); then the support samples whose bead can reach
+    inside the switch hole's bore (r < hole_d / 2 + support line / 2, z over the plate's underside) or inside the collar
+    (r < lp_col_ri + support line / 2 over the plate top) - both must be 0 - and the support path under the inner nut's
+    seat (the plate's underside, r <= nut across corners / 2, reported).  status PASS / FAIL / NOT_VERIFIED."""
+    import numpy as np
+    res: dict = {"status": "NOT_VERIFIED", "check": "support extrusion inside the logic switch hole / the collar"}
+    try:
+        T = mpf.orient_matrix(mesh, rots)
+        Vs = trimesh.transform_points(mesh.vertices, T)
+        P, plate = mpf.plate_transform(project_3mf, np.vstack([Vs.min(axis=0), Vs.max(axis=0)]))
+    except (ValueError, KeyError, OSError) as e:
+        res["reason"] = f"slicer placement unknown: {e}"
+        return res
+    G = P @ T
+    if abs(G[2, 2] - 1.0) > 1e-9:
+        res["reason"] = "the cap is not upright in this orientation: check not implemented"
+        return res
+    Ginv = np.linalg.inv(G)
+    pts, settings = mpf.gcode_extrusion_samples(
+        gcode, lambda f, z: f.startswith(mpf.SUPPORT_FEATURE_PREFIX) or f == "Outer wall")
+    lw, _ = mpf._setting_mm(settings, "outer_wall_line_width", "line_width")
+    lws, _ = mpf._setting_mm(settings, "support_line_width", "line_width")
+    lh, _ = mpf._setting_mm(settings, "layer_height")
+    if lw is None or lws is None or lh is None:
+        res["reason"] = "no line width / support line width / layer height in the G-code config"
+        return res
+    sx, sy = L.lp_sw_xy
+
+    def design(Q):
+        D = (Ginv @ np.c_[Q[:, :3], np.ones(len(Q))].T).T
+        return np.hypot(D[:, 0] - sx, D[:, 1] - sy), D[:, 2]
+
+    def design_dx(Q):
+        D = (Ginv @ np.c_[Q[:, :3], np.ones(len(Q))].T).T
+        return D[:, 0] - sx
+    empty = np.empty((0, 4))
+    ow = pts.get("Outer wall", empty)
+    r_ow, z_ow = design(ow) if len(ow) else (np.empty(0), np.empty(0))
+    sel = (z_ow > L.lp_col_notch_z0 - 1.0) & (z_ow < L.lp_col_z[1]) & (z_ow > L.lp_col_z[0] + 0.5) & \
+          (np.abs(r_ow - (L.lp_col_ro - lw / 2)) < 1.0)
+    reg = {"slicer_placement": plate, "collar_outer_wall_samples": int(sel.sum())}
+    res["registration"] = reg
+    if sel.sum() < 30:
+        res["reason"] = f"only {int(sel.sum())} collar outer-wall samples"
+        return res
+    D = (Ginv @ np.c_[ow[sel, :3], np.ones(int(sel.sum()))].T).T
+    cx, cy, R = mpf._circle_fit(D[:, :2])
+    reg.update({"fit_centre_offset_mm": round(math.hypot(cx - sx, cy - sy), 4), "fit_r_mm": round(R, 4),
+                "expected_r_mm": round(L.lp_col_ro - lw / 2, 4)})
+    if math.hypot(cx - sx, cy - sy) > 0.1 or abs(R - (L.lp_col_ro - lw / 2)) > 0.1:
+        res["reason"] = f"collar outer wall fit off: centre {math.hypot(cx - sx, cy - sy):.3f} mm, r {R:.3f}"
+        return res
+    S = np.vstack([v for k, v in pts.items() if k.startswith(mpf.SUPPORT_FEATURE_PREFIX)] or [empty])
+    r_s, z_s = design(S) if len(S) else (np.empty(0), np.empty(0))
+    hole_r = 0.5 * L.lp_sw_hole_d
+    in_hole = (r_s < hole_r + lws / 2) & (z_s > L.z_cap_plate_bottom + lh / 2) & (z_s < L.z_cap_top + lh)
+    in_collar = (r_s < L.lp_col_ri + lws / 2) & (z_s > L.z_cap_top)
+    # review fix (2026-11-05): the two U notches across the wall (|x - sx| < notch_w / 2, over the round bottom)
+    ru = 0.5 * L.lp_col_notch_w
+    dx_s = design_dx(S) if len(S) else np.empty(0)
+    zb_s = L.lp_col_notch_zc - np.sqrt(np.clip(ru * ru - dx_s * dx_s, 0.0, None))
+    in_notch = (np.abs(dx_s) < ru) & (r_s >= L.lp_col_ri) & (r_s < L.lp_col_ro + lws / 2) & (z_s > zb_s + lh / 2)
+    in_collar = in_collar | in_notch
+    seat = (r_s <= 0.5 * L.lp_sw_nut_d) & (z_s < L.z_cap_plate_bottom) & (z_s > L.z_cap_plate_bottom - 3.0)
+    res.update({"support_samples_total": int(len(S)), "support_path_mm_total": round(float(S[:, 3].sum()), 1) if len(S) else 0.0,
+                "support_samples_in_switch_hole": int(in_hole.sum()), "support_samples_in_collar": int(in_collar.sum()),
+                "support_samples_in_the_notches (in the collar count)": int(in_notch.sum()),
+                "support_path_mm_under_the_nut_seat_reported": round(float(S[seat, 3].sum()), 1) if len(S) else 0.0,
+                "support_line_width_mm": lws, "layer_height_mm": lh,
+                "status": "PASS" if not (in_hole.any() or in_collar.any()) else "FAIL"})
+    return res
 
 
 def config_paths(config: str | None) -> tuple[str, str, str, str]:
@@ -321,6 +431,8 @@ def main(argv: list[str] | None = None) -> int:
         base = re.sub(r"_\d+$", "", name) if re.sub(r"_\d+$", "", name) in stl_files else name
         vol.setdefault(base, e["volume_mm3"])
         qty[base] = qty.get(base, 0) + 1
+    # 2026-11-05: the STL's own solid where the report's mass entry is measured on another one (logic switch hole)
+    vol.update(rep["extra"].get("printed_solid_volume_override_mm3") or {})
     names = [n for n in (a.parts.split(",") if a.parts else list(stl_files)) if n]
     os.makedirs(OUT, exist_ok=True)
     tmp = tempfile.mkdtemp(prefix="cansat_v09_slice_")
@@ -341,10 +453,22 @@ def main(argv: list[str] | None = None) -> int:
             "machine": mpf.MACHINE, "process_base": mpf.PROCESS, "filament": mpf.FILAMENT, "parts": {}}
     old = {}
     tpath = os.path.join(OUT, "slicer_part_masses.json")
-    if a.parts and os.path.exists(tpath):          # partial run: keep the other parts' entries
+    if os.path.exists(tpath):
         with open(tpath, "r", encoding="utf-8") as f:
             old = json.load(f).get("parts", {})
+    if a.parts:                                    # partial run: keep the other parts' entries
         table["parts"].update({k: v for k, v in old.items() if k not in names})
+    else:                                          # 2026-11-05: '@' variants are slices of geometry other builds use
+        table["parts"].update({k: v for k, v in old.items() if "@" in k})
+    old_plan = {}
+    ppath = os.path.join(OUT, "print_plan_provisional.json")
+    if a.parts and os.path.exists(ppath):          # 2026-11-05: a partial run keeps the other parts' plan entries
+        with open(ppath, "r", encoding="utf-8") as f:
+            pj = json.load(f)
+        old_plan = {k: v for k, v in (pj.get("parts") or {}).items() if k not in names}
+        plan["source"]["stl_sha256"].update({k: v for k, v in (pj.get("source") or {}).get("stl_sha256", {}).items()
+                                             if k not in names})
+    variants = dict(getattr(L, "slicer_variants", {}) or {})
     try:
         inlay_name = getattr(L, "livery_inlay_part", None) if getattr(L, "has_livery", False) else None
         for name in names:
@@ -353,7 +477,7 @@ def main(argv: list[str] | None = None) -> int:
             if name not in PARTS:
                 log.append(f"{name}: no orientation rule - skipped")
                 continue
-            q, cands, sup, why = PARTS[name]
+            q, cands, sup, why = part_rule(L, name)
             if name == "propulsion_module":     # fins on the plate diagonals (rocket_geometry.plate_rot_z)
                 rz = (45.0 - L.fin_thetas[0]) % 90.0
                 cands = [[("z", rz)]] if rz else [[]]
@@ -364,6 +488,8 @@ def main(argv: list[str] | None = None) -> int:
             m = mpf.orient(mesh, rots)
             cls, ov, txt = class_overrides(pr, name)
             extra = {**(mpf.PART_OVERRIDES.get(name) or {}), **SUPPORT_OVERRIDES.get(name, {}), **ov}
+            if name == "top_cap" and getattr(L, "has_lp_collar", False):
+                extra.update(COLLAR_CAP_OVERRIDES)        # review fix F6: the skirt mouth is the first layer
             entry = {"rotations": rots, "extents_mm": [round(float(x), 1) for x in m.extents], "class": cls,
                      "settings": txt, "overrides": extra}
             t0 = time.time()
@@ -392,6 +518,10 @@ def main(argv: list[str] | None = None) -> int:
                     upright = all(ax == "z" for ax, _ in rots)
                     entry["part_z_centroid_design_mm"] = (lo + zc if upright else hi - zc if rots == [("x", 180.0)]
                                                           else None) if zc is not None else None
+                    if name == "top_cap" and getattr(L, "has_lp_collar", False) and res.get("_project"):
+                        # switch-collar round (2026-11-05): no support inside the switch hole / the collar (G-code, M)
+                        entry["switch_hole_support"] = switch_hole_support_check(res["_gcode"], res["_project"], L, mesh,
+                                                                                 rots)
                 if res.get("ok") and two:
                     # livery: the white body above is sliced alone like every other part (its table grams stay in the
                     # pipeline's settings); the print file is the 2-filament project with the RESOLVED P2S profile -
@@ -440,6 +570,14 @@ def main(argv: list[str] | None = None) -> int:
             used = mpf.used_support_type(name, sup, entry)
             plan["parts"][name] = {"quantity": qty.get(name, q), "supports": sup, "support_type_used": used, "why": why,
                                    **entry}
+            if entry.get("ok") and name in variants and name in old and old[name].get("solid_volume_mm3") and abs(
+                    old[name]["solid_volume_mm3"] / vol[name] - 1.0) > 1e-6:
+                vkey = f"{name}@{variants[name]}"        # 2026-11-05: keep the other geometry's slice
+                if vkey not in table["parts"]:
+                    table["parts"][vkey] = {**old[name], "variant_note": (
+                        f"kept by make_v09_print_files {time.strftime('%Y-%m-%d')}: the slice of the {name} geometry "
+                        f"'{variants[name]}' (solid {old[name]['solid_volume_mm3']:.2f} mm^3) that other builds / the "
+                        f"flight-mass model still use; the '{name}' entry is the printed part (solid {vol[name]:.2f} mm^3)")}
             if entry.get("ok"):
                 table["parts"][name] = {"part_g": entry["part_g"], "filament_g": entry["filament_g"],
                                         "removed_g": entry["removed_g"], "solid_volume_mm3": vol[name],
@@ -465,6 +603,8 @@ def main(argv: list[str] | None = None) -> int:
                     + (f"part {entry['part_g']:.2f} g (solid {vol[name] * rho / 1000:.2f} g), filament {entry['filament_g']:.2f} g, "
                        f"{mpf.fmt_t(entry['time_s'])}, support {used}" if entry.get("ok") else str(entry.get("error", "not sliced")))
                     + (f", window support check {ws.get('status')}" if ws else "")
+                    + (f", switch hole / collar support check {entry['switch_hole_support'].get('status')}"
+                       if entry.get("switch_hole_support") else "")
                     + (f"; 2 filaments: {inlay_name} {entry['inlay_part_g']:.2f} g, {entry['swaps']} swaps, purge "
                        f"{sum(entry['purge_g_by_tool'].values()):.1f} g, tower {sum(entry['prime_tower_g_by_tool'].values()):.1f} g, "
                        f"+{mpf.fmt_t(two_colour_summary(entry)['added_time_s'])} vs one colour"
@@ -473,6 +613,11 @@ def main(argv: list[str] | None = None) -> int:
             print(line, flush=True)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+    if old_plan:                                   # 2026-11-05: partial run - the other parts' entries, plan order kept
+        plan["parts"] = {**old_plan, **plan["parts"]}
+        order = list(pj.get("parts") or {})
+        plan["parts"] = {k: plan["parts"][k] for k in order + [k for k in plan["parts"] if k not in order]
+                         if k in plan["parts"]}
     ok = [(n, v) for n, v in plan["parts"].items() if v.get("ok")]
     pg = lambda v: v["part_g"] + (v.get("inlay_part_g") or 0.0)      # noqa: E731  (livery: + the orange inlay)
     plan["totals"] = {"time_s": sum(v["time_s"] * v["quantity"] for _, v in ok),
@@ -503,14 +648,33 @@ def main(argv: list[str] | None = None) -> int:
     total_line = (f"**합계 (수량 반영)**: {mpf.fmt_t(t['time_s'])}, 필라멘트 {t['filament_g']:.0f} g, 부품 {t['part_g']:.0f} g "
                   f"(발사대 제외 기체 부품 {t['vehicle_part_g']:.0f} g)")
     lines += ["", total_line, ""]
+    for n, v in plan["parts"].items():          # switch-collar round (2026-11-05): the cap's support check (M, G-code)
+        shs = v.get("switch_hole_support")
+        if shs:
+            sup_g = sum(g_ for k_, g_ in (v.get("feature_g") or {}).items() if k_.startswith("Support"))
+            lines += [f"## {n}: 바로 세워 출력 + 서포트 (2026-11-05 스위치 보호 칼라)", "",
+                      f"* 서포트 검사(G-code, M): **{shs.get('status')}** - 스위치 구멍 안 서포트 {shs.get('support_samples_in_switch_hole')}점, "
+                      f"칼라 안 {shs.get('support_samples_in_collar')}점(둘 다 0이어야 함). 안쪽 너트 자리(판 밑면) 서포트 경로 "
+                      f"{shs.get('support_path_mm_under_the_nut_seat_reported')} mm(보고만: 떼고 평평하게 긁음). 등록: 칼라 바깥 벽 원 중심 "
+                      f"{(shs.get('registration') or {}).get('fit_centre_offset_mm')} mm 차이.",
+                      f"* 서포트 {sup_g:.1f} g, 서포트 시간 {mpf.fmt_t(v.get('support_time_s') or 0.0)} (M).", ""]
     lines += colour_lines(plan, L)
     with open(os.path.join(OUT, "print_plan_provisional.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(lines))
     log.append(total_line)
-    with open(os.path.join(OUT, "slice_log.txt"), "w", encoding="utf-8", newline="\n") as f:
-        f.write("\n".join(log) + "\n")
+    lpath = os.path.join(OUT, "slice_log.txt")
+    prev = ""
+    if a.parts and os.path.exists(lpath):          # 2026-11-05: a partial run appends to the log of the full run
+        with open(lpath, "r", encoding="utf-8") as f:
+            prev = f.read().rstrip("\n") + "\n\n--- partial run (--parts " + a.parts + ") ---\n"
+    with open(lpath, "w", encoding="utf-8", newline="\n") as f:
+        f.write(prev + "\n".join(log) + "\n")
     print(total_line)
     fails = [n for n in names if n in plan["parts"] and not plan["parts"][n].get("ok")]
+    for n, v in plan["parts"].items():          # switch-collar round: the cap's hole / collar support check must PASS
+        shs = v.get("switch_hole_support")
+        if shs is not None and shs.get("status") != "PASS":
+            fails.append(f"{n} switch hole support check {shs.get('status')}")
     # reviewfix F1: the 2-colour G-code must print the inlay as ONE outer-line pass of the drawn logo
     for n, v in plan["parts"].items():
         if v.get("two_colour"):

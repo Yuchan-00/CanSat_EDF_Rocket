@@ -1,0 +1,34 @@
+{
+ "tool": "scripts/determinism.py (two full runs, sha256 compared)",
+ "files": {
+  "com.kicad_sch": "e86b2a7dfb75d1b3a02faa332b213016dc1924eb9aca4f7401ae030bdf1da714",
+  "fcu.kicad_sch": "01290a05f549f84fdf5a67303aa8ecf728a8204f83a503925bb954c5ccea80b6",
+  "gns.kicad_sch": "ad18430d81bc4853708020899d1b43d34df79bffb3d90758d654488e2b2c7bb6",
+  "io.kicad_sch": "15f5231fabcd2e2e1b76b701f9bce4d4b035b64c3217d54ce61725d56fa6410e",
+  "level_shift.kicad_sch": "dfa3643cec1429a9c20cadcf62c88186521bbba9d6f47ea45caa1731019e2a61",
+  "nav.kicad_sch": "d4155dcef85d6270c3708031931158532b31b10ef3551fa04b5cf266afce5ace",
+  "power.kicad_sch": "f9d864817b97c22dbcddba4351c63f54aa209faa9d23d5ba85432688b6b26375",
+  "spare_mcu.kicad_sch": "b1a98a35f83a2f81fe36abb5d38266cc6081c0ea3ca9155f2003cd238ed74b40",
+  "vtol_carrier.kicad_sch": "eaa68a1b01eebc047b5262c803cae7b75eb8e55430cc4f020f3108b6e933e031",
+  "vtol_carrier.kicad_pro": "eddf18d5ecc1f371ef2bd04b3cba6e83d98ac14983d2dddf14ba482e6bb2874e",
+  "placement.json": "07b5ff5ff8416d7d4eba6bbcf034f7a619479483b7b295ed2552a3d878bc4365",
+  "vtol_carrier.ir.json": "e56e8c6c9de313d9de2ed325472c11979f12e208bd1548948a7ac2968ead15d8",
+  "vtol_carrier.ir_with_pcb.json": "1b317973a7aafea41ad11d6b2b6291de6e1518a1cd7a3a37fc5be9b07128dc5a",
+  "vtol_carrier_unrouted.kicad_pcb": "e075fb031cad875192577066d753a87d9873ceb6532ca02b5ac46db55b885df1"
+ },
+ "differences": [],
+ "routed_board_reimport": {
+  "file_sha256": [
+   "44a56a169e8bc54c820d0231a2479c5e9e45fa0e046e2469cd138e198e3db61b",
+   "56787b3ca9020c5e2441e97e575f77aa7b1e6368e62ab570290ae39663ceafed"
+  ],
+  "sha256_without_uuids": [
+   "4887e39618abeaf2b1eb93aaa733b0d197b265bdc28bd643d40cff13543d29ce",
+   "4887e39618abeaf2b1eb93aaa733b0d197b265bdc28bd643d40cff13543d29ce"
+  ],
+  "bytes_identical": false,
+  "geometry_identical": true,
+  "note": "pcbnew.ImportSpecctraSES gives imported tracks / vias random KIIDs and KiCad saves items in KIID order; geometry is compared as a sorted set of items without uuids"
+ },
+ "result": "PASS"
+}

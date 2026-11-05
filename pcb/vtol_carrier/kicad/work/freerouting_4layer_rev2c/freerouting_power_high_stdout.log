@@ -1,0 +1,35 @@
+2026-11-05 11:51:19.761 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-05 11:51:20.055 INFO   Hardware: 16 CPU cores, 421 CPU score, 4026 MB RAM
+2026-11-05 11:51:20.055 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 11:51:20.057 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-05 11:51:21.113 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 11:51:21.175 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-05 11:51:21.175 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-05 11:51:21.247 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-05 11:51:21.388 INFO   [A8CD7E\1E7BFC] Loading board file 'vtol_carrier_power_high.dsn'...
+2026-11-05 11:51:21.401 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-05 11:51:21.401 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-05 11:51:21.415 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-05 11:51:21.681 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-05 11:51:21.682 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-05 11:51:21.687 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-05 11:51:21.695 INFO   [A8CD7E\1E7BFC] Job 'A8CD7E\1E7BFC' started at 2026-11-05T02:51:21.694488200Z.
+2026-11-05 11:51:21.990 INFO   [A8CD7E\1E7BFC] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-05 11:51:22.168 INFO   [A8CD7E\1E7BFC] Fanout stage started on board 'dc7f1b746fc8904bde7c3152b2199c41' with 5 of 574 SMD pins needing fanout (569 already connected, 0 netless).
+2026-11-05 11:51:23.059 INFO   [A8CD7E\1E7BFC] Fanout pass #1 on board '2d152a601c1938a9df11c7997e2febd0' completed in 0.72 seconds with 2 SMD pins fanouted, 3 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-05 11:51:23.317 INFO   [A8CD7E\1E7BFC] Fanout pass #2 on board '2d152a601c1938a9df11c7997e2febd0' completed in 0.21 seconds with 0 SMD pins fanouted, 1 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-05 11:51:23.337 INFO   [A8CD7E\1E7BFC] Fanout stage completed: started with 574 total SMD pins, completed in 1.06 seconds, escaped pins: 6/574 (1.0%), using 1.19 total CPU seconds, 0.31 GB total allocated, and 62.8 MB peak heap usage.
+2026-11-05 11:51:23.484 INFO   [A8CD7E\1E7BFC] Auto-routing stage started on board '2d152a601c1938a9df11c7997e2febd0' with baseline score 686.27 for 4 unrouted items.
+2026-11-05 11:51:24.647 INFO   [A8CD7E\1E7BFC] Auto-routing pass #1 on board '2d152a601c1938a9df11c7997e2febd0' was completed in 1.09 seconds with score 1000.00 (0 unrouted and 0 violations), using 1.78 CPU seconds and the job allocated 0.43 GB of memory so far.
+2026-11-05 11:51:24.811 INFO   [A8CD7E\1E7BFC] Auto-routing pass #2 on board 'a3c1231fb8ba053040eba79d576e3838' was completed in 0.07 seconds with score 1000.00 (0 unrouted and 0 violations), using 2.72 CPU seconds and the job allocated 0.67 GB of memory so far.
+2026-11-05 11:51:24.980 INFO   [A8CD7E\1E7BFC] Auto-routing stage completed: started with 6 unrouted nets, completed in 2.93 seconds, final score: 1000.00 (0 unrouted and 0 violations), using 2.72 total CPU seconds, 0.67 GB total allocated, and 64.6 MB peak heap usage.
+2026-11-05 11:51:25.176 INFO   [A8CD7E\1E7BFC] Optimization stage started on board 'a3c1231fb8ba053040eba79d576e3838'. Baseline router score: 1000.00, optimizer score: 852.29, incomplete connections: 0, clearance violations: 0.
+2026-11-05 11:51:27.235 INFO   [A8CD7E\1E7BFC] Optimizer pass #1 on board 'a3d1c3cc485e3a00ac9d000061f9b564' was completed in 1.76 seconds with the score of 860.90 (0 unrouted and 0 violations).
+2026-11-05 11:51:27.323 INFO   [A8CD7E\1E7BFC] Optimizer pass #1: optimizer score 852.29 -> 860.90 (IMPROVED, 1.0104%), router score: 1000.00, incomplete connections: 0, clearance violations: 0.
+2026-11-05 11:51:27.323 INFO   [A8CD7E\1E7BFC] Stopping optimizer because the improvement in this pass (1.0104%) is below the threshold (2.50%).
+2026-11-05 11:51:27.446 INFO   [A8CD7E\1E7BFC] Optimization stage completed:. Baseline router score: 1000.00, baseline optimizer score: 852.29, final router score: 1000.00, final optimizer score: 860.90, completed in 2.20 seconds, using 5.69 total CPU seconds, 1.11 GB total allocated, and 184.4 MB peak heap usage.
+2026-11-05 11:51:27.513 INFO   [A8CD7E\1E7BFC] Job 'A8CD7E\1E7BFC' finished with state: COMPLETED (elapsed: 5.82 seconds, finished at UTC: 2026-11-05T02:51:27.511731200Z).
+2026-11-05 11:51:27.540 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\B--Claude\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\fix3\vM\work\vtol_carrier_power_high.ses' (SES)...
+2026-11-05 11:51:27.544 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\B--Claude\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\fix3\vM\work\vtol_carrier_power_high.ses' (12759 bytes).
+
+--- stderr ---

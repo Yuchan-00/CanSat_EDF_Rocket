@@ -1,4 +1,4 @@
-# Fusion 360 스크립트 — `CanSatEDFRocket` (지금 0.9.6; 아래 설명의 첫 부분은 v0.8.1 기준)
+# Fusion 360 스크립트 — `CanSatEDFRocket` (지금 0.9.8; 아래 설명의 첫 부분은 v0.8.1 기준)
 
 `docs/SPEC.md` 1–6절의 전체 어셈블리를 Fusion 360 안에서 자동 생성하고 STL/STEP/f3d/미리보기/질량특성
 보고서를 내보내는 API 스크립트입니다. 스크립트 판은 `SCRIPT_VERSION = "0.8.1"`이고, 실행 로그 첫 줄과 보고서의
@@ -269,3 +269,29 @@ Fusion 커널이 그 호출을 실제로 어떻게 실행하는지(평면 규약
   재생 비교(X3, `replay_x3.py`가 `CB.inlay`를 따로 구현): `avionics_module` 불리언 차이 **0.0000 / 0.0000 mm³**(로켓, VTOL 배터리·유선·하이브리드),
   `avionics_logo` **0.0000 / 0.0000 mm³**(부피 680.99 mm³, 20개 고체). 흡입부·베인·트레이는 예전과 같은 재생기 한계입니다.
   **Fusion GUI 실행은 아직 안 했습니다(사람이 해야 함).** 실기에서는 스케치 하나에 선이 최대 120개(CAD용 단순화 0.005 mm, 스케치 40개)라 이 부분이 몇 분 더 걸릴 수 있습니다.
+
+## 스위치 보호 칼라 (0.9.8, 2026-11-05, 아직 Fusion 실기 실행 전)
+
+* 사용자 결정(2026-11-05): "상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘". 로직 스위치 레버 둘레에 상단 캡과 한 몸인 칼라를 둡니다.
+  **VTOL 배터리 구성만**입니다(`Layout.has_lp_collar`). `SCRIPT_VERSION`을 0.9.8로 올렸습니다.
+* `build_top_cap`이 판 구멍을 뚫기 **전에** 네 단계를 더합니다(치수는 모두 `Layout.lp_col_*`, 스크립트에 숫자 없음):
+  `cap_collar`(cyl_z JOIN, 바깥 Ø25.8, 판 두께 가운데부터 테두리 z 492.5까지), `cap_collar_bore`(cyl_z CUT, 안 Ø21, 판 윗면부터),
+  레버가 젖혀지는 y 방향 손가락 홈 2개를 **U자 홈**으로(독립 검토 반영 2026-11-05, 처음은 폭 16 mm 네모 홈): `cap_collar_notches`(box_xy CUT, 폭 17 mm, 반원 중심 z 488.80부터 위), `cap_collar_notch_round`(cut_between CUT, Ø17 원기둥, y 방향, 축 z 488.80, 가장 낮은 곳 판 위 5.0 mm). 같은 라운드라 버전은 0.9.8 그대로이고 변경 기록 줄에 적었습니다.
+* 칼라도 로직 전원 부품이라 질량 결정 대기 중(`in_flight_mass_model` false)에는 합계에서 뺍니다:
+  `__top_cap_logic_collar_removed`(Layout 칼라 부피 2,104.03 mm³ × 캡 밀도의 음의 점질량, 칼라 무게중심). 구멍 마개와 같은 방식입니다.
+* 확인(2026-11-05 검토 반영 뒤, 실기 아님): API 검사 **0건**, 모의 실행 **5개 구성 실패 0, ERROR 줄 0**, 재생 비교(X3): 상단 캡(구멍 + U자 홈 칼라)
+  **0.0000 / 0.0000 mm³**(부피 29,573.8 mm³), `logic_pack`·`logic_switch` 0.0000 / 0.0000, 유선·하이브리드 상단 캡(칼라 없음) 0.0000 / 0.0000.
+  흡입부·트레이는 예전과 같은 재생기 한계입니다. **Fusion GUI 실행은 아직 안 했습니다.**
+
+## 로직 전원 (0.9.7, 2026-11-05, 아직 Fusion 실기 실행 전)
+
+* 사용자 결정(2026-11-05): 캐리어 PCB rev 2c의 1S 로직 배터리를 6S 팩 −x 면(A 자리)에, MTS-102 스위치를 VTOL 상단 캡의 구멍에 넣습니다.
+  **VTOL 배터리 구성만**입니다(`Layout.has_logic_power`; 유선·하이브리드는 이 캐리어로 더 맞추지 않음). `SCRIPT_VERSION`을 0.9.7로 올렸습니다.
+* 상단 캡: 스위치 구멍(Ø6.2, r 43, 140°)은 `Layout.cap_holes`에 들어 있어 `build_top_cap`이 다른 구멍처럼 뚫습니다(스크립트에 치수 없음).
+* 새 자리표시 컴포넌트 `logic_pack`(배터리 상자), `logic_switch`(`build_logic_switch`: 안쪽 너트, 몸통, 단자, 부싱, 바깥 너트, 레버),
+  묶음 질량 `logic_switch_lead`, `logic_retention`.
+* 질량 결정 대기(`params.json` `configs.vtol.logic_power.in_flight_mass_model` false): 이 넷은 만들고 재지만 보고서 합계에는 넣지 않습니다
+  (`derived.extra.logic_power.pending`). 합계에는 스위치 구멍만큼의 마개(Layout 부피 × 캡 밀도)를 더해 CadQuery의 비행 질량 모델과 맞춥니다.
+* `printed_density`는 슬라이서 표에서 이 컴포넌트의 부피에 가장 가까운 항목(`top_cap` 또는 `top_cap@no_logic_switch_hole`)을 씁니다.
+* 확인(2026-11-05, 실기 아님): API 검사 **0건**, 모의 실행 **5개 구성 실패 0**, 재생 비교(X3): 상단 캡(구멍 포함) **0.0000 / 0.0000 mm³**,
+  `logic_pack`·`logic_switch` **0.0000 / 0.0000 mm³**, 유선·하이브리드 상단 캡(구멍 없음) 0.0000 / 0.0000 mm³. **Fusion GUI 실행은 아직 안 했습니다.**

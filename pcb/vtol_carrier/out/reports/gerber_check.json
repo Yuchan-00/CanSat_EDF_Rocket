@@ -1,0 +1,28 @@
+{
+ "copper_layers": 4,
+ "gerber_check": {
+  "status": "PASS",
+  "message": "12 files, 4 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Copper,L3', 'Copper,L4', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+ },
+ "drill_check": {
+  "status": "PASS",
+  "message": "1 drill file(s)"
+ },
+ "files": [
+  "vtol_carrier-B_Cu.gbl",
+  "vtol_carrier-B_Mask.gbs",
+  "vtol_carrier-B_Paste.gbp",
+  "vtol_carrier-B_Silkscreen.gbo",
+  "vtol_carrier-drl_map.pdf",
+  "vtol_carrier-Edge_Cuts.gm1",
+  "vtol_carrier-F_Cu.gtl",
+  "vtol_carrier-F_Mask.gts",
+  "vtol_carrier-F_Paste.gtp",
+  "vtol_carrier-F_Silkscreen.gto",
+  "vtol_carrier-In1_Cu.g1",
+  "vtol_carrier-In2_Cu.g2",
+  "vtol_carrier-job.gbrjob",
+  "vtol_carrier.drl"
+ ],
+ "zip": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_gerber.zip"
+}

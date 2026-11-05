@@ -71,6 +71,15 @@ the OD, cut last; ``avionics_module(with_livery=False)`` is the plain module) - 
 (LIVERY_COLOR, Mandarin Orange) is the inlay that fills the pocket: per copy and island the pre-warped (v, z) outline
 (``Layout.livery_polys_vz``) extruded along the copy's radial direction INTERSECT the annular sector r [body_r - depth,
 body_r].  White + inlay = the plain module (check C36).  No other solid changes.
+2026-11-05 logic power (Layout.has_logic_power, VTOL battery build): ``top_cap`` cuts the logic switch hole (a plate hole of
+Layout.cap_holes; ``with_logic_hole=False`` gives the hole-less cap, the flight-mass model's ``Part.mass_shape`` while
+logic_power.in_flight_mass_model is false); ``logic_power_parts`` holds the placeholders ``logic_pack`` / ``logic_switch``
+and the lumped ``logic_switch_lead`` / ``logic_retention`` - in ``build_all`` only once the mass switch is true;
+``logic_lead_keepouts`` / ``carrier_plug_boxes`` are check helpers (C37-C39).
+Switch-collar round (user decision 2026-11-05, Layout.has_lp_collar): ``top_cap`` also fuses the protective collar
+(``logic_collar``: tube round the switch with two finger notches on the throw axis) - one piece with the cap; it is part
+of the logic-power kit, so ``with_logic_hole=False`` leaves out the collar too (``with_logic_collar`` overrides) and the
+flight-mass shape stays the cap of the previous round, bit for bit.  ``logic_lever_sweep`` is a check helper (C39 / C41).
 """
 from __future__ import annotations
 
@@ -1937,13 +1946,47 @@ def chute_pack(L: Layout) -> cq.Shape:
 # --------------------------------------------------------------------------- #
 # v0.9 CAD-2 VTOL configuration: top cap, GPS on the cap, hybrid buffer pack
 # --------------------------------------------------------------------------- #
-def top_cap(L: Layout) -> cq.Shape:
+def logic_collar(L: Layout) -> cq.Shape:
+    """Switch-collar round (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'; Layout._logic_collar):
+    the protective collar printed with the top cap - Ø 2 lp_col_ro from half the plate thickness (union overlap) to the
+    rim lp_col_z[1], minus the bore Ø 2 lp_col_ri from the plate top up, minus the two finger notches on the throw axis
+    (vehicle y).  Review fix (2026-11-05, F1 / F2): each notch is a U slot (``logic_collar_slot``): the slab |x - sx| <
+    lp_col_notch_w / 2 from the U's centre lp_col_notch_zc up plus a round bottom (a cylinder Ø lp_col_notch_w along y,
+    axis at lp_col_notch_zc), lowest point lp_col_notch_z0.  Fused into ``top_cap``."""
+    sx, sy = L.lp_sw_xy
+    zin = L.z_cap_plate_bottom + 0.5 * L.cap_plate_t
+    z1 = L.lp_col_z[1]
+    outer = _cyl_z(L.lp_col_ro, zin, z1, sx, sy)
+    return _cut(outer, [_cyl_z(L.lp_col_ri, L.z_cap_top, z1 + OVERLAP, sx, sy),
+                        logic_collar_slot(L, sy - L.lp_col_ro - OVERLAP, sy + L.lp_col_ro + OVERLAP)])
+
+
+def logic_collar_slot(L: Layout, y0: float, y1: float, shrink: float = 0.0) -> cq.Shape:
+    """Review fix (2026-11-05, F1 / F2): the collar's U notch slot between y0 and y1 (vehicle y, the throw axis) - the
+    slab |x - sx| < lp_col_notch_w / 2 - shrink from lp_col_notch_zc to the rim + OVERLAP plus the round bottom (a
+    cylinder of radius lp_col_notch_w / 2 - shrink along y, axis at (sx, lp_col_notch_zc)).  shrink > 0 gives the
+    check probes (C41, the tests: the slot must be free of material)."""
+    sx, _ = L.lp_sw_xy
+    r = 0.5 * L.lp_col_notch_w - shrink
+    zc = L.lp_col_notch_zc
+    slab = _box(sx - r, sx + r, y0, y1, zc, L.lp_col_z[1] + OVERLAP)
+    rnd = cq.Solid.makeCylinder(r, y1 - y0, V(sx, y0, zc), V(0.0, 1.0, 0.0))
+    return slab.fuse(rnd).clean()
+
+
+def top_cap(L: Layout, with_logic_hole: bool = True, with_logic_collar: bool | None = None) -> cq.Shape:
     """v0.9 CAD-2 VTOL top cap (Layout._top_cap): skirt r body_id/2..body_r over the avionics spigot, plate (full disc,
     flat top) z_cap_plate_bottom..z_cap_top; under the plate the hub (O cap_hub_d), cap_rib_n radial ribs (cap_rib_t, from
     cap_rib_r[0] inside the hub to cap_rib_r[1]) down to z_cap_under and the rim ring (cap_ring_r) down to
     z_cap_ring_bottom - the hub / ribs / ring reach half the plate thickness into it (union overlap); then the hardpoint
     hole (axis, through hub and plate), the plate holes (Layout.cap_holes) and the skirt joint holes (O joint_hole_outer_d at
-    z_cap_skirt_bottom + joint_screw_dz, joint_thetas)."""
+    z_cap_skirt_bottom + joint_screw_dz, joint_thetas).  2026-11-05: ``with_logic_hole`` False leaves out the logic power
+    switch hole (the flight-mass model while logic_power.in_flight_mass_model is false; the printed part has the hole).
+    Switch-collar round (2026-11-05): the battery build's cap also carries the protective collar (``logic_collar``,
+    Layout.has_lp_collar) - part of the logic-power kit, so ``with_logic_collar`` follows ``with_logic_hole`` unless
+    given (the flight-mass model is the cap without the hole AND without the collar)."""
+    if with_logic_collar is None:
+        with_logic_collar = with_logic_hole
     zp = L.z_cap_plate_bottom
     zin = zp + 0.5 * L.cap_plate_t
     parts = [_tube(L.body_r, L.body_id / 2, L.z_cap_skirt_bottom, zp + OVERLAP),
@@ -1952,11 +1995,15 @@ def top_cap(L: Layout) -> cq.Shape:
              _tube(L.cap_ring_r[1], L.cap_ring_r[0], L.z_cap_ring_bottom, zin)]
     for th in L.cap_rib_thetas:
         parts.append(_box_polar(L.cap_rib_r[0], L.cap_rib_r[1], -L.cap_rib_t / 2, L.cap_rib_t / 2, L.z_cap_under, zin, th))
+    if with_logic_collar and getattr(L, "has_lp_collar", False):
+        parts.append(logic_collar(L))
     body = _fuse(parts)
     cutters = [_cyl_z(L.cap_hardpoint_d / 2, L.z_cap_under - OVERLAP, L.z_cap_top + OVERLAP)]
     if getattr(L, "cap_hardpoint", False):     # v0.9 fix round: the load washer's flush recess in the hub / rib bottoms
         cutters.append(_cyl_z(L.cap_washer_recess[0] / 2, L.z_cap_under - OVERLAP, L.z_cap_under + L.cap_washer_recess[1]))
-    for x, y, d in L.cap_holes.values():
+    for nm, (x, y, d) in L.cap_holes.items():
+        if nm == "logic power switch" and not with_logic_hole:
+            continue
         cutters.append(_cyl_z(d / 2, zp - OVERLAP, L.z_cap_top + OVERLAP, x, y))
     for th in L.joint_thetas:
         cutters.append(_radial_cyl(L.p["body"]["joint_hole_outer_d"], L.body_id / 2 - 2 * OVERLAP, L.body_r + 2 * OVERLAP,
@@ -2011,6 +2058,127 @@ def tether_nut(L: Layout) -> cq.Shape:
     hexagon = cq.Workplane("XY").workplane(offset=L.z_cap_nut[0]).polygon(6, 2 * L.cap_nut_af / math.sqrt(3)) \
         .extrude(L.cap_nut_h).val()
     return hexagon.cut(_cyl_z(L.cap_bolt_d / 2 + 0.05, L.z_cap_nut[0] - OVERLAP, L.z_cap_nut[1] + OVERLAP))
+
+
+# --------------------------------------------------------------------------- #
+# v0.9 logic-power round (user decisions 2026-11-05, configs.vtol.logic_power; Layout._logic_power): the 1S logic pack at
+# spot A, the MTS-102 switch through the top cap and the lead keep-outs - VTOL battery build only
+# --------------------------------------------------------------------------- #
+def logic_pack(L: Layout) -> cq.Shape:
+    """Placeholder ``logic_pack``: the 1S pack box on the 6S pack's -x face (Layout.lp_pack_x / y / z)."""
+    return _box(*L.lp_pack_x, *L.lp_pack_y, *L.lp_pack_z)
+
+
+def logic_switch_below(L: Layout) -> cq.Shape:
+    """Check helper: the switch under the plate - the inner nut (Ø lp_sw_nut_d, lp_sw_inner_nut_z), the body
+    (lp_sw_body) and the solder lugs / heat shrink (lp_sw_lugs)."""
+    sx, sy = L.lp_sw_xy
+    return _fuse([_cyl_z(L.lp_sw_nut_d / 2, *L.lp_sw_inner_nut_z, sx, sy), _box(*L.lp_sw_body[0], *L.lp_sw_body[1],
+                  *L.lp_sw_body[2]), _box(*L.lp_sw_lugs[0], *L.lp_sw_lugs[1], *L.lp_sw_lugs[2])])
+
+
+def logic_switch_above(L: Layout) -> cq.Shape:
+    """Check helper: the switch over the plate - the outer nut + washer (Ø lp_sw_nut_d, lp_sw_outer_nut_z), the
+    bushing top (Ø lp_sw_bushing_d to lp_sw_bushing_top_z) and the lever (Ø lp_sw_lever_d to lp_sw_top_z)."""
+    sx, sy = L.lp_sw_xy
+    return _fuse([_cyl_z(L.lp_sw_nut_d / 2, *L.lp_sw_outer_nut_z, sx, sy),
+                  _cyl_z(L.lp_sw_bushing_d / 2, L.lp_sw_outer_nut_z[1] - OVERLAP, L.lp_sw_bushing_top_z, sx, sy),
+                  _cyl_z(L.lp_sw_lever_d / 2, L.lp_sw_bushing_top_z - OVERLAP, L.lp_sw_top_z, sx, sy)])
+
+
+def logic_switch(L: Layout) -> cq.Shape:
+    """Placeholder ``logic_switch``: the MTS-102 as mounted - below the plate (inner nut, body, lugs), the bushing through
+    the lp_sw_hole_d hole (Ø lp_sw_bushing_d, no contact with the hole wall) and above the plate (outer nut, bushing top,
+    lever); one solid."""
+    sx, sy = L.lp_sw_xy
+    bush = _cyl_z(L.lp_sw_bushing_d / 2, L.lp_sw_inner_nut_z[0] + OVERLAP, L.lp_sw_outer_nut_z[1], sx, sy)
+    return _fuse([logic_switch_below(L), bush, logic_switch_above(L)])
+
+
+def logic_lever_positions(L: Layout, n: int = 9) -> dict[float, cq.Shape]:
+    """Switch-collar round check helper (C39 / C41): the lever (Ø lp_sw_lever_d, flat end) at ``n`` throw angles evenly
+    from -lp_lever_throw_deg to +lp_lever_throw_deg (0 included for odd n), turned about the pivot axis (vehicle x
+    through (sx, sy, lp_lever_pivot_z)) - each a cylinder from the bushing top's arm lp_lever_s0 to the tip lp_lever_len
+    along (0, sin a, cos a).  Their union is the lever's swept envelope up to the sampling (the extreme corners sit at the
+    end positions and near vertical, both sampled)."""
+    sx, sy = L.lp_sw_xy
+    out: dict[float, cq.Shape] = {}
+    for k in range(n):
+        a = -L.lp_lever_throw_deg + 2.0 * L.lp_lever_throw_deg * k / (n - 1)
+        ar = math.radians(a)
+        d = V(0.0, math.sin(ar), math.cos(ar))
+        base = V(sx, sy + L.lp_lever_s0 * d.y, L.lp_lever_pivot_z + L.lp_lever_s0 * d.z)
+        out[round(a, 6)] = cq.Solid.makeCylinder(0.5 * L.lp_sw_lever_d, L.lp_lever_len - L.lp_lever_s0, base, d)
+    # the near-vertical angle where the tip end's upper corner peaks (Layout lp_lever_env_top_z)
+    ap = math.degrees(math.atan2(0.5 * L.lp_sw_lever_d, L.lp_lever_len))
+    if ap <= L.lp_lever_throw_deg:
+        for a in (ap, -ap):
+            ar = math.radians(a)
+            d = V(0.0, math.sin(ar), math.cos(ar))
+            base = V(sx, sy + L.lp_lever_s0 * d.y, L.lp_lever_pivot_z + L.lp_lever_s0 * d.z)
+            out[round(a, 6)] = cq.Solid.makeCylinder(0.5 * L.lp_sw_lever_d, L.lp_lever_len - L.lp_lever_s0, base, d)
+    return out
+
+
+def logic_finger_probes(L: Layout, angle_deg: float | None = None) -> dict[str, cq.Shape]:
+    """Switch-collar round check helper (C41): at each end position the fingertip sphere (Layout.lp_col_finger: Ø
+    finger_tip_d, level with the outer corner of the lever's tip end, its radius outboard along the throw axis) fused
+    with the finger behind it (a cylinder of the same Ø, body_len_mm further out along the throw axis, horizontal).
+    Review fix (2026-11-05, F1): ``angle_deg`` given = the probe of the PUSH at that lever angle (positive = the lever
+    tilted toward the probe's own side, the end position = lp_lever_throw_deg): the sphere on the lever's outboard tip
+    corner (Layout lp_col_finger_path), one probe per side ('+y' pushes the lever tilted to +y back toward -y)."""
+    fg = L.lp_col_finger
+    r, ln = fg["sphere_r_mm"], fg["body_len_mm"]
+    if angle_deg is None:
+        cs = list(fg["centres"])
+    else:
+        sx, sy = L.lp_sw_xy
+        ar = math.radians(angle_deg)
+        yc = L.lp_lever_len * math.sin(ar) + 0.5 * L.lp_sw_lever_d * math.cos(ar) + r
+        zc = L.lp_lever_pivot_z + L.lp_lever_len * math.cos(ar) - 0.5 * L.lp_sw_lever_d * math.sin(ar)
+        cs = [(sx, sy + yc, zc), (sx, sy - yc, zc)]
+    out = {}
+    for (x, y, z), s, nm in zip(cs, (1.0, -1.0), ("+y", "-y")):
+        sph = cq.Solid.makeSphere(r, V(x, y, z), angleDegrees1=-90, angleDegrees2=90)
+        body = cq.Solid.makeCylinder(r, ln, V(x, y, z), V(0.0, s, 0.0))
+        out[nm] = sph.fuse(body).clean()
+    return out
+
+
+def logic_lead_keepouts(L: Layout) -> dict[str, cq.Shape]:
+    """Check helpers: one cylinder Ø lp_wire_od per segment of the two lead routes (Layout.lp_switch_lead_polyline,
+    lp_pack_lead_polyline), each extended by its radius at both ends so the corners are covered.  Names
+    '<lead> <k>' (k = segment index; the last segment of each enters its plug box inside the carrier envelope)."""
+    r = L.lp_wire_od / 2
+    out: dict[str, cq.Shape] = {}
+    for nm, pts in (("switch lead", L.lp_switch_lead_polyline), ("pack lead", L.lp_pack_lead_polyline)):
+        for k, (a, b) in enumerate(zip(pts[:-1], pts[1:])):
+            out[f"{nm} {k}"] = _cyl_between(L.lp_wire_od, a, b, r, r)
+    return out
+
+
+def carrier_plug_boxes(L: Layout) -> dict[str, cq.Shape]:
+    """Check helpers: the carrier PCB rev 2c's mated plug boxes (Layout.lp_plugs, from the PCB round's board metrics)."""
+    return {nm: _box(*bx[0], *bx[1], *bx[2]) for nm, bx in L.lp_plugs.items()}
+
+
+def logic_power_parts(L: Layout) -> dict[str, "Part"]:
+    """The logic-power report components (VTOL battery build, Layout.has_logic_power): placeholders ``logic_pack`` (box,
+    lp_pack_mass_g) and ``logic_switch`` (lp_sw_mass_g); lumped ``logic_switch_lead`` (wire + connector at the route
+    centroid) and ``logic_retention`` (longer strap + tie).  The pack's own lead is part of its mass (params ASSUMED).
+    With logic_power.in_flight_mass_model false they are NOT in build_all (pending-mass report only)."""
+    if not getattr(L, "has_logic_power", False):
+        return {}
+    return {
+        "logic_pack": Part("logic_pack", "placeholder", "logic_pack", logic_pack(L), "avionics_module", "",
+                           COLORS["logic_pack"], mass_g=L.lp_pack_mass_g),
+        "logic_switch": Part("logic_switch", "placeholder", "logic_switch", logic_switch(L), "top_cap", "",
+                             COLORS["logic_switch"], mass_g=L.lp_sw_mass_g),
+        "logic_switch_lead": Part("logic_switch_lead", "lumped", "logic_switch_lead", None, "avionics_module",
+                                  mass_g=L.lp_switch_lead_mass_g, point_mm=tuple(L.lp_switch_lead_com)),
+        "logic_retention": Part("logic_retention", "lumped", "logic_retention", None, "avionics_module",
+                                mass_g=L.lp_retention_mass_g, point_mm=tuple(L.lp_retention_com)),
+    }
 
 
 def edf_tab(L: Layout, tab_theta: float) -> cq.Shape:
@@ -2482,6 +2650,7 @@ COLORS = {
     "gns": (0.15, 0.55, 0.55),     # v0.8.1: the GNS board (ATmega128A #4)
     "carrier": (0.10, 0.50, 0.30),     # v0.9 CAD-2 VTOL: the one avionics carrier PCB (green)
     "buffer_pack": (0.95, 0.80, 0.15),  # v0.9 CAD-2 VTOL hybrid: the 6S 650 mAh buffer
+    "logic_pack": (0.95, 0.75, 0.30), "logic_switch": (0.20, 0.20, 0.22),   # 2026-11-05 logic power (battery build)
 }
 
 
@@ -2500,6 +2669,9 @@ class Part:
     density_g_cm3: float | None = None  # printed
     point_mm: tuple[float, float, float] | None = None  # lumped
     in_vehicle: bool = True        # launch_pad is ground equipment
+    # 2026-11-05 (logic_power.in_flight_mass_model false): the solid the report's mass entry is measured on when it is not
+    # ``shape`` (the top cap without the logic switch hole); ``shape`` stays the real part (STL / STEP / checks)
+    mass_shape: cq.Shape | None = None
 
 
 PRINT_ORIENTATION = {
@@ -2662,6 +2834,11 @@ def _build_all_vtol(L: Layout, parts: list, printed, placeholder) -> dict[str, P
         printed(base, base, PRINTED_BUILDERS[base](L))
         if base == "avionics_module" and getattr(L, "has_livery", False):   # livery: the orange inlay, own part
             printed("avionics_logo", "avionics_logo", avionics_logo(L))
+    if getattr(L, "has_logic_power", False) and not getattr(L, "logic_in_flight", False):
+        # 2026-11-05 user decision 4 (mass deferred, logic_power.in_flight_mass_model false): the printed cap HAS the switch
+        # hole (STL / STEP / checks); its mass entry is measured on the cap without it, so the flight mass model is unchanged
+        # (switch-collar round 2026-11-05: without the collar too - with_logic_hole=False leaves both out)
+        parts[-1].mass_shape = top_cap(L, with_logic_hole=False)
     for i in range(L.vane_count):
         printed(f"vane_{i + 1}", "vane", vane(L, i))
     for i in range(L.vane_count):
@@ -2696,6 +2873,8 @@ def _build_all_vtol(L: Layout, parts: list, printed, placeholder) -> dict[str, P
         placeholder("tether_load_washer", tether_load_washer(L), "top_cap", L.cap_washer_mass_g, "servo_arm")
         placeholder("tether_nut", tether_nut(L), "top_cap", L.cap_nut_mass_g, "servo_arm")
     parts += lumped_masses(L)
+    if getattr(L, "has_logic_power", False) and getattr(L, "logic_in_flight", False):
+        parts += list(logic_power_parts(L).values())     # only once the user decides (logic_power.in_flight_mass_model)
     return {p.name: p for p in parts}
 
 
@@ -2747,4 +2926,7 @@ __all__ = [
     "gns_boss_prisms", "gns_boss_clip", "gns_bosses", "gns_hole_cutters", "gns_board",
     # livery 2026-11-04
     "livery_inlay_solids", "avionics_logo", "LIVERY_COLOR", "PRINTED_COLOR",
+    # logic power 2026-11-05
+    "logic_pack", "logic_switch", "logic_switch_below", "logic_switch_above", "logic_lead_keepouts", "carrier_plug_boxes",
+    "logic_power_parts",
 ]

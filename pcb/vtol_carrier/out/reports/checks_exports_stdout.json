@@ -1,0 +1,232 @@
+{
+ "erc": {
+  "report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\reports\\erc.json",
+  "kicad_version": "10.0.6",
+  "sheets_checked": [
+   "/",
+   "/Power/",
+   "/NAV/",
+   "/FCU/",
+   "/COM/",
+   "/GNS/",
+   "/Level_shift/",
+   "/IO_connectors/"
+  ],
+  "counts": {},
+  "errors": 0,
+  "warnings": 0
+ },
+ "netlist_vs_spec": {
+  "tool": "kicad-cli sch export netlist + scripted comparison",
+  "components": 164,
+  "spec_nets": 102,
+  "netlist_named_nets": 102,
+  "mismatched_nets": [],
+  "extra_nets": [],
+  "single_pin_unconnected_nets": 184,
+  "spec_no_connect_pins": 184,
+  "result": "PASS"
+ },
+ "board_vs_ir": {
+  "tool": "scripted: routed .kicad_pcb pad nets vs IR nets",
+  "ir_pins": 481,
+  "pins_found_on_board": 481,
+  "mismatches": [],
+  "result": "PASS"
+ },
+ "drc": {
+  "report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\reports\\drc.json",
+  "kicad_version": "10.0.6",
+  "violations": {
+   "warning:track_dangling": 7,
+   "warning:silk_overlap": 3,
+   "warning:silk_over_copper": 2
+  },
+  "errors": 0,
+  "warnings": 12,
+  "unconnected": 25,
+  "schematic_parity": {},
+  "parity_count": 0
+ },
+ "fab": [
+  {
+   "status": "PASS",
+   "message": "12 files, 4 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Copper,L3', 'Copper,L4', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+  },
+  {
+   "status": "PASS",
+   "message": "1 drill file(s)"
+  }
+ ],
+ "bom_cpl": {
+  "bom": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_bom.csv",
+  "cpl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_cpl.csv",
+  "cpl_rows": 136,
+  "jlcpcb_bom_lines": 25,
+  "jlcpcb_parts": 136,
+  "tht_hand_solder_lines": 7,
+  "devicemart_lines": 7,
+  "fitted_parts_without_source": [],
+  "cpl_rows_without_lcsc": [],
+  "jlc_parts_not_in_cpl": [],
+  "result": "PASS",
+  "note": "JLC CPL rotations are KiCad's; JLC's preview may need per-footprint rotation offsets (A - check the placement preview before ordering)"
+ },
+ "step_renders": {
+  "render_top.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "render_bottom.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "render_iso.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "schematic_exports": [
+   "vtol_carrier-COM.svg",
+   "vtol_carrier-FCU.svg",
+   "vtol_carrier-GNS.svg",
+   "vtol_carrier-IO_connectors.svg",
+   "vtol_carrier-Level_shift.svg",
+   "vtol_carrier-NAV.svg",
+   "vtol_carrier-Power.svg",
+   "vtol_carrier.svg",
+   "vtol_carrier_schematic.pdf"
+  ]
+ },
+ "step": {
+  "path": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier.step",
+  "exit": 0,
+  "exists": true
+ },
+ "board_metrics": {
+  "report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\reports\\board_metrics.json",
+  "cluster_paths_all_le_3mm": false,
+  "cluster_paths_max_mm": 99,
+  "gnd": {
+   "copper_layers": 4,
+   "gnd_vias": 223,
+   "gnd_fill_polygons": {
+    "F.Cu": 52,
+    "B.Cu": 37,
+    "In1.Cu": 1
+   },
+   "gnd_fill_area_mm2": {
+    "F.Cu": 2015.5,
+    "B.Cu": 2496.6,
+    "In1.Cu": 4482.1
+   },
+   "plus5v_in2_fill_area_mm2": 4198.7,
+   "plus5v_in2_fill_polygons": 5,
+   "gnd_track_mm": 86.7,
+   "gnd_track_widths": {
+    "0.3": 73,
+    "0.2": 8,
+    "0.25": 12,
+    "0.4": 1
+   },
+   "track_length_over_adjacent_plane_pct": {
+    "F.Cu": 88.9,
+    "B.Cu": 87.8
+   },
+   "track_mm_per_layer": {
+    "F.Cu": 1802.3,
+    "B.Cu": 1861.5
+   },
+   "nlink_pct_on_F_over_In1_GND": {
+    "NLINK_SS": 23.3,
+    "NLINK_SCK": 33.2,
+    "NLINK_MOSI": 4.9,
+    "NLINK_MISO": 4.1
+   }
+  },
+  "hole_to_hole": {
+   "min_drill_edge_mm_different_nets": 0.543,
+   "pair": [
+    [
+     75.6752,
+     129.1002,
+     0.15,
+     "GNS_LED"
+    ],
+    [
+     75.0489,
+     129.6651,
+     0.15,
+     "GNS_LED_A"
+    ]
+   ],
+   "rule_mm": 0.5
+  },
+  "silk": {
+   "board_texts": {
+    "F.Silkscreen": 15,
+    "B.Silkscreen": 11,
+    "User.Drawings": 9
+   },
+   "reference_layers": {
+    "F.Silkscreen": 94,
+    "F.Fab": 70
+   }
+  },
+  "esp12e": {
+   "pin8_to_C54_copper_mm": 3.55,
+   "pin8_to_C53_pad1_straight_mm": 4.75,
+   "pin8_to_C52_pad1_straight_mm": 7.47,
+   "C54_gnd_pad_to_nearest_gnd_via_mm": 0.7,
+   "rule_area_kicad": [
+    74.63,
+    65.0,
+    98.87,
+    72.4
+   ],
+   "copper_items_inside_rule_area": [
+    "PCB_TRACK VS_VTETHER at (75.11, 73.23)",
+    "PCB_TRACK VS_VTETHER at (100.35, 71.29)"
+   ],
+   "pour_area_inside_rule_area_mm2": 0.0,
+   "module_antenna_end_y_kicad": 65.08,
+   "antenna_end_to_board_edge_mm": 0.08,
+   "ok": false
+  },
+  "min_track_width_mm": {
+   "VBAT_LOGIC_RAW": {
+    "min_mm": 1.0,
+    "segments": 7
+   },
+   "VBAT_LOGIC": {
+    "min_mm": 0.601,
+    "segments": 10
+   },
+   "VBAT_LOGIC_SW": {
+    "min_mm": 0.75,
+    "segments": 21
+   },
+   "SERVO_5V": {
+    "min_mm": 0.9,
+    "segments": 30
+   },
+   "GND_PWR": {
+    "min_mm": 0.5,
+    "segments": 26
+   },
+   "+5V": {
+    "min_mm": 0.3,
+    "segments": 48
+   },
+   "+3V3": {
+    "min_mm": 0.375,
+    "segments": 178
+   },
+   "GPS_VCC": {
+    "min_mm": 0.5,
+    "segments": 5
+   }
+  },
+  "plug_fit_ok": true,
+  "plug_fit_failed": []
+ }
+}

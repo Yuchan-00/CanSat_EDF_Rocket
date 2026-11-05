@@ -1,0 +1,76 @@
+{
+  "renders": {
+    "pcb_top_2400.png": {
+      "exit": 0,
+      "exists": true
+    },
+    "pcb_bottom_2400.png": {
+      "exit": 0,
+      "exists": true
+    },
+    "pcb_iso_front_2400.png": {
+      "exit": 0,
+      "exists": true
+    },
+    "pcb_iso_back_2400.png": {
+      "exit": 0,
+      "exists": true
+    }
+  },
+  "sheets": {
+    "sch_root.png": {
+      "w": 3000,
+      "h": 2121,
+      "exit": 0,
+      "exists": true
+    },
+    "sch_Power.png": {
+      "w": 3000,
+      "h": 2121,
+      "exit": 0,
+      "exists": true
+    },
+    "sch_FCU.png": {
+      "w": 3000,
+      "h": 2121,
+      "exit": 0,
+      "exists": true
+    },
+    "sch_NAV.png": {
+      "w": 3000,
+      "h": 2121,
+      "exit": 0,
+      "exists": true
+    },
+    "sch_COM.png": {
+      "w": 3000,
+      "h": 2119,
+      "exit": 0,
+      "exists": true
+    },
+    "sch_GNS.png": {
+      "w": 3000,
+      "h": 2121,
+      "exit": 0,
+      "exists": true
+    },
+    "sch_Level_shift.png": {
+      "w": 3000,
+      "h": 2121,
+      "exit": 0,
+      "exists": true
+    },
+    "sch_IO_connectors.png": {
+      "w": 3000,
+      "h": 2119,
+      "exit": 0,
+      "exists": true
+    }
+  },
+  "montage": {
+    "file": "schematic_overview.png",
+    "w": 4920,
+    "h": 1864,
+    "tiles": 8
+  }
+}

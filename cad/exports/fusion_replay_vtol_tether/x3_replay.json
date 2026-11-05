@@ -1,6 +1,6 @@
 {
  "preset": "BUDGET_90mm_6S",
- "script_version": "0.9.6",
+ "script_version": "0.9.8",
  "recorded_calls": 390,
  "parts": {
   "propulsion_module": {
@@ -30,6 +30,16 @@
    "twin_minus_replay_mm3": 0.0,
    "replay_valid": true,
    "replay_solids": 20,
+   "slice_x3": "PASS",
+   "status": "PASS"
+  },
+  "top_cap": {
+   "replay_volume_mm3": 27506.090731505574,
+   "twin_volume_mm3": 27506.061524352142,
+   "replay_minus_twin_mm3": 0.0,
+   "twin_minus_replay_mm3": 0.0,
+   "replay_valid": true,
+   "replay_solids": 1,
    "slice_x3": "PASS",
    "status": "PASS"
   },

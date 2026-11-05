@@ -1,0 +1,12 @@
+{
+ "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier.dsn -do B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier.ses -mp 40 -mt 4 --gui.enabled=false",
+ "freerouting_jar_sha256": "f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7",
+ "seconds": 402.9,
+ "exit_code": 0,
+ "dsn_sha256": "3d1eebdaca2ec2b7dc33d458defee035051b17587f05f99e822b00bd388d2a2a",
+ "gnd_planes_removed_from_dsn": 2,
+ "ses_sha256": "1c2731aeab7a14d833e75432872fdb22de1b71d2d3fa33a4a2d4189fe467a3c6",
+ "routed_board_sha256": "42636d29924675bdb88014643a021ec6530a25bf13dc85ff08ecd1abebebd4a8",
+ "segments": 2393,
+ "vias": 210
+}

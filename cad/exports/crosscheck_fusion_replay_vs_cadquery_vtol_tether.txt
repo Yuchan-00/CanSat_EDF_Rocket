@@ -1,5 +1,5 @@
 X3 replay (Fusion script feature calls from a mock run, rebuilt in OCC) vs the CadQuery twin - preset BUDGET_90mm_6S
-script B:\0)AI_Cad\CanSat_EDF_Rocket\cad\fusion360\CanSatEDFRocket\CanSatEDFRocket.py v0.9.6; 390 recorded calls
+script B:\0)AI_Cad\CanSat_EDF_Rocket\cad\fusion360\CanSatEDFRocket\CanSatEDFRocket.py v0.9.8; 390 recorded calls
 
 == propulsion_module: replay V 278983.44 mm3 (valid True, 1 solid(s)), twin V 278983.88 mm3, dV -0.0002 %; boolean replay - twin 0.0113 mm3, twin - replay 0.0000 mm3
 
@@ -29,6 +29,16 @@ script B:\0)AI_Cad\CanSat_EDF_Rocket\cad\fusion360\CanSatEDFRocket\CanSatEDFRock
    sections agree at every slice
    centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
    X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 121 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== top_cap: replay V 27506.09 mm3 (valid True, 1 solid(s)), twin V 27506.06 mm3, dV +0.0001 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== top_cap: V fusion 27496 mm3, cadquery 27496 mm3, dV -0.00 %
+   bbox fusion [[-60.0, -59.98, 459.1], [60.0, 59.98, 475.3]]
+   bbox cq     [[-60.0, -59.98, 459.1], [60.0, 59.98, 475.3]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 16 planes, step 1 mm, each >= 0.0005 mm off every vertex height
    replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
 
 == tether_eyebolt: replay V 1266.28 mm3 (valid True, 1 solid(s)), twin V 1266.28 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3

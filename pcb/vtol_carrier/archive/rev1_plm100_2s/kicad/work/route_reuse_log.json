@@ -1,0 +1,65 @@
+{
+ "mode": "reuse recorded session",
+ "ses_sha256": "a9a6d809852d277f121b46ecfff355242abfa771bb09cfea6e55e63701d59396",
+ "neckdowns_widened_to_0.127mm": [
+  {
+   "net": "LORA_RESET_N",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 89.913,
+   "y": 75.884
+  },
+  {
+   "net": "LORA_RESET_N",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 90.072,
+   "y": 75.884
+  },
+  {
+   "net": "NAV_XTAL1",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 109.488,
+   "y": 131.8
+  },
+  {
+   "net": "NAV_XTAL1",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 109.612,
+   "y": 131.644
+  },
+  {
+   "net": "NAV_XTAL1",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 109.612,
+   "y": 131.676
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 128.361,
+   "y": 67.472
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 128.396,
+   "y": 67.472
+  }
+ ],
+ "dangling_vias_removed": [
+  {
+   "net": "VANE4_PWM",
+   "x": 74.436,
+   "y": 91.748
+  }
+ ],
+ "segments": 2454,
+ "vias": 209,
+ "routed_board_sha256": "56787b3ca9020c5e2441e97e575f77aa7b1e6368e62ab570290ae39663ceafed"
+}

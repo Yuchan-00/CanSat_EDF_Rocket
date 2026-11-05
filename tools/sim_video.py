@@ -2716,6 +2716,22 @@ def _top_cap_params() -> dict[str, Any]:
         return {}
 
 
+def _logic_collar_xy_r(hw: Hardware) -> tuple[float, float, float] | None:
+    """Switch-collar round (2026-11-05, params configs.vtol.logic_power.collar): (x, y, outer radius) in m of the protective
+    collar printed with the top cap in the builds the logic power applies to, else None."""
+    try:
+        with open(PARAMS_PATH, "r", encoding="utf-8") as f:
+            lp = json.load(f)["configs"]["vtol"].get("logic_power") or {}
+    except (OSError, KeyError, ValueError, TypeError):
+        return None
+    co, sw = lp.get("collar"), lp.get("switch") or {}
+    if not co or hw.power not in (lp.get("applies_to_power_sources") or []):
+        return None
+    a = math.radians(float(sw.get("theta_deg", 0.0)))
+    r = float(sw.get("r", 0.0)) * 1e-3
+    return r * math.cos(a), r * math.sin(a), (0.5 * float(co["inner_d"]) + float(co["wall_t"])) * 1e-3
+
+
 def top_items(hw: Hardware, top_z_m: float) -> list[tuple[str, Any]]:
     """[(material key, mesh in m, body frame)] of the non-printed items on the VTOL top cap, at the places of params
     ``configs.vtol.top_cap`` (sizes there are vendor data / ASSUMED): GPS ground plane (copper), patch (ceramic) and board
@@ -3702,6 +3718,14 @@ class Scene:
         if hw.vtol and self.body_actors:
             top_cap = [a for a, (nm, _) in zip(self.body_actors, body_part_list(hw)) if nm == "top_cap"]
             self.top_z_m = float(top_cap[0].mapper.dataset.bounds[5]) if top_cap else self.length_m
+            col = _logic_collar_xy_r(hw) if top_cap else None
+            if col is not None:
+                # switch-collar round (2026-11-05): the collar stands 17 mm over the plate - the GPS parts sit on the
+                # PLATE top (the cap's highest point outside the collar), the body length keeps the collar rim
+                pts = np.asarray(top_cap[0].mapper.dataset.points)
+                out = np.hypot(pts[:, 0] - col[0], pts[:, 1] - col[1]) > col[2] + 5e-4
+                if out.any():
+                    self.top_z_m = float(pts[out, 2].max())
         # v0.8: the GPS antenna pod (printed in the same PLA Matte Black), moving with the body; v0.9 VTOL: the GPS sits
         # on the top cap (``top_items``), no pod
         self.pod_actors: list[Any] = []

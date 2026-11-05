@@ -2,7 +2,7 @@
   "generator": "cadquery",
   "generator_version": "cadquery 2.8.0",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+  "params_sha256": "9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292",
   "parts": {
     "propulsion_module": {
       "kind": "printed",
@@ -2375,7 +2375,7 @@
     "thrust_to_weight_nominal": 1.1888223593429248,
     "inertia_convention": "standard tensor about the part COM, I_xy = -sum(m x y); kg*m^2",
     "cadquery_version": "2.8.0",
-    "build_time_s": 9.384795188903809,
+    "build_time_s": 7.195266246795654,
     "gps": {
       "added_mass_g": {
         "pod + raceway + pocket (in payload_module)": 19.171833967042677,
@@ -3429,6 +3429,6 @@
       "launch_pad": 0.05
     },
     "step_file": "cad/exports/cadquery/CanSatEDFRocket.step",
-    "total_time_s": 31.67824101448059
+    "total_time_s": 23.649134159088135
   }
 }

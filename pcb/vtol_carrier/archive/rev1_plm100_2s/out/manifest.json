@@ -1,0 +1,155 @@
+{
+ "erc": {
+  "report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\reports\\erc.json",
+  "kicad_version": "10.0.6",
+  "sheets_checked": [
+   "/",
+   "/Power/",
+   "/NAV/",
+   "/FCU/",
+   "/COM/",
+   "/GNS/",
+   "/Spare_MCU/",
+   "/Level_shift/",
+   "/IO_connectors/"
+  ],
+  "counts": {},
+  "errors": 0,
+  "warnings": 0
+ },
+ "netlist_vs_spec": {
+  "tool": "kicad-cli sch export netlist + scripted comparison",
+  "components": 165,
+  "spec_nets": 107,
+  "netlist_named_nets": 107,
+  "mismatched_nets": [],
+  "extra_nets": [],
+  "single_pin_unconnected_nets": 235,
+  "spec_no_connect_pins": 235,
+  "result": "PASS"
+ },
+ "drc": {
+  "report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\reports\\drc.json",
+  "kicad_version": "10.0.6",
+  "violations": {
+   "warning:hole_to_hole": 6
+  },
+  "errors": 0,
+  "warnings": 6,
+  "unconnected": 0,
+  "unconnected_by_net": {},
+  "schematic_parity": {},
+  "parity_count": 0
+ },
+ "board_vs_ir": {
+  "tool": "scripted: routed .kicad_pcb pad nets vs IR nets",
+  "ir_pins": 494,
+  "pins_found_on_board": 494,
+  "mismatches": [],
+  "result": "PASS"
+ },
+ "fab": {
+  "gerber_check": {
+   "status": "PASS",
+   "message": "10 files, 2 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+  },
+  "drill_check": {
+   "status": "PASS",
+   "message": "1 drill file(s)"
+  },
+  "files": [
+   "vtol_carrier-B_Cu.gbl",
+   "vtol_carrier-B_Mask.gbs",
+   "vtol_carrier-B_Paste.gbp",
+   "vtol_carrier-B_Silkscreen.gbo",
+   "vtol_carrier-drl_map.pdf",
+   "vtol_carrier-Edge_Cuts.gm1",
+   "vtol_carrier-F_Cu.gtl",
+   "vtol_carrier-F_Mask.gts",
+   "vtol_carrier-F_Paste.gtp",
+   "vtol_carrier-F_Silkscreen.gto",
+   "vtol_carrier-job.gbrjob",
+   "vtol_carrier.drl"
+  ],
+  "zip": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_gerber.zip"
+ },
+ "bom_cpl": {
+  "bom": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_bom.csv",
+  "cpl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_cpl.csv",
+  "cpl_rows": 136
+ },
+ "step_renders": {
+  "step": {
+   "path": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier.step",
+   "exit": 0,
+   "exists": true,
+   "log_tail": "STEP file 'B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/out/vtol_carrier.step' created.\n\nExport time 5.240 s\n"
+  },
+  "render_top.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "render_bottom.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "render_iso.png": {
+   "exit": 0,
+   "exists": true
+  },
+  "schematic_exports": [
+   "vtol_carrier-COM.svg",
+   "vtol_carrier-FCU.svg",
+   "vtol_carrier-GNS.svg",
+   "vtol_carrier-IO_connectors.svg",
+   "vtol_carrier-Level_shift.svg",
+   "vtol_carrier-NAV.svg",
+   "vtol_carrier-Power.svg",
+   "vtol_carrier-Spare_MCU.svg",
+   "vtol_carrier.svg",
+   "vtol_carrier_schematic.pdf"
+  ]
+ },
+ "sha256": {
+  "gerber/vtol_carrier-B_Cu.gbl": "620f533c9abb101420ecf637fdb8d24a68e14ad4dc2f22a4d081c19530c95b7c",
+  "gerber/vtol_carrier-B_Mask.gbs": "392d2cb3b9a5b166780ccc6410b3ef507ddff0b8a81ef2ba2ec99707c1f703c2",
+  "gerber/vtol_carrier-B_Paste.gbp": "be801faa26d713d3115b34a3ef1ce16f4590767f886463c5446c78a9941a7b4d",
+  "gerber/vtol_carrier-B_Silkscreen.gbo": "8feece6be5fdba743dbbadc977200bfd5c70a37fe108cd3ddeb070a90befe603",
+  "gerber/vtol_carrier-drl_map.pdf": "5a7a051665326f46914973b2494bd7b0ac407807b1e5cede21fa372f69008ff2",
+  "gerber/vtol_carrier-Edge_Cuts.gm1": "a39ca8bb89916d77380b4db10d03a6b0223ffa086ea693601153cea31172f36e",
+  "gerber/vtol_carrier-F_Cu.gtl": "5753ed244a033751f5e6913667ceb44e3f2a6b358e5879732501cd4af22cf16a",
+  "gerber/vtol_carrier-F_Mask.gts": "f917847f0a7925964af384a64306abb45dd8989cb9d7c575b4b0b4abf263b4df",
+  "gerber/vtol_carrier-F_Paste.gtp": "6049d047f7d06bcff4ad5eb3dd8023a80919422207767b2b875c6ae48ea5ca0a",
+  "gerber/vtol_carrier-F_Silkscreen.gto": "2f0dc94a6bf18ba8c29b134015e4fef17ccd2652792a4ef31f77b47feff275a9",
+  "gerber/vtol_carrier-job.gbrjob": "e43c2bbfe0cb7aeced55c5b11af6199b8616b28521cb57bc4b41fd8c9004494e",
+  "gerber/vtol_carrier.drl": "a7769d7905d914f18cfdfd560ee83b87d1d7b922ee0c18e76118b5ced05f9fe9",
+  "render_bottom.png": "51bdb8582d35c6e33f2ed8479866aa53b960421ce85c14b317b567c4f4bf1009",
+  "render_iso.png": "d6b83edd68f66465989a8ccfaa61855bb1a3f4b9d5ad5b29ed360ba12593aa3b",
+  "render_top.png": "624880bb669123d8c19ae47b9fea296cb7421043ca4f8c8dff88a94d208c93c7",
+  "reports/board_vs_ir.json": "aa95cd852fb5e485ac5ee1249a5f0e9c05788a65c7312c8292c06340b5e47660",
+  "reports/determinism.json": "9fe3670d01c16b0c31fdb64c60b2c76b08d09139b779d6b73a6cd294834c86dc",
+  "reports/drc.json": "c197fc353e56f9e3c426222a0c223b299f3d9eb79df13880fb187769e826927e",
+  "reports/erc.json": "dbc8714770e7573661416f569f847cfde36a13bee00abc7d0ee1e2513a8f0cd2",
+  "reports/gerber_check.json": "8159ac2b1ef956582ec7341def09ee3645a3e8d4efa5d2695e4e61dae2229785",
+  "reports/netlist_vs_spec.json": "bce9b850d83330a89a90fcc29e2165e9702b0274523fc1a92e8c819ff56afb97",
+  "schematic/vtol_carrier-COM.svg": "76cd8bab2c65516d91a097720041944cda1ec7ea7b99697fba8ae487207ceaac",
+  "schematic/vtol_carrier-FCU.svg": "f1f2fe5429f6aa6facec85aad4508184d6ab891940a0b4a2c8860dc1b7a7d80c",
+  "schematic/vtol_carrier-GNS.svg": "9c2c1af8a994e65379048e93f764dad8655802e85b4902032a2619b4147a8663",
+  "schematic/vtol_carrier-IO_connectors.svg": "8f21ee9548a8b693c1c8a90fb2853b2617168efddba7678248df9da1f72e8a6a",
+  "schematic/vtol_carrier-Level_shift.svg": "c1feb0be45f216416be1d8eb385037693c9e08a4c1128ba28d70a35bde6554c3",
+  "schematic/vtol_carrier-NAV.svg": "8f5f52b029bcaa55e7ee32b2109a3e74e9143fdc1be46cf71586e923417a29d0",
+  "schematic/vtol_carrier-Power.svg": "e22d26e1f6a090efac3d2ed382f1b8dc60a176a7ff5a54a553e760f5b3001bb3",
+  "schematic/vtol_carrier-Spare_MCU.svg": "3046ae7b6accdf2c8e80195fffd6716523a0a8c21b50f4f93d79ba03b035a129",
+  "schematic/vtol_carrier.svg": "f2dea2c025e3fc64594f914200ce599ed48ab30d5094e561e0dd5a18407fa9c9",
+  "schematic/vtol_carrier_schematic.pdf": "7b52c3a6dd0b8ea47fc178ed55a4ab4fe42aea8d0f2e36f6b4efd542d4250d5b",
+  "vtol_carrier.net": "d87a5482a87e408d97dfe8f17712bd127713837f67aad62aa8e34b719df055f3",
+  "vtol_carrier.step": "b75fc08293f1d6552ae3d271dbf47cc82d81d59e3cc8132f93cfd5c6315bf3a4",
+  "vtol_carrier_bom.csv": "2c15ecb7d2ed8c57056d76674c87a597a4e7863ae01fb3cff61e44c672a2d16e",
+  "vtol_carrier_cpl.csv": "a765f9f62612e64dbc91e6ba935bf173133e56a80707d8ff90f9a8b73f3ea2e8",
+  "vtol_carrier_gerber.zip": "d6bc2c7fbf0e3310ee0d7b41874ab80f2b60e3985178eed22dc96730f823c49d",
+  "../kicad/vtol_carrier.kicad_sch": "eaa68a1b01eebc047b5262c803cae7b75eb8e55430cc4f020f3108b6e933e031",
+  "../kicad/vtol_carrier.kicad_pcb": "56787b3ca9020c5e2441e97e575f77aa7b1e6368e62ab570290ae39663ceafed",
+  "../kicad/vtol_carrier.kicad_pro": "0d69b40728848abb04c7e948deed69b48c6d0fc1355cc4c2ce93bfe7699a2d4c",
+  "../kicad/placement.json": "07b5ff5ff8416d7d4eba6bbcf034f7a619479483b7b295ed2552a3d878bc4365"
+ }
+}

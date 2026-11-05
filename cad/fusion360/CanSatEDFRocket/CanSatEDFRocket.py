@@ -23,6 +23,27 @@ hardware configuration - 'rocket' (default) or 'vtol' [battery | tether | hybrid
 has the top cap (``build_top_cap``), the carrier PCB, the GPS on the cap, the windowed avionics module, the fin holes and
 the lightened tray, and writes ``fusion_vtol*/`` and ``fusion360_report_vtol*.json``; the rocket build is unchanged.
 
+0.9.7 logic power (user decisions 2026-11-05, ``Layout.has_logic_power`` - VTOL battery build only; mirrors
+rocket_geometry.logic_pack / logic_switch): the top cap gets the logic power switch hole through ``Layout.cap_holes``
+(``build_top_cap`` already cuts every plate hole), the new placeholders ``logic_pack`` (the 1S pack box at spot A on the 6S
+pack's -x face) and ``logic_switch`` (``build_logic_switch``: inner nut, body, lugs, bushing, outer nut, lever) and the lumped
+``logic_switch_lead`` / ``logic_retention``.  While params logic_power.in_flight_mass_model is false (the user deferred the
+mass decision) those four are built, measured and listed but NOT summed into the report totals
+(``derived.extra.logic_power.pending``), and the totals add back the switch hole's plug (Layout volume x the cap's
+density) so the totals stay the flight-mass model the CadQuery twin reports (it measures the cap without the hole).
+``printed_density`` picks the slicer-table entry ('top_cap' or 'top_cap@<variant>') whose solid volume is nearest to the
+component's measured volume.
+
+0.9.8 switch collar (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'; ``Layout.has_lp_collar`` -
+VTOL battery build only; mirrors rocket_geometry.logic_collar): ``build_top_cap`` adds, before the plate holes, the
+protective collar round the logic switch - ``cap_collar`` (cyl_z JOIN, Ø 2 lp_col_ro from half the plate thickness to the
+rim lp_col_z[1]), ``cap_collar_bore`` (cyl_z CUT, Ø 2 lp_col_ri from the plate top up) and the two finger notches on the
+throw axis as U slots (review fix 2026-11-05, F1 / F2: was a box slab from lp_col_notch_z0) - ``cap_collar_notches``
+(box_xy CUT, |x - sx| < lp_col_notch_w / 2 from the U's centre lp_col_notch_zc up) and ``cap_collar_notch_round``
+(cut_between, a cylinder Ø lp_col_notch_w along y, axis at lp_col_notch_zc).  The collar is logic-power kit: while logic_power.in_flight_mass_model is false the totals take its material back out
+(``__top_cap_logic_collar_removed``: a negative point mass at Layout.lp_col_centroid, Layout volume x the cap's density),
+like the switch hole's plug, so the totals stay the CadQuery flight model (the cap without the hole and the collar).
+
 0.9.6 livery (user decisions 2026-11-04, ``Layout.has_livery``; mirrors rocket_geometry.livery_inlay_solids): the avionics
 module ends with the 0.42 mm logo pocket (``build_livery`` op CUT: per copy azimuth and logo island one ``CB.inlay`` - an
 annular sector NEW body r [body_r - depth, body_r + OVERLAP] INTERSECTED with the island's pre-warped (v, z) outline
@@ -146,7 +167,9 @@ import traceback
 import adsk.core
 import adsk.fusion
 
-SCRIPT_VERSION = "0.9.6"   # livery (2026-11-04): white printed parts, orange YUCHAN inlay part + logo pocket (was 0.9.5)
+SCRIPT_VERSION = "0.9.8"   # switch collar (2026-11-05): the protective collar printed with the top cap, U finger notches after the independent review (was 0.9.7)
+# (0.9.7 logic power (2026-11-05): top-cap logic switch hole, logic_pack / logic_switch)
+# (0.9.6 livery (2026-11-04): white printed parts, orange YUCHAN inlay part + logo pocket)
 # (0.9.5 wire09c clock mount (2026-10-30): keyways round the circle, lead passage + blister)
 # (0.9.2 v0.9 fix round: lip slit, tie anchors, coupler socket + set screw, bushings, tether boxes)
 # (0.9.1 v0.9 CAD-2: mission.config vtol (config.txt / CANSAT_CONFIG), power sources)
@@ -169,6 +192,9 @@ EDF_TAB_EMBED = 0.5             # modelling helper (same as the CadQuery twin): 
 EJECTED = ("cansat_payload", "nose_cone", "chute_pack")
 # Ground equipment: built and exported, never part of the vehicle mass.
 NOT_IN_VEHICLE = ("launch_pad",)
+# 0.9.7 (2026-11-05): the logic-power components (VTOL battery build); out of the totals while logic_power
+# .in_flight_mass_model is false (rocket_geometry.logic_power_parts)
+LOGIC_PARTS = ("logic_pack", "logic_switch", "logic_switch_lead", "logic_retention")
 
 
 # --------------------------------------------------------------------------- #
@@ -1507,11 +1533,13 @@ def build_tab_mount(ctx: "Ctx", cb: CB) -> None:
                  f"{screws['ok']}/{screws['total']} tab-screw cuts")
 
 
-def printed_density(L, name: str, root: str) -> float:
+def printed_density(L, name: str, root: str, volume_mm3: float | None = None) -> float:
     """v0.9 (printer.mass_model): density (g/cm^3) of a printed component - mode 'slicer_part_g': the effective density of
     its part in the slicer table (part grams / the CAD solid volume it was sliced from), else its class's
     effective_density_fallback_g_cm3; mode 'solid' (or none): printer.density_g_cm3.  The CadQuery twin uses the table's
-    grams for the identical solid; Fusion's own volume x this density agrees with it to the volume difference."""
+    grams for the identical solid; Fusion's own volume x this density agrees with it to the volume difference.
+    0.9.7: with ``volume_mm3`` (the measured component) the entry among '<base>' and '<base>@<variant>' whose solid volume
+    is nearest is used (the top cap with / without the logic switch hole)."""
     pr = L.p["printer"]
     mm = pr.get("mass_model") or {}
     if mm.get("mode") != "slicer_part_g":
@@ -1520,7 +1548,12 @@ def printed_density(L, name: str, root: str) -> float:
     base = stem[0] if len(stem) == 2 and stem[1].isdigit() else name
     try:
         with open(os.path.join(root, mm["table"]), "r", encoding="utf-8") as f:
-            ent = json.load(f).get("parts", {}).get(base)
+            tab = json.load(f).get("parts", {})
+        ent = tab.get(base)
+        if volume_mm3:
+            cands = [e for k, e in tab.items() if (k == base or k.startswith(base + "@")) and e and e.get("solid_volume_mm3")]
+            if cands:
+                ent = min(cands, key=lambda e: abs(float(e["solid_volume_mm3"]) - volume_mm3))
     except (OSError, ValueError, KeyError):
         ent = None
     if ent and ent.get("part_g") and ent.get("solid_volume_mm3"):
@@ -2458,7 +2491,7 @@ def build_top_cap(ctx: "Ctx", cb: CB) -> None:
     """v0.9 CAD-2 VTOL top cap (Layout._top_cap; rocket_geometry.top_cap): skirt (body_id/2..body_r over the avionics
     spigot, into the plate by OVERLAP), plate (full disc, flat top), hub / rim ring / radial ribs under it reaching half the
     plate thickness into it; then the hardpoint hole (axis), the plate holes (Layout.cap_holes) and one skirt joint hole per
-    joint theta.  Every feature CB.required."""
+    joint theta.  Every feature CB.required.  0.9.8: the battery build's protective switch collar (before the holes)."""
     L = ctx.lay
     R, ri = L.body_r, L.body_id / 2.0
     zp, zt = L.z_cap_plate_bottom, L.z_cap_top
@@ -2475,6 +2508,24 @@ def build_top_cap(ctx: "Ctx", cb: CB) -> None:
         lbl = f"cap_rib_{th:g}"
         req(lbl, lambda th=th, lbl=lbl: cb.box_pod(th, L.cap_rib_r[0], L.cap_rib_r[1], -L.cap_rib_t / 2.0, L.cap_rib_t / 2.0,
                                                    L.z_cap_under, zin, ctx.JOIN, lbl))
+    if getattr(L, "has_lp_collar", False):
+        # 0.9.8 switch collar (user decision 2026-11-05; rocket_geometry.logic_collar): before the plate holes - the
+        # outer cylinder from half the plate thickness to the rim (JOIN), the bore from the plate top up (CUT), the
+        # finger notches across both sides as U slots (review fix 2026-11-05, F1 / F2; rocket_geometry.logic_collar_slot):
+        # the slab |x - sx| < notch_w / 2 from the U's centre lp_col_notch_zc up (CUT) and the round bottom, a cylinder
+        # Ø notch_w along y with its axis at lp_col_notch_zc (cut_between, probe in the wall under the slab)
+        csx, csy = L.lp_sw_xy
+        cz1 = L.lp_col_z[1]
+        chw = 0.5 * L.lp_col_notch_w
+        czu = L.lp_col_notch_zc
+        cy0, cy1 = csy - L.lp_col_ro - OVERLAP, csy + L.lp_col_ro + OVERLAP
+        req("cap_collar", lambda: cb.cyl_z(csx, csy, zin, cz1, 2.0 * L.lp_col_ro, ctx.JOIN, "cap_collar"))
+        req("cap_collar_bore", lambda: cb.cyl_z(csx, csy, zt, cz1 + OVERLAP, 2.0 * L.lp_col_ri, ctx.CUT, "cap_collar_bore"))
+        req("cap_collar_notches", lambda: cb.box_xy(csx - chw, csx + chw, cy0, cy1, czu, cz1 + OVERLAP,
+                                                    ctx.CUT, "cap_collar_notches"))
+        req("cap_collar_notch_round", lambda: cb.cut_between(
+            (csx, cy0, czu), (csx, cy1, czu), L.lp_col_notch_w, "cap_collar_notch_round",
+            probe_mm=(csx, csy + 0.5 * (L.lp_col_ri + L.lp_col_ro), czu - 0.5 * chw)))
     req("cap_hardpoint_hole", lambda: cb.cyl_z(0.0, 0.0, L.z_cap_under - OVERLAP, zt + OVERLAP, L.cap_hardpoint_d, ctx.CUT,
                                                "cap_hardpoint_hole"))
     if getattr(L, "cap_hardpoint", False):     # v0.9 fix round: the load washer's flush recess in the hub / rib bottoms
@@ -2489,7 +2540,11 @@ def build_top_cap(ctx: "Ctx", cb: CB) -> None:
         req(lbl, lambda th=th, lbl=lbl: cb.radial_cyl(th, zj, ri - 2.0 * OVERLAP, R + 2.0 * OVERLAP,
                                                       L.p["body"]["joint_hole_outer_d"], ctx.CUT, lbl))
     ctx.report_extra["top_cap"] = {"z_mm": [L.z_cap_skirt_bottom, zp, zt], "holes": {k: list(v) for k, v in L.cap_holes.items()},
-                                   "tether_mm": dict(L.cap_tether), **req.summary()}
+                                   "tether_mm": dict(L.cap_tether), **req.summary(),
+                                   **({"collar": {"r_in_out_mm": [L.lp_col_ri, L.lp_col_ro], "z_mm": list(L.lp_col_z),
+                                                  "notch_w_mm": L.lp_col_notch_w, "notch_z0_mm": L.lp_col_notch_z0,
+                                                  "volume_mm3_layout": L.lp_col_volume_mm3}}
+                                      if getattr(L, "has_lp_collar", False) else {})}
 
 
 def build_cap_gps_module(ctx: "Ctx", cb: CB) -> None:
@@ -2716,6 +2771,21 @@ def build_hinge_bushing(k: int):
         cb.radial_cyl(th, zh, L.dd_bush_u[0], L.dd_bush_u[1], L.dd_bush_od, ctx.NEW, "bushing")
         cb.radial_cyl(th, zh, L.dd_bush_u[0] - OVERLAP, L.dd_bush_u[1] + OVERLAP, L.dd_bush_id, ctx.CUT, "bushing_bore")
     return fn
+
+
+def build_logic_switch(ctx: "Ctx", cb: CB) -> None:
+    """0.9.7 placeholder logic_switch (rocket_geometry.logic_switch): the MTS-102 as mounted at Layout.lp_sw_xy - inner
+    nut, body, lugs under the plate, the bushing through the hole, the outer nut, the bushing top and the lever over it."""
+    L = ctx.lay
+    sx, sy = L.lp_sw_xy
+    b, g = L.lp_sw_body, L.lp_sw_lugs
+    cb.cyl_z(sx, sy, L.lp_sw_inner_nut_z[0], L.lp_sw_inner_nut_z[1], L.lp_sw_nut_d, ctx.NEW, "logic_sw_inner_nut")
+    cb.box_xy(b[0][0], b[0][1], b[1][0], b[1][1], b[2][0], b[2][1], ctx.JOIN, "logic_sw_body")
+    cb.box_xy(g[0][0], g[0][1], g[1][0], g[1][1], g[2][0], g[2][1], ctx.JOIN, "logic_sw_lugs")
+    cb.cyl_z(sx, sy, L.lp_sw_inner_nut_z[0] + OVERLAP, L.lp_sw_outer_nut_z[1], L.lp_sw_bushing_d, ctx.JOIN, "logic_sw_bushing")
+    cb.cyl_z(sx, sy, L.lp_sw_outer_nut_z[0], L.lp_sw_outer_nut_z[1], L.lp_sw_nut_d, ctx.JOIN, "logic_sw_outer_nut")
+    cb.cyl_z(sx, sy, L.lp_sw_outer_nut_z[1] - OVERLAP, L.lp_sw_bushing_top_z, L.lp_sw_bushing_d, ctx.JOIN, "logic_sw_bushing_top")
+    cb.cyl_z(sx, sy, L.lp_sw_bushing_top_z - OVERLAP, L.lp_sw_top_z, L.lp_sw_lever_d, ctx.JOIN, "logic_sw_lever")
 
 
 def build_tether_eyebolt(ctx: "Ctx", cb: CB) -> None:
@@ -3142,6 +3212,10 @@ class Ctx:
             specs += [("tether_eyebolt", "placeholder", build_tether_eyebolt, L.cap_bolt_mass_g),
                       ("tether_load_washer", "placeholder", build_tether_load_washer, L.cap_washer_mass_g),
                       ("tether_nut", "placeholder", build_tether_nut, L.cap_nut_mass_g)]
+        if getattr(L, "has_logic_power", False):   # 0.9.7 (2026-11-05): the 1S logic pack at spot A + the top-cap switch
+            specs += [("logic_pack", "placeholder", build_box_placeholder(L.lp_pack_x, L.lp_pack_y, L.lp_pack_z),
+                       L.lp_pack_mass_g),
+                      ("logic_switch", "placeholder", build_logic_switch, L.lp_sw_mass_g)]
         return specs
 
     def component_specs(self) -> list[tuple[str, str, object, float | None]]:
@@ -3289,7 +3363,7 @@ class Ctx:
             raw.append((V, com, rho_f, mom))
             v_total += V
         if kind == "printed":
-            rho = printed_density(self.lay, name, self.root_dir)       # v0.9: printer.mass_model
+            rho = printed_density(self.lay, name, self.root_dir, v_total * 1000.0)   # v0.9: printer.mass_model
         else:
             rho = (mass_g / v_total) if v_total > 0 else 0.0
             if v_total <= 0:
@@ -3328,8 +3402,40 @@ class Ctx:
             sel = [(parts[n]["mass_g"] / 1000.0, tuple(c / 1000.0 for c in parts[n]["com_mm"]), parts[n]["inertia_about_com_kg_m2"]) for n in names]
             m, com, I = combine_inertia(sel)
             return m, com, I
-        vehicle = [n for n in parts if n not in NOT_IN_VEHICLE]
-        m, com, I = totals_of(vehicle)
+        # 0.9.7: the logic-power parts stay out of the totals while their mass is pending (in_flight_mass_model false);
+        # the totals get the switch hole's plug back (lumped at the hole, Layout volume x the cap's density)
+        pending = [n for n in LOGIC_PARTS if n in parts] if (getattr(L, "has_logic_power", False)
+                                                              and not getattr(L, "logic_in_flight", False)) else []
+        vehicle = [n for n in parts if n not in NOT_IN_VEHICLE and n not in pending]
+        plug = collar_neg = None
+        if pending and "top_cap" in parts:
+            hx, hy, hd = L.cap_holes["logic power switch"]
+            pv = math.pi / 4.0 * hd * hd * L.cap_plate_t
+            plug = self.lumped_part(parts["top_cap"]["density_g_cm3"] * pv / 1000.0,
+                                    0.5 * (L.z_cap_plate_bottom + L.z_cap_top), hx, hy)
+            plug["volume_mm3_layout"] = pv
+            parts_t = dict(parts)
+            parts_t["__top_cap_logic_hole_plug"] = plug
+            vehicle_t = vehicle + ["__top_cap_logic_hole_plug"]
+            if getattr(L, "has_lp_collar", False):
+                # 0.9.8 switch collar: the collar is logic-power kit too - the totals take its material back out (a
+                # negative point mass at its Layout centroid, Layout volume x the cap's density), like the hole's plug
+                cx_, cy_, cz_ = L.lp_col_centroid
+                neg = self.lumped_part(-parts["top_cap"]["density_g_cm3"] * L.lp_col_volume_mm3 / 1000.0, cz_, cx_, cy_)
+                neg["volume_mm3_layout"] = -L.lp_col_volume_mm3
+                parts_t["__top_cap_logic_collar_removed"] = neg
+                vehicle_t.append("__top_cap_logic_collar_removed")
+                collar_neg = neg
+            sel = [(parts_t[n]["mass_g"] / 1000.0, tuple(c / 1000.0 for c in parts_t[n]["com_mm"]),
+                    parts_t[n]["inertia_about_com_kg_m2"]) for n in vehicle_t]
+            m, com, I = combine_inertia(sel)
+        else:
+            m, com, I = totals_of(vehicle)
+        if getattr(L, "has_logic_power", False):
+            self.report_extra["logic_power"] = {
+                "in_flight_mass_model": bool(getattr(L, "logic_in_flight", False)), "pending": pending,
+                "pending_mass_g": {n: parts[n]["mass_g"] for n in pending}, "hole_plug": plug, "collar_removed": collar_neg,
+                "note": "2026-11-05 user decision 4: mass decision deferred - pending parts built and measured, not summed"}
         printed_mass = sum(parts[n]["mass_g"] for n in vehicle if parts[n]["kind"] == "printed")
         post = [n for n in vehicle if n not in EJECTED]
         mp, comp_, Ip = totals_of(post)
@@ -3514,6 +3620,11 @@ def run(context):  # noqa: ARG001 - Fusion passes a context string
         if vtol:   # v0.9 CAD-2: the tether kit (power.source tether / hybrid), lumped at its Layout stations
             for nm, (m_g, (tx, ty, tz)) in lay.tether_items.items():
                 parts[nm] = ctx.lumped_part(m_g, tz, tx, ty)
+        if getattr(lay, "has_logic_power", False):   # 0.9.7: the switch lead and the strap / tie (lumped, as the twin)
+            lx, ly, lz = lay.lp_switch_lead_com
+            parts["logic_switch_lead"] = ctx.lumped_part(lay.lp_switch_lead_mass_g, lz, lx, ly)
+            rx, ry, rz = lay.lp_retention_com
+            parts["logic_retention"] = ctx.lumped_part(lay.lp_retention_mass_g, rz, rx, ry)
         pr = ctx.report_extra.get("pushrod_len_mm_each", [])
         pushrod_len = pr[0] if pr else 0.0
         exported = ctx.export_all()

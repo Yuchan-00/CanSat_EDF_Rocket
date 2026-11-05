@@ -1,0 +1,2403 @@
+{
+ "frame": "KiCad coordinates (mm, y down); board outline x 62..138, y 65..135; spec (x, y) = (X - 100, 100 - Y)",
+ "generator": "scripts/place.py (deterministic greedy placement around anchored parts)",
+ "spec_sha256": "13e6649325346685aeef37cffb25c0ce9cd1c7656239726b407c8bb44891ccad",
+ "placements": {
+  "C1": {
+   "x": 109.53,
+   "y": 129.71,
+   "rot": 0,
+   "how": "cluster",
+   "why": "NAV support cluster 'dec21' at fixed MCU-local (-2.32, 9.11) rot 0 (pre-routed)"
+  },
+  "C2": {
+   "x": 114.97,
+   "y": 111.49,
+   "rot": 180,
+   "how": "cluster",
+   "why": "NAV support cluster 'dec52' at fixed MCU-local (3.12, -9.11) rot 180 (pre-routed)"
+  },
+  "C3": {
+   "x": 104.2,
+   "y": 104.2,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (101.82, 104.18)"
+  },
+  "C4": {
+   "x": 106.33,
+   "y": 111.49,
+   "rot": 0,
+   "how": "cluster",
+   "why": "NAV support cluster 'avcc' at fixed MCU-local (-5.52, -9.11) rot 0 (pre-routed)"
+  },
+  "C5": {
+   "x": 107.0,
+   "y": 103.6,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (107.45, 112.94)"
+  },
+  "C6": {
+   "x": 114.11,
+   "y": 133.37,
+   "rot": 0,
+   "how": "cluster",
+   "why": "NAV support cluster 'cx1' at fixed MCU-local (2.26, 12.77) rot 0 (pre-routed)"
+  },
+  "C7": {
+   "x": 108.79,
+   "y": 131.17,
+   "rot": 180,
+   "how": "cluster",
+   "why": "NAV support cluster 'cx2' at fixed MCU-local (-3.06, 10.57) rot 180 (pre-routed)"
+  },
+  "C8": {
+   "x": 104.6,
+   "y": 130.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.49, 126.61)"
+  },
+  "C9": {
+   "x": 109.53,
+   "y": 102.31,
+   "rot": 0,
+   "how": "cluster",
+   "why": "FCU support cluster 'dec21' at fixed MCU-local (-2.32, 9.11) rot 0 (pre-routed)"
+  },
+  "C10": {
+   "x": 114.97,
+   "y": 84.09,
+   "rot": 180,
+   "how": "cluster",
+   "why": "FCU support cluster 'dec52' at fixed MCU-local (3.12, -9.11) rot 180 (pre-routed)"
+  },
+  "C11": {
+   "x": 95.8,
+   "y": 104.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (102.04, 104.74)"
+  },
+  "C12": {
+   "x": 106.33,
+   "y": 84.09,
+   "rot": 0,
+   "how": "cluster",
+   "why": "FCU support cluster 'avcc' at fixed MCU-local (-5.52, -9.11) rot 0 (pre-routed)"
+  },
+  "C13": {
+   "x": 109.2,
+   "y": 83.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (107.45, 85.54)"
+  },
+  "C14": {
+   "x": 114.11,
+   "y": 105.97,
+   "rot": 0,
+   "how": "cluster",
+   "why": "FCU support cluster 'cx1' at fixed MCU-local (2.26, 12.77) rot 0 (pre-routed)"
+  },
+  "C15": {
+   "x": 108.79,
+   "y": 103.77,
+   "rot": 180,
+   "how": "cluster",
+   "why": "FCU support cluster 'cx2' at fixed MCU-local (-3.06, 10.57) rot 180 (pre-routed)"
+  },
+  "C16": {
+   "x": 96.2,
+   "y": 95.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.49, 95.31)"
+  },
+  "C17": {
+   "x": 88.32,
+   "y": 88.09,
+   "rot": 180,
+   "how": "cluster",
+   "why": "COM support cluster 'dec21' at fixed MCU-local (-2.32, 9.11) rot 0 (pre-routed)"
+  },
+  "C18": {
+   "x": 82.88,
+   "y": 106.31,
+   "rot": 0,
+   "how": "cluster",
+   "why": "COM support cluster 'dec52' at fixed MCU-local (3.12, -9.11) rot 180 (pre-routed)"
+  },
+  "C19": {
+   "x": 95.8,
+   "y": 108.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (101.85, 103.81)"
+  },
+  "C20": {
+   "x": 91.52,
+   "y": 106.31,
+   "rot": 180,
+   "how": "cluster",
+   "why": "COM support cluster 'avcc' at fixed MCU-local (-5.52, -9.11) rot 0 (pre-routed)"
+  },
+  "C21": {
+   "x": 92.2,
+   "y": 107.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (90.4, 104.86)"
+  },
+  "C22": {
+   "x": 83.74,
+   "y": 84.43,
+   "rot": 180,
+   "how": "cluster",
+   "why": "COM support cluster 'cx1' at fixed MCU-local (2.26, 12.77) rot 0 (pre-routed)"
+  },
+  "C23": {
+   "x": 89.06,
+   "y": 86.63,
+   "rot": 0,
+   "how": "cluster",
+   "why": "COM support cluster 'cx2' at fixed MCU-local (-3.06, 10.57) rot 180 (pre-routed)"
+  },
+  "C24": {
+   "x": 95.6,
+   "y": 92.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (94.16, 94.04)"
+  },
+  "C25": {
+   "x": 83.68,
+   "y": 126.41,
+   "rot": 0,
+   "how": "cluster",
+   "why": "GNS support cluster 'dec21' at fixed MCU-local (-2.32, 9.11) rot 0 (pre-routed)"
+  },
+  "C26": {
+   "x": 89.12,
+   "y": 108.19,
+   "rot": 180,
+   "how": "cluster",
+   "why": "GNS support cluster 'dec52' at fixed MCU-local (3.12, -9.11) rot 180 (pre-routed)"
+  },
+  "C27": {
+   "x": 95.8,
+   "y": 112.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (101.35, 103.38)"
+  },
+  "C28": {
+   "x": 80.48,
+   "y": 108.19,
+   "rot": 0,
+   "how": "cluster",
+   "why": "GNS support cluster 'avcc' at fixed MCU-local (-5.52, -9.11) rot 0 (pre-routed)"
+  },
+  "C29": {
+   "x": 83.4,
+   "y": 107.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (81.6, 109.64)"
+  },
+  "C30": {
+   "x": 88.26,
+   "y": 130.07,
+   "rot": 0,
+   "how": "cluster",
+   "why": "GNS support cluster 'cx1' at fixed MCU-local (2.26, 12.77) rot 0 (pre-routed)"
+  },
+  "C31": {
+   "x": 82.94,
+   "y": 127.87,
+   "rot": 180,
+   "how": "cluster",
+   "why": "GNS support cluster 'cx2' at fixed MCU-local (-3.06, 10.57) rot 180 (pre-routed)"
+  },
+  "C32": {
+   "x": 95.6,
+   "y": 120.6,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (90.56, 120.56)"
+  },
+  "C33": {
+   "x": 124.8,
+   "y": 105.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (126.45, 104.16)"
+  },
+  "C34": {
+   "x": 132.8,
+   "y": 87.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (132.85, 88.84)"
+  },
+  "C35": {
+   "x": 115.0,
+   "y": 103.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (102.69, 103.7)"
+  },
+  "C36": {
+   "x": 123.2,
+   "y": 87.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (123.25, 88.84)"
+  },
+  "C37": {
+   "x": 126.4,
+   "y": 87.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (124.85, 88.84)"
+  },
+  "C38": {
+   "x": 128.8,
+   "y": 105.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (128.85, 104.16)"
+  },
+  "C39": {
+   "x": 126.8,
+   "y": 105.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (128.05, 104.16)"
+  },
+  "C40": {
+   "x": 116.6,
+   "y": 105.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (112.19, 105.76)"
+  },
+  "C41": {
+   "x": 105.4,
+   "y": 70.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (104.8, 67.2)"
+  },
+  "C42": {
+   "x": 110.2,
+   "y": 70.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (109.88, 67.2)"
+  },
+  "C43": {
+   "x": 92.0,
+   "y": 85.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.21, 101.93)"
+  },
+  "C44": {
+   "x": 105.4,
+   "y": 80.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (102.83, 101.26)"
+  },
+  "C45": {
+   "x": 110.6,
+   "y": 82.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (110.65, 85.54)"
+  },
+  "C46": {
+   "x": 77.0,
+   "y": 131.15,
+   "rot": 0,
+   "how": "anchor",
+   "why": "SERVO_5V bulk 220 uF next to the -x servo headers (no room near J12)"
+  },
+  "C47": {
+   "x": 126.4,
+   "y": 85.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (119.51, 96.0)"
+  },
+  "C48": {
+   "x": 113.4,
+   "y": 81.2,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (108.25, 85.54)"
+  },
+  "C49": {
+   "x": 110.0,
+   "y": 77.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (109.05, 85.54)"
+  },
+  "C50": {
+   "x": 113.4,
+   "y": 78.2,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (109.85, 85.54)"
+  },
+  "C51": {
+   "x": 94.0,
+   "y": 72.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (94.08, 69.8)"
+  },
+  "C52": {
+   "x": 96.0,
+   "y": 69.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (94.08, 69.8)"
+  },
+  "C53": {
+   "x": 92.8,
+   "y": 67.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (92.81, 69.8)"
+  },
+  "C54": {
+   "x": 69.4,
+   "y": 126.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (65.12, 133.15)"
+  },
+  "D1": {
+   "x": 96.2,
+   "y": 101.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.75, 103.01)"
+  },
+  "D2": {
+   "x": 119.2,
+   "y": 103.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.66, 103.0)"
+  },
+  "D3": {
+   "x": 95.4,
+   "y": 87.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.83, 103.01)"
+  },
+  "D4": {
+   "x": 92.4,
+   "y": 87.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.64, 102.51)"
+  },
+  "D5": {
+   "x": 95.4,
+   "y": 85.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.16, 102.61)"
+  },
+  "D6": {
+   "x": 135.2,
+   "y": 106.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (135.15, 83.0)"
+  },
+  "D7": {
+   "x": 121.0,
+   "y": 79.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (128.8, 67.6)"
+  },
+  "J1": {
+   "x": 104.85,
+   "y": 108.8,
+   "rot": 90,
+   "how": "anchor",
+   "why": "GY-521 header between FCU and NAV, module body over the FCU (low parts only)"
+  },
+  "J2": {
+   "x": 136.2,
+   "y": 133.0,
+   "rot": -90,
+   "how": "anchor",
+   "why": "BMP280 socket; module lies flat toward +y over a part-free keep-out"
+  },
+  "J3": {
+   "x": 94.08,
+   "y": 69.8,
+   "rot": -90,
+   "how": "anchor",
+   "why": "PLM100 pins 1-12 (datasheet fig 5), antenna end toward -x/+y corner"
+  },
+  "J4": {
+   "x": 80.11,
+   "y": 81.4,
+   "rot": 90,
+   "how": "anchor",
+   "why": "PLM100 pins 13-24 (datasheet fig 5)"
+  },
+  "J5": {
+   "x": 116.4,
+   "y": 81.8,
+   "rot": 180,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.39, 103.54)"
+  },
+  "J6": {
+   "x": 104.8,
+   "y": 67.2,
+   "rot": 90,
+   "how": "anchor",
+   "why": "5 V buck module header (VIN, GND, VOUT, EN - A)"
+  },
+  "J7": {
+   "x": 67.0,
+   "y": 131.2,
+   "rot": 0,
+   "how": "anchor",
+   "why": "edge -y, x < -5 mm: GPS lead, vertical JST-GH (lead hole at x -23.8, y -28.3)"
+  },
+  "J8": {
+   "x": 72.8,
+   "y": 80.87,
+   "rot": 180,
+   "how": "anchor",
+   "why": "edge -x: vane servo 1 (spec board.edges)"
+  },
+  "J9": {
+   "x": 72.8,
+   "y": 89.59,
+   "rot": 180,
+   "how": "anchor",
+   "why": "edge -x: vane servo 2"
+  },
+  "J10": {
+   "x": 72.8,
+   "y": 98.31,
+   "rot": 180,
+   "how": "anchor",
+   "why": "edge -x: vane servo 3"
+  },
+  "J11": {
+   "x": 72.8,
+   "y": 107.03,
+   "rot": 180,
+   "how": "anchor",
+   "why": "edge -x: vane servo 4"
+  },
+  "J12": {
+   "x": 127.5,
+   "y": 73.85,
+   "rot": 0,
+   "how": "anchor",
+   "why": "edge +x, y > +14 mm: ESC lead (signal, BEC 5 V, GND), upper slot"
+  },
+  "J13": {
+   "x": 72.8,
+   "y": 72.15,
+   "rot": 180,
+   "how": "anchor",
+   "why": "edge -x: release servo (DNP) in the top slot (plug would touch the spigot bore)"
+  },
+  "J14": {
+   "x": 133.15,
+   "y": 67.5,
+   "rot": 0,
+   "how": "anchor",
+   "why": "edge +x, y > +14 mm: logic battery JST-PH vertical (top entry)"
+  },
+  "J15": {
+   "x": 128.8,
+   "y": 67.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (133.15, 67.5)"
+  },
+  "J16": {
+   "x": 121.4,
+   "y": 75.9,
+   "rot": 90,
+   "how": "anchor",
+   "why": "edge +y, x > +5 mm: arm switch lead (top cap hole at 90 deg)"
+  },
+  "J17": {
+   "x": 133.15,
+   "y": 83.0,
+   "rot": 0,
+   "how": "anchor",
+   "why": "edge +x, y > +14 mm: buzzer lead, vertical JST-PH below the ESC lead (no plug toward the motor-lead joint zone)"
+  },
+  "J18": {
+   "x": 72.8,
+   "y": 122.0,
+   "rot": 180,
+   "how": "anchor",
+   "why": "edge -x, y < -12 mm: 6S power-sense lead"
+  },
+  "J19": {
+   "x": 98.73,
+   "y": 119.87,
+   "rot": 0,
+   "how": "anchor",
+   "why": "NAV ISP footprint in the tie band (unpopulated)"
+  },
+  "J20": {
+   "x": 98.73,
+   "y": 84.67,
+   "rot": 0,
+   "how": "anchor",
+   "why": "FCU ISP footprint in the tie band (unpopulated, pogo / held header)"
+  },
+  "J21": {
+   "x": 98.73,
+   "y": 93.47,
+   "rot": 0,
+   "how": "anchor",
+   "why": "COM ISP footprint in the tie band (unpopulated)"
+  },
+  "J22": {
+   "x": 98.73,
+   "y": 111.07,
+   "rot": 0,
+   "how": "anchor",
+   "why": "GNS ISP footprint in the tie band (unpopulated)"
+  },
+  "J23": {
+   "x": 98.73,
+   "y": 102.27,
+   "rot": 0,
+   "how": "anchor",
+   "why": "SPARE ISP footprint in the tie band (unpopulated, DNP in the spec too)"
+  },
+  "J24": {
+   "x": 95.2,
+   "y": 128.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.65, 128.8)"
+  },
+  "J25": {
+   "x": 120.0,
+   "y": 82.6,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (99.84, 96.5)"
+  },
+  "JP1": {
+   "x": 65.2,
+   "y": 126.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (65.12, 133.15)"
+  },
+  "L1": {
+   "x": 107.0,
+   "y": 106.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (105.85, 112.21)"
+  },
+  "L2": {
+   "x": 105.8,
+   "y": 82.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (105.85, 84.81)"
+  },
+  "L3": {
+   "x": 88.8,
+   "y": 106.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (92.0, 105.59)"
+  },
+  "L4": {
+   "x": 80.0,
+   "y": 106.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (80.0, 108.91)"
+  },
+  "L5": {
+   "x": 123.0,
+   "y": 85.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (122.98, 88.02)"
+  },
+  "NT1": {
+   "x": 124.4,
+   "y": 78.93,
+   "rot": 0,
+   "how": "anchor",
+   "why": "single GND <-> GND_PWR tie right next to J12 pin 3 (spec grounding)"
+  },
+  "Q1": {
+   "x": 122.4,
+   "y": 120.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (117.77, 123.35)"
+  },
+  "Q2": {
+   "x": 118.0,
+   "y": 131.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (118.03, 123.35)"
+  },
+  "Q3": {
+   "x": 122.4,
+   "y": 116.2,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (113.41, 114.5)"
+  },
+  "Q4": {
+   "x": 81.0,
+   "y": 85.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (86.1, 85.47)"
+  },
+  "Q5": {
+   "x": 81.6,
+   "y": 77.6,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (87.72, 78.2)"
+  },
+  "Q6": {
+   "x": 75.2,
+   "y": 125.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (78.21, 129.06)"
+  },
+  "Q7": {
+   "x": 83.8,
+   "y": 133.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (77.19, 129.06)"
+  },
+  "Q8": {
+   "x": 106.4,
+   "y": 77.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (106.44, 84.24)"
+  },
+  "Q9": {
+   "x": 130.8,
+   "y": 108.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (136.0, 94.7)"
+  },
+  "Q10": {
+   "x": 128.6,
+   "y": 82.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (133.15, 67.5)"
+  },
+  "R1": {
+   "x": 104.6,
+   "y": 131.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.6, 127.8)"
+  },
+  "R2": {
+   "x": 96.2,
+   "y": 115.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (107.86, 112.41)"
+  },
+  "R3": {
+   "x": 96.2,
+   "y": 98.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (101.06, 95.6)"
+  },
+  "R4": {
+   "x": 119.6,
+   "y": 106.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (119.36, 100.11)"
+  },
+  "R5": {
+   "x": 95.6,
+   "y": 89.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (94.64, 93.75)"
+  },
+  "R6": {
+   "x": 83.8,
+   "y": 87.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (87.26, 89.9)"
+  },
+  "R7": {
+   "x": 95.6,
+   "y": 123.6,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (92.24, 120.83)"
+  },
+  "R8": {
+   "x": 76.6,
+   "y": 106.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (93.42, 104.65)"
+  },
+  "R9": {
+   "x": 117.6,
+   "y": 103.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (113.4, 105.77)"
+  },
+  "R10": {
+   "x": 112.4,
+   "y": 83.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (116.55, 93.15)"
+  },
+  "R11": {
+   "x": 125.2,
+   "y": 108.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (104.19, 108.1)"
+  },
+  "R12": {
+   "x": 96.2,
+   "y": 80.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.19, 99.76)"
+  },
+  "R13": {
+   "x": 91.8,
+   "y": 126.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (98.09, 117.99)"
+  },
+  "R14": {
+   "x": 125.2,
+   "y": 82.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (125.16, 80.33)"
+  },
+  "R15": {
+   "x": 111.6,
+   "y": 75.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (111.6, 75.02)"
+  },
+  "R16": {
+   "x": 111.0,
+   "y": 80.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (110.97, 80.85)"
+  },
+  "R17": {
+   "x": 78.2,
+   "y": 84.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (88.49, 89.64)"
+  },
+  "R18": {
+   "x": 76.4,
+   "y": 94.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (88.49, 94.4)"
+  },
+  "R19": {
+   "x": 76.4,
+   "y": 99.6,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (89.32, 99.59)"
+  },
+  "R20": {
+   "x": 76.4,
+   "y": 102.6,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (88.49, 98.72)"
+  },
+  "R21": {
+   "x": 113.0,
+   "y": 73.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (115.84, 82.53)"
+  },
+  "R22": {
+   "x": 93.0,
+   "y": 78.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (88.49, 82.08)"
+  },
+  "R23": {
+   "x": 108.2,
+   "y": 75.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (108.18, 82.3)"
+  },
+  "R24": {
+   "x": 128.8,
+   "y": 86.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (122.18, 85.77)"
+  },
+  "R25": {
+   "x": 126.8,
+   "y": 107.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (124.65, 88.86)"
+  },
+  "R26": {
+   "x": 126.8,
+   "y": 110.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (124.69, 102.03)"
+  },
+  "R27": {
+   "x": 129.2,
+   "y": 110.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (128.33, 108.61)"
+  },
+  "R28": {
+   "x": 94.6,
+   "y": 78.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (98.15, 96.5)"
+  },
+  "R29": {
+   "x": 105.2,
+   "y": 75.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (105.42, 81.56)"
+  },
+  "R30": {
+   "x": 96.2,
+   "y": 77.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (97.02, 94.07)"
+  },
+  "R31": {
+   "x": 104.8,
+   "y": 73.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (104.83, 79.64)"
+  },
+  "R32": {
+   "x": 93.8,
+   "y": 75.6,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (98.68, 93.81)"
+  },
+  "R33": {
+   "x": 107.8,
+   "y": 73.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (105.96, 80.04)"
+  },
+  "R34": {
+   "x": 76.4,
+   "y": 109.2,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (96.16, 104.79)"
+  },
+  "R35": {
+   "x": 76.4,
+   "y": 91.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (97.96, 101.79)"
+  },
+  "R36": {
+   "x": 96.2,
+   "y": 83.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (103.42, 83.69)"
+  },
+  "R37": {
+   "x": 111.0,
+   "y": 78.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (110.93, 78.91)"
+  },
+  "R38": {
+   "x": 115.2,
+   "y": 130.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (117.33, 123.86)"
+  },
+  "R39": {
+   "x": 125.0,
+   "y": 120.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (121.47, 121.05)"
+  },
+  "R40": {
+   "x": 116.6,
+   "y": 133.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (115.99, 129.73)"
+  },
+  "R41": {
+   "x": 120.8,
+   "y": 130.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (119.37, 124.65)"
+  },
+  "R42": {
+   "x": 125.0,
+   "y": 117.8,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (113.29, 117.73)"
+  },
+  "R43": {
+   "x": 125.8,
+   "y": 115.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (122.99, 112.97)"
+  },
+  "R44": {
+   "x": 78.4,
+   "y": 87.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (82.1, 87.0)"
+  },
+  "R45": {
+   "x": 89.8,
+   "y": 84.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (85.47, 83.87)"
+  },
+  "R46": {
+   "x": 76.8,
+   "y": 87.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (79.97, 87.13)"
+  },
+  "R47": {
+   "x": 89.2,
+   "y": 67.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (89.13, 71.85)"
+  },
+  "R48": {
+   "x": 81.4,
+   "y": 72.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (81.38, 69.8)"
+  },
+  "R49": {
+   "x": 80.4,
+   "y": 126.8,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (82.47, 125.38)"
+  },
+  "R50": {
+   "x": 72.0,
+   "y": 126.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (70.94, 129.95)"
+  },
+  "R51": {
+   "x": 88.2,
+   "y": 128.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (86.37, 128.98)"
+  },
+  "R52": {
+   "x": 69.6,
+   "y": 125.0,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (74.62, 133.55)"
+  },
+  "R53": {
+   "x": 76.6,
+   "y": 84.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (91.19, 91.61)"
+  },
+  "R54": {
+   "x": 78.2,
+   "y": 81.0,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (90.29, 97.21)"
+  },
+  "R55": {
+   "x": 76.4,
+   "y": 112.2,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (91.12, 100.64)"
+  },
+  "R56": {
+   "x": 74.8,
+   "y": 110.4,
+   "rot": 90,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (90.29, 96.91)"
+  },
+  "R57": {
+   "x": 84.0,
+   "y": 67.2,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (83.92, 69.8)"
+  },
+  "U1": {
+   "x": 111.85,
+   "y": 120.6,
+   "rot": 0,
+   "how": "anchor",
+   "why": "NAV"
+  },
+  "U2": {
+   "x": 111.85,
+   "y": 93.2,
+   "rot": 0,
+   "how": "anchor",
+   "why": "FCU (top-side support parts sit under the buck module body)"
+  },
+  "U3": {
+   "x": 86.0,
+   "y": 97.2,
+   "rot": 180,
+   "how": "anchor",
+   "why": "COM next to the PLM100 (rotated: UART1 PD2/PD3 face the module, PE0/PE1/PB1 face the band)"
+  },
+  "U4": {
+   "x": 86.0,
+   "y": 117.3,
+   "rot": 0,
+   "how": "anchor",
+   "why": "GNS next to the GPS lead corner"
+  },
+  "U5": {
+   "x": 129.25,
+   "y": 96.5,
+   "rot": 0,
+   "how": "anchor",
+   "why": "5th ATmega128A (DNP) - only power, crystal, reset, ISP nets"
+  },
+  "U6": {
+   "x": 87.8,
+   "y": 75.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (109.88, 67.2)"
+  },
+  "Y1": {
+   "x": 111.45,
+   "y": 132.27,
+   "rot": 90,
+   "how": "cluster",
+   "why": "NAV support cluster 'xtal' at fixed MCU-local (-0.4, 11.67) rot 90 (pre-routed)"
+  },
+  "Y2": {
+   "x": 111.45,
+   "y": 104.87,
+   "rot": 90,
+   "how": "cluster",
+   "why": "FCU support cluster 'xtal' at fixed MCU-local (-0.4, 11.67) rot 90 (pre-routed)"
+  },
+  "Y3": {
+   "x": 86.4,
+   "y": 85.53,
+   "rot": 270,
+   "how": "cluster",
+   "why": "COM support cluster 'xtal' at fixed MCU-local (-0.4, 11.67) rot 90 (pre-routed)"
+  },
+  "Y4": {
+   "x": 85.6,
+   "y": 128.97,
+   "rot": 90,
+   "how": "cluster",
+   "why": "GNS support cluster 'xtal' at fixed MCU-local (-0.4, 11.67) rot 90 (pre-routed)"
+  },
+  "Y5": {
+   "x": 123.8,
+   "y": 112.4,
+   "rot": 0,
+   "how": "auto",
+   "why": "greedy: nearest free spot to its connected pads at (127.88, 104.98)"
+  }
+ },
+ "courtyards": {
+  "C1": [
+   108.62,
+   129.25,
+   110.44,
+   130.17
+  ],
+  "C2": [
+   114.06,
+   111.03,
+   115.88,
+   111.95
+  ],
+  "C3": [
+   103.22,
+   102.5,
+   105.18,
+   105.9
+  ],
+  "C4": [
+   105.42,
+   111.03,
+   107.24,
+   111.95
+  ],
+  "C5": [
+   106.27,
+   102.12,
+   107.73,
+   105.08
+  ],
+  "C6": [
+   113.2,
+   132.91,
+   115.02,
+   133.83
+  ],
+  "C7": [
+   107.88,
+   130.71,
+   109.7,
+   131.63
+  ],
+  "C8": [
+   103.12,
+   129.47,
+   106.08,
+   130.93
+  ],
+  "C9": [
+   108.62,
+   101.85,
+   110.44,
+   102.77
+  ],
+  "C10": [
+   114.06,
+   83.63,
+   115.88,
+   84.55
+  ],
+  "C11": [
+   94.82,
+   103.1,
+   96.78,
+   106.5
+  ],
+  "C12": [
+   105.42,
+   83.63,
+   107.24,
+   84.55
+  ],
+  "C13": [
+   107.72,
+   82.87,
+   110.68,
+   84.33
+  ],
+  "C14": [
+   113.2,
+   105.51,
+   115.02,
+   106.43
+  ],
+  "C15": [
+   107.88,
+   103.31,
+   109.7,
+   104.23
+  ],
+  "C16": [
+   95.47,
+   93.92,
+   96.93,
+   96.88
+  ],
+  "C17": [
+   87.41,
+   87.63,
+   89.23,
+   88.55
+  ],
+  "C18": [
+   81.97,
+   105.85,
+   83.79,
+   106.77
+  ],
+  "C19": [
+   94.82,
+   106.7,
+   96.78,
+   110.1
+  ],
+  "C20": [
+   90.61,
+   105.85,
+   92.43,
+   106.77
+  ],
+  "C21": [
+   90.72,
+   106.87,
+   93.68,
+   108.33
+  ],
+  "C22": [
+   82.83,
+   83.97,
+   84.65,
+   84.89
+  ],
+  "C23": [
+   88.15,
+   86.17,
+   89.97,
+   87.09
+  ],
+  "C24": [
+   94.87,
+   90.92,
+   96.33,
+   93.88
+  ],
+  "C25": [
+   82.77,
+   125.95,
+   84.59,
+   126.87
+  ],
+  "C26": [
+   88.21,
+   107.73,
+   90.03,
+   108.65
+  ],
+  "C27": [
+   94.82,
+   110.3,
+   96.78,
+   113.7
+  ],
+  "C28": [
+   79.57,
+   107.73,
+   81.39,
+   108.65
+  ],
+  "C29": [
+   81.92,
+   107.07,
+   84.88,
+   108.53
+  ],
+  "C30": [
+   87.35,
+   129.61,
+   89.17,
+   130.53
+  ],
+  "C31": [
+   82.03,
+   127.41,
+   83.85,
+   128.33
+  ],
+  "C32": [
+   94.87,
+   119.12,
+   96.33,
+   122.08
+  ],
+  "C33": [
+   123.89,
+   105.34,
+   125.71,
+   106.26
+  ],
+  "C34": [
+   131.89,
+   86.74,
+   133.71,
+   87.66
+  ],
+  "C35": [
+   113.3,
+   102.62,
+   116.7,
+   104.58
+  ],
+  "C36": [
+   122.29,
+   86.74,
+   124.11,
+   87.66
+  ],
+  "C37": [
+   124.92,
+   86.27,
+   127.88,
+   87.73
+  ],
+  "C38": [
+   127.89,
+   105.34,
+   129.71,
+   106.26
+  ],
+  "C39": [
+   125.89,
+   105.34,
+   127.71,
+   106.26
+  ],
+  "C40": [
+   115.12,
+   105.07,
+   118.08,
+   106.53
+  ],
+  "C41": [
+   103.1,
+   69.05,
+   107.7,
+   71.35
+  ],
+  "C42": [
+   107.9,
+   69.05,
+   112.5,
+   71.35
+  ],
+  "C43": [
+   90.3,
+   84.82,
+   93.7,
+   86.78
+  ],
+  "C44": [
+   103.09,
+   79.55,
+   107.71,
+   81.65
+  ],
+  "C45": [
+   109.12,
+   81.27,
+   112.08,
+   82.73
+  ],
+  "C46": [
+   72.3,
+   127.6,
+   81.7,
+   134.7
+  ],
+  "C47": [
+   124.92,
+   84.67,
+   127.88,
+   86.13
+  ],
+  "C48": [
+   112.67,
+   79.72,
+   114.13,
+   82.68
+  ],
+  "C49": [
+   108.52,
+   76.47,
+   111.48,
+   77.93
+  ],
+  "C50": [
+   112.67,
+   76.72,
+   114.13,
+   79.68
+  ],
+  "C51": [
+   92.3,
+   71.62,
+   95.7,
+   73.58
+  ],
+  "C52": [
+   95.27,
+   68.32,
+   96.73,
+   71.28
+  ],
+  "C53": [
+   91.32,
+   66.47,
+   94.28,
+   67.93
+  ],
+  "C54": [
+   67.7,
+   125.82,
+   71.1,
+   127.78
+  ],
+  "D1": [
+   95.47,
+   99.92,
+   96.93,
+   102.88
+  ],
+  "D2": [
+   118.47,
+   101.92,
+   119.93,
+   104.88
+  ],
+  "D3": [
+   93.92,
+   86.27,
+   96.88,
+   87.73
+  ],
+  "D4": [
+   90.92,
+   86.87,
+   93.88,
+   88.33
+  ],
+  "D5": [
+   93.92,
+   84.67,
+   96.88,
+   86.13
+  ],
+  "D6": [
+   132.85,
+   105.25,
+   137.55,
+   107.55
+  ],
+  "D7": [
+   118.65,
+   77.85,
+   123.35,
+   80.15
+  ],
+  "J1": [
+   103.08,
+   107.03,
+   124.4,
+   110.57
+  ],
+  "J2": [
+   121.7,
+   122.45,
+   137.95,
+   134.75
+  ],
+  "J3": [
+   78.98,
+   68.03,
+   95.22,
+   71.57
+  ],
+  "J4": [
+   78.97,
+   79.63,
+   95.21,
+   83.17
+  ],
+  "J5": [
+   114.63,
+   67.33,
+   118.17,
+   83.57
+  ],
+  "J6": [
+   103.03,
+   65.43,
+   114.19,
+   68.97
+  ],
+  "J7": [
+   62.27,
+   127.9,
+   71.73,
+   134.5
+  ],
+  "J8": [
+   62.26,
+   74.02,
+   74.57,
+   82.64
+  ],
+  "J9": [
+   62.26,
+   82.74,
+   74.57,
+   91.36
+  ],
+  "J10": [
+   62.26,
+   91.46,
+   74.57,
+   100.08
+  ],
+  "J11": [
+   62.26,
+   100.18,
+   74.57,
+   108.8
+  ],
+  "J12": [
+   125.73,
+   72.08,
+   138.04,
+   80.7
+  ],
+  "J13": [
+   62.26,
+   65.3,
+   74.57,
+   73.92
+  ],
+  "J14": [
+   130.7,
+   65.3,
+   137.6,
+   70.8
+  ],
+  "J15": [
+   127.03,
+   65.83,
+   130.57,
+   71.92
+  ],
+  "J16": [
+   119.63,
+   65.36,
+   125.72,
+   77.67
+  ],
+  "J17": [
+   130.7,
+   80.8,
+   137.6,
+   86.3
+  ],
+  "J18": [
+   62.26,
+   112.61,
+   74.57,
+   123.77
+  ],
+  "J19": [
+   96.96,
+   118.1,
+   103.05,
+   126.72
+  ],
+  "J20": [
+   96.96,
+   82.9,
+   103.05,
+   91.52
+  ],
+  "J21": [
+   96.96,
+   91.7,
+   103.05,
+   100.32
+  ],
+  "J22": [
+   96.96,
+   109.3,
+   103.05,
+   117.92
+  ],
+  "J23": [
+   96.96,
+   100.5,
+   103.05,
+   109.12
+  ],
+  "J24": [
+   93.43,
+   127.03,
+   96.97,
+   133.12
+  ],
+  "J25": [
+   118.23,
+   80.83,
+   124.32,
+   84.37
+  ],
+  "JP1": [
+   62.9,
+   125.15,
+   67.5,
+   127.65
+  ],
+  "L1": [
+   105.25,
+   105.15,
+   108.75,
+   106.85
+  ],
+  "L2": [
+   104.05,
+   81.75,
+   107.55,
+   83.45
+  ],
+  "L3": [
+   87.05,
+   105.95,
+   90.55,
+   107.65
+  ],
+  "L4": [
+   78.25,
+   105.95,
+   81.75,
+   107.65
+  ],
+  "L5": [
+   121.25,
+   84.95,
+   124.75,
+   86.65
+  ],
+  "NT1": [
+   123.5,
+   78.53,
+   125.3,
+   79.33
+  ],
+  "Q1": [
+   120.7,
+   118.47,
+   124.1,
+   122.33
+  ],
+  "Q2": [
+   116.07,
+   129.5,
+   119.93,
+   132.9
+  ],
+  "Q3": [
+   120.7,
+   114.27,
+   124.1,
+   118.13
+  ],
+  "Q4": [
+   79.3,
+   83.47,
+   82.7,
+   87.33
+  ],
+  "Q5": [
+   79.9,
+   75.67,
+   83.3,
+   79.53
+  ],
+  "Q6": [
+   73.27,
+   124.1,
+   77.13,
+   127.5
+  ],
+  "Q7": [
+   81.87,
+   131.3,
+   85.73,
+   134.7
+  ],
+  "Q8": [
+   104.47,
+   75.9,
+   108.33,
+   79.3
+  ],
+  "Q9": [
+   128.87,
+   106.5,
+   132.73,
+   109.9
+  ],
+  "Q10": [
+   126.67,
+   80.9,
+   130.53,
+   84.3
+  ],
+  "R1": [
+   103.12,
+   131.07,
+   106.08,
+   132.53
+  ],
+  "R2": [
+   95.47,
+   113.92,
+   96.93,
+   116.88
+  ],
+  "R3": [
+   95.47,
+   96.92,
+   96.93,
+   99.88
+  ],
+  "R4": [
+   118.12,
+   105.27,
+   121.08,
+   106.73
+  ],
+  "R5": [
+   94.87,
+   87.92,
+   96.33,
+   90.88
+  ],
+  "R6": [
+   83.07,
+   85.52,
+   84.53,
+   88.48
+  ],
+  "R7": [
+   94.87,
+   122.12,
+   96.33,
+   125.08
+  ],
+  "R8": [
+   75.12,
+   106.07,
+   78.08,
+   107.53
+  ],
+  "R9": [
+   116.87,
+   101.92,
+   118.33,
+   104.88
+  ],
+  "R10": [
+   110.92,
+   82.87,
+   113.88,
+   84.33
+  ],
+  "R11": [
+   124.47,
+   106.52,
+   125.93,
+   109.48
+  ],
+  "R12": [
+   95.47,
+   78.52,
+   96.93,
+   81.48
+  ],
+  "R13": [
+   90.32,
+   126.07,
+   93.28,
+   127.53
+  ],
+  "R14": [
+   124.47,
+   80.92,
+   125.93,
+   83.88
+  ],
+  "R15": [
+   110.12,
+   74.27,
+   113.08,
+   75.73
+  ],
+  "R16": [
+   109.52,
+   79.67,
+   112.48,
+   81.13
+  ],
+  "R17": [
+   77.47,
+   82.52,
+   78.93,
+   85.48
+  ],
+  "R18": [
+   75.67,
+   92.92,
+   77.13,
+   95.88
+  ],
+  "R19": [
+   75.67,
+   98.12,
+   77.13,
+   101.08
+  ],
+  "R20": [
+   75.67,
+   101.12,
+   77.13,
+   104.08
+  ],
+  "R21": [
+   111.52,
+   72.67,
+   114.48,
+   74.13
+  ],
+  "R22": [
+   92.27,
+   76.52,
+   93.73,
+   79.48
+  ],
+  "R23": [
+   106.72,
+   74.27,
+   109.68,
+   75.73
+  ],
+  "R24": [
+   128.07,
+   84.52,
+   129.53,
+   87.48
+  ],
+  "R25": [
+   126.07,
+   106.32,
+   127.53,
+   109.28
+  ],
+  "R26": [
+   126.07,
+   109.32,
+   127.53,
+   112.28
+  ],
+  "R27": [
+   127.72,
+   110.07,
+   130.68,
+   111.53
+  ],
+  "R28": [
+   93.87,
+   76.52,
+   95.33,
+   79.48
+  ],
+  "R29": [
+   103.72,
+   74.27,
+   106.68,
+   75.73
+  ],
+  "R30": [
+   95.47,
+   75.52,
+   96.93,
+   78.48
+  ],
+  "R31": [
+   103.32,
+   72.67,
+   106.28,
+   74.13
+  ],
+  "R32": [
+   92.32,
+   74.87,
+   95.28,
+   76.33
+  ],
+  "R33": [
+   106.32,
+   72.67,
+   109.28,
+   74.13
+  ],
+  "R34": [
+   75.67,
+   107.72,
+   77.13,
+   110.68
+  ],
+  "R35": [
+   75.67,
+   89.92,
+   77.13,
+   92.88
+  ],
+  "R36": [
+   95.47,
+   81.52,
+   96.93,
+   84.48
+  ],
+  "R37": [
+   109.52,
+   78.07,
+   112.48,
+   79.53
+  ],
+  "R38": [
+   114.47,
+   129.32,
+   115.93,
+   132.28
+  ],
+  "R39": [
+   124.27,
+   119.32,
+   125.73,
+   122.28
+  ],
+  "R40": [
+   115.12,
+   133.07,
+   118.08,
+   134.53
+  ],
+  "R41": [
+   120.07,
+   129.32,
+   121.53,
+   132.28
+  ],
+  "R42": [
+   124.27,
+   116.32,
+   125.73,
+   119.28
+  ],
+  "R43": [
+   124.32,
+   114.27,
+   127.28,
+   115.73
+  ],
+  "R44": [
+   77.67,
+   85.52,
+   79.13,
+   88.48
+  ],
+  "R45": [
+   88.32,
+   83.27,
+   91.28,
+   84.73
+  ],
+  "R46": [
+   76.07,
+   85.52,
+   77.53,
+   88.48
+  ],
+  "R47": [
+   87.72,
+   66.47,
+   90.68,
+   67.93
+  ],
+  "R48": [
+   79.92,
+   71.67,
+   82.88,
+   73.13
+  ],
+  "R49": [
+   78.92,
+   126.07,
+   81.88,
+   127.53
+  ],
+  "R50": [
+   71.27,
+   124.52,
+   72.73,
+   127.48
+  ],
+  "R51": [
+   87.47,
+   126.52,
+   88.93,
+   129.48
+  ],
+  "R52": [
+   68.12,
+   124.27,
+   71.08,
+   125.73
+  ],
+  "R53": [
+   75.87,
+   82.52,
+   77.33,
+   85.48
+  ],
+  "R54": [
+   77.47,
+   79.52,
+   78.93,
+   82.48
+  ],
+  "R55": [
+   75.67,
+   110.72,
+   77.13,
+   113.68
+  ],
+  "R56": [
+   74.07,
+   108.92,
+   75.53,
+   111.88
+  ],
+  "R57": [
+   82.52,
+   66.47,
+   85.48,
+   67.93
+  ],
+  "U1": [
+   103.2,
+   111.95,
+   120.5,
+   129.25
+  ],
+  "U2": [
+   103.2,
+   84.55,
+   120.5,
+   101.85
+  ],
+  "U3": [
+   77.35,
+   88.55,
+   94.65,
+   105.85
+  ],
+  "U4": [
+   77.35,
+   108.65,
+   94.65,
+   125.95
+  ],
+  "U5": [
+   120.6,
+   87.85,
+   137.9,
+   105.15
+  ],
+  "U6": [
+   83.4,
+   71.8,
+   92.2,
+   79.0
+  ],
+  "Y1": [
+   109.7,
+   130.17,
+   113.2,
+   134.37
+  ],
+  "Y2": [
+   109.7,
+   102.77,
+   113.2,
+   106.97
+  ],
+  "Y3": [
+   84.65,
+   83.43,
+   88.15,
+   87.63
+  ],
+  "Y4": [
+   83.85,
+   126.87,
+   87.35,
+   131.07
+  ],
+  "Y5": [
+   121.7,
+   110.65,
+   125.9,
+   114.15
+  ]
+ },
+ "placement_checks": {
+  "problems": [],
+  "courtyard_overlaps": [],
+  "outside_outline": [],
+  "in_tie_band": [],
+  "unpopulated_isp_footprints_in_tie_band": [
+   "J19",
+   "J20",
+   "J21",
+   "J22",
+   "J23"
+  ],
+  "edge_rules": {
+   "-x": {
+    "J8": true,
+    "J9": true,
+    "J10": true,
+    "J11": true,
+    "J13": true,
+    "J18": true
+   },
+   "-x,y<-12": {
+    "J18": true
+   },
+   "+x,y>+14": {
+    "J12": true,
+    "J14": true,
+    "J17": true
+   },
+   "+y,x>+5": {
+    "J16": true
+   },
+   "-y,x<-5": {
+    "J7": true
+   }
+  },
+  "edge_notes": {
+   "J12": "courtyard bottom at spec y 19.3 mm (motor-lead band is |y| < 14)",
+   "J1": "GY-521 header centre at spec ((13.74, -8.8))"
+  },
+  "module_bodies": [
+   {
+    "name": "PLM100 module 22 x 19 mm (datasheet p.7 table 1, fig 4)",
+    "rect": [
+     74.9,
+     66.1,
+     96.9,
+     85.1
+    ],
+    "rule": "parts <= 2.0 mm high only (module sits on 1.27 mm sockets, A)",
+    "max_h": 2.0,
+    "parts_under": [
+     "C22",
+     "C43",
+     "C51",
+     "C52",
+     "C53",
+     "D5",
+     "J3",
+     "J4",
+     "Q4",
+     "Q5",
+     "R12",
+     "R17",
+     "R22",
+     "R28",
+     "R30",
+     "R32",
+     "R36",
+     "R45",
+     "R47",
+     "R48",
+     "R53",
+     "R54",
+     "R57",
+     "U6",
+     "Y3"
+    ],
+    "inside_outline": true
+   },
+   {
+    "name": "GY-521 module ~21.2 x 16.4 mm (A)",
+    "rect": [
+     103.35,
+     93.7,
+     124.55,
+     110.1
+    ],
+    "rule": "parts <= 2.0 mm high only (module on a 2.54 mm header spacer, A)",
+    "max_h": 2.0,
+    "parts_under": [
+     "C3",
+     "C5",
+     "C9",
+     "C14",
+     "C15",
+     "C33",
+     "C35",
+     "C40",
+     "D2",
+     "J1",
+     "L1",
+     "R4",
+     "R9",
+     "R11",
+     "U2",
+     "U5",
+     "Y2"
+    ],
+    "inside_outline": true
+   },
+   {
+    "name": "BMP280 module ~15.2 x 11.5 mm (A) in front of the right-angle socket",
+    "rect": [
+     122.25,
+     110.95,
+     137.45,
+     122.45
+    ],
+    "rule": "parts <= 1.1 mm high only (module ~2.5 mm above the board in a right-angle socket, A)",
+    "max_h": 1.1,
+    "parts_under": [
+     "Q1",
+     "Q3",
+     "R26",
+     "R27",
+     "R39",
+     "R42",
+     "R43",
+     "Y5"
+    ],
+    "inside_outline": true
+   },
+   {
+    "name": "5 V buck module ~17 x 11 mm class (A)",
+    "rect": [
+     103.3,
+     65.7,
+     114.5,
+     82.9
+    ],
+    "rule": "parts <= 2.0 mm high only (module on a 2.54 mm header spacer, A)",
+    "max_h": 2.0,
+    "parts_under": [
+     "C13",
+     "C41",
+     "C42",
+     "C44",
+     "C45",
+     "C48",
+     "C49",
+     "C50",
+     "J6",
+     "L2",
+     "Q8",
+     "R10",
+     "R15",
+     "R16",
+     "R21",
+     "R23",
+     "R29",
+     "R31",
+     "R33",
+     "R37"
+    ],
+    "inside_outline": true
+   }
+  ],
+  "courtyard_area_mm2": 4164.9,
+  "board_area_minus_tie_band_mm2": 4900.0
+ }
+}

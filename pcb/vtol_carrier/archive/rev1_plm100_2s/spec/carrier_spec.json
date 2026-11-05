@@ -1,0 +1,5030 @@
+{
+ "schema": "vtol_carrier_spec/1",
+ "title": "CanSat EDF VTOL avionics carrier PCB - electrical specification (not drawn yet)",
+ "status": "electrical spec; the KiCad schematic and board are generated from it (scripts/). NOT_VERIFIED: nothing built or measured",
+ "labels": {
+  "F": "from a file (params / firmware / docs / datasheet / KiCad library)",
+  "M": "measured by a tool",
+  "E": "estimated",
+  "A": "assumed (reason given)"
+ },
+ "sources": {
+  "params.json": "B:/0)AI_Cad/CanSat_EDF_Rocket/params.json (read-only; line numbers as of 2026-11-04)",
+  "firmware/atmega128_fc/src/board.h": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/atmega128_fc/src/board.h",
+  "firmware/atmega128_fc/src/params_gen.h": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/atmega128_fc/src/params_gen.h (generated from params.json)",
+  "firmware/README.md": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/README.md",
+  "firmware/atmega128_fc/platformio.ini": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/atmega128_fc/platformio.ini",
+  "firmware/atmega128_fc/src/hal/*.c": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/atmega128_fc/src/hal/",
+  "firmware/atmega128_fc/fc_config.json": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/atmega128_fc/fc_config.json",
+  "cad/exports/cadquery_report_vtol.json": "B:/0)AI_Cad/CanSat_EDF_Rocket/cad/exports/cadquery_report_vtol.json",
+  "cad/layout.py": "B:/0)AI_Cad/CanSat_EDF_Rocket/cad/layout.py",
+  "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf)": "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/tools_dl/plm100/plm100_1.pdf (text: scratchpad/pcb/src/plm100_1.txt; figures: scratchpad/pcb/img/plm100_1_p*.jpg)",
+  "PLM100 User's Guide V2.2 (plm100_3.pdf)": "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/tools_dl/plm100/plm100_3.pdf",
+  "PLM100 User's Guide V1.4 (plm100_2.pdf, 'configuration guide')": "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/tools_dl/plm100/plm100_2.pdf",
+  "fw09/p3/README.md (scratch study, P3 fifth-chip proposal)": "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/fw09/p3/README.md",
+  "KiCad libraries": "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/share/kicad/{symbols,footprints} (probed: spec/library_probe.json)",
+  "devicemart": "user-chosen products: devicemart no=15442588 (BMP280 TYE-BMP29), no=1289751 (PLM100), no=10895400 (NEO-7M SZH-NT07), no=1247052 (GY-521 SZH-EK007); pin orders not printed (A)"
+ },
+ "user_parts": {
+  "barometer": "BMP280 module [SMG] TYE-BMP29 (devicemart 15442588) - replaces GY-63 MS5611",
+  "radio": "PLNetworks PLM100 LoRa module (devicemart 1289751) - replaces Ebyte E22 / SX1276 options",
+  "gps": "NEO-7M module SZH-NT07 (devicemart 10895400) - in the top cap, carrier has the lead connector only",
+  "imu": "GY-521 MPU-6050 SZH-EK007 (devicemart 1247052) - as before"
+ },
+ "summary": {
+  "parts": 171,
+  "parts_populated": 152,
+  "parts_dnp_or_optional": 19,
+  "nets": 108,
+  "by_prefix": {
+   "U": 6,
+   "J": 25,
+   "Q": 10,
+   "R": 57,
+   "C": 54,
+   "L": 5,
+   "Y": 5,
+   "D": 7,
+   "JP": 1,
+   "NT": 1
+  }
+ },
+ "board": {
+  "outline_mm": {
+   "x": [
+    -38.0,
+    38.0
+   ],
+   "y": [
+    -35.0,
+    35.0
+   ],
+   "size": [
+    76.0,
+    70.0
+   ],
+   "corner_radius_mm": 1.0,
+   "label": "F (size) / A (corner radius)",
+   "source": "params.json configs.vtol.electronics.carrier.dims_lwh [76, 70, 15] (line 1758); cad/exports/cadquery_report_vtol.json parts.carrier.bbox_mm [[-38,-35,327.1],[38,35,342.1]]"
+  },
+  "frame": "board origin = vehicle axis; board +x = CAD +x (ESC / misc side, motor-lead hole at theta 0 deg), +y = CAD +y (theta 90 deg); component side = top = +Z (up, toward the tray). Source: cad/layout.py:1110-1131 (centred, edges along x / y)",
+  "layers": 2,
+  "thickness_mm": 1.6,
+  "copper": "1 oz (A)",
+  "stackup_note": "user chose 2 layers; params.json carrier.note (line 1754) said 'a 4-layer layout ... is the PCB round's job' - 2 layers with a near-solid bottom GND pour (A)",
+  "height_limit_top_mm": {
+   "value": 13.4,
+   "label": "F/E",
+   "why": "carrier envelope 15 mm incl. components minus 1.6 mm board (params.json carrier.dims_lwh; cad/exports/cadquery_report_vtol.json carrier z 327.1-342.1, tray bottom z 344.1)"
+  },
+  "bottom_side": "no components: the board sits on 3 mm double-sided foam tape (carrier.foam_t, line 1763); THT leads flush-cut to <= 1.0 mm after soldering (A; 1.4-1.8 mm untrimmed would press 47-60 % into the foam, independent review 2026-11-05 MF-8)",
+  "mounting": {
+   "holes": "none",
+   "method": "3 mm foam tape + ONE cable tie running across the board top between the intake-bulkhead vent holes at 90 / 270 deg (d 8 mm at r 40 mm: centres (0, +40) / (0, -40)) - params.json configs.vtol.electronics.carrier.note (line 1754), configs.vtol.intake_module (line 1688-1690), intake_module.vent_hole_r / vent_hole_d (line 814-816)",
+   "tie_band": {
+    "x_mm": [
+     -3.0,
+     3.0
+    ],
+    "y_mm": [
+     -35.0,
+     35.0
+    ],
+    "rule": "no components and no tall parts inside the band (traces / vias allowed); A width for a 2.5-3.6 mm tie"
+   }
+  },
+  "keepouts": [
+   {
+    "what": "motor-lead bulkhead hole 20 x 11 at r 42-53, theta 0 deg + bullet joint zone u 42-54.5 (4 mm from the +x edge)",
+    "rule": "+x edge, |y| < 14 mm: no lead connectors, no I2C / radio / crystal parts (A margin, EMI from the 100 A motor leads)",
+    "source": "params.json intake_module.wire_channel.bulkhead_hole_* ; motor_leads.joint_zone; cad/exports/cadquery_report_vtol.json extra.motor_leads.joint_zone_clearance_mm.carrier = 4.0"
+   },
+   {
+    "what": "board corners 5.3 mm inside the intake spigot bore",
+    "rule": "no part overhangs the outline",
+    "source": "params.json carrier.note (line 1754)"
+   },
+   {
+    "what": "tray plane x = 14.6 (2 mm above the carrier envelope)",
+    "rule": "13.4 mm top height limit everywhere",
+    "source": "params.json configs.vtol.avionics_module.tray_plane_x (line 1745); cad/exports/cadquery_report_vtol.json parts.avionics_tray.bbox_mm"
+   }
+  ],
+  "edges": [
+   {
+    "edge": "-x (x = -38)",
+    "connectors": [
+     "J13 (DNP, top slot)",
+     "J8",
+     "J9",
+     "J10",
+     "J11"
+    ],
+    "why": "vane-servo leads enter the bay through the bulkhead servo hole at theta 180 deg, r 50-56 (params.json servo_leads.gather_theta_deg 180 / bulkhead_hole_r [50, 56], line 763-768); right-angle headers facing -x. The fitted vanes 1-4 take the four lower slots (pin 1 at y +19.13 / +10.41 / +1.69 / -7.03); the top slot (y +27.85), whose mated plug would touch the intake spigot bore (r 57.17 > 57.0, E), carries the DNP release header J13 (independent review 2026-11-05 MF-2)"
+   },
+   {
+    "edge": "-x, y < -12",
+    "connectors": [
+     "J18"
+    ],
+    "why": "power-sense lead: 6S pack on the tray's -x face, tether / hybrid kit boxes on the -x side (params.json power.tether_kit_ASSUMED.boxes; cad/exports/cadquery_report_vtol.json parts.battery x -37.4..13.6) - A"
+   },
+   {
+    "edge": "+x (x = +38), y > +14",
+    "connectors": [
+     "J12 (ESC lead + NT1 tie, top slot)",
+     "J17 (buzzer, below)",
+     "J14 (logic battery, vertical, corner)"
+    ],
+    "why": "ESC on the tray's +x face, misc box (buzzer, wiring junction) above it (cad/exports/cadquery_report_vtol.json parts.esc x 15.6..24.6, misc_electronics x 15.6..27.6); |y| < 14 kept clear for the motor leads. J12 takes the upper slot (pins y +26.15..+21.07) so its mated plug stays >= 2 mm from the motor-lead joint zone; J17 sits below it (independent review 2026-11-05 MF-3). Logic battery location not in CAD (user decision; misc box suggested, A)"
+   },
+   {
+    "edge": "+y (y = +35), x > +5",
+    "connectors": [
+     "J16 (arm switch)"
+    ],
+    "why": "arming switch in the top cap at theta 90 deg, r 40 (params.json configs.vtol.top_cap.switch_hole, line 1852): its lead drops along the +y wall; x > +5 keeps the tie band free"
+   },
+   {
+    "edge": "-y (y = -35), x < -5",
+    "connectors": [
+     "J7 (GPS, JST-GH vertical, plugged from above)"
+    ],
+    "why": "GPS lead drops through the top-cap lead hole at theta 230 deg, r 37 = (x -23.8, y -28.3) (params.json configs.vtol.top_cap.gps.lead_hole, line 1840; cad/layout.py:1995-1999 routes it straight down)"
+   },
+   {
+    "edge": "-x / +y quadrant",
+    "connectors": [
+     "J3",
+     "J4 (PLM100)"
+    ],
+    "why": "antenna end (module pins 12 / 13, u.FL) toward the +y / -x corner, away from the ESC (+x) and the motor leads (0 deg); antenna hangs up the bay wall (firmware/README.md:286-291, params.json electronics.radio_log.note) - A"
+   },
+   {
+    "edge": "interior (top)",
+    "connectors": [
+     "J19-J23 ISP",
+     "J24 / J25 reset-hold",
+     "J15 power shunt",
+     "J5 OpenLog lead (holes, no upright socket)",
+     "J1 GY-521",
+     "J2 BMP280",
+     "J6 buck"
+    ],
+    "why": "ISP reachable after lifting the avionics module off the intake (firmware/README.md:655-659); GY-521 near the board centre (vibration, CG), outside the tie band (A)"
+   }
+  ]
+ },
+ "power": {
+  "decision": "user decision 2026-11-04 (Korean: '전원은 칩셋 전원용 배터리를 하나 추가한다고 가정하고 진행해줘'): logic powered by ONE added logic battery; NO 6S-to-logic converter on the carrier (the old '5 V logic UBEC' from the 6S of firmware/README.md:166, 212, 244 is dropped)",
+  "tree": [
+   "J14 logic battery (2S LiPo) -> Q10 AO3401A reverse-polarity P-FET -> VBAT_LOGIC -> J15 power shunt / switch -> VBAT_LOGIC_SW -> J6 5 V buck module -> +5V",
+   "+5V -> 4 x ATmega128A VCC / AVCC (LC), GY-521 VCC, OpenLog VCC, buzzer, shifter HV pull-ups, U6 AMS1117-3.3 input",
+   "+5V -> U6 AMS1117-3.3 -> +3V3 -> PLM100 VDD, BMP280 VCC, GPS VCC (JP1 default), BSS138 gates + LV pull-ups",
+   "ESC BEC 5 V / 7 A (J12 pin 2) -> SERVO_5V -> J8-J11 (+ J13 DNP) pin 2 - separate from +5V (firmware/README.md:212, 322-324; params.json electronics.esc 'BEC 5V/7A' line 942, misc.items line 995)",
+   "6S propulsion bus is only SENSED (J18 -> 47k / 4.7k dividers -> FCU PF0 / PF1 / PF2), never powers the logic"
+  ],
+  "input_range_V": {
+   "logic_battery_2S": [
+    6.0,
+    8.4
+   ],
+   "label": "F (LiPo 3.0-4.2 V/cell) / A (3.0 V cut-off)",
+   "propulsion_sensed": [
+    0.0,
+    28.16
+   ],
+   "propulsion_note": "divider full scale params.json power.electrical_plant_ASSUMED.adc_full_scale_v 28.16 (line ~2028); 6S max 25.2 V (firmware/README.md:205); tether set point 25.2 V (power.supply.v_set)"
+  },
+  "load_estimate": {
+   "label": "E (datasheet-class values, A where marked; nothing measured)",
+   "rail_5V_mA": {
+    "ATmega128A x4 @16 MHz (25 mA each, A)": 100,
+    "status LEDs x4 (3 mA)": 12,
+    "GY-521 (MPU-6050 3.9 mA + LED + LDO, A)": 6,
+    "OpenLog (avg 20 / peak 80, A)": [
+     20,
+     80
+    ],
+    "buzzer (A)": [
+     0,
+     30
+    ],
+    "AMS1117 quiescent (A)": 5,
+    "3.3 V rail (below)": [
+     62,
+     148
+    ]
+   },
+   "rail_3V3_mA": {
+    "PLM100 (RX 14 typ, TX 40 DS p.10 / 100 UG p.6)": [
+     14,
+     100
+    ],
+    "NEO-7M board (params.json electronics.gps.power ~45 mA, NEO-6M value, A)": 45,
+    "BMP280 module (A)": 1,
+    "shifter / I2C pull-ups (E)": 2
+   },
+   "rail_5V_total_mA": {
+    "typical": 205,
+    "peak": 381
+   },
+   "rail_3V3_total_mA": {
+    "typical": 62,
+    "peak": 148
+   },
+   "battery_side": "buck efficiency 85 % (A): typical 5 V x 0.205 A / 0.85 = 1.21 W -> 0.163 A at 7.4 V; peak 2.24 W -> 0.30 A at 7.4 V, 0.37 A at 6.0 V",
+   "ldo_dissipation_W": "(5.0 - 3.3) x 0.148 = 0.25 W peak in SOT-223 (E)",
+   "servo_rail": "not on the logic battery (ESC BEC 5 V / 7 A)"
+  },
+  "battery_choice": {
+   "pick": "2S LiPo 300 mAh (7.4 V nominal, 6.0-8.4 V), JST-PH lead",
+   "label": "A (class chosen here; user decides the exact pack)",
+   "why": [
+    "2S min 6.0 V > buck Vout 5.0 V + ~0.8 V module dropout (A) = 5.8 V: the 5 V rail stays regulated over the whole discharge without a boost stage; BOD 4.0 V on every chip (lfuse 0x3F, firmware/README.md:416) keeps margin",
+    "AO3401A drop at 0.37 A ~ 0.02 V (Rds(on) ~60 mOhm, A) - a Schottky (~0.4 V) would eat the margin",
+    "300 mAh x 0.8 usable / 0.163 A = 1.47 h typical (E): pad wait + several flights (params.json mission.vtol.power_rules_ASSUMED.tether_endurance.max_flight_s 180 s)",
+    "peak 0.37 A = 1.2 C of a 300 mAh pack (E)"
+   ],
+   "alternative": "1S LiPo 300 mAh + 5 V boost module: ~8-9 g pack + ~1 g boost (E) vs ~20 g for 2S (E); boost peak input ~0.68 A at 3.3 V (E); needs a different J6 module - user decision",
+   "mass_g": {
+    "value": 20.0,
+    "label": "E (typical 2S 300 mAh catalogue class, incl. lead)",
+    "not_in_params": true,
+    "note": "params.json mass budgets do not hold this pack; the VTOL battery configuration is already ~3.7 g over its 1,650 g target -> ~24 g over with the pack (E) - user decision; dropping the 6S->5 V UBEC from the misc box (25 g ASSUMED lump, params.json configs.vtol.electronics.misc, line 1787) may offset a few grams (E)"
+   }
+  },
+  "power_switch": "J15: a removable shunt (or wires to an external toggle) in series after Q10. Logic off = shunt removed or battery unplugged. The arming switch (J16, FCU PC2) is NOT a power switch.",
+  "reverse_polarity": "Q10 AO3401A high-side P-FET, gate via 10 kOhm to GND"
+ },
+ "grounding": {
+  "nets": {
+   "GND": "logic ground (logic battery -, all chips, modules, dividers, arm switch, buzzer, GPS)",
+   "GND_PWR": "propulsion-side ground on the carrier: J12 ESC lead pin 3 (= ESC BEC ground = 6S -), servo headers pin 3, servo bulk capacitor"
+  },
+  "single_tie_point": "NT1 net tie placed at J12 (ESC lead) pin 3. It is the ONLY connection between the logic battery's ground and the propulsion side. Reason: the ESC / servo PWM signals need a common reference (firmware/README.md:247, 323; firmware/atmega128_fc/src/board.h:84, 91, 107 'common ground')",
+  "rules": [
+   "J18 (power sense) has NO ground pin: the 47k / 4.7k dividers return to logic GND and see the bus negative through NT1 (a second ground wire would close a loop with the ESC lead ground through the ESC's 100 A negative path)",
+   "servo return currents flow J8-J13 pin 3 -> GND_PWR -> J12 pin 3 and never through the logic GND",
+   "with the ESC lead unplugged the logic ground floats from the propulsion side (no current path) - bench-safe",
+   "measurement error: V_in sees the drop of the ESC's internal negative path between the pack and the BEC ground (E: < 0.1 V at 100 A for a few mOhm, A)"
+  ]
+ },
+ "level_shifting": {
+  "principle": "MCU -> 3.3 V-only device through a BSS138 channel; I2C both ways through channels; device -> MCU direct only where the source says so (firmware/README.md:254-255; SPEC.md:1178, 1239)",
+  "channels": [
+   {
+    "q": "Q1",
+    "signal": "NAV PD0 SCL <-> GY-521 / BMP280 SCL",
+    "pullups": "4.7k (5 V) / 10k (3.3 V, modules add theirs)",
+    "populate": true
+   },
+   {
+    "q": "Q2",
+    "signal": "NAV PD1 SDA <-> GY-521 / BMP280 SDA",
+    "pullups": "4.7k (5 V) / 10k (3.3 V, modules add theirs)",
+    "populate": true
+   },
+   {
+    "q": "Q3",
+    "signal": "GY-521 INT -> NAV PE6 (firmware polls)",
+    "pullups": "10k (fitted, PE6 never floats) / 10k (DNP)",
+    "populate": "optional (DNP)"
+   },
+   {
+    "q": "Q4",
+    "signal": "COM PD3 TXD1 -> PLM100 UART1_RXD (pin 20)",
+    "pullups": "10k / 10k",
+    "populate": true
+   },
+   {
+    "q": "Q5",
+    "signal": "COM PC6 -> PLM100 RESET_N (pin 2)",
+    "pullups": "10k / 10k",
+    "populate": true
+   },
+   {
+    "q": "Q6",
+    "signal": "GNS PD3 TXD1 -> GPS RXD",
+    "pullups": "10k / 10k",
+    "populate": true
+   },
+   {
+    "q": "Q7",
+    "signal": "GPS TXD -> GNS PD2 RXD1",
+    "pullups": "10k / 10k",
+    "populate": true
+   },
+   {
+    "q": "Q8",
+    "signal": "FCU PE1 TXD0 -> OpenLog RXI",
+    "pullups": "10k / 10k",
+    "populate": true
+   }
+  ],
+  "count": {
+   "populated": 7,
+   "optional": 1,
+   "total_footprints": 8
+  },
+  "direct_3v3_to_5v": [
+   "PLM100 UART1_TXD (pin 19) -> COM PD2 RXD1: 3.3 V vs V_IH 3.0 V, 0.3 V margin (params.json com.pins.link_uart_rx 'direct', line 2212; params.json electronics.gps.interface notes the same 0.3 V margin)"
+  ],
+  "no_shifter_links": "nlink, ilink, glink: all chips at 5 V (firmware/atmega128_fc/src/board.h:84, 92, 107)"
+ },
+ "per_chip_support": {
+  "each_mcu": [
+   "16 MHz crystal (3225 SMD, CL 16-18 pF A) + 2 x 22 pF to GND (crystal ground pads to GND)",
+   "RESET: 10 kOhm to +5V + 100 nF to GND; ISP pin 5",
+   "100 nF on VCC pin 21 and on VCC pin 52, 10 uF bulk",
+   "AVCC (pin 64): 10 uH series from +5V + 100 nF ('AVCC(LC)')",
+   "AREF (pin 62): 100 nF only - internal 2.56 V reference, never an external voltage on AREF",
+   "PEN (pin 1): tied to +5V (A: PEN low at power-on would enter SPI programming mode)",
+   "GND pins 22 / 53 / 63 to the GND pour",
+   "AVR ISP 2x3 header: 1 MISO = PE1/PDO, 2 VCC, 3 SCK = PB1, 4 MOSI = PE0/PDI, 5 RST, 6 GND",
+   "status LED + 1 kOhm (NAV PC1; FCU / COM / GNS PC0)"
+  ],
+  "fuses": "lfuse 0x3F, hfuse 0xCF, efuse 0xFF for every chip (firmware/atmega128_fc/platformio.ini:51-56; firmware/README.md:414-418): ext. crystal, BOD 4.0 V, JTAG off (frees PF4-PF7), M103C off",
+  "source": "firmware/README.md:196, 310-311, 332-333, 345-346; firmware/atmega128_fc/src/board.h:37; fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6"
+ },
+ "isp_procedure": [
+  {
+   "chip": "NAV (J19)",
+   "before": "nothing",
+   "why": "firmware/README.md:649 (NAV PE0 / PE1 unused in flight; FCU SS pull-up idles the FCU SPI)"
+  },
+  {
+   "chip": "FCU (J20)",
+   "before": "shunt on J24 (NAV held in reset); OpenLog may stay (Q8 isolates RXI; it may log garbage)",
+   "why": "firmware/README.md:650; params.json pins.nlink_sck (line 2162): NAV drives FCU PB1 = ISP SCK"
+  },
+  {
+   "chip": "COM (J21)",
+   "before": "shunt on J25 (FCU held in reset)",
+   "why": "firmware/README.md:651; firmware/atmega128_fc/src/board.h:59-62: COM PE0 / PE1 = ilink; the 1 kOhm limits the fight to 5 mA but the programmer may still mis-read"
+  },
+  {
+   "chip": "GNS (J22)",
+   "before": "shunt on J24 (NAV held in reset)",
+   "why": "firmware/atmega128_fc/src/board.h:99-100 (GNS PE0 / PE1 = ISP = glink); README 0.9 'unplug the glink to program the GNS'"
+  },
+  {
+   "chip": "SPARE (J23, DNP)",
+   "before": "nothing (own ISP pins only)",
+   "why": "no shared nets"
+  },
+  {
+   "chip": "all",
+   "before": "remove every shunt after programming; power the board from the logic battery and set the USBasp to 'target powered' (do not feed 5 V from both)",
+   "why": "firmware/README.md:653"
+  }
+ ],
+ "unpopulated_5th_mcu": {
+  "refs": "U5 + Y, C, L, R, LED of block SPARE + J23",
+  "connected": "+5V, GND, crystal, RESET (pull-up / cap), AVCC (LC), AREF cap, decoupling, its own ISP header, LED",
+  "not_connected": "the P3 nets (fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6: elink A PE1 <-> B PE0 / B PE1 <-> A PE0 through 1 kOhm, glink split B PD3 -> GNS PE0, MS5611 / barometer bus moved to B PD0 / PD1, P3b BAT54C wired-AND + 10 kOhm). Reason: P3 is a fallback with a hardware-measurement trigger (SPEC.md 10.6.1; docs/v0.9_펌웨어_결과.md 8장); the footprint is for that study only."
+ },
+ "parts": [
+  {
+   "refdes": "C1",
+   "role": "NAV VCC pin 21 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C2",
+   "role": "NAV VCC pin 52 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C3",
+   "role": "NAV local bulk",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 10 uF ceramic per chip (bulk next to the chip)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C4",
+   "role": "NAV AVCC decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C5",
+   "role": "NAV AREF capacitor (internal 2.56 V reference)",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/atmega128_fc/src/board.h:37; firmware/atmega128_fc/src/hal/adc.h:4-6; firmware/README.md:205",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C6",
+   "role": "NAV crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A (match the crystal CL); 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C7",
+   "role": "NAV crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A; 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C8",
+   "role": "NAV reset capacitor",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "C9",
+   "role": "FCU VCC pin 21 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C10",
+   "role": "FCU VCC pin 52 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C11",
+   "role": "FCU local bulk",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 10 uF ceramic per chip (bulk next to the chip)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C12",
+   "role": "FCU AVCC decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C13",
+   "role": "FCU AREF capacitor (internal 2.56 V reference)",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/atmega128_fc/src/board.h:37; firmware/atmega128_fc/src/hal/adc.h:4-6; firmware/README.md:205",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C14",
+   "role": "FCU crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A (match the crystal CL); 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C15",
+   "role": "FCU crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A; 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C16",
+   "role": "FCU reset capacitor",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "C17",
+   "role": "COM VCC pin 21 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C18",
+   "role": "COM VCC pin 52 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C19",
+   "role": "COM local bulk",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 10 uF ceramic per chip (bulk next to the chip)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C20",
+   "role": "COM AVCC decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C21",
+   "role": "COM AREF capacitor (internal 2.56 V reference)",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/atmega128_fc/src/board.h:37; firmware/atmega128_fc/src/hal/adc.h:4-6; firmware/README.md:205",
+   "block": "COM"
+  },
+  {
+   "refdes": "C22",
+   "role": "COM crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A (match the crystal CL); 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C23",
+   "role": "COM crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A; 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C24",
+   "role": "COM reset capacitor",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C25",
+   "role": "GNS VCC pin 21 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C26",
+   "role": "GNS VCC pin 52 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C27",
+   "role": "GNS local bulk",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 10 uF ceramic per chip (bulk next to the chip)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C28",
+   "role": "GNS AVCC decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C29",
+   "role": "GNS AREF capacitor (internal 2.56 V reference)",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/atmega128_fc/src/board.h:37; firmware/atmega128_fc/src/hal/adc.h:4-6; firmware/README.md:205",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C30",
+   "role": "GNS crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A (match the crystal CL); 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C31",
+   "role": "GNS crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A; 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C32",
+   "role": "GNS reset capacitor",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "C33",
+   "role": "SPARE VCC pin 21 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": false,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C34",
+   "role": "SPARE VCC pin 52 decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": false,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C35",
+   "role": "SPARE local bulk",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": false,
+   "label": "A",
+   "source": "A: 10 uF ceramic per chip (bulk next to the chip)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C36",
+   "role": "SPARE AVCC decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": false,
+   "label": "A",
+   "source": "firmware/README.md:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); firmware/atmega128_fc/platformio.ini:51-56 (16 MHz crystal, CKOPT on); 0402 so its pads sit under the supply / GND pin pair, pre-routed in place (independent review 2026-11-05 F1)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C37",
+   "role": "SPARE AREF capacitor (internal 2.56 V reference)",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": false,
+   "label": "F",
+   "source": "firmware/atmega128_fc/src/board.h:37; firmware/atmega128_fc/src/hal/adc.h:4-6; firmware/README.md:205",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C38",
+   "role": "SPARE crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": false,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A (match the crystal CL); 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C39",
+   "role": "SPARE crystal load cap",
+   "value": "22p",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "populate": false,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (2 x 22 pF); value A; 0402, crystal + load caps placed as one cluster at pins 23 / 24 and pre-routed on F.Cu (independent review 2026-11-05 F2)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C40",
+   "role": "SPARE reset capacitor",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": false,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "C41",
+   "role": "buck input capacitor",
+   "value": "10u 25V",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_1206_3216Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "PWR"
+  },
+  {
+   "refdes": "C42",
+   "role": "5 V rail bulk at the buck output",
+   "value": "22u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_1206_3216Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "PWR"
+  },
+  {
+   "refdes": "C43",
+   "role": "AMS1117 input capacitor",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A (AMS1117 datasheet class value)",
+   "block": "PWR"
+  },
+  {
+   "refdes": "C44",
+   "role": "AMS1117 output capacitor (stability, ESR)",
+   "value": "22u 10V tantalum",
+   "symbol": "Device:C_Polarized",
+   "footprint": "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A",
+   "populate": true,
+   "label": "A",
+   "source": "A (AMS1117 class datasheets: >= 22 uF tantalum, ESR in a stable window - check the bought vendor's sheet); tantalum instead of a 1206 MLCC (independent review 2026-11-05 E5 / F9)",
+   "block": "PWR"
+  },
+  {
+   "refdes": "C45",
+   "role": "logic battery divider filter (NEW)",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A; fitted (independent review 2026-11-05 E1)",
+   "block": "PWR"
+  },
+  {
+   "refdes": "C46",
+   "role": "servo rail bulk capacitor",
+   "value": "220u 10V",
+   "symbol": "Device:C_Polarized",
+   "footprint": "Capacitor_SMD:CP_Elec_6.3x5.8",
+   "populate": true,
+   "label": "A",
+   "source": "A (servo current spikes on the BEC rail)",
+   "block": "IO"
+  },
+  {
+   "refdes": "C47",
+   "role": "arm input filter",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "IO"
+  },
+  {
+   "refdes": "C48",
+   "role": "PF0 divider filter",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vbat_adc 'PF0/ADC0 (divider 47k/4.7k, internal 2.56 V ref)' (line 2155); firmware/atmega128_fc/src/params_gen.h:164-165; firmware/README.md:205, 318",
+   "block": "IO"
+  },
+  {
+   "refdes": "C49",
+   "role": "PF1 divider filter",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.v_tether_adc (line 2165); firmware/atmega128_fc/src/params_gen.h:171 (ASSUMED until the carrier is routed)",
+   "block": "IO"
+  },
+  {
+   "refdes": "C50",
+   "role": "PF2 divider filter",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.v_buffer_adc (line 2166); firmware/atmega128_fc/src/params_gen.h:172 (ASSUMED until the carrier is routed)",
+   "block": "IO"
+  },
+  {
+   "refdes": "C51",
+   "role": "PLM100 VDD bulk",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.15 fig 8 (C6 10 uF on DVCC)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C52",
+   "role": "PLM100 VDD decoupling",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.15 fig 8 (C5 0.1 uF on DVCC)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C53",
+   "role": "PLM100 RESET_N capacitor",
+   "value": "100n",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.16 fig 9 (C31 100 nF)",
+   "block": "COM"
+  },
+  {
+   "refdes": "C54",
+   "role": "GPS supply bulk at the connector",
+   "value": "10u",
+   "symbol": "Device:C",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "GNS"
+  },
+  {
+   "refdes": "D1",
+   "role": "NAV status LED",
+   "value": "LED 0603 (colour A)",
+   "symbol": "Device:LED",
+   "footprint": "LED_SMD:LED_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.nav.pins.led PC1 (line 2182); firmware/atmega128_fc/src/board.h:54",
+   "block": "NAV"
+  },
+  {
+   "refdes": "D2",
+   "role": "FCU status LED",
+   "value": "LED 0603 (colour A)",
+   "symbol": "Device:LED",
+   "footprint": "LED_SMD:LED_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.pins.led PC0 (line 2156); firmware/atmega128_fc/src/board.h:38",
+   "block": "FCU"
+  },
+  {
+   "refdes": "D3",
+   "role": "COM status LED",
+   "value": "LED 0603 (colour A)",
+   "symbol": "Device:LED",
+   "footprint": "LED_SMD:LED_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.com.pins.led PC0 (line 2211); firmware/atmega128_fc/src/board.h:63",
+   "block": "COM"
+  },
+  {
+   "refdes": "D4",
+   "role": "GNS status LED",
+   "value": "LED 0603 (colour A)",
+   "symbol": "Device:LED",
+   "footprint": "LED_SMD:LED_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.gns.pins.led PC0; firmware/atmega128_fc/src/board.h:101, 139-144",
+   "block": "GNS"
+  },
+  {
+   "refdes": "D5",
+   "role": "SPARE status LED",
+   "value": "LED 0603 (colour A)",
+   "symbol": "Device:LED",
+   "footprint": "LED_SMD:LED_0603_1608Metric",
+   "populate": false,
+   "label": "F",
+   "source": "A: same LED as the FCU / COM / GNS (P3 README section 6 lists 'LED + resistor')",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "D6",
+   "role": "buzzer flyback diode",
+   "value": "SS14 / B5819W class Schottky",
+   "symbol": "Device:D_Schottky",
+   "footprint": "Diode_SMD:D_SOD-123",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "IO"
+  },
+  {
+   "refdes": "D7",
+   "role": "Q10 gate-source clamp (cathode = source)",
+   "value": "10 V zener (BZT52C10 class), SOD-123",
+   "symbol": "Device:D_Zener",
+   "footprint": "Diode_SMD:D_SOD-123",
+   "populate": true,
+   "label": "A",
+   "source": "independent review 2026-11-05 E4 (AO3401A Vgs abs. max +-12 V, A: datasheet not on disk; hot-plug ringing up to ~2 x Vbat, E); part A",
+   "block": "PWR"
+  },
+  {
+   "refdes": "J1",
+   "role": "IMU module GY-521 MPU-6050 [SZH-EK007]",
+   "value": "1x8 2.54 mm (GY-521 soldered flat or socketed)",
+   "symbol": "Connector_Generic:Conn_01x08",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical",
+   "populate": true,
+   "label": "A",
+   "source": "devicemart no=1247052; params.json nav (line ~2170); firmware/README.md:197 (module VCC 5 V, I2C 3.3 V, 0x68)",
+   "block": "NAV",
+   "note": "pin order A: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT - check the silkscreen. Mount flat, parallel to the carrier; set fc_config.json imu_mounting after placement"
+  },
+  {
+   "refdes": "J2",
+   "role": "barometer module BMP280 [TYE-BMP29]",
+   "value": "1x6 2.54 mm right-angle socket (module lies flat)",
+   "symbol": "Connector_Generic:Conn_01x06",
+   "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "A",
+   "source": "devicemart no=15442588 (BMP280, 3.3 V, I2C/SPI, right-angle 6-pin header); replaces the GY-63 MS5611 (user decision 2026-11-04)",
+   "block": "NAV",
+   "note": "pin order A: VCC, GND, SCL, SDA, CSB, SDO - check the silkscreen. CSB high = I2C; SDO high = address 0x77 (= the firmware's barometer address CAL_MS5611_ADDR 0x77, firmware/atmega128_fc/src/params_gen.h:964)"
+  },
+  {
+   "refdes": "J3",
+   "role": "LoRa module PLM100 row J2 (module pins 1..12)",
+   "value": "1x12 1.27 mm socket (PLM100 pins 1-12)",
+   "symbol": "Connector_Generic:Conn_01x12",
+   "footprint": "Connector_PinSocket_1.27mm:PinSocket_1x12_P1.27mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2 (pin description), p.8 fig 3 (pin map: J2 = pins 1-12, J3 = pins 13-24, HEADER12_1.27mm), p.12 fig 4 / p.13 fig 5 (rows 11.60 mm apart, 3.70 mm from the sides, 1.27 mm pitch); devicemart no=1289751; user decision 2026-11-04",
+   "block": "COM",
+   "note": "socket pin n = module pin n. Placed 11.60 mm (centre to centre) from J4, pin 1 at the end AWAY from the antenna; pin 12 (ANT) beside the module's u.FL receptacle"
+  },
+  {
+   "refdes": "J4",
+   "role": "LoRa module PLM100 row J3 (module pins 13..24)",
+   "value": "1x12 1.27 mm socket (PLM100 pins 13-24)",
+   "symbol": "Connector_Generic:Conn_01x12",
+   "footprint": "Connector_PinSocket_1.27mm:PinSocket_1x12_P1.27mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2 (pin description), p.8 fig 3 (pin map: J2 = pins 1-12, J3 = pins 13-24, HEADER12_1.27mm), p.12 fig 4 / p.13 fig 5 (rows 11.60 mm apart, 3.70 mm from the sides, 1.27 mm pitch)",
+   "block": "COM",
+   "note": "socket pin k = module pin 12 + k (pin 1 = module 13 at the antenna end, pin 12 = module 24): J4 pin 1 is level with J3 pin 12"
+  },
+  {
+   "refdes": "J5",
+   "role": "OpenLog logger lead (microSD logger off the carrier)",
+   "value": "OpenLog lead: 1x6 2.54 mm holes (lead wires soldered in, or a low right-angle header)",
+   "symbol": "Connector_Generic:Conn_01x06",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.log_tx PE1/TXD0 (line 2154); firmware/README.md:204, 378-390; firmware/atmega128_fc/src/board.h:35-36; no upright socket: an OpenLog standing in it reaches 23+ mm above the board, over the 13.4 mm limit (independent review 2026-11-05 MF-1)",
+   "block": "LOG",
+   "note": "OpenLog header order A (SparkFun: GRN, RXI, TXO, VCC, GND, BLK) - check the clone's silkscreen. Only RXI, VCC, GND carry signals. The module does NOT fit flat on the carrier (its ~16.5 x 22 mm body, A, overlaps the GY-521 body by >= 4 mm in the only free area, over the DNP U5): where it goes (misc box on a lead suggested) is a user / CAD decision"
+  },
+  {
+   "refdes": "J6",
+   "role": "logic 5 V buck module",
+   "value": "5 V buck module (>= 1 A, Vin 6-8.4 V) on a 1x4 2.54 mm header",
+   "symbol": "Connector_Generic:Conn_01x04",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical",
+   "populate": true,
+   "label": "A",
+   "source": "params.json configs.vtol.electronics.carrier.model '5 V buck for the logic' (line 1754); misc.items line 1788",
+   "block": "PWR",
+   "note": "module pin order A: 1 VIN, 2 GND, 3 VOUT, 4 EN/NC - check against the purchased module before soldering"
+  },
+  {
+   "refdes": "J7",
+   "role": "GPS lead (u-blox NEO-7M module in the top cap)",
+   "value": "JST-GH 1.25 mm 4-pin vertical (top entry)",
+   "symbol": "Connector_Generic_MountingPin:Conn_01x04_MountingPin",
+   "footprint": "Connector_JST:JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical",
+   "populate": true,
+   "label": "A",
+   "source": "params.json payload_module.gps_pod.connector_pocket.connector 'JST-GH 1.25 mm 4-pin'; configs.vtol.top_cap.gps (line 1830-1850); devicemart no=10895400; vertical: the lead drops from the top-cap hole and plugs in from above, no plug beyond the -y edge toward the 225 deg joint screw (independent review 2026-11-05 MF-6)",
+   "block": "GNS",
+   "note": "carrier pin order (A, the lead is user-made): 1 VCC, 2 GPS TXD (-> GNS RX), 3 GPS RXD (<- GNS TX), 4 GND; the GPS end follows the NEO-7M board silkscreen (A: VCC, GND, TXD, RXD, PPS). PPS not wired (firmware unused)"
+  },
+  {
+   "refdes": "J8",
+   "role": "vane servo 1 lead (SIG, V+, GND)",
+   "value": "1x3 2.54 mm right-angle header (S, +, -)",
+   "symbol": "Connector_Generic:Conn_01x03",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vane_1_servo PB5/OC1A; firmware/atmega128_fc/src/board.h:23",
+   "block": "IO"
+  },
+  {
+   "refdes": "J9",
+   "role": "vane servo 2 lead (SIG, V+, GND)",
+   "value": "1x3 2.54 mm right-angle header (S, +, -)",
+   "symbol": "Connector_Generic:Conn_01x03",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vane_2_servo PB6/OC1B; firmware/atmega128_fc/src/board.h:24",
+   "block": "IO"
+  },
+  {
+   "refdes": "J10",
+   "role": "vane servo 3 lead (SIG, V+, GND)",
+   "value": "1x3 2.54 mm right-angle header (S, +, -)",
+   "symbol": "Connector_Generic:Conn_01x03",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vane_3_servo PB7/OC1C; firmware/atmega128_fc/src/board.h:25",
+   "block": "IO"
+  },
+  {
+   "refdes": "J11",
+   "role": "vane servo 4 lead (SIG, V+, GND)",
+   "value": "1x3 2.54 mm right-angle header (S, +, -)",
+   "symbol": "Connector_Generic:Conn_01x03",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vane_4_servo PE3/OC3A; firmware/atmega128_fc/src/board.h:26",
+   "block": "IO"
+  },
+  {
+   "refdes": "J12",
+   "role": "ESC lead (signal, BEC +5 V out, GND)",
+   "value": "1x3 2.54 mm right-angle header (S, +, -)",
+   "symbol": "Connector_Generic:Conn_01x03",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.esc PE4/OC3B (line 2152); firmware/atmega128_fc/src/board.h:27",
+   "block": "IO",
+   "note": "ESC red wire = BEC +5 V OUT into SERVO_5V (never into the logic +5V); ESC GND here is the single ground tie (NT1)"
+  },
+  {
+   "refdes": "J13",
+   "role": "release servo header (VTOL has no release servo)",
+   "value": "1x3 2.54 mm right-angle header (S, +, -)",
+   "symbol": "Connector_Generic:Conn_01x03",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+   "populate": false,
+   "label": "F",
+   "source": "params.json pins.release_servo PE5/OC3C; firmware/atmega128_fc/src/board.h:28; firmware/atmega128_fc/src/hal/pwm.c:49",
+   "block": "IO",
+   "note": "unpopulated: configs.vtol.note (line ~1700) removes the release servo, but the firmware still drives PE5 (src/main.c:518) - footprint kept, header and series resistor DNP"
+  },
+  {
+   "refdes": "J14",
+   "role": "logic battery input (2S LiPo ONLY, separate from the 6S)",
+   "value": "JST-PH 2.0 2-pin vertical (top entry)",
+   "symbol": "Connector_Generic:Conn_01x02",
+   "footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+   "populate": true,
+   "label": "A",
+   "source": "user decision 2026-11-04 (separate logic battery); connector type A (match the purchased pack); vertical so the battery lead leaves upward toward the battery and no plug sticks out toward the spigot wall (independent review 2026-11-05 MF-4)",
+   "block": "PWR",
+   "note": "pin 1 = +, pin 2 = - (A: JST-PH polarity differs between vendors - Q10 protects a reversed plug). 2S only: D7 clamps the Q10 gate, a 3S pack is still outside the design range"
+  },
+  {
+   "refdes": "J15",
+   "role": "logic power switch",
+   "value": "2-pin header + shunt (or wires to an external switch)",
+   "symbol": "Connector_Generic:Conn_01x02",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+   "populate": true,
+   "label": "A",
+   "source": "user decision 2026-11-04 ('power switch'); the arm switch is NOT a power switch (params.json pins.arm_switch line 2158, firmware/README.md:319)",
+   "block": "PWR",
+   "note": "shunt on = logic on. A second toggle in the top cap needs a new hole = CAD change (user decision)"
+  },
+  {
+   "refdes": "J16",
+   "role": "arming switch lead (top cap toggle, switch to GND)",
+   "value": "1x2 right-angle header",
+   "symbol": "Connector_Generic:Conn_01x02",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.arm_switch PC2 (line 2158); params.json configs.vtol.top_cap.switch_hole (line 1852); firmware/atmega128_fc/src/board.h:40",
+   "block": "IO"
+  },
+  {
+   "refdes": "J17",
+   "role": "buzzer lead (5 V active buzzer in the misc box)",
+   "value": "JST-PH 2.0 2-pin vertical (top entry)",
+   "symbol": "Connector_Generic:Conn_01x02",
+   "footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.buzzer PC1 NPN driver (line 2157); configs.vtol.electronics.misc.items (line 1788); firmware/atmega128_fc/src/board.h:39; vertical so no mated plug points at the motor-lead joint zone below J12 (independent review 2026-11-05 MF-3)",
+   "block": "IO"
+  },
+  {
+   "refdes": "J18",
+   "role": "power-sense lead: V_in (6S bus), V_tether, V_buffer, buffer-current sign",
+   "value": "1x4 right-angle header",
+   "symbol": "Connector_Generic:Conn_01x04",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vbat_adc / v_tether_adc / v_buffer_adc / buf_isign (line 2155, 2165-2167); params.json power.electrical_plant_ASSUMED.note",
+   "block": "IO",
+   "note": "no GND pin on purpose: a second ground wire to the propulsion side would close a loop with the ESC lead ground; divider returns use the logic GND, tied once at NT1"
+  },
+  {
+   "refdes": "J19",
+   "role": "NAV ISP header (MOSI = PE0/PDI, MISO = PE1/PDO, SCK = PB1)",
+   "value": "AVR ISP 2x3 (USBasp)",
+   "symbol": "Connector:AVR-ISP-6",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/README.md:311 / 213 (MOSI->PE0, MISO<-PE1, SCK->PB1); firmware/atmega128_fc/src/board.h:43",
+   "block": "NAV"
+  },
+  {
+   "refdes": "J20",
+   "role": "FCU ISP header (MOSI = PE0/PDI, MISO = PE1/PDO, SCK = PB1)",
+   "value": "AVR ISP 2x3 (USBasp)",
+   "symbol": "Connector:AVR-ISP-6",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/README.md:311 / 213 (MOSI->PE0, MISO<-PE1, SCK->PB1); firmware/atmega128_fc/src/board.h:43",
+   "block": "FCU"
+  },
+  {
+   "refdes": "J21",
+   "role": "COM ISP header (MOSI = PE0/PDI, MISO = PE1/PDO, SCK = PB1)",
+   "value": "AVR ISP 2x3 (USBasp)",
+   "symbol": "Connector:AVR-ISP-6",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/README.md:311 / 213 (MOSI->PE0, MISO<-PE1, SCK->PB1); firmware/atmega128_fc/src/board.h:43",
+   "block": "COM"
+  },
+  {
+   "refdes": "J22",
+   "role": "GNS ISP header (MOSI = PE0/PDI, MISO = PE1/PDO, SCK = PB1)",
+   "value": "AVR ISP 2x3 (USBasp)",
+   "symbol": "Connector:AVR-ISP-6",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/README.md:311 / 213 (MOSI->PE0, MISO<-PE1, SCK->PB1); firmware/atmega128_fc/src/board.h:43",
+   "block": "GNS"
+  },
+  {
+   "refdes": "J23",
+   "role": "SPARE ISP header (MOSI = PE0/PDI, MISO = PE1/PDO, SCK = PB1)",
+   "value": "AVR ISP 2x3 (USBasp)",
+   "symbol": "Connector:AVR-ISP-6",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical",
+   "populate": false,
+   "label": "F",
+   "source": "firmware/README.md:311 / 213 (MOSI->PE0, MISO<-PE1, SCK->PB1); firmware/atmega128_fc/src/board.h:43",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "J24",
+   "role": "NAV reset hold (shunt on = NAV held in reset)",
+   "value": "2-pin header + shunt",
+   "symbol": "Connector_Generic:Conn_01x02",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:649-650 (program the FCU: hold the NAV in reset); params.json pins.nlink_sck (line 2162); firmware/atmega128_fc/src/board.h:99-100 (GNS ISP shares the glink)",
+   "block": "LINK",
+   "note": "replaces 'unplug the nlink / glink connector' of the multi-board build: shunt on while programming the FCU or the GNS"
+  },
+  {
+   "refdes": "J25",
+   "role": "FCU reset hold (shunt on = FCU held in reset)",
+   "value": "2-pin header + shunt",
+   "symbol": "Connector_Generic:Conn_01x02",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:651 (program the COM: unplug the ilink); firmware/atmega128_fc/src/board.h:59-61",
+   "block": "LINK",
+   "note": "replaces 'unplug the ilink connector': shunt on while programming the COM (FCU PD3 / PD2 go high-Z)"
+  },
+  {
+   "refdes": "JP1",
+   "role": "GPS supply select: 1-2 = 3.3 V (default, params), 2-3 = 5 V",
+   "value": "solder jumper, 1-2 bridged",
+   "symbol": "Jumper:SolderJumper_3_Bridged12",
+   "footprint": "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm",
+   "populate": true,
+   "label": "A",
+   "source": "params.json electronics.gps.power (line 1012); NEO-7M board supply '3.3-5 V' typical (A, not on the product page)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "L1",
+   "role": "NAV AVCC filter inductor",
+   "value": "10uH",
+   "symbol": "Device:L",
+   "footprint": "Inductor_SMD:L_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 / 332 / 345 'AVCC(LC)'; value A",
+   "block": "NAV"
+  },
+  {
+   "refdes": "L2",
+   "role": "FCU AVCC filter inductor",
+   "value": "10uH",
+   "symbol": "Device:L",
+   "footprint": "Inductor_SMD:L_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 / 332 / 345 'AVCC(LC)'; value A",
+   "block": "FCU"
+  },
+  {
+   "refdes": "L3",
+   "role": "COM AVCC filter inductor",
+   "value": "10uH",
+   "symbol": "Device:L",
+   "footprint": "Inductor_SMD:L_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 / 332 / 345 'AVCC(LC)'; value A",
+   "block": "COM"
+  },
+  {
+   "refdes": "L4",
+   "role": "GNS AVCC filter inductor",
+   "value": "10uH",
+   "symbol": "Device:L",
+   "footprint": "Inductor_SMD:L_0805_2012Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/README.md:310 / 332 / 345 'AVCC(LC)'; value A",
+   "block": "GNS"
+  },
+  {
+   "refdes": "L5",
+   "role": "SPARE AVCC filter inductor",
+   "value": "10uH",
+   "symbol": "Device:L",
+   "footprint": "Inductor_SMD:L_0805_2012Metric",
+   "populate": false,
+   "label": "A",
+   "source": "firmware/README.md:310 / 332 / 345 'AVCC(LC)'; value A",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "NT1",
+   "role": "single tie point logic GND <-> propulsion GND (GND_PWR), at J12 pin 3",
+   "value": "net tie",
+   "symbol": "Device:NetTie_2",
+   "footprint": "NetTie:NetTie-2_SMD_Pad0.5mm",
+   "populate": true,
+   "label": "A",
+   "source": "user decision 2026-11-04 (common ground, one tie point); firmware/README.md:247, 323 (GND common); firmware/atmega128_fc/src/board.h:84, 91, 107",
+   "block": "PWR",
+   "note": "place NT1 touching J12 (ESC lead) pin 3; servo return currents stay on GND_PWR (J8-J13 pin 3 -> J12 pin 3)"
+  },
+  {
+   "refdes": "Q1",
+   "role": "level shifter channel: NAV I2C SCL (400 kHz)",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "params.json nav.pins.i2c_scl (line 2175); firmware/atmega128_fc/src/board.h:47-48; firmware/README.md:199, 334",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q2",
+   "role": "level shifter channel: NAV I2C SDA",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "params.json nav.pins.i2c_sda; firmware/atmega128_fc/src/board.h:47-48; firmware/README.md:199, 334",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q3",
+   "role": "level shifter channel: GY-521 INT -> NAV PE6/INT6 (firmware polls; optional)",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": "optional (DNP)",
+   "label": "F",
+   "source": "params.json nav.pins.imu_int 'not used, polled' (line 2177); firmware/atmega128_fc/src/board.h:49; firmware/README.md:199, 335 (shifter ch4 optional)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q4",
+   "role": "level shifter channel: COM PD3 TXD1 -> PLM100 UART1_RXD (pin 20)",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "params.json com.pins.link_uart_tx (line 2213); firmware/README.md:254, 261; PLM100 User's Guide V2.2 (plm100_3.pdf) p.6 1.3 (host = UART1, 115200 default)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q5",
+   "role": "level shifter channel: COM PC6 -> PLM100 RESET_N (pin 2, active low)",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 table 2 pin 2 RESET_N; p.16 fig 9 (47k pull-up + 100 nF); firmware/README.md:276 (sx127x RESET through a channel)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q6",
+   "role": "level shifter channel: GNS PD3 TXD1 -> GPS RXD (38400 8N1)",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "params.json gns.pins.gps_tx (line 2268); electronics.gps.interface 'BOTH lines level-shifted, GPS RX abs max 3.6 V' (line 1011)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q7",
+   "role": "level shifter channel: GPS TXD -> GNS PD2 RXD1",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "params.json gns.pins.gps_rx (line 2267); electronics.gps.interface (line 1011)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q8",
+   "role": "level shifter channel: FCU PE1 TXD0 -> OpenLog RXI (57600 8N1)",
+   "value": "BSS138",
+   "symbol": "Transistor_FET:BSS138",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/README.md:204, 382 (log through one shifter channel, RXI 3.3 V); channel chosen here (firmware/README.md:385 left it open)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "Q9",
+   "role": "buzzer low-side driver",
+   "value": "MMBT3904",
+   "symbol": "Transistor_BJT:MMBT3904",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.buzzer 'PC1 (NPN driver)'; firmware/README.md:206",
+   "block": "IO"
+  },
+  {
+   "refdes": "Q10",
+   "role": "reverse-polarity protection (P-MOSFET, high side)",
+   "value": "AO3401A (-30 V, -4 A)",
+   "symbol": "Transistor_FET:AO3401A",
+   "footprint": "Package_TO_SOT_SMD:SOT-23",
+   "populate": true,
+   "label": "A",
+   "source": "user decision 2026-11-04 (reverse-polarity protection); part A",
+   "block": "PWR",
+   "note": "drain = battery +, source = load: the body diode starts conduction, Vgs = -Vbat turns it on; a reversed pack leaves it off. Vgs -8.4 V at 2S full charge, inside the +-12 V rating (A, AO3401A datasheet not on disk); the gate-source zener clamps hot-plug ringing / a wrong pack"
+  },
+  {
+   "refdes": "R1",
+   "role": "NAV reset pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "NAV"
+  },
+  {
+   "refdes": "R2",
+   "role": "NAV status LED resistor",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.nav.pins.led PC1 (line 2182); firmware/atmega128_fc/src/board.h:54",
+   "block": "NAV"
+  },
+  {
+   "refdes": "R3",
+   "role": "FCU reset pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "FCU"
+  },
+  {
+   "refdes": "R4",
+   "role": "FCU status LED resistor",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.pins.led PC0 (line 2156); firmware/atmega128_fc/src/board.h:38",
+   "block": "FCU"
+  },
+  {
+   "refdes": "R5",
+   "role": "COM reset pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "COM"
+  },
+  {
+   "refdes": "R6",
+   "role": "COM status LED resistor",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.com.pins.led PC0 (line 2211); firmware/atmega128_fc/src/board.h:63",
+   "block": "COM"
+  },
+  {
+   "refdes": "R7",
+   "role": "GNS reset pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "GNS"
+  },
+  {
+   "refdes": "R8",
+   "role": "GNS status LED resistor",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.gns.pins.led PC0; firmware/atmega128_fc/src/board.h:101, 139-144",
+   "block": "GNS"
+  },
+  {
+   "refdes": "R9",
+   "role": "SPARE reset pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": false,
+   "label": "A",
+   "source": "fw09/p3/README.md (scratch study, P3 fifth-chip proposal) section 6 (reset 10 kOhm + 100 nF)",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "R10",
+   "role": "SPARE status LED resistor",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": false,
+   "label": "F",
+   "source": "A: same LED as the FCU / COM / GNS (P3 README section 6 lists 'LED + resistor')",
+   "block": "SPARE"
+  },
+  {
+   "refdes": "R11",
+   "role": "nlink SS pull-up (FCU idle-high while the NAV is in reset / programmed)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "firmware/atmega128_fc/src/board.h:29-30, 55-56 (FCU SS pull-up keeps the FCU SPI idle); external 10 kOhm in addition to the internal one: A",
+   "block": "LINK"
+  },
+  {
+   "refdes": "R12",
+   "role": "ilink series resistor FCU TXD1 -> COM RXD0",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.ilink.series_resistor_ohm 1000 (line 2228); firmware/atmega128_fc/src/board.h:42, 89; firmware/README.md:355",
+   "block": "LINK"
+  },
+  {
+   "refdes": "R13",
+   "role": "glink series resistor NAV TXD1 -> GNS RXD0 (NEW, like the ilink one)",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: firmware/atmega128_fc/src/board.h:105 wires it direct; the 1 kOhm copies the ilink rule (firmware/atmega128_fc/src/board.h:59-61) because GNS PE0 is its ISP PDI (programming the GNS with the NAV running would fight the NAV's TXD1)",
+   "block": "LINK"
+  },
+  {
+   "refdes": "R14",
+   "role": "Q10 gate resistor",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "PWR"
+  },
+  {
+   "refdes": "R15",
+   "role": "logic battery divider top (NEW, firmware does not read PF3 yet)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: PF3/ADC3 is free on the FCU (PF0-PF2 used, PF4-PF7 = JTAG pins freed by the fuse) (firmware/atmega128_fc/src/params_gen.h:164-172; firmware/atmega128_fc/src/hal/adc.h:21-22); 8.4 V -> 2.08 V < 2.56 V ref; fitted by default so the logic pack can be measured at PF3 / on the board (independent review 2026-11-05 E1)",
+   "block": "PWR"
+  },
+  {
+   "refdes": "R16",
+   "role": "logic battery divider bottom (NEW)",
+   "value": "3.3k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A; fitted (independent review 2026-11-05 E1)",
+   "block": "PWR"
+  },
+  {
+   "refdes": "R17",
+   "role": "VANE1 signal series resistor (long lead, back-power limit)",
+   "value": "220",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 220 Ohm series on a ~0.5 m servo lead (README 4.11 lead lengths 434-539 mm) limits back-power into an unpowered servo / ESC",
+   "block": "IO"
+  },
+  {
+   "refdes": "R18",
+   "role": "VANE2 signal series resistor (long lead, back-power limit)",
+   "value": "220",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 220 Ohm series on a ~0.5 m servo lead (README 4.11 lead lengths 434-539 mm) limits back-power into an unpowered servo / ESC",
+   "block": "IO"
+  },
+  {
+   "refdes": "R19",
+   "role": "VANE3 signal series resistor (long lead, back-power limit)",
+   "value": "220",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 220 Ohm series on a ~0.5 m servo lead (README 4.11 lead lengths 434-539 mm) limits back-power into an unpowered servo / ESC",
+   "block": "IO"
+  },
+  {
+   "refdes": "R20",
+   "role": "VANE4 signal series resistor (long lead, back-power limit)",
+   "value": "220",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 220 Ohm series on a ~0.5 m servo lead (README 4.11 lead lengths 434-539 mm) limits back-power into an unpowered servo / ESC",
+   "block": "IO"
+  },
+  {
+   "refdes": "R21",
+   "role": "ESC signal series resistor (long lead, back-power limit)",
+   "value": "220",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A: 220 Ohm series on a ~0.5 m servo lead (README 4.11 lead lengths 434-539 mm) limits back-power into an unpowered servo / ESC",
+   "block": "IO"
+  },
+  {
+   "refdes": "R22",
+   "role": "RELEASE signal series resistor (long lead, back-power limit)",
+   "value": "220",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": false,
+   "label": "A",
+   "source": "A: 220 Ohm series on a ~0.5 m servo lead (README 4.11 lead lengths 434-539 mm) limits back-power into an unpowered servo / ESC",
+   "block": "IO"
+  },
+  {
+   "refdes": "R23",
+   "role": "ESC signal pull-down (motor off while the FCU boots / resets)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "firmware/README.md:316 (10 kOhm pull-down on the ESC signal)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R24",
+   "role": "arm input series resistor (ESD / lead noise)",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "IO"
+  },
+  {
+   "refdes": "R25",
+   "role": "arm input external pull-up (in addition to the internal one)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "IO"
+  },
+  {
+   "refdes": "R26",
+   "role": "buzzer driver base resistor",
+   "value": "1k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "IO"
+  },
+  {
+   "refdes": "R27",
+   "role": "buzzer driver base pull-down (off during reset)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "IO"
+  },
+  {
+   "refdes": "R28",
+   "role": "PF0 divider top",
+   "value": "47k 1%",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vbat_adc 'PF0/ADC0 (divider 47k/4.7k, internal 2.56 V ref)' (line 2155); firmware/atmega128_fc/src/params_gen.h:164-165; firmware/README.md:205, 318",
+   "block": "IO"
+  },
+  {
+   "refdes": "R29",
+   "role": "PF0 divider bottom",
+   "value": "4.7k 1%",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.vbat_adc 'PF0/ADC0 (divider 47k/4.7k, internal 2.56 V ref)' (line 2155); firmware/atmega128_fc/src/params_gen.h:164-165; firmware/README.md:205, 318",
+   "block": "IO"
+  },
+  {
+   "refdes": "R30",
+   "role": "PF1 divider top",
+   "value": "47k 1%",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.v_tether_adc (line 2165); firmware/atmega128_fc/src/params_gen.h:171 (ASSUMED until the carrier is routed)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R31",
+   "role": "PF1 divider bottom",
+   "value": "4.7k 1%",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.v_tether_adc (line 2165); firmware/atmega128_fc/src/params_gen.h:171 (ASSUMED until the carrier is routed)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R32",
+   "role": "PF2 divider top",
+   "value": "47k 1%",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.v_buffer_adc (line 2166); firmware/atmega128_fc/src/params_gen.h:172 (ASSUMED until the carrier is routed)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R33",
+   "role": "PF2 divider bottom",
+   "value": "4.7k 1%",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "params.json pins.v_buffer_adc (line 2166); firmware/atmega128_fc/src/params_gen.h:172 (ASSUMED until the carrier is routed)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R34",
+   "role": "buffer-current sign series resistor",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A; 10k (not 1k) limits the clamp current while the hybrid-board signal level is undefined (independent review 2026-11-05 E7)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R35",
+   "role": "buffer-current sign pull-down (battery / tether builds: reads low)",
+   "value": "100k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "A",
+   "block": "IO"
+  },
+  {
+   "refdes": "R36",
+   "role": "Q8 HV (5 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R37",
+   "role": "Q8 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R38",
+   "role": "Q1 HV (5 V) pull-up",
+   "value": "4.7k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R39",
+   "role": "Q1 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values); 10k (not 4.7k): the GY-521 (4.7k, A) and BMP280 (10k, A) modules carry their own 3.3 V pull-ups - keeps the low-level sink current < 3 mA (independent review 2026-11-05 E3; measure the bought modules, DNP if they pull up hard)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R40",
+   "role": "Q2 HV (5 V) pull-up",
+   "value": "4.7k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R41",
+   "role": "Q2 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values); 10k (not 4.7k): the GY-521 (4.7k, A) and BMP280 (10k, A) modules carry their own 3.3 V pull-ups - keeps the low-level sink current < 3 mA (independent review 2026-11-05 E3; measure the bought modules, DNP if they pull up hard)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R42",
+   "role": "Q3 HV (5 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values); HV pull-up fitted even with Q3 DNP so NAV PE6 never floats (independent review 2026-11-05 E11)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R43",
+   "role": "Q3 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": "optional (DNP)",
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R44",
+   "role": "Q4 HV (5 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R45",
+   "role": "Q4 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R46",
+   "role": "Q5 HV (5 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R47",
+   "role": "Q5 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R48",
+   "role": "PLM100 GPIO5 (USER_KEY / 'Default') pull-up - never asserted",
+   "value": "47k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.16 fig 9 (R36 47k)",
+   "block": "COM"
+  },
+  {
+   "refdes": "R49",
+   "role": "Q6 HV (5 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R50",
+   "role": "Q6 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R51",
+   "role": "Q7 HV (5 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R52",
+   "role": "Q7 LV (3.3 V) pull-up",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "standard BSS138 bidirectional shifter (A values)",
+   "block": "SHIFT"
+  },
+  {
+   "refdes": "R53",
+   "role": "VANE1 PWM pull-down (servo line low while the FCU boots / is held in reset)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "independent review 2026-11-05 E8 (pins Hi-Z until pwm.c:48-49 sets them; J25 holds the FCU in reset while the COM is programmed); same as the ESC pull-down (firmware/README.md:316)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R54",
+   "role": "VANE2 PWM pull-down (servo line low while the FCU boots / is held in reset)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "independent review 2026-11-05 E8 (pins Hi-Z until pwm.c:48-49 sets them; J25 holds the FCU in reset while the COM is programmed); same as the ESC pull-down (firmware/README.md:316)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R55",
+   "role": "VANE3 PWM pull-down (servo line low while the FCU boots / is held in reset)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "independent review 2026-11-05 E8 (pins Hi-Z until pwm.c:48-49 sets them; J25 holds the FCU in reset while the COM is programmed); same as the ESC pull-down (firmware/README.md:316)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R56",
+   "role": "VANE4 PWM pull-down (servo line low while the FCU boots / is held in reset)",
+   "value": "10k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "A",
+   "source": "independent review 2026-11-05 E8 (pins Hi-Z until pwm.c:48-49 sets them; J25 holds the FCU in reset while the COM is programmed); same as the ESC pull-down (firmware/README.md:316)",
+   "block": "IO"
+  },
+  {
+   "refdes": "R57",
+   "role": "PLM100 GPIO3 (UART1 RX enable when AT+GPIO=4) pull-up - RX stays enabled",
+   "value": "47k",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "label": "F",
+   "source": "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 fig 3 pin map (pin 9 = GPIO3); PLM100 User's Guide V2.2 (plm100_3.pdf) p.7 (GPIO3 HIGH = UART1 RX enabled), p.13 (+GPIO, bit2); independent review 2026-11-05 E10",
+   "block": "COM"
+  },
+  {
+   "refdes": "U1",
+   "role": "NAV microcontroller",
+   "value": "ATmega128A-AU 16 MHz 5 V",
+   "symbol": "MCU_Microchip_ATmega:ATmega128A-A",
+   "footprint": "Package_QFP:TQFP-64_14x14mm_P0.8mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.nav (line ~2170); firmware/atmega128_fc/src/board.h:5-7",
+   "block": "NAV"
+  },
+  {
+   "refdes": "U2",
+   "role": "FCU microcontroller",
+   "value": "ATmega128A-AU 16 MHz 5 V",
+   "symbol": "MCU_Microchip_ATmega:ATmega128A-A",
+   "footprint": "Package_QFP:TQFP-64_14x14mm_P0.8mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.pins (line 2147-2167); firmware/atmega128_fc/src/board.h:8-10",
+   "block": "FCU"
+  },
+  {
+   "refdes": "U3",
+   "role": "COM microcontroller",
+   "value": "ATmega128A-AU 16 MHz 5 V",
+   "symbol": "MCU_Microchip_ATmega:ATmega128A-A",
+   "footprint": "Package_QFP:TQFP-64_14x14mm_P0.8mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.com.pins (line 2208-2222); firmware/atmega128_fc/src/board.h:11-12",
+   "block": "COM"
+  },
+  {
+   "refdes": "U4",
+   "role": "GNS microcontroller",
+   "value": "ATmega128A-AU 16 MHz 5 V",
+   "symbol": "MCU_Microchip_ATmega:ATmega128A-A",
+   "footprint": "Package_QFP:TQFP-64_14x14mm_P0.8mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.gns.pins (line 2266-2271); firmware/atmega128_fc/src/board.h:95-102",
+   "block": "GNS"
+  },
+  {
+   "refdes": "U5",
+   "role": "SPARE microcontroller",
+   "value": "ATmega128A-AU 16 MHz 5 V",
+   "symbol": "MCU_Microchip_ATmega:ATmega128A-A",
+   "footprint": "Package_QFP:TQFP-64_14x14mm_P0.8mm",
+   "populate": false,
+   "label": "F",
+   "source": "params.json configs.vtol.electronics.carrier.model (line 1754); SPEC.md 10.6.1 (5th footprint unpopulated, P3 reserve)",
+   "block": "SPARE",
+   "note": "unpopulated 5th ATmega128A: power, ground, crystal, reset, AVCC/AREF, decoupling and its own ISP only (the P3 nets of fw09/p3 README section 6 are NOT routed - P3 is a fallback with a hardware-measurement trigger; bodge-wire them if P3 is ever adopted)"
+  },
+  {
+   "refdes": "U6",
+   "role": "3.3 V LDO (sensors, radio, GPS, shifter LV side)",
+   "value": "AMS1117-3.3",
+   "symbol": "Regulator_Linear:AMS1117-3.3",
+   "footprint": "Package_TO_SOT_SMD:SOT-223-3_TabPin2",
+   "populate": true,
+   "label": "F",
+   "source": "params.json configs.vtol.electronics.carrier.model 'AMS1117-3.3' (line 1754); firmware/README.md:245-246",
+   "block": "PWR"
+  },
+  {
+   "refdes": "Y1",
+   "role": "NAV crystal",
+   "value": "16 MHz, CL 16-18 pF (A), 3225 SMD",
+   "symbol": "Device:Crystal_GND24",
+   "footprint": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.f_cpu_hz 16000000; firmware/atmega128_fc/platformio.ini:51-55 lfuse 0x3F (ext. crystal, CKSEL 1111, SUT 11), hfuse 0xCF (CKOPT programmed = full-swing oscillator)",
+   "block": "NAV",
+   "note": "SMD 3225 chosen over HC-49S for height / mass (A; P3 README section 6 lists both)"
+  },
+  {
+   "refdes": "Y2",
+   "role": "FCU crystal",
+   "value": "16 MHz, CL 16-18 pF (A), 3225 SMD",
+   "symbol": "Device:Crystal_GND24",
+   "footprint": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.f_cpu_hz 16000000; firmware/atmega128_fc/platformio.ini:51-55 lfuse 0x3F (ext. crystal, CKSEL 1111, SUT 11), hfuse 0xCF (CKOPT programmed = full-swing oscillator)",
+   "block": "FCU",
+   "note": "SMD 3225 chosen over HC-49S for height / mass (A; P3 README section 6 lists both)"
+  },
+  {
+   "refdes": "Y3",
+   "role": "COM crystal",
+   "value": "16 MHz, CL 16-18 pF (A), 3225 SMD",
+   "symbol": "Device:Crystal_GND24",
+   "footprint": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.f_cpu_hz 16000000; firmware/atmega128_fc/platformio.ini:51-55 lfuse 0x3F (ext. crystal, CKSEL 1111, SUT 11), hfuse 0xCF (CKOPT programmed = full-swing oscillator)",
+   "block": "COM",
+   "note": "SMD 3225 chosen over HC-49S for height / mass (A; P3 README section 6 lists both)"
+  },
+  {
+   "refdes": "Y4",
+   "role": "GNS crystal",
+   "value": "16 MHz, CL 16-18 pF (A), 3225 SMD",
+   "symbol": "Device:Crystal_GND24",
+   "footprint": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "populate": true,
+   "label": "F",
+   "source": "params.json flight_computer.f_cpu_hz 16000000; firmware/atmega128_fc/platformio.ini:51-55 lfuse 0x3F (ext. crystal, CKSEL 1111, SUT 11), hfuse 0xCF (CKOPT programmed = full-swing oscillator)",
+   "block": "GNS",
+   "note": "SMD 3225 chosen over HC-49S for height / mass (A; P3 README section 6 lists both)"
+  },
+  {
+   "refdes": "Y5",
+   "role": "SPARE crystal",
+   "value": "16 MHz, CL 16-18 pF (A), 3225 SMD",
+   "symbol": "Device:Crystal_GND24",
+   "footprint": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "populate": false,
+   "label": "F",
+   "source": "params.json flight_computer.f_cpu_hz 16000000; firmware/atmega128_fc/platformio.ini:51-55 lfuse 0x3F (ext. crystal, CKSEL 1111, SUT 11), hfuse 0xCF (CKOPT programmed = full-swing oscillator)",
+   "block": "SPARE",
+   "note": "SMD 3225 chosen over HC-49S for height / mass (A; P3 README section 6 lists both)"
+  }
+ ],
+ "nets": [
+  {
+   "name": "+3V3",
+   "members": [
+    "C44.1",
+    "C51.1",
+    "C52.1",
+    "J2.1",
+    "J2.5",
+    "J2.6",
+    "J3.1",
+    "JP1.A(1)",
+    "Q1.G(1)",
+    "Q2.G(1)",
+    "Q3.G(1)",
+    "Q4.G(1)",
+    "Q5.G(1)",
+    "Q6.G(1)",
+    "Q7.G(1)",
+    "Q8.G(1)",
+    "R37.2",
+    "R39.2",
+    "R41.2",
+    "R43.2",
+    "R45.2",
+    "R47.2",
+    "R48.2",
+    "R50.2",
+    "R52.2",
+    "R57.2",
+    "U6.VO(2)"
+   ],
+   "sources": [
+    "firmware/README.md:245-246; params.json electronics.gps.power '3.3 V rail' (line 1012)",
+    "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 table 2 pin 1 VDD 2.1-3.6 V; p.9 table 3 (3.3 V, max 40 mA); PLM100 User's Guide V2.2 (plm100_3.pdf) p.6 (TX up to 100 mA)"
+   ]
+  },
+  {
+   "name": "+5V",
+   "members": [
+    "C1.1",
+    "C2.1",
+    "C3.1",
+    "C9.1",
+    "C10.1",
+    "C11.1",
+    "C17.1",
+    "C18.1",
+    "C19.1",
+    "C25.1",
+    "C26.1",
+    "C27.1",
+    "C33.1",
+    "C34.1",
+    "C35.1",
+    "C42.1",
+    "C43.1",
+    "D6.K(1)",
+    "J1.1",
+    "J5.4",
+    "J6.3",
+    "J17.1",
+    "J19.VCC(2)",
+    "J20.VCC(2)",
+    "J21.VCC(2)",
+    "J22.VCC(2)",
+    "J23.VCC(2)",
+    "JP1.B(3)",
+    "L1.1",
+    "L2.1",
+    "L3.1",
+    "L4.1",
+    "L5.1",
+    "R1.2",
+    "R3.2",
+    "R5.2",
+    "R7.2",
+    "R9.2",
+    "R11.2",
+    "R25.2",
+    "R36.2",
+    "R38.2",
+    "R40.2",
+    "R42.2",
+    "R44.2",
+    "R46.2",
+    "R49.2",
+    "R51.2",
+    "U1.VCC(21)",
+    "U1.VCC(52)",
+    "U1.~{PEN}(1)",
+    "U2.VCC(21)",
+    "U2.VCC(52)",
+    "U2.~{PEN}(1)",
+    "U3.VCC(21)",
+    "U3.VCC(52)",
+    "U3.~{PEN}(1)",
+    "U4.VCC(21)",
+    "U4.VCC(52)",
+    "U4.~{PEN}(1)",
+    "U5.VCC(21)",
+    "U5.VCC(52)",
+    "U5.~{PEN}(1)",
+    "U6.VI(3)"
+   ],
+   "sources": [
+    "params.json flight_computer.vcc_V 5.0 (line 2137)",
+    "params.json flight_computer.vcc_V 5.0 (line 2137); firmware/README.md:244 (5 V logic rail)",
+    "firmware/README.md:204, 383 (OpenLog VCC 5 V)"
+   ]
+  },
+  {
+   "name": "ARM_SW_EXT",
+   "members": [
+    "J16.1",
+    "R24.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "BUZ_B",
+   "members": [
+    "Q9.B(1)",
+    "R26.2",
+    "R27.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "BUZ_N",
+   "members": [
+    "D6.A(2)",
+    "J17.2",
+    "Q9.C(3)"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "COM_AREF",
+   "members": [
+    "C21.1",
+    "U3.AREF(62)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/hal/adc.h:4-6 (AREF carries only its 100 nF; internal 2.56 V ref); firmware/atmega128_fc/src/board.h:37"
+   ]
+  },
+  {
+   "name": "COM_AVCC",
+   "members": [
+    "C20.1",
+    "L3.2",
+    "U3.AVCC(64)"
+   ],
+   "sources": [
+    "firmware/README.md:310 AVCC(LC)"
+   ]
+  },
+  {
+   "name": "COM_ILINK_RX",
+   "members": [
+    "J21.MOSI(4)",
+    "R12.2",
+    "U3.PE0(2)"
+   ],
+   "sources": [
+    "params.json com.pins.ilink_rx (line 2209); firmware/atmega128_fc/src/board.h:59-61"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "COM_ISP_SCK",
+   "members": [
+    "J21.SCK(3)",
+    "U3.PB1(11)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "COM_LED",
+   "members": [
+    "R6.1",
+    "U3.PC0(35)"
+   ],
+   "sources": [
+    "params.json flight_computer.com.pins.led PC0 (line 2211); firmware/atmega128_fc/src/board.h:63"
+   ]
+  },
+  {
+   "name": "COM_LED_A",
+   "members": [
+    "D3.A(2)",
+    "R6.2"
+   ],
+   "sources": []
+  },
+  {
+   "name": "COM_LINK_TX",
+   "members": [
+    "Q4.D(3)",
+    "R44.1",
+    "U3.PD3(28)"
+   ],
+   "sources": [
+    "params.json com.pins.link_uart_tx 'PD3/TXD1 (to module RXD through a BSS138 channel)' (line 2213); firmware/atmega128_fc/src/board.h:66"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "COM_LORA_RESET",
+   "members": [
+    "Q5.D(3)",
+    "R46.1",
+    "U3.PC6(41)"
+   ],
+   "sources": [
+    "params.json com.pins.lora_reset PC6 (line 2222); firmware/atmega128_fc/src/board.h:74; firmware/atmega128_fc/src/hal/lora_uart.c:65-70 (lora_uart build drives only M0/M1, reads AUX)"
+   ]
+  },
+  {
+   "name": "COM_RESET",
+   "members": [
+    "C24.1",
+    "J21.~{RST}(5)",
+    "R5.1",
+    "U3.~{RESET}(20)"
+   ],
+   "sources": [
+    "firmware/README.md:311 ISP pin 5 RST"
+   ]
+  },
+  {
+   "name": "COM_XTAL1",
+   "members": [
+    "C22.1",
+    "U3.XTAL1(24)",
+    "Y3.1"
+   ],
+   "sources": []
+  },
+  {
+   "name": "COM_XTAL2",
+   "members": [
+    "C23.1",
+    "U3.XTAL2(23)",
+    "Y3.3"
+   ],
+   "sources": []
+  },
+  {
+   "name": "ESC_PWM",
+   "members": [
+    "R21.1",
+    "R23.1",
+    "U2.PE4(6)"
+   ],
+   "sources": [
+    "params.json pins.esc PE4/OC3B (line 2152); firmware/atmega128_fc/src/board.h:27"
+   ],
+   "kind": "pwm"
+  },
+  {
+   "name": "ESC_SIG",
+   "members": [
+    "J12.1",
+    "R21.2"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "FCU_AREF",
+   "members": [
+    "C13.1",
+    "U2.AREF(62)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/hal/adc.h:4-6 (AREF carries only its 100 nF; internal 2.56 V ref); firmware/atmega128_fc/src/board.h:37"
+   ]
+  },
+  {
+   "name": "FCU_ARM",
+   "members": [
+    "C47.1",
+    "R24.2",
+    "R25.1",
+    "U2.PC2(37)"
+   ],
+   "sources": [
+    "params.json pins.arm_switch (line 2158); firmware/atmega128_fc/src/hal/gpio.c:12-13 (internal pull-up)"
+   ]
+  },
+  {
+   "name": "FCU_AVCC",
+   "members": [
+    "C12.1",
+    "L2.2",
+    "U2.AVCC(64)"
+   ],
+   "sources": [
+    "firmware/README.md:310 AVCC(LC)"
+   ]
+  },
+  {
+   "name": "FCU_BUF_ISIGN",
+   "members": [
+    "R34.2",
+    "R35.1",
+    "U2.PC3(38)"
+   ],
+   "sources": [
+    "params.json pins.buf_isign PC3 (line 2167); firmware/atmega128_fc/src/params_gen.h:173-174"
+   ]
+  },
+  {
+   "name": "FCU_BUZ",
+   "members": [
+    "R26.1",
+    "U2.PC1(36)"
+   ],
+   "sources": [
+    "params.json pins.buzzer (line 2157)"
+   ]
+  },
+  {
+   "name": "FCU_ILINK_TX",
+   "members": [
+    "R12.1",
+    "U2.PD3(28)"
+   ],
+   "sources": [
+    "params.json pins.ilink_tx (line 2160); firmware/atmega128_fc/src/board.h:42, 89"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "FCU_ISP_MOSI",
+   "members": [
+    "J20.MOSI(4)",
+    "U2.PE0(2)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "FCU_LBAT_ADC",
+   "members": [
+    "C45.1",
+    "R15.2",
+    "R16.1",
+    "U2.PF3(58)"
+   ],
+   "sources": [
+    "NEW (not in params / firmware): optional logic-battery sense on FCU PF3/ADC3"
+   ]
+  },
+  {
+   "name": "FCU_LED",
+   "members": [
+    "R4.1",
+    "U2.PC0(35)"
+   ],
+   "sources": [
+    "params.json flight_computer.pins.led PC0 (line 2156); firmware/atmega128_fc/src/board.h:38"
+   ]
+  },
+  {
+   "name": "FCU_LED_A",
+   "members": [
+    "D2.A(2)",
+    "R4.2"
+   ],
+   "sources": []
+  },
+  {
+   "name": "FCU_LOG_TX",
+   "members": [
+    "J20.MISO(1)",
+    "Q8.D(3)",
+    "R36.1",
+    "U2.PE1(3)"
+   ],
+   "sources": [
+    "params.json pins.log_tx (line 2154); firmware/atmega128_fc/src/board.h:35 (also the FCU ISP PDO)"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "FCU_RESET",
+   "members": [
+    "C16.1",
+    "J20.~{RST}(5)",
+    "J25.1",
+    "R3.1",
+    "U2.~{RESET}(20)"
+   ],
+   "sources": [
+    "firmware/README.md:311 ISP pin 5 RST"
+   ]
+  },
+  {
+   "name": "FCU_VBAT_ADC",
+   "members": [
+    "C48.1",
+    "R28.2",
+    "R29.1",
+    "U2.PF0(61)"
+   ],
+   "sources": [
+    "params.json pins.vbat_adc 'PF0/ADC0 (divider 47k/4.7k, internal 2.56 V ref)' (line 2155); firmware/atmega128_fc/src/params_gen.h:164-165; firmware/README.md:205, 318"
+   ],
+   "kind": "adc"
+  },
+  {
+   "name": "FCU_VBUF_ADC",
+   "members": [
+    "C50.1",
+    "R32.2",
+    "R33.1",
+    "U2.PF2(59)"
+   ],
+   "sources": [
+    "params.json pins.v_buffer_adc (line 2166); firmware/atmega128_fc/src/params_gen.h:172 (ASSUMED until the carrier is routed)"
+   ],
+   "kind": "adc"
+  },
+  {
+   "name": "FCU_VTET_ADC",
+   "members": [
+    "C49.1",
+    "R30.2",
+    "R31.1",
+    "U2.PF1(60)"
+   ],
+   "sources": [
+    "params.json pins.v_tether_adc (line 2165); firmware/atmega128_fc/src/params_gen.h:171 (ASSUMED until the carrier is routed)"
+   ],
+   "kind": "adc"
+  },
+  {
+   "name": "FCU_XTAL1",
+   "members": [
+    "C14.1",
+    "U2.XTAL1(24)",
+    "Y2.1"
+   ],
+   "sources": []
+  },
+  {
+   "name": "FCU_XTAL2",
+   "members": [
+    "C15.1",
+    "U2.XTAL2(23)",
+    "Y2.3"
+   ],
+   "sources": []
+  },
+  {
+   "name": "GLINK_G2N",
+   "members": [
+    "J22.MISO(1)",
+    "U1.PD2(27)",
+    "U4.PE1(3)"
+   ],
+   "sources": [
+    "params.json gns.pins.glink_tx; firmware/atmega128_fc/src/board.h:100, 106"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "GND",
+   "members": [
+    "C1.2",
+    "C2.2",
+    "C3.2",
+    "C4.2",
+    "C5.2",
+    "C6.2",
+    "C7.2",
+    "C8.2",
+    "C9.2",
+    "C10.2",
+    "C11.2",
+    "C12.2",
+    "C13.2",
+    "C14.2",
+    "C15.2",
+    "C16.2",
+    "C17.2",
+    "C18.2",
+    "C19.2",
+    "C20.2",
+    "C21.2",
+    "C22.2",
+    "C23.2",
+    "C24.2",
+    "C25.2",
+    "C26.2",
+    "C27.2",
+    "C28.2",
+    "C29.2",
+    "C30.2",
+    "C31.2",
+    "C32.2",
+    "C33.2",
+    "C34.2",
+    "C35.2",
+    "C36.2",
+    "C37.2",
+    "C38.2",
+    "C39.2",
+    "C40.2",
+    "C41.2",
+    "C42.2",
+    "C43.2",
+    "C44.2",
+    "C45.2",
+    "C47.2",
+    "C48.2",
+    "C49.2",
+    "C50.2",
+    "C51.2",
+    "C52.2",
+    "C53.2",
+    "C54.2",
+    "D1.K(1)",
+    "D2.K(1)",
+    "D3.K(1)",
+    "D4.K(1)",
+    "D5.K(1)",
+    "J1.2",
+    "J1.7",
+    "J2.2",
+    "J3.3",
+    "J4.1",
+    "J4.3",
+    "J5.5",
+    "J5.6",
+    "J6.2",
+    "J7.4",
+    "J7.MP",
+    "J14.2",
+    "J16.2",
+    "J19.GND(6)",
+    "J20.GND(6)",
+    "J21.GND(6)",
+    "J22.GND(6)",
+    "J23.GND(6)",
+    "J24.2",
+    "J25.2",
+    "NT1.1",
+    "Q9.E(2)",
+    "R14.2",
+    "R16.2",
+    "R23.2",
+    "R27.2",
+    "R29.2",
+    "R31.2",
+    "R33.2",
+    "R35.2",
+    "R53.2",
+    "R54.2",
+    "R55.2",
+    "R56.2",
+    "U1.GND(22)",
+    "U1.GND(53)",
+    "U1.GND(63)",
+    "U2.GND(22)",
+    "U2.GND(53)",
+    "U2.GND(63)",
+    "U3.GND(22)",
+    "U3.GND(53)",
+    "U3.GND(63)",
+    "U4.GND(22)",
+    "U4.GND(53)",
+    "U4.GND(63)",
+    "U5.GND(22)",
+    "U5.GND(53)",
+    "U5.GND(63)",
+    "U6.GND(1)",
+    "Y1.G(2)",
+    "Y1.G(4)",
+    "Y2.G(2)",
+    "Y2.G(4)",
+    "Y3.G(2)",
+    "Y3.G(4)",
+    "Y4.G(2)",
+    "Y4.G(4)",
+    "Y5.G(2)",
+    "Y5.G(4)"
+   ],
+   "sources": [
+    "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 table 2 pin 3 VeREF+ 'ADC unused -> Ground', pins 13 / 15 GND"
+   ]
+  },
+  {
+   "name": "GND_PWR",
+   "members": [
+    "C46.2",
+    "J8.3",
+    "J9.3",
+    "J10.3",
+    "J11.3",
+    "J12.3",
+    "J13.3",
+    "NT1.2"
+   ],
+   "sources": [
+    "user decision 2026-11-04; firmware/README.md:322-324 (servo 5 V rail from the ESC BEC, grounds common)"
+   ]
+  },
+  {
+   "name": "GNS_AREF",
+   "members": [
+    "C29.1",
+    "U4.AREF(62)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/hal/adc.h:4-6 (AREF carries only its 100 nF; internal 2.56 V ref); firmware/atmega128_fc/src/board.h:37"
+   ]
+  },
+  {
+   "name": "GNS_AVCC",
+   "members": [
+    "C28.1",
+    "L4.2",
+    "U4.AVCC(64)"
+   ],
+   "sources": [
+    "firmware/README.md:310 AVCC(LC)"
+   ]
+  },
+  {
+   "name": "GNS_GLINK_RX",
+   "members": [
+    "J22.MOSI(4)",
+    "R13.2",
+    "U4.PE0(2)"
+   ],
+   "sources": [
+    "params.json gns.pins.glink_rx (line ~2269); firmware/atmega128_fc/src/board.h:99"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "GNS_GPS_RX",
+   "members": [
+    "Q7.D(3)",
+    "R51.1",
+    "U4.PD2(27)"
+   ],
+   "sources": [
+    "params.json gns.pins.gps_rx (line 2267); firmware/atmega128_fc/src/board.h:97; firmware/atmega128_fc/src/hal/gps_uart.c:299 (RXD1 pull-up)"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "GNS_GPS_TX",
+   "members": [
+    "Q6.D(3)",
+    "R49.1",
+    "U4.PD3(28)"
+   ],
+   "sources": [
+    "params.json gns.pins.gps_tx 'PD3/TXD1 (to GPS RX through the level shifter)' (line 2268); firmware/atmega128_fc/src/board.h:98"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "GNS_ISP_SCK",
+   "members": [
+    "J22.SCK(3)",
+    "U4.PB1(11)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "GNS_LED",
+   "members": [
+    "R8.1",
+    "U4.PC0(35)"
+   ],
+   "sources": [
+    "params.json flight_computer.gns.pins.led PC0; firmware/atmega128_fc/src/board.h:101, 139-144"
+   ]
+  },
+  {
+   "name": "GNS_LED_A",
+   "members": [
+    "D4.A(2)",
+    "R8.2"
+   ],
+   "sources": []
+  },
+  {
+   "name": "GNS_RESET",
+   "members": [
+    "C32.1",
+    "J22.~{RST}(5)",
+    "R7.1",
+    "U4.~{RESET}(20)"
+   ],
+   "sources": [
+    "firmware/README.md:311 ISP pin 5 RST"
+   ]
+  },
+  {
+   "name": "GNS_XTAL1",
+   "members": [
+    "C30.1",
+    "U4.XTAL1(24)",
+    "Y4.1"
+   ],
+   "sources": []
+  },
+  {
+   "name": "GNS_XTAL2",
+   "members": [
+    "C31.1",
+    "U4.XTAL2(23)",
+    "Y4.3"
+   ],
+   "sources": []
+  },
+  {
+   "name": "GPS_RXD_3V3",
+   "members": [
+    "J7.3",
+    "Q6.S(2)",
+    "R50.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "GPS_TXD_3V3",
+   "members": [
+    "J7.2",
+    "Q7.S(2)",
+    "R52.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "GPS_VCC",
+   "members": [
+    "C54.1",
+    "J7.1",
+    "JP1.C(2)"
+   ],
+   "sources": [
+    "params.json electronics.gps.power '3.3 V rail, ~45 mA' (line 1012)"
+   ]
+  },
+  {
+   "name": "I2C_SCL_3V3",
+   "members": [
+    "J1.3",
+    "J2.3",
+    "Q1.S(2)",
+    "R39.1"
+   ],
+   "sources": [
+    "NAV I2C 3.3 V side"
+   ]
+  },
+  {
+   "name": "I2C_SCL_5V",
+   "members": [
+    "Q1.D(3)",
+    "R38.1",
+    "U1.PD0(25)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/hal/twi.c:229 (internal pull-ups off: external pull-ups on the shifter)"
+   ],
+   "kind": "i2c"
+  },
+  {
+   "name": "I2C_SDA_3V3",
+   "members": [
+    "J1.4",
+    "J2.4",
+    "Q2.S(2)",
+    "R41.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "I2C_SDA_5V",
+   "members": [
+    "Q2.D(3)",
+    "R40.1",
+    "U1.PD1(26)"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ],
+   "kind": "i2c"
+  },
+  {
+   "name": "ILINK_C2F",
+   "members": [
+    "J21.MISO(1)",
+    "U2.PD2(27)",
+    "U3.PE1(3)"
+   ],
+   "sources": [
+    "params.json pins.ilink_rx / com.pins.ilink_tx (line 2159, 2210); firmware/atmega128_fc/src/board.h:41, 62, 90"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "IMU_INT_3V3",
+   "members": [
+    "J1.8",
+    "Q3.S(2)",
+    "R43.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "IMU_INT_5V",
+   "members": [
+    "Q3.D(3)",
+    "R42.1",
+    "U1.PE6(8)"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "LBAT_PFET_G",
+   "members": [
+    "D7.A(2)",
+    "Q10.G(1)",
+    "R14.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "LORA_GPIO3",
+   "members": [
+    "J3.9",
+    "R57.1"
+   ],
+   "sources": [
+    "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 fig 3 (pin 9 GPIO3); PLM100 User's Guide V2.2 (plm100_3.pdf) p.7"
+   ]
+  },
+  {
+   "name": "LORA_GPIO5",
+   "members": [
+    "J3.11",
+    "R48.1"
+   ],
+   "sources": [
+    "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.16 fig 9 (GPIO5 = USER_KEY with 47 kOhm pull-up)"
+   ]
+  },
+  {
+   "name": "LORA_RESET_N",
+   "members": [
+    "C53.1",
+    "J3.2",
+    "Q5.S(2)",
+    "R47.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "LORA_UART1_RXD",
+   "members": [
+    "J4.8",
+    "Q4.S(2)",
+    "R45.1"
+   ],
+   "sources": [
+    "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 table 2 pin 20 UART1_RXD"
+   ]
+  },
+  {
+   "name": "LORA_UART1_TXD",
+   "members": [
+    "J4.7",
+    "U3.PD2(27)"
+   ],
+   "sources": [
+    "PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 table 2 pin 19 UART1_TXD; params.json com.pins.link_uart_rx 'PD2/RXD1 (module TXD, direct)' (line 2212); firmware/atmega128_fc/src/board.h:65"
+   ],
+   "notes": [
+    "direct: module 3.3 V output into the ATmega128A input (V_IH 3.0 V at 5 V, 0.3 V margin; module V_OH not in the datasheet - A, measure)"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "NAV_AREF",
+   "members": [
+    "C5.1",
+    "U1.AREF(62)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/hal/adc.h:4-6 (AREF carries only its 100 nF; internal 2.56 V ref); firmware/atmega128_fc/src/board.h:37"
+   ]
+  },
+  {
+   "name": "NAV_AVCC",
+   "members": [
+    "C4.1",
+    "L1.2",
+    "U1.AVCC(64)"
+   ],
+   "sources": [
+    "firmware/README.md:310 AVCC(LC)"
+   ]
+  },
+  {
+   "name": "NAV_GLINK_TX",
+   "members": [
+    "R13.1",
+    "U1.PD3(28)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/board.h:99, 105 (NAV PD3 TXD1 -> GNS PE0 RXD0)"
+   ],
+   "kind": "uart"
+  },
+  {
+   "name": "NAV_ISP_MISO",
+   "members": [
+    "J19.MISO(1)",
+    "U1.PE1(3)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "NAV_ISP_MOSI",
+   "members": [
+    "J19.MOSI(4)",
+    "U1.PE0(2)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "NAV_LED",
+   "members": [
+    "R2.1",
+    "U1.PC1(36)"
+   ],
+   "sources": [
+    "params.json flight_computer.nav.pins.led PC1 (line 2182); firmware/atmega128_fc/src/board.h:54"
+   ]
+  },
+  {
+   "name": "NAV_LED_A",
+   "members": [
+    "D1.A(2)",
+    "R2.2"
+   ],
+   "sources": []
+  },
+  {
+   "name": "NAV_RESET",
+   "members": [
+    "C8.1",
+    "J19.~{RST}(5)",
+    "J24.1",
+    "R1.1",
+    "U1.~{RESET}(20)"
+   ],
+   "sources": [
+    "firmware/README.md:311 ISP pin 5 RST"
+   ]
+  },
+  {
+   "name": "NAV_XTAL1",
+   "members": [
+    "C6.1",
+    "U1.XTAL1(24)",
+    "Y1.1"
+   ],
+   "sources": []
+  },
+  {
+   "name": "NAV_XTAL2",
+   "members": [
+    "C7.1",
+    "U1.XTAL2(23)",
+    "Y1.3"
+   ],
+   "sources": []
+  },
+  {
+   "name": "NLINK_MISO",
+   "members": [
+    "U1.PB3(13)",
+    "U2.PB3(13)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/board.h:34, 53, 83 (NAV input with pull-up)"
+   ],
+   "kind": "spi"
+  },
+  {
+   "name": "NLINK_MOSI",
+   "members": [
+    "U1.PB2(12)",
+    "U2.PB2(12)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/board.h:33, 52, 82"
+   ],
+   "kind": "spi"
+  },
+  {
+   "name": "NLINK_SCK",
+   "members": [
+    "J19.SCK(3)",
+    "J20.SCK(3)",
+    "U1.PB1(11)",
+    "U2.PB1(11)"
+   ],
+   "sources": [
+    "params.json pins.nlink_sck (line 2162); firmware/atmega128_fc/src/board.h:31-32, 51, 80 (also the NAV and FCU ISP SCK)"
+   ],
+   "kind": "spi"
+  },
+  {
+   "name": "NLINK_SS",
+   "members": [
+    "R11.1",
+    "U1.PB0(10)",
+    "U2.PB0(10)"
+   ],
+   "sources": [
+    "params.json flight_computer.nav.pins.spi_ss / pins.nlink_ss (line 2161, 2178); firmware/atmega128_fc/src/board.h:29-30, 50, 79"
+   ],
+   "kind": "spi"
+  },
+  {
+   "name": "OPENLOG_RXI",
+   "members": [
+    "J5.2",
+    "Q8.S(2)",
+    "R37.1"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "RELEASE_PWM",
+   "members": [
+    "R22.1",
+    "U2.PE5(7)"
+   ],
+   "sources": [
+    "params.json pins.release_servo PE5/OC3C; firmware/atmega128_fc/src/board.h:28; firmware/atmega128_fc/src/hal/pwm.c:49"
+   ],
+   "kind": "pwm"
+  },
+  {
+   "name": "RELEASE_SIG",
+   "members": [
+    "J13.1",
+    "R22.2"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "SERVO_5V",
+   "members": [
+    "C46.1",
+    "J8.2",
+    "J9.2",
+    "J10.2",
+    "J11.2",
+    "J12.2",
+    "J13.2"
+   ],
+   "sources": [
+    "firmware/README.md:201-203, 315-317, 322-324 (servo V+ = ESC BEC rail, not the logic 5 V); params.json electronics.misc.items (line 995)"
+   ]
+  },
+  {
+   "name": "SPARE_AREF",
+   "members": [
+    "C37.1",
+    "U5.AREF(62)"
+   ],
+   "sources": [
+    "firmware/atmega128_fc/src/hal/adc.h:4-6 (AREF carries only its 100 nF; internal 2.56 V ref); firmware/atmega128_fc/src/board.h:37"
+   ]
+  },
+  {
+   "name": "SPARE_AVCC",
+   "members": [
+    "C36.1",
+    "L5.2",
+    "U5.AVCC(64)"
+   ],
+   "sources": [
+    "firmware/README.md:310 AVCC(LC)"
+   ]
+  },
+  {
+   "name": "SPARE_ISP_MISO",
+   "members": [
+    "J23.MISO(1)",
+    "U5.PE1(3)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "SPARE_ISP_MOSI",
+   "members": [
+    "J23.MOSI(4)",
+    "U5.PE0(2)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "SPARE_ISP_SCK",
+   "members": [
+    "J23.SCK(3)",
+    "U5.PB1(11)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "SPARE_LED",
+   "members": [
+    "R10.1",
+    "U5.PC0(35)"
+   ],
+   "sources": [
+    "A: same LED as the FCU / COM / GNS (P3 README section 6 lists 'LED + resistor')"
+   ]
+  },
+  {
+   "name": "SPARE_LED_A",
+   "members": [
+    "D5.A(2)",
+    "R10.2"
+   ],
+   "sources": []
+  },
+  {
+   "name": "SPARE_RESET",
+   "members": [
+    "C40.1",
+    "J23.~{RST}(5)",
+    "R9.1",
+    "U5.~{RESET}(20)"
+   ],
+   "sources": [
+    "firmware/README.md:311 ISP pin 5 RST"
+   ]
+  },
+  {
+   "name": "SPARE_XTAL1",
+   "members": [
+    "C38.1",
+    "U5.XTAL1(24)",
+    "Y5.1"
+   ],
+   "sources": []
+  },
+  {
+   "name": "SPARE_XTAL2",
+   "members": [
+    "C39.1",
+    "U5.XTAL2(23)",
+    "Y5.3"
+   ],
+   "sources": []
+  },
+  {
+   "name": "VANE1_PWM",
+   "members": [
+    "R17.1",
+    "R53.1",
+    "U2.PB5(15)"
+   ],
+   "sources": [
+    "params.json pins.vane_1_servo PB5/OC1A; firmware/atmega128_fc/src/board.h:23"
+   ],
+   "kind": "pwm"
+  },
+  {
+   "name": "VANE1_SIG",
+   "members": [
+    "J8.1",
+    "R17.2"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "VANE2_PWM",
+   "members": [
+    "R18.1",
+    "R54.1",
+    "U2.PB6(16)"
+   ],
+   "sources": [
+    "params.json pins.vane_2_servo PB6/OC1B; firmware/atmega128_fc/src/board.h:24"
+   ],
+   "kind": "pwm"
+  },
+  {
+   "name": "VANE2_SIG",
+   "members": [
+    "J9.1",
+    "R18.2"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "VANE3_PWM",
+   "members": [
+    "R19.1",
+    "R55.1",
+    "U2.PB7(17)"
+   ],
+   "sources": [
+    "params.json pins.vane_3_servo PB7/OC1C; firmware/atmega128_fc/src/board.h:25"
+   ],
+   "kind": "pwm"
+  },
+  {
+   "name": "VANE3_SIG",
+   "members": [
+    "J10.1",
+    "R19.2"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "VANE4_PWM",
+   "members": [
+    "R20.1",
+    "R56.1",
+    "U2.PE3(5)"
+   ],
+   "sources": [
+    "params.json pins.vane_4_servo PE3/OC3A; firmware/atmega128_fc/src/board.h:26"
+   ],
+   "kind": "pwm"
+  },
+  {
+   "name": "VANE4_SIG",
+   "members": [
+    "J11.1",
+    "R20.2"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
+   "name": "VBAT_LOGIC",
+   "members": [
+    "D7.K(1)",
+    "J15.1",
+    "Q10.S(2)"
+   ],
+   "sources": []
+  },
+  {
+   "name": "VBAT_LOGIC_RAW",
+   "members": [
+    "J14.1",
+    "Q10.D(3)"
+   ],
+   "sources": [
+    "user decision 2026-11-04"
+   ]
+  },
+  {
+   "name": "VBAT_LOGIC_SW",
+   "members": [
+    "C41.1",
+    "J6.1",
+    "J15.2",
+    "R15.1"
+   ],
+   "sources": []
+  },
+  {
+   "name": "VS_BUF_ISIGN",
+   "members": [
+    "J18.4",
+    "R34.1"
+   ],
+   "sources": [
+    "params.json pins.buf_isign (line 2167); firmware/atmega128_fc/src/params_gen.h:173"
+   ]
+  },
+  {
+   "name": "VS_VBUFFER",
+   "members": [
+    "J18.3",
+    "R32.1"
+   ],
+   "sources": [
+    "params.json pins.v_buffer_adc (line 2166); firmware/atmega128_fc/src/params_gen.h:172 (ASSUMED until the carrier is routed)"
+   ]
+  },
+  {
+   "name": "VS_VIN",
+   "members": [
+    "J18.1",
+    "R28.1"
+   ],
+   "sources": [
+    "params.json pins.vbat_adc 'PF0/ADC0 (divider 47k/4.7k, internal 2.56 V ref)' (line 2155); firmware/atmega128_fc/src/params_gen.h:164-165; firmware/README.md:205, 318"
+   ]
+  },
+  {
+   "name": "VS_VTETHER",
+   "members": [
+    "J18.2",
+    "R30.1"
+   ],
+   "sources": [
+    "params.json pins.v_tether_adc (line 2165); firmware/atmega128_fc/src/params_gen.h:171 (ASSUMED until the carrier is routed)"
+   ]
+  }
+ ],
+ "no_connect": [
+  {
+   "pin": "J1.5",
+   "reason": "GY-521 XDA: auxiliary I2C master, unused"
+  },
+  {
+   "pin": "J1.6",
+   "reason": "GY-521 XCL: auxiliary I2C master, unused"
+  },
+  {
+   "pin": "J3.4",
+   "reason": "PLM100 GPIO2 unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J3.5",
+   "reason": "PLM100 UART0_RXD (sensor UART) unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J3.6",
+   "reason": "PLM100 UART0_TXD (sensor UART) unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J3.7",
+   "reason": "PLM100 J_TEST (JTAG test mode) - only the JTAG connector in fig 8 (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J3.8",
+   "reason": "PLM100 GPIO1 unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J3.10",
+   "reason": "PLM100 GPIO4 unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J3.12",
+   "reason": "PLM100 ANT pin: only for an external SMA option; the antenna uses the module's u.FL (MM9329-2700) receptacle (DS p.8 table 1) (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.2",
+   "reason": "PLM100 pin 14 GPIO6 unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.4",
+   "reason": "PLM100 pin 16 GPIO7 unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.5",
+   "reason": "PLM100 pin 17 I2C_SDA unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.6",
+   "reason": "PLM100 pin 18 I2C_SCL unused (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.9",
+   "reason": "PLM100 pin 21 TMS (JTAG) (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.10",
+   "reason": "PLM100 pin 22 TCK (JTAG) (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.11",
+   "reason": "PLM100 pin 23 TDO (JTAG) (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J4.12",
+   "reason": "PLM100 pin 24 TDI (JTAG) (PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8-9 table 2)"
+  },
+  {
+   "pin": "J5.1",
+   "reason": "OpenLog GRN/DTR: not used (no bootloader reset)"
+  },
+  {
+   "pin": "J5.3",
+   "reason": "OpenLog TXO: not used (FCU PE0 is the ISP PDI only)"
+  },
+  {
+   "pin": "J6.4",
+   "reason": "buck module EN / spare pin left open (A: module enabled by default)"
+  },
+  {
+   "pin": "U1.PA0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PA1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PA2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PA3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PA4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PA5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PA6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PA7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PB4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PB5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PB6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PB7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PC0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PC2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PC3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PC4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PC5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PC6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PC7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PD4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PD5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PD6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PD7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PE2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PE3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PE4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PE5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PE7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PF7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PG0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PG1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PG2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PG3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U1.PG4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PA7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PB4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PC4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PC5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PC6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PC7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PD0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PD1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PD4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PD5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PD6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PD7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PE2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PE6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PE7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PF4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PF5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PF6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PF7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PG0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PG1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PG2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PG3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U2.PG4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PA7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PB0",
+   "reason": "COM lora_spi_nss (sx127x backend only) - params.json com.pins (line 2214-2222); left open for the PLM100 (firmware follow-up)"
+  },
+  {
+   "pin": "U3.PB2",
+   "reason": "COM lora_spi_mosi (sx127x only) - params.json com.pins (line 2214-2222); left open for the PLM100 (firmware follow-up)"
+  },
+  {
+   "pin": "U3.PB3",
+   "reason": "COM lora_spi_miso (sx127x only) - params.json com.pins (line 2214-2222); left open for the PLM100 (firmware follow-up)"
+  },
+  {
+   "pin": "U3.PB4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PB5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PB6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PB7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PC1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PC2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PC3",
+   "reason": "COM link_m0 (Ebyte M0): the firmware drives it low; PLM100 has no M0 - params.json com.pins (line 2214-2222); left open for the PLM100 (firmware follow-up)"
+  },
+  {
+   "pin": "U3.PC4",
+   "reason": "COM link_m1 (Ebyte M1): driven low by the firmware; PLM100 has no M1 - params.json com.pins (line 2214-2222); left open for the PLM100 (firmware follow-up)"
+  },
+  {
+   "pin": "U3.PC5",
+   "reason": "COM link_aux (Ebyte AUX): input with internal pull-up = 'ready' when open (lora_uart.c:69-70) - params.json com.pins (line 2214-2222); left open for the PLM100 (firmware follow-up)"
+  },
+  {
+   "pin": "U3.PC7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PD0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PD1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PD4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PD5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PD6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PD7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PE2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PE3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PE4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PE5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PE6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PE7",
+   "reason": "COM lora_dio0 (sx127x only) - params.json com.pins (line 2214-2222); left open for the PLM100 (firmware follow-up)"
+  },
+  {
+   "pin": "U3.PF0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PF1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PF2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PF3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PF4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PF5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PF6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PF7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PG0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PG1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PG2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PG3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U3.PG4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PA7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PB0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PB2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PB3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PB4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PB5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PB6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PB7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PC1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PC2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PC3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PC4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PC5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PC6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PC7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PD0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PD1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PD4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PD5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PD6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PD7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PE2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PE3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PE4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PE5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PE6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PE7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PF7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PG0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PG1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PG2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PG3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U4.PG4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PA7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PB0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PB2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PB3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PB4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PB5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PB6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PB7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PC1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PC2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PC3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PC4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PC5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PC6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PC7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PD7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PE2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PE3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PE4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PE5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PE6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PE7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF5",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF6",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PF7",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PG0",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PG1",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PG2",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PG3",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  },
+  {
+   "pin": "U5.PG4",
+   "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
+  }
+ ],
+ "checks": {
+  "tool": "scripts/build_spec.py (scripted netlist checks; not ERC / DRC)",
+  "result": "PASS",
+  "pins_total": 741,
+  "pins_connected": 507,
+  "pins_no_connect": 234,
+  "signal_paths": [
+   {
+    "path": "ilink FCU TXD1 -> COM RXD0",
+    "from": "U2.PD3 [FCU_ILINK_TX]",
+    "to": "U3.PE0 [COM_ILINK_RX]",
+    "ok": true
+   },
+   {
+    "path": "ilink COM TXD0 -> FCU RXD1",
+    "from": "U3.PE1 [ILINK_C2F]",
+    "to": "U2.PD2 [ILINK_C2F]",
+    "ok": true
+   },
+   {
+    "path": "glink NAV TXD1 -> GNS RXD0",
+    "from": "U1.PD3 [NAV_GLINK_TX]",
+    "to": "U4.PE0 [GNS_GLINK_RX]",
+    "ok": true
+   },
+   {
+    "path": "glink GNS TXD0 -> NAV RXD1",
+    "from": "U4.PE1 [GLINK_G2N]",
+    "to": "U1.PD2 [GLINK_G2N]",
+    "ok": true
+   },
+   {
+    "path": "nlink SS NAV -> FCU",
+    "from": "U1.PB0 [NLINK_SS]",
+    "to": "U2.PB0 [NLINK_SS]",
+    "ok": true
+   },
+   {
+    "path": "nlink SCK NAV -> FCU",
+    "from": "U1.PB1 [NLINK_SCK]",
+    "to": "U2.PB1 [NLINK_SCK]",
+    "ok": true
+   },
+   {
+    "path": "nlink MOSI NAV -> FCU",
+    "from": "U1.PB2 [NLINK_MOSI]",
+    "to": "U2.PB2 [NLINK_MOSI]",
+    "ok": true
+   },
+   {
+    "path": "nlink MISO FCU -> NAV",
+    "from": "U2.PB3 [NLINK_MISO]",
+    "to": "U1.PB3 [NLINK_MISO]",
+    "ok": true
+   },
+   {
+    "path": "LoRa COM TXD1 -> PLM100 UART1_RXD (pin 20)",
+    "from": "U3.PD3 [COM_LINK_TX]",
+    "to": "J4.8 [LORA_UART1_RXD]",
+    "ok": true
+   },
+   {
+    "path": "LoRa PLM100 UART1_TXD (pin 19) -> COM RXD1",
+    "from": "J4.7 [LORA_UART1_TXD]",
+    "to": "U3.PD2 [LORA_UART1_TXD]",
+    "ok": true
+   },
+   {
+    "path": "LoRa COM PC6 -> PLM100 RESET_N (pin 2)",
+    "from": "U3.PC6 [COM_LORA_RESET]",
+    "to": "J3.2 [LORA_RESET_N]",
+    "ok": true
+   },
+   {
+    "path": "GPS GNS TXD1 -> GPS RXD",
+    "from": "U4.PD3 [GNS_GPS_TX]",
+    "to": "J7.3 [GPS_RXD_3V3]",
+    "ok": true
+   },
+   {
+    "path": "GPS GPS TXD -> GNS RXD1",
+    "from": "J7.2 [GPS_TXD_3V3]",
+    "to": "U4.PD2 [GNS_GPS_RX]",
+    "ok": true
+   },
+   {
+    "path": "log FCU TXD0 -> OpenLog RXI",
+    "from": "U2.PE1 [FCU_LOG_TX]",
+    "to": "J5.2 [OPENLOG_RXI]",
+    "ok": true
+   },
+   {
+    "path": "I2C SCL NAV -> GY-521",
+    "from": "U1.PD0 [I2C_SCL_5V]",
+    "to": "J1.3 [I2C_SCL_3V3]",
+    "ok": true
+   },
+   {
+    "path": "I2C SCL NAV -> BMP280",
+    "from": "U1.PD0 [I2C_SCL_5V]",
+    "to": "J2.3 [I2C_SCL_3V3]",
+    "ok": true
+   },
+   {
+    "path": "I2C SDA NAV -> GY-521",
+    "from": "U1.PD1 [I2C_SDA_5V]",
+    "to": "J1.4 [I2C_SDA_3V3]",
+    "ok": true
+   },
+   {
+    "path": "I2C SDA NAV -> BMP280",
+    "from": "U1.PD1 [I2C_SDA_5V]",
+    "to": "J2.4 [I2C_SDA_3V3]",
+    "ok": true
+   },
+   {
+    "path": "IMU INT -> NAV PE6 (optional)",
+    "from": "J1.8 [IMU_INT_3V3]",
+    "to": "U1.PE6 [IMU_INT_5V]",
+    "ok": true
+   },
+   {
+    "path": "vane 1 PWM",
+    "from": "U2.PB5 [VANE1_PWM]",
+    "to": "J8.1 [VANE1_SIG]",
+    "ok": true
+   },
+   {
+    "path": "vane 2 PWM",
+    "from": "U2.PB6 [VANE2_PWM]",
+    "to": "J9.1 [VANE2_SIG]",
+    "ok": true
+   },
+   {
+    "path": "vane 3 PWM",
+    "from": "U2.PB7 [VANE3_PWM]",
+    "to": "J10.1 [VANE3_SIG]",
+    "ok": true
+   },
+   {
+    "path": "vane 4 PWM",
+    "from": "U2.PE3 [VANE4_PWM]",
+    "to": "J11.1 [VANE4_SIG]",
+    "ok": true
+   },
+   {
+    "path": "ESC PWM",
+    "from": "U2.PE4 [ESC_PWM]",
+    "to": "J12.1 [ESC_SIG]",
+    "ok": true
+   },
+   {
+    "path": "release PWM (DNP)",
+    "from": "U2.PE5 [RELEASE_PWM]",
+    "to": "J13.1 [RELEASE_SIG]",
+    "ok": true
+   },
+   {
+    "path": "V_in sense -> PF0",
+    "from": "J18.1 [VS_VIN]",
+    "to": "U2.PF0 [FCU_VBAT_ADC]",
+    "ok": true
+   },
+   {
+    "path": "V_tether sense -> PF1",
+    "from": "J18.2 [VS_VTETHER]",
+    "to": "U2.PF1 [FCU_VTET_ADC]",
+    "ok": true
+   },
+   {
+    "path": "V_buffer sense -> PF2",
+    "from": "J18.3 [VS_VBUFFER]",
+    "to": "U2.PF2 [FCU_VBUF_ADC]",
+    "ok": true
+   },
+   {
+    "path": "buffer-current sign -> PC3",
+    "from": "J18.4 [VS_BUF_ISIGN]",
+    "to": "U2.PC3 [FCU_BUF_ISIGN]",
+    "ok": true
+   },
+   {
+    "path": "arm switch -> PC2",
+    "from": "J16.1 [ARM_SW_EXT]",
+    "to": "U2.PC2 [FCU_ARM]",
+    "ok": true
+   },
+   {
+    "path": "buzzer PC1 -> NPN base",
+    "from": "U2.PC1 [FCU_BUZ]",
+    "to": "Q9.B [BUZ_B]",
+    "ok": true
+   },
+   {
+    "path": "logic battery sense -> PF3 (optional)",
+    "from": "VBAT_LOGIC_SW",
+    "to": "U2.PF3",
+    "ok": true
+   },
+   {
+    "path": "NAV ISP MOSI -> PE0/PDI",
+    "from": "J19.MOSI [NAV_ISP_MOSI]",
+    "to": "U1.PE0 [NAV_ISP_MOSI]",
+    "ok": true
+   },
+   {
+    "path": "NAV ISP MISO <- PE1/PDO",
+    "from": "U1.PE1 [NAV_ISP_MISO]",
+    "to": "J19.MISO [NAV_ISP_MISO]",
+    "ok": true
+   },
+   {
+    "path": "NAV ISP SCK -> PB1",
+    "from": "J19.SCK [NLINK_SCK]",
+    "to": "U1.PB1 [NLINK_SCK]",
+    "ok": true
+   },
+   {
+    "path": "NAV ISP RST -> RESET",
+    "from": "J19.~{RST} [NAV_RESET]",
+    "to": "U1.~{RESET} [NAV_RESET]",
+    "ok": true
+   },
+   {
+    "path": "FCU ISP MOSI -> PE0/PDI",
+    "from": "J20.MOSI [FCU_ISP_MOSI]",
+    "to": "U2.PE0 [FCU_ISP_MOSI]",
+    "ok": true
+   },
+   {
+    "path": "FCU ISP MISO <- PE1/PDO",
+    "from": "U2.PE1 [FCU_LOG_TX]",
+    "to": "J20.MISO [FCU_LOG_TX]",
+    "ok": true
+   },
+   {
+    "path": "FCU ISP SCK -> PB1",
+    "from": "J20.SCK [NLINK_SCK]",
+    "to": "U2.PB1 [NLINK_SCK]",
+    "ok": true
+   },
+   {
+    "path": "FCU ISP RST -> RESET",
+    "from": "J20.~{RST} [FCU_RESET]",
+    "to": "U2.~{RESET} [FCU_RESET]",
+    "ok": true
+   },
+   {
+    "path": "COM ISP MOSI -> PE0/PDI",
+    "from": "J21.MOSI [COM_ILINK_RX]",
+    "to": "U3.PE0 [COM_ILINK_RX]",
+    "ok": true
+   },
+   {
+    "path": "COM ISP MISO <- PE1/PDO",
+    "from": "U3.PE1 [ILINK_C2F]",
+    "to": "J21.MISO [ILINK_C2F]",
+    "ok": true
+   },
+   {
+    "path": "COM ISP SCK -> PB1",
+    "from": "J21.SCK [COM_ISP_SCK]",
+    "to": "U3.PB1 [COM_ISP_SCK]",
+    "ok": true
+   },
+   {
+    "path": "COM ISP RST -> RESET",
+    "from": "J21.~{RST} [COM_RESET]",
+    "to": "U3.~{RESET} [COM_RESET]",
+    "ok": true
+   },
+   {
+    "path": "GNS ISP MOSI -> PE0/PDI",
+    "from": "J22.MOSI [GNS_GLINK_RX]",
+    "to": "U4.PE0 [GNS_GLINK_RX]",
+    "ok": true
+   },
+   {
+    "path": "GNS ISP MISO <- PE1/PDO",
+    "from": "U4.PE1 [GLINK_G2N]",
+    "to": "J22.MISO [GLINK_G2N]",
+    "ok": true
+   },
+   {
+    "path": "GNS ISP SCK -> PB1",
+    "from": "J22.SCK [GNS_ISP_SCK]",
+    "to": "U4.PB1 [GNS_ISP_SCK]",
+    "ok": true
+   },
+   {
+    "path": "GNS ISP RST -> RESET",
+    "from": "J22.~{RST} [GNS_RESET]",
+    "to": "U4.~{RESET} [GNS_RESET]",
+    "ok": true
+   },
+   {
+    "path": "SPARE ISP MOSI -> PE0/PDI",
+    "from": "J23.MOSI [SPARE_ISP_MOSI]",
+    "to": "U5.PE0 [SPARE_ISP_MOSI]",
+    "ok": true
+   },
+   {
+    "path": "SPARE ISP MISO <- PE1/PDO",
+    "from": "U5.PE1 [SPARE_ISP_MISO]",
+    "to": "J23.MISO [SPARE_ISP_MISO]",
+    "ok": true
+   },
+   {
+    "path": "SPARE ISP SCK -> PB1",
+    "from": "J23.SCK [SPARE_ISP_SCK]",
+    "to": "U5.PB1 [SPARE_ISP_SCK]",
+    "ok": true
+   },
+   {
+    "path": "SPARE ISP RST -> RESET",
+    "from": "J23.~{RST} [SPARE_RESET]",
+    "to": "U5.~{RESET} [SPARE_RESET]",
+    "ok": true
+   }
+  ],
+  "driver_conflicts": 0,
+  "three_v3_inputs_checked": 11,
+  "bss138_channels": [
+   "Q1",
+   "Q2",
+   "Q3",
+   "Q4",
+   "Q5",
+   "Q6",
+   "Q7",
+   "Q8"
+  ]
+ },
+ "firmware_followup": [
+  {
+   "area": "COM radio driver (PLM100 replaces Ebyte E22 / SX1276)",
+   "owner": "firmware round (user decides)",
+   "items": [
+    "Host port = PLM100 UART1 (pins 19 TXD / 20 RXD), ASCII AT command interface, 115200 8N1 default (PLM100 User's Guide V2.2 (plm100_3.pdf) p.6 1.3, table 1); the firmware's LINK_UART_BAUD is 9600 (firmware/atmega128_fc/src/params_gen.h:879): set AT+CBAR=9600 once (supported 9600-115200, PLM100 User's Guide V2.2 (plm100_3.pdf) p.9) or change link.uart_baud",
+    "The module boots in AT mode (no transparent mode): TX = AT+DATA=<string> (ASCII) or AT+BDAT=<len><hex> (hex text, first byte = length) (PLM100 User's Guide V2.2 (plm100_3.pdf) p.13-14); RX arrives as 'RECV:<id>:<RSSI>:<data>' lines on the console, binary only with AT+RXDP=1 (HEX display) (PLM100 User's Guide V2.2 (plm100_3.pdf) p.10, 14); TX result 'TX DONE(n)(SUCCESS|FAIL)'",
+    "Echo is on by default: AT+ECHO=0 (PLM100 User's Guide V2.2 (plm100_3.pdf) p.10); destination AT+DEST=<last 3 EUI bytes> or FFFFFF broadcast (PLM100 User's Guide V2.2 (plm100_3.pdf) p.13); retries AT+RTRY=0 (the link protocol retries itself)",
+    "RF settings: AT+FREQ=9 -> 920.3 + 9 x 0.2 = 922.1 MHz = link.sx127x.freq_hz 922100000 (PLM100 User's Guide V2.2 (plm100_3.pdf) p.11); AT+SPFA=7, AT+BWTH=1 (125 kHz in V2.2 numbering; V1.4 used 0 = 125 kHz - check the module's firmware version, PLM100 User's Guide V2.2 (plm100_3.pdf) p.12 vs PLM100 User's Guide V1.4 (plm100_2.pdf, 'configuration guide') p.10), AT+CORA=1 (4/5), AT+OPWR=14 (Korean max 14 dBm, PLM100 User's Guide V2.2 (plm100_3.pdf) p.12), AT+PRMB=8 (16 when mixing P/N M100C(P)E with W100C(P)E at SF7, PLM100 User's Guide V2.2 (plm100_3.pdf) p.2)",
+    "The binary link_proto frames (0xC5 0x5C ... CRC) must be hex-encoded for AT+BDAT -> 2x bytes on the UART; the IEEE 802.15.4e MAC overhead is not documented: sim/link_model.py EBYTE_* constants (line 78-80) and the 2 Hz poll / TELEM rate (README 0.5: lora_uart 2.014 Hz, thin) must be re-derived and measured",
+    "M0 / M1 (PC3 / PC4) and AUX (PC5) have no PLM100 counterpart: left open (firmware still drives M0 / M1 low and reads AUX = ready through its pull-up - harmless). RESET_N is on PC6 (the sx127x reset pin, untouched by the lora_uart build): the driver may pulse it low at boot; AT+RSET reboot takes ~2-3 s (UG p.9)",
+    "KC certification of the PLM100 in the 920 MHz band: check (A) before flight"
+   ]
+  },
+  {
+   "area": "ground station",
+   "owner": "firmware / tools round",
+   "items": [
+    "the ground side needs a second PLM100 + a USB-UART at the console baud (AT protocol both ends)",
+    "tools/ground_station.py must send AT+BDAT / parse RECV lines; firmware/ground_bridge (SX127x only, firmware/ground_bridge/README.md:1-4) is not used"
+   ]
+  },
+  {
+   "area": "NAV barometer (BMP280 replaces MS5611)",
+   "owner": "firmware + sim round (control-relevant)",
+   "items": [
+    "new driver: BMP280 chip-id 0x58, trim registers, oversampling / filter / standby settings, 20-bit raw values, integer compensation (Bosch datasheet, not on disk - A); replaces hal/ms5611.c and core/ms5611_math.c; I2C address kept at 0x77 by SDO high (fc_config.json i2c_addr.ms5611 119)",
+    "NAV timing must be re-measured (bus script, background math) - simbench / co-sim",
+    "sim/sim6dof.py:881 baro_noise_m 0.25 m (MS5611) and the fan static-pressure offset model, the estimator / AltitudeFilter tuning -> CONTROL-RELEVANT change: archive the before state and make before / after comparison videos (user rule) before adopting"
+   ]
+  },
+  {
+   "area": "GNS GPS (NEO-7M replaces NEO-6M)",
+   "owner": "firmware check",
+   "items": [
+    "MON-VER hwVersion of u-blox 7 is '00070000' -> ubx_monver_module() returns UNKNOWN (firmware/atmega128_fc/src/core/gps_ubx.c:276-298): only reported (gns_simbench), no functional effect found - verify on the unit",
+    "UBX CFG-PRT / CFG-RATE / CFG-MSG / CFG-NAV5 and NAV-POSLLH / VELNED / SOL exist in the u-blox 7 protocol; NEO-7M max navigation rate 10 Hz >= the 5 Hz the firmware sets (A: u-blox 7 data, not on disk); boot probe at the factory 9600 then 38400 (gps_ubx.c:476) is compatible",
+    "the 0.22 s latency (params.json flight_computer.nav.gps.latency_s_ASSUMED) is a u-blox 6 value - re-check",
+    "fit of the NEO-7M board + its antenna in the top-cap GPS spot (params board 36 x 25.8 x 4 mm + 25.5 mm patch, configs.vtol.top_cap.gps) - measure, CAD not changed"
+   ]
+  },
+  {
+   "area": "FCU",
+   "owner": "firmware (optional)",
+   "items": [
+    "PF3 logic-battery divider (NEW, fitted by default) is not read by the firmware yet: add ADC3 to the telemetry / a low-logic-battery alarm (user decision); until then measure the pack before each flight",
+    "PC3 buf_isign is defined (firmware/atmega128_fc/src/params_gen.h:173-174) but no firmware code reads it today",
+    "fc_config.json imu_mounting (+x,+y,+z) must be set from the GY-521 orientation chosen in placement"
+   ]
+  },
+  {
+   "area": "sim / power model",
+   "owner": "sim round",
+   "items": [
+    "sim/tether.py:171 bec_min_v (avionics brown out below 6 V on the bus) no longer applies: the logic runs from its own battery; after a tether cut / sag the avionics keep running (servos lose the BEC) -> reference / scenario change, not done here"
+   ]
+  }
+ ],
+ "user_decisions": [
+  "logic battery: 2S 300 mAh (~20 g E) or 1S + boost (~10 g E); where it sits (misc box above the ESC suggested, A); the VTOL battery build is ~3.7 g over 1,650 g already -> ~24 g over (E)",
+  "logic power switch: shunt / unplug only (default) or a second toggle in the top cap (new hole = CAD change)",
+  "PLM100 firmware port (COM driver, link timing model, ground station, a second PLM100 on the ground) - separate round",
+  "BMP280 driver + sim baro model - separate round, control-relevant (archived before / after videos)",
+  "NEO-7M fit in the top cap and MON-VER behaviour - measure / confirm",
+  "accept the new 1 kOhm series resistor on glink NAV TXD1 -> GNS RXD0 and the reset-hold jumpers J24 / J25",
+  "logic power switch reachable from outside: J15 is inside the closed intake spigot (avionics windows start at z 343.1); a lead from J15 to a switch in a side window or the top cap needs a CAD change (review MF-5)",
+  "OpenLog location: it cannot stand in a socket on the carrier (23+ mm > 13.4 mm) and does not fit flat (body overlaps the GY-521 body); J5 is now a lead pad row - put the OpenLog on a ~15-20 cm lead, e.g. in the misc box (CAD / mass placement decision, review MF-1)",
+  "joint-screw length for the intake / avionics joint (M3 x 6 max suggested, review MF-6) and connector-plug envelopes in the CAD carrier placeholder (review MF-7) - next CAD round",
+  "ADC pins PF1 / PF2 / PC3 kept as params (docs/v0.9_펌웨어_결과.md 9장 decision 3)",
+  "antenna placement (u.FL pigtail) and GY-521 orientation (fc_config.json imu_mounting)",
+  "modules socketed or soldered (GY-521 soldered flat recommended for vibration, A)"
+ ],
+ "conflicts": [
+  "PLM100 package: task text says '24-pin castellated SMD'; PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.8 fig 3 and p.12-13 fig 4 / 5 show two 1x12 1.27 mm headers (HEADER12 / socket12_1.27mm) 11.60 mm apart -> two library 1x12 1.27 mm sockets, no custom footprint",
+  "PLM100 max current: PLM100 Hardware Datasheet V1.0 (plm100_1.pdf) p.9 table 3 says 40 mA; PLM100 User's Guide V2.2 (plm100_3.pdf) p.6 says 100 mA (TX) -> budget uses 100 mA",
+  "PLM100 bandwidth numbering: PLM100 User's Guide V2.2 (plm100_3.pdf) p.12 BWTH 1 = 125 kHz; PLM100 User's Guide V1.4 (plm100_2.pdf, 'configuration guide') p.10 BWTH 0 = 125 kHz",
+  "PLM100 host port: firmware lora_uart expects an Ebyte transparent UART with M0 / M1 / AUX (firmware/atmega128_fc/src/params_gen.h:150-155, lora_uart.c:65-70); PLM100 is an AT command modem on UART1 at 115200 (PLM100 User's Guide V2.2 (plm100_3.pdf) p.6-8) -> firmware follow-up",
+  "link.uart_baud 9600 (params.json line 2242) vs PLM100 console default 115200 -> AT+CBAR=9600 or firmware change",
+  "carrier model text (params.json line 1754) still lists GY-63 MS5611 and a generic LoRa module; mass_breakdown_g_ASSUMED 'gy521_gy63_modules', 'lora_module_and_antenna' are for the old parts (user replaced them 2026-11-04)",
+  "power: firmware/README.md:166, 212, 244 and params.json flight_computer.ilink.note put the logic on a 5 V UBEC from the 6S; the user decision 2026-11-04 adds a separate logic battery -> no 6S-to-logic converter on the carrier",
+  "sim/tether.py:171 bec_min_v models an avionics brown-out with the bus; with the logic battery the avionics stay up",
+  "electronics.gps.interface (params.json line 1011) still names the NAV USART1 (v0.8); firmware board.h:95-102 and flight_computer.gns.pins (v0.8.1) put the GPS on the GNS -> firmware wins (GNS)",
+  "electronics.gps names NEO-6M (GY-NEO6MV2); the user's part is NEO-7M (MON-VER 00070000 -> UNKNOWN in gps_ubx.c:278-298)",
+  "glink is wired direct in firmware/atmega128_fc/src/board.h:105; this spec adds a 1 kOhm series resistor (A, like the ilink) because one board has no glink connector to unplug for GNS programming",
+  "programming: firmware/README.md:647-651 says 'unplug the nlink / ilink / glink connector'; one carrier has none -> reset-hold shunts J24 (NAV) / J25 (FCU)",
+  "release servo: configs.vtol.note removes it, but the firmware still drives PE5 (pwm.c:49, main.c:518) -> J13 footprint DNP",
+  "OpenLog shifter channel was undefined (firmware/README.md:385-387) -> Q8 here",
+  "GPS supply: params.json electronics.gps.power '3.3 V rail' vs NEO-7M boards that often take 3.3-5 V via an on-board LDO (A) -> JP1 solder jumper, 3.3 V default",
+  "SPEC.md:1640-1642 says GPS patch at 180 deg / gland at 0 deg; params configs.vtol.top_cap (fix round) has gland 180 deg / patch 0 deg -> params wins (no carrier impact)",
+  "firmware/atmega128_fc/src/board.h:1 header says 'three ATmega128A' while the same file documents four (NAV, FCU, COM, GNS) - comment only"
+ ],
+ "assumptions": [
+  "BMP280 module pin order VCC, GND, SCL, SDA, CSB, SDO (common GY-BMP280 order; not printed on the product page) - check the silkscreen",
+  "BMP280 at 0x77: SDO tied to 3.3 V (same address as the firmware's MS5611), CSB tied to 3.3 V = I2C mode",
+  "GY-521 pin order VCC, GND, SCL, SDA, XDA, XCL, AD0, INT; AD0 tied to GND = 0x68; module VCC 5 V (on-board LDO, README 2)",
+  "NEO-7M board pins VCC, GND, TXD, RXD (+ PPS); supply 3.3 V via JP1 (5 V option); carrier JST-GH order 1 VCC, 2 GPS TXD, 3 GPS RXD, 4 GND",
+  "OpenLog header order GRN, RXI, TXO, VCC, GND, BLK (SparkFun); VCC 5 V",
+  "5 V buck module on a 1x4 2.54 mm header, order VIN, GND, VOUT, EN/NC, >= 1 A, Vin 6-8.4 V",
+  "PLM100 has male 1.27 mm header pins (datasheet fig 4 side view 2.00 mm under a 1.0 mm PCB) -> two 1x12 1.27 mm sockets",
+  "PLM100 pins 1 / 24 are 2.82 mm from the module's far edge, pins 12 / 13 5.22 mm from the antenna edge (fig 4; fig 5 labels are ambiguous) - 1:1 print check before ordering",
+  "PLM100 UART1_TXD drives >= 3.0 V (V_IH of the ATmega128A at 5 V); not stated in the datasheet - measure",
+  "PLM100 GPIO5 (USER_KEY) pulled up 47 kOhm so it is never asserted; GPIO3 / JTAG / UART0 / I2C / GPIO left open",
+  "logic battery 2S LiPo 300 mAh, JST-PH, 3.0 V/cell cut-off; mass ~20 g (E, not in params)",
+  "ATmega128A 25 mA each at 16 MHz / 5 V; OpenLog 20 mA avg / 80 mA peak; buck efficiency 85 %",
+  "AVCC filter 10 uH + 100 nF; crystals 3225 SMD CL 16-18 pF with 22 pF caps; PEN tied to VCC",
+  "BSS138 pull-ups 10k / 10k (I2C 4.7k on 5 V / 10k on 3.3 V, the modules add their own); servo / ESC series 220 Ohm + 10k pull-downs; arm input 1k series + 10k pull-up + 100 nF",
+  "logic ground tied to the propulsion ground only at NT1 (J12 pin 3)",
+  "2 layers, 1 oz copper, near-solid bottom GND pour; corner radius 1 mm; tie band x -3..+3 mm free of parts",
+  "servo / ESC / sense / arm / buzzer leads on right-angle headers; logic battery (JST-PH) and GPS (JST-GH) vertical, plugged from above (height limit 13.4 mm above the board); THT leads flush-cut <= 1.0 mm for the 3 mm foam",
+  "OpenLog on a lead soldered into J5 (location off the carrier is a user decision); 57600 baud over ~0.2 m is fine (E)",
+  "edge assignment from the CAD lead entries (servo hole 180 deg, GPS lead hole 230 deg, arm switch 90 deg, ESC / misc +x)"
+ ]
+}

@@ -1,0 +1,28 @@
+2026-11-05 06:35:55.647 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-05 06:35:55.940 INFO   Hardware: 16 CPU cores, 525 CPU score, 4026 MB RAM
+2026-11-05 06:35:55.941 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 06:35:55.944 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-05 06:35:56.991 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 06:35:57.271 INFO   [3A7014\BAD513] Loading board file 'vtol_carrier_servo.dsn'...
+2026-11-05 06:35:57.545 INFO   [3A7014\BAD513] Job '3A7014\BAD513' started at 2026-11-04T21:35:57.545025700Z.
+2026-11-05 06:35:57.802 INFO   [3A7014\BAD513] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-05 06:35:57.947 INFO   [3A7014\BAD513] Fanout stage started on board 'dbc6659c343ad7459d1e78191ecc03c1' with 3 of 576 SMD pins needing fanout (573 already connected, 0 netless).
+2026-11-05 06:35:58.607 INFO   [3A7014\BAD513] Fanout pass #1 on board 'eb7328fc9585af63f138f36a42e89c45' completed in 0.46 seconds with 3 SMD pins fanouted, 0 not routed, 0 insert errors, +1 extra via (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-05 06:35:58.806 INFO   [3A7014\BAD513] Fanout pass #2 on board 'eb7328fc9585af63f138f36a42e89c45' completed in 0.16 seconds with 0 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-05 06:35:58.823 INFO   [3A7014\BAD513] Fanout stage completed: started with 576 total SMD pins, completed in 0.75 seconds, escaped pins: 3/576 (0.5%), using 0.86 total CPU seconds, 0.24 GB total allocated, and 91.3 MB peak heap usage.
+2026-11-05 06:35:58.887 INFO   [3A7014\BAD513] Auto-routing stage started on board 'eb7328fc9585af63f138f36a42e89c45' with baseline score 102.56 for 11 unrouted items.
+2026-11-05 06:36:00.089 INFO   [3A7014\BAD513] Auto-routing pass #1 on board 'eb7328fc9585af63f138f36a42e89c45' was completed in 1.14 seconds with score 1000.00 (0 unrouted and 0 violations), using 1.72 CPU seconds and the job allocated 0.41 GB of memory so far.
+2026-11-05 06:36:00.210 INFO   [3A7014\BAD513] Auto-routing pass #2 on board '665a92c3de2a59be31c96932e87fa640' was completed in 0.06 seconds with score 1000.00 (0 unrouted and 0 violations), using 1.72 CPU seconds and the job allocated 0.41 GB of memory so far.
+2026-11-05 06:36:00.344 INFO   [3A7014\BAD513] Auto-routing stage completed: started with 13 unrouted nets, completed in 2.50 seconds, final score: 1000.00 (0 unrouted and 0 violations), using 1.72 total CPU seconds, 0.41 GB total allocated, and 86.4 MB peak heap usage.
+2026-11-05 06:36:00.476 INFO   [3A7014\BAD513] Optimization stage started on board '665a92c3de2a59be31c96932e87fa640'. Baseline router score: 1000.00, optimizer score: 880.87, incomplete connections: 0, clearance violations: 0.
+2026-11-05 06:36:02.291 INFO   [3A7014\BAD513] Optimizer pass #1 on board '093478bd6facffadd16f1b7ac66b6e2f' was completed in 1.55 seconds with the score of 920.06 (0 unrouted and 0 violations).
+2026-11-05 06:36:02.387 INFO   [3A7014\BAD513] Optimizer pass #1: optimizer score 880.87 -> 920.06 (IMPROVED, 4.4491%), router score: 1000.00, incomplete connections: 0, clearance violations: 0.
+2026-11-05 06:36:06.089 INFO   [3A7014\BAD513] Optimizer pass #2 on board '40f01b82445ff37516e8cf07e9f42d2d' was completed in 3.39 seconds with the score of 921.50 (0 unrouted and 0 violations).
+2026-11-05 06:36:06.147 INFO   [3A7014\BAD513] Optimizer pass #2: optimizer score 920.06 -> 921.50 (IMPROVED, 0.1565%), router score: 1000.00, incomplete connections: 0, clearance violations: 0.
+2026-11-05 06:36:06.147 INFO   [3A7014\BAD513] Stopping optimizer because the improvement in this pass (0.1565%) is below the threshold (2.50%).
+2026-11-05 06:36:06.204 INFO   [3A7014\BAD513] Optimization stage completed:. Baseline router score: 1000.00, baseline optimizer score: 880.87, final router score: 1000.00, final optimizer score: 921.50, completed in 5.71 seconds, using 14.02 total CPU seconds, 2.49 GB total allocated, and 481.5 MB peak heap usage.
+2026-11-05 06:36:06.237 INFO   [3A7014\BAD513] Job '3A7014\BAD513' finished with state: COMPLETED (elapsed: 8.69 seconds, finished at UTC: 2026-11-04T21:36:06.236404400Z).
+2026-11-05 06:36:06.280 INFO   Saving output file 'B:\0)AI_Cad\CanSat_EDF_Rocket\pcb\vtol_carrier\kicad\work\vtol_carrier_servo.ses' (SES)...
+2026-11-05 06:36:06.282 INFO   Successfully saved output file 'B:\0)AI_Cad\CanSat_EDF_Rocket\pcb\vtol_carrier\kicad\work\vtol_carrier_servo.ses' (13383 bytes).
+
+--- stderr ---

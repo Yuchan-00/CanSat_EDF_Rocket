@@ -1,0 +1,433 @@
+{
+ "freerouting_jar_sha256": "f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7",
+ "unrouted_board_sha256": "317318585992da5b1e5b4657ae2e5ac240c9aaf752f727d01a1bcc9ef81c9dae",
+ "gnd_planes_removed_from_dsn": 2,
+ "stage1": {
+  "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier.dsn -do B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage1.ses -mp 40 -mt 4 --gui.enabled=false",
+  "seconds": 252.7,
+  "exit_code": 0,
+  "dsn_sha256": "faeffccc0864edcc727a51671d4c4f72913d0a0fb1067e57739e331470d2f393",
+  "ses_sha256": "fcff0f992ad25a179dbc79a794dae349c59ac1a7baf9c797dca7572da1a7a56e",
+  "passes_unrouted": [
+   [
+    1,
+    118
+   ],
+   [
+    2,
+    83
+   ],
+   [
+    3,
+    77
+   ],
+   [
+    4,
+    68
+   ],
+   [
+    5,
+    113
+   ],
+   [
+    6,
+    90
+   ],
+   [
+    7,
+    72
+   ],
+   [
+    8,
+    54
+   ],
+   [
+    9,
+    50
+   ],
+   [
+    10,
+    49
+   ],
+   [
+    11,
+    46
+   ],
+   [
+    12,
+    43
+   ],
+   [
+    13,
+    42
+   ],
+   [
+    14,
+    42
+   ],
+   [
+    15,
+    42
+   ],
+   [
+    16,
+    42
+   ],
+   [
+    17,
+    42
+   ],
+   [
+    18,
+    42
+   ],
+   [
+    19,
+    41
+   ],
+   [
+    20,
+    41
+   ],
+   [
+    21,
+    41
+   ],
+   [
+    22,
+    40
+   ],
+   [
+    23,
+    40
+   ],
+   [
+    24,
+    40
+   ],
+   [
+    25,
+    40
+   ],
+   [
+    26,
+    40
+   ],
+   [
+    27,
+    40
+   ],
+   [
+    28,
+    40
+   ],
+   [
+    29,
+    40
+   ],
+   [
+    30,
+    40
+   ],
+   [
+    31,
+    40
+   ],
+   [
+    32,
+    40
+   ]
+  ],
+  "stdout_tail": "ign (e.g. check pad clearances, trace width rules, and available routing space):\n  Net 'GND' (15 unrouted connections):\n    - C18-2  ->  U3-53\n    - U4-22  ->  C25-2\n    - C17-2  ->  U3-22\n    - U3-63  ->  C20-2\n    - U1-63  ->  C4-2\n    - C1-2  ->  U1-22\n    - C9-2  ->  U2-22\n    - U1-53  ->  C2-2\n    - C39-2  ->  C33-2\n    - C20-2  ->  C21-2\n    - C11-2  ->  C19-2\n    - J1-2  ->  Y2-4\n    - R55-2  ->  U4-63\n    - J21-6  ->  C3-2\n    - C30-2  ->  J24-2\n  Net '+5V' (9 unrouted connections):\n    - C25-1  ->  U4-21\n    - C26-1  ->  U4-52\n    - U1-21  ->  C1-1\n    - C9-1  ->  U2-21\n    - U2-52  ->  C10-1\n    - via  ->  C26-1\n    - U5-21  ->  C33-1\n    - U2-21  ->  via\n    - C25-1  ->  R51-2\n  Net 'GNS_XTAL2' (1 unrouted connection):\n    - U4-23  ->  Y4-3\n  Net 'COM_AVCC' (1 unrouted connection):\n    - C20-1  ->  U3-64\n  Net 'FCU_AVCC' (1 unrouted connection):\n    - C12-1  ->  U2-64\n  Net 'COM_XTAL1' (2 unrouted connections):\n    - C22-1  ->  Y3-1\n    - Y3-1  ->  U3-24\n  Net 'GNS_AVCC' (1 unrouted connection):\n    - U4-64  ->  C28-1\n  Net 'NAV_XTAL1' (2 unrouted connections):\n    - C6-1  ->  Y1-1\n    - Y1-1  ->  U1-24\n  Net 'FCU_XTAL2' (1 unrouted connection):\n    - U2-23  ->  Y2-3\n  Net 'FCU_XTAL1' (2 unrouted connections):\n    - C14-1  ->  Y2-1\n    - Y2-1  ->  U2-24\n  Net 'NAV_XTAL2' (1 unrouted connection):\n    - U1-23  ->  Y1-3\n  Net 'NAV_AVCC' (1 unrouted connection):\n    - C4-1  ->  U1-64\n  Net 'COM_XTAL2' (1 unrouted connection):\n    - U3-23  ->  Y3-3\n  Net 'GNS_XTAL1' (2 unrouted connections):\n    - C30-1  ->  Y4-1\n    - Y4-1  ->  U4-24\n2026-11-05 00:46:25.299 INFO   [8F88DA\\19C2E5] Auto-routing stage completed: started with 397 unrouted nets, completed in 247.31 seconds, final score: 867.00 (40 unrouted and 0 violations), using 243.47 total CPU seconds, 230.17 GB total allocated, and 433.9 MB peak heap usage.\n2026-11-05 00:46:25.405 INFO   [8F88DA\\19C2E5] Skipping optimization stage: the board has 40 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-05 00:46:25.448 INFO   [8F88DA\\19C2E5] Job '8F88DA\\19C2E5' finished with state: COMPLETED (elapsed: 4 minutes 7.75 seconds, finished at UTC: 2026-11-04T15:46:25.448142100Z).\n2026-11-05 00:46:25.496 INFO   Saving output file 'B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage1.ses' (SES)...\n2026-11-05 00:46:25.508 INFO   Successfully saved output file 'B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage1.ses' (181993 bytes).\n",
+  "unconnected_after_import": 6
+ },
+ "stage2": {
+  "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage2.dsn -do B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage2.ses -mp 20 -mt 4 --gui.enabled=false",
+  "seconds": 204.4,
+  "exit_code": 0,
+  "dsn_sha256": "8054b35304991f8b4e08be42fa923d3f2874eefd3ee1191d35eaa94f70bdb563",
+  "ses_sha256": "856d3da539a7b5526751082fca0df38d3ac4addaa92fbddf09079838d4d35f32",
+  "passes_unrouted": [
+   [
+    1,
+    71
+   ],
+   [
+    2,
+    70
+   ],
+   [
+    3,
+    70
+   ],
+   [
+    4,
+    70
+   ],
+   [
+    5,
+    70
+   ],
+   [
+    6,
+    70
+   ],
+   [
+    7,
+    70
+   ],
+   [
+    8,
+    70
+   ],
+   [
+    9,
+    70
+   ],
+   [
+    10,
+    70
+   ],
+   [
+    11,
+    70
+   ],
+   [
+    12,
+    70
+   ],
+   [
+    13,
+    70
+   ],
+   [
+    14,
+    70
+   ],
+   [
+    15,
+    70
+   ],
+   [
+    16,
+    70
+   ],
+   [
+    17,
+    70
+   ],
+   [
+    18,
+    70
+   ]
+  ],
+  "stdout_tail": "ection):\n    - NT1-2  ->  via\n  Net 'SPARE_XTAL1' (1 unrouted connection):\n    - U5-24  ->  C38-1\n  Net 'FCU_AVCC' (1 unrouted connection):\n    - U2-64  ->  C12-1\n  Net 'IMU_INT_3V3' (1 unrouted connection):\n    - Q3-2  ->  R43-1\n  Net 'NAV_LED_A' (1 unrouted connection):\n    - D1-2  ->  via\n  Net 'COM_XTAL1' (2 unrouted connections):\n    - C22-1  ->  Y3-1\n    - U3-24  ->  Y3-1\n  Net 'NAV_RESET' (1 unrouted connection):\n    - U1-20  ->  C8-1\n  Net 'GNS_AVCC' (1 unrouted connection):\n    - C28-1  ->  U4-64\n  Net 'NAV_XTAL1' (2 unrouted connections):\n    - C6-1  ->  Y1-1\n    - Y1-1  ->  U1-24\n  Net 'GNS_GPS_RX' (1 unrouted connection):\n    - U4-27  ->  R51-1\n  Net 'FCU_LED' (1 unrouted connection):\n    - R4-1  ->  U2-35\n  Net 'FCU_ISP_MOSI' (1 unrouted connection):\n    - J20-4  ->  U2-2\n  Net 'RELEASE_PWM' (1 unrouted connection):\n    - via  ->  U2-7\n  Net 'FCU_XTAL2' (1 unrouted connection):\n    - U2-23  ->  Y2-3\n  Net 'FCU_XTAL1' (2 unrouted connections):\n    - Y2-1  ->  C14-1\n    - Y2-1  ->  U2-24\n  Net 'NAV_XTAL2' (1 unrouted connection):\n    - U1-23  ->  Y1-3\n  Net 'NAV_AVCC' (1 unrouted connection):\n    - U1-64  ->  C4-1\n  Net 'COM_XTAL2' (1 unrouted connection):\n    - U3-23  ->  Y3-3\n  Net 'SPARE_ISP_MISO' (1 unrouted connection):\n    - via  ->  U5-3\n  Net 'GNS_XTAL1' (2 unrouted connections):\n    - C30-1  ->  Y4-1\n    - Y4-1  ->  U4-24\n  Net 'NAV_ISP_MOSI' (1 unrouted connection):\n    - J19-4  ->  U1-2\n  Net 'NAV_ISP_MISO' (1 unrouted connection):\n    - J19-1  ->  U1-3\n  Net 'NAV_AREF' (1 unrouted connection):\n    - C5-1  ->  U1-62\n2026-11-05 00:49:49.836 INFO   [51BABE\\DFD8A5] Auto-routing stage completed: started with 137 unrouted nets, completed in 197.62 seconds, final score: 756.09 (70 unrouted and 457 violations), using 195.00 total CPU seconds, 188.15 GB total allocated, and 326.8 MB peak heap usage.\n2026-11-05 00:49:50.006 INFO   [51BABE\\DFD8A5] Skipping optimization stage: the board has 70 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-05 00:49:50.103 INFO   [51BABE\\DFD8A5] Job '51BABE\\DFD8A5' finished with state: COMPLETED (elapsed: 3 minutes 18.72 seconds, finished at UTC: 2026-11-04T15:49:50.102318300Z).\n2026-11-05 00:49:50.122 INFO   Saving output file 'B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage2.ses' (SES)...\n2026-11-05 00:49:50.124 INFO   Successfully saved output file 'B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\kicad\\work\\vtol_carrier_stage2.ses' (374779 bytes).\n",
+  "unconnected_after_import": 6
+ },
+ "final_session": "vtol_carrier_stage2.ses",
+ "vias_shrunk_after_inflation": 0,
+ "neckdowns_widened_to_0.127mm": [
+  {
+   "net": "SPARE_ISP_MISO",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 120.578,
+   "y": 90.852
+  },
+  {
+   "net": "SPARE_ISP_MISO",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 120.578,
+   "y": 91.085
+  },
+  {
+   "net": "FCU_LBAT_ADC",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 114.174,
+   "y": 80.669
+  },
+  {
+   "net": "NLINK_SCK",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 105.336,
+   "y": 100.012
+  },
+  {
+   "net": "NLINK_SCK",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 105.51,
+   "y": 99.838
+  },
+  {
+   "net": "VANE4_PWM",
+   "layer": "B.Cu",
+   "was_mm": 0.1,
+   "x": 106.031,
+   "y": 95.647
+  },
+  {
+   "net": "NAV_LED",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 104.754,
+   "y": 127.058
+  },
+  {
+   "net": "NAV_LED",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 104.694,
+   "y": 127.118
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 87.885,
+   "y": 129.415
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 87.99,
+   "y": 129.519
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 125.741,
+   "y": 105.594
+  },
+  {
+   "net": "GND",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 125.534,
+   "y": 105.8
+  },
+  {
+   "net": "VANE2_PWM",
+   "layer": "B.Cu",
+   "was_mm": 0.12,
+   "x": 76.255,
+   "y": 91.662
+  },
+  {
+   "net": "VANE2_PWM",
+   "layer": "B.Cu",
+   "was_mm": 0.12,
+   "x": 76.329,
+   "y": 91.736
+  }
+ ],
+ "dangling_vias_removed": [],
+ "segments": 2467,
+ "routed_vias": 189,
+ "gnd_stitching_vias": 122,
+ "silk": {
+  "labels_top": [
+   "J1",
+   "J2",
+   "J3",
+   "J5",
+   "J6",
+   "J8",
+   "J9",
+   "J10",
+   "J11",
+   "J13",
+   "J15",
+   "J17",
+   "J18",
+   "J19",
+   "J20",
+   "J21",
+   "J22",
+   "J23",
+   "J24"
+  ],
+  "labels_bottom_mirrored": [
+   "J7",
+   "J12",
+   "J14",
+   "J16",
+   "J25",
+   "JP1"
+  ],
+  "labels_missed": [],
+  "refs_on_silk": 107,
+  "refs_on_fab_only": [
+   "C11",
+   "C15",
+   "C19",
+   "C22",
+   "C33",
+   "C34",
+   "C35",
+   "C36",
+   "C37",
+   "C38",
+   "C39",
+   "C40",
+   "C43",
+   "C53",
+   "C54",
+   "D3",
+   "D5",
+   "D7",
+   "J6",
+   "J9",
+   "J12",
+   "J13",
+   "J15",
+   "J16",
+   "J19",
+   "J20",
+   "J21",
+   "J22",
+   "J23",
+   "J25",
+   "L1",
+   "L5",
+   "NT1",
+   "Q3",
+   "Q10",
+   "R4",
+   "R5",
+   "R8",
+   "R9",
+   "R10",
+   "R14",
+   "R15",
+   "R16",
+   "R21",
+   "R22",
+   "R25",
+   "R30",
+   "R31",
+   "R32",
+   "R33",
+   "R35",
+   "R36",
+   "R37",
+   "R43",
+   "R44",
+   "R45",
+   "R47",
+   "R52",
+   "R53",
+   "R54",
+   "R56",
+   "U3",
+   "U5",
+   "Y5"
+  ]
+ },
+ "routed_board_sha256": "fc74e0568ef47d13d4fa38a192028633a7b8f494a8fe8f24cce8d3b58d39b0bf"
+}

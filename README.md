@@ -25,6 +25,7 @@
 
 로켓은 수직으로 올라가 모터를 끄고, 정점에서 노즈콘을 열어 캔위성을 내보낸 뒤 자체 낙하산으로 내려옵니다.
 VTOL은 같은 추진·흡입 모듈에 짧은 전자부를 얹은 시험용 기체로, 배터리·유선·하이브리드 세 가지 전원 구성이 있습니다.
+**2026-11-05 사용자 결정: 앞으로 배터리 구성만 씁니다.** 유선·하이브리드는 지우지 않았지만 캐리어 PCB rev 2c의 로직 배터리(1S, 6S 팩 −x 면)와 상단 캡 스위치로는 더 맞추지 않습니다. 로직 전원 부품의 질량은 사용자가 나중에 정합니다(`configs.vtol.logic_power.in_flight_mass_model` = false; [docs/v0.9_하드웨어_변경.md](docs/v0.9_하드웨어_변경.md) 19장).
 자세는 배기구의 베인 4개(MG90S 직접 구동)로 잡고, 비행 계산은 모두 ATmega128A 칩 4개가 합니다.
 
 > **실물 비행·추력 시험 전입니다.** 아래 숫자는 CAD, 슬라이서, 시뮬레이션에서 나온 값입니다.
@@ -36,12 +37,12 @@ VTOL은 같은 추진·흡입 모듈에 짧은 전자부를 얹은 시험용 기
 | 로켓 구성 질량 | **2,599.2 g** | M | `cad/exports/cadquery_report.json` |
 | VTOL 질량 (배터리 / 유선 / 하이브리드) | **1,653.7 / 1,405.8 / 1,526.8 g** | M | `cadquery_report_vtol*.json` |
 | 몸통 | Ø120 mm, 벽 1.2 mm | 설계 | `params.json` `body` |
-| 높이 (로켓 / VTOL 배터리 / 유선·하이브리드) | 856.3 / 485.9 / 500.3 mm (발사대 제외) | 설계 | CadQuery 보고서 `vehicle_h_mm` |
+| 높이 (로켓 / VTOL 배터리 / 유선·하이브리드) | 856.3 / 492.5 / 500.3 mm (발사대 제외; VTOL 배터리는 2026-11-05 스위치 보호 칼라 포함) | 설계 | CadQuery 보고서 `vehicle_h_mm` |
 | 추진 | 90 mm 12엽 EDF, 6S, 100 A ESC | 부품 | [예산안](docs/budget/예산안.md) |
 | EDF 추력 | 2.14–3.09 kgf (22.2 V) - **아직 재지 않음** | A | 3.09 = 판매자 추력표(대리값), 2.14 = 설계 하한(배터리 VTOL T/W 1.3), `params.json`. 판정 기준 안에서 날려면 약 2.6 kgf 이상 필요([결과 문서](docs/v0.9_시뮬레이션_제어_결과.md)) |
 | 비행 컴퓨터 | ATmega128A × 4 (NAV · FCU · COM · GNS), 16 MHz, 250 Hz 제어 틱 | 설계 | `params.json` `flight_computer` |
 | 예산 (로켓 / VTOL 배터리) | 421,232원 / 375,192원 | M + A | 2026-10-13 판매가, 추정 줄 일부 ([로켓](docs/budget/예산안.md), [VTOL](docs/budget/예산안_vtol.md)) |
-| 출력 시간 (로켓 / VTOL) | 47 h 29 min / 32 h 41 min | M + A | Bambu Studio 슬라이스, 로고 퍼지량은 가정값 ([임시 출력 계획](cad/exports/print/provisional_v09_cadquery/print_plan_provisional.md): CadQuery STL 슬라이스, Fusion 실행 전) |
+| 출력 시간 (로켓 / VTOL) | 47 h 29 min / 34 h 46 min | M + A | Bambu Studio 슬라이스, 로고 퍼지량은 가정값 ([임시 출력 계획](cad/exports/print/provisional_v09_cadquery/print_plan_provisional.md): CadQuery STL 슬라이스, Fusion 실행 전) |
 
 <sub>M = 도구로 잰 값(CadQuery, 슬라이서) · E = 추정 · A = 가정(아직 재지 않은 입력) · 설계 = `params.json` 입력값 · 부품 = 예산안의 구매 부품 사양. 질량은 출력 부품을 슬라이서 값으로 넣은 CAD 합계이고, 일부 전자부품 질량은 가정값입니다. 로켓 출력 시간은 발사대 포함.</sub>
 
@@ -119,11 +120,35 @@ VTOL은 같은 추진·흡입 모듈에 짧은 전자부를 얹은 시험용 기
 |:-:|:-:|
 | <sub>실물 EDF (2026-10-29): 모터선 묶음이 나오는 자리를 이 사진으로 정했습니다</sub> | <sub>흰색 도색 직전의 로켓 (2026-11-04 오전, 검정 PLA). 위 갤러리가 지금 모습입니다</sub> |
 
+## 아비오닉스 캐리어 PCB와 로직 전원 (2026-11-04 ~ 11-05)
+
+VTOL의 칩 4개, 센서, 무선, 로거를 한 장에 올린 캐리어 PCB를 KiCad 10(kicad-cli)과 Freerouting으로 만들었습니다. **만들거나 전원을 넣어 본 적은 없습니다(NOT_VERIFIED).**
+
+| <img src="docs/images/pcb_carrier.jpg" width="400"> | <img src="docs/images/pcb_top.jpg" width="400"> |
+|:-:|:-:|
+| <sub>캐리어 PCB rev 2c: 76 × 70 mm 4층, ATmega128A × 4, ESP-12E (kicad-cli 렌더)</sub> | <sub>같은 보드 윗면 (kicad-cli 렌더)</sub> |
+
+<p align="center">
+  <img src="docs/images/pcb_schematic.jpg" width="800" alt="회로도 8장"><br>
+  <sub>회로도 8장 (전원, NAV, FCU, COM, GNS, 레벨 시프터, 커넥터, 최상위)</sub>
+</p>
+
+* **검사 (M, kicad-cli 10.0.6)**: ERC 오류 0 · 경고 0, DRC 오류 0 · 경고 0 · 미연결 0 · 회로도 불일치 0. 부품 162개(실장 152), 넷 100개.
+* **사용자가 정한 부품**: BMP280, GY-521, NEO-7M(리드만), 무선 ESP-12E(LoRa PLM100 대신, 2026-11-05), 로직 배터리 1S 4200 mAh(디바이스마트 16021596). 부품은 모두 JLCPCB(LCSC) 또는 디바이스마트에서 찾은 것만 썼습니다.
+* **고쳐 온 과정**: rev 1(PLM100 + 2S, 2층)은 독립 검토에서 디커플링·크리스털·실크·GND 문제가 나와 다시 만들었습니다. rev 2는 2층으로는 배선이 끝나지 않아(미연결 63) 4층으로 바꿨고, 쓰지 않는 5번째 칩 자리를 뺐습니다. rev 1은 [`pcb/vtol_carrier/archive/`](pcb/vtol_carrier/archive/)에 있습니다.
+* **로직 전원 (CAD)**: 1S 팩은 6S 팩 −x 면(A 자리), 스위치(MTS-102)는 상단 캡에 달고, 레버 둘레에 캡과 한 몸으로 출력하는 보호 칼라를 둡니다(검사 C37–C41). 로직 전원 부품 약 94 g은 사용자가 정할 때까지 비행 질량에 넣지 않았습니다(넣으면 1,747.7 g, T/W 1.23 (E)).
+* **Wi-Fi 거리**: ESP-NOW 1 Mbps + 지상국 외부 안테나로 늘립니다(계산 E). 비행 전에 1 km 이상 지상 통신 시험이 필요하고, 실패하면 LoRa로 돌아갑니다.
+* 자세한 내용: [PCB README](pcb/vtol_carrier/README_ko.md), [하드웨어 변경 19장](docs/v0.9_하드웨어_변경.md), [제작 가이드 3장 14단계](docs/제작가이드.md).
+
+| <img src="docs/images/vtol_logic_power.jpg" width="400"> | <img src="docs/images/vtol_switch_collar.jpg" width="400"> |
+|:-:|:-:|
+| <sub>로직 전원: 1S 팩(A 자리)과 스위치 선 (칼라 넣기 전 그림)</sub> | <sub>상단 캡 스위치 보호 칼라: 레버 두 끝 자세보다 2.14 mm 높음 (M)</sub> |
+
 ## 검증 방식
 
 설계값은 한 곳(`params.json` → `cad/layout.py`)에서 나오고, 합격·불합격은 정해진 도구와 기준으로 판정합니다.
 
-* **형상 검사 C1–C36** (CadQuery): 네 구성 모두. FAIL / WARN - 로켓 0 / 5, VTOL 배터리 0 / 3, 유선 1 / 2, 하이브리드 1 / 2.
+* **형상 검사 C1–C41** (CadQuery): 네 구성 모두(C37-C40 로직 전원, C41 스위치 보호 칼라는 VTOL 배터리만, 나머지 N/A). FAIL / WARN - 로켓 0 / 5, VTOL 배터리 0 / 3(2026-11-05 보호 칼라로 C39 레버 WARN이 PASS가 됨), 유선 1 / 2, 하이브리드 1 / 2.
 * **Fusion 360 교차 확인**: 같은 사양을 Fusion 스크립트로도 만듭니다. 이번 라운드는 스크립트 모의 실행(재생)으로 CadQuery 형상과의 불리언 차이를 봤습니다(로고 0.0000 mm³). Fusion GUI 실행(0.9.6)은 아직 사람이 해야 합니다.
 * **슬라이스**: Bambu Studio CLI로 실제 슬라이스하고 무게·시간·색 바꿈 수를 G-code에서 셉니다.
 * **6자유도 시뮬레이션 + 캠페인**: 현장 조건 500회에서 통과 18 %, 비상정지 13 % ([결과 문서](docs/v0.9_시뮬레이션_제어_결과.md)).
@@ -147,6 +172,7 @@ VTOL은 같은 추진·흡입 모듈에 짧은 전자부를 얹은 시험용 기
 | [`tools/`](tools/) | 지상국, 출력 파일 생성, 예산, 시뮬레이션 영상 도구 |
 | [`docs/`](docs/) | 사양서, 변경 문서, 제작 가이드, 예산, 시험·안전·법규 |
 | [`render/`](render/) | Blender 렌더 파이프라인 (시뮬레이션 영상용) |
+| [`pcb/`](pcb/) | VTOL 캐리어 PCB: KiCad 프로젝트, 생성 스크립트, 거버·BOM·CPL, 검사 보고서 |
 
 <sub>`sim/out/`과 STL · STEP · F3D 파일은 만들어지는 파일이라 저장소에 없습니다. 다시 만드는 방법은 아래 기술 상세에 있습니다.</sub>
 

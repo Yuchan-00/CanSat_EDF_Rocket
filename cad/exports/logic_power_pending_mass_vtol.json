@@ -1,0 +1,947 @@
+{
+  "generator": "cadquery",
+  "params_sha256": "9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292",
+  "preset": "BUDGET_90mm_6S",
+  "config": "vtol",
+  "power_source": "battery",
+  "decisions": {
+    "note": "v0.9 logic-power round (2026-11-05): the VTOL avionics carrier PCB rev 2c (pcb/vtol_carrier, read-only here) runs from a SEPARATE 1S logic pack through J14 (pack) and J15 (power-switch lead) at the carrier's -x/+y corner. user decision 1 (2026-11-05, '배터리는 A 위치(6S 팩 −x 면)로 해줘'): the pack stands on the -x face of the 6S flight pack (spot A). user decision 2 (2026-11-05, logic power switch: '상단 캡에 구멍 내기'): an MTS-102 toggle through the top cap, operable with the vehicle closed; its lead plugs into J15 and unplugs there when the cap comes off. user decision 3 (2026-11-05, '배터리 구성만 쓰기'): only the battery build carries it (applies_to_power_sources). user decision 4 (2026-11-05, '이 배터리로 진행, 질량은 나중에 결정'): in_flight_mass_model below. Layout._logic_power derives the solids / routes / clearances; check_geometry C37-C40.",
+    "applies_note": "user decision 3 (2026-11-05, '배터리 구성만 쓰기'): the logic pack, the switch, its top-cap hole and the leads exist in the battery build only. Spot A collides with the tether kit boxes (bus clamp ~13,500 mm^3, XT90 190-940 mm^3, PCB review MF2-2) in the tether / hybrid builds; those builds are NOT maintained with the logic-battery carrier (user decision) - not redesigned, not deleted, their CAD / checks / tests stay as they were.",
+    "in_flight_mass_model_note": "user decision 4 (2026-11-05, '이 배터리로 진행, 질량은 나중에 결정'): false = the pack, switch, leads and ties (and the material the switch hole removes from the top cap) are real CAD solids / lumped items for geometry and interference (C37-C39) and for the pending-mass report (extra.logic_power, cad/exports/logic_power_pending_mass_vtol.json / .md), but they stay OUT of the report's parts / totals - the mass / CG / inertia that the sim, the firmware headers and the mass targets consume (the top cap's mass entry is the cap without the logic switch hole, C40 proves it). true = they join the flight mass model; set it only after the user decides (then re-run the CAD, sizing, sim and firmware chain). Switch-collar round (2026-11-05): the protective collar printed with the cap (logic_power.collar) is behind the same switch - the flight-mass cap is the cap without the hole and without the collar."
+  },
+  "in_flight_mass_model": false,
+  "applies_to_power_sources": [
+    "battery"
+  ],
+  "pending_parts": {
+    "logic_pack": {
+      "kind": "placeholder",
+      "volume_mm3": 39044.25,
+      "density_g_cm3": 2.1514051364797635,
+      "mass_g": 84.0,
+      "bbox_mm": [
+        [
+          -48.4,
+          -27.75,
+          346.09999999999997
+        ],
+        [
+          -37.9,
+          27.75,
+          413.09999999999997
+        ]
+      ],
+      "com_mm": [
+        -43.15,
+        -2.2220241914317276e-16,
+        379.59999999999997
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          5.298475000000206e-05,
+          3.340611369617715e-24,
+          0.0
+        ],
+        [
+          3.340611369617715e-24,
+          3.2194750000002055e-05,
+          -2.714909557531112e-22
+        ],
+        [
+          0.0,
+          -2.714909557531112e-22,
+          2.2333500000000002e-05
+        ]
+      ]
+    },
+    "logic_switch": {
+      "kind": "placeholder",
+      "volume_mm3": 1795.3424392113036,
+      "density_g_cm3": 2.2279872143819013,
+      "mass_g": 4.0,
+      "bbox_mm": [
+        [
+          -37.539911054116054,
+          21.139867216521196,
+          457.09999999999997
+        ],
+        [
+          -28.33991105411605,
+          34.139867216521196,
+          490.29999999999995
+        ]
+      ],
+      "com_mm": [
+        -32.939911054116045,
+        27.639867216521196,
+        468.385351831628
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          2.1350947606354567e-07,
+          1.0374873943542603e-21,
+          -8.299899154834082e-21
+        ],
+        [
+          1.0374873943542603e-21,
+          1.896700128695265e-07,
+          1.6599798309668164e-20
+        ],
+        [
+          -8.299899154834082e-21,
+          1.6599798309668164e-20,
+          6.02013472034848e-08
+        ]
+      ]
+    },
+    "logic_switch_lead": {
+      "kind": "lumped",
+      "volume_mm3": 0.0,
+      "density_g_cm3": 0.0,
+      "mass_g": 1.3894502721446997,
+      "bbox_mm": [
+        [
+          -32.968222853945356,
+          27.605856544527416,
+          398.1651364623654
+        ],
+        [
+          -32.968222853945356,
+          27.605856544527416,
+          398.1651364623654
+        ]
+      ],
+      "com_mm": [
+        -32.968222853945356,
+        27.605856544527416,
+        398.1651364623654
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "logic_retention": {
+      "kind": "lumped",
+      "volume_mm3": 0.0,
+      "density_g_cm3": 0.0,
+      "mass_g": 2.0,
+      "bbox_mm": [
+        [
+          -48.4,
+          0.0,
+          387.09999999999997
+        ],
+        [
+          -48.4,
+          0.0,
+          387.09999999999997
+        ]
+      ],
+      "com_mm": [
+        -48.4,
+        0.0,
+        387.09999999999997
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    }
+  },
+  "pending_parts_g": {
+    "logic_pack": 84.0,
+    "logic_switch": 4.0,
+    "logic_switch_lead": 1.3894502721446997,
+    "logic_retention": 2.0
+  },
+  "top_cap": {
+    "printed_volume_mm3 (with the switch hole and the collar)": 29573.81439065509,
+    "flight_model_volume_mm3 (without them)": 27506.061524352142,
+    "hole_removed_mm3": 36.22883416582408,
+    "collar_added_mm3": 2104.0341399627105,
+    "collar_volume_mm3_layout": 2104.034140001091,
+    "has_collar": true,
+    "printed_mass_g": 37.77077033659431,
+    "printed_mass_model": {
+      "mass_g": 37.77077033659431,
+      "model": "slicer_part_g",
+      "solid_mass_g": 38.74169685175817,
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "slicer_z_centroid_design_mm": 472.257761564524
+    },
+    "flight_model_mass_g": 35.15343805026615,
+    "flight_model_mass_model": {
+      "mass_g": 35.15343805026615,
+      "model": "slicer_part_g",
+      "solid_mass_g": 36.03294059690131,
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "slicer_z_centroid_design_mm": 471.45682184251433,
+      "table_entry": "top_cap@no_logic_switch_hole"
+    },
+    "mass_delta_g (printed - flight model)": 2.617332286328157
+  },
+  "flight_model": {
+    "mass_g": 1653.699819990231,
+    "com_mm": [
+      1.324558926616389,
+      -0.18783018005066282,
+      245.324093839456
+    ],
+    "lateral_offset_mm": 1.3378103477761805,
+    "inertia_diag_kg_m2": [
+      0.03550573095386363,
+      0.035800920490461435,
+      0.003311703676669542
+    ],
+    "inertia_about_com_kg_m2": [
+      [
+        0.03550573095386363,
+        -3.5074400219686502e-06,
+        0.0001941058006560899
+      ],
+      [
+        -3.5074400219686502e-06,
+        0.035800920490461435,
+        6.339887357984885e-05
+      ],
+      [
+        0.0001941058006560899,
+        6.339887357984885e-05,
+        0.003311703676669542
+      ]
+    ]
+  },
+  "with_logic_power": {
+    "mass_g": 1747.7066025487038,
+    "com_mm": [
+      -1.0273676889158017,
+      -0.05075511656405831,
+      252.92751129956014
+    ],
+    "lateral_offset_mm": 1.028620654121638,
+    "inertia_diag_kg_m2": [
+      0.037397885565792405,
+      0.03783704449302102,
+      0.0035114651586156532
+    ],
+    "inertia_about_com_kg_m2": [
+      [
+        0.037397885565792405,
+        4.3058625108856935e-06,
+        0.0007379040367122541
+      ],
+      [
+        4.3058625108856935e-06,
+        0.03783704449302102,
+        1.488329088120799e-05
+      ],
+      [
+        0.0007379040367122541,
+        1.488329088120799e-05,
+        0.0035114651586156532
+      ]
+    ]
+  },
+  "without_logic_power": {
+    "mass_g": 1653.699819990231,
+    "com_mm": [
+      1.324558926616389,
+      -0.18783018005066282,
+      245.324093839456
+    ],
+    "lateral_offset_mm": 1.3378103477761805,
+    "inertia_diag_kg_m2": [
+      0.03550573095386363,
+      0.03580092049046145,
+      0.0033117036766695416
+    ],
+    "inertia_about_com_kg_m2": [
+      [
+        0.03550573095386363,
+        -3.5074400219686502e-06,
+        0.00019410580065608993
+      ],
+      [
+        -3.5074400219686502e-06,
+        0.03580092049046145,
+        6.339887357984883e-05
+      ],
+      [
+        0.00019410580065608993,
+        6.339887357984883e-05,
+        0.0033117036766695416
+      ]
+    ]
+  },
+  "delta_full_minus_without": {
+    "mass_g": 94.00678255847288,
+    "com_mm": [
+      -2.3519266155321907,
+      0.1370750634866045,
+      7.60341746010414
+    ],
+    "lateral_offset_mm": -0.3091896936545424,
+    "inertia_diag_rel": [
+      0.053291526778802334,
+      0.056873509805483335,
+      0.060319853902811804
+    ]
+  },
+  "mass_target_g": 1650.0,
+  "tw_E": {
+    "2.14 kgf": [
+      1.294067988719163,
+      1.2244618157757197
+    ],
+    "3.09 kgf": [
+      1.868537422963651,
+      1.7680313134331653
+    ]
+  },
+  "over_target_g": {
+    "without": 3.699819990230935,
+    "with": 97.70660254870381
+  },
+  "layout": {
+    "pack_box_mm": [
+      [
+        -48.4,
+        -37.9
+      ],
+      [
+        -27.75,
+        27.75
+      ],
+      [
+        346.09999999999997,
+        413.09999999999997
+      ]
+    ],
+    "switch_xy_mm": [
+      -32.93991105411605,
+      27.639867216521196
+    ],
+    "switch_r_theta": [
+      43.0,
+      140.0
+    ],
+    "switch_hole_d_mm": 6.2,
+    "switch_top_z_mm": 490.29999999999995,
+    "switch_lugs_bottom_z_mm": 457.09999999999997,
+    "switch_lead_polyline_mm": [
+      [
+        -32.93991105411605,
+        27.639867216521196,
+        457.09999999999997
+      ],
+      [
+        -32.93991105411605,
+        27.639867216521196,
+        344.09999999999997
+      ],
+      [
+        -34.305,
+        26.0,
+        339.7
+      ]
+    ],
+    "pack_lead_polyline_mm": [
+      [
+        -43.15,
+        22.0,
+        413.09999999999997
+      ],
+      [
+        -43.15,
+        22.0,
+        417.09999999999997
+      ],
+      [
+        -40.0,
+        31.8,
+        417.09999999999997
+      ],
+      [
+        -40.0,
+        31.8,
+        344.09999999999997
+      ],
+      [
+        -33.555,
+        31.799999999999997,
+        339.7
+      ]
+    ],
+    "switch_lead_route_len_mm_E": [
+      117.89005442893996,
+      177.89005442893995
+    ],
+    "pack_lead_route_len_mm_E": [
+      95.09752748373869,
+      115.09752748373869
+    ],
+    "strap_z_mm": [
+      361.09999999999997,
+      381.09999999999997
+    ],
+    "tie_z_mm": 403.09999999999997,
+    "retention_E": {
+      "touchdown_load_N": 16.475172,
+      "friction_mu_ASSUMED": 0.5,
+      "normal_force_needed_N (2 faces)": 16.475172
+    },
+    "carrier_plugs_mm": {
+      "J7": [
+        [
+          -37.8,
+          -28.25
+        ],
+        [
+          -34.79,
+          -28.1
+        ],
+        [
+          328.7,
+          337.7
+        ]
+      ],
+      "J8": [
+        [
+          -45.74,
+          -31.24
+        ],
+        [
+          14.17,
+          21.97
+        ],
+        [
+          328.4,
+          331.7
+        ]
+      ],
+      "J9": [
+        [
+          -45.74,
+          -31.24
+        ],
+        [
+          5.55,
+          13.35
+        ],
+        [
+          328.4,
+          331.7
+        ]
+      ],
+      "J10": [
+        [
+          -45.74,
+          -31.24
+        ],
+        [
+          -3.07,
+          4.73
+        ],
+        [
+          328.4,
+          331.7
+        ]
+      ],
+      "J11": [
+        [
+          -45.74,
+          -31.24
+        ],
+        [
+          -11.69,
+          -3.89
+        ],
+        [
+          328.4,
+          331.7
+        ]
+      ],
+      "J14": [
+        [
+          -37.8,
+          -29.31
+        ],
+        [
+          28.8,
+          34.8
+        ],
+        [
+          328.7,
+          339.7
+        ]
+      ],
+      "J15": [
+        [
+          -37.8,
+          -30.81
+        ],
+        [
+          23.2,
+          28.8
+        ],
+        [
+          328.7,
+          339.7
+        ]
+      ],
+      "J18": [
+        [
+          -45.24,
+          -31.24
+        ],
+        [
+          -22.78,
+          -12.58
+        ],
+        [
+          328.4,
+          331.7
+        ]
+      ]
+    },
+    "clearance_mm": {
+      "pack -> 6S pack (strapped against its -x face)": 0.5,
+      "pack -> bore (radial)": 3.0091181284970148,
+      "pack -> avionics_tray": 51.5,
+      "pack -> esc": 53.5,
+      "pack -> misc_electronics": 57.846780377130756,
+      "pack -> carrier": 4.0,
+      "pack -> rail x16.8 y+1": 58.90454494759167,
+      "pack -> rail x12.4 y+1": 54.92308636159157,
+      "pack -> rail x16.8 y-1": 58.90454494759167,
+      "pack -> rail x12.4 y-1": 54.92308636159157,
+      "pack -> J7 plug": 8.40788320565882,
+      "pack -> J8 plug": 14.399999999999977,
+      "pack -> J9 plug": 14.399999999999977,
+      "pack -> J10 plug": 14.399999999999977,
+      "pack -> J11 plug": 14.399999999999977,
+      "pack -> J14 plug": 6.486331783065041,
+      "pack -> J15 plug": 6.400781202322081,
+      "pack -> J18 plug": 14.399999999999977,
+      "pack -> GPS lead (centre line - OD/2)": 12.1293349428878,
+      "switch nut bearing on the plate (flats - hole) / 2": 0.8999999999999999,
+      "switch bushing above the plate - (outer nut + lock washer)": 2.5,
+      "switch body / nut -> rim ring (radial)": 4.200024232136009,
+      "switch body / nut -> ribs": 12.872229928688224,
+      "switch body / nut -> hub": 27.838700279897097,
+      "switch body -> arming-switch body": 22.14146949510118,
+      "switch body -> hardpoint stack": 29.401733434796252,
+      "switch body / lugs -> cap joint screw M3 x 6 (max, 135 deg)": 2.630873957481215,
+      "switch body / lugs -> avionics_tray": 42.96095939911148,
+      "switch body / lugs -> battery": 5.515272885675681,
+      "switch body / lugs -> esc": 52.644200692989436,
+      "switch body / lugs -> misc_electronics": 46.142203826647346,
+      "switch body / lugs -> carrier": 115.0,
+      "switch body / lugs -> rail x16.8 y+1": 48.41659031587715,
+      "switch body / lugs -> rail x12.4 y+1": 44.382597947160185,
+      "switch body / lugs -> rail x16.8 y-1": 85.84895361948408,
+      "switch body / lugs -> rail x12.4 y-1": 83.64025119692137,
+      "switch body / lugs -> logic pack": 44.04363686931151,
+      "switch lever / nut -> body edge (radial)": 12.399999999999999,
+      "switch lead slack -> cap skirt engagement (lift the cap before unplugging J15)": 45.0,
+      "switch lead -> bore (radial)": 14.255453016671204,
+      "switch lead -> avionics_tray": 45.039911054116054,
+      "switch lead -> battery": 8.639867216521196,
+      "switch lead -> esc": 47.98787735490035,
+      "switch lead -> misc_electronics": 47.637465708230955,
+      "switch lead -> rail x16.8 y+1": 52.969980642485744,
+      "switch lead -> rail x12.4 y+1": 49.07101515608076,
+      "switch lead -> rail x16.8 y-1": 91.20281250105855,
+      "switch lead -> rail x12.4 y-1": 88.90048365803369,
+      "switch lead -> carrier (above its envelope)": 0.5,
+      "pack lead -> bore (radial)": 6.199706458768752,
+      "pack lead -> avionics_tray": 45.859835567704415,
+      "pack lead -> battery": 5.801540933255117,
+      "pack lead -> esc": 49.9549708483058,
+      "pack lead -> misc_electronics": 58.12046628465766,
+      "pack lead -> rail x16.8 y+1": 51.86707253348703,
+      "pack lead -> rail x12.4 y+1": 47.826265121073845,
+      "pack lead -> rail x16.8 y-1": 93.07787409887334,
+      "pack lead -> rail x12.4 y-1": 90.39980559861014,
+      "pack lead -> carrier (above its envelope)": 1.3284271247461903,
+      "switch lead -> logic pack": 3.460088945883947,
+      "pack lead -> logic pack (its own lead, beside it)": 2.5,
+      "finger circle (Ø 20) round the lever -> GPS ground plane": 36.5708385016436,
+      "finger circle (Ø 20) round the lever -> GPS board": 41.93510694147129,
+      "finger circle (Ø 20) round the lever -> tether eye (when fitted)": 23.0,
+      "finger circle (Ø 20) round the lever -> arming switch (its nut, Ø as this one)": 20.582532920162308,
+      "finger circle round the lever -> cap edge": 7.0,
+      "collar wall - printer.min_feature": 1.2,
+      "collar wall: perimeters (2 x class wall loops x nozzle) - wall_t": 0.8000000000000003,
+      "collar rim - lever sweep top (every position)": 2.138291427141894,
+      "lever sweep inside the rim hull (plan, along the throw axis)": 2.0693020368605337,
+      "lever sweep -> collar bore (radial)": 2.8656944602939705,
+      "finger tip sphere -> collar notch bottom (z, over the wall band)": 0.871159390681612,
+      "finger tip sphere -> collar arcs (plan)": 2.364515344674185,
+      "finger tip sphere -> plate top (z)": 5.389375483315064,
+      "finger path (end position -> past centre) -> collar (3D, min over the push)": 0.5,
+      "collar bore -> lever finger circle (radial)": 0.5,
+      "collar -> gland 1 hole": 9.517136554816872,
+      "collar -> gland 2 hole": 16.433080697524865,
+      "collar -> GPS lead hole": 39.82741841473133,
+      "collar -> arming switch hole": 19.03253292016231,
+      "collar -> GPS ground plane": 33.6708385016436,
+      "collar -> GPS board": 39.03510694147129,
+      "collar -> tether eye (when fitted)": 20.1,
+      "collar -> cap edge": 4.100000000000001,
+      "collar -> arming switch finger circle": 12.28253292016231,
+      "outer nut -> collar bore (nut driver room, radial)": 5.9
+    },
+    "limits_mm": {
+      "pack -> 6S pack (strapped against its -x face)": 0.0,
+      "pack -> bore (radial)": 1.0,
+      "pack -> avionics_tray": 2.0,
+      "pack -> esc": 2.0,
+      "pack -> misc_electronics": 2.0,
+      "pack -> carrier": 2.0,
+      "pack -> rail x16.8 y+1": 2.0,
+      "pack -> rail x12.4 y+1": 2.0,
+      "pack -> rail x16.8 y-1": 2.0,
+      "pack -> rail x12.4 y-1": 2.0,
+      "pack -> J7 plug": 2.0,
+      "pack -> J8 plug": 2.0,
+      "pack -> J9 plug": 2.0,
+      "pack -> J10 plug": 2.0,
+      "pack -> J11 plug": 2.0,
+      "pack -> J14 plug": 2.0,
+      "pack -> J15 plug": 2.0,
+      "pack -> J18 plug": 2.0,
+      "pack -> GPS lead (centre line - OD/2)": 2.0,
+      "switch nut bearing on the plate (flats - hole) / 2": 0.8,
+      "switch bushing above the plate - (outer nut + lock washer)": 0.0,
+      "switch body / nut -> rim ring (radial)": 1.2,
+      "switch body / nut -> ribs": 1.2,
+      "switch body / nut -> hub": 1.2,
+      "switch body -> arming-switch body": 1.2,
+      "switch body -> hardpoint stack": 2.0,
+      "switch body / lugs -> cap joint screw M3 x 6 (max, 135 deg)": 2.0,
+      "switch body / lugs -> avionics_tray": 2.0,
+      "switch body / lugs -> battery": 2.0,
+      "switch body / lugs -> esc": 2.0,
+      "switch body / lugs -> misc_electronics": 2.0,
+      "switch body / lugs -> carrier": 2.0,
+      "switch body / lugs -> rail x16.8 y+1": 2.0,
+      "switch body / lugs -> rail x12.4 y+1": 2.0,
+      "switch body / lugs -> rail x16.8 y-1": 2.0,
+      "switch body / lugs -> rail x12.4 y-1": 2.0,
+      "switch body / lugs -> logic pack": 2.0,
+      "switch lever / nut -> body edge (radial)": 0.0,
+      "switch lead slack -> cap skirt engagement (lift the cap before unplugging J15)": 0.0,
+      "switch lead -> bore (radial)": 1.0,
+      "switch lead -> avionics_tray": 0.0,
+      "switch lead -> battery": 0.0,
+      "switch lead -> esc": 0.0,
+      "switch lead -> misc_electronics": 0.0,
+      "switch lead -> rail x16.8 y+1": 0.0,
+      "switch lead -> rail x12.4 y+1": 0.0,
+      "switch lead -> rail x16.8 y-1": 0.0,
+      "switch lead -> rail x12.4 y-1": 0.0,
+      "switch lead -> carrier (above its envelope)": 0.0,
+      "pack lead -> bore (radial)": 1.0,
+      "pack lead -> avionics_tray": 0.0,
+      "pack lead -> battery": 0.0,
+      "pack lead -> esc": 0.0,
+      "pack lead -> misc_electronics": 0.0,
+      "pack lead -> rail x16.8 y+1": 0.0,
+      "pack lead -> rail x12.4 y+1": 0.0,
+      "pack lead -> rail x16.8 y-1": 0.0,
+      "pack lead -> rail x12.4 y-1": 0.0,
+      "pack lead -> carrier (above its envelope)": 0.0,
+      "switch lead -> logic pack": 2.0,
+      "pack lead -> logic pack (its own lead, beside it)": 0.0,
+      "finger circle (Ø 20) round the lever -> GPS ground plane": 0.0,
+      "finger circle (Ø 20) round the lever -> GPS board": 0.0,
+      "finger circle (Ø 20) round the lever -> tether eye (when fitted)": 0.0,
+      "finger circle (Ø 20) round the lever -> arming switch (its nut, Ø as this one)": 0.0,
+      "finger circle round the lever -> cap edge": 0.0,
+      "collar wall - printer.min_feature": 0.0,
+      "collar wall: perimeters (2 x class wall loops x nozzle) - wall_t": 0.0,
+      "collar rim - lever sweep top (every position)": 2.0,
+      "lever sweep inside the rim hull (plan, along the throw axis)": 1.0,
+      "lever sweep -> collar bore (radial)": 1.0,
+      "finger tip sphere -> collar notch bottom (z, over the wall band)": 0.2,
+      "finger tip sphere -> collar arcs (plan)": 0.0,
+      "finger tip sphere -> plate top (z)": 0.0,
+      "finger path (end position -> past centre) -> collar (3D, min over the push)": 0.5,
+      "collar bore -> lever finger circle (radial)": 0.0,
+      "collar -> gland 1 hole": 1.2,
+      "collar -> gland 2 hole": 1.2,
+      "collar -> GPS lead hole": 1.2,
+      "collar -> arming switch hole": 1.2,
+      "collar -> GPS ground plane": 1.2,
+      "collar -> GPS board": 1.2,
+      "collar -> tether eye (when fitted)": 1.0,
+      "collar -> cap edge": 1.2,
+      "collar -> arming switch finger circle": 0.0,
+      "outer nut -> collar bore (nut driver room, radial)": 1.2
+    },
+    "exposure_mm": {
+      "lever top above the cap top": 15.0,
+      "eye-bolt top above the cap top (when fitted)": 25.0,
+      "lever top below the eye-bolt top": 10.0,
+      "rim -> eye-top line height at the switch r (tip-over onto the top corner)": 8.5,
+      "lever top over that line (information)": 6.5,
+      "lever axis -> eye axis (plan)": 43.0,
+      "lever axis -> body edge (plan)": 17.0
+    },
+    "gps_lever_shadow_deg": {
+      "azimuth_width": 7.362332738078254,
+      "elevation_top": 3.7629974944275015
+    },
+    "j15_nearest_window": [
+      17.199885286011654,
+      136.0
+    ],
+    "collar": {
+      "inner_d_mm": 21.0,
+      "outer_d_mm": 25.8,
+      "wall_t_mm": 2.4,
+      "z_mm": [
+        475.29999999999995,
+        492.49999999999994
+      ],
+      "h_over_plate_mm": 17.19999999999999,
+      "notch_w_mm": 17.0,
+      "notch_bottom_z_mm": 480.29999999999995,
+      "notch_axis": "y",
+      "notch_shape": "U (round bottom of radius notch_w / 2, review fix 2026-11-05)",
+      "notch_round_centre_z_mm": 488.79999999999995,
+      "finger_path_E": {
+        "angles_deg": [
+          20.0,
+          19.0,
+          18.0,
+          17.0,
+          16.0,
+          15.0,
+          14.0,
+          13.0,
+          12.0,
+          11.0,
+          10.0,
+          9.0,
+          8.0,
+          7.0,
+          6.0,
+          5.0,
+          4.0,
+          3.0,
+          2.0,
+          1.0,
+          0.0,
+          -1.0,
+          -2.0
+        ],
+        "centre_local_y_mm": [
+          15.63430553970603,
+          15.343618274519223,
+          15.050694072066769,
+          14.755622159898358,
+          14.45849241977686,
+          14.159395360299477,
+          13.858422089327945,
+          13.555664286236194,
+          13.251214173983927,
+          12.94516449102461,
+          12.637608463056441,
+          12.328639774624907,
+          12.018352540585544,
+          11.706841277435664,
+          11.394200874523701,
+          11.080526565144996,
+          10.765913897532815,
+          10.450458705753437,
+          10.13425708051416,
+          9.817405339893147,
+          9.5,
+          9.182137745576027,
+          8.863915400543126
+        ],
+        "centre_z": [
+          488.689375483315,
+          488.8200858442218,
+          488.9457031050094,
+          489.0661890014431,
+          489.1815068323519,
+          489.29162147080723,
+          489.3964993748236,
+          489.49610859757547,
+          489.59041879712856,
+          489.67940124568264,
+          489.7630288383217,
+          489.8412761012711,
+          489.9141191996564,
+          489.9815359447643,
+          490.0435058008011,
+          490.10000989114826,
+          490.15103100411255,
+          490.1965535981688,
+          490.23656380669377,
+          490.27104944219036,
+          490.29999999999995,
+          490.3234066615022,
+          490.34126229680123
+        ],
+        "dist_mm": [
+          0.8237207449303909,
+          0.8635846622274617,
+          0.9091900401547655,
+          0.9604354363685079,
+          1.0172092265631711,
+          1.079390582402885,
+          1.1468504840452223,
+          1.2095902186088434,
+          1.210619554082081,
+          1.0971254377232142,
+          0.9921277349648108,
+          0.8961111751620443,
+          0.8095427945184106,
+          0.7328658102765857,
+          0.6664932757775563,
+          0.6108016990932885,
+          0.5661248367955078,
+          0.5327478932151575,
+          0.5109023608105332,
+          0.5007617265124029,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "min_mm": 0.5,
+        "at_deg": 0.0,
+        "margin_min_mm": 0.5
+      },
+      "plate_root_E": {
+        "boss_r_mm": 12.9,
+        "b_farthest_support_mm": 50.647787423147555,
+        "b_nearest_support_mm": 11.499999999999993,
+        "plate_t_mm": 1.2,
+        "nu_A": 0.35,
+        "sigma_per_Nmm_moment": 0.045143235178042335,
+        "sigma_per_N_axial": 0.6383086914517414,
+        "lever_rule_share": 0.5825242718446602
+      },
+      "wall": {
+        "t_mm": 2.4,
+        "lines_of_nozzle": 5.999999999999999,
+        "class": "A_load_path",
+        "wall_loops_per_side": 4,
+        "perimeter_width_mm": 3.2
+      },
+      "volume_mm3_layout": 2104.034140001091,
+      "centroid_mm": [
+        -32.93991105411605,
+        27.639867216521196,
+        482.4306145031124
+      ],
+      "lever_sweep": {
+        "pivot_z_mm": 472.09999999999997,
+        "arm_mm": 18.19999999999999,
+        "throw_deg_A": 20.0,
+        "top_z_mm": 490.36170857285805,
+        "tip_y_mm": 7.6343055397060295,
+        "end_corner_z_mm": 488.689375483315
+      },
+      "hull_chord_y_mm": 9.703607576566563,
+      "finger": {
+        "sphere_r_mm": 8.0,
+        "centre_local_y_mm": 15.63430553970603,
+        "centre_z": 488.689375483315,
+        "centres": [
+          [
+            -32.93991105411605,
+            43.27417275622723,
+            488.689375483315
+          ],
+          [
+            -32.93991105411605,
+            12.005561676815166,
+            488.689375483315
+          ]
+        ],
+        "body_len_mm": 30.0,
+        "contact_end_positions_deg": [
+          20.0,
+          -20.0
+        ]
+      },
+      "gps_sky_E": {
+        "patch_centre_to_collar_axis_mm": 71.49849040064873,
+        "nearest_plan_distance_mm": 58.598490400648735,
+        "rim_over_patch_top_mm": 6.599999999999966,
+        "top_elevation_deg": 6.426192216378892,
+        "azimuth_width_deg": 20.788844049916577,
+        "receiver_mask_deg_A": 5.0,
+        "blocked_sky_above_mask_pct": 0.1566797196276394,
+        "limit_pct": 1.0
+      },
+      "section_E": {
+        "arc_z_min_mm3": 30.391513484056116,
+        "arc_area_mm2": 47.26639716756847,
+        "arc_arm_mm": 7.123714797251049,
+        "ring_z_mm3": 945.9618953900633,
+        "ring_arm_mm": 17.2,
+        "arc_z_over_plate_mm": 10.07628520274895,
+        "arc_half_width_mm": 7.779985667537197,
+        "arc_k_per_mm2": 0.23439815858424642
+      },
+      "clearance_mm": {
+        "collar wall - printer.min_feature": 1.2,
+        "collar wall: perimeters (2 x class wall loops x nozzle) - wall_t": 0.8000000000000003,
+        "collar rim - lever sweep top (every position)": 2.138291427141894,
+        "lever sweep inside the rim hull (plan, along the throw axis)": 2.0693020368605337,
+        "lever sweep -> collar bore (radial)": 2.8656944602939705,
+        "finger tip sphere -> collar notch bottom (z, over the wall band)": 0.871159390681612,
+        "finger tip sphere -> collar arcs (plan)": 2.364515344674185,
+        "finger tip sphere -> plate top (z)": 5.389375483315064,
+        "finger path (end position -> past centre) -> collar (3D, min over the push)": 0.5,
+        "collar bore -> lever finger circle (radial)": 0.5,
+        "collar -> gland 1 hole": 9.517136554816872,
+        "collar -> gland 2 hole": 16.433080697524865,
+        "collar -> GPS lead hole": 39.82741841473133,
+        "collar -> arming switch hole": 19.03253292016231,
+        "collar -> GPS ground plane": 33.6708385016436,
+        "collar -> GPS board": 39.03510694147129,
+        "collar -> tether eye (when fitted)": 20.1,
+        "collar -> cap edge": 4.100000000000001,
+        "collar -> arming switch finger circle": 12.28253292016231,
+        "outer nut -> collar bore (nut driver room, radial)": 5.9
+      }
+    }
+  },
+  "note": "pending mass decision (user 2026-11-05 '이 배터리로 진행, 질량은 나중에 결정'): flight_model = the report totals the sim / firmware headers / mass targets consume; with_logic_power = the vehicle with the pack, switch, lead, ties and the printed (holed) cap. Masses of the pack (vendor), switch, lead and ties are ASSUMED; the printed cap is the slicer table's (M) when its holed slice exists"
+}

@@ -19,6 +19,9 @@ mm or the lid posts moved 0.5 mm pass the slice test but fail the boolean one (t
 INTERSECT the island's pre-warped (v, z) outline (holes subtracted) extruded radially; op NEW keeps it as a body of the
 component (the orange part ``avionics_logo``), op CUT subtracts it from the main body (the white ``avionics_module``'s
 pocket).  Run with ``--parts avionics_module,avionics_logo`` in both configurations.
+0.9.7 (logic power, user 2026-11-05): the logic-power placeholders (rocket_geometry.logic_power_parts) are compared too
+although build_all leaves them out while their mass is pending; run the VTOL battery build with
+``--parts top_cap,logic_pack,logic_switch`` (the top cap carries the logic switch hole there).
 v0.8 (GPS pod): written to verify the pod / lid / entry-hole code of CanSatEDFRocket.py 0.8.0 without Fusion 360.
 v0.8.1 (GNS board): also models CB.tprism ((v, z) polygon in the plane perpendicular to the radial direction theta at
 u_mid, extruded radially u_mid +- length / 2) and CB.cut_between (a cylinder Ø d from model point A to B, cut from the main
@@ -269,6 +272,8 @@ import rocket_geometry as rg  # noqa: E402
 
 L = rg.layout_for(a.preset) if not (a.config or a.power) else rg.layout_for(a.preset, a.config, a.power)
 twin = rg.build_all(L)
+# 0.9.7 (2026-11-05): the logic-power placeholders are not in build_all while their mass is pending - compare them too
+twin.update({k: v for k, v in rg.logic_power_parts(L).items() if k not in twin and v.shape is not None})
 preset = L.p["meta"]["preset"]
 lines: list[str] = []
 

@@ -1,0 +1,33 @@
+{
+ "tool": "scripts/determinism.py (two full runs, sha256 compared)",
+ "files": {
+  "com.kicad_sch": "c7c889cf03fcd86018025e2528d4bb0f929b427072368ea9aee02871823070e3",
+  "fcu.kicad_sch": "46468455ec6b39fd7fa92ef2040e606611ad67650a3c43e35ef1311df673dda6",
+  "gns.kicad_sch": "de2d9577a96c2bb72ae8c0f1480bd58c36597c73978ed9f12b88e319edfad294",
+  "io.kicad_sch": "665fd3563dacef9e85704d16733dfe7f00720c50b066700d7c3ddf4940edbfff",
+  "level_shift.kicad_sch": "75ddc8072cbb5cb18a63a3048361061dac77dfd3c1a2b1f52ac4e712760ef0c7",
+  "nav.kicad_sch": "d5b9cd7fd8b988d86ae26b04739ac2c8b6e129effb757cdd21bd32fb395b77e6",
+  "power.kicad_sch": "a3c009269cdbc4f4028646571d062346ae4ef8d95f007bab6475c416bded652f",
+  "vtol_carrier.kicad_sch": "79040b242b114c1adc10d756d81392cbb30555253ad165bdc7ecf3d7be2be882",
+  "vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
+  "placement.json": "c32a8cc86cdaf30a7e98c31ff3859e8658ea78b9c9044bdb2d2c5cc49eb11cc2",
+  "vtol_carrier.ir.json": "1260bf40540d05fc7405a25fd545766ce1a4c6707708d64c0b5d7f6051416b2e",
+  "vtol_carrier.ir_with_pcb.json": "19ae528ae305446bff34dade192277ced5b8cc4d6e172e8e2ad15579f6acdc77",
+  "vtol_carrier_unrouted.kicad_pcb": "e7e7a8ec1f20e897b8716a6a3c980d165cd138c40345ef285bac4a2b52c2613d"
+ },
+ "differences": [],
+ "routed_board_reimport": {
+  "file_sha256": [
+   "5131d009bf6bce285a5369f3317f0056090fa036842ea555c0d126e6b0d3d667",
+   "4fd7bf3185a7891d8f3f69cdf094e6595fdd50238a2e03ff94803c80eed3e564"
+  ],
+  "sha256_without_uuids": [
+   "912e0b5842a801ce06bd7976094bd5ce9d5d9638b15774fb97e3ae77679f22ae",
+   "912e0b5842a801ce06bd7976094bd5ce9d5d9638b15774fb97e3ae77679f22ae"
+  ],
+  "bytes_identical": false,
+  "geometry_identical": true,
+  "note": "pcbnew.ImportSpecctraSES gives imported tracks / vias random KIIDs and KiCad saves items in KIID order; geometry is compared as a sorted set of items without uuids"
+ },
+ "result": "PASS"
+}

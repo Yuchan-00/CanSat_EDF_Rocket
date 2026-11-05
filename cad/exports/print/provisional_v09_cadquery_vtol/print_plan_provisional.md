@@ -11,19 +11,24 @@
 | avionics_module | B_shell | 3 walls, 4 top / 4 bottom layers, 15 % gyroid | 1 | upright | 없음 | 57.7 | 238.9 | 16 h 28 min |
 | └ avionics_logo (주황 상감, 같은 출력물) | B_shell | 바깥 벽 1줄 | 1 | 모듈과 함께 | - | 0.90 | 75.6 | 모듈 시간에 포함 |
 | avionics_tray | C_flat_plate | 3 walls, 4 top / 4 bottom layers, 15 % gyroid | 1 | flat | 없음 | 14.2 | 14.3 | 0 h 27 min |
-| top_cap | A_load_path | 4 walls, 4 top / 4 bottom layers, 15 % gyroid | 1 | flat: plate top face on the bed, skirt / ribs / hub / rim ring up | 없음 | 35.2 | 35.2 | 0 h 43 min |
+| top_cap | A_load_path | 4 walls, 4 top / 4 bottom layers, 15 % gyroid | 1 | upright (2026-11-05 switch collar): skirt rim on the bed, top face + collar up; tree supports from the bed inside the skirt under the plate, ribs, hub, washer recess and rim ring; none inside the switch hole or the collar (G-code check); the inner nut's seat under the plate prints on support interface - scrape it flat | 트리 (`tree(auto)`) | 37.8 | 64.5 | 2 h 48 min |
 | vane | D_small_keep | 5 walls, 5 top / 5 bottom layers, 15 % gyroid | 4 | flat; the D5 shaft stands 1 mm proud of the 3 mm plate -> supports on build plate | 트리 (`tree(auto)`) | 3.6 | 4.1 | 0 h 09 min |
 | vane_coupler | D_small_keep | 5 walls, 5 top / 5 bottom layers, 15 % gyroid | 4 | upright, flange on the bed, D-bore vertical | 없음 | 0.9 | 0.9 | 0 h 06 min |
 | servo_cover | C_flat_plate | 3 walls, 4 top / 4 bottom layers, 15 % gyroid | 4 | flat | 없음 | 3.4 | 3.4 | 0 h 05 min |
 | wire_cover | B_shell | 3 walls, 4 top / 4 bottom layers, 15 % gyroid | 1 | flat | 없음 | 2.2 | 2.2 | 0 h 04 min |
 
-**합계 (수량 반영)**: 32 h 41 min, 필라멘트 827 g, 부품 566 g (발사대 제외 기체 부품 566 g)
+**합계 (수량 반영)**: 34 h 46 min, 필라멘트 857 g, 부품 568 g (발사대 제외 기체 부품 568 g)
+
+## top_cap: 바로 세워 출력 + 서포트 (2026-11-05 스위치 보호 칼라)
+
+* 서포트 검사(G-code, M): **PASS** - 스위치 구멍 안 서포트 0점, 칼라 안 0점(둘 다 0이어야 함). 안쪽 너트 자리(판 밑면) 서포트 경로 450.5 mm(보고만: 떼고 평평하게 긁음). 등록: 칼라 바깥 벽 원 중심 0.0058 mm 차이.
+* 서포트 26.7 g, 서포트 시간 1 h 25 min (M).
 
 ## 색별 필라멘트 (슬라이서 M, 퍼지·프라임 타워·서포트 포함)
 
 | 색 (Bambu PLA Matte) | 코드 | 색값 | 슬라이스 g | 예비 10 % 포함 g | 1 kg 롤 | 부품 |
 |---|---|---|---|---|---|---|
-| Ivory White | 11100 | #FFFFFF | 752 | 827 | 1 | propulsion_module, intake_module, avionics_module, avionics_tray, top_cap, vane, vane_coupler, servo_cover, wire_cover |
+| Ivory White | 11100 | #FFFFFF | 781 | 859 | 1 | propulsion_module, intake_module, avionics_module, avionics_tray, top_cap, vane, vane_coupler, servo_cover, wire_cover |
 | Mandarin Orange | 11300 | #F99963 | 76 | 83 | 1 | avionics_module |
 
 ## 2색 부품: avionics_module + avionics_logo (한 출력물, 필라멘트 2개)

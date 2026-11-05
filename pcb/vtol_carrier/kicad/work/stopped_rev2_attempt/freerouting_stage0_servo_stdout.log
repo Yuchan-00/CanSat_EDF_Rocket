@@ -1,0 +1,26 @@
+2026-11-05 05:13:18.187 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-05 05:13:18.499 INFO   Hardware: 16 CPU cores, 317 CPU score, 4026 MB RAM
+2026-11-05 05:13:18.501 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 05:13:18.502 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-05 05:13:19.604 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 05:13:19.908 INFO   [FCC97D\6E5425] Loading board file 'vtol_carrier_servo.dsn'...
+2026-11-05 05:13:20.339 INFO   [FCC97D\6E5425] Job 'FCC97D\6E5425' started at 2026-11-04T20:13:20.339458500Z.
+2026-11-05 05:13:20.882 INFO   [FCC97D\6E5425] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-05 05:13:21.300 INFO   [FCC97D\6E5425] Fanout stage started on board 'e2ecabae6384e9e9d383aaf8d503394d' with 3 of 668 SMD pins needing fanout (665 already connected, 0 netless).
+2026-11-05 05:13:23.616 INFO   [FCC97D\6E5425] Fanout pass #1 on board 'fd5472b7799c021047381057ac21f1f6' completed in 1.71 seconds with 3 SMD pins fanouted, 0 not routed, 0 insert errors, +2 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-05 05:13:24.082 INFO   [FCC97D\6E5425] Fanout pass #2 on board 'fd5472b7799c021047381057ac21f1f6' completed in 0.37 seconds with 0 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-05 05:13:24.116 INFO   [FCC97D\6E5425] Fanout stage completed: started with 668 total SMD pins, completed in 2.35 seconds, escaped pins: 3/668 (0.4%), using 1.56 total CPU seconds, 0.29 GB total allocated, and 57.7 MB peak heap usage.
+2026-11-05 05:13:24.268 INFO   [FCC97D\6E5425] Auto-routing stage started on board 'fd5472b7799c021047381057ac21f1f6' with baseline score 51.28 for 12 unrouted items.
+2026-11-05 05:13:26.261 INFO   [FCC97D\6E5425] Auto-routing pass #1 on board 'fd5472b7799c021047381057ac21f1f6' was completed in 1.87 seconds with score 1000.00 (0 unrouted and 0 violations), using 2.98 CPU seconds and the job allocated 0.50 GB of memory so far.
+2026-11-05 05:13:26.384 INFO   [FCC97D\6E5425] Auto-routing pass #2 on board 'ee9780d37c8bbbf2d715b12c2b9f4c78' was completed in 0.06 seconds with score 1000.00 (0 unrouted and 0 violations), using 3.95 CPU seconds and the job allocated 0.74 GB of memory so far.
+2026-11-05 05:13:26.508 INFO   [FCC97D\6E5425] Auto-routing stage completed: started with 13 unrouted nets, completed in 5.59 seconds, final score: 1000.00 (0 unrouted and 0 violations), using 3.95 total CPU seconds, 0.74 GB total allocated, and 76.6 MB peak heap usage.
+2026-11-05 05:13:26.674 INFO   [FCC97D\6E5425] Optimization stage started on board 'ee9780d37c8bbbf2d715b12c2b9f4c78'. Baseline router score: 1000.00, optimizer score: 821.17, incomplete connections: 0, clearance violations: 0.
+2026-11-05 05:13:31.240 INFO   [FCC97D\6E5425] Optimizer pass #1 on board '3a0e00effda243da0cf45386caeaae34' was completed in 4.19 seconds with the score of 830.15 (0 unrouted and 0 violations).
+2026-11-05 05:13:31.351 INFO   [FCC97D\6E5425] Optimizer pass #1: optimizer score 821.17 -> 830.15 (IMPROVED, 1.0941%), router score: 1000.00, incomplete connections: 0, clearance violations: 0.
+2026-11-05 05:13:31.352 INFO   [FCC97D\6E5425] Stopping optimizer because the improvement in this pass (1.0941%) is below the threshold (2.50%).
+2026-11-05 05:13:31.467 INFO   [FCC97D\6E5425] Optimization stage completed:. Baseline router score: 1000.00, baseline optimizer score: 821.17, final router score: 1000.00, final optimizer score: 830.15, completed in 4.74 seconds, using 14.70 total CPU seconds, 2.61 GB total allocated, and 214.5 MB peak heap usage.
+2026-11-05 05:13:31.538 INFO   [FCC97D\6E5425] Job 'FCC97D\6E5425' finished with state: COMPLETED (elapsed: 11.20 seconds, finished at UTC: 2026-11-04T20:13:31.536321Z).
+2026-11-05 05:13:31.574 INFO   Saving output file 'B:\0)AI_Cad\CanSat_EDF_Rocket\pcb\vtol_carrier\kicad\work\vtol_carrier_servo.ses' (SES)...
+2026-11-05 05:13:31.577 INFO   Successfully saved output file 'B:\0)AI_Cad\CanSat_EDF_Rocket\pcb\vtol_carrier\kicad\work\vtol_carrier_servo.ses' (16302 bytes).
+
+--- stderr ---

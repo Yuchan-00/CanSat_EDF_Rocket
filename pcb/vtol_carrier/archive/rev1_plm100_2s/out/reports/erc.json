@@ -1,0 +1,77 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-05T00:01:16",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a",
+            "violations": []
+        },
+        {
+            "path": "/Power/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/101e93c7-9a85-5998-bdb4-3ad1a9ca065d",
+            "violations": []
+        },
+        {
+            "path": "/NAV/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/237c200e-ae42-57e0-854d-09d50fbcffa5",
+            "violations": []
+        },
+        {
+            "path": "/FCU/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/34004cc0-69e8-5bed-9076-58434f53fea9",
+            "violations": []
+        },
+        {
+            "path": "/COM/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/b2ea86ff-b7b1-5687-b572-fcada269fb8d",
+            "violations": []
+        },
+        {
+            "path": "/GNS/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/88ec7f31-7b63-52a9-a637-30fc391e046f",
+            "violations": []
+        },
+        {
+            "path": "/Spare_MCU/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/42cdc145-0c06-5e1b-b3ec-335eb9ffa10d",
+            "violations": []
+        },
+        {
+            "path": "/Level_shift/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/740eb615-b464-5aa1-8315-c856b488b8d6",
+            "violations": []
+        },
+        {
+            "path": "/IO_connectors/",
+            "uuid_path": "/b6643291-c50e-53b6-b991-851dc1a56f2a/0209128e-ee74-570c-84de-a42991172ca6",
+            "violations": []
+        }
+    ],
+    "source": "vtol_carrier.kicad_sch"
+}

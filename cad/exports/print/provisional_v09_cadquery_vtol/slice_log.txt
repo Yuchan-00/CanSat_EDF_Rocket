@@ -10,3 +10,21 @@ vane_coupler: D_small_keep (5 walls, 5 top / 5 bottom layers, 15 % gyroid), [12.
 servo_cover: C_flat_plate (3 walls, 4 top / 4 bottom layers, 15 % gyroid), [50.8, 42.3, 1.2], part 3.41 g (solid 3.37 g), filament 3.43 g, 0 h 05 min, support none [1 s]
 wire_cover: B_shell (3 walls, 4 top / 4 bottom layers, 15 % gyroid), [34.7, 30.6, 1.6], part 2.23 g (solid 2.19 g), filament 2.24 g, 0 h 04 min, support none [1 s]
 **합계 (수량 반영)**: 32 h 41 min, 필라멘트 827 g, 부품 566 g (발사대 제외 기체 부품 566 g)
+
+--- partial run (--parts top_cap) ---
+v0.9 provisional slices 2026-11-05 15:49 - Bambu Studio CLI C:\Program Files\Bambu Studio\bambu-studio.exe
+params.json sha256 431eb66a468182ad3aaeb233ab0d1c342fd68bcc55704e5c8d70d02854cde13a, preset BUDGET_90mm_6S, filament density 1.31
+top_cap: A_load_path (4 walls, 4 top / 4 bottom layers, 15 % gyroid), [120.0, 120.0, 16.2], part 35.11 g (solid 35.99 g), filament 35.14 g, 0 h 43 min, support none [2 s]
+**합계 (수량 반영)**: 32 h 41 min, 필라멘트 827 g, 부품 566 g (발사대 제외 기체 부품 566 g)
+
+--- partial run (--parts top_cap) ---
+v0.9 provisional slices 2026-11-05 20:24 - Bambu Studio CLI C:\Program Files\Bambu Studio\bambu-studio.exe
+params.json sha256 2f2c2a93c2df19ad91e660f348a773a561c700ef8f4b04fde5dbe7a1528ba376, preset BUDGET_90mm_6S, filament density 1.31
+top_cap: A_load_path (4 walls, 4 top / 4 bottom layers, 15 % gyroid), [120.0, 120.0, 33.4], part 37.71 g (solid 38.65 g), filament 64.46 g, 2 h 48 min, support tree(auto), switch hole / collar support check PASS [42 s]
+**합계 (수량 반영)**: 34 h 46 min, 필라멘트 857 g, 부품 568 g (발사대 제외 기체 부품 568 g)
+
+--- partial run (--parts top_cap) ---
+v0.9 provisional slices 2026-11-05 23:03 - Bambu Studio CLI C:\Program Files\Bambu Studio\bambu-studio.exe
+params.json sha256 9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292, preset BUDGET_90mm_6S, filament density 1.31
+top_cap: A_load_path (4 walls, 4 top / 4 bottom layers, 15 % gyroid), [120.0, 120.0, 33.4], part 37.77 g (solid 38.74 g), filament 64.52 g, 2 h 48 min, support tree(auto), switch hole / collar support check PASS [28 s]
+**합계 (수량 반영)**: 34 h 46 min, 필라멘트 857 g, 부품 568 g (발사대 제외 기체 부품 568 g)

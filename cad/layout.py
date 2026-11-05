@@ -62,6 +62,13 @@ vane-servo lead route - pod windows, entry slots, straight annulus columns, deck
 servo channel / bulge / notch / bulkhead hole (attributes ``sl_*``) - with every passage sized from the ribbon envelope
 and every wall it leaves checked against printer.min_feature, plus the lead lengths and the lumped lead mass / COM
 (``sl_lead_mass_g``, ``sl_lead_com``) along ``servo_lead_polyline``.
+
+2026-11-05 logic power (user decisions 1-4, ``logic_power`` = params configs.vtol.logic_power; ``has_logic_power`` only
+for the power sources it applies to - the battery build): ``_top_cap`` adds the MTS-102 switch hole to ``cap_holes`` (every
+hole rule applies to it) and ``_logic_power`` places the carrier PCB's 1S logic pack at spot A (``lp_pack_*``, on the 6S
+pack's -x face), the switch body / nuts / lever (``lp_sw_*``), the lead routes to the carrier's J15 / J14 (``lp_*_lead_*``)
+and the carrier's mated plug boxes (``lp_plugs``), with every clearance raised on when short (``lp_clearance``).  Nothing
+else in the layout changes; ``logic_in_flight`` mirrors logic_power.in_flight_mass_model (the named mass switch).
 """
 from __future__ import annotations
 
@@ -154,6 +161,35 @@ def _pt_seg_dist_2d(p: tuple, a: tuple, b: tuple) -> float:
     return math.hypot(p[0] - (a[0] + t * dx), p[1] - (a[1] + t * dy))
 
 
+def _convex_hull_2d(pts: list) -> list:
+    """Convex hull of plane points (monotone chain), counter-clockwise, no repeated end point (2026-11-05 logic-power
+    strap / tie loops)."""
+    ps = sorted(set((float(x), float(y)) for x, y in pts))
+    if len(ps) < 3:
+        return ps
+    def cross(o: tuple, a: tuple, b: tuple) -> float:
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+    lo: list = []
+    for q in ps:
+        while len(lo) >= 2 and cross(lo[-2], lo[-1], q) <= 0.0:
+            lo.pop()
+        lo.append(q)
+    up: list = []
+    for q in reversed(ps):
+        while len(up) >= 2 and cross(up[-2], up[-1], q) <= 0.0:
+            up.pop()
+        up.append(q)
+    return lo[:-1] + up[:-1]
+
+
+def _signed_dist_convex_2d(poly: list, p: tuple) -> float:
+    """Signed distance from a plane point to the boundary of a convex polygon: negative inside, positive outside."""
+    d = min(_pt_seg_dist_2d(p, poly[i], poly[(i + 1) % len(poly)]) for i in range(len(poly)))
+    inside = all((b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]) >= 0.0
+                 for a, b in zip(poly, poly[1:] + poly[:1]))
+    return -d if inside else d
+
+
 def _convex_gap_2d(pa: list, pb: list) -> float:
     """Gap between two convex polygons in the plane (vertex lists, either winding): 0 when they touch or overlap
     (no separating edge normal), else the smallest vertex-to-edge distance either way (exact for convex polygons)."""
@@ -171,6 +207,132 @@ def _convex_gap_2d(pa: list, pb: list) -> float:
         return 0.0
     return min(min(_pt_seg_dist_2d(p, a, b) for p in pa for a, b in edges(pb)),
                min(_pt_seg_dist_2d(p, a, b) for p in pb for a, b in edges(pa)))
+
+
+def _disc_strip_area(r: float, a: float) -> float:
+    """Area of the disc of radius r inside the strip |x| < a (2026-11-05 switch collar: the notch slab)."""
+    a = min(max(a, 0.0), r)
+    return 2.0 * (a * math.sqrt(r * r - a * a) + r * r * math.asin(a / r))
+
+
+def _polygon_section(pts: list) -> dict:
+    """Plane section properties of a simple polygon (Green's theorem; either winding): area, centroid, centroidal
+    Ixx / Iyy / Ixy, principal I_min and the section modulus about the minor principal axis
+    (I_min / the farthest vertex measured perpendicular to that axis).  2026-11-05 switch collar side-load hand calc."""
+    a = cx = cy = ixx = iyy = ixy = 0.0
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:] + pts[:1]):
+        c = x0 * y1 - x1 * y0
+        a += c / 2.0
+        cx += (x0 + x1) * c / 6.0
+        cy += (y0 + y1) * c / 6.0
+        ixx += (y0 * y0 + y0 * y1 + y1 * y1) * c / 12.0
+        iyy += (x0 * x0 + x0 * x1 + x1 * x1) * c / 12.0
+        ixy += (x0 * y1 + 2.0 * x0 * y0 + 2.0 * x1 * y1 + x1 * y0) * c / 24.0
+    s = 1.0 if a > 0 else -1.0
+    a, cx, cy, ixx, iyy, ixy = a * s, cx * s, cy * s, ixx * s, iyy * s, ixy * s
+    cx, cy = cx / a, cy / a
+    ixx, iyy, ixy = ixx - a * cy * cy, iyy - a * cx * cx, ixy - a * cx * cy
+    m, r = 0.5 * (ixx + iyy), math.hypot(0.5 * (ixx - iyy), ixy)
+    i_min = m - r
+    # the axis (through the centroid, direction angle t) with the smallest second moment: I(t) = sum (n . p)^2 dA with
+    # n = (-sin t, cos t) the in-plane normal of the axis; the bending stress grows with the distance n . p
+    def i_about(t: float) -> float:
+        nx, ny = -math.sin(t), math.cos(t)
+        return iyy * nx * nx + ixx * ny * ny + 2.0 * ixy * nx * ny
+    t_min = min((k * math.pi / 3600.0 for k in range(3600)), key=i_about)
+    nx, ny = -math.sin(t_min), math.cos(t_min)
+    c_max = max(abs((x - cx) * nx + (y - cy) * ny) for x, y in pts)
+    return {"area": a, "centroid": (cx, cy), "ixx": ixx, "iyy": iyy, "ixy": ixy, "i_min": i_min,
+            "minor_axis_deg": math.degrees(t_min), "c_max_minor": c_max, "z_min": i_about(t_min) / c_max}
+
+
+def _solve_linear(A: list, b: list) -> list:
+    """Small dense linear solve (Gauss elimination with partial pivoting) - no numpy in the Layout."""
+    n = len(b)
+    M = [list(map(float, row)) + [float(b[i])] for i, row in enumerate(A)]
+    for c in range(n):
+        p = max(range(c, n), key=lambda r: abs(M[r][c]))
+        if abs(M[p][c]) < 1e-300:
+            raise ValueError("singular system")
+        M[c], M[p] = M[p], M[c]
+        for r in range(n):
+            if r != c:
+                f = M[r][c] / M[c][c]
+                for k in range(c, n + 1):
+                    M[r][k] -= f * M[c][k]
+    return [M[i][n] / M[i][i] for i in range(n)]
+
+
+def _annular_plate_boss(a: float, b: float, t: float, nu: float) -> dict:
+    """2026-11-05 switch collar, review F3 (plate root): Kirchhoff annular plate of thickness t, clamped at the outer
+    radius b, its inner edge welded to a RIGID boss of radius a (the collar).  Returns the largest |radial bending stress|
+    (at r = a or r = b) per unit load, MPa per N mm of moment M on the boss (tilting, the cos(theta) harmonic
+    w = f(r) cos(theta), f = A r^3 + B r ln r + C r + E / r with B = M / (4 pi D) from the concentrated-couple solution,
+    boundary f(a) = a phi, f'(a) = phi, f(b) = f'(b) = 0) and MPa per N of axial force P through the boss (axisymmetric
+    w = A + B r^2 + C ln r + Dc r^2 ln r with Dc = P / (8 pi D), w'(a) = 0, w(b) = w'(b) = 0).  The stress does not
+    depend on the modulus (D cancels).  Roark's rigid-boss cases; checked against the reviewer's numbers (M = 294.8 N mm,
+    a 12.9, t 1.2: 6.25 / 8.78 / 10.92 / 13.26 / 15.03 MPa for b = 20 / 25 / 32 / 50 / 200)."""
+    D = 1.0     # cancels
+    B = 1.0 / (4.0 * math.pi * D)
+    A_, C_, E_, _phi = _solve_linear(
+        [[a ** 3, a, 1.0 / a, -a], [3.0 * a * a, 1.0, -1.0 / (a * a), -1.0], [b ** 3, b, 1.0 / b, 0.0],
+         [3.0 * b * b, 1.0, -1.0 / (b * b), 0.0]],
+        [-B * a * math.log(a), -B * (math.log(a) + 1.0), -B * b * math.log(b), -B * (math.log(b) + 1.0)])
+
+    def mr_m(r: float) -> float:
+        f = A_ * r ** 3 + B * r * math.log(r) + C_ * r + E_ / r
+        fp = 3.0 * A_ * r * r + B * (math.log(r) + 1.0) + C_ - E_ / (r * r)
+        fpp = 6.0 * A_ * r + B / r + 2.0 * E_ / r ** 3
+        return -D * (fpp + nu * (fp / r - f / (r * r)))
+    Dc = 1.0 / (8.0 * math.pi * D)
+    A2, B2, C2 = _solve_linear(
+        [[0.0, 2.0 * a, 1.0 / a], [1.0, b * b, math.log(b)], [0.0, 2.0 * b, 1.0 / b]],
+        [-Dc * (2.0 * a * math.log(a) + a), -Dc * b * b * math.log(b), -Dc * (2.0 * b * math.log(b) + b)])
+
+    def mr_p(r: float) -> float:
+        wpp = 2.0 * B2 - C2 / (r * r) + Dc * (2.0 * math.log(r) + 3.0)
+        wp = 2.0 * B2 * r + C2 / r + Dc * (2.0 * r * math.log(r) + r)
+        return -D * (wpp + nu * wp / r)
+    k = 6.0 / (t * t)
+    return {"sigma_per_Nmm_moment": k * max(abs(mr_m(a)), abs(mr_m(b))),
+            "sigma_per_N_axial": k * max(abs(mr_p(a)), abs(mr_p(b)))}
+
+
+def _ray_exit(px: float, py: float, dx: float, dy: float, circles_out: list, circles_in: list, rects: list) -> float:
+    """2026-11-05 switch collar plate root: distance from (px, py) along the unit direction (dx, dy) to the first support
+    - a circle the ray leaves the inside of (the rim ring's inner radius), a circle it enters from outside (the hub) or a
+    rib rectangle (theta, u0, u1, half width).  inf when nothing is met."""
+    best = math.inf
+    for r in circles_out:                        # the point is inside: s^2 + 2 s (p.d) + |p|^2 - r^2 = 0, the + root
+        pd, pp = px * dx + py * dy, px * px + py * py
+        disc = pd * pd - (pp - r * r)
+        if disc >= 0.0:
+            s = -pd + math.sqrt(disc)
+            if s > 0.0:
+                best = min(best, s)
+    for r in circles_in:                         # the point is outside: the - root, when in front
+        pd, pp = px * dx + py * dy, px * px + py * py
+        disc = pd * pd - (pp - r * r)
+        if disc >= 0.0:
+            s = -pd - math.sqrt(disc)
+            if s > 0.0:
+                best = min(best, s)
+    for th, u0, u1, hw in rects:                 # slab method in the rib's (u, v) frame
+        t = math.radians(th)
+        c, s_ = math.cos(t), math.sin(t)
+        pu, pv = px * c + py * s_, -px * s_ + py * c
+        du, dv = dx * c + dy * s_, -dx * s_ + dy * c
+        lo, hi = 0.0, math.inf
+        for p0, d0, a0, a1 in ((pu, du, u0, u1), (pv, dv, -hw, hw)):
+            if abs(d0) < 1e-15:
+                if not (a0 <= p0 <= a1):
+                    lo, hi = 1.0, 0.0
+                continue
+            t0, t1 = (a0 - p0) / d0, (a1 - p0) / d0
+            lo, hi = max(lo, min(t0, t1)), min(hi, max(t0, t1))
+        if lo <= hi and lo > 0.0:
+            best = min(best, lo)
+    return best
 
 
 def _polar_rect_2d(theta_deg: float, u0: float, u1: float, v0: float, v1: float) -> list:
@@ -378,6 +540,12 @@ class Layout:
         if self.power_source not in POWER_SOURCES:
             raise ValueError(f"power.source must be one of {POWER_SOURCES}, not {self.power_source!r}")
         self.has_battery = self.power_source != "tether"
+        # v0.9 logic-power round (user decisions 2026-11-05): the carrier's 1S logic pack + top-cap switch, battery build
+        # only (logic_power.applies_to_power_sources); set in _top_cap / _logic_power
+        lpw = p.get("logic_power") if self.vtol else None
+        self.has_logic_power = bool(lpw) and self.power_source in (lpw.get("applies_to_power_sources") or [])
+        self.logic_in_flight = bool(lpw.get("in_flight_mass_model")) if self.has_logic_power else False
+        self.has_lp_collar = False       # switch-collar round (2026-11-05): set by _logic_power (logic_power.collar)
 
         # ---------------- body tube ----------------
         self.body_od = b["od"]
@@ -1298,6 +1466,8 @@ class Layout:
             # v0.9 CAD-2 VTOL: top cap on the avionics spigot (GPS, tether hardpoint, gland, arming switch)
             self._top_cap(p)
             self.vehicle_h = self.z_cap_top - self.z_exit
+            if self.has_logic_power:     # 2026-11-05: 1S logic pack at spot A, top-cap switch, leads (battery build)
+                self._logic_power(p)
         else:
             self.z_nose_skirt_bottom = self.z_payload_spigot_bottom
             self.z_nose_skirt_top = self.z_payload_spigot_top
@@ -1895,6 +2065,12 @@ class Layout:
         sw = tc["switch_hole"]
         self.cap_holes["arming switch"] = (sw["r"] * math.cos(math.radians(sw["theta_deg"])),
                                            sw["r"] * math.sin(math.radians(sw["theta_deg"])), float(sw["d"]))
+        if self.has_logic_power:
+            # 2026-11-05 user decision 2 ('상단 캡에 구멍 내기'): the logic power switch (MTS-102) through the plate; every
+            # hole rule below applies to it (rim ring, spigot bore, hub, ribs, the other holes, the GPS parts)
+            lsw = p["logic_power"]["switch"]
+            self.cap_holes["logic power switch"] = (lsw["r"] * math.cos(math.radians(lsw["theta_deg"])),
+                                                    lsw["r"] * math.sin(math.radians(lsw["theta_deg"])), float(lsw["hole_d"]))
         cl: dict[str, float] = {}
         lim: dict[str, float | None] = {}
         # (1) every hole: inside the spigot bore (the plate rests on the spigot wall outside it), clear of the hub and the
@@ -2085,6 +2261,532 @@ class Layout:
                     hx_ = p["power"]["hybrid_extra_ASSUMED"]
                     self.tether_items["hybrid_diode_board"] = (hx_["ideal_diode_board_g"] + hx_["buffer_lead_xt60_g"],
                                                                (esc_c[0], 0.0, self.esc_z[1] + 2.0))
+
+    def _logic_power(self, p: dict) -> None:
+        """v0.9 logic-power round (user decisions 2026-11-05, ``logic_power``; VTOL battery build only): the carrier PCB rev
+        2c's 1S logic pack at spot A (on the 6S pack's -x face, ``lp_pack_*``), the MTS-102 switch through the top cap
+        (hole ``cap_holes['logic power switch']`` placed by _top_cap; body / nuts / lever ``lp_sw_*``), the lead routes
+        switch -> J15 and pack -> J14 (``lp_*_lead_polyline``, keep-out Ø ``lp_wire_od``) and the carrier's mated plug
+        boxes (``lp_plugs``, from the PCB round).  Clearances ``lp_clearance`` / ``lp_limits`` (box / segment, raised
+        when short; C37-C39 re-measure them on the solids): pack vs the 6S pack (strapped against it, >= 0), the bore
+        (>= PLACEHOLDER_BORE_CLEAR_MM), the carrier and every bay box (>= min_clear_to_tray), the plug boxes and the GPS
+        lead (>= logic_power.clearance.min_to_leads_plugs, PCB review MF2-10); switch body / lugs vs the ribs, the rim
+        ring, the arming-switch body and the hardpoint stack (>= min_feature / min_clear_to_tray) and every bay box and the
+        pack (>= min_clear_to_tray); the leads vs the 6S pack / bay boxes (no overlap) and the bore (>= 1 mm) and the
+        switch lead vs the pack (>= min_to_leads_plugs).  Masses (``lp_*_mass_g``, ``lp_*_com``) feed the
+        pending-mass report (logic_power.in_flight_mass_model false) or the flight model (true)."""
+        lp, mf = p["logic_power"], p["printer"]["min_feature"]
+        mc = float(p["payload_module"]["com_mount"]["min_clear_to_tray"])
+        mlp = float(lp["clearance"]["min_to_leads_plugs"])
+        cl: dict[str, float] = {}
+        lim: dict[str, float] = {}
+        # ---- pack at spot A ----
+        pk = lp["pack"]
+        dx, dy, dz = pk["dims_xyz"]
+        x1 = self.battery_x[0] - pk["gap_to_flight_pack"]
+        z0 = self.battery_z[0] + pk["z0_from_flight_pack_bottom"]
+        self.lp_pack_x, self.lp_pack_y, self.lp_pack_z = (x1 - dx, x1), (-dy / 2, dy / 2), (z0, z0 + dz)
+        self.lp_pack_mass_g = float(pk["mass_g"])
+        self.lp_pack_center = (0.5 * (x1 - dx + x1), 0.0, z0 + dz / 2)
+        pack = (self.lp_pack_x, self.lp_pack_y, self.lp_pack_z)
+        # the carrier's mated plug boxes (vehicle x / y; z above the board's top face = carrier foam top + board_t)
+        self.lp_board_top_z = self.fcu_z[0] + float(p["electronics"]["carrier"]["board_t"])
+        self.lp_plugs = {nm: (tuple(b["x"]), tuple(b["y"]), (self.lp_board_top_z + b["z"][0], self.lp_board_top_z + b["z"][1]))
+                         for nm, b in lp["carrier_plugs"].items() if nm.startswith("J")}
+        bay = self.avionics_bay_boxes()
+        k = "pack -> 6S pack (strapped against its -x face)"
+        # signed (an overlap is negative; _box_gap would give 0 for it): the face-to-face gap along x
+        cl[k], lim[k] = bay["battery"][0][0] - self.lp_pack_x[1], 0.0
+        k = "pack -> bore (radial)"
+        cl[k] = self.body_id / 2 - max(math.hypot(x, y) for x in self.lp_pack_x for y in self.lp_pack_y)
+        lim[k] = PLACEHOLDER_BORE_CLEAR_MM
+        if self.z_intake_spigot_top > self.lp_pack_z[0]:
+            raise ValueError("logic pack reaches down into the intake spigot (its bore is the tighter one)")
+        for nm, bx in bay.items():
+            if nm != "battery":
+                cl[f"pack -> {nm}"], lim[f"pack -> {nm}"] = _box_gap(pack, bx), mc
+        for nm, bx in self.lp_plugs.items():
+            cl[f"pack -> {nm} plug"], lim[f"pack -> {nm} plug"] = _box_gap(pack, bx), mlp
+        gl = self.gps_lead_polyline
+        k = "pack -> GPS lead (centre line - OD/2)"
+        cl[k] = (min(_box_segment_dist(pack, a, b) for a, b in zip(gl[:-1], gl[1:]))
+                 - 0.5 * float(lp["clearance"]["gps_lead_od_ASSUMED"]))
+        lim[k] = mlp
+        # retention: the 6S pack's lower strap (rocket_geometry.avionics_tray slot at battery_z[0] + 25, strap_slot_w wide,
+        # y +-(tray_w / 2 - 10)) wraps both packs; one tie lp_tie_z below the pack top
+        rt = lp["retention"]
+        sw_w = float(p["avionics_module"]["strap_slot_w"])
+        zs = self.battery_z[0] + 25.0
+        self.lp_strap_z = (zs - sw_w / 2, zs + sw_w / 2)
+        self.lp_strap_slot_y = self.tray_w / 2 - 10.0
+        self.lp_tie_z = self.lp_pack_z[1] - float(rt["tie_z_below_pack_top"])
+        self.lp_strap_wraps_pack = (self.lp_pack_z[0] <= self.lp_strap_z[0] and self.lp_strap_z[1] <= self.lp_pack_z[1]
+                                    and self.lp_strap_slot_y > self.lp_pack_y[1])
+        if not self.lp_strap_wraps_pack:
+            raise ValueError("logic pack: the 6S pack's lower strap does not wrap it (strap band / slot span)")
+        self.lp_retention_mass_g = float(rt["strap_tie_mass_g_ASSUMED"])
+        self.lp_retention_com = (self.lp_pack_x[0], 0.0, 0.5 * (zs + self.lp_tie_z))
+        f_n = self.lp_pack_mass_g * 1e-3 * 9.80665 * float(rt["touchdown_g_ASSUMED"])
+        self.lp_retention_E = {"touchdown_load_N": f_n, "friction_mu_ASSUMED": float(rt["friction_mu_ASSUMED"]),
+                               "normal_force_needed_N (2 faces)": f_n / (2.0 * float(rt["friction_mu_ASSUMED"]))}
+        # ---- switch through the top cap (hole placed by _top_cap) ----
+        sw = lp["switch"]
+        sx, sy, sd = self.cap_holes["logic power switch"]
+        self.lp_sw_xy, self.lp_sw_hole_d = (sx, sy), sd
+        self.lp_sw_r, self.lp_sw_theta = math.hypot(sx, sy), float(sw["theta_deg"])
+        bx_, by_, bd_ = sw["body_xyz_ASSUMED"]
+        self.lp_sw_nut_d, self.lp_sw_bushing_d = float(sw["nut_d_ASSUMED"]), float(sw["bushing_d"])
+        self.lp_sw_lever_d = float(sw["lever_d_ASSUMED"])
+        if self.lp_sw_bushing_d >= sd:
+            raise ValueError("logic_power.switch: the bushing does not pass the hole")
+        # review fix (2026-11-05, G5): the nuts must bear on the plate round the hole (flats - hole >= 2 x min bearing) and
+        # the nut stack must fit on the bushing (outer nut + lock washer within the bushing above the plate)
+        self.lp_sw_nut_af = float(sw["nut_af_ASSUMED"])
+        self.lp_sw_nut_bearing_w = 0.5 * (self.lp_sw_nut_af - sd)
+        k = "switch nut bearing on the plate (flats - hole) / 2"
+        cl[k], lim[k] = self.lp_sw_nut_bearing_w, float(sw["nut_min_bearing_w_ASSUMED"])
+        self.lp_sw_thread_spare = (float(sw["above_plate_h_ASSUMED"]) - float(sw["inner_nut_h_ASSUMED"])
+                                   - float(sw["lock_washer_t_ASSUMED"]))
+        k = "switch bushing above the plate - (outer nut + lock washer)"
+        cl[k], lim[k] = self.lp_sw_thread_spare, 0.0
+        z_bt = self.z_cap_plate_bottom - float(sw["inner_nut_h_ASSUMED"])
+        self.lp_sw_inner_nut_z = (z_bt, self.z_cap_plate_bottom)
+        self.lp_sw_body = ((sx - bx_ / 2, sx + bx_ / 2), (sy - by_ / 2, sy + by_ / 2), (z_bt - bd_, z_bt))
+        zl = z_bt - bd_ - float(sw["lugs_h_ASSUMED"])
+        self.lp_sw_lugs = ((sx - bx_ / 2 + 1.0, sx + bx_ / 2 - 1.0), (sy - by_ / 2 + 1.5, sy + by_ / 2 - 1.5), (zl, z_bt - bd_))
+        self.lp_sw_outer_nut_z = (self.z_cap_top, self.z_cap_top + float(sw["inner_nut_h_ASSUMED"]))
+        self.lp_sw_bushing_top_z = self.z_cap_top + float(sw["above_plate_h_ASSUMED"])
+        self.lp_sw_top_z = self.lp_sw_bushing_top_z + float(sw["lever_h_ASSUMED"])
+        self.lp_sw_mass_g = float(sw["mass_g_ASSUMED"])
+        self.lp_sw_center = (sx, sy, 0.5 * (zl + self.lp_sw_top_z))
+        nut = ((sx - self.lp_sw_nut_d / 2, sx + self.lp_sw_nut_d / 2), (sy - self.lp_sw_nut_d / 2, sy + self.lp_sw_nut_d / 2),
+               self.lp_sw_inner_nut_z)
+        below = [self.lp_sw_body, self.lp_sw_lugs, nut]
+        corners = [(x, y) for bb in below for x in bb[0] for y in bb[1]]
+        k = "switch body / nut -> rim ring (radial)"
+        cl[k], lim[k] = self.cap_ring_r[0] - max(math.hypot(x, y) for x, y in corners), mf
+        def rect(bb: tuple) -> list:
+            return [(bb[0][0], bb[1][0]), (bb[0][1], bb[1][0]), (bb[0][1], bb[1][1]), (bb[0][0], bb[1][1])]
+        ribs = []
+        for th in self.cap_rib_thetas:
+            c, s = math.cos(math.radians(th)), math.sin(math.radians(th))
+            ribs.append([(self.cap_rib_r[0] * c, self.cap_rib_r[0] * s), (self.cap_rib_r[1] * c, self.cap_rib_r[1] * s)])
+        k = "switch body / nut -> ribs"
+        cl[k] = min(_convex_gap_2d(rect(bb), rb) for bb in below for rb in ribs) - self.cap_rib_t / 2
+        lim[k] = mf
+        k = "switch body / nut -> hub"
+        cl[k] = min(math.hypot(max(bb[0][0], min(0.0, bb[0][1])), max(bb[1][0], min(0.0, bb[1][1]))) for bb in below) \
+            - self.cap_hub_d / 2
+        lim[k] = mf
+        k = "switch body -> arming-switch body"
+        cl[k], lim[k] = min(_box_gap(bb, self.cap_switch_box) for bb in below), mf
+        if getattr(self, "cap_hardpoint", False):
+            r_st = max(self.cap_nut_af / math.sqrt(3), self.cap_bolt_d / 2)
+            st = ((-r_st, r_st), (-r_st, r_st), (self.cap_stack_low_z, self.z_cap_under))
+            k = "switch body -> hardpoint stack"
+            cl[k], lim[k] = min(_box_gap(bb, st) for bb in below), mc
+        # review fix (2026-11-05, G1): the cap's joint screws (M3 at joint_thetas, z skirt bottom + joint_screw_dz, head on
+        # the skirt at body_r, driven radially in).  The project proxy for a screw of ANY length (joint_screw_axes, Ø
+        # joint_hole_outer_d to the axis) crosses the switch body at 135 deg, so the cap screws are limited to
+        # switch.cap_joint_screw_max_len (tip at body_r - len): that finite screw keeps >= min_clear_to_tray from the
+        # switch below the plate; the any-length proxy distance and the longest screw that still keeps it are reported
+        z_js = self.z_cap_skirt_bottom + self.joint_screw_dz
+        r_js = 0.5 * float(p["body"]["joint_hole_outer_d"])
+        self.lp_cap_screw_max_len = float(sw["cap_joint_screw_max_len"])
+        def screw_gap(th: float, ln: float) -> float:
+            c, s = math.cos(math.radians(th)), math.sin(math.radians(th))
+            r0 = max(self.body_r - ln, 0.0)
+            return min(_box_segment_dist(bb, (r0 * c, r0 * s, z_js), (self.body_r * c, self.body_r * s, z_js))
+                       for bb in below) - r_js
+        self.lp_cap_screw_z = z_js
+        self.lp_cap_screw_gap = {th: screw_gap(th, self.lp_cap_screw_max_len) for th in self.joint_thetas}
+        self.lp_cap_screw_any_len_gap = {th: screw_gap(th, self.body_r) for th in self.joint_thetas}
+        th_c = min(self.lp_cap_screw_gap, key=self.lp_cap_screw_gap.get)
+        lo_, hi_ = 0.0, self.body_r                # longest screw at th_c that keeps min_clear_to_tray (bisection)
+        for _ in range(60):
+            mid = 0.5 * (lo_ + hi_)
+            lo_, hi_ = (mid, hi_) if screw_gap(th_c, mid) >= mc else (lo_, mid)
+        self.lp_cap_screw_critical = (th_c, lo_)
+        k = f"switch body / lugs -> cap joint screw M3 x {self.lp_cap_screw_max_len:g} (max, {th_c:g} deg)"
+        cl[k], lim[k] = self.lp_cap_screw_gap[th_c], mc
+        for nm, bx in list(bay.items()) + [("logic pack", pack)]:
+            cl[f"switch body / lugs -> {nm}"] = min(_box_gap(bb, bx) for bb in below)
+            lim[f"switch body / lugs -> {nm}"] = mc
+        k = "switch lever / nut -> body edge (radial)"
+        cl[k], lim[k] = self.body_r - (self.lp_sw_r + self.lp_sw_nut_d / 2), 0.0
+        # ---- leads (keep-out Ø lp_wire_od): switch lugs -> J15, pack top (lead exit) -> J14 ----
+        ld = lp["leads"]
+        self.lp_wire_od = float(ld["wire_od_ASSUMED"])
+        rw = self.lp_wire_od / 2
+        def plug_top(nm: str) -> tuple:
+            b = self.lp_plugs[nm]
+            return (0.5 * (b[0][0] + b[0][1]), 0.5 * (b[1][0] + b[1][1]), b[2][1])
+        j15, j14 = plug_top("J15"), plug_top("J14")
+        z_drop = self.fcu_z[1] + rw + 0.5         # the vertical legs end just over the carrier envelope's top
+        self.lp_switch_lead_polyline = [(sx, sy, zl), (sx, sy, z_drop), j15]
+        pl = ld["pack_to_J14"]
+        ex = pk["lead_exit_ASSUMED"]
+        if ex["end"] != "top":
+            raise ValueError("logic_power.pack.lead_exit_ASSUMED.end: only 'top' is routed (the bottom end sits over the "
+                             "servo bundle with no room for the lead bend)")
+        xc = self.lp_pack_center[0]
+        zt = self.lp_pack_z[1] + float(pl["over_pack_top"])
+        vx, vy = float(pl["vertical_x"]), float(pl["vertical_y"])
+        self.lp_pack_lead_polyline = [(xc, float(ex["y"]), self.lp_pack_z[1]), (xc, float(ex["y"]), zt), (vx, vy, zt),
+                                      (vx, vy, z_drop), j14]
+        def route_len(pts: list) -> float:
+            return sum(math.dist(a, b) for a, b in zip(pts[:-1], pts[1:]))
+        def route_com(pts: list) -> tuple:
+            segs = list(zip(pts[:-1], pts[1:]))
+            n_ = route_len(pts)
+            return tuple(sum(0.5 * (a[i] + b[i]) * math.dist(a, b) for a, b in segs) / n_ for i in range(3))
+        sl = ld["switch_to_J15"]
+        self.lp_switch_lead_route_mm = route_len(self.lp_switch_lead_polyline)
+        self.lp_switch_lead_len_mm = self.lp_switch_lead_route_mm + float(sl["slack_mm"])
+        self.lp_switch_lead_mass_g = (self.lp_switch_lead_len_mm * 1e-3 * float(sl["mass_g_per_m_ASSUMED"])
+                                      + float(sl["connector_g_ASSUMED"]))
+        self.lp_switch_lead_com = route_com(self.lp_switch_lead_polyline)
+        self.lp_pack_lead_route_mm = route_len(self.lp_pack_lead_polyline)
+        self.lp_pack_lead_len_mm = self.lp_pack_lead_route_mm + float(pl["slack_mm"])
+        self.lp_cap_skirt_engagement_mm = self.z_cap_plate_bottom - self.z_cap_skirt_bottom
+        k = "switch lead slack -> cap skirt engagement (lift the cap before unplugging J15)"
+        cl[k], lim[k] = float(sl["slack_mm"]) - self.lp_cap_skirt_engagement_mm, 0.0
+        carrier = bay.get(self.fcu_part)
+        for lead, pts in (("switch lead", self.lp_switch_lead_polyline), ("pack lead", self.lp_pack_lead_polyline)):
+            segs = list(zip(pts[:-1], pts[1:]))
+            above = segs[:-1]                       # the last segment enters its plug box inside the carrier envelope
+            k = f"{lead} -> bore (radial)"
+            cl[k] = self.body_id / 2 - max(math.hypot(q[0], q[1]) for q in pts) - rw
+            lim[k] = PLACEHOLDER_BORE_CLEAR_MM
+            for nm, bx in bay.items():
+                if nm == self.fcu_part:
+                    continue
+                k = f"{lead} -> {nm}"
+                cl[k], lim[k] = min(_box_segment_dist(bx, a, b) for a, b in segs) - rw, 0.0
+            if carrier is not None:
+                k = f"{lead} -> {self.fcu_part} (above its envelope)"
+                cl[k], lim[k] = min(_box_segment_dist(carrier, a, b) for a, b in above) - rw, 0.0
+        k = "switch lead -> logic pack"
+        cl[k] = min(_box_segment_dist(pack, a, b) for a, b in zip(self.lp_switch_lead_polyline[:-1],
+                                                                   self.lp_switch_lead_polyline[1:])) - rw
+        lim[k] = mlp
+        k = "pack lead -> logic pack (its own lead, beside it)"
+        cl[k] = min(_box_segment_dist(pack, a, b) for a, b in zip(self.lp_pack_lead_polyline[1:-1],
+                                                                   self.lp_pack_lead_polyline[2:])) - rw
+        lim[k] = 0.0
+        # ---- review fix (2026-11-05, G3 / DP-10): strap / tie loops in plan vs the leads (E, information for C37) ----
+        # the lengthened lower 6S strap: hull of the tray slots (tray_x, +-slot y), both packs' corners; the tie: hull of
+        # the tray lightening holes' outer edges (tray_x, +-tray_hole_y[1], retention.tie_path_ASSUMED) and both packs.
+        # Each lead's vertical leg (plan point) -> signed band gap: inside the loop = (distance to the band's inner face) -
+        # lead radius (negative = the band presses on the lead: it is held); outside = distance - band thickness - lead
+        # radius (negative = the lead lies over the band)
+        bx6 = bay["battery"]
+        corners = ([(x, y) for x in self.lp_pack_x for y in self.lp_pack_y]
+                   + [(x, y) for x in bx6[0] for y in bx6[1]])
+        self.lp_strap_loop = _convex_hull_2d(corners + [(self.tray_x, s * self.lp_strap_slot_y) for s in (1.0, -1.0)])
+        y_tie = float(self.tray_hole_y[1]) if getattr(self, "tray_hole_y", None) else self.lp_strap_slot_y
+        self.lp_tie_loop = _convex_hull_2d(corners + [(self.tray_x, s * y_tie) for s in (1.0, -1.0)])
+        self.lp_strap_wraps_flight_pack_corners = [c for c in ((bx6[0][0], bx6[1][0]), (bx6[0][0], bx6[1][1]))
+                                                   if c in self.lp_strap_loop]
+        t_band = {"strap": float(rt["strap_t_ASSUMED"]), "tie": float(rt["tie_t_ASSUMED"])}
+        legs = {"switch lead": (sx, sy), "pack lead": (vx, vy)}
+        self.lp_band_leads = {}
+        for band, poly in (("strap", self.lp_strap_loop), ("tie", self.lp_tie_loop)):
+            for lead, xy in legs.items():
+                sd_ = _signed_dist_convex_2d(poly, xy)
+                inside = sd_ < 0.0
+                gap = (-sd_ - rw) if inside else (sd_ - t_band[band] - rw)
+                self.lp_band_leads[f"{lead} vs {band}"] = {"inside_loop": inside, "centre_to_band_mm": abs(sd_),
+                                                           "band_gap_mm": gap}
+        # ---- reach / exposure (information for C39) ----
+        te = p["top_cap"]["tether"]
+        r_eye, h_eye = 0.5 * float(te["eye_od_ASSUMED"]), float(te["eye_h_ASSUMED"])
+        self.lp_sw_lever_h = self.lp_sw_top_z - self.z_cap_top
+        hull = h_eye * (self.body_r - self.lp_sw_r) / (self.body_r - r_eye)
+        self.lp_exposure = {"lever top above the cap top": self.lp_sw_lever_h,
+                            "eye-bolt top above the cap top (when fitted)": h_eye,
+                            "lever top below the eye-bolt top": h_eye - self.lp_sw_lever_h,
+                            "rim -> eye-top line height at the switch r (tip-over onto the top corner)": hull,
+                            "lever top over that line (information)": self.lp_sw_lever_h - hull,
+                            "lever axis -> eye axis (plan)": self.lp_sw_r,
+                            "lever axis -> body edge (plan)": self.body_r - self.lp_sw_r}
+        pcx, pcy = 0.5 * sum(self.cap_patch_xy[0]), 0.5 * sum(self.cap_patch_xy[1])
+        dp = math.hypot(sx - pcx, sy - pcy)
+        self.lp_gps_lever_shadow_deg = {"azimuth_width": 2 * math.degrees(math.atan2(0.5 * self.lp_sw_nut_d, dp)),
+                                        "elevation_top": math.degrees(math.atan2(self.lp_sw_top_z - self.cap_patch_z[1],
+                                                                                 dp - 0.5 * self.lp_sw_nut_d))}
+        fr = 0.5 * float(sw["finger_clear_d_ASSUMED"])
+        self.lp_finger_r = fr
+        def rect_pt(xy: tuple, x: float, y: float) -> float:
+            return math.hypot(max(xy[0][0] - x, x - xy[0][1], 0.0), max(xy[1][0] - y, y - xy[1][1], 0.0))
+        tops = {"GPS ground plane": rect_pt(self.cap_gp_xy, sx, sy), "GPS board": rect_pt(self.cap_board_xy, sx, sy),
+                "tether eye (when fitted)": math.hypot(sx, sy) - r_eye,
+                "arming switch (its nut, Ø as this one)": math.hypot(sx - self.cap_holes["arming switch"][0],
+                                                                      sy - self.cap_holes["arming switch"][1])
+                - 0.5 * self.lp_sw_nut_d}
+        for nm, dv in tops.items():
+            k = f"finger circle (Ø {2 * fr:g}) round the lever -> {nm}"
+            cl[k], lim[k] = dv - fr, 0.0
+        k = "finger circle round the lever -> cap edge"
+        cl[k], lim[k] = self.body_r - self.lp_sw_r - fr, 0.0
+        # ---- switch-collar round (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘') ----
+        self.has_lp_collar = bool(lp.get("collar"))
+        if self.has_lp_collar:
+            self._logic_collar(p, cl, lim, tops_xy={"GPS ground plane": self.cap_gp_xy, "GPS board": self.cap_board_xy},
+                               r_eye=r_eye)
+        # J15 reach with the cap off: the nearest avionics-window bottom tip (tweezers through the window)
+        if getattr(self, "has_av_windows", False):
+            self.lp_j15_window = min(
+                ((math.dist((self.body_id / 2 * math.cos(math.radians(t)), self.body_id / 2 * math.sin(math.radians(t)),
+                             self.avw_z0), j15), t) for t in self.avw_thetas))
+        self.lp_clearance, self.lp_limits = cl, lim
+        for k_, v_ in cl.items():
+            if v_ < lim[k_] - 1e-9:
+                raise ValueError(f"logic power: {k_} {v_:.2f} mm < {lim[k_]:g}")
+        # the slicer table keeps the hole-less cap's slice as 'top_cap@no_logic_switch_hole' (make_v09_print_files): the
+        # tether / hybrid builds and, while in_flight_mass_model is false, the flight-mass model use that geometry
+        # (switch-collar round: that geometry is the cap without the hole AND without the collar)
+        self.slicer_variants = {"top_cap": "no_logic_switch_hole"}
+
+    def _logic_collar(self, p: dict, cl: dict, lim: dict, tops_xy: dict, r_eye: float) -> None:
+        """Switch-collar round (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘';
+        params configs.vtol.logic_power.collar): the protective collar round the logic switch lever, one piece with the
+        top cap - a tube (bore Ø inner_d, wall wall_t) on the plate top coaxial with the switch, rim h over the plate
+        top, two finger notches on the lever's throw axis (vehicle y).  Review fix (2026-11-05, F1 / F2): each notch is
+        a U slot - width notch_w, a round bottom of radius notch_w / 2 whose lowest point is notch_bottom_h over the
+        plate top (centre ``lp_col_notch_zc``), straight sides from the centre up through the rim; the round bottom
+        replaces the box slot's sharp re-entrant corners.  Derives ``lp_col_*`` and the lever sweep ``lp_lever_*``
+        (pivot at the bushing's body end, +- lever_throw_deg_ASSUMED about it) and adds to ``cl`` / ``lim`` (raised by
+        _logic_power when short): the FDM wall rule (a multiple of printer.nozzle_d, >= min_feature, all perimeters with
+        the cap's class), the rim over the sweep's top (>= rim_margin_min), the sweep in plan inside the rim tops' convex
+        hull (>= plan_margin_min), the sweep -> collar (>= lever_clear_min), the fingertip sphere at each end position ->
+        the notch bottom (>= printer.layer_h) / the arcs / the plate (>= 0), the FINGER PATH (review F1: the fingertip
+        probe kept on the lever's outboard tip corner while it pushes the lever from the end position to
+        finger_path_past_centre_deg past centre) -> the collar >= finger_path_margin_min, the bore -> the existing Ø
+        finger circle (>= 0), the collar -> every other cap-top feature (holes, GPS parts, cap edge >= min_feature; the
+        eye bolt when fitted >= 1.0 as the GPS parts; the arming switch's Ø finger circle >= 0).  Reported (E): the GPS
+        sky shading seen from the patch centre (``lp_col_gps``), the side-load sections along the notch height
+        (``lp_col_section``: the arc's largest arm / Z, review F2) and the plate root (``lp_col_plate_root``: the
+        rigid-boss plate model, review F3); the collar volume / centroid (``lp_col_volume_mm3``, ``lp_col_centroid``)
+        for the Fusion twin's flight-model totals.  Nothing here moves another part."""
+        lp, pr = p["logic_power"], p["printer"]
+        mf, nz, lh = float(pr["min_feature"]), float(pr["nozzle_d"]), float(pr["layer_h"])
+        sw, co = lp["switch"], lp["collar"]
+        sx, sy = self.lp_sw_xy
+        ri, t = 0.5 * float(co["inner_d"]), float(co["wall_t"])
+        ro = ri + t
+        h, hn, w = float(co["h"]), float(co["notch_bottom_h"]), float(co["notch_w"])
+        ru = 0.5 * w
+        if not (0.0 < hn and hn + ru <= h) or w <= 0.0 or w >= 2.0 * ri:
+            raise ValueError("logic_power.collar: the U notch (lowest point notch_bottom_h, round bottom of radius "
+                             "notch_w / 2) must lie between the plate and the rim and notch_w inside the bore")
+        self.lp_col_ri, self.lp_col_ro, self.lp_col_t = ri, ro, t
+        self.lp_col_z = (self.z_cap_top, self.z_cap_top + h)
+        self.lp_col_notch_w, self.lp_col_notch_z0 = w, self.z_cap_top + hn
+        self.lp_col_notch_zc = self.z_cap_top + hn + ru          # the U's centre: straight sides above, round below
+        self.lp_col_axis = "y"            # the throw axis (switch.body_note: the lever throws along vehicle y)
+        # (1) FDM wall rule: whole 0.4 mm lines, >= min_feature, all perimeters with the cap's print class
+        n_lines = t / nz
+        cls = (pr.get("part_class") or {}).get("top_cap")
+        loops = int(pr["print_classes"][cls]["wall_loops"]) if cls else 0
+        self.lp_col_wall = {"t_mm": t, "lines_of_nozzle": n_lines, "class": cls, "wall_loops_per_side": loops,
+                            "perimeter_width_mm": 2 * loops * nz}
+        if abs(n_lines - round(n_lines)) > 1e-9:
+            raise ValueError(f"logic_power.collar.wall_t {t:g} is not a whole number of {nz:g} mm lines")
+        k = "collar wall - printer.min_feature"
+        cl[k], lim[k] = t - mf, 0.0
+        k = "collar wall: perimeters (2 x class wall loops x nozzle) - wall_t"
+        cl[k], lim[k] = 2 * loops * nz - t, 0.0
+        # (2) the lever sweep (A): a Ø lever_d cylinder from the bushing top to lp_sw_top_z (vertical), turned +- throw
+        # about the pivot at the bushing's body end (the inner nut's bottom)
+        if sw.get("lever_pivot_ASSUMED") != "body_end_of_bushing":
+            raise ValueError("logic_power.switch.lever_pivot_ASSUMED: only 'body_end_of_bushing' is modelled")
+        th_deg = float(sw["lever_throw_deg_ASSUMED"])
+        th = math.radians(th_deg)
+        zpv = self.lp_sw_inner_nut_z[0]
+        Lt = self.lp_sw_top_z - zpv
+        rl = 0.5 * self.lp_sw_lever_d
+        self.lp_lever_pivot_z, self.lp_lever_len, self.lp_lever_throw_deg = zpv, Lt, th_deg
+        self.lp_lever_s0 = self.lp_sw_bushing_top_z - zpv
+        a_top = min(math.atan2(rl, Lt), th)            # the tip end's upper corner peaks slightly off vertical
+        self.lp_lever_env_top_z = zpv + Lt * math.cos(a_top) + rl * math.sin(a_top)
+        self.lp_lever_tip_y = Lt * math.sin(th) + rl * math.cos(th)          # the outer corner at an end position
+        self.lp_lever_corner_z = zpv + Lt * math.cos(th) - rl * math.sin(th)
+        z_rim = self.lp_col_z[1]
+        k = "collar rim - lever sweep top (every position)"
+        cl[k], lim[k] = z_rim - self.lp_lever_env_top_z, float(co["rim_margin_min"])
+        y_o = math.sqrt(ro * ro - 0.25 * w * w)          # the notch chord of the rim tops' convex hull
+        self.lp_col_hull_chord_y = y_o
+        k = "lever sweep inside the rim hull (plan, along the throw axis)"
+        cl[k], lim[k] = y_o - self.lp_lever_tip_y, float(co["plan_margin_min"])
+        k = "lever sweep -> collar bore (radial)"
+        cl[k], lim[k] = ri - self.lp_lever_tip_y, float(co["lever_clear_min"])
+        # (3) finger access at each end position: a fingertip sphere (Ø finger_tip_d) level with the outer corner of the
+        # lever's tip end, finger_tip_d / 2 outboard of it along the throw axis (a horizontal push over centre)
+        rf = 0.5 * float(co["finger_tip_d_ASSUMED"])
+        yc, zc = self.lp_lever_tip_y + rf, self.lp_lever_corner_z
+        self.lp_col_finger = {"sphere_r_mm": rf, "centre_local_y_mm": yc, "centre_z": zc,
+                              "centres": [(sx, sy + s * yc, zc) for s in (1.0, -1.0)],
+                              "body_len_mm": 30.0, "contact_end_positions_deg": [th_deg, -th_deg]}
+        dpl = yc - ro
+        z_low = zc - (math.sqrt(rf * rf - dpl * dpl) if 0.0 < dpl < rf else (rf if dpl <= 0.0 else -math.inf))
+        k = "finger tip sphere -> collar notch bottom (z, over the wall band)"
+        cl[k], lim[k] = z_low - self.lp_col_notch_z0, lh
+        d_arc = math.hypot(0.5 * w, yc - y_o) if yc > y_o else 0.5 * w
+        k = "finger tip sphere -> collar arcs (plan)"
+        cl[k], lim[k] = d_arc - rf, 0.0
+        k = "finger tip sphere -> plate top (z)"
+        cl[k], lim[k] = zc - rf - self.z_cap_top, 0.0
+        # (3b) review fix (2026-11-05, F1): the finger PATH, not only the end positions.  The fingertip probe (sphere Ø
+        # finger_tip_d + the finger behind it, a Ø finger_tip_d cylinder outward along the throw axis) stays on the
+        # lever's outboard tip corner (horizontal push, the sphere centre level with the corner) while it pushes the lever
+        # from the end position (+throw) to finger_path_past_centre_deg past centre, every finger_path_step_deg; the
+        # distance to the collar material (the U slot's surface within the wall, the plate) must stay >=
+        # finger_path_margin_min at every step (A: room for a real, soft fingertip).  Both notches are mirror images
+        # (the throw axis is the collar's symmetry plane), so one side is computed.  C41 measures it on the solids.
+        zc_u, z_top_ = self.lp_col_notch_zc, self.z_cap_top
+
+        def probe_dist(ycl: float, zcl: float) -> float:
+            def d_pt(x_: float, z_: float) -> float:
+                ax_ = abs(x_)
+                yi_ = math.sqrt(max(ri * ri - ax_ * ax_, 0.0))
+                yo_ = math.sqrt(max(ro * ro - ax_ * ax_, 0.0))
+                del yi_                          # the finger body covers y >= ycl: the wall's inner edge never governs
+                if ycl <= yo_:
+                    return math.hypot(x_, z_ - zcl) - rf
+                return math.sqrt(x_ * x_ + (yo_ - ycl) ** 2 + (z_ - zcl) ** 2) - rf
+            ds = [d_pt(ru * math.cos(math.radians(-90.0 + 0.5 * k_)), zc_u + ru * math.sin(math.radians(-90.0 + 0.5 * k_)))
+                  for k_ in range(181)]                                     # the round bottom (one side; symmetric in x)
+            ds.append(d_pt(ru, min(max(zcl, zc_u), z_rim)))                 # the straight side, nearest height
+            ds.append(zcl - rf - z_top_)                                    # the plate top inside the bore
+            return min(ds)
+        step = float(co["finger_path_step_deg"])
+        past = float(co["finger_path_past_centre_deg"])
+        n_st = int(math.ceil((th_deg + past) / step - 1e-9))
+        path = []
+        for j in range(n_st + 1):
+            a_deg = max(th_deg - j * step, -past)
+            ar = math.radians(a_deg)
+            ycn = Lt * math.sin(ar) + rl * math.cos(ar) + rf
+            zcn = zpv + Lt * math.cos(ar) - rl * math.sin(ar)
+            path.append((a_deg, ycn, zcn, probe_dist(ycn, zcn)))
+        worst_p = min(path, key=lambda q: q[3])
+        self.lp_col_finger_path = {"angles_deg": [q[0] for q in path], "centre_local_y_mm": [q[1] for q in path],
+                                   "centre_z": [q[2] for q in path], "dist_mm": [q[3] for q in path],
+                                   "min_mm": worst_p[3], "at_deg": worst_p[0],
+                                   "margin_min_mm": float(co["finger_path_margin_min"])}
+        k = "finger path (end position -> past centre) -> collar (3D, min over the push)"
+        cl[k], lim[k] = worst_p[3], float(co["finger_path_margin_min"])
+        k = "collar bore -> lever finger circle (radial)"
+        cl[k], lim[k] = ri - self.lp_finger_r, 0.0
+        # (4) the collar's outer circle against every other cap-top feature (plan)
+        def rect_pt(xy: tuple, x: float, y: float) -> float:
+            return math.hypot(max(xy[0][0] - x, x - xy[0][1], 0.0), max(xy[1][0] - y, y - xy[1][1], 0.0))
+        for hn_, (hx, hy, hd) in self.cap_holes.items():
+            if hn_ == "logic power switch":
+                continue
+            k = f"collar -> {hn_} hole"
+            cl[k], lim[k] = math.hypot(hx - sx, hy - sy) - ro - 0.5 * hd, mf
+        for nm, xy in tops_xy.items():
+            k = f"collar -> {nm}"
+            cl[k], lim[k] = rect_pt(xy, sx, sy) - ro, mf
+        k = "collar -> tether eye (when fitted)"
+        cl[k], lim[k] = math.hypot(sx, sy) - ro - r_eye, 1.0
+        k = "collar -> cap edge"
+        cl[k], lim[k] = self.body_r - (self.lp_sw_r + ro), mf
+        ax, ay, _ = self.cap_holes["arming switch"]
+        k = "collar -> arming switch finger circle"
+        cl[k], lim[k] = math.hypot(ax - sx, ay - sy) - ro - self.lp_finger_r, 0.0
+        k = "outer nut -> collar bore (nut driver room, radial)"
+        cl[k], lim[k] = ri - 0.5 * self.lp_sw_nut_d, mf
+        # (5) GPS sky seen from the patch centre (E): the collar top at its nearest point, its azimuth width, the share
+        # of the sky above the receiver's elevation mask it shades (azimuth x elevation band, conservative)
+        gs = co["gps_sky"]
+        pcx, pcy = 0.5 * sum(self.cap_patch_xy[0]), 0.5 * sum(self.cap_patch_xy[1])
+        dp = math.hypot(sx - pcx, sy - pcy)
+        el = math.degrees(math.atan2(z_rim - self.cap_patch_z[1], dp - ro))
+        az = 2.0 * math.degrees(math.asin(min(1.0, ro / dp)))
+        mask = float(gs["receiver_elev_mask_deg_ASSUMED"])
+        sm = math.sin(math.radians(mask))
+        frac = (0.0 if el <= mask else
+                math.radians(az) * (math.sin(math.radians(el)) - sm) / (2.0 * math.pi * (1.0 - sm)))
+        self.lp_col_gps = {"patch_centre_to_collar_axis_mm": dp, "nearest_plan_distance_mm": dp - ro,
+                           "rim_over_patch_top_mm": z_rim - self.cap_patch_z[1], "top_elevation_deg": el,
+                           "azimuth_width_deg": az, "receiver_mask_deg_A": mask,
+                           "blocked_sky_above_mask_pct": 100.0 * frac,
+                           "limit_pct": float(gs["max_blocked_sky_above_mask_pct"])}
+        # (6) side-load sections (E, judged in C41 with the report mass).  Review fix (2026-11-05, F2): with the U notch
+        # the arc's section grows below the U's centre, so the governing section is searched along the notch height:
+        # at height z over the plate the arc is the annulus part with x_local >= the slot half-width x(z) (notch_w / 2 on
+        # the straight part, sqrt(r_u^2 - (z_u - z)^2) on the round bottom), loaded on its rim (arm h - z); the largest
+        # arm / Z_min is kept (``arc_k_per_mm2``; C41: stress = F x it x kt_notch).  Below the notch the full ring.
+        def arc_sec(xh: float) -> dict:
+            n_ = 48
+            ao, ai = math.acos(xh / ro), math.acos(xh / ri)
+            arc = ([(ro * math.cos(-ao + 2 * ao * j / n_), ro * math.sin(-ao + 2 * ao * j / n_)) for j in range(n_ + 1)]
+                   + [(ri * math.cos(ai - 2 * ai * j / n_), ri * math.sin(ai - 2 * ai * j / n_)) for j in range(n_ + 1)])
+            return _polygon_section(arc)
+        zu_rel = hn + ru
+
+        def half_w(zr: float) -> float:
+            return ru if zr >= zu_rel else math.sqrt(max(ru * ru - (zu_rel - zr) ** 2, 0.0))
+
+        def k_of(zr: float) -> float:
+            xh = half_w(zr)
+            return (h - zr) / arc_sec(xh)["z_min"] if xh > 0.05 else 0.0
+        n_z = 60
+        zs = [hn + (h - hn) * j / n_z for j in range(n_z + 1)]
+        j_best = max(range(n_z + 1), key=lambda j: k_of(zs[j]))
+        lo_, hi_ = zs[max(j_best - 1, 0)], zs[min(j_best + 1, n_z)]
+        for _ in range(40):                                    # golden-section refinement of the peak
+            m1, m2 = lo_ + 0.382 * (hi_ - lo_), lo_ + 0.618 * (hi_ - lo_)
+            if k_of(m1) < k_of(m2):
+                lo_ = m1
+            else:
+                hi_ = m2
+        z_g = 0.5 * (lo_ + hi_)
+        z_g = max((z_g, zs[j_best]), key=k_of)
+        sec = arc_sec(half_w(z_g))
+        self.lp_col_section = {"arc": sec, "arc_z_over_plate_mm": z_g, "arc_half_width_mm": half_w(z_g),
+                               "arc_arm_mm": h - z_g, "arc_k_per_mm2": (h - z_g) / sec["z_min"],
+                               "ring_z_mm3": math.pi * (ro ** 4 - ri ** 4) / (4.0 * ro), "ring_arm_mm": h}
+        # (6b) review fix (2026-11-05, F3): the plate root.  The collar is a rigid boss (radius ro) in the 1.2 mm plate;
+        # the plate is modelled as an annular Kirchhoff plate clamped at b = the FARTHEST first support seen from the
+        # collar axis (rays every 1 deg to the rim ring's inner face, the hub, the ribs - conservative: the real panel is
+        # held closer on most sides), unit stresses per N mm of boss moment and per N of axial force (_annular_plate_boss);
+        # C41 multiplies them by the load cases (side_load.plate_root)
+        pl = co["side_load"]["plate_root"]
+        rects = [(th_, self.cap_rib_r[0], self.cap_rib_r[1], 0.5 * self.cap_rib_t) for th_ in self.cap_rib_thetas]
+        rays = []
+        for k_ in range(360):
+            a_ = math.radians(k_)
+            rays.append(_ray_exit(sx, sy, math.cos(a_), math.sin(a_), [self.cap_ring_r[0]], [0.5 * self.cap_hub_d], rects))
+        b_far = max(rays)
+        if not math.isfinite(b_far) or b_far <= ro:
+            raise ValueError("logic_power.collar: no support round the collar for the plate-root model")
+        unit = _annular_plate_boss(ro, b_far, self.cap_plate_t, float(pl["nu_ASSUMED"]))
+        self.lp_col_plate_root = {"boss_r_mm": ro, "b_farthest_support_mm": b_far, "b_nearest_support_mm": min(rays),
+                                  "plate_t_mm": self.cap_plate_t, "nu_A": float(pl["nu_ASSUMED"]), **unit,
+                                  "lever_rule_share": self.body_r / (self.body_r + self.lp_sw_r)}
+        # (7) volume / centroid of the material the collar adds over the plate top (the tube minus the two U slots, both
+        # across the wall: per x across the slot, wall length in y 2 (sqrt(ro^2 - x^2) - sqrt(ri^2 - x^2)) times the slot
+        # height from its bottom zb(x) = hn + ru - sqrt(ru^2 - x^2) to the rim; x = ru sin(u) makes the integrand smooth,
+        # composite Simpson, 2000 panels - converged far below the 1e-4 C41 rule)
+        v_ring = math.pi * (ro * ro - ri * ri) * h
+        n_s = 2000
+        v_cut = m_cut = 0.0
+        for j in range(n_s + 1):
+            u_ = -0.5 * math.pi + math.pi * j / n_s
+            wgt = (1 if j in (0, n_s) else (4 if j % 2 else 2)) * (math.pi / n_s) / 3.0
+            x_ = ru * math.sin(u_)
+            ly = 2.0 * (math.sqrt(ro * ro - x_ * x_) - math.sqrt(ri * ri - x_ * x_))
+            zb = hn + ru - ru * math.cos(u_)
+            dx_ = ru * math.cos(u_)
+            v_cut += wgt * ly * (h - zb) * dx_
+            m_cut += wgt * ly * 0.5 * (h * h - zb * zb) * dx_
+        self.lp_col_volume_mm3 = v_ring - v_cut
+        zbar = (v_ring * 0.5 * h - m_cut) / self.lp_col_volume_mm3
+        self.lp_col_centroid = (sx, sy, self.z_cap_top + zbar)
 
     def _servo_lead_route(self) -> None:
         """SPEC 3.8 / 5.1 vane-servo lead route (edf.mount = tabs).  Every passage is sized from the ribbon envelope

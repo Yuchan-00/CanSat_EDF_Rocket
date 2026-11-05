@@ -75,6 +75,9 @@ def expected_parts(L: Layout) -> list[str]:
     if L.power_source in ("tether", "hybrid") and getattr(L, "cap_hardpoint", False):
         out += ["tether_eyebolt", "tether_load_washer", "tether_nut"]
     out += ["joint_screws_inserts", "vane_drive_hardware", "servo_leads", "motor_leads", "gps_lead"] + list(L.tether_items)
+    if getattr(L, "has_logic_power", False) and getattr(L, "logic_in_flight", False):
+        # 2026-11-05: the logic-power parts join the report only once the user decides (logic_power.in_flight_mass_model)
+        out += ["logic_pack", "logic_switch", "logic_switch_lead", "logic_retention"]
     return out
 
 

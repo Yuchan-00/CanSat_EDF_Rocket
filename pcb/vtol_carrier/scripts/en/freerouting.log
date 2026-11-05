@@ -1,0 +1,11 @@
+2026-11-05 08:04:08.123 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-05 08:04:08.127 DEBUG  [startup] user-data path : C:\Users\yc012\AppData\Roaming\freerouting  (source: default (OS standard user-data path))
+2026-11-05 08:04:08.127 DEBUG  [startup] log file       : B:\0)AI_Cad\CanSat_EDF_Rocket\pcb\vtol_carrier\scripts\en\freerouting.log
+2026-11-05 08:04:08.199 DEBUG  Settings loaded from 'C:\Users\yc012\AppData\Roaming\freerouting\freerouting.json'.
+2026-11-05 08:04:08.199 WARN   [startup] freerouting.json contains a stale 'logging.file.location' value: 'C:\Users\yc012\AppData\Local\freerouting\logs\freerouting.log'. The actual log file is being written to 'B:\0)AI_Cad\CanSat_EDF_Rocket\pcb\vtol_carrier\scripts\en\freerouting.log' (as resolved at startup). The stale value will be corrected in freerouting.json on next save. If you see this in Docker, the old JSON was written by an earlier version that stored the host path; the fix is to delete freerouting.json so it is regenerated with the correct path.
+2026-11-05 08:04:08.432 INFO   Hardware: 16 CPU cores, 391 CPU score, 4026 MB RAM
+2026-11-05 08:04:08.433 DEBUG  UTC Time: 2026-11-04T23:04:08.209187600Z
+2026-11-05 08:04:08.433 DEBUG  GUI Language: en
+2026-11-05 08:04:08.433 DEBUG  Host: N/A
+2026-11-05 08:04:08.642 DEBUG  Screen: 3440x1440, 96 DPI
+2026-11-05 08:04:10.197 DEBUG  No new version available. Current version is up to date: v2.5.0

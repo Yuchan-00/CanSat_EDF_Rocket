@@ -1,0 +1,7 @@
+﻿LCSC Part #,MPN,qty,for,JLC type
+C100114,2.54Short Circuit Cap Closed,4,"jumper shunts for J24, J25, J26 (reset holds, fitted only while programming) and J3 pins 1-2 (ESP download mode); J15 (JST-PH) is bridged on the bench with the switch lead closed",Extended
+C55629820,SH-PZ254R-1x6P,1,1x6 right-angle male header soldered on the OpenLog (so it lies flat in J5),Extended
+C160418,GHR-04V-S,2,"GPS lead housings (carrier end J7 + NEO-7M end if it has a GH socket; else a 2.54 Dupont end, A)",Extended
+C189897,SSHL-002T-P0.2,8,GPS lead crimp contacts,Extended
+C157955,PHR-2,2,JST-PH 2-pin housings: buzzer lead (mates J17) + power-switch lead (mates J15),Extended
+C111515,SPH-002T-P0.5S,4,JST-PH crimp contacts (buzzer lead 2 + switch lead 2),Extended

@@ -24,6 +24,17 @@ livery (user decisions 2026-11-04): with ``Layout.has_livery`` the parts list ca
 (exported as avionics_logo.stl, STEP colour orange) beside the white ``avionics_module`` (with the logo pocket); each has
 its own printed mass (the 2-colour slice's per-filament part grams in the slicer table) and ``extra.livery`` records the
 plain-module union, colours and the 2-colour slice summary.
+2026-11-05 logic power (VTOL battery build, params configs.vtol.logic_power): ``extra.logic_power`` is the pending-mass
+record (the pack, switch, lead, ties and the printed holed cap against the flight model; written also as
+cad/exports/logic_power_pending_mass_vtol.json / .md) and the STEP carries the logic-power solids.  The named switch
+logic_power.in_flight_mass_model (false: user decision 4, mass deferred) keeps them out of ``parts`` / ``totals`` and measures
+the top cap's mass entry on the cap without the switch hole (``Part.mass_shape``; the STL is the holed cap,
+``extra.printed_solid_volume_override_mm3``); the slicer table may hold '<part>@<variant>' entries (printed_mass_model).
+Switch-collar round (user decision 2026-11-05): the printed cap also carries the protective collar (rocket_geometry
+.logic_collar), behind the same mass switch - the flight-mass entry is still the cap without the hole and without the
+collar (the previous round's solid, so the flight mass is unchanged); ``extra.logic_power.top_cap`` measures the hole and
+the collar apart, ``extra.logic_power.layout.collar`` records the collar, and ``derived.vehicle_h_mm`` counts the printed
+cap's real solid (the collar rim is the battery build's top).
 """
 from __future__ import annotations
 
@@ -88,6 +99,9 @@ def output_paths(preset: str | None, config: str | None = None, power: str | Non
         "report": os.path.join(EXPORT_DIR, f"cadquery_report{sfx}.json"),
         "checks_md": os.path.join(EXPORT_DIR, f"cadquery_checks{sfx}.md"),
         "checks_json": os.path.join(EXPORT_DIR, f"cadquery_checks{sfx}.json"),
+        # 2026-11-05: the logic-power pending-mass report (VTOL battery build only)
+        "logic_pending_json": os.path.join(EXPORT_DIR, f"logic_power_pending_mass{sfx}.json"),
+        "logic_pending_md": os.path.join(EXPORT_DIR, f"logic_power_pending_mass{sfx}.md"),
     }
 
 
@@ -121,9 +135,18 @@ def printed_mass_model(L: Layout, base: str, solid_volume_mm3: float, table: dic
         return {"mass_g": solid_g, "model": "solid", "solid_mass_g": solid_g}
     cls = (pr.get("part_class") or {}).get(base)
     ent = table.get(base)
-    if ent and ent.get("part_g") and abs(ent["solid_volume_mm3"] / solid_volume_mm3 - 1.0) <= SLICER_VOLUME_REL_TOL:
-        return {"mass_g": float(ent["part_g"]), "model": "slicer_part_g", "solid_mass_g": solid_g, "class": cls,
-                "settings": ent.get("settings"), "slicer_z_centroid_design_mm": ent.get("part_z_centroid_design_mm")}
+    # 2026-11-05: a part sliced in two geometries keeps the other one's slice as '<base>@<variant>' (the top cap with /
+    # without the logic power switch hole: the battery build prints it with the hole, the tether / hybrid builds and the
+    # flight-mass model while logic_power.in_flight_mass_model is false use the cap without it) - the entry whose solid
+    # volume is THIS solid's is used, the same SLICER_VOLUME_REL_TOL rule
+    cands = [(base, ent)] + sorted((k, v) for k, v in table.items() if k.startswith(base + "@"))
+    for key, e_ in cands:
+        if e_ and e_.get("part_g") and abs(e_["solid_volume_mm3"] / solid_volume_mm3 - 1.0) <= SLICER_VOLUME_REL_TOL:
+            out = {"mass_g": float(e_["part_g"]), "model": "slicer_part_g", "solid_mass_g": solid_g, "class": cls,
+                   "settings": e_.get("settings"), "slicer_z_centroid_design_mm": e_.get("part_z_centroid_design_mm")}
+            if key != base:
+                out["table_entry"] = key
+            return out
     if cls is None:
         raise KeyError(f"printer.part_class has no class for printed part {base!r}")
     eff = pr["print_classes"][cls]["effective_density_fallback_g_cm3"]
@@ -141,9 +164,14 @@ def part_entry(part: rg.Part, L: Layout | None = None, table: dict | None = None
     if part.kind == "lumped":
         e = mp.lumped_properties(part.mass_g, part.point_mm)
     elif part.kind == "printed":
-        e = mp.part_properties(part.shape, density_g_cm3=part.density_g_cm3)
+        # 2026-11-05: Part.mass_shape (the top cap without the logic switch hole while the mass decision is deferred)
+        e = mp.part_properties(part.shape if part.mass_shape is None else part.mass_shape, density_g_cm3=part.density_g_cm3)
         if L is not None:
             m = printed_mass_model(L, part.base, e["volume_mm3"], table or {})
+            if part.mass_shape is not None:
+                m["mass_shape"] = ("the solid without the logic power switch hole and the switch collar "
+                                   "(logic_power.in_flight_mass_model false, user decisions 2026-11-05) - the printed part / "
+                                   "STL has both")
             if models is not None:
                 models[part.name] = m
             if m["model"] != "solid":
@@ -308,6 +336,15 @@ def make_report(L: Layout, parts: dict[str, rg.Part], warnings: list[str] | None
 
     zmin = min(entries[n]["bbox_mm"][0][2] for n in vehicle if parts[n].kind != "lumped")
     zmax = max(entries[n]["bbox_mm"][1][2] for n in vehicle if parts[n].kind != "lumped")
+    if getattr(L, "has_logic_power", False) and "logic_switch" not in parts:
+        # review fix (2026-11-05, F1): the height is geometry - the logic switch lever (the battery build's top) counts
+        # whatever logic_power.in_flight_mass_model is (the mass switch keeps it out of the masses only)
+        zmax = max(zmax, rg.logic_switch(L).BoundingBox().zmax)
+    # switch-collar round (2026-11-05): a printed part whose mass entry is measured on another solid (the top cap without
+    # the switch hole and the collar) counts with its REAL solid - the collar rim is the battery build's top
+    for n in vehicle:
+        if parts[n].kind == "printed" and parts[n].mass_shape is not None:
+            zmax = max(zmax, mp.bbox(parts[n].shape)[1][2])
     # v0.9 direct drive: no pushrods (pushrod_len_mm = 0 keeps the SPEC 6 schema)
     pushrod_lens = [rg.pushrod_length(L, i) for i in range(L.vane_count)] if not L.direct_drive else [0.0] * L.vane_count
     if max(pushrod_lens) - min(pushrod_lens) > 1e-6:
@@ -380,7 +417,8 @@ def make_report(L: Layout, parts: dict[str, rg.Part], warnings: list[str] | None
     for n in printed_names:
         if parts[n].base in prec:
             continue
-        vp, vr = mp.precise_volume(parts[n].shape), entries[n]["volume_mm3"]
+        vp = mp.precise_volume(parts[n].shape if parts[n].mass_shape is None else parts[n].mass_shape)
+        vr = entries[n]["volume_mm3"]
         if abs(vp / vr - 1.0) > 1e-4:
             prec[parts[n].base] = {"report_mm3": vr, "precise_mm3": vp, "rel": vp / vr - 1.0}
     extra["printed_volume_precise"] = prec
@@ -473,7 +511,217 @@ def make_report(L: Layout, parts: dict[str, rg.Part], warnings: list[str] | None
         out["config"] = L.config
         out["power_source"] = L.power_source
         extra["vtol"] = vtol_extra(L, parts, entries, totals)
+    if getattr(L, "has_logic_power", False):     # 2026-11-05 logic power (battery build): pending-mass record
+        extra["logic_power"] = logic_power_extra(L, parts, entries, totals, table)
+        # the printed solid of a part whose mass entry is measured on another solid (make_v09_print_files slices the STL)
+        extra["printed_solid_volume_override_mm3"] = {
+            p_.base: mp.volume_properties(p_.shape)[0] for p_ in parts.values()
+            if p_.kind == "printed" and p_.mass_shape is not None}
     return out
+
+
+LOGIC_MASS_TARGET_G = 1650.0      # architect target, VTOL battery build (meta.v09_cad2_note, sizing/vtol_sizing.py targets_g)
+
+
+def _mass_summary(t: dict) -> dict:
+    I = t["inertia_about_com_kg_m2"]
+    return {"mass_g": t["mass_g"], "com_mm": list(t["com_mm"]), "lateral_offset_mm": math.hypot(t["com_mm"][0], t["com_mm"][1]),
+            "inertia_diag_kg_m2": [I[0][0], I[1][1], I[2][2]], "inertia_about_com_kg_m2": I}
+
+
+def collar_record(L: Layout) -> dict:
+    """Switch-collar round (2026-11-05): the protective collar's Layout numbers (dimensions A / design, sweep, finger,
+    sky and section values E) for the pending-mass report and the checks."""
+    return {"inner_d_mm": 2 * L.lp_col_ri, "outer_d_mm": 2 * L.lp_col_ro, "wall_t_mm": L.lp_col_t,
+            "z_mm": list(L.lp_col_z), "h_over_plate_mm": L.lp_col_z[1] - L.lp_col_z[0],
+            "notch_w_mm": L.lp_col_notch_w, "notch_bottom_z_mm": L.lp_col_notch_z0, "notch_axis": L.lp_col_axis,
+            "notch_shape": "U (round bottom of radius notch_w / 2, review fix 2026-11-05)",
+            "notch_round_centre_z_mm": L.lp_col_notch_zc,
+            "finger_path_E": {k: v for k, v in L.lp_col_finger_path.items()},
+            "plate_root_E": dict(L.lp_col_plate_root),
+            "wall": dict(L.lp_col_wall), "volume_mm3_layout": L.lp_col_volume_mm3, "centroid_mm": list(L.lp_col_centroid),
+            "lever_sweep": {"pivot_z_mm": L.lp_lever_pivot_z, "arm_mm": L.lp_lever_len, "throw_deg_A": L.lp_lever_throw_deg,
+                            "top_z_mm": L.lp_lever_env_top_z, "tip_y_mm": L.lp_lever_tip_y,
+                            "end_corner_z_mm": L.lp_lever_corner_z},
+            "hull_chord_y_mm": L.lp_col_hull_chord_y,
+            "finger": {k: (list(map(list, v)) if k == "centres" else v) for k, v in L.lp_col_finger.items()},
+            "gps_sky_E": dict(L.lp_col_gps),
+            "section_E": {"arc_z_min_mm3": L.lp_col_section["arc"]["z_min"], "arc_area_mm2": L.lp_col_section["arc"]["area"],
+                          "arc_arm_mm": L.lp_col_section["arc_arm_mm"], "ring_z_mm3": L.lp_col_section["ring_z_mm3"],
+                          "ring_arm_mm": L.lp_col_section["ring_arm_mm"],
+                          "arc_z_over_plate_mm": L.lp_col_section["arc_z_over_plate_mm"],
+                          "arc_half_width_mm": L.lp_col_section["arc_half_width_mm"],
+                          "arc_k_per_mm2": L.lp_col_section["arc_k_per_mm2"]},
+            "clearance_mm": {k: v for k, v in L.lp_clearance.items() if "collar" in k or "lever sweep" in k
+                             or "finger tip" in k or "finger path" in k or "nut driver" in k}}
+
+
+def logic_power_extra(L: Layout, parts: dict[str, rg.Part], entries: dict[str, dict], totals: dict, table: dict) -> dict:
+    """2026-11-05 (user decisions 1-4, params configs.vtol.logic_power): the logic pack, switch, switch lead and ties
+    (rocket_geometry.logic_power_parts, measured like any part) and the printed top cap WITH the switch hole, against the
+    flight mass model.  ``in_flight_mass_model`` false (the user deferred the mass decision): the report's parts / totals
+    are the flight model WITHOUT them (the cap entry measured on the cap without the hole) and ``with_logic_power`` is what
+    the vehicle weighs with them - the pending mass decision; true: they are in the parts / totals already and
+    ``without_logic_power`` is the model without them (for comparison)."""
+    lp = L.p["logic_power"]
+    vehicle = [n for n, p_ in parts.items() if p_.in_vehicle]
+    lpp = rg.logic_power_parts(L)
+    pend = {n: part_entry(p_) for n, p_ in lpp.items()}
+    cap = parts["top_cap"]
+    m_real: dict = {}
+    real = part_entry(rg.Part(cap.name, cap.kind, cap.base, cap.shape, cap.module, cap.orientation, cap.color,
+                              density_g_cm3=cap.density_g_cm3), L, table, m_real)
+    m_noh: dict = {}
+    noh = part_entry(rg.Part(cap.name, cap.kind, cap.base, rg.top_cap(L, with_logic_hole=False), cap.module,
+                             cap.orientation, cap.color, density_g_cm3=cap.density_g_cm3), L, table, m_noh)
+    others = [entries[n] for n in vehicle if n != "top_cap" and n not in lpp]
+    with_ = mp.combine(others + [real] + list(pend.values()))
+    without = mp.combine(others + [noh])
+    fs, ws, os_ = _mass_summary(totals), _mass_summary(with_), _mass_summary(without)
+    full = fs if L.logic_in_flight else ws
+    base = os_ if L.logic_in_flight else fs
+    # switch-collar round (2026-11-05): the printed cap carries the hole AND the protective collar; the flight model has
+    # neither (both are logic-power kit); the hole and the collar are measured apart on the cap with the hole only
+    v_hole_only = mp.part_properties(rg.top_cap(L, with_logic_collar=False), density_g_cm3=cap.density_g_cm3)["volume_mm3"]
+    has_col = bool(getattr(L, "has_lp_collar", False))
+    rec_cap = {"printed_volume_mm3 (with the switch hole and the collar)": real["volume_mm3"],
+               "flight_model_volume_mm3 (without them)": noh["volume_mm3"],
+               "hole_removed_mm3": noh["volume_mm3"] - v_hole_only,
+               # review fix (2026-11-05): the U notches' curved intersections need the adaptive integration (the default
+               # GProp call under-reports this difference by ~0.05 mm^3, 2.5e-5); the entries' volumes stay default
+               "collar_added_mm3": (mp.precise_volume(rg.top_cap(L)) - mp.precise_volume(rg.top_cap(L, with_logic_collar=False))
+                                    if has_col else real["volume_mm3"] - v_hole_only),
+               "collar_volume_mm3_layout": getattr(L, "lp_col_volume_mm3", 0.0) if has_col else 0.0,
+               "has_collar": has_col,
+               "printed_mass_g": real["mass_g"], "printed_mass_model": m_real.get("top_cap"),
+               "flight_model_mass_g": noh["mass_g"], "flight_model_mass_model": m_noh.get("top_cap"),
+               "mass_delta_g (printed - flight model)": real["mass_g"] - noh["mass_g"]}
+    return {
+        "decisions": {k: lp[k] for k in ("note", "applies_note", "in_flight_mass_model_note")},
+        "in_flight_mass_model": bool(L.logic_in_flight),
+        "applies_to_power_sources": list(lp["applies_to_power_sources"]),
+        "pending_parts": pend,
+        "pending_parts_g": {n: e["mass_g"] for n, e in pend.items()},
+        "top_cap": rec_cap,
+        "flight_model": fs,
+        "with_logic_power": ws,
+        "without_logic_power": os_,
+        "delta_full_minus_without": {
+            "mass_g": full["mass_g"] - base["mass_g"],
+            "com_mm": [a - b for a, b in zip(full["com_mm"], base["com_mm"])],
+            "lateral_offset_mm": full["lateral_offset_mm"] - base["lateral_offset_mm"],
+            "inertia_diag_rel": [a / b - 1.0 for a, b in zip(full["inertia_diag_kg_m2"], base["inertia_diag_kg_m2"])]},
+        "mass_target_g": LOGIC_MASS_TARGET_G,
+        # review fix (2026-11-05, F3): T/W at the design-envelope thrusts (edf.thrust_v09, unmeasured: E) without / with
+        "tw_E": {f"{t:g} kgf": [t * 1e3 / base["mass_g"], t * 1e3 / full["mass_g"]]
+                 for t in ((L.p.get("edf") or {}).get("thrust_v09") or {}).get("design_envelope_kgf_at_22v2", [])},
+        "over_target_g": {"without": base["mass_g"] - LOGIC_MASS_TARGET_G, "with": full["mass_g"] - LOGIC_MASS_TARGET_G},
+        "layout": {
+            "pack_box_mm": [list(L.lp_pack_x), list(L.lp_pack_y), list(L.lp_pack_z)],
+            "switch_xy_mm": list(L.lp_sw_xy), "switch_r_theta": [L.lp_sw_r, L.lp_sw_theta], "switch_hole_d_mm": L.lp_sw_hole_d,
+            "switch_top_z_mm": L.lp_sw_top_z, "switch_lugs_bottom_z_mm": L.lp_sw_lugs[2][0],
+            "switch_lead_polyline_mm": [list(q) for q in L.lp_switch_lead_polyline],
+            "pack_lead_polyline_mm": [list(q) for q in L.lp_pack_lead_polyline],
+            "switch_lead_route_len_mm_E": [L.lp_switch_lead_route_mm, L.lp_switch_lead_len_mm],
+            "pack_lead_route_len_mm_E": [L.lp_pack_lead_route_mm, L.lp_pack_lead_len_mm],
+            "strap_z_mm": list(L.lp_strap_z), "tie_z_mm": L.lp_tie_z, "retention_E": dict(L.lp_retention_E),
+            "carrier_plugs_mm": {k: [list(a) for a in v] for k, v in L.lp_plugs.items()},
+            "clearance_mm": dict(L.lp_clearance), "limits_mm": dict(L.lp_limits),
+            "exposure_mm": dict(L.lp_exposure), "gps_lever_shadow_deg": dict(L.lp_gps_lever_shadow_deg),
+            "j15_nearest_window": list(getattr(L, "lp_j15_window", (math.nan, math.nan))),
+            **({"collar": collar_record(L)} if has_col else {})},
+        "note": ("pending mass decision (user 2026-11-05 '이 배터리로 진행, 질량은 나중에 결정'): flight_model = the "
+                 "report totals the sim / firmware headers / mass targets consume; with_logic_power = the vehicle with "
+                 "the pack, switch, lead, ties and the printed (holed) cap. Masses of the pack (vendor), switch, lead "
+                 "and ties are ASSUMED; the printed cap is the slicer table's (M) when its holed slice exists"),
+    }
+
+
+def collar_md(c: dict, tc: dict) -> list[str]:
+    """Switch-collar round (2026-11-05): the Korean section of the pending-mass report on the protective collar."""
+    g, s = c["gps_sky_E"], c["section_E"]
+    return [
+        "## 2b. 스위치 보호 칼라 (사용자 결정 2026-11-05: \"상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘\")", "",
+        f"* 상단 캡과 한 몸으로 출력하는 둥근 칼라입니다. 안지름 {c['inner_d_mm']:.1f} mm, 벽 {c['wall_t_mm']:.1f} mm "
+        f"(0.4 mm 선 {c['wall']['lines_of_nozzle']:.0f}줄), 판 위 높이 {c['h_over_plate_mm']:.1f} mm(테두리 z {c['z_mm'][1]:.2f}), "
+        f"손가락 홈 2개(U자 홈, 폭 {c['notch_w_mm']:.1f} mm, 둥근 바닥의 가장 낮은 곳 z {c['notch_bottom_z_mm']:.2f}, "
+        f"레버가 젖혀지는 기체 y 방향). 손끝이 레버를 가운데 너머로 미는 동안 홈과의 거리 최소 "
+        f"{c['finger_path_E']['min_mm']:.2f} mm(E, 기준 ≥ {c['finger_path_E']['margin_min_mm']:g}).",
+        f"* 칼라 재료 {tc['collar_added_mm3']:.1f} mm³(M). 이 재료도 로직 전원 부품이라 같은 스위치 "
+        "`in_flight_mass_model` 뒤에 있습니다: 비행 모델 캡은 구멍도 칼라도 없는 캡입니다(C40).",
+        f"* 레버가 가장 높을 때 z {c['lever_sweep']['top_z_mm']:.2f}(A 치수로 계산) → 테두리가 "
+        f"{c['z_mm'][1] - c['lever_sweep']['top_z_mm']:.2f} mm 높습니다(기준 ≥ 2.0). GPS 패치 중심에서 본 칼라 꼭대기 "
+        f"{g['top_elevation_deg']:.2f}°, 폭 {g['azimuth_width_deg']:.1f}°, 수신기 기본 마스크 {g['receiver_mask_deg_A']:g}°(A) 위 하늘의 "
+        f"{g['blocked_sky_above_mask_pct']:.2f} %를 가림(E, 기준 ≤ {g['limit_pct']:g} %).",
+        f"* 옆 하중 손계산 단면(E): 가장 약한 높이(판 위 {s['arc_z_over_plate_mm']:.2f} mm)의 호 하나 "
+        f"Z {s['arc_z_min_mm3']:.1f} mm³(팔 {s['arc_arm_mm']:.2f} mm), 판 위 전체 링 Z {s['ring_z_mm3']:.0f} mm³. "
+        f"판 뿌리(E): 판을 가장 먼 받침 b {c['plate_root_E']['b_farthest_support_mm']:.1f} mm에서 고정한 원판으로 봄. "
+        "판정은 검사 C41.", ""]
+
+
+def write_logic_pending(report: dict, path_json: str, path_md: str) -> None:
+    """2026-11-05: the pending-mass report (extra.logic_power) as JSON + a short Korean Markdown summary."""
+    lp = report["extra"]["logic_power"]
+    write_json({"generator": "cadquery", "params_sha256": report["params_sha256"], "preset": report["preset"],
+                "config": report.get("config"), "power_source": report.get("power_source"), **lp}, path_json)
+    f, w = lp["flight_model"], lp["with_logic_power"]
+    d = lp["delta_full_minus_without"]
+    tc = lp["top_cap"]
+    ly = lp["layout"]
+    pend = lp["pending_parts_g"]
+
+    def row(nm: str, t: dict) -> str:
+        c = t["com_mm"]
+        i = t["inertia_diag_kg_m2"]
+        return (f"| {nm} | {t['mass_g']:.2f} | ({c[0]:+.2f}, {c[1]:+.2f}, {c[2]:.2f}) | {t['lateral_offset_mm']:.2f} | "
+                f"{i[0]:.5f} / {i[1]:.5f} / {i[2]:.6f} |")
+    pm = (tc["printed_mass_model"] or {}).get("model")
+    lines = [
+        "# 로직 전원 - 질량 결정 대기 보고서 (VTOL 배터리 구성)", "",
+        "**사용자 결정 4 (2026-11-05): \"이 배터리로 진행, 질량은 나중에 결정\".** "
+        f"그래서 `params.json` `configs.vtol.logic_power.in_flight_mass_model` = **{str(lp['in_flight_mass_model']).lower()}** 입니다. "
+        "아래 부품(스위치 보호 칼라 포함)은 CAD 고체로 모양·간섭 검사(C37-C39, C41)에만 쓰고, 시뮬레이션·펌웨어 헤더·질량 목표가 읽는 질량"
+        "(보고서 parts / totals)에는 넣지 않았습니다(C40이 확인).", "",
+        f"params sha256 `{report['params_sha256'][:16]}…`, 만든 명령: `python cad/cadquery/build_rocket.py --config vtol`.", "",
+        "표시: M = 도구로 잰 값(CadQuery 질량 특성, 슬라이서), E = 추정, A = 가정(산 물건으로 재야 함).", "",
+        "## 1. 무게·무게중심·관성 (M: CadQuery 질량 특성, 아래 부품 질량은 A)", "",
+        "| 경우 | 질량 g | 무게중심 (x, y, z) mm | 옆 치우침 mm | Ixx / Iyy / Izz kg m² |", "|---|---|---|---|---|",
+        row("지금 비행 모델 (시뮬레이션·펌웨어가 읽는 값)", f),
+        row("로직 전원을 넣은 전체", w), "",
+        f"* 차이(전체 − 지금): **{d['mass_g']:+.2f} g**, 무게중심 ({d['com_mm'][0]:+.2f}, {d['com_mm'][1]:+.2f}, "
+        f"{d['com_mm'][2]:+.2f}) mm, 옆 치우침 {d['lateral_offset_mm']:+.2f} mm, 관성 Ixx {100 * d['inertia_diag_rel'][0]:+.2f} % / "
+        f"Iyy {100 * d['inertia_diag_rel'][1]:+.2f} % / Izz {100 * d['inertia_diag_rel'][2]:+.2f} %.",
+        f"* 질량 목표 {lp['mass_target_g']:.0f} g 대비: 지금 {lp['over_target_g']['without']:+.1f} g, 넣으면 "
+        f"**{lp['over_target_g']['with']:+.1f} g**.",
+        "* 옆 치우침 판정(C33과 같은 식)은 검사 보고서 `cadquery_checks_vtol.md`의 C40 줄에 지금 / 전체 두 값으로 있습니다.",
+        *([("* 추력 대 무게(E, 추력은 아직 재지 않음 - `edf.thrust_v09` 설계 범위): "
+            + ", ".join(f"{k} → 로직 전원 없이 {v[0]:.2f}, 넣으면 {v[1]:.2f}" for k, v in lp["tw_E"].items())
+            + " (목표 1.3).")] if lp.get("tw_E") else []), "",
+        "## 2. 넣지 않은 부품 (질량은 A, 위치는 CAD)", "",
+        "| 부품 | g | 근거 |", "|---|---|---|",
+        f"| logic_pack (1S 4200 mAh, 디바이스마트 16021596) | {pend.get('logic_pack', 0):.2f} | 판매자 무게 84 g, 자체 리드·플러그 포함(A) |",
+        f"| logic_switch (MTS-102, 디바이스마트 13029107) | {pend.get('logic_switch', 0):.2f} | A (산 물건을 잴 것) |",
+        f"| logic_switch_lead (스위치 → J15, {ly['switch_lead_route_len_mm_E'][1]:.0f} mm, E) | "
+        f"{pend.get('logic_switch_lead', 0):.2f} | 5 g/m + 커넥터 0.5 g (A) |",
+        f"| logic_retention (긴 6S 끈 + 케이블 타이) | {pend.get('logic_retention', 0):.2f} | A |",
+        (f"| 상단 캡 스위치 구멍 + 보호 칼라 (출력 부품 − 비행 모델) | {tc['mass_delta_g (printed - flight model)']:+.3f} | "
+         f"구멍 −{tc['hole_removed_mm3']:.1f} mm³, 칼라 +{tc['collar_added_mm3']:.1f} mm³ (M, CadQuery 고체); 출력 부품 무게 "
+         f"모델 `{pm}` (출력 캡 {tc['printed_mass_g']:.2f} g, 비행 모델 캡 {tc['flight_model_mass_g']:.2f} g) |"
+         if tc.get("has_collar") else
+         f"| 상단 캡 스위치 구멍 (출력 부품 − 비행 모델) | {tc['mass_delta_g (printed - flight model)']:+.3f} | "
+         f"부피 −{tc['hole_removed_mm3']:.1f} mm³ (M); 출력 부품 무게 모델 `{pm}` |"), "",
+        *(collar_md(ly["collar"], tc) if ly.get("collar") else []),
+        "## 3. 결정하면 할 일", "",
+        "1. `in_flight_mass_model`을 true로 바꾸고 CAD 보고서(`build_rocket.py --config vtol`)와 검사"
+        "(`check_geometry.py --config vtol`)를 다시 만듭니다.",
+        "2. 크기 산정(`python sizing/vtol_sizing.py`), 강도 손계산(`python sizing/vtol_strength.py` → "
+        "`docs/vtol_strength_checks.json`: 착지·다리 하중이 보고서 질량에 비례, 트레이에 1S 팩 하중 추가), 추력 대 무게·"
+        "호버 전류·비행 시간, 시뮬레이션(게인·시나리오), 펌웨어 헤더(`params_gen.h`, `gains.h`, `bridge_config_gen.h`)와 "
+        "HEX를 다시 만듭니다(제어가 바뀌면 전/후 비교 영상 규칙).",
+        "3. 질량 목표(1,650 g)를 넘는 만큼은 사용자가 정합니다(목표를 바꾸거나 다른 곳을 줄이기).", ""]
+    os.makedirs(os.path.dirname(path_md), exist_ok=True)
+    with open(path_md, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("\n".join(lines))
 
 
 def vtol_extra(L: Layout, parts: dict[str, rg.Part], entries: dict[str, dict], totals: dict) -> dict:
@@ -595,10 +843,12 @@ def export_stl(parts: dict[str, rg.Part], stl_dir: str) -> dict[str, str]:
     return written
 
 
-def export_step(parts: dict[str, rg.Part], step_path: str) -> str:
+def export_step(parts: dict[str, rg.Part], step_path: str, extra_parts: dict[str, rg.Part] | None = None) -> str:
+    """STEP assembly, one part per component; 2026-11-05: ``extra_parts`` (the logic-power solids while their mass is
+    pending) are added as parts of the assembly too (geometry, not in the report's parts)."""
     os.makedirs(os.path.dirname(step_path), exist_ok=True)
     assy = cq.Assembly(name=ASSEMBLY_NAME)
-    for part in parts.values():
+    for part in list(parts.values()) + [q for n, q in (extra_parts or {}).items() if n not in parts]:
         if part.shape is None:
             continue
         assy.add(part.shape, name=part.name, color=cq.Color(*part.color))
@@ -631,7 +881,7 @@ def build(preset: str | None, export: bool = True, verbose: bool = True,
     stl_files: dict[str, str] = {}
     if export:
         stl_files = export_stl(parts, paths["stl_dir"])
-        export_step(parts, paths["step"])
+        export_step(parts, paths["step"], rg.logic_power_parts(L) if getattr(L, "has_logic_power", False) else None)
         warnings += [f"{b}.stl volume {100 * r:+.3f} % off the solid (accepted after {STL_REFINE_MAX} refinements)"
                      for b, r in STL_OUT_OF_LIMIT.items()]
     report = make_report(L, parts, warnings, build_time_s=t_build)
@@ -641,6 +891,8 @@ def build(preset: str | None, export: bool = True, verbose: bool = True,
     report["extra"]["total_time_s"] = time.time() - t0
     if write_report:
         write_json(report, paths["report"])
+        if "logic_power" in report["extra"]:
+            write_logic_pending(report, paths["logic_pending_json"], paths["logic_pending_md"])
     if verbose:
         t = report["totals"]
         print(f"preset {report['preset']}" + (f" config {L.config} power {L.power_source}" if L.vtol else "")

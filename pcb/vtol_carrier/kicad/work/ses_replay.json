@@ -1,0 +1,30 @@
+{
+ "fanout": true,
+ "stages": [
+  [
+   "servo",
+   "vtol_carrier_servo.ses"
+  ],
+  [
+   "power_high",
+   "vtol_carrier_power_high.ses"
+  ],
+  [
+   "power",
+   "vtol_carrier_power.ses"
+  ],
+  [
+   "signals",
+   "vtol_carrier_signals.ses"
+  ],
+  [
+   "gnd",
+   "vtol_carrier_gnd.ses"
+  ],
+  [
+   "complete",
+   "vtol_carrier_complete.ses"
+  ]
+ ],
+ "source": "rev 2c 4-layer Freerouting live run \"vM\" (route.py 40 5, CARRIER_ROUTE_ORDER=power_first, CARRIER_IN2=plane, fanout clearance 0.15 mm; placement = place.py defaults: LED-crystal gap 0.1 mm, FCU AREF/AVCC cluster, 6S divider tops at J18), 2026-11-05 11:51-12:12 KST, scratch folder; logs, DSNs and the live route log in kicad/work/freerouting_4layer_rev2c/"
+}

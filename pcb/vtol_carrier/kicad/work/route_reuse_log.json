@@ -1,0 +1,1149 @@
+{
+ "mode": "replay of the recorded Freerouting sessions",
+ "replay": {
+  "fanout": true,
+  "stages": [
+   [
+    "servo",
+    "vtol_carrier_servo.ses"
+   ],
+   [
+    "power_high",
+    "vtol_carrier_power_high.ses"
+   ],
+   [
+    "power",
+    "vtol_carrier_power.ses"
+   ],
+   [
+    "signals",
+    "vtol_carrier_signals.ses"
+   ],
+   [
+    "gnd",
+    "vtol_carrier_gnd.ses"
+   ],
+   [
+    "complete",
+    "vtol_carrier_complete.ses"
+   ]
+  ],
+  "source": "rev 2c 4-layer Freerouting live run \"vM\" (route.py 40 5, CARRIER_ROUTE_ORDER=power_first, CARRIER_IN2=plane, fanout clearance 0.15 mm; placement = place.py defaults: LED-crystal gap 0.1 mm, FCU AREF/AVCC cluster, 6S divider tops at J18), 2026-11-05 11:51-12:12 KST, scratch folder; logs, DSNs and the live route log in kicad/work/freerouting_4layer_rev2c/"
+ },
+ "ses_sha256": {
+  "vtol_carrier_servo.ses": "2eb82a47ea89b1b048df6c86175fc6bb0d8a12bd254a22974e8a20f26bbcacd8",
+  "vtol_carrier_power_high.ses": "ce454dda8148acf69f95708b24d30b9fbce84cdd87a37528885d041289fd4aab",
+  "vtol_carrier_power.ses": "7dfd207180170c6f55728bc714f3898b19f6abe16475873dc23c22d493a10f65",
+  "vtol_carrier_signals.ses": "c92b537dd234e685d47e1506f5959752fdd4e05ad13951d643dabee213e7272c",
+  "vtol_carrier_gnd.ses": "6b461b683e85cf1b610535aed14686b543c37c531300509b4c5a0cf39a11986a",
+  "vtol_carrier_complete.ses": "dec5196740a1f906428912e938bb935ae88d2a0732352b7c16c67a20d5a7b490"
+ },
+ "fanout": {
+  "tool": "scripts/fanout.py",
+  "pads_considered": 119,
+  "vias_placed": 114,
+  "not_placed": [
+   [
+    "C1",
+    "2",
+    "GND"
+   ],
+   [
+    "C9",
+    "2",
+    "GND"
+   ],
+   [
+    "C17",
+    "2",
+    "GND"
+   ],
+   [
+    "C25",
+    "2",
+    "GND"
+   ],
+   [
+    "NT1",
+    "1",
+    "GND"
+   ]
+  ],
+  "via_mm": [
+   0.6,
+   0.3
+  ],
+  "stub_mm": 0.3,
+  "clearance_mm": 0.15
+ },
+ "vias_shrunk_after_inflation": 0,
+ "neckdowns_widened_to_0.127mm": [],
+ "dangling_vias_removed": [
+  {
+   "net": "ESP_RXD_SH",
+   "x": 88.263,
+   "y": 113.948
+  }
+ ],
+ "segments": 2025,
+ "routed_vias": 295,
+ "gnd_stitching_vias": 158,
+ "tracks_narrowed_for_clearance": [],
+ "power_tracks_widened": {
+  "widened": [
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.38
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.62
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.4,
+    "length_mm": 0.51
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.4,
+    "length_mm": 0.27
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.27
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 1.08
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.97
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.45
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 1.39
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 1.15
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.24
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 8.36
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 3.33
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.64
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 1.31
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.1
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.23
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.08
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.67
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 1.23
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.16
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.32
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.95
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.09
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.17
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 1.86
+   },
+   {
+    "net": "+3V3",
+    "layer": "B.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.09
+   },
+   {
+    "net": "+3V3",
+    "layer": "B.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.32
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.12
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.71
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.71
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.15
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.0
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 0.92
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.5,
+    "length_mm": 1.73
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 1.15
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 0.1
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 2.1
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.5,
+    "length_mm": 0.07
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.3,
+    "length_mm": 5.97
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.75,
+    "to_mm": 0.95,
+    "length_mm": 4.28
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.75,
+    "to_mm": 0.8,
+    "length_mm": 35.01
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.75,
+    "to_mm": 1.0,
+    "length_mm": 1.2
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.75,
+    "to_mm": 1.0,
+    "length_mm": 0.76
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.75,
+    "to_mm": 1.0,
+    "length_mm": 0.7
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.75,
+    "to_mm": 0.95,
+    "length_mm": 5.46
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.75,
+    "to_mm": 1.0,
+    "length_mm": 0.45
+   }
+  ],
+  "kept": [
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "width_mm": 0.3,
+    "length_mm": 0.25,
+    "at": [
+     119.95,
+     110.83
+    ]
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "width_mm": 0.3,
+    "length_mm": 0.86,
+    "at": [
+     120.56,
+     110.22
+    ]
+   },
+   {
+    "net": "GND_PWR",
+    "layer": "F.Cu",
+    "width_mm": 0.5,
+    "length_mm": 0.13,
+    "at": [
+     124.88,
+     78.25
+    ]
+   }
+  ]
+ },
+ "leftovers_routed_by_script": [
+  {
+   "net": "ESP_RXD_SH",
+   "routed": true,
+   "from": [
+    88.263,
+    114.75
+   ],
+   "to": [
+    88.263,
+    113.948
+   ],
+   "segments": 1,
+   "vias": 1,
+   "length_mm": 0.8,
+   "search_window_mm": 5.0,
+   "width_mm": 0.2
+  },
+  {
+   "net": "GND",
+   "routed": false,
+   "reason": "power / plane net - not routed by this step"
+  },
+  {
+   "net": "GND",
+   "routed": true,
+   "from": [
+    123.75,
+    78.25
+   ],
+   "to": [
+    118.25,
+    76.25
+   ],
+   "segments": 17,
+   "vias": 2,
+   "length_mm": 10.33,
+   "island": [
+    "NT1.1"
+   ],
+   "width_mm": 0.4
+  }
+ ],
+ "dangling_track_stubs_removed": [],
+ "silk": {
+  "names_front": [
+   {
+    "ref": "J14",
+    "text": "1S BAT +-",
+    "layer": "F.SilkS",
+    "height_mm": 0.8,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J8",
+    "text": "V1 S+-",
+    "layer": "F.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 1.1
+   },
+   {
+    "ref": "J16",
+    "text": "ARM SW AG",
+    "layer": "F.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J17",
+    "text": "BUZ +-",
+    "layer": "F.SilkS",
+    "height_mm": 0.8,
+    "distance_to_courtyard_mm": 0.1
+   },
+   {
+    "ref": "U7",
+    "text": "ESP-12E",
+    "layer": "F.SilkS",
+    "height_mm": 0.8,
+    "distance_to_courtyard_mm": 0.0
+   }
+  ],
+  "names_back_mirrored": [
+   {
+    "ref": "J15",
+    "text": "PWR SW",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J18",
+    "text": "6S NO GND VI VT VB IS",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J12",
+    "text": "ESC S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J9",
+    "text": "V2 S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J10",
+    "text": "V3 S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J11",
+    "text": "V4 S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J7",
+    "text": "GPS V TX RX G",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J6",
+    "text": "5V MOD VO G VI nc nc",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "JP1",
+    "text": "GPS 3V3|5V",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J3",
+    "text": "ESP 3V3 IO0 G TX RX RST G",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J1",
+    "text": "GY-521",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J2",
+    "text": "BMP280",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J5",
+    "text": "OPENLOG",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J19",
+    "text": "ISP NAV",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J20",
+    "text": "ISP FCU",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J21",
+    "text": "ISP COM",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J22",
+    "text": "ISP GNS",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J24",
+    "text": "NAV RST",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J25",
+    "text": "FCU RST",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J26",
+    "text": "COM RST",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   }
+  ],
+  "names_missed": [],
+  "pin_label_sets": [],
+  "pin_label_sets_missed": [],
+  "refs_on_silk": 10,
+  "refs_on_fab_only": [
+   "C1",
+   "C2",
+   "C3",
+   "C4",
+   "C5",
+   "C6",
+   "C7",
+   "C8",
+   "C9",
+   "C10",
+   "C11",
+   "C12",
+   "C13",
+   "C14",
+   "C15",
+   "C16",
+   "C17",
+   "C18",
+   "C19",
+   "C20",
+   "C21",
+   "C22",
+   "C23",
+   "C24",
+   "C25",
+   "C26",
+   "C27",
+   "C28",
+   "C29",
+   "C30",
+   "C31",
+   "C32",
+   "C41",
+   "C42",
+   "C43",
+   "C44",
+   "C45",
+   "C46",
+   "C48",
+   "C49",
+   "C50",
+   "C51",
+   "C52",
+   "C55",
+   "C56",
+   "D1",
+   "D2",
+   "D3",
+   "D4",
+   "J1",
+   "J2",
+   "J3",
+   "J6",
+   "J7",
+   "J8",
+   "J10",
+   "J11",
+   "J12",
+   "J14",
+   "J15",
+   "J17",
+   "J18",
+   "J19",
+   "J20",
+   "J21",
+   "J22",
+   "J24",
+   "J25",
+   "J26",
+   "JP1",
+   "L1",
+   "L2",
+   "L3",
+   "L4",
+   "NT1",
+   "Q1",
+   "Q2",
+   "Q3",
+   "Q4",
+   "Q5",
+   "Q6",
+   "Q7",
+   "Q8",
+   "Q9",
+   "Q10",
+   "Q11",
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R6",
+   "R7",
+   "R8",
+   "R11",
+   "R12",
+   "R13",
+   "R14",
+   "R15",
+   "R16",
+   "R17",
+   "R18",
+   "R19",
+   "R20",
+   "R21",
+   "R23",
+   "R24",
+   "R25",
+   "R26",
+   "R27",
+   "R28",
+   "R29",
+   "R30",
+   "R31",
+   "R32",
+   "R33",
+   "R34",
+   "R35",
+   "R36",
+   "R37",
+   "R38",
+   "R39",
+   "R40",
+   "R41",
+   "R42",
+   "R43",
+   "R44",
+   "R45",
+   "R46",
+   "R47",
+   "R48",
+   "R49",
+   "R50",
+   "R51",
+   "R52",
+   "R53",
+   "R54",
+   "R55",
+   "R56",
+   "R57",
+   "R58",
+   "R59",
+   "R60",
+   "R61",
+   "R62",
+   "U1",
+   "U2",
+   "U3",
+   "U6",
+   "Y1",
+   "Y2",
+   "Y3",
+   "Y4"
+  ]
+ },
+ "routed_board_sha256": "4fd7bf3185a7891d8f3f69cdf094e6595fdd50238a2e03ff94803c80eed3e564"
+}

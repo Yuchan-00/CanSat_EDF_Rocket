@@ -1596,7 +1596,9 @@ def test_v6_vtol_mesh_set_top_items_interior_and_pad(tmp_path):
         assert os.path.basename(sc.stl_dir) == "stl_vtol" and sc.hw.vtol and sc.pod_actors == []
         # 4 modules + groove cover + tray + the four servo covers as one mesh
         assert len(sc.body_actors) == 7
-        assert sc.length_m == pytest.approx(0.4753, abs=2e-3) and sc.top_z_m == pytest.approx(0.4753, abs=2e-3)
+        # switch-collar round (2026-11-05): the battery cap's collar rim (z 492.5) is the body top; the GPS parts stay on
+        # the plate top (475.3)
+        assert sc.length_m == pytest.approx(0.4925, abs=2e-3) and sc.top_z_m == pytest.approx(0.4753, abs=2e-3)
         keys = [k for k, _ in sc.hw_meshes]
         assert {"copper", "patch", "pcb"} <= set(keys) and "boot" not in keys       # battery: no eye bolt / boot
         assert {"edf", "lipo", "esc", "pcb_g"} <= {k for k, _ in sc.interior}
@@ -1663,7 +1665,7 @@ def test_v6_ghost_draws_its_own_hardware(tmp_path):
         same = rnd.scene.add_ghost(other)
         assert len(same.body) == len(sv.BODY_PARTS)
         g = rnd.scene.add_ghost(other, hardware=sv.Hardware("vtol", "battery", "meta"))
-        assert len(g.body) == 7 and g.length_m == pytest.approx(0.4753, abs=2e-3)
+        assert len(g.body) == 7 and g.length_m == pytest.approx(0.4925, abs=2e-3)     # 2026-11-05: collar rim
         rnd.frame(0)
     finally:
         rnd.close()
