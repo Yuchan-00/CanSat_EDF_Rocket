@@ -16,7 +16,12 @@
 ### 0.1 상태
 
 * 칩 4개(ATmega128A 16 MHz): NAV(센서·자세·고도), FCU(모든 비행 판단·출력·로그), COM(LoRa), GNS(GPS·위치 제어). 칩·배선·무게는
-  v0.8.1과 같습니다. 캐리어 기판의 5번째 칩 자리는 비워 둡니다(P3 예비, `docs/v0.9_펌웨어_결과.md` 8장).
+  v0.8.1과 같습니다. 캐리어 기판 rev 2c에는 5번째 칩 자리가 없습니다(사용자가 2026-11-05에 뺌). 그래서 P3(5번째 칩으로
+  NAV 일 옮기기)는 기판에 준비된 예비안이 아닙니다. 쓰려면 기판을 다시 설계해야 하고, 사용자가 정합니다(`docs/v0.9_펌웨어_결과.md` 8장).
+* 부품과 펌웨어 (2026-11-04 사용자 결정): 기압계는 BMP280 모듈(TYE-BMP29, I2C 0x77, 캐리어 J2)이고, GPS는 NEO-7M(SZH-NT07)입니다.
+  펌웨어에는 아직 MS5611 드라이버만 있습니다(`src/hal/ms5611.*`, `src/core/ms5611_math.*`). 시뮬레이션·추정기의 기압계 잡음 모델도
+  MS5611 것입니다. 이 문서의 MS5611 설명은 지금 펌웨어의 설명입니다. BMP280 드라이버와 기압계 모델은 다음 제어 라운드에서 만듭니다.
+  GPS: 펌웨어가 쓰는 UBX 메시지는 NEO-6M과 NEO-7M이 같다고 봅니다(A). MON-VER는 7로 읽습니다(0.10.1절).
 * 펌웨어 SPEC(`fw09/spec/SPEC_firmware_v09.md`) 7절의 기준 22개가 모두 통과했습니다(시뮬레이터). 실기 측정(같은 문서 7장) 전에는
   비행하지 않습니다.
 * 기준 모델(sim/)에서 바뀐 것은 RP1(통신 규약) 하나입니다. 제어 법칙은 v0.9 시뮬레이션·제어 라운드의 것 그대로입니다.
@@ -235,7 +240,7 @@ FC_ROLE_COM`)을 정합니다 (`platformio.ini`). 시뮬레이션의 참조 구�
 
 | 칩 | 하는 일 | 소스 |
 |---|---|---|
-| **NAV** (항법) | MPU-6050·MS5611(I2C), 패드 정렬 / 자이로 적분 자세 추정, 기울기, 고도 필터, 센서 상태. 매 틱 끝에 항법 프레임을 SPI(nlink)로 FCU에 보냄. **비행 판단 없음** | `src/nav/` + `src/core/` |
+| **NAV** (항법) | MPU-6050·MS5611(I2C; 산 기압계는 BMP280, 드라이버는 다음 제어 라운드), 패드 정렬 / 자이로 적분 자세 추정, 기울기, 고도 필터, 센서 상태. 매 틱 끝에 항법 프레임을 SPI(nlink)로 FCU에 보냄. **비행 판단 없음** | `src/nav/` + `src/core/` |
 | **FCU** (비행 제어) | 감시기(지상 명령 + 인터록 I1–I10), 자세제어, PWM 6채널, OpenLog 로그. 틱은 NAV 프레임이 도착하면 시작. **모든 비행 판단은 여기서** | `src/main.c` + `src/core/` |
 | **COM** (통신) | LoRa 무선 드라이버, 상향 CMD 해독 → FCU로 전달(ilink), FCU 스냅샷으로 TELEM 작성. **비행 판단 없음** | `src/com/` + `src/core/` |
 
@@ -288,7 +293,7 @@ FC_ROLE_COM`)을 정합니다 (`platformio.ini`). 시뮬레이션의 참조 구�
 |---|---|---|---|---|---|
 | 공통 | MCU | ATmega128A 최소 시스템 보드 ×3, 16 MHz 크리스털 | — | 5 V | 크리스털이 16 MHz인지 확인(예산안: 8 MHz로 온 사례). 세 칩 모두 같은 퓨즈(5절). ISP는 PE0/PE1/PB1 |
 | NAV | IMU | GY-521 (MPU-6050) | TWI PD0/PD1, 400 kHz, 0x68 | 모듈 VCC 5 V, I2C 3.3 V | ±2000 °/s, ±16 g, DLPF 98 Hz, 1 kHz |
-| NAV | 기압계 | GY-63 (MS5611) | TWI, 0x77 | 모듈 VCC 5 V, I2C 3.3 V | PROM CRC4, 2차 온도보상 |
+| NAV | 기압계 | BMP280 모듈 (TYE-BMP29, 디바이스마트 15442588; 사용자 결정 2026-11-04, GY-63 MS5611 대신) | TWI, 0x77 (CSB·SDO를 3.3 V에) | 모듈 VCC 3.3 V, I2C 3.3 V | 지금 펌웨어는 MS5611 드라이버만 있습니다(PROM CRC4, 2차 온도보상). BMP280 드라이버: 다음 제어 라운드 |
 | NAV | 레벨시프터 1 | BSS138 4채널 | HV = 5 V, LV = 3.3 V | | ch1 SCL, ch2 SDA, ch4 MPU INT(선택, 펌웨어 미사용), ch3 예비 |
 | NAV | 3.3 V #1 | AMS1117-3.3 모듈 | 5 V → 3.3 V | | 레벨시프터 1의 LV 기준 |
 | FCU | 베인 서보 ×4 | MG90S | OC1A PB5, OC1B PB6, OC1C PB7, OC3A PE3 | 전원 5 V (ESC BEC), 신호 5 V | 50 Hz, 1500 µs 중심, 11.1 µs/° |
@@ -335,8 +340,8 @@ COM PC0 = LED, NAV PC1 = LED). 핀 표 전체는 `src/board.h` 머리말에 있�
 |---|---|---|
 | 6S (22.2 V, 최대 25.2 V) | 6S 2200 mAh ×1 | ESC 전원, 로직 UBEC 입력, 전압 분압기 상단 (FCU PF0) |
 | 5 V 서보 | ESC BEC 5 V/7 A | MG90S ×5 V+ (베인 4 + 사출 1) |
-| 5 V 로직 | 5 V 3 A UBEC (하나) | **NAV·FCU·COM 세 보드** VCC/AVCC(LC), **통신·로거 상자**(OpenLog VCC, 레벨시프터 2 HV, AMS1117 #2 입력), NAV의 GY-521/GY-63 VCC·레벨시프터 1 HV·AMS1117 #1 입력, FCU의 부저·LED |
-| 3.3 V 센서 (NAV) | **AMS1117 #1** (NAV 보드) | 레벨시프터 1 LV 기준 (I2C 센서 쪽) |
+| 5 V 로직 | 5 V 3 A UBEC (하나) | **NAV·FCU·COM 세 보드** VCC/AVCC(LC), **통신·로거 상자**(OpenLog VCC, 레벨시프터 2 HV, AMS1117 #2 입력), NAV의 GY-521 VCC·레벨시프터 1 HV·AMS1117 #1 입력, FCU의 부저·LED (BMP280은 3.3 V 모듈이라 AMS1117 #1에서) |
+| 3.3 V 센서 (NAV) | **AMS1117 #1** (NAV 보드) | 레벨시프터 1 LV 기준 (I2C 센서 쪽), BMP280 모듈 VCC·CSB·SDO |
 | 3.3 V 무선 (통신·로거 상자) | **AMS1117 #2** | 레벨시프터 2 LV 기준, LoRa 모듈 VCC (형식 B는 3.3 V 전용; 형식 A는 모듈 설명서의 허용 전압 확인) |
 | GND | 모든 모듈 공통 | ilink·nlink 하네스마다 GND 선(`board.h`). v0.5까지는 비행 컴퓨터 한 점 성형 접지였고, 세 보드 구성의 접지점은 정해지지 않았습니다 |
 
@@ -425,7 +430,7 @@ v0.6.3의 FCU에는 I2C도 센서도 없습니다. PD0/PD1/PE6은 비어 있습�
 |---|---|---|---|---|
 | 로직 전원 | 5V, GND | VCC, AVCC(LC), GND | 5 V UBEC | AMS1117 #1 입력도 여기서 |
 | ISP (6핀) | | PE1, VCC, PB1, PE0, RESET, GND | USBasp | 뺄 것 없음 (7.3) |
-| I2C 센서 | SCL, SDA | PD0, PD1 | BSS138-1 ch1/ch2 → GY-521, GY-63 | 400 kHz |
+| I2C 센서 | SCL, SDA | PD0, PD1 | BSS138-1 ch1/ch2 → GY-521, BMP280 (GY-63 대신, 2026-11-04) | 400 kHz |
 | MPU INT (선택) | INT | PE6 (INT6) | BSS138-1 ch4 | 펌웨어 미사용 (틱에서 폴링) |
 | nlink | SS, SCK, MOSI, MISO, GND | PB0, PB1, PB2, PB3 | FCU PB0–PB3 (4.9) | NAV는 SPI 마스터. PB3 입력 + 풀업 |
 | LED | LED | PC1 | + 1 kΩ | 8.6 |
