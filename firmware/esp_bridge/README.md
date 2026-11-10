@@ -177,6 +177,8 @@ PC6은 오픈 드레인으로 씁니다. 리셋할 때만 L로 몰고, 놓을 �
 * 지상 거리 시험 1 km 이상(예상 최대 거리의 2배)을 먼저 합니다. 실패하면 LoRa로 돌아갑니다(`flight_computer.link.vehicle_radio`
   = `lora_uart` 또는 `sx127x`, 다시 생성·빌드). 계산 링크 예산(E): 20 dBm − 2 dBi(기체, 동체 안) + 8 dBi(지상) − 자유공간 손실
   − 10 dB 여유 → 1 km에서 약 −84 dBm (감도 약 −98 dBm, A) (`pcb/vtol_carrier/spec/carrier_spec.json` `radio_decision_2026_11_05`).
-* 왕복 시간을 실제로 재십시오. 시뮬레이션의 링크 모델은 LoRa(lora_uart) 그대로입니다(비관적인 쪽, E). ESP-NOW에 맞춘 링크 모델은
-  제어 관련 변경이라 다음 라운드입니다.
+* 왕복 시간을 실제로 재십시오. 2026-11-10 제어 라운드부터 시뮬레이션과 지상국은 ESP-NOW 링크 모델(`sim/link_model.py`
+  `esp_bridge`)을 씁니다: 정상 왕복 51.7 ms(탄도 TELEM v1) ~ 57.0 ms(VTOL TELEM v7), MAC 재전송을 모두 쓰면 146~152 ms,
+  응답 제한 240~246 ms (모두 E/A: 38400 baud UART 두 구간 + 브리지 처리 1 ms(A) + 802.11b 1 Mbps 프레임(E)). 실측 왕복이
+  모델과 다르면 `ESP_HOP_PROCESS_S_ASSUMED` 등 상수를 고치십시오. 지상국의 `t_link`는 실측 왕복으로 계속 갱신됩니다(규칙 R-ESP1).
 * ESP-12E와 지상 모듈의 KC 인증, 고이득 안테나의 EIRP 한도를 확인하십시오 (A).

@@ -30,6 +30,23 @@ Link delay t_link: mean of the last ``RTT_WINDOW_ASSUMED`` request -> reply time
 ``t_link_default_s`` (the link model's nominal round trip).  The round trip is the
 age of the telemetry when it arrives plus the uplink time of a command sent right
 then, i.e. the delay from the measurement to the command taking effect.
+2026-11-10 control round (rule R-ESP1, the ESP-NOW link): (a) a LATE reply - one that arrives after its request's reply
+timeout but before the next request is sent, with the SEQ of that request - is a round-trip sample too (``stats``
+"late_replies"; before, every late reply was "stale" and never measured), unless the previous request with the same
+SEQ is still unanswered (a heartbeat repeats its SEQ: the reply could be that one's - not measured, "stale");
+(b) ``t_link`` = max(mean of the last ``RTT_WINDOW_ASSUMED`` samples, the latest sample), so a rise of the link delay
+moves CUT / RELEASE earlier at once while a fall lowers it only through the mean (the conservative direction for both
+rules: an earlier CUT lowers the apogee, an earlier RELEASE opens the nose nearer apogee); (c) the reply timeout of a
+request is max(``reply_timeout_s``, the longest round trip in the window + ``LATE_TIMEOUT_MARGIN_S_ASSUMED``), at most
+``LATE_TIMEOUT_MAX_S_ASSUMED``: once late replies are measured the ground waits for them instead of transmitting while
+the vehicle's reply is still on air (a half-duplex LoRa link timed for the ESP: the CUT / RELEASE sent at the short
+timeout collided with the late reply and needed two or three exchanges).  Why: with the ESP model
+(nominal round trip ~0.06 s, reply timeout ~0.25 s) a link whose delay rises above the timeout (the 2026-11-10 study:
+the ESP link stepping to the LoRa model's 0.49 s; a ground station set up for the ESP on a LoRa link) answered every
+request late, t_link stayed at 0.06 s, the CUT came late (I4 cut instead) and the RELEASE 0.4 - 1.2 s after apogee
+(v_z -7 .. -12 m/s, S2 failed in 30 of 60 runs).  With the link model the ground is set up for, (a) and (c) change
+nothing (every reply is on time, every round trip + margin is below the model's timeout) and (b) changes nothing for
+the LoRa models (constant round trip); on the ESP model (b) can move the decisions earlier by a MAC-retry round trip.
 
 Assist mode (default on; ``set_assist(False)`` = operator only), evaluated on each
 new telemetry:
@@ -102,6 +119,13 @@ spool-up), ``up`` / ``down`` (move the altitude target by alt_step_m), ``kill`` 
   ``power_on_window_ok`` stays on the vcell field), so a tether / hybrid run differs from its TELEM v2 / v3 twin only
   by the longer downlink frame (link timing) and these events.
 
+* 2026-11-10 control round (logic-battery telemetry): the decoder also takes TELEM v6 / v7 (TELEM v2 / v3 + the 1-byte
+  logic-battery tail of the carrier's battery build, ``link_proto.TYPE_TELEM6`` / ``TYPE_TELEM7``).  The logic keeps the
+  latest reading (``lbat_v``), ``vtol_status`` shows it and ``lbat_status_ko`` gives one Korean line; below
+  ``GroundParams.lbat_warn_v`` (params ``flight_computer.logic_battery_monitor.ground_warn_below_v_ASSUMED``, A) it logs
+  "LOGIC BATTERY LOW" once and sets ``lbat_low`` (cleared above the threshold + ``LBAT_WARN_HYST_V``, logged again on the
+  next drop).  A warning only: nothing is sent to the vehicle and the vehicle does nothing (a user decision).
+
 Invariant: the logic never invents vehicle data - every decision uses decoded
 telemetry only, and every command it sends is recorded in ``records``.
 """
@@ -122,6 +146,12 @@ except ImportError:  # pragma: no cover
 pl.register_reason_names(lp)          # v0.9 power codes: a no-op since RP1 (sim.link_proto defines them)
 
 RTT_WINDOW_ASSUMED = 8          # round-trip samples averaged into t_link
+LBAT_WARN_HYST_V = 0.05         # 2026-11-10: the logic-battery warning clears this far above its threshold
+# 2026-11-10 R-ESP1 (c): the adaptive reply timeout - margin over the longest measured round trip (= sim.link_model
+# REPLY_TIMEOUT_MARGIN_S_ASSUMED) and its upper limit (with poll interval 0.5 s, one lost frame then leaves the vehicle
+# <= 1.5 s without an uplink, below link_loss_disarm_s 2 s - A)
+LATE_TIMEOUT_MARGIN_S_ASSUMED = 0.04
+LATE_TIMEOUT_MAX_S_ASSUMED = 1.0
 PRIORITY_CMDS = (lp.CMD_CUT, lp.CMD_RELEASE, lp.CMD_KILL, lp.CMD_OFF)   # pre-empt the pending / queued commands
 
 # Operator text (Korean, user-facing) for every code the VTOL build can report; the English names stay in
@@ -231,6 +261,16 @@ def power_status_ko(build: int, tlm: "lp.Telemetry | None", ptel: "pl.PowerTelem
     return " | ".join(parts)
 
 
+def lbat_status_ko(tlm: "lp.Telemetry | None", warn_v: float | None) -> str:
+    """2026-11-10: one Korean line for the logic battery of a TELEM v6 / v7 ('' for a frame without the tail)."""
+    if tlm is None or not tlm.has_lbat:
+        return ""
+    v = tlm.lbat_v
+    low = warn_v is not None and v < warn_v
+    lim = "" if warn_v is None else f" (경고 {warn_v:.2f} V 미만)"
+    return f"로직 배터리 {v:.2f} V{lim}" + (" - 낮음: 착륙 후 충전하십시오 (기체는 자동 동작 없음)" if low else "")
+
+
 def power_on_window_ok(build: int, tlm: "lp.Telemetry", lo_v: float, hi_v: float) -> bool:
     """v0.9 ground pre-check of W_ARM for the battery-less build (the bus at idle = the supply, from the vcell field):
     ON is not sent while 6 x vcell is outside [lo_v, hi_v] (the vehicle would refuse it, REJ_POWER).  The hybrid's buffer
@@ -249,6 +289,12 @@ def gps_status_ko(tlm: lp.Telemetry) -> str:
     d = tlm.dist_m
     dist = "유지점 없음" if d is None else f"유지점에서 {d:.1f} m"
     return f"{ready} | 위성 {tlm.num_sv}개 | 정확도 {acc} | {POS_MODE_TEXT_KO.get(tlm.pos_mode, str(tlm.pos_mode))} | {dist}"
+
+
+def _lbat_warn_v(p: dict) -> float | None:
+    lbm = (p.get("flight_computer") or {}).get("logic_battery_monitor") or {}
+    v = lbm.get("ground_warn_below_v_ASSUMED")
+    return None if v is None else float(v)
 
 
 @dataclass(frozen=True)
@@ -270,6 +316,7 @@ class GroundParams:
     # apogee_confirm_s is not applied to the prediction.  False = the v0.3 literal rule.
     release_compensated: bool = True
     mode: str = lp.MODE_BALLISTIC          # v0.7: the vehicle build's mission.mode (VTOL: ON / OFF / UP / DOWN, no assist)
+    lbat_warn_v: float | None = None       # 2026-11-10: logic-battery warning threshold (TELEM v6 / v7), None = no warning
 
     @property
     def vtol(self) -> bool:
@@ -293,7 +340,8 @@ class GroundParams:
                    apogee_detect_vz_mps=float(m["apogee_detect_vz_mps"]),
                    apogee_confirm_s=float(m["apogee_confirm_s"]), coast_timeout_s=float(m["coast_timeout_s"]),
                    release_after_cut_s=float(m["release_after_cut_s"]), release_compensated=bool(release_compensated),
-                   mode=lp.mission_mode(p) if mode is None else lp.check_mode(mode))
+                   mode=lp.mission_mode(p) if mode is None else lp.check_mode(mode),
+                   lbat_warn_v=_lbat_warn_v(p))
 
 
 @dataclass
@@ -333,7 +381,9 @@ class GroundAssist:
         self.next_poll = float("-inf")
         self.rtts: deque[float] = deque(maxlen=gp.rtt_window)
         self.rtt_all: list[tuple[float, float]] = []      # (t_reply, rtt)
-        self.stats = {"polls": 0, "replies": 0, "timeouts": 0, "stale_replies": 0, "telemetry": 0}
+        self.stats = {"polls": 0, "replies": 0, "timeouts": 0, "stale_replies": 0, "telemetry": 0, "late_replies": 0}
+        self.reply_open = False             # R-ESP1: the latest request's reply has not arrived (on time or late) yet
+        self.rtt_ambiguous = False          # R-ESP1: the request before it had the same SEQ and was never answered
         self.events: list[tuple[float, str]] = []
         self.assist_log: list[dict] = []
         self.cut_queued = False
@@ -350,6 +400,8 @@ class GroundAssist:
         self.pos_mode: int | None = None                    # v0.8: latest TELEM v3 position-hold mode
         self.power_alarm: int | None = None                 # v0.9: the latest power rule seen (POWER_ALARM_KO)
         self.ptel: pl.PowerTelem | None = None              # v0.9 RP1: the latest TELEM v4 / v5 power tail
+        self.lbat_v: float | None = None                    # 2026-11-10: the latest TELEM v6 / v7 logic battery [V]
+        self.lbat_low = False                               # below GroundParams.lbat_warn_v (hysteresis)
         if gp.vtol:
             self.events.append((0.0, "VTOL build: commands ON / OFF / UP / DOWN / KILL, assist off"))
 
@@ -432,11 +484,23 @@ class GroundAssist:
             st.update(gps_ready=t.gps_flag(0x02), gps_fix_ok=t.gps_flag(0x01), gps_3d=t.gps_flag(0x08),
                       num_sv=t.num_sv, hacc_m=None if t.hacc_dm >= lp.HACC_NONE else t.hacc_m, pos_mode=t.pos_mode,
                       dist_m=t.dist_m, gps_ko=gps_status_ko(t))
+        if t.has_lbat:                                          # 2026-11-10 TELEM v6 / v7: the logic battery
+            st.update(lbat_v=t.lbat_v, lbat_low=self.lbat_low, lbat_ko=lbat_status_ko(t, self.gp.lbat_warn_v))
         return st
+
+    def reply_timeout(self) -> float:
+        """R-ESP1 (c): max(the configured timeout, the longest round trip in the window + margin), <= the limit."""
+        t = self.gp.reply_timeout_s
+        if self.rtts:
+            t = max(t, min(max(self.rtts) + LATE_TIMEOUT_MARGIN_S_ASSUMED, LATE_TIMEOUT_MAX_S_ASSUMED))
+        return t
 
     @property
     def t_link(self) -> float:
-        return sum(self.rtts) / len(self.rtts) if self.rtts else self.gp.t_link_default_s
+        """R-ESP1 (2026-11-10): max(mean of the last rtt_window round trips, the latest one); the default before any."""
+        if not self.rtts:
+            return self.gp.t_link_default_s
+        return max(sum(self.rtts) / len(self.rtts), self.rtts[-1])
 
     # ---- radio --------------------------------------------------------------------------------------
     def _next_seq(self) -> int:
@@ -470,10 +534,12 @@ class GroundAssist:
                 rec.t_first_tx = now
                 self.events.append((now, f"TX {rec.name} seq {seq}"))
             rec.n_tx += 1
+        self.rtt_ambiguous = self.reply_open and seq == self.sent_seq    # R-ESP1: the unanswered one had this SEQ
+        self.reply_open = True
         self.awaiting = True
         self.t_sent = now
         self.sent_seq = seq
-        self.deadline = now + self.gp.reply_timeout_s
+        self.deadline = now + self.reply_timeout()
         self.next_poll = now + 1.0 / self.gp.poll_hz
         self.stats["polls"] += 1
         return lp.encode_command(self.gp.vehicle_id, seq, cmd)
@@ -488,8 +554,20 @@ class GroundAssist:
                 self.rtts.append(rtt)
                 self.rtt_all.append((now, rtt))
                 self.awaiting = False
+                self.reply_open = False
                 self.stats["replies"] += 1
+            elif self.reply_open and fr.seq == self.sent_seq and not self.rtt_ambiguous:
+                rtt = now - self.t_sent                       # R-ESP1 (a): a late reply, after its timeout
+                self.rtts.append(rtt)
+                self.rtt_all.append((now, rtt))
+                self.reply_open = False
+                self.stats["late_replies"] += 1
+                self.events.append((now, f"late reply seq {fr.seq}: round trip {rtt:.3f} s > reply timeout "
+                                         f"{self.gp.reply_timeout_s:.3f} s (t_link now {self.t_link:.3f} s, timeout "
+                                         f"{self.reply_timeout():.3f} s)"))
             else:
+                if fr.seq == self.sent_seq:
+                    self.reply_open = False
                 self.stats["stale_replies"] += 1
             if self.latest is not None and tlm.t_ms <= self.latest.t_ms:
                 continue                                      # older than what we have: data ignored
@@ -530,6 +608,19 @@ class GroundAssist:
                     self.events.append((now, f"PWR tail {pl.PWR_NAMES.get(pt.build, pt.build)}: v_aux {pt.v_aux_v:.3f} V, "
                                              f"flags 0x{pt.flags:02X} ({names})"))
                 self.ptel = pt
+            if tlm.has_lbat:                                    # 2026-11-10: TELEM v6 / v7 logic battery (warning only)
+                v = tlm.lbat_v
+                if self.lbat_v is None:
+                    self.events.append((now, f"logic battery {v:.2f} V (TELEM v6 / v7)"))
+                self.lbat_v = v
+                w = self.gp.lbat_warn_v
+                if w is not None and not self.lbat_low and v < w:
+                    self.lbat_low = True
+                    self.events.append((now, f"LOGIC BATTERY LOW {v:.2f} V < {w:.2f} V (warning only, the vehicle does "
+                                             "nothing)"))
+                elif self.lbat_low and w is not None and v >= w + LBAT_WARN_HYST_V:
+                    self.lbat_low = False
+                    self.events.append((now, f"logic battery {v:.2f} V back above {w + LBAT_WARN_HYST_V:.2f} V"))
             if tlm.is_v3:                                       # v0.8: GPS readiness and position-hold mode changes
                 ready = tlm.gps_flag(0x02)
                 if ready != self.gps_ready:

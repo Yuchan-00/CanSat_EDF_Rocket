@@ -54,13 +54,17 @@ PAYLOAD = {
 EXTRA = {
     # v0.6.3: the v0.5 'fc' board is electronics.nav (the sensor computer, same board and spot); electronics.fcu, .com
     # and .radio_log are base keys that both presets share, so the budget preset does not override them.  v0.6: misc
-    # 60 -> 40 g, its LoRa / OpenLog parts moved to electronics.radio_log.
+    # 60 -> 40 g, its radio / OpenLog parts moved to electronics.radio_log.  2026-11-11: the two description strings
+    # below follow params.json (BMP280 barometer, ESP-12E radio); masses and dimensions unchanged.
     "electronics": {
-        "nav": {"model": "NAV board: ATmega128A minimum-system board (16 MHz crystal) + GY-521 MPU-6050 + GY-63 MS5611 "
-                         "on a 4-ch level shifter (3.3 V side) - v0.6.3: the sensor computer, at the v0.5 flight-computer "
-                         "spot", "mass_g": 40.0, "dims_lwh": [50.0, 50.0, 15.0]},
+        "nav": {"model": "NAV board: ATmega128A minimum-system board (16 MHz crystal) + GY-521 MPU-6050 + BMP280 "
+                         "barometer module (TYE-BMP29, I2C 0x77; 2026-11: the bought part and the default NAV driver, "
+                         "flight_computer.nav.baro_sensor - the GY-63 MS5611 of v0.5 .. v0.9 stays a firmware build "
+                         "option) on a 4-ch level shifter (3.3 V side) - v0.6.3: the sensor computer, at the v0.5 "
+                         "flight-computer spot", "mass_g": 40.0, "dims_lwh": [50.0, 50.0, 15.0]},
         "misc": {"items": "5 V logic UBEC, buzzer, arming switch, wiring (servos run from the ESC's 5 V / 7 A BEC); v0.6: "
-                          "the LoRa module, OpenLog and radio level shifter moved to electronics.radio_log",
+                          "the radio module (2026-11-06: an ESP-12E, LoRa the fallback), OpenLog and radio level "
+                          "shifter moved to electronics.radio_log",
                  "mass_g": 40.0, "dims_lwh": [30.0, 40.0, 20.0]},
     },
     "mission": {"budget_note": "100 A ESC (120 A peak 10 s): full throttle on a fresh pack draws ~114 A for the first "

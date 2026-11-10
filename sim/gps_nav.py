@@ -4,8 +4,8 @@ Executable specification for the NAV firmware (``firmware/atmega128_fc/src/core/
 ported; float32 on the AVR, float64 here except where a step is integer and therefore exact in both).  Pure Python, no
 numpy, no RNG, no clock: every state explicit, every number a module constant with its source or a params.json value.
 
-Hardware (params.json ``electronics.gps``, ``flight_computer.nav.gps``; architect v0.8): u-blox NEO-6M on a GY-NEO6MV2
-board (NEO-M8N = upgrade path) on the NAV's USART1 (PD2 RXD1 / PD3 TXD1), 38400 8N1 through a level shifter; UBX
+Hardware (params.json ``electronics.gps``, ``flight_computer.nav.gps``; architect v0.8): a u-blox receiver - the NEO-7M module
+SZH-NT07 since 2026-11, a NEO-6M on a GY-NEO6MV2 board in the v0.8 design (NEO-M8N = upgrade path) - on the NAV's USART1 (PD2 RXD1 / PD3 TXD1), 38400 8N1 through a level shifter; UBX
 NAV-POSLLH + NAV-VELNED + NAV-SOL at 5 Hz; antenna in the option-B pod under the nose skirt, ~321 mm from the CG.
 
 Part 1 - UBX protocol (byte-exact; ``sim/out/gps_vectors.json`` holds the C vectors)
@@ -40,11 +40,11 @@ Epoch time (``ItowClock``, review v0.8 (8)): D = (NAV_ms - iTOW) mod 2^32 as int
 (boot, week roll-over), else O = min(D, O + ``ITOW_LEAK_MS`` = 1): the earliest-arriving epoch defines the offset, the
 1 ms per epoch leak (5 ms/s) follows the drift of the NAV clock (crystal; a ceramic resonator stays within 0.5 %).
 Measurement time of the epoch on the NAV clock: t_e = iTOW + O - L, L = round(latency_s x 1000) (params
-flight_computer.nav.gps.latency_s_ASSUMED 0.22 s, ArduPilot's u-blox 6 lag: from the measurement to the complete
+flight_computer.nav.gps.latency_s_ASSUMED 0.22 s, ArduPilot's u-blox 6 lag, kept for the NEO-7M (A; the 6-DOF's NEO-7M model uses 0.12 s A): from the measurement to the complete
 arrival).  The arrival jitter (UART, tick quantisation, the receiver's output load) is removed by the minimum; the
 latency itself is not observable and stays ASSUMED.
 
-Boot configuration (``GpsConfigurator``, review v0.8 (8); the NEO-6M has no flash: its configuration lives in the
+Boot configuration (``GpsConfigurator``, review v0.8 (8); the NEO-6M has no flash - and the NEO-7M's is not relied on (A): the configuration lives in the
 battery-backed RAM, so the NAV re-sends it at every boot): wait ``CFG_BOOT_WAIT_S``; probe at 38400 (CFG-PRT, ACK
 checked - a receiver kept configured by its backup cell answers here); else switch the NAV UART to 9600 (the factory
 default), send CFG-PRT (the receiver changes its baud rate: that ACK is not checked), settle, back to 38400, CFG-PRT
@@ -909,7 +909,7 @@ class LocalFrame:
 
 
 def epoch_frames(ep: GpsEpoch, week: int = 2400, order: str = "psv") -> bytes:
-    """UBX bytes of one epoch as a NEO-6M sends them (POSLLH, SOL, VELNED by default; ``order`` p/s/v letters):
+    """UBX bytes of one epoch as a u-blox 6 / 7 receiver (NEO-6M, NEO-7M) sends them (POSLLH, SOL, VELNED by default; ``order`` p/s/v letters):
     the receiver side for tests and the 6-DOF (the 6-DOF's error model chooses the fields)."""
     p = NavPosllh(ep.itow_ms, ep.lon_e7, ep.lat_e7, ep.hmsl_mm, ep.hmsl_mm, ep.hacc_mm, ep.vacc_mm)
     vn, ve = ep.vel_n_cms, ep.vel_e_cms
@@ -1650,7 +1650,7 @@ def make_test_vectors() -> dict:
     cfgs.append({"name": "MON-VER poll", "hex": mon_ver_poll().hex()})
     streams = []
     ep_b = frames["posllh"] + frames["sol"] + frames["velned"]
-    streams.append(_stream_vector("epoch_psv", ep_b, "one NEO-6M epoch: POSLLH, SOL, VELNED"))
+    streams.append(_stream_vector("epoch_psv", ep_b, "one u-blox (NEO-6M / NEO-7M) epoch: POSLLH, SOL, VELNED"))
     streams.append(_stream_vector("garbage_and_nmea", b"$GPGGA,123519,4807.038,N*47\r\n\x00\xff\xb5" + ep_b,
                                   "NMEA text, junk and a lone B5 before an epoch"))
     streams.append(_stream_vector("b5_b5_62", b"\xb5" + frames["ack_prt"], "B5 B5 62: the second B5 starts the frame"))

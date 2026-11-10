@@ -1,12 +1,12 @@
 {
   "meta": {
-    "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+    "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
     "preset": "BUDGET_90mm_6S",
     "density_g_cm3": 1.31,
     "source": "cad/exports/cadquery/stl (CadQuery twin of this params.json)",
     "slicer": "Bambu Lab P2S 0.4 nozzle / 0.20mm Standard @BBL P2S / Bambu PLA Matte @BBL P2S + class overrides",
     "part_g": "the part's own extrusion (G-code features minus Support*, Brim, Skirt, Custom / prime)",
-    "date": "2026-11-04 15:39"
+    "date": "2026-11-11 01:23"
   },
   "parts": {
     "propulsion_module": {
@@ -48,11 +48,11 @@
       "stl": "cad/exports/cadquery/stl/avionics_module.stl",
       "stl_sha256": "48c0eef7d4ec0ada0b12cc7c6b3191af6afcb9cabc4a0c094c70d83452955ec0",
       "part_z_centroid_design_mm": 434.96956183168066,
-      "time_s": 60829.2197265625,
+      "time_s": 60828.3876953125,
       "support": "none",
       "filament": "1 (white)",
       "two_colour": {
-        "time_s": 60829.2197265625,
+        "time_s": 60828.3876953125,
         "swaps": 576,
         "swaps_by_direction": {
           "T0->T1": 288,
@@ -82,10 +82,10 @@
           "white_to_orange": 150.0,
           "orange_to_white": 210.0
         },
-        "added_time_s": 51761.36328125,
+        "added_time_s": 51760.53125,
         "added_filament_g": 180.44,
         "cli_default_flush": {
-          "time_s": 55823.58203125,
+          "time_s": 55822.7265625,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 255.89,
@@ -174,7 +174,7 @@
       "filament": "2 (orange)",
       "note": "printed with avionics_module (one 2-filament object); its time / purge / tower are in that entry",
       "two_colour": {
-        "time_s": 60829.2197265625,
+        "time_s": 60828.3876953125,
         "swaps": 576,
         "swaps_by_direction": {
           "T0->T1": 288,
@@ -204,10 +204,10 @@
           "white_to_orange": 150.0,
           "orange_to_white": 210.0
         },
-        "added_time_s": 51761.36328125,
+        "added_time_s": 51760.53125,
         "added_filament_g": 180.44,
         "cli_default_flush": {
-          "time_s": 55823.58203125,
+          "time_s": 55822.7265625,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 255.89,
@@ -423,7 +423,7 @@
     "launch_pad": {
       "part_g": 141.19613556741928,
       "filament_g": 169.03342671941311,
-      "removed_g": 27.837281793699713,
+      "removed_g": 27.837281793699706,
       "solid_volume_mm3": 272363.9560333042,
       "solid_mass_g_at_rho": 356.7967824036285,
       "class": "E_ground_equipment",
@@ -431,7 +431,7 @@
       "stl": "cad/exports/cadquery/stl/launch_pad.stl",
       "stl_sha256": "09d5be050819e2e04de5b6d3d07de1440dede4d83573c4ebc505551f6d0ae7bc",
       "part_z_centroid_design_mm": -32.65479397546866,
-      "time_s": 18777.119140625,
+      "time_s": 18777.68359375,
       "support": "normal(auto)"
     }
   }

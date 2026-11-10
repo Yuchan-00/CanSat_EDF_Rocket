@@ -11,7 +11,7 @@ image is byte-identical for the field and demo build profiles, and that the FCU 
 NAV never pushes its frame earlier than nav.h ``NAV_PUSH_MIN_US_VTOL`` after the tick (the estimator branches differ by
 up to ~0.75 ms: pushed as soon as ready, the frame-ready time jumped by more than the FCU's frame-timeout margin); the
 bench reports the compute end before that wait (SB ``ce``) and the ticks past the floor (``lp``), the composed figures
-are max(the measured time, compute end + the MS5611 bus interrupts + the wire exchange), and the floor must bound the
+are max(the measured time, compute end + the barometer's bus interrupts + the wire exchange), and the floor must bound the
 variation: compute end + bus interrupts - floor <= the NAV variation the FCU's background timing allows (simbench.h
 SB_NAV_JITTER_US, inside main.c's NLINK_EARLY_US);
 ``--mode ballistic`` the ``*_ballistic`` envs (v0.6.3 estimator and filter); ``--mode both`` (default) both.  Reports
@@ -34,8 +34,10 @@ AVR instruction set) and parses the console (numbers hex, formats in ``nav_simbe
 
 The frame-ready time on the wire in flight mode is composed: the bench's flight figure with its bypass exchange
 section replaced by the stand-alone nav_cosim's real exchange section (both measured; the rest of the tick is the same
-code).  Interrupts not in the measured figures (no I2C slave in simavr): every TWI interrupt of one MS5611 bus script
-(it runs inside the time-critical part in phases 0 and MS5611_D1_PHASE of every FC_BARO_DIV ticks), counted from the
+code).  Interrupts not in the measured figures (no I2C slave in simavr): every TWI interrupt of the barometer's longest
+bus script (BARO_TWI_SCRIPTS below: it runs inside the time-critical part of the script's tick - BMP280: the data read
+in phase BMP280_READ_PHASE, the shorter forced write in phase BMP280_START_PHASE; MS5611: phases 0 and MS5611_D1_PHASE - of every
+FC_BARO_DIV ticks), counted from the
 flight ELF's disassembly (4 response + 3 vector JMP + the longest path through ``__vector_33``).  The MPU-6050 burst read
 (Timer0 lead ISR, FC_IMU_LEAD_COUNTS before the tick) runs while the NAV is idle; the check is that the loop incl. its
 background ends before that lead.  Stack: the canary high-water mark of the simulated loops (bench and cosim) plus the
@@ -65,7 +67,7 @@ filter's job of the tick + the slot latch) | FCU reply + LED | background.  The 
 frame delivered; the tick's MANDATORY work (everything up to the FCU reply, every tick) is new: ``SW`` line (wk / wp / wf
 window / pad / flight max from the loop's own tick start, ws / wn the flight sum / count -> mean, wl flight ticks ending
 inside the next tick's IMU-lead window, wt flight ticks ending after the next tick, ls the largest tick-start lateness after
-the Timer2 interrupt).  A synthetic u-blox NEO-6M (nav_simbench.c: factory 9600 baud with NMEA, ACKs the boot
+the Timer2 interrupt).  A synthetic u-blox receiver (the NEO-6M model of v0.8; nav_simbench.c: factory 9600 baud with NMEA, ACKs the boot
 configuration, answers MON-VER, 5 Hz NAV-POSLLH / SOL / VELNED once configured) drives the real UBX path through a
 byte-accurate Timer3 "wire" into the USART1 RX ring (hal/gps_uart.c; the flight build's USART1 RX interrupt is counted from
 its disassembly and compared); lines ``SG`` (configurator / parser / assembler), ``SI`` (filter / UART), ``SH`` (the GPS
@@ -106,17 +108,17 @@ STACK_MIN_FREE = 1024                     # never-touched stack the flight build
 CRIT_LIMIT = 0.80                         # time-critical part <= 80 % of the tick (the project's limit)
 EXPECTED_WARNINGS = ("GAINS_PARAMS_STALE", "tuned against a different params.json")
 STATES = ["SAFE", "ARMED", "POWERED", "UNPOWERED", "RELEASED", "ABORT"]
-SECTION_NAMES = ["sensors (IMU convert, failure count, MS5611 step)", "estimator + tilt + pad-still + altitude filter",
+SECTION_NAMES = ["sensors (IMU convert, failure count, barometer step)", "estimator + tilt + pad-still + altitude filter",
                  "frame build + nl_encode_nav", "nlink_spi_exchange", "FCU reply decode + LED",
-                 "background (MS5611 math, stack scan)"]
+                 "background (barometer math, stack scan)"]
 # v0.8.1 VTOL (nav_main.c): predict -> publish -> correct -> altitude -> glink (v0.8: GPS)
-SECTION_NAMES_V08 = ["sensors (IMU convert, failure count, MS5611 step)",
+SECTION_NAMES_V08 = ["sensors (IMU convert, failure count, barometer step)",
                      "gyro prediction + nl_nav3_tilt + quantised fields + pre-build glink decode (<= 8 B) + GNS slot + "
                      "nl_encode_nav4 (+ push-floor wait)",
                      "nlink_spi_exchange",
                      "glink decode after the push + Mahony correction + pad-still + VTOL altitude filter (corrected q)",
                      "glink: force sum, the STATE frame at k mod 5 == 4 (USART1 TX ring), glink decode",
-                     "FCU reply decode (nlink v4) + LED", "background (glink decode, MS5611 math, stack scan)"]
+                     "FCU reply decode (nlink v4) + LED", "background (glink decode, barometer math, stack scan)"]
 EXCHANGE_SECTION = {"vtol": 2, "ballistic": 3}            # index of nlink_spi_exchange in the section list
 # v0.8.1 glink lines (nav_simbench.h)
 SW_ALIAS = {"wk": "work_max_us", "wp": "work_pad_max_us", "wf": "work_flight_max_us", "ce": "compute_end_max_us",
@@ -153,7 +155,31 @@ SIGNED16 = {"jx"}
 # ---- interrupt model (as tools/run_simbench.py) ----
 ISR_ENTRY_CYCLES = 7                      # 4 interrupt response + 3 vector-table JMP (ATmega128, 16-bit PC)
 VECTORS = {"tick_timer2": 9, "imu_lead_timer0": 15, "spi_stc": 17, "console_udre0": 19, "twi": 33}
-TWI_SCRIPT_INTERRUPTS = (1 + 1 + 1) + (1 + 1 + 3) + (1 + 1 + 1)   # hal/ms5611.c script: write 1, read 3, write 1 B
+# TWI interrupts of one bus script = per transfer: START + SLA + every data byte (the STOP raises none).  Per barometer
+# driver (src/hal/baro.h, params_gen.h FC_BARO_SENSOR): the scripts of one FC_BARO_DIV cycle, each in its own tick.
+BARO_TWI_SCRIPTS = {
+    # hal/ms5611.c: write 1 B (convert), read 3 B (ADC), write 1 B (convert) - the same script in both phases
+    "MS5611": {"phase 0 / MS5611_D1_PHASE": (1 + 1 + 1) + (1 + 1 + 3) + (1 + 1 + 1)},
+    # hal/bmp280.c: script A write 2 B (ctrl_meas, forced); script B write 1 B (register), read 6 B (0xF7 .. 0xFC)
+    "BMP280": {"BMP280_START_PHASE (forced write)": 1 + 1 + 2, "BMP280_READ_PHASE (data read)": (1 + 1 + 1) + (1 + 1 + 6)},
+}
+
+
+def baro_sensor(fw: str | None = None) -> str:
+    """the barometer driver the default NAV envs build: params_gen.h FC_BARO_SENSOR (FC_BARO_BMP280 / FC_BARO_MS5611)"""
+    with open(os.path.join(fw or FW, "src", "params_gen.h"), "r", encoding="utf-8") as f:
+        m = re.search(r"^#define\s+FC_BARO_SENSOR\s+FC_BARO_(\w+)", f.read(), re.M)
+    if not m or m.group(1) not in BARO_TWI_SCRIPTS:
+        raise SystemExit("src/params_gen.h: #define FC_BARO_SENSOR FC_BARO_<BMP280 | MS5611> not found")
+    return m.group(1)
+
+
+def twi_script_interrupts(fw: str | None = None) -> int:
+    """the TWI interrupts of the longest barometer script of one tick (the figure added to a tick's measured time)"""
+    return max(BARO_TWI_SCRIPTS[baro_sensor(fw)].values())
+
+
+TWI_SCRIPT_INTERRUPTS = max(BARO_TWI_SCRIPTS["MS5611"].values())   # v0.9 name; the build's value: twi_script_interrupts()
 ICALL_TARGETS = {"__vector_15": ["mpu6050_start_async"]}         # timer_set_lead_hook in nav_main.c (flight build)
 CYCLES = {**{m: 1 for m in ("add adc sub subi sbc sbci and andi or ori eor com neg sbr cbr inc dec tst clr ser mov movw "
                              "ldi in out lsl lsr rol ror asr swap bst bld sec clc sen cln sez clz sei cli ses cls sev clv "
@@ -603,7 +629,7 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
     flight_vcd = os.path.join(vcd_dir, "nav_flight_ss.vcd")
     run_for(builds[FLIGHT_ENV]["elf"], args.flight_wall_s, flight_vcd)
     flight_smoke = ss_figures(ss_edges(flight_vcd))
-    flight_smoke["_doc"] = ("flight ELF without sensors (MPU-6050 / MS5611 init fail, IMU read fails every tick: reset_cause "
+    flight_smoke["_doc"] = ("flight ELF without sensors (MPU-6050 / barometer init fail, IMU read fails every tick: reset_cause "
                             "0xC0 | MCUCSR, imu_fail climbing) for ~flight_wall_s of host time: SS low = the exchange on the "
                             "wire, SS rise spacing = what the FCU's frame-triggered tick sees (no gap > the frame timeout: no "
                             "watchdog reset, no missed exchange)")
@@ -611,7 +637,9 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
     # ---- interrupts and stack from the flight ELF
     isr = isr_table(builds[FLIGHT_ENV]["elf"])
     twi_cyc = isr["twi"].get("longest")
-    twi_us = TWI_SCRIPT_INTERRUPTS * twi_cyc * cyc_us if twi_cyc else None
+    baro = baro_sensor()
+    twi_n = twi_script_interrupts()
+    twi_us = twi_n * twi_cyc * cyc_us if twi_cyc else None
     isr_stack_unexercised = max((isr[n].get("stack_bytes", 0) for n in ("twi", "imu_lead_timer0")), default=0)
     stack_used = max(stack_used_bench, stack_used_cosim)
     flight_static = builds[FLIGHT_ENV]["static_ram_bytes"]
@@ -630,8 +658,8 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
     crit_wire_isr = crit_flight_wire + (twi_us or 0.0)
     if vtol:
         # v0.8: the compute end measured from the loop's own tick start (the bench's tick ISR stamp also holds the late
-        # start of a tick after an overrun): the flight time-critical part minus its bypass exchange; the MS5611 bus
-        # interrupts run during the compute (they follow the step-2 ms5611_step) and are absorbed by the wait unless the
+        # start of a tick after an overrun): the flight time-critical part minus its bypass exchange; the barometer's bus
+        # interrupts run during the compute (they follow the step-2 baro_step) and are absorbed by the wait unless the
         # compute + they pass the floor
         compute_t0 = bench["crit_flight_max_us"] - bypass_ex
         if async_ex:                                   # fw09/p1: crit (tick -> SS rise) minus the exchange on the wire
@@ -642,7 +670,7 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
     work = None
     if vtol:
         # v0.8: the tick's mandatory work (prediction, publish, correction, altitude, GPS, reply) on the wire: the bench's
-        # figure minus its bypass exchange + the real exchange; + the TWI script (in every tick of an MS5611 phase); the
+        # figure minus its bypass exchange + the real exchange; + the TWI script (in every tick that starts a barometer script); the
         # GPS RX interrupts are in the measured figure (the bench's Timer3 wire, see gps_uart below)
         sw = b["sw"]
         wl = sw[-1] if sw else {}
@@ -659,7 +687,7 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
             "bench_stack_free_min": min((r.get("stack_free", 9999) for r in sw), default=None),
             "_doc": "mandatory work = the loop's own tick start -> the FCU reply handled (everything but the background), "
                     "measured with the bypass exchange; *_wire = that - the bypass exchange + nav_cosim's real one (+ the "
-                    "MS5611 script's TWI interrupts for the max).  The bench's counts (into the IMU lead / past the tick) "
+                    "barometer script's TWI interrupts for the max).  The bench's counts (into the IMU lead / past the tick) "
                     "are with the bypass exchange, i.e. ~0.6 ms optimistic; late_start = the largest lateness of a tick "
                     "start after its Timer2 interrupt (the previous tick still running, incl. the bench's own end-of-loop "
                     "work)",
@@ -675,7 +703,8 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
         "exchange_wire_us": wire_ex, "exchange_bypass_us": bypass_ex, "nlink_xfer_us_generator": k["NLINK_XFER_US"],
         "crit_pad_wire_us": cosim["crit_pad_max_us"], "crit_flight_wire_us": crit_flight_wire,
         "ready_pad_wire_us": cosim["ready_pad_max_us"], "ready_flight_wire_us": ready_flight_wire,
-        "twi_script_interrupts": TWI_SCRIPT_INTERRUPTS, "twi_isr_cycles": twi_cyc,
+        "baro_sensor": baro, "twi_scripts": BARO_TWI_SCRIPTS[baro],
+        "twi_script_interrupts": twi_n, "twi_isr_cycles": twi_cyc,
         "twi_script_isr_us": None if twi_us is None else round(twi_us, 1),
         "crit_flight_wire_with_isr_us": round(crit_wire_isr, 1), "crit_fraction": round(crit_wire_isr / tick_us, 4),
         "ready_flight_wire_with_isr_us": round(max(ready_flight_wire, compute_isr + (flight_smoke["ss_low_max_us"] if async_ex
@@ -689,7 +718,7 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
         "_doc": "wire figures = bench flight figure - its bypass exchange section + nav_cosim's real exchange section; "
                 "ready = from the Timer2 ISR's Timer1 stamp to SS high (the FCU's tick starts then); imu_sample_to_frame"
                 "_ready = FC_IMU_LEAD_COUNTS lead (the burst read starts then) + ready; ready_jump = largest increase of the "
-                "frame-ready time from one tick to the next (+ one MS5611 script's TWI interrupts): the FCU's tick spacing "
+                "frame-ready time from one tick to the next (+ the longest barometer script's TWI interrupts): the FCU's tick spacing "
                 "is the tick + that, and its own timer takes over after NLINK_FRAME_TIMEOUT_US",
     }
     stack = {
@@ -845,7 +874,7 @@ def run_mode(mode: str, args, out_paths: list[str]) -> bool:
     print(f"stack: flight free {flight_stack_free} B (used {stack_used} B + ISR {isr_stack_unexercised} B)")
     if vtol:
         print(f"VTOL push floor {nav_h['NAV_PUSH_MIN_US_VTOL']} us: compute end <= {bench['compute_end_max_us']} us "
-              f"(+ {timing['twi_script_isr_us']} us MS5611 bus interrupts = {timing['compute_end_plus_twi_us']} us), ticks "
+              f"(+ {timing['twi_script_isr_us']} us {timing['baro_sensor']} bus interrupts = {timing['compute_end_plus_twi_us']} us), ticks "
               f"past the floor {bench['late_pushes']} (cosim {cosim_late})")
         w = timing["mandatory_work"]
         print(f"mandatory work (tick start -> FCU reply): flight max {w['flight_max_wire_isr_us']} us on the wire incl. "

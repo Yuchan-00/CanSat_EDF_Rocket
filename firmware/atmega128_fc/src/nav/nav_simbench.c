@@ -80,7 +80,7 @@ const uint8_t *nav_sb_imu_raw(void)
     return s_raw;
 }
 
-void nav_sb_baro(uint32_t tick, uint8_t phase, ms5611_t *b)
+void nav_sb_baro(uint32_t tick, uint8_t phase, baro_t *b)
 {
     (void)tick;
     (void)phase;
@@ -88,9 +88,6 @@ void nav_sb_baro(uint32_t tick, uint8_t phase, ms5611_t *b)
 }
 #else
 /* ---- synthetic sensors: the FCU simbench's (src/simbench.c of v0.6.2), unchanged ---- */
-/* datasheet example PROM, D1/D2 around it */
-static const uint16_t k_prom[8] = {0, 40127, 36924, 23317, 23282, 33464, 28312, 0};
-
 static void put_be16(uint8_t *p, int16_t c)
 {
     p[0] = (uint8_t)((uint16_t)c >> 8);
@@ -159,9 +156,37 @@ const uint8_t *nav_sb_imu_raw(void)
     return s_raw;
 }
 
+#if FC_BARO_SENSOR == FC_BARO_BMP280
+/* bmp280_step without the bus: the datasheet's example trimming parameters (3.12), raw values around its example
+ * appear at the read phase and the publish gate opens at the start phase, as the driver does; the compensation (two int64
+ * steps) and the altitude then run through bmp280_background exactly as in the firmware.  adc_T moves in steps of
+ * 16 = the x1 temperature oversampling's 16-bit grid. */
+static const bmp280_calib_t k_cal = {27504u, 26435, -1000, 36477u, -10685, 3024, 2855, 140, -7, 15500, -14600, 6000};
+
+void nav_sb_baro(uint32_t tick, uint8_t phase, baro_t *b)
+{
+    if (!b->cal_ok) {
+        b->cal = k_cal;
+        b->cal_ok = true;
+    }
+    if (phase == BMP280_START_PHASE) {
+        b->gate_open = true;
+    } else if (phase == BMP280_READ_PHASE) {
+        if (b->stage != BMP280_ST_IDLE)                    /* the last sample was never published (bmp280_step) */
+            b->fail_count++;
+        b->gate_open = false;
+        b->adc_p = 415148UL + (uint32_t)(tick & 0xFF);
+        b->adc_t = 519888UL - 16UL * (uint32_t)(tick & 0x3F);
+        b->stage = BMP280_ST_RAW;
+    }
+}
+#else
+/* datasheet example PROM, D1/D2 around it */
+static const uint16_t k_prom[8] = {0, 40127, 36924, 23317, 23282, 33464, 28312, 0};
+
 /* ms5611_step without the bus: D1/D2 appear at the CALC phase; the compensation and the
  * altitude then run through ms5611_background exactly as in the firmware */
-void nav_sb_baro(uint32_t tick, uint8_t phase, ms5611_t *b)
+void nav_sb_baro(uint32_t tick, uint8_t phase, baro_t *b)
 {
     uint8_t i;
     if (!b->prom_ok) {
@@ -175,6 +200,7 @@ void nav_sb_baro(uint32_t tick, uint8_t phase, ms5611_t *b)
         b->need_comp = true;
     }
 }
+#endif /* FC_BARO_SENSOR */
 #endif /* NAV_SB_SYNTH_SENSORS */
 
 /* ---- report lines: numbers in hex, nibble by nibble (no 32-bit division in the loop it measures) ---- */

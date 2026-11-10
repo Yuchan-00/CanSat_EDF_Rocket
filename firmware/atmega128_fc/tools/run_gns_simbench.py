@@ -5,7 +5,7 @@ position controller at 50 Hz; src/gns/gns_main.c, core/gns_node.h) in the simavr
 Builds the PlatformIO environments ``gns`` / ``gns_demo`` (the flight images of the two build profiles: the position
 controller's parameters depend on the profile), ``gns_simbench`` (the same loop with a synthetic NAV on the glink - the
 STATE frames of a synthetic flight injected by a Timer1 compare interrupt, bytes 0..58 then the last byte 2.36 ms later,
-the injection phase sweeping the GNS's 4 ms poll - and a synthetic u-blox NEO-6M on the GPS UART: factory 9600 baud with
+the injection phase sweeping the GNS's 4 ms poll - and a synthetic u-blox receiver (NEO-6M model; the bought part is a NEO-7M) on the GPS UART: factory 9600 baud with
 NMEA, ACKs the boot configuration, answers MON-VER, 5 Hz NAV-POSLLH / SOL / VELNED once configured, byte-accurate on a
 Timer3 wire; src/gns/gns_simbench.h) and ``gns_cosim`` (the two-core harness's GNS: real glink USART0, build only), runs
 ``gns_simbench`` in PlatformIO's ``tool-simavr`` (ATmega128, 16 MHz, cycle-accurate for the AVR instruction set) and

@@ -807,7 +807,11 @@ def test_vectors_deterministic_consistent_and_write():
     assert [f["type"] for f in by_name["snap2_header_then_cmd@fcu"]["expected_frames"]] == [il.TYPE_CMD, il.TYPE_CMD]
     assert by_name["max_out_0_snap2@comv"]["expected_stats"]["overflow"] == 2
     t2 = [tv for tv in v["telem"] if tv["name"].startswith("snap2_")]
-    assert len(t2) >= 15 and all(bytes.fromhex(tv["telem_frame_hex"])[4] == lp.TYPE_TELEM2 for tv in t2)
+    # 2026-11-10: a SNAP2 whose spare byte (the logic battery) is not 0 becomes TELEM6 (snap2_extremes 255,
+    # snap2_sync_in_payload 0x5C), every other SNAP2 here (no power tail) TELEM2 - the COM rule, both cases present
+    ty2 = [bytes.fromhex(tv["telem_frame_hex"])[4] for tv in t2]
+    want2 = [lp.TYPE_TELEM6 if il.Snap.unpack(bytes.fromhex(tv["snap_hex"])).spare else lp.TYPE_TELEM2 for tv in t2]
+    assert len(t2) >= 15 and ty2 == want2 and lp.TYPE_TELEM2 in ty2 and lp.TYPE_TELEM6 in ty2
     assert all(bytes.fromhex(tv["telem_frame_hex"])[4] == lp.TYPE_TELEM for tv in v["telem"] if tv not in t2)
     written = il.write_test_vectors()
     assert written == v

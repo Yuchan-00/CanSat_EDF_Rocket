@@ -41,14 +41,15 @@ static int16_t sin_q15(uint16_t ph)
 }
 
 /* ======================================================================================== */
-/* a synthetic u-blox NEO-6M on the GPS UART (both builds: simavr has no receiver on RXD1; v0.8 NAV bench -> GNS)   */
+/* a synthetic u-blox receiver on the GPS UART (both builds: simavr has no receiver on RXD1; v0.8 NAV bench -> GNS).
+ * It answers as the NEO-6M of v0.8 (below); the bought NEO-7M differs here only in MON-VER - bench not changed     */
 /* ======================================================================================== */
 /* Factory state: 9600 baud, NMEA out (a 1 Hz burst of RCV_NMEA_BYTES), no UBX NAV message, 1 Hz.  It parses the frames
  * the GNS queues (hal/gps_uart.c's copies) when they were sent at its own baud and answers RCV_RESP_TICKS later at its
  * baud: CFG-PRT for another baud -> switches (no ACK: the answer would leave at the old baud while it switches - the
  * reference configurator expects none on the 9600 path), CFG-PRT for its own baud / CFG-RATE / CFG-MSG / CFG-NAV5 ->
  * ACK-ACK (CFG-MSG enables the message, CFG-PRT's outProtoMask without NMEA stops the NMEA), MON-VER poll -> a 100-byte
- * MON-VER (sw "7.03 (45969)", hw "00040007" = u-blox 6, two 30-byte extensions; the GNS stores 64 of them).  Once a
+ * MON-VER (sw "7.03 (45969)", hw "00040007" = u-blox 6 - the vehicle's NEO-7M says "00070000" - two 30-byte extensions; the GNS stores 64 of them).  Once a
  * message is enabled and the rate is 200 ms: one epoch every RCV_EPOCH_COUNTS (200.1 ms: the receiver's clock drifts
  * 500 ppm against the GNS's, so the epoch phase sweeps the 4 ms poll), NAV-POSLLH + NAV-SOL + NAV-VELNED back to back,
  * 3D fix, gpsFixOK, RCV_NUM_SV satellites, hAcc RCV_HACC_MM, sAcc RCV_SACC_CMS, the antenna moving on a 0.5 m / 0.3 m

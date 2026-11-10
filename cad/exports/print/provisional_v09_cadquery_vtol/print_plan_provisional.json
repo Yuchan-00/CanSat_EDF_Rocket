@@ -5,7 +5,7 @@
     "kind": "CadQuery twin STL (cad/exports/cadquery/stl) - NOT the Fusion 360 path",
     "why": "make_print_files.py makes print files only from a Fusion run of the current params.json and script; the v0.9 Fusion GUI run has not been made",
     "replaced_by": "python tools/make_print_files.py after the Fusion run (then delete this folder)",
-    "params_sha256": "9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292",
+    "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
     "preset": "BUDGET_90mm_6S",
     "stl_sha256": {
       "propulsion_module": "898e8b80a0c768c084b2b940c487b9d6d7052733b8e0234a561fd7a65d6dce93",
@@ -13,11 +13,11 @@
       "avionics_module": "9ad9ee7cc5c33e767b839f0ebfee287bc45bb65dc12795e783f55617e724a580",
       "avionics_logo": "8575b9e0543742537dd2ea45fb1812468109f90cac3383c6f93d8188087187d8",
       "avionics_tray": "4bab65a805101bbc5d4ec02268cf751d82bd2de84585e30746c5c7988dca9169",
+      "top_cap": "73693478070a34437fa0db82d30c64cefd28a73c53fef3e76755efc5745490f1",
       "vane": "1f1a4adf3782fce0a463ad763032e27f9713e5319ebce4cddd92eecdd9a26063",
       "vane_coupler": "d8e4ec8b5743c202cfe83679c56954550f8a7476ee3e24d706a98357d25ee715",
       "servo_cover": "6cdf043ef6ba6ed4a8a0226d0249bc4177421ec28b8ddb624f4ceb81a9aaeab5",
-      "wire_cover": "433a1aee3ecdb71c0a34cc74f3d8510f63ce74e2f3356e5c96623e6861061a75",
-      "top_cap": "73693478070a34437fa0db82d30c64cefd28a73c53fef3e76755efc5745490f1"
+      "wire_cover": "433a1aee3ecdb71c0a34cc74f3d8510f63ce74e2f3356e5c96623e6861061a75"
     }
   },
   "machine": "Bambu Lab P2S 0.4 nozzle",
@@ -52,9 +52,9 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 32211.35546875,
-      "filament_mm": 95604.49,
-      "filament_g": 301.24202857564416,
+      "time_s": 32211.353515625,
+      "filament_mm": 95604.47,
+      "filament_g": 301.241965557259,
       "settings_in_gcode": {
         "enable_support": "0",
         "filament_density": "1.31",
@@ -65,7 +65,7 @@
         "wall_loops": "4"
       },
       "support_time_s": 0.0,
-      "part_g": 301.17451760981294,
+      "part_g": 301.1744786959602,
       "removed_g": 0.06747999227562573,
       "feature_g": {
         "Inner wall": 155.5593736606234,
@@ -74,12 +74,12 @@
         "Internal solid infill": 15.189592631873522,
         "Bridge": 4.202249650943827,
         "Top surface": 3.4499607778744195,
-        "Floating vertical shell": 1.7943413224631661,
+        "Floating vertical shell": 1.7943024086103456,
         "Overhang wall": 0.2508702044782468,
         "Skirt": 0.06747999227562573
       },
-      "part_z_centroid_plate_mm": 86.64490853855926,
-      "part_z_centroid_design_mm": 86.64490853855926,
+      "part_z_centroid_plate_mm": 86.64490762699201,
+      "part_z_centroid_design_mm": 86.64490762699201,
       "print_file": "propulsion_module.3mf",
       "print_file_stl": "propulsion_module.stl"
     },
@@ -341,7 +341,7 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 59275.05908203125,
+      "time_s": 59272.68017578125,
       "filament_mm": 18252.54,
       "filament_g": 238.85999999999999,
       "settings_in_gcode": {
@@ -354,8 +354,8 @@
         "wall_loops": "3"
       },
       "support_time_s": 0.0,
-      "part_g": 57.740401819530774,
-      "removed_g": 180.21742137023165,
+      "part_g": 57.74040178802158,
+      "removed_g": 180.21742140174084,
       "feature_g": {
         "Outer wall": 33.39883653110435,
         "Inner wall": 23.589716063128034,
@@ -455,23 +455,23 @@
       "runs": {
         "two_colour": {
           "ok": true,
-          "main_predication_s": 11122.98046875,
-          "total_predication_s": 59723.171875,
+          "main_predication_s": 11120.59765625,
+          "total_predication_s": 59720.79296875,
           "filament_change_times": 576,
           "feature_type_times_s": {
             "Bridge": 3.2821195125579834,
             "Custom": 397.753662109375,
             "Flush": 41898.07421875,
-            "Gap infill": 1295.7303466796875,
+            "Gap infill": 1295.7264404296875,
             "Inner wall": 635.2945556640625,
             "Internal solid infill": 6.180983543395996,
-            "Outer wall": 3172.583251953125,
+            "Outer wall": 3172.572021484375,
             "Overhang wall": 118.28064727783203,
-            "Prime tower": 6279.8310546875,
+            "Prime tower": 6279.83447265625,
             "Sparse infill": 0.5909007787704468,
             "Top surface": 40.60874557495117,
-            "Travel": 5871.92578125,
-            "Undefined": 5870.45654296875
+            "Travel": 5869.5107421875,
+            "Undefined": 5868.04150390625
           },
           "slice_info_used": {
             "1": {
@@ -500,7 +500,7 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 12.1,
+          "cli_wall_s": 12.0,
           "part_g_by_tool": {
             "0": 57.55365367268092,
             "1": 0.9021768102375674
@@ -557,7 +557,7 @@
             "_e_only|T1": 4.97467132260465
           },
           "part_z_centroid_plate_mm_by_tool": {
-            "0": 78.97019344103893,
+            "0": 78.97019344103896,
             "1": 75.45629233654546
           },
           "changes": 576,
@@ -573,18 +573,18 @@
             20.0,
             205.0
           ],
-          "time_s": 59275.05908203125
+          "time_s": 59272.68017578125
         },
         "two_colour_cli_default_flush": {
           "ok": true,
-          "main_predication_s": 11124.03515625,
-          "total_predication_s": 63786.34765625,
+          "main_predication_s": 11123.8359375,
+          "total_predication_s": 63786.1484375,
           "filament_change_times": 576,
           "feature_type_times_s": {
             "Bridge": 3.2821195125579834,
             "Custom": 397.753662109375,
             "Flush": 45960.203125,
-            "Gap infill": 1295.7335205078125,
+            "Gap infill": 1295.7340087890625,
             "Inner wall": 635.2945556640625,
             "Internal solid infill": 6.180983543395996,
             "Outer wall": 3172.614013671875,
@@ -592,8 +592,8 @@
             "Prime tower": 6279.82470703125,
             "Sparse infill": 0.5909007787704468,
             "Top surface": 40.60874557495117,
-            "Travel": 5874.1708984375,
-            "Undefined": 5872.70166015625
+            "Travel": 5873.97607421875,
+            "Undefined": 5872.5068359375
           },
           "slice_info_used": {
             "1": {
@@ -622,7 +622,7 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 15.1,
+          "cli_wall_s": 10.0,
           "part_g_by_tool": {
             "0": 57.55365367268092,
             "1": 0.9021768102375674
@@ -695,26 +695,26 @@
             20.0,
             205.0
           ],
-          "time_s": 63338.23486328125
+          "time_s": 63338.03564453125
         },
         "single_colour_control": {
           "ok": true,
-          "main_predication_s": 7291.9921875,
-          "total_predication_s": 7740.10498046875,
+          "main_predication_s": 7294.99560546875,
+          "total_predication_s": 7743.1083984375,
           "filament_change_times": 0,
           "feature_type_times_s": {
             "Bridge": 3.323704957962036,
             "Custom": 397.5816345214844,
             "Flush": 26.0,
-            "Gap infill": 1241.055908203125,
-            "Inner wall": 621.8820190429688,
+            "Gap infill": 1240.0911865234375,
+            "Inner wall": 621.8764038085938,
             "Internal solid infill": 6.039127826690674,
-            "Outer wall": 2811.86767578125,
+            "Outer wall": 2811.867919921875,
             "Overhang wall": 118.24567413330078,
             "Sparse infill": 0.5193280577659607,
             "Top surface": 40.675872802734375,
-            "Travel": 2475.145263671875,
-            "Undefined": 2473.67626953125
+            "Travel": 2479.133056640625,
+            "Undefined": 2477.6640625
           },
           "slice_info_used": {
             "1": {
@@ -739,12 +739,12 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 9.1,
+          "cli_wall_s": 8.0,
           "part_g_by_tool": {
             "0": 58.41172678249842
           },
           "part_path_mm_by_tool": {
-            "0": 573714.9327743436
+            "0": 573714.9327743435
           },
           "part_layers_by_tool": {
             "0": {
@@ -768,12 +768,12 @@
             "Bridge|T0": 0.020341578501150946,
             "Floating vertical shell|T0": 0.0026202729447457945,
             "Gap infill|T0": 13.959573386093085,
-            "Inner wall|T0": 8.971473601836522,
+            "Inner wall|T0": 8.971473601836525,
             "Internal solid infill|T0": 0.03921756992839578,
             "Outer wall|T0": 35.05775925271036,
             "Overhang wall|T0": 0.12765668937030944,
             "Sparse infill|T0": 0.003321856626460461,
-            "Top surface|T0": 0.22976257448738788,
+            "Top surface|T0": 0.22976257448738796,
             "_e_only|T0": 15.508824581871538
           },
           "part_z_centroid_plate_mm_by_tool": {
@@ -786,7 +786,7 @@
             20.0,
             205.0
           ],
-          "time_s": 7291.9921875
+          "time_s": 7294.99560546875
         }
       },
       "inlay_print_check": {
@@ -815,14 +815,14 @@
       },
       "added_vs_single_colour": {
         "flush_150_210": {
-          "time_s": 51983.06689453125,
+          "time_s": 51977.6845703125,
           "purge_g": 135.82088375205979,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 180.45,
           "swaps": 576
         },
         "flush_280_cli_default": {
-          "time_s": 56046.24267578125,
+          "time_s": 56043.0400390625,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 255.9,
@@ -830,7 +830,7 @@
         }
       },
       "single_colour_control": {
-        "time_s": 7291.9921875,
+        "time_s": 7294.99560546875,
         "filament_g": 58.41,
         "part_g": 58.41172678249842
       },
@@ -841,16 +841,16 @@
         "note": "the white body (with the pocket) sliced alone, pipeline settings (slice_one) - information; the table grams are mass_basis (reviewfix F3)"
       },
       "mass_basis": {
-        "pipeline_plain_module_g": 58.59847492934827,
+        "pipeline_plain_module_g": 58.598474897839075,
         "resolved_white_g": 57.55365367268092,
         "resolved_orange_g": 0.9021768102375674,
         "resolved_single_colour_control_g": 58.41172678249842,
         "livery_delta_resolved_g": 0.04410370042007372,
-        "module_total_g": 58.642578629768344,
-        "avionics_module_g": 57.740401819530774,
+        "module_total_g": 58.64257859825915,
+        "avionics_module_g": 57.74040178802158,
         "inlay_g": 0.9021768102375674,
         "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
-        "pipeline_plain_module_time_s": 8805.4384765625
+        "pipeline_plain_module_time_s": 8805.421875
       },
       "inlay_part_g": 0.9021768102375674,
       "inlay_part_z_centroid_design_mm": 399.5562984400611,
@@ -1222,15 +1222,15 @@
     }
   },
   "totals": {
-    "time_s": 125171.50090026855,
-    "filament_g": 856.6451101173681,
-    "part_g": 568.2137724882625,
-    "vehicle_part_g": 568.2137724882625,
+    "time_s": 125169.12004089355,
+    "filament_g": 856.6450470989829,
+    "part_g": 568.2137335429006,
+    "vehicle_part_g": 568.2137335429006,
     "filament_g_by_colour": {
       "Ivory White": {
         "hex": "#FFFFFF",
         "code": "11100",
-        "filament_g": 781.0151101173681,
+        "filament_g": 781.0150470989829,
         "parts": [
           "propulsion_module",
           "intake_module",
@@ -1242,7 +1242,7 @@
           "servo_cover",
           "wire_cover"
         ],
-        "with_spare_g": 859.1166211291049,
+        "with_spare_g": 859.1165518088812,
         "rolls_1kg": 1
       },
       "Mandarin Orange": {

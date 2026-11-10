@@ -1,7 +1,7 @@
 /* nav_main.c - ATmega128A navigation computer (NAV) of the CanSat EDF rocket: the 250 Hz loop (v0.6.3).
  *
  * v0.6.3 (params.json flight_computer.architecture, SPEC 10.5) splits the v0.6 FCU in two: this chip reads the
- * MPU-6050 and the MS5611 on I2C and computes the navigation state - the steps 2-4 of the v0.6.2 FCU loop, the
+ * MPU-6050 and the barometer (hal/baro.h: BMP280 by default, MS5611 = build option) on I2C and computes the navigation state - the steps 2-4 of the v0.6.2 FCU loop, the
  * same core functions in the same order - and pushes it to the FCU every tick as the nlink SPI master
  * (core/nlink_proto.h, hal/nlink_spi.h); the FCU (src/main.c) makes every flight decision.  The NAV makes none:
  * its only input from the FCU is the supervisor state, which selects pad or flight mode of the estimator.
@@ -10,7 +10,7 @@
  *   1. (nothing to latch: the NAV drives no output but the nlink and its LED)
  *   2. sensors: the MPU-6050 burst read that the Timer0 lead ISR started FC_IMU_LEAD_COUNTS before the tick
  *      (v0.5 timing) is converted; a failed read counts imu_fail and every ONB_IMU_FAIL_TICKS + 1 consecutive
- *      failures clock the bus free (twi_recover); then the MS5611 step of this tick's phase (its bus script runs
+ *      failures clock the bus free (twi_recover); then the barometer step of this tick's phase (its bus script runs
  *      during step 3)
  *   3. attitude estimate (sim/estimator.py PadAlignGyroEstimator): pad alignment while on_pad, gyro-only after;
  *      bias-corrected rates, tilt, the pad-still counter
@@ -22,7 +22,7 @@
  *   end of the time-critical part (the loop time measured here is tick -> frame delivered)
  *   6. the FCU's reply: valid (nl_decode_fcu: sync, TYPE, CRC) -> its state and fflags select the mode of the NEXT
  *      tick; invalid -> the last valid ones stay.  LED.
- * Background until NAV_BG_RESERVE_US before the next tick: the MS5611 math (int64 compensation, then the powf
+ * Background until NAV_BG_RESERVE_US before the next tick: the barometer math (the driver's compensation, then the powf
  * altitude: one step per pass, published for the next tick), the stack scan slice.  Then the CPU sleeps.
  *
  * Pad / flight (nlink_proto.h "Semantics on the NAV", sim/nlink_proto.py nav_pad_mode): the v0.6.2 FCU used its
@@ -72,14 +72,14 @@
  *      epoch assembler + iTOW clock -> the fixed-gain filter on a_k, q_k and g - b_k, pad = pad_alt (the vehicle stands on
  *      the pad in the bench-vanes mode too); at the 50 Hz step (k mod 5 == 4) and the snapshot completion (k mod 5 == 0)
  *      the snapshot is latched for the slots (nl_slot_tx_latch).
- *   7. the FCU's reply (its state selects pad / flight of tick k+1, as before), LED; background: the MS5611 math.
+ *   7. the FCU's reply (its state selects pad / flight of tick k+1, as before), LED; background: the barometer math.
  * Steps 4-6 are not optional: they run every tick, and with step 3 they must end before the next tick (the GPS work is
  * split so no tick carries more than one job of it: core/gps_nav.h).  The reference's single pad flag per tick: pad_alt /
  * on_pad / thr_q are taken from the FCU frame of the previous exchange at the start of the tick and kept for all of it
  * (the reply of this tick's exchange is read in step 7).  The GPS boot configuration and its result travel in the slot
  * STATUS flags (core/gps_nav.h GPS_F_CFG_OK / GPS_F_VER_OK / FIX3D / FIX_OK / GATE_OK; the FCU logs them and sends them
  * in TELEM v3) - reset_cause has no free bit.  loop_us_max keeps its meaning (tick -> frame delivered of the previous
- * tick).  Measured: tools/run_nav_simbench.py --mode vtol (a synthetic NEO-6M on a byte-accurate Timer3 wire).
+ * tick).  Measured: tools/run_nav_simbench.py --mode vtol (a synthetic u-blox receiver - the NEO-6M of v0.8 - on a byte-accurate Timer3 wire).
  *
  * v0.8.1 VTOL build, the FOUR-chip set (architect 2026-10-21 20:30, params flight_computer.architecture_v081 / glink / gns;
  * the v0.8 integration measured the three-chip GPS build at 98.7 % mean / 119.5 % max NAV mandatory work): the GPS
@@ -98,7 +98,7 @@
  *      the reply this tick's pad mode came from (the previous exchange: the FCU's tick k - 2, the 6-DOF's
  *      nav_state_lag_ticks = 2 - the frame sim/sim6dof.py hands GlinkNav.tick).  Then every glink byte waiting again.
  *   7. the FCU's reply (nl_decode_fcu4: the v4 frame with pflags / kt_q) -> the mode of tick k+1; LED.
- *   background: the glink bytes still arriving -> gl_nav_rx (k_rx = k); the MS5611 math; the stack scan.
+ *   background: the glink bytes still arriving -> gl_nav_rx (k_rx = k); the barometer math; the stack scan.
  * The RESULT bytes are decoded where the CPU is in the tick - a RESULT completing at any time before the frame build of
  * k_m + L is in the 4-entry ring the build latches from (3b / 6 / background of the earlier ticks, or the capped pre-build
  * decode for one that completed just before the build); the decode is mandatory work (~15 us a byte, 26 bytes a cycle).
@@ -134,7 +134,7 @@
 #endif
 
 #include "hal/mpu6050.h"
-#include "hal/ms5611.h"
+#include "hal/baro.h"
 #include "hal/nlink_spi.h"
 #include "hal/stack.h"
 #include "hal/timer.h"
@@ -203,7 +203,7 @@ static att_est_t g_est;
 static alt_filter_t g_alt;
 #endif
 static imu_sample_t g_imu;
-static ms5611_t g_baro;
+static baro_t g_baro;                                  /* hal/baro.h: BMP280 (default) or MS5611 */
 #if !FC_VTOL
 static nl_nav_t g_nav;
 #endif
@@ -237,7 +237,7 @@ static uint8_t phase_advance8(uint8_t ph, uint32_t d, uint8_t div)
 }
 
 /* background work may start a step only if it ends well before the next tick */
-#define NAV_BG_RESERVE_US 450u        /* > the longest background step (MS5611 altitude, powf: ~0.37 ms in simavr) + the
+#define NAV_BG_RESERVE_US 450u        /* > the longest background step (the altitude powf: ~0.37 ms in simavr, measured with the MS5611 build) + the
                                        * TWI interrupts of the MPU-6050 burst read the Timer0 lead ISR starts 496 us
                                        * before the tick */
 static bool bg_time_left(uint16_t t0)
@@ -368,7 +368,7 @@ static uint8_t sensors_init(bool *imu_present, bool *baro_present)
             twi_recover();
     }
     *imu_present = mpu6050_whoami_ok(who);
-    *baro_present = ms5611_init(&g_baro);
+    *baro_present = baro_init(&g_baro);
 #endif
     if (!*imu_present)
         rc |= NAV_RC_IMU_INIT_FAIL;
@@ -460,14 +460,14 @@ int main(void)
 #endif
 #if FC_VTOL
     fc_default_mahony(&g_mah);
-    fc_default_alt_vtol(&g_altv, MS5611_LATENCY_S);
+    fc_default_alt_vtol(&g_altv, BARO_LATENCY_S);
 #if defined(FC_SIMBENCH) && defined(NAV_SB_COMP_M)
     g_altv.p.comp_m = NAV_SB_COMP_M;                      /* simbench input: time the thrust compensation (nav_simbench.h) */
 #endif
     gl_nav_init(&g_gl, GL_STEP_TICKS, fc_glink_latency_ticks());   /* v0.8.1: no RESULT yet: slot header 0x07 */
 #else
     fc_default_estimator(&g_est);
-    fc_default_alt_filter(&g_alt, MS5611_LATENCY_S);
+    fc_default_alt_filter(&g_alt, BARO_LATENCY_S);
     alt_filter_reset(&g_alt, 0.0f);
 #endif
 
@@ -480,6 +480,15 @@ int main(void)
     if (imu_present)
         timer_set_lead_hook(mpu6050_start_async);         /* the burst read starts FC_IMU_LEAD_COUNTS before each tick */
 #endif
+    /* 2026-11-10 (four-chip co-simulation row 3, found with the BMP280): the tick timer has been running since
+     * timer_init, so a tick that fired during the initialisation above is still flagged and the loop's first
+     * timer_wait_tick() returned at once - in the middle of that tick (measured: 2.1 ms into it after the BMP280's
+     * reset wait + trim read, 1.1 ms with the MS5611).  That first pass then ended inside the next tick's IMU lead
+     * (3967 us after its tick with the BMP280; 2981 us with the MS5611, inside the limit only by the length of the
+     * initialisation).  A stale tick is dropped here (nothing happens when none is flagged), so the loop always starts
+     * at a tick boundary, whatever the sensors' initialisation takes.  Pad only (the vehicle is SAFE); the tick
+     * numbering is the timer's and does not change. */
+    (void)timer_tick_take();
 
 #if FC_VTOL
     /* fw09 W1: every driver is initialised - Timer3 must still be the nlink's (nlink_spi_init), else no exchange ever */
@@ -528,7 +537,7 @@ int main(void)
 #if NAV_SB_SYNTH_SENSORS
         nav_sb_baro(tick, ph_baro, &g_baro);
 #else
-        ms5611_step(&g_baro, ph_baro);                        /* after the IMU read: one bus user at a time */
+        baro_step(&g_baro, ph_baro);                          /* after the IMU read: one bus user at a time */
 #endif
         SB_MARK(1);
 
@@ -660,7 +669,7 @@ int main(void)
 #endif
 
         /* 8. background until NAV_BG_RESERVE_US before the next tick: the glink RESULT bytes (v0.8.1, first: the next
-         * frame builds latch them), MS5611 math, stack scan */
+         * frame builds latch them), barometer math, stack scan */
         for (;;) {
 #ifdef FC_SIMBENCH
             const uint16_t a = timer_tcnt1();
@@ -669,7 +678,7 @@ int main(void)
                 timer_elapsed_counts(t0, timer_tcnt1()) <
                     (uint16_t)((FC_TICK_US - NAV_GL_BG_RESERVE_US) * FC_PWM_COUNTS_PER_US)) {
                 (void)glink_rx(tick, NAV_GL_BG_CHUNK);
-            } else if (!bg_time_left(t0) || !ms5611_background(&g_baro)) {
+            } else if (!bg_time_left(t0) || !baro_background(&g_baro)) {
                 break;
             }
 #ifdef FC_SIMBENCH
@@ -738,7 +747,7 @@ int main(void)
 #if NAV_SB_SYNTH_SENSORS
         nav_sb_baro(tick, ph_baro, &g_baro);
 #else
-        ms5611_step(&g_baro, ph_baro);                        /* after the IMU read: one bus user at a time */
+        baro_step(&g_baro, ph_baro);                          /* after the IMU read: one bus user at a time */
 #endif
         SB_MARK(1);
 
@@ -837,12 +846,12 @@ int main(void)
                 g_fcu.have && g_fcu.params_tag != FC_PARAMS_TAG, g_fcu.age > NAV_FCU_LOST_TICKS, pad_alt, aligned);
         SB_MARK(5);
 
-        /* 7. background until NAV_BG_RESERVE_US before the next tick: MS5611 math, stack scan */
+        /* 7. background until NAV_BG_RESERVE_US before the next tick: barometer math, stack scan */
         for (;;) {
 #ifdef FC_SIMBENCH
             const uint16_t a = timer_tcnt1();
 #endif
-            if (!bg_time_left(t0) || !ms5611_background(&g_baro))
+            if (!bg_time_left(t0) || !baro_background(&g_baro))
                 break;
 #ifdef FC_SIMBENCH
             nav_sb_bg_step((uint16_t)(timer_elapsed_counts(a, timer_tcnt1()) / FC_PWM_COUNTS_PER_US));

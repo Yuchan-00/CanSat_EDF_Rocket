@@ -370,7 +370,7 @@ class Snap:
     q: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 0.0)
     phase: int | None = None          # SNAP2: link_proto.PHASE_*
     h_tgt_m: float | None = None      # SNAP2: altitude target [m]
-    spare: int = 0                    # SNAP2: reserved byte
+    spare: int = 0                    # SNAP2: 2026-11-10 the logic battery lbat (0 = none; the COM's TELEM6)
     gps_flags: int | None = None      # SNAP3 (in the SNAP2 spare byte's position): sim.gps_nav GF_*
     num_sv: int | None = None         # SNAP3
     hacc_dm: int | None = None        # SNAP3: 0.1 m
@@ -378,7 +378,7 @@ class Snap:
     dist_m: float | None = None       # SNAP3: distance from the hold point [m], NaN = none
     pw_vaux: int = 0                  # v0.9 SNAP2 / SNAP3: the power tail's v_aux (0.125 V)
     pw_flags: int = 0                 # v0.9 SNAP2 / SNAP3: PF_* | build << 6 (0: the battery build, no TELEM tail)
-    spare3: int = 0                   # v0.9 SNAP3: reserved byte (the FCU sends 0, the COM ignores it)
+    spare3: int = 0                   # v0.9 SNAP3 reserved byte; 2026-11-10: lbat (0 = none; TELEM7)
 
     def __post_init__(self) -> None:
         for n in ("reply_seq", "state", "flags", "reason", "ack_seq"):
@@ -762,12 +762,17 @@ def tlm_src_telemetry(src: TlmSource, loop_hz: int) -> lp.Telemetry:
 def telem_frame_from_snap(s: Snap, vehicle_id: int | None = None, loop_hz: int | None = None) -> bytes:
     """The COM pipeline: SNAP -> TELEM source -> onboard quantisation -> link_proto TELEM frame with
     SEQ = reply_seq (vehicle id / loop rate from params.json unless given); SNAP2 -> TELEM2 (v0.9: TELEM4 with a power
-    build's tail), SNAP3 -> TELEM3 (TELEM5)."""
+    build's tail), SNAP3 -> TELEM3 (TELEM5); 2026-11-10: the snapshot's logic-battery byte (SNAP2 spare / SNAP3
+    spare3) -> TELEM6 / TELEM7 when link_proto.logic_tail_due (non-zero, no power tail) - the rule of the C
+    lp_encode_vtol_reply (core/link_proto_v09.h)."""
     if vehicle_id is None or loop_hz is None:
         vid, hz = load_link_params()
         vehicle_id = vid if vehicle_id is None else vehicle_id
         loop_hz = hz if loop_hz is None else loop_hz
-    return lp.encode_telemetry(int(vehicle_id), s.reply_seq, tlm_src_telemetry(snap_to_tlm_src(s), int(loop_hz)))
+    tlm = tlm_src_telemetry(snap_to_tlm_src(s), int(loop_hz))
+    if s.phase is not None:
+        tlm = lp.with_logic_tail(tlm, s.spare3 if s.gps_flags is not None else s.spare)
+    return lp.encode_telemetry(int(vehicle_id), s.reply_seq, tlm)
 
 
 # --------------------------------------------------------------------------- #
@@ -1095,7 +1100,8 @@ def make_test_vectors(vehicle_id: int, loop_hz: int, seed: int = 20261015) -> di
                                                  2800.0, (1.0, 0.0, 0.0, 0.0), phase=lp.PHASE_LANDED, h_tgt_m=0.0).pack())
     add_payload("snap2_extremes", TYPE_SNAP2, Snap(255, 255, 255, 255, 255, 0xFFFF, 0xFFFF, 0xFFFFFFFF, -1e30, 3.4e38,
                                                    -3.4e38, 1e-30, 65535.5, (-1.0, 1.0, -0.5, 0.5), phase=255, spare=255,
-                                                   h_tgt_m=-3.4e38).pack(), note="spare byte 255: carried, ignored by the COM")
+                                                   h_tgt_m=-3.4e38).pack(),
+                note="spare byte 255: carried; 2026-11-10 it is the logic-battery byte (5.10 V) -> the COM sends TELEM6")
     for h_t in (3276.7, 3276.75, 1e6, -0.05, -3276.85):
         add_payload(f"snap2_target_{h_t:g}", TYPE_SNAP2, Snap(5, lp.STATE_POWERED, 0x2F, 0, 5, 1, 900, 1000, 2.0, 0.1, 1.0,
                                                                3.9, 2900.0, q_hov, phase=lp.PHASE_HOLD, h_tgt_m=h_t).pack(),
@@ -1361,7 +1367,7 @@ def _make_v09_vectors(vehicle_id: int, loop_hz: int, seed: int) -> dict:
                     "build bits 0: TELEM2 (no tail) whatever the other bits" if not (fl >> 6) else "")
         add_payload(f"snap3_pwr_{nm}", Snap(**base2, **g3, pw_vaux=va, pw_flags=fl, spare3=0))
     add_payload("snap3_pwr_spare3", Snap(**base2, **g3, pw_vaux=1, pw_flags=0x41, spare3=0xA5),
-                "spare3 0xA5: carried, ignored by the COM")
+                "spare3 0xA5: carried; ignored by the COM - the power tail wins over the logic battery (TELEM5)")
     for i in range(4):
         b = dict(base2, reply_seq=rng.randrange(256), state=rng.randrange(6), flags=rng.randrange(256),
                  reason=rng.choice([0, lp.R_W_LOST, lp.R_W_SAG, lp.R_W_BUF, lp.R_W_D2, lp.REJ_POWER]),

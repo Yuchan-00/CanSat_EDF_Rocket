@@ -1,6 +1,6 @@
 {
- "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
- "total_krw_battery_vtol": 375192,
+ "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
+ "total_krw_battery_vtol": 408903,
  "rows": [
   [
    "추진",
@@ -44,11 +44,11 @@
   ],
   [
    "비행 컴퓨터",
-   "MS5611 GY-63 기압계",
-   4780,
-   1973,
-   "https://ko.aliexpress.com/item/1005009835384590.html",
-   ""
+   "BMP280 기압계 모듈 [TYE-BMP29]",
+   2750,
+   0,
+   "https://www.devicemart.co.kr/goods/view?no=15442588",
+   "I2C 0x77, NAV 기본 기압계 드라이버 (flight_computer.nav.baro_sensor). 디바이스마트 판매가(부가세 포함), 2026-11-05 조회·2026-11-11 다시 확인. 배송비는 M3 볼트 키트 줄에 1회 (같은 주문 가정 - ASSUMED). v0.9까지의 MS5611 GY-63(4,780원 + 배송 1,973원, 2026-10-13 조사)은 펌웨어 빌드 옵션(nav_ms5611)으로만 남고 사지 않음"
   ],
   [
    "비행 컴퓨터",
@@ -59,28 +59,20 @@
    "microSD 카드는 보유 가정"
   ],
   [
-   "비행 컴퓨터",
-   "5 V 3 A UBEC (2-6S) 로직 전원",
-   2256,
-   1940,
-   "https://ko.aliexpress.com/item/4001219424525.html",
-   "MCU를 서보 전원과 분리 (서보 부하로 인한 브라운아웃 리셋 방지)"
-  ],
-  [
    "항법",
-   "GPS 모듈 GY-NEO6MV2 (u-blox NEO-6M + 25 mm 세라믹 패치 안테나)",
-   8800,
-   null,
-   "https://www.eleparts.co.kr/goods/search?search_text=GPS%20%EB%AA%A8%EB%93%88",
-   "eleparts [LK임베디드] 부가세 별도 8,000원 + 부가세 10 % (v0.8 GPS 조사 2026-10-21, report_gps-research.json; 배송비 미확인). v0.8.1: GNS 보드 USART1 (PD2/PD3) 38400 bps, 레벨 변환은 GNS 보드의 4채널 BSS138 시프터 (아래 줄). 업그레이드: NEO-M8N (정품 모듈 약 55,364원 부가세 별도)"
+   "GPS 모듈 NEO-7M [SZH-NT07] (u-blox NEO-7M)",
+   9460,
+   0,
+   "https://www.devicemart.co.kr/goods/view?no=10895400",
+   "디바이스마트 판매가(부가세 포함), 2026-11-05 조회·2026-11-11 다시 확인. 배송비는 M3 볼트 키트 줄에 1회 (같은 주문 가정 - ASSUMED) (부가세 별도로 환산하면 8,600원). v0.8-v0.9 예산은 GY-NEO6MV2(NEO-6M, eleparts 8,000원 부가세 별도)였음. 보드·안테나 치수와 무게는 다시 재지 않음 (ASSUMED: GY-NEO6MV2와 같은 급). v0.8.1: GNS 보드 USART1 (PD2/PD3) 38400 bps, 레벨 변환은 GNS 보드의 4채널 BSS138 시프터 (아래 줄). 업그레이드: NEO-M8N (정품 모듈 약 55,364원 부가세 별도)"
   ],
   [
    "통신",
-   "LoRa 모듈 2개 (기체용, 지상용)",
+   "ESP-12E Wi-Fi 모듈 (ESP8266, 기체 무선)",
+   2640,
    0,
-   0,
-   "",
-   "사용자 보유. 지상 쪽은 USB-UART 변환기 또는 SX127x용 아두이노 브리지 필요"
+   "https://www.devicemart.co.kr/goods/view?no=1378118",
+   "디바이스마트 판매가(부가세 포함), 2026-11-05 조회·2026-11-11 다시 확인. 배송비는 M3 볼트 키트 줄에 1회 (같은 주문 가정 - ASSUMED). 기체 무선 기본값 (flight_computer.link.vehicle_radio = esp_bridge, firmware/esp_bridge). 로켓은 통신·로거 상자에 손배선 (firmware/README.md 0.10.4 - 거리 시험과 상자 맞춤은 사용자 결정 대기), VTOL은 캐리어 rev 2c의 U7 자리 (JLC 조립이면 LCSC C89297, 손납땜이면 이 모듈). 부팅 핀 저항·커패시터는 '분압 저항·커패시터' 줄 몫 (ASSUMED). 지상 쪽 ESP는 아래 지상 표 (합계에 미포함)"
   ],
   [
    "비행 컴퓨터",
@@ -148,19 +140,43 @@
   ],
   [
    "비행 컴퓨터",
-   "VTOL 캐리어 PCB 제작 (2층 76 x 70 mm, 5장) (ASSUMED)",
+   "VTOL 캐리어 PCB 제작 (rev 2c, 4층, 5장) (ASSUMED)",
    15000,
    0,
    "",
-   "추정값 - 견적 안 받음. ATmega128A 4개(NAV·FCU·COM·GNS) + 5번째 자리(미실장), 센서 모듈·LoRa·OpenLog 헤더, 레벨 시프터·레귤레이터 온보드. 흡입 격벽 위 FCU 자리에 폼 테이프 + 케이블 타이"
+   "추정값 - 견적 안 받음 (v0.9 CAD-2의 2층 기판 추정값 그대로; 4층은 더 비쌀 수 있음). ATmega128A 4개(NAV·FCU·COM·GNS; 5번째 칩 자리 없음), ESP-12E 납땜 자리, BMP280·GY-521·OpenLog·Pololu 5 V 모듈 헤더, 레벨 시프터·레귤레이터 온보드 (pcb/vtol_carrier). 흡입 격벽 위 FCU 자리에 폼 테이프 + 케이블 타이"
   ],
   [
    "비행 컴퓨터",
-   "캐리어 부품: ATmega128A TQFP-64 x4, 16 MHz 크리스털 x4, AMS1117 x2, BSS138, 수동 소자, 헤더 (ASSUMED)",
+   "캐리어 부품: ATmega128A TQFP-64 x4, 16 MHz 크리스털 x4, AMS1117, BSS138, 수동 소자, 헤더·커넥터 (ASSUMED)",
    45000,
    0,
    "",
-   "추정값 - 가격 조사 안 함. 기존 보드 4개·레벨 시프터 3개·AMS1117 3개·하네스 3개를 대신함"
+   "추정값 - 가격 조사 안 함 (v0.9 CAD-2 추정값 그대로, rev 2c 부품표로 다시 계산하지 않음). 기존 보드 4개·레벨 시프터 3개·AMS1117 3개·하네스 3개를 대신함. ESP-12E·BMP280·GY-521·OpenLog·GPS는 각자의 줄"
+  ],
+  [
+   "비행 컴퓨터",
+   "로직 전원 1S 리튬폴리머 3.7 V 4200 mAh [DTP105565P]",
+   18150,
+   0,
+   "https://www.devicemart.co.kr/goods/view?no=16021596",
+   "디바이스마트 판매가(부가세 포함), 2026-11-05 조회·2026-11-11 다시 확인. 배송비는 M3 볼트 키트 줄에 1회 (같은 주문 가정 - ASSUMED). 캐리어 J14. 6S 팩과 분리된 로직 전원 (configs.vtol.logic_power). 충전기 1S 설정 필요"
+  ],
+  [
+   "비행 컴퓨터",
+   "Pololu 5 V 승강압 모듈 S9V11F5S6CMA (#2870, 저전압 차단 조정)",
+   19360,
+   0,
+   "https://www.devicemart.co.kr/goods/view?no=15855364",
+   "디바이스마트 판매가(부가세 포함), 2026-11-05 조회·2026-11-11 다시 확인. 배송비는 M3 볼트 키트 줄에 1회 (같은 주문 가정 - ASSUMED). 캐리어 J6. 1S 팩 -> 5 V 로직. 로켓 예산의 5 V UBEC를 대신함"
+  ],
+  [
+   "비행 컴퓨터",
+   "로직 전원 토글 스위치 MTS-102 (2단 3P, 듀폰 하네스)",
+   1100,
+   0,
+   "https://www.devicemart.co.kr/goods/view?no=13029107",
+   "디바이스마트 판매가(부가세 포함), 2026-11-05 조회·2026-11-11 다시 확인. 배송비는 M3 볼트 키트 줄에 1회 (같은 주문 가정 - ASSUMED). 캐리어 J15"
   ],
   [
    "항법",
@@ -172,7 +188,7 @@
   ],
   [
    "구조",
-   "Bambu PLA Matte 아이보리 화이트(흰색) (Ivory White, 코드 11100) 리필 1 kg x1 (VTOL 기체 출력 부품 + 2색 부품의 퍼지·타워 몫: 슬라이스 752 g + 10 %)",
+   "Bambu PLA Matte 아이보리 화이트(흰색) (Ivory White, 코드 11100) 리필 1 kg x1 (VTOL 기체 출력 부품 + 2색 부품의 퍼지·타워 몫: 슬라이스 781 g + 10 %)",
    18000,
    0,
    "https://kr.store.bambulab.com/products/pla-matte-filament",
@@ -194,7 +210,7 @@
    34940,
    7812,
    "https://ko.aliexpress.com/item/1005005368023927.html",
-   "개당 8,735원 + 배송 1,953원. NAV(센서·자세 추정) 1개 + FCU(감시·제어·PWM·로그) 1개 + COM(LoRa 통신) 1개 + GNS(GPS·위치 유지) 1개, 같은 판매 페이지. 배송비는 보드마다 따로 계산 (가격 조사에 묶음 배송 정보 없음 - 보수적). 크리스털이 16 MHz인지 확인 (8 MHz로 온 사례 있음)"
+   "개당 8,735원 + 배송 1,953원. NAV(센서·자세 추정) 1개 + FCU(감시·제어·PWM·로그) 1개 + COM(무선 통신) 1개 + GNS(GPS·위치 유지) 1개, 같은 판매 페이지. 배송비는 보드마다 따로 계산 (가격 조사에 묶음 배송 정보 없음 - 보수적). 크리스털이 16 MHz인지 확인 (8 MHz로 온 사례 있음)"
   ],
   [
    "비행 컴퓨터",
@@ -210,7 +226,15 @@
    4203,
    0,
    "https://ko.aliexpress.com/item/1005009310410637.html",
-   "개당 1,401원, 무료 배송, 같은 판매 페이지 (묶음 가격은 조사 안 함 - 1개 가격 x3). 1개는 NAV 센서 레벨 시프터 3.3 V 쪽, 1개는 페이로드 격벽 아래 무선·로거 상자의 LoRa 모듈과 두 번째 레벨 시프터용 (800 mA급, LoRa 송신 약 120 mA). v0.8.1: 1개는 GNS 보드의 GPS 레벨 시프터 3.3 V 쪽 (ASSUMED 필요 - GY-NEO6MV2는 3.3 V 핀을 내놓지 않음; 보드에서 확인)"
+   "개당 1,401원, 무료 배송, 같은 판매 페이지 (묶음 가격은 조사 안 함 - 1개 가격 x3). 1개는 NAV 센서 레벨 시프터 3.3 V 쪽, 1개는 페이로드 격벽 아래 무선·로거 상자의 무선 모듈(ESP-12E, 예비 LoRa)과 두 번째 레벨 시프터용 (800 mA급; ESP 송신 피크 약 400 mA - ASSUMED, LoRa 송신 약 120 mA). v0.8.1: 1개는 GNS 보드의 GPS 레벨 시프터 3.3 V 쪽 (ASSUMED 필요 - v0.8의 GY-NEO6MV2는 3.3 V 핀을 내놓지 않았음; NEO-7M SZH-NT07은 확인 안 함 - 보드에서 확인)"
+  ],
+  [
+   "비행 컴퓨터",
+   "5 V 3 A UBEC (2-6S) 로직 전원",
+   2256,
+   1940,
+   "https://ko.aliexpress.com/item/4001219424525.html",
+   "MCU를 서보 전원과 분리 (서보 부하로 인한 브라운아웃 리셋 방지)"
   ],
   [
    "항법",
@@ -238,11 +262,19 @@
   ],
   [
    "통신",
-   "I2C 레벨 시프터 4채널 (LoRa 신호선용 두 번째)",
+   "LoRa 모듈 2개 (예비 링크: 기체용, 지상용)",
+   0,
+   0,
+   "",
+   "사용자 보유. Wi-Fi가 지상 거리 시험(1 km)을 통과하지 못하면 돌아갈 예비 링크 (vehicle_radio). 지상 쪽은 USB-UART 변환기 또는 SX127x용 아두이노 브리지 필요"
+  ],
+  [
+   "통신",
+   "I2C 레벨 시프터 4채널 (무선 모듈 신호선용 두 번째)",
    344,
    1417,
    "https://ko.aliexpress.com/item/32621797482.html",
-   "MCU -> 모듈 방향 신호를 3.3 V로"
+   "ESP-12E: COM TX·RST -> 모듈, 모듈 TX -> COM, OpenLog 로그선 (4채널, firmware/README.md 0.10.4). 예비 LoRa: MCU -> 모듈 방향 신호를 3.3 V로"
   ],
   [
    "비행 컴퓨터",
@@ -313,6 +345,42 @@
    "유선전원 검토 (ASSUMED)"
   ]
  ],
+ "devicemart_parts": {
+  "bmp280": {
+   "goods_no": "15442588",
+   "krw_incl_vat": 2750,
+   "url": "https://www.devicemart.co.kr/goods/view?no=15442588"
+  },
+  "neo7m": {
+   "goods_no": "10895400",
+   "krw_incl_vat": 9460,
+   "url": "https://www.devicemart.co.kr/goods/view?no=10895400"
+  },
+  "esp12e": {
+   "goods_no": "1378118",
+   "krw_incl_vat": 2640,
+   "url": "https://www.devicemart.co.kr/goods/view?no=1378118"
+  },
+  "logic_battery": {
+   "goods_no": "16021596",
+   "krw_incl_vat": 18150,
+   "url": "https://www.devicemart.co.kr/goods/view?no=16021596"
+  },
+  "boost": {
+   "goods_no": "15855364",
+   "krw_incl_vat": 19360,
+   "url": "https://www.devicemart.co.kr/goods/view?no=15855364"
+  },
+  "toggle": {
+   "goods_no": "13029107",
+   "krw_incl_vat": 1100,
+   "url": "https://www.devicemart.co.kr/goods/view?no=13029107"
+  }
+ },
+ "devicemart_read": [
+  "2026-11-05",
+  "2026-11-11"
+ ],
  "ground_kits": {
   "i_thrust_test": {
    "krw": 60207,
@@ -331,11 +399,11 @@
    "contents": "as above with SE-1500-24 (excl. import)"
   }
  },
- "pla_g": 827.3169523499173,
+ "pla_g": 856.6450470989829,
  "pla_rolls": 2,
  "pla_by_colour": {
   "Ivory White": {
-   "filament_g": 751.6869523499174,
+   "filament_g": 781.0150470989829,
    "rolls": 1,
    "code": "11100",
    "hex": "#FFFFFF",
@@ -362,9 +430,9 @@
   }
  },
  "vehicle_mass_g": {
-  "battery": 1653.699819990231,
-  "tether": 1405.7998199902308,
-  "hybrid": 1526.7998199902308
+  "battery": 1653.699781044869,
+  "tether": 1405.799781044869,
+  "hybrid": 1526.799781044869
  },
  "thrust_nominal_N_unverified": 30.302548499999997
 }

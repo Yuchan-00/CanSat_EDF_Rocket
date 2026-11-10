@@ -2,12 +2,14 @@
  * no AVR headers): Fletcher checksum, frame encoding, the boot configuration frames, the streaming parser, the message
  * decoders, the epoch assembler (iTOW matching), the iTOW clock and the ACK-checked boot configurator.
  *
- * Hardware (params.json electronics.gps, flight_computer.nav.gps; architect v0.8): u-blox NEO-6M on a GY-NEO6MV2 board on
+ * Hardware (params.json electronics.gps, flight_computer.nav.gps; architect v0.8): a u-blox receiver - the NEO-7M module SZH-NT07
+ * since 2026-11 (hwVersion "00070000"), a NEO-6M on a GY-NEO6MV2 board in the v0.8 design - on
  * the NAV's USART1 (PD2 RXD1 / PD3 TXD1), 38400 8N1 through a level shifter; UBX NAV-POSLLH + NAV-VELNED + NAV-SOL at
- * 5 Hz.  The NEO-6M has no flash: the NAV sends its configuration at every boot (gps_cfg_*).
+ * 5 Hz.  The NEO-6M has no flash (the NEO-7M's is not relied on, A): the NAV sends its configuration at every boot (gps_cfg_*).
  *
  * Frame: 0xB5 0x62 | class | id | length u16 LE | payload | CK_A CK_B, the 8-bit Fletcher checksum over class, id, the two
- * length bytes and the payload (CK_A += b; CK_B += CK_A, mod 256).  Messages used (u-blox 6 protocol, GPS.G6-SW-10018):
+ * length bytes and the payload (CK_A += b; CK_B += CK_A, mod 256).  Messages used (u-blox 6 protocol, GPS.G6-SW-10018;
+ * the u-blox 7 receiver takes the same ones - A, its protocol document is not in the repository):
  *   NAV-POSLLH 01 02 28 B  iTOW U4 ms, lon I4 1e-7 deg, lat I4, height I4 mm, hMSL I4 mm, hAcc U4 mm, vAcc U4 mm
  *   NAV-SOL    01 06 52 B  iTOW U4, fTOW I4, week I2, gpsFix U1 (3 = 3D), flags X1 (bit0 gpsFixOK), ecefX/Y/Z I4 cm, pAcc U4
  *                          cm, ecefVX/VY/VZ I4 cm/s, sAcc U4 cm/s, pDOP U2, res U1, numSV U1, res U4

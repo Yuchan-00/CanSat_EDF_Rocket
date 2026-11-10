@@ -8,6 +8,12 @@ misses a SPEC s6 part) and the thrust-to-weight ratio is computed from that same
 ``edf.thrust_nominal_N``, so the two numbers printed side by side agree; lengths and walls
 come from ``cad/layout.py``.  Totals are computed, never typed.
 
+2026-11-11 (control round, the parts actually bought): the barometer row is the BMP280 module TYE-BMP29, the GPS row the
+NEO-7M module SZH-NT07 and the vehicle radio an ESP-12E (LoRa = the fallback, user-owned).  Their prices are the
+devicemart goods pages recorded in pcb/vtol_carrier/spec/parts_sources.json (sale price incl. VAT, read 2026-11-05 and
+again 2026-11-11 - ``DM``); devicemart shipping is counted once, on the M3 screw-kit row (one order ASSUMED).  The
+version paragraphs below are history: they name the parts of their time (MS5611 GY-63, GY-NEO6MV2, LoRa).
+
 v0.6 (two ATmega128A, ``flight_computer.architecture``): the ATmega128 minimum-system board row counts one board per
 chip (FCU + COM: 1 + ``flight_computer.com`` present) at the same AliExpress listing and unit price, and its shipping
 once PER BOARD - the price research gives 1,953 KRW for one board and says nothing about combined shipping, so the
@@ -25,7 +31,7 @@ per-board shipping as before; "likely owned" still subtracts ONE board.  The nli
 MISO + GND, a connector pair - the FCU is programmed with it unplugged - and ~30 cm of wire) is its own small ASSUMED row
 like the ilink row (no matching item in the price research), not folded into an existing wiring row.
 
-v0.8 (GPS position hold, ``electronics.gps`` / ``payload_module.gps_pod``): a "항법" group with the GY-NEO6MV2 board (eleparts,
+v0.8 (GPS position hold, ``electronics.gps`` / ``payload_module.gps_pod``): a "항법" group with the GPS board (then the GY-NEO6MV2 at eleparts,
 8,000 KRW excluding VAT from the v0.8 GPS research, +10 % VAT computed, shipping unknown) and one ASSUMED row for the pod's
 other parts (FR4 ground plane, JST-GH pair, lead, M2 screws / standoffs, grommet); no level-shifter row (the NAV's
 BSS138 shifter has two free channels); the mass the pod adds is the CadQuery report's ``extra.gps.added_total_g``.
@@ -33,7 +39,8 @@ BSS138 shifter has two free channels); the mass the pod adds is the CadQuery rep
 v0.8.1 (four ATmega128A: + GNS, ``flight_computer.gns`` / ``electronics.gns``; architect 2026-10-21): the board row counts the
 GNS board too (same listing, unit price and per-board shipping); the GPS now plugs into the GNS, so its level shifting needs
 the GNS board's own 4-channel BSS138 module (the "I2C 레벨 시프터 4채널" listing, a third one) and a 3.3 V reference for its low
-side (one more AMS1117-3.3 module - ASSUMED necessary: the GY-NEO6MV2 does not break out its 3.3 V); the glink harness (NAV
+side (one more AMS1117-3.3 module - ASSUMED necessary: the GY-NEO6MV2 of v0.8 does not break out its 3.3 V; not checked for the
+NEO-7M SZH-NT07 bought in 2026-11); the glink harness (NAV
 USART1 <-> GNS USART0 + 5 V + GND, a connector pair, ~30 cm) is its own small ASSUMED row like the ilink / nlink rows.  The
 mass the GNS board adds is the CadQuery report's ``extra.gns.added_total_g`` (board ASSUMED + screws + bosses + the GPS lead
 change).
@@ -67,7 +74,7 @@ ATMEGA_BOARD_URL = "https://ko.aliexpress.com/item/1005005368023927.html"
 ATMEGA_BOARD_KRW, ATMEGA_BOARD_SHIP_KRW = 8735, 1953
 _P = layout.load_params()
 HAS_NAV = bool(_P["flight_computer"].get("nav"))     # v0.6.3: the NAV ATmega128A (sensors + attitude estimate)
-HAS_COM = bool(_P["flight_computer"].get("com"))     # v0.6: the COM ATmega128A (LoRa)
+HAS_COM = bool(_P["flight_computer"].get("com"))     # v0.6: the COM ATmega128A (vehicle radio)
 HAS_GNS = bool(_P["flight_computer"].get("gns")) and bool(_P["electronics"].get("gns"))   # v0.8.1: GPS + position hold
 ATMEGA_BOARD_QTY = 1 + int(HAS_NAV) + int(HAS_COM) + int(HAS_GNS)  # FCU (+ NAV) (+ COM) (+ GNS), one chip each
 ATMEGA_BOARD_ROLES = "+".join(["NAV"] * HAS_NAV + ["FCU"] + ["COM"] * HAS_COM + ["GNS"] * HAS_GNS)
@@ -75,7 +82,7 @@ ATMEGA_BOARD_ITEM = (f"ATmega128 최소 시스템 보드 x{ATMEGA_BOARD_QTY}"
                      + (f" ({ATMEGA_BOARD_ROLES.replace('+', ' + ')})" if ATMEGA_BOARD_QTY > 1 else ""))
 NLINK_HARNESS_KRW_ASSUMED = 1500   # v0.6.3: 5-pin connector pair + ~30 cm signal wire (as the ilink row, no resistor)
 # v0.6.2: AMS1117-3.3 module, one per 3.3 V rail - the sensor level shifter (v0.6.3: on the NAV) and (electronics.radio_log) the radio
-# box's LoRa module + level shifter.  Same AliExpress listing and unit price as before (price_research_2026-10-13.json:
+# box's radio module (ESP-12E since 2026-11-06, LoRa the fallback) + level shifter.  Same AliExpress listing and unit price as before (price_research_2026-10-13.json:
 # 1,401 KRW for ONE piece, free shipping; the listing's 2-pc option was not priced -> 2 x the 1-pc price, an upper bound)
 AMS1117_URL = "https://ko.aliexpress.com/item/1005009310410637.html"
 AMS1117_KRW = 1401
@@ -93,15 +100,30 @@ SERVO_WIRE_KRW_PER_M_ASSUMED = 1500
 SERVO_HOUSINGS_PINS_KRW_ASSUMED = 1500       # 4 x JR/Dupont 3-pin female housing + 12 crimp pins
 SERVO_HEATSHRINK_KRW_ASSUMED = 1000
 SERVO_WIRE_SPARE_MM = 300.0                  # handling / re-crimp spare on top of the cut lengths (ASSUMED)
-# v0.8 GPS (user 2026-10-21: "a standard Arduino GPS"; electronics.gps): the GY-NEO6MV2 at eleparts, 8,000 KRW excluding
-# VAT (v0.8 GPS research, scratchpad v08/report_gps-research.json - not in the 2026-10-13 price research); +10 % VAT
-# computed here; shipping not researched.  The pod's other parts (FR4 ground plane, connector pair, lead, M2 screws /
+# 2026-11 parts bought at devicemart: goods number and sale price incl. VAT (pcb/vtol_carrier/spec/parts_sources.json,
+# fetched 2026-11-05; read again 2026-11-11, unchanged).  Shipping: one devicemart order ASSUMED, already counted on the
+# M3 screw-kit row.  logic_battery / boost / toggle are VTOL-carrier parts (tools/budget_bom_vtol.py).
+DM = {"bmp280": ("15442588", 2750), "neo7m": ("10895400", 9460), "esp12e": ("1378118", 2640),
+      "logic_battery": ("16021596", 18150), "boost": ("15855364", 19360), "toggle": ("13029107", 1100)}
+DM_READ = ("2026-11-05", "2026-11-11")
+DM_NOTE = ("디바이스마트 판매가(부가세 포함), 2026-11-05 조회·2026-11-11 다시 확인. 배송비는 M3 볼트 키트 줄에 1회 "
+           "(같은 주문 가정 - ASSUMED)")
+
+
+def dm_url(key: str) -> str:
+    """devicemart goods page of a ``DM`` part."""
+    return f"https://www.devicemart.co.kr/goods/view?no={DM[key][0]}"
+
+
+# v0.8 GPS (user 2026-10-21: "a standard Arduino GPS"; electronics.gps).  2026-11: the part bought is the NEO-7M module
+# SZH-NT07 at devicemart (DM["neo7m"], incl. VAT; the excl.-VAT figure is computed from it).  v0.8 .. v0.9 priced the
+# GY-NEO6MV2 at eleparts (8,000 KRW excluding VAT, scratchpad v08/report_gps-research.json).  The pod's other parts (FR4 ground plane, connector pair, lead, M2 screws /
 # standoffs, grommet) are one plainly ASSUMED row.  Level shifting needs no part: the NAV's 4-channel BSS138 shifter has
 # two channels the I2C bus leaves free (electronics.gps.interface; verify on the board).
 HAS_GPS = bool(_P["electronics"].get("gps")) and bool(_P["payload_module"].get("gps_pod"))
-GPS_BOARD_URL = "https://www.eleparts.co.kr/goods/search?search_text=GPS%20%EB%AA%A8%EB%93%88"
-GPS_BOARD_KRW_EXCL_VAT = 8000
-GPS_BOARD_KRW_INCL_VAT = round(GPS_BOARD_KRW_EXCL_VAT * 1.10)
+GPS_BOARD_URL = dm_url("neo7m")
+GPS_BOARD_KRW_INCL_VAT = DM["neo7m"][1]
+GPS_BOARD_KRW_EXCL_VAT = round(GPS_BOARD_KRW_INCL_VAT / 1.10)
 GPS_POD_PARTS_KRW_ASSUMED = 4000
 GPS_GP_SIDE = float(_P["payload_module"]["gps_pod"]["ground_plane"]["side"]) if HAS_GPS else 0.0
 # v0.9 (decision 1, vane_drive.mode 'direct'): no pushrods / clevises / servo arms (they were never rows of their own -
@@ -152,29 +174,31 @@ MUST = [
     ("비행 컴퓨터", ATMEGA_BOARD_ITEM, ATMEGA_BOARD_QTY * ATMEGA_BOARD_KRW, ATMEGA_BOARD_QTY * ATMEGA_BOARD_SHIP_KRW,
      ATMEGA_BOARD_URL,
      f"개당 {ATMEGA_BOARD_KRW:,}원 + 배송 {ATMEGA_BOARD_SHIP_KRW:,}원. "
-     + (("NAV(센서·자세 추정) 1개 + FCU(감시·제어·PWM·로그) 1개 + COM(LoRa 통신) 1개 + GNS(GPS·위치 유지) 1개"
+     + (("NAV(센서·자세 추정) 1개 + FCU(감시·제어·PWM·로그) 1개 + COM(무선 통신) 1개 + GNS(GPS·위치 유지) 1개"
           if ATMEGA_BOARD_QTY == 4 else
-          "NAV(센서·자세 추정) 1개 + FCU(감시·제어·PWM·로그) 1개 + COM(LoRa 통신) 1개" if ATMEGA_BOARD_QTY == 3 else
-          "FCU(센서·제어·감시) 1개 + COM(LoRa 통신) 1개")
+          "NAV(센서·자세 추정) 1개 + FCU(감시·제어·PWM·로그) 1개 + COM(무선 통신) 1개" if ATMEGA_BOARD_QTY == 3 else
+          "FCU(센서·제어·감시) 1개 + COM(무선 통신) 1개")
         + ", 같은 판매 페이지. 배송비는 보드마다 따로 계산 (가격 조사에 묶음 배송 정보 없음 - 보수적). "
         if ATMEGA_BOARD_QTY > 1 else "")
      + "크리스털이 16 MHz인지 확인 (8 MHz로 온 사례 있음)"),
     ("비행 컴퓨터", "MPU-6050 GY-521", 2572, 0, "https://ko.aliexpress.com/item/1005010057794277.html", ""),
-    ("비행 컴퓨터", "MS5611 GY-63 기압계", 4780, 1973, "https://ko.aliexpress.com/item/1005009835384590.html", ""),
+    ("비행 컴퓨터", "BMP280 기압계 모듈 [TYE-BMP29]", DM["bmp280"][1], 0, dm_url("bmp280"),
+     "I2C 0x77, NAV 기본 기압계 드라이버 (flight_computer.nav.baro_sensor). " + DM_NOTE + ". v0.9까지의 MS5611 GY-63"
+     "(4,780원 + 배송 1,973원, 2026-10-13 조사)은 펌웨어 빌드 옵션(nav_ms5611)으로만 남고 사지 않음"),
     ("비행 컴퓨터", "I2C 레벨 시프터 4채널", 344, 1417, "https://ko.aliexpress.com/item/32621797482.html", ""),
     ("비행 컴퓨터", AMS1117_ITEM, AMS1117_QTY * AMS1117_KRW, 0, AMS1117_URL,
      (f"개당 {AMS1117_KRW:,}원, 무료 배송, 같은 판매 페이지 (묶음 가격은 조사 안 함 - 1개 가격 x{AMS1117_QTY}). "
-      f"1개는 {_SENSOR_BOARD} 센서 레벨 시프터 3.3 V 쪽, 1개는 페이로드 격벽 아래 무선·로거 상자의 LoRa 모듈과 두 번째 레벨 시프터용 "
-      "(800 mA급, LoRa 송신 약 120 mA)"
-      + (". v0.8.1: 1개는 GNS 보드의 GPS 레벨 시프터 3.3 V 쪽 (ASSUMED 필요 - GY-NEO6MV2는 3.3 V 핀을 내놓지 않음; "
-         "보드에서 확인)" if HAS_GNS else "") if AMS1117_QTY >= 2 else
+      f"1개는 {_SENSOR_BOARD} 센서 레벨 시프터 3.3 V 쪽, 1개는 페이로드 격벽 아래 무선·로거 상자의 무선 모듈(ESP-12E, 예비 LoRa)과 두 번째 레벨 "
+      "시프터용 (800 mA급; ESP 송신 피크 약 400 mA - ASSUMED, LoRa 송신 약 120 mA)"
+      + (". v0.8.1: 1개는 GNS 보드의 GPS 레벨 시프터 3.3 V 쪽 (ASSUMED 필요 - v0.8의 GY-NEO6MV2는 3.3 V 핀을 내놓지 않았음; "
+         "NEO-7M SZH-NT07은 확인 안 함 - 보드에서 확인)" if HAS_GNS else "") if AMS1117_QTY >= 2 else
       "레벨 시프터 3.3 V 쪽. SPI형(SX127x) LoRa 모듈 전원도 여기서 (800 mA급, 송신 약 120 mA)")),
     ("비행 컴퓨터", "OpenLog 호환 로거", 3980, 0, "https://ko.aliexpress.com/item/1005006370090065.html", "microSD 카드는 보유 가정"),
     ("비행 컴퓨터", "5 V 3 A UBEC (2-6S) 로직 전원", 2256, 1940, "https://ko.aliexpress.com/item/4001219424525.html",
      "MCU를 서보 전원과 분리 (서보 부하로 인한 브라운아웃 리셋 방지)"),
-    *([("항법", "GPS 모듈 GY-NEO6MV2 (u-blox NEO-6M + 25 mm 세라믹 패치 안테나)", GPS_BOARD_KRW_INCL_VAT, None, GPS_BOARD_URL,
-        f"eleparts [LK임베디드] 부가세 별도 {GPS_BOARD_KRW_EXCL_VAT:,}원 + 부가세 10 % (v0.8 GPS 조사 2026-10-21, "
-        "report_gps-research.json; 배송비 미확인). "
+    *([("항법", "GPS 모듈 NEO-7M [SZH-NT07] (u-blox NEO-7M)", GPS_BOARD_KRW_INCL_VAT, 0, GPS_BOARD_URL,
+        f"{DM_NOTE} (부가세 별도로 환산하면 {GPS_BOARD_KRW_EXCL_VAT:,}원). v0.8-v0.9 예산은 GY-NEO6MV2(NEO-6M, eleparts "
+        "8,000원 부가세 별도)였음. 보드·안테나 치수와 무게는 다시 재지 않음 (ASSUMED: GY-NEO6MV2와 같은 급). "
         + ("v0.8.1: GNS 보드 USART1 (PD2/PD3) 38400 bps, 레벨 변환은 GNS 보드의 4채널 BSS138 시프터 (아래 줄). "
            if HAS_GNS else
            "NAV USART1 (PD2/PD3) 38400 bps. 레벨 변환은 NAV의 기존 4채널 BSS138 시프터에서 I2C가 쓰지 않는 2채널을 사용 "
@@ -191,9 +215,17 @@ MUST = [
         "추정값 - 가격 조사 안 함. NAV USART1 <-> GNS USART0 (TX, RX) + 5 V + GND, 250 kbaud. 트레이 위를 넘어 NAV에서 "
         "-x 벽의 GNS까지. GNS를 프로그래밍할 때는 이 커넥터를 뽑는다 (RXD0/TXD0가 ISP와 공유)")]
       if HAS_GNS else []),
-    ("통신", "LoRa 모듈 2개 (기체용, 지상용)", 0, 0, "", "사용자 보유. 지상 쪽은 USB-UART 변환기 또는 SX127x용 아두이노 브리지 필요"),
-    ("통신", "I2C 레벨 시프터 4채널 (LoRa 신호선용 두 번째)", 344, 1417, "https://ko.aliexpress.com/item/32621797482.html",
-     "MCU -> 모듈 방향 신호를 3.3 V로"),
+    ("통신", "ESP-12E Wi-Fi 모듈 (ESP8266, 기체 무선)", DM["esp12e"][1], 0, dm_url("esp12e"),
+     DM_NOTE + ". 기체 무선 기본값 (flight_computer.link.vehicle_radio = esp_bridge, firmware/esp_bridge). 로켓은 "
+     "통신·로거 상자에 손배선 (firmware/README.md 0.10.4 - 거리 시험과 상자 맞춤은 사용자 결정 대기), VTOL은 캐리어 rev 2c의 "
+     "U7 자리 (JLC 조립이면 LCSC C89297, 손납땜이면 이 모듈). 부팅 핀 저항·커패시터는 '분압 저항·커패시터' 줄 몫 (ASSUMED). "
+     "지상 쪽 ESP는 아래 지상 표 (합계에 미포함)"),
+    ("통신", "LoRa 모듈 2개 (예비 링크: 기체용, 지상용)", 0, 0, "",
+     "사용자 보유. Wi-Fi가 지상 거리 시험(1 km)을 통과하지 못하면 돌아갈 예비 링크 (vehicle_radio). 지상 쪽은 USB-UART 변환기 "
+     "또는 SX127x용 아두이노 브리지 필요"),
+    ("통신", "I2C 레벨 시프터 4채널 (무선 모듈 신호선용 두 번째)", 344, 1417, "https://ko.aliexpress.com/item/32621797482.html",
+     "ESP-12E: COM TX·RST -> 모듈, 모듈 TX -> COM, OpenLog 로그선 (4채널, firmware/README.md 0.10.4). 예비 LoRa: MCU -> 모듈 "
+     "방향 신호를 3.3 V로"),
     ("비행 컴퓨터", "분압 저항·커패시터 (ASSUMED)", 1000, 0, "", "추정값"),
     *([("비행 컴퓨터", "ilink 배선: 1 kΩ 직렬 저항 + 4핀 커넥터 1쌍 + 신호선 30 cm (ASSUMED)", 1500, 0, "",
         "추정값 - 가격 조사 안 함. FCU USART1 <-> COM USART0 (TX, RX, GND, 5 V), FCU TX 쪽에 1 kΩ")]
@@ -243,7 +275,17 @@ EQUIPMENT = [
     ("LiPo 충전기 iMAX B6AC 호환", 31400, 0, "https://ko.aliexpress.com/item/32856467525.html", "AC 내장"),
     ("USBasp ISP 프로그래머", 4400, 2700, "https://www.devicemart.co.kr/goods/view?no=1326948", ""),
 ]
-# ground side, depends on the type of the user's LoRa modules; not in the total (prices ASSUMED, not researched)
+# ground side of the ESP8266 link (firmware/esp_bridge/README.md "지상 ESP-07S 배선과 굽기"; params
+# flight_computer.link.esp_bridge.range_plan); not in the total (prices ASSUMED, not researched - no listing read)
+GROUND_ESP_ASSUMED = [
+    ("지상 ESP8266 모듈 ESP-07S급 (u.FL 안테나 단자) (ASSUMED)", 4000, "firmware/esp_bridge 지상 역할 (ground_esp07s)"),
+    ("2.4 GHz 8-9 dBi 무지향 안테나 + u.FL-SMA 피그테일 (ASSUMED)", 8000,
+     "1 km 지상 거리 시험 계획(range_plan)의 안테나. EIRP 한도·KC 인증 확인 (ASSUMED)"),
+    ("USB-UART 변환기 3.3 V (CH340/CP2102) + 3.3 V 레귤레이터·저항·커패시터·만능 기판 (ASSUMED)", 5000,
+     "노트북 연결과 굽기. 변환기의 3.3 V 핀으로 ESP를 먹이지 않음 (전류 부족)"),
+]
+# ground side of the LoRa FALLBACK link, depends on the type of the user's LoRa modules; not in the total (prices ASSUMED,
+# not researched)
 GROUND_CONDITIONAL = [
     ("UART형 (Ebyte) 지상 모듈용 USB-UART 변환기 (CH340/CP2102, 3.3 V 신호) (ASSUMED)", 3000,
      "모듈에 USB 보드가 딸려 있으면 불필요"),
@@ -397,27 +439,28 @@ def main(argv: list[str] | None = None) -> int:
     tw = thrust_n / (flight_mass * 1e-3 * G)
 
     out = ["# 예산안 (기체만, 캔위성 제외)", "",
-           "가격은 2026-10-13에 각 판매 페이지에서 읽은 값입니다. 해외 가격은 1 USD = 1,341원으로 환산했습니다. "
+           "가격은 2026-10-13에 각 판매 페이지에서 읽은 값입니다 (BMP280·NEO-7M·ESP-12E는 디바이스마트에서 2026-11-05에 읽고 "
+           "2026-11-11에 다시 확인). 해외 가격은 1 USD = 1,341원으로 환산했습니다. "
            "알리익스프레스는 신규 회원 할인가가 아닌 정가를 썼습니다. 가격은 자주 바뀝니다. "
            "(ASSUMED) 표시 품목은 조사하지 않은 추정가입니다.", "",
            f"**합계: {total:,}원** (보유 가능성이 높은 ATmega128 보드 1개와 나사를 빼면 {total - owned:,}원)", "",
-           *([f"비행 컴퓨터는 ATmega128A 4개입니다 (v0.8.1): NAV가 센서(MPU-6050·MS5611)·자세 추정·고도 필터를 맡아 매 틱 "
-              f"항법 프레임을 SPI(nlink)로 FCU에 보내고, FCU가 감시(인터록)·자세 제어·PWM·로그를, COM이 LoRa 무선·명령 해독·"
+           *([f"비행 컴퓨터는 ATmega128A 4개입니다 (v0.8.1): NAV가 센서(MPU-6050·BMP280)·자세 추정·고도 필터를 맡아 매 틱 "
+              f"항법 프레임을 SPI(nlink)로 FCU에 보내고, FCU가 감시(인터록)·자세 제어·PWM·로그를, COM이 무선(ESP-12E Wi-Fi, 예비 LoRa)·명령 해독·"
               f"텔레메트리를, GNS가 GPS 수신(UBX)·GPS 필터·위치 제어(50 Hz)를 맡습니다 (GNS는 NAV와 glink 직렬로 연결, 비행 "
               f"판단은 FCU만). GNS는 항공전자 튜브 -x 벽(배터리 바깥쪽, GPS 선 입구 바로 아래)에 인쇄 보스 4개로 나사 고정합니다. "
               f"네 보드는 같은 판매 페이지에서 사며 배송비 {ATMEGA_BOARD_SHIP_KRW:,}원을 보드마다 따로 넣었습니다 (묶음 배송 여부 "
               f"미확인). GNS 보드·나사·보스·GPS 선 변경으로 기체가 약 {GNS_ADDED_G:.0f} g 무거워지고, 이를 일부 상쇄하려고 GPS "
               f"포드 벽·바닥·뚜껑을 1.2 mm로 얇게 했습니다.", ""] if ATMEGA_BOARD_QTY == 4 else
-             [f"비행 컴퓨터는 ATmega128A 3개입니다 (v0.6.3): NAV가 센서(MPU-6050·MS5611)·자세 추정·고도 필터를 맡아 "
-              f"매 틱 항법 프레임을 SPI(nlink)로 FCU에 보내고, FCU가 감시(인터록)·자세 제어·PWM·로그를, COM이 LoRa 무선·명령 "
+             [f"비행 컴퓨터는 ATmega128A 3개입니다 (v0.6.3): NAV가 센서(MPU-6050·BMP280)·자세 추정·고도 필터를 맡아 "
+              f"매 틱 항법 프레임을 SPI(nlink)로 FCU에 보내고, FCU가 감시(인터록)·자세 제어·PWM·로그를, COM이 무선(ESP-12E Wi-Fi, 예비 LoRa)·명령 "
               f"해독·텔레메트리 작성을 맡습니다 (NAV·COM은 비행 판단 없음). FCU는 흡입 모듈 격벽 위에 폼 테이프로 눕혀 붙입니다. "
               f"세 보드는 같은 판매 페이지에서 사며 배송비 {ATMEGA_BOARD_SHIP_KRW:,}원을 보드마다 따로 넣었습니다 (묶음 배송 여부 "
               f"미확인).", ""] if ATMEGA_BOARD_QTY == 3 else
              [f"비행 컴퓨터는 ATmega128A 2개입니다 (v0.6): FCU가 센서·추정·감시(인터록)·자세 제어·PWM·로그를 모두 맡고, "
-              f"COM은 LoRa 무선·명령 해독·텔레메트리 작성만 합니다 (비행 판단 없음). 두 보드는 같은 판매 페이지에서 사며 "
+              f"COM은 무선(ESP-12E Wi-Fi, 예비 LoRa)·명령 해독·텔레메트리 작성만 합니다 (비행 판단 없음). 두 보드는 같은 판매 페이지에서 사며 "
               f"배송비 {ATMEGA_BOARD_SHIP_KRW:,}원을 보드마다 따로 넣었습니다 (묶음 배송 여부 미확인).", ""]
              if ATMEGA_BOARD_QTY == 2 else []),
-           *([f"v0.8: 위치 유지(바람·밀기)를 위해 GPS(GY-NEO6MV2, u-blox NEO-6M) 1개를 더합니다. 안테나는 페이로드 모듈 바깥 "
+           *([f"v0.8: 위치 유지(바람·밀기)를 위해 GPS(NEO-7M 모듈 SZH-NT07; v0.8 설계 때는 GY-NEO6MV2) 1개를 더합니다. 안테나는 페이로드 모듈 바깥 "
               f"포드(θ {L.gps_theta:g}°, 노즈 분리면 바로 아래)에 {GPS_GP_SIDE:g} mm 접지판과 함께 넣고, 선은 튜브 바깥 통로를 "
               f"따라 항공전자 모듈로 들어가 {'GNS 보드' if HAS_GNS else 'NAV'}에 연결됩니다. 포드·뚜껑·GPS·배선을 합쳐 기체가 약 "
               f"{GPS_ADDED_G:.0f} g 무거워집니다 (CAD 측정).", ""] if HAS_GPS else []),
@@ -431,7 +474,13 @@ def main(argv: list[str] | None = None) -> int:
     for n, p, s, u, note in EQUIPMENT:
         out.append(f"| {n} | {p:,} | {s:,} | {note} | [링크]({u}) |")
     gmax = max(GROUND_CONDITIONAL[0][1], GROUND_CONDITIONAL[1][1] + GROUND_CONDITIONAL[2][1])
-    out += ["", f"## LoRa 모듈 종류에 따라 지상 쪽에 추가로 필요할 수 있는 것 (합계에 미포함, 최대 {gmax:,}원)", "",
+    gesp = sum(p_ for (_, p_, _) in GROUND_ESP_ASSUMED)
+    out += ["", f"## Wi-Fi(ESP8266) 링크의 지상 쪽에 필요한 것 (합계에 미포함, {gesp:,}원)", "",
+            "가격은 조사하지 않은 추정값(ASSUMED)입니다. 배선은 `firmware/esp_bridge/README.md`의 지상 ESP-07S 절을 따릅니다.", "",
+            "| 품목 | 가격 | 비고 |", "|---|---|---|"]
+    for n, p_, note in GROUND_ESP_ASSUMED:
+        out.append(f"| {n} | {p_:,} | {note} |")
+    out += ["", f"## 예비 LoRa 링크를 쓸 때 모듈 종류에 따라 지상 쪽에 추가로 필요할 수 있는 것 (합계에 미포함, 최대 {gmax:,}원)", "",
             "가격은 조사하지 않은 추정값(ASSUMED)입니다. 모듈 종류를 확인한 뒤 해당하는 줄만 사면 됩니다.", "",
             "| 품목 | 가격 | 비고 |", "|---|---|---|"]
     for n, p_, note in GROUND_CONDITIONAL:
@@ -443,7 +492,8 @@ def main(argv: list[str] | None = None) -> int:
             "| EDF | JP Hobby 90 mm 12S | Hobbyocean 90 mm 6S |",
             "| ESC / 배터리 | 160 A HV / 6S 2200 x2 (12S) | 100 A / 6S 2200 x1 |",
             "| 전원 | 12S UBEC 2개 | ESC BEC (서보) + 6S UBEC (로직) |",
-            "| 조종 링크 | SBUS 수신기 + RC 송신기 | 보유한 LoRa 모듈 (명령·텔레메트리), 노트북 지상국 |",
+            "| 조종 링크 | SBUS 수신기 + RC 송신기 | ESP-12E Wi-Fi(ESP-NOW) 브리지 (명령·텔레메트리; 보유한 LoRa 모듈은 예비), "
+            "노트북 지상국 |",
             f"| 벽 두께 | {walls(L_full)} | {walls(L)} |",
             f"| 전장 | {L_full.vehicle_h:.0f} mm | {L.vehicle_h:.0f} mm |",
             f"| 낙하산 | {chute(L_full):g} m 완제품 가정 | {chute(L):g} m 립스톱 자작 |"]
@@ -467,20 +517,25 @@ def main(argv: list[str] | None = None) -> int:
                             "glink_harness_krw_assumed": GLINK_HARNESS_KRW_ASSUMED, "added_mass_g_cad": GNS_ADDED_G}
                            if HAS_GNS else None),
                    "gps": ({"board_krw_excl_vat": GPS_BOARD_KRW_EXCL_VAT, "board_krw_incl_vat": GPS_BOARD_KRW_INCL_VAT,
-                            "board_url": GPS_BOARD_URL, "board_shipping_krw": None,
+                            "board_url": GPS_BOARD_URL, "board_shipping_krw": 0,
+                            "board_shipping_note": "devicemart shipping counted once on the M3 screw-kit row (ASSUMED)",
                             "pod_parts_krw_assumed": GPS_POD_PARTS_KRW_ASSUMED,
                             "level_shifter": "GNS board's BSS138 (v0.8.1)" if HAS_GNS else "NAV's BSS138, 2 free channels",
-                            "added_mass_g_cad": GPS_ADDED_G, "price_source": "scratchpad v08/report_gps-research.json (2026-10-21)"}
+                            "added_mass_g_cad": GPS_ADDED_G, "price_source": "devicemart goods page no=" + DM["neo7m"][0]
+                            + " (pcb/vtol_carrier/spec/parts_sources.json 2026-11-05, re-read 2026-11-11)"}
                            if HAS_GPS else None),
                    "equipment_krw": equip, "pla_g": pla_g, "pla_source": pla_src, "pla_rolls": pla_rolls,
                    "pla_by_colour": pla_by_colour,
                    "vehicle_mass_g_cad": mass, "vehicle_mass_g_flight": flight_mass, "thrust_nominal_N": thrust_n,
                    "tw_nominal": tw, "tw_mass_source": tw_src,
                    "vehicle_h_mm": {L.p["meta"]["preset"]: L.vehicle_h, FULL_PRESET: L_full.vehicle_h},
-                   "rows": rows, "equipment": EQUIPMENT, "ground_conditional_assumed": GROUND_CONDITIONAL,
+                   "devicemart_parts": {k: {"goods_no": v[0], "krw_incl_vat": v[1], "url": dm_url(k)} for k, v in DM.items()},
+                   "devicemart_read": list(DM_READ),
+                   "rows": rows, "equipment": EQUIPMENT, "ground_esp_assumed": GROUND_ESP_ASSUMED,
+                   "ground_esp_assumed_krw": gesp, "ground_conditional_assumed": GROUND_CONDITIONAL,
                    "ground_conditional_max_krw": gmax}, f, ensure_ascii=False, indent=1)
     print(f"total {total:,} KRW (without likely-owned {total - owned:,}); equipment if not owned {equip:,}; "
-          f"ground-side conditional (ASSUMED) up to {gmax:,}; PLA {pla_g:.0f} g -> {pla_rolls} rolls; "
+          f"ground-side ESP (ASSUMED) {gesp:,}, LoRa-fallback conditional (ASSUMED) up to {gmax:,}; PLA {pla_g:.0f} g -> {pla_rolls} rolls; "
           f"CAD mass {mass:.0f} g, flight mass {flight_mass:.0f} g -> T/W {tw:.3f}; length {L.vehicle_h:.1f} mm")
     return 0
 

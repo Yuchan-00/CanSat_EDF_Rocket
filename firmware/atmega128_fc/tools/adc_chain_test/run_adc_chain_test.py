@@ -13,6 +13,12 @@ the internal 2.56 V reference), adc_chain_vin returns V_in once it is converted,
     python firmware/atmega128_fc/tools/adc_chain_test/run_adc_chain_test.py    # exit 0 pass, 1 fail, 77 tools missing
     ... [--adc-src PATH]   build another adc.c (comparison of two versions; same output = same behaviour)
 
+2026-11-10 control round: also the logic-battery path of the VTOL battery FCU (``lbat_avr.c`` + ``src/hal/adc.c`` with the
+env ``fcu``'s -D flags: adc_read_blocking at boot, adc_poll_mux on main.c's schedule) with distinct millivolts on the V_cell
+and PF3 channels: each result carries its channel, the codes match the inputs, the lbat byte is
+sim.link_proto.lbat_q_from_counts of the code; and which FCU envs compile FC_LOGIC_BAT (fcu / fcu_demo / fcu_nogps: 1; the
+rocket and the tether / hybrid FCUs: 0).
+
 Output: ``firmware/atmega128_fc/host_test/build/adc_chain_test/`` (elf / hex per env, the simulator, <env>.txt consoles).
 """
 from __future__ import annotations
@@ -26,6 +32,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FW = os.path.normpath(os.path.join(HERE, "..", ".."))
+ROOT = os.path.normpath(os.path.join(FW, "..", ".."))
 SRC = os.path.join(FW, "src")
 OUT = os.path.join(FW, "host_test", "build", "adc_chain_test")
 ENVS = ("fcu_wired", "fcu_wired_buffer")
@@ -155,6 +162,71 @@ def run_env(env: str, sim_exe: str, adc_src: str) -> dict:
             "adc_src": adc_src}
 
 
+LBAT_ENVS_ON = ("fcu", "fcu_demo", "fcu_nogps")
+LBAT_ENVS_OFF = ("fcu_ballistic", "fcu_wired", "fcu_wired_buffer")
+LBAT_MV_VBAT, LBAT_MV_PF3 = 1300, 1930          # V_cell divider input / the 1S pack 3.86 V through 47k / 47k
+LB_RE = re.compile(r"LB t=(\d+) ch=(\d+) code=(\d+) q=(\d+)")
+
+
+def lbat_flag(env: str) -> int | None:
+    """FC_LOGIC_BAT as src/hal/adc.h computes it for the env's -D flags (avr-gcc -E)"""
+    gcc = tool("toolchain-atmelavr", "avr-gcc")
+    src = os.path.join(OUT, "probe_lbat.c")
+    with open(src, "w", encoding="utf-8", newline="\n") as f:
+        f.write('#include "hal/adc.h"\nPROBE_LBAT = FC_LOGIC_BAT ;\n')
+    r = sh([gcc, "-mmcu=atmega128", "-E", "-P", "-I", SRC, *env_defines(env), src])
+    m = re.search(r"^PROBE_LBAT = (\d+) ;$", r.stdout, re.M)
+    return int(m.group(1)) if m else None
+
+
+def run_lbat(sim_exe: str, adc_src: str) -> dict:
+    sys.path.insert(0, ROOT)
+    from sim import link_proto as lp  # noqa: E402  (the reference lbat byte)
+    gcc, objcopy = tool("toolchain-atmelavr", "avr-gcc"), tool("toolchain-atmelavr", "avr-objcopy")
+    defs = env_defines("fcu")
+    elf, hexf = os.path.join(OUT, "fcu_lbat.elf"), os.path.join(OUT, "fcu_lbat.hex")
+    r = sh([gcc, "-mmcu=atmega128", "-Os", "-std=gnu99", "-DF_CPU=16000000UL", "-Wall", *defs, "-I", SRC,
+            os.path.join(HERE, "lbat_avr.c"), adc_src, "-o", elf])
+    if r.returncode != 0:
+        return {"env": "fcu_lbat", "status": "FAIL", "why": "avr-gcc failed: " + (r.stdout + r.stderr)[-2000:]}
+    r = sh([objcopy, "-O", "ihex", "-R", ".eeprom", elf, hexf])
+    if r.returncode != 0:
+        return {"env": "fcu_lbat", "status": "FAIL", "why": "avr-objcopy failed: " + r.stderr[-1000:]}
+    ch = header_defines(defs, ("VBAT_ADC_CHANNEL", "LOGIC_BAT_ADC_CHANNEL", "LOGIC_BAT_Q_X1024"))
+    mv = [0] * 8
+    mv[ch["VBAT_ADC_CHANNEL"]] = LBAT_MV_VBAT
+    mv[ch["LOGIC_BAT_ADC_CHANNEL"]] = LBAT_MV_PF3
+    s = sh([sim_exe, hexf, "mv=" + ",".join(str(x) for x in mv), "max_ms=200"], timeout=600)
+    con = s.stdout + s.stderr
+    with open(os.path.join(OUT, "fcu_lbat.txt"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(con)
+    boot = re.search(r"LB boot code=(\d+) q=(\d+)", con)
+    rows = [tuple(int(x) for x in m.groups()) for m in LB_RE.finditer(con)]
+    vb, lb_ch, qx = ch["VBAT_ADC_CHANNEL"], ch["LOGIC_BAT_ADC_CHANNEL"], ch["LOGIC_BAT_Q_X1024"]
+    sched = [lb_ch if (k + 1) % 3 == 0 else vb for k in range(12)]      # the conversion each tick started
+    want_ch = [vb] + sched[:-1]                                         # the result a tick reads: the previous start
+    flags = {e: lbat_flag(e) for e in LBAT_ENVS_ON + LBAT_ENVS_OFF}
+    checks = {
+        "boot read of PF3 = the input (+-2 counts), lbat byte = lbat_q_from_counts": bool(boot)
+            and near(int(boot.group(1)), LBAT_MV_PF3) and int(boot.group(2)) == lp.lbat_q_from_counts(int(boot.group(1)), qx),
+        "12 ticks, no busy ADC (4 ms >> one conversion)": len(rows) == 12 and "busy" not in con and "LB end" in con,
+        "each result carries the channel it converted (one PF3 slot every 3rd tick, V_cell otherwise)":
+            [r[1] for r in rows] == want_ch,
+        "codes match their channel's input (+-2 counts)": all(near(r[2], LBAT_MV_PF3 if r[1] == lb_ch else LBAT_MV_VBAT)
+                                                             for r in rows),
+        "lbat byte of every PF3 result = sim.link_proto.lbat_q_from_counts (3.86 V -> 193 +-1)":
+            all(r[3] == lp.lbat_q_from_counts(r[2], qx) and abs(r[3] - 193) <= 1 for r in rows if r[1] == lb_ch),
+        "FC_LOGIC_BAT: 1 in fcu / fcu_demo / fcu_nogps, 0 in the rocket and the tether / hybrid FCUs":
+            all(flags[e] == 1 for e in LBAT_ENVS_ON) and all(flags[e] == 0 for e in LBAT_ENVS_OFF),
+        "simulator ended normally": s.returncode == 0,
+    }
+    with open(hexf, "rb") as f:
+        sha = hashlib.sha256(f.read()).hexdigest()
+    return {"env": "fcu_lbat", "status": "PASS" if all(checks.values()) else "FAIL", "checks": checks,
+            "rows": {k: list(v[1:]) + [0] for k, v in enumerate(rows)}, "boot": boot.groups() if boot else None,
+            "flags": flags, "channels": ch, "adc_isr": None, "simavr_conversion_us": None, "hex_sha256": sha}
+
+
 def run(adc_src: str | None = None) -> dict:
     gcc, objcopy = tool("toolchain-atmelavr", "avr-gcc"), tool("toolchain-atmelavr", "avr-objcopy")
     if not gcc or not objcopy or not simavr_dir() or not have_zig():
@@ -166,6 +238,7 @@ def run(adc_src: str | None = None) -> dict:
     except RuntimeError as e:
         return {"status": "FAIL", "why": str(e)}
     res = {e: run_env(e, sim_exe, adc_src or os.path.join(SRC, "hal", "adc.c")) for e in ENVS}
+    res["fcu_lbat"] = run_lbat(sim_exe, adc_src or os.path.join(SRC, "hal", "adc.c"))      # 2026-11-10
     return {"status": "PASS" if all(r["status"] == "PASS" for r in res.values()) else "FAIL", "envs": res}
 
 

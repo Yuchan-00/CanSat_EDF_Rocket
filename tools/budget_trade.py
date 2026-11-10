@@ -47,6 +47,9 @@ EDF_HOBBYOCEAN_90_6S = {
 # --------------------------------------------------------------------------- #
 # bill of materials (KRW, incl. shipping where known); "owned" items listed separately
 # --------------------------------------------------------------------------- #
+# BOM_BASE is the v0.3 trade-study baseline, kept as history so the trade table stays comparable with itself: it still
+# lists the MS5611 GY-63 and an SBUS receiver and one ATmega128 board.  The parts bought since (BMP280, NEO-7M, ESP-12E,
+# the 1S logic battery, four chips) are in tools/budget_bom.py / tools/budget_bom_vtol.py, not here (2026-11-11 note).
 BOM_BASE = [
     ("EDF 90mm 6S 1450KV (Hobbyocean)", 83400, "https://ko.aliexpress.com/item/1005007300026404.html"),
     ("ESC Hobbywing SkyWalker 100A V2 (5V/7A BEC)", 51300, "https://ko.aliexpress.com/item/1005012523818954.html"),

@@ -1,7 +1,7 @@
 /* gns_node.h - the GNS board's application core (v0.8.1, the FOURTH ATmega128A: params flight_computer.gns), a port of
  * sim/glink_proto.py GnsNode on core/gps_ubx.h + core/gps_nav.h (the v0.8 NAV GPS side) and core/position_ctrl.h.
  *
- * The GNS runs the GPS receiver (NEO-6M on its USART1, 38400, the boot configurator), UBX, the GPS-aided horizontal filter
+ * The GNS runs the GPS receiver (NEO-7M; NEO-6M in v0.8 - on its USART1, 38400, the boot configurator), UBX, the GPS-aided horizontal filter
  * and the position controller at 50 Hz; it makes no safety decision (its LAND requests are data for the FCU's supervisor,
  * V11-V14; the FCU detects a silent GNS itself, core/nlink_proto.h nl_gns_rx_requests).  Calls (the GNS main loop):
  *   every 4 ms timer tick: gns_poll(g, g->nt + 1, the bytes USART1 received, &act) - the UBX parser, the configurator's

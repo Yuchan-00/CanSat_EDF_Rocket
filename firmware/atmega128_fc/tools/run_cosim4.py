@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Four-core co-simulation of the v0.9 flight computer with a closed-loop plant (SPEC_firmware_v09 WP-S / S1, section 7):
 NAV + GNS + FCU + COM in one libsimavr process (``tools/cosim/cosim4.c``), the plant in the harness
-(``tools/cosim/plant4.c``), the NAV's MPU-6050 / MS5611 on its TWI (``tools/cosim/twi_models.c``).
+(``tools/cosim/plant4.c``), the NAV's MPU-6050 and barometer (BMP280 or MS5611: the image's ``FC_BARO_SENSOR``) on
+its TWI (``tools/cosim/twi_models.c``).
 
 What it does:
 
@@ -199,7 +200,8 @@ PROBE_NAMES = ("VC_U_HOVER", "MIX_THROTTLE_EXP", "MIX_T_MAX_N", "MIX_L_V_M", "MI
                "CAL_SERVO_TRIM_US_3", "CAL_SERVO_TRIM_US_4", "GPS_LEVER_B_X_M", "GPS_LEVER_B_Y_M", "GPS_LEVER_B_Z_M",
                "GPS_PSI0_RAD", "FC_TICK_US", "NLINK_XFER_US", "FC_IMU_LEAD_COUNTS", "FC_T2_PRESCALER",
                "GLINK_LATENCY_TICKS", "FC_LOOP_HZ", "ONB_V_HOVER_DM", "ONB_V_ALT_MAX_DM", "ONB_W_ALT_MAX_DM",
-               "ONB_V_ALT_STEP_DM", "VC_CLIMB_RATE_MPS", "VC_DESCENT_RATE_MPS", "FC_PARAMS_TAG")
+               "ONB_V_ALT_STEP_DM", "VC_CLIMB_RATE_MPS", "VC_DESCENT_RATE_MPS", "FC_PARAMS_TAG",
+               "FC_BARO_SENSOR", "FC_BARO_BMP280")
 
 
 def header_probe(fw: str, env: str) -> dict:
@@ -336,6 +338,7 @@ def run_one(exe: str, s: Scn, ctx: dict) -> tuple[Scn, float, int, str]:
                 f"report={tree['cl_syms'][cs['com']]['com_report'][0]}",
                 "gps={}:{}".format(*tree["cl_syms"][gns_env]["gps"]),
                 "gnsrep={}:{}".format(*tree["cl_syms"][gns_env]["gnsrep"]), "twi=1", "twifix=1", "t0fix=1", "plant=1",
+                f"baro={tree['cl_baro'][cs['nav']]}",
                 *plant_args(tree["header"][fcu_env])]
     else:
         im = tree["ol_images"]
@@ -695,7 +698,12 @@ def analyse(s: Scn, ctx: dict) -> dict:
     out["baro"] = {"flight_seconds": len(full), "samples_per_s": stat(rates, 0),
                    "seconds_outside_50pm1": sum(1 for r in rates if abs(r - 50) > 1),
                    "flight_frames_without_baro_ok": sum(1 for f in fl_frames if not f[1] & NL_F_BARO_OK),
-                   "twi_d1_conversions": ev["MX"].get("d1"), "twi_adc_reads_early": ev["MX"].get("adc_early")}
+                   "twi_d1_conversions": ev["MX"].get("d1"), "twi_adc_reads_early": ev["MX"].get("adc_early"),
+                   # 2026-11-10: the barometer model of the run (MX baro=; a harness before it: the MS5611) and the
+                   # BMP280 model's counters - a data read while the measurement runs returns the PREVIOUS sample
+                   "sensor": ev["MX"].get("baro", "ms5611"), "twi_bmp280_forced": ev["MX"].get("bmp_forced"),
+                   "twi_bmp280_data_reads": ev["MX"].get("bmp_data_reads"),
+                   "twi_bmp280_reads_early": ev["MX"].get("bmp_early")}
     # ---- the FCU's report lines
     C = {k: merge_lines(v) for k, v in ev["C"].items()}
     last = {k: (v[-1][1] if v else {}) for k, v in C.items()}
@@ -859,7 +867,9 @@ def analyse(s: Scn, ctx: dict) -> dict:
             out["gns_pos_mode_changes"] = [x for i, x in enumerate(pm) if i == 0 or x[1] != pm[i - 1][1]][:20]
     out["plant"] = {k: ev["MX"].get(k) for k in ("h_max", "td_v", "touchdowns", "liftoffs", "tilt_max_deg", "x", "y")}
     out["harness"] = {k: ev["MX"].get(k) for k in ("wdt_fcu", "wdt_com", "wdt_nav", "wdt_gns", "t0fix_nav", "t0fix_gns",
-                                                   "nl_lose", "twi_msgs", "bursts", "d1", "d2", "adc_early",
+                                                   "nl_lose", "twi_msgs", "bursts", "d1", "d2", "adc_early", "baro",
+                                                   "bmp_forced", "bmp_done", "bmp_data_reads", "bmp_early",
+                                                   "bmp_calib_reads", "bmp_resets", "bmp_busy_writes", "bmp_normal_writes",
                                                    "twi_rescaled", "twi_not_found", "scl_cycles_per_bit",
                                                    "twi_bits_hist")}
     out["stack_lowest_sp_run"] = {k: ev["M"].get(k) for k in ("fcu_sp_min_run", "nav_sp_min_run", "com_sp_min_run")}
@@ -977,14 +987,19 @@ def judge(res: dict, ctx: dict) -> dict:
     m8 = max((x["flight_max"] or 0 for x in v8.values()), default=None)
     row(8, "NAV tick -> vane (closed loop incl. TWI and HOLD)", "<= 4000 us; accept max <= 3800 us",
         m8 is not None and 0 < m8 <= 3800, {"max_us": m8, "by_run": v8})
-    # row 9: MS5611 at 50 Hz in flight, no BARO-lost in a normal run
-    v9 = {k: {"samples_per_s": mx(v, "baro", "samples_per_s"), "seconds_outside_50pm1": mx(v, "baro", "seconds_outside_50pm1"),
+    # row 9: the barometer (BMP280 since 2026-11-10; MS5611 in an image built with it) at 50 Hz in flight, no BARO-lost
+    # in a normal run; BMP280: additionally no data read while a measurement runs (the chip would hand the previous
+    # sample out silently - the MS5611 answers 0, which its driver refuses and the sample count shows)
+    v9 = {k: {"sensor": mx(v, "baro", "sensor"), "bmp280_reads_early": mx(v, "baro", "twi_bmp280_reads_early"),
+              "samples_per_s": mx(v, "baro", "samples_per_s"), "seconds_outside_50pm1": mx(v, "baro", "seconds_outside_50pm1"),
               "frames_without_baro_ok": mx(v, "baro", "flight_frames_without_baro_ok"),
               "baro_lost_reason": v["fcu"]["land_reason"] in BARO_LOST_REASONS or v["fcu"]["abort_reason"] in BARO_LOST_REASONS}
           for k, v in normal.items()}
-    row(9, "MS5611 compensation at 50 Hz in flight (frames with BARO_NEW per second), no BARO-lost event in a normal run",
+    row(9, "barometer (BMP280; MS5611 as a build option) compensation at 50 Hz in flight (frames with BARO_NEW per "
+           "second), no BARO-lost event in a normal run, no BMP280 data read during a measurement",
         "50 +- 1 samples per s", all(x["seconds_outside_50pm1"] == 0 and x["frames_without_baro_ok"] == 0
-                                       and not x["baro_lost_reason"] and x["samples_per_s"] for x in v9.values()), v9,
+                                       and not x["baro_lost_reason"] and x["samples_per_s"]
+                                       and not x["bmp280_reads_early"] for x in v9.values()), v9,
         "the per-tick compensation (pow 0.2 / tick) is the NAV flight-image profile's figure (navflight); the co-simulation "
         "counts the samples the altitude filter used (NL_F_BARO_NEW in the NAV's frames)")
     # row 11: flight-record drops in calm flight
@@ -1341,7 +1356,13 @@ def tree_ctx(fw: str, build: bool, jobs: int, closed: bool) -> dict:
                     raise SystemExit(f"{g}: g_cosim_gps is {t['cl_syms'][g]['gps'][1]} bytes, the harness writes 24")
             t["header"][cs["fcu"]] = header_probe(fw, cs["fcu"])
             # the four images of one run must carry one FC_PARAMS_TAG (fw09 G1)
-            tags = {e: header_probe(fw, e).get("FC_PARAMS_TAG") for e in (cs["nav"], cs["gns"], cs["com"])}
+            hn = header_probe(fw, cs["nav"])
+            # 2026-11-10: the barometer model at 0x77 is the one this NAV image was built for (params_gen.h
+            # FC_BARO_SENSOR as the NAV env compiles it; a tree without the define has the MS5611 driver only)
+            t.setdefault("cl_baro", {})[cs["nav"]] = (
+                "bmp280" if "FC_BARO_SENSOR" in hn and hn["FC_BARO_SENSOR"] == hn.get("FC_BARO_BMP280") else "ms5611")
+            tags = {cs["nav"]: hn.get("FC_PARAMS_TAG"),
+                    **{e: header_probe(fw, e).get("FC_PARAMS_TAG") for e in (cs["gns"], cs["com"])}}
             tags[cs["fcu"]] = t["header"][cs["fcu"]].get("FC_PARAMS_TAG")
             if len(set(tags.values())) != 1:
                 raise SystemExit(f"closed-loop set of {b}: FC_PARAMS_TAG differs between its images {tags}")
@@ -1400,7 +1421,7 @@ def main(argv: list[str] | None = None) -> int:
               "complete_set": not a.only, "generated_s": round(time.time() - t0, 1), "harness": {"exe": exe, "warnings": warns,
                                                                      "sha256": hashlib.sha256(open(exe, "rb").read()).hexdigest()},
               "plant_wind_mps2_ASSUMED": WIND, "plant_drag_k_per_s_ASSUMED": DRAG_K, "fault_at_ms_closed_loop": FAULT_AT_CL_MS,
-              "trees": {k: {kk: vv for kk, vv in v.items() if kk in ("fw", "images", "main_c", "pwm_map")} | {
+              "trees": {k: {kk: vv for kk, vv in v.items() if kk in ("fw", "images", "main_c", "pwm_map", "cl_baro")} | {
                   "header_fcu_cosim_cl": v["header"].get("fcu_cosim_cl")} for k, v in ctx["trees"].items()},
               "rows": rows, "runs": results}
     os.makedirs(os.path.dirname(a.report), exist_ok=True)

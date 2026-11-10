@@ -93,6 +93,11 @@
  * past the 80 ms reply window: the bench sees the D5 expiry clearly, not at the window's edge) */
 #if FC_LINK_RADIO == FC_RADIO_SX127X
 #define SB_BURST_N 3u
+#elif FC_LINK_RADIO == FC_RADIO_ESP_BRIDGE
+/* 2026-11-10: the ESP's 38400-baud UART is busy only ~12 ms per TELEM (46 B), so 4 frames ~4 ms apart superseded an
+ * older reply at most once (2026-11-06 bench: 1) and, after the synthetic ground's poll period moved by 5 ms (params_gen.h
+ * LINK_RTT_WORST_MS 486 -> 491: the TELEM v7 byte), not at all; 6 frames (~24 ms) always do - the burst check is unchanged */
+#define SB_BURST_N 6u
 #else
 #define SB_BURST_N 4u
 #endif

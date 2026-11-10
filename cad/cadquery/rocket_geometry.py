@@ -1696,7 +1696,7 @@ def gps_pod_lid(L: Layout) -> cq.Shape:
 
 
 def gps_module(L: Layout) -> cq.Shape:
-    """v0.8 placeholder ``gps``: the ceramic patch on the ground plane and the GY-NEO6MV2 board under it (two boxes, one
+    """v0.8 placeholder ``gps``: the ceramic patch on the ground plane and the GPS board (GY-NEO6MV2 dims; the bought NEO-7M board is not measured, A) under it (two boxes, one
     compound; electronics.gps.board_mass_g spread over both by volume)."""
     t = L.gps_theta
     (pu, pv, pz), (bu, bv, bz) = L.gps_patch_box, L.gps_board_box
@@ -2012,7 +2012,7 @@ def top_cap(L: Layout, with_logic_hole: bool = True, with_logic_collar: bool | N
 
 
 def cap_gps_module(L: Layout) -> cq.Shape:
-    """v0.9 CAD-2 VTOL placeholder ``gps``: the patch on the ground plane and the GY-NEO6MV2 board taped on the cap top
+    """v0.9 CAD-2 VTOL placeholder ``gps``: the patch on the ground plane and the GPS board (GY-NEO6MV2 dims; the bought NEO-7M board is not measured, A) taped on the cap top
     (two boxes, one compound)."""
     (px, py), (bx, by) = L.cap_patch_xy, L.cap_board_xy
     return cq.Compound.makeCompound([_box(*px, *py, *L.cap_patch_z), _box(*bx, *by, *L.cap_board_z)])
@@ -2646,7 +2646,7 @@ COLORS = {
     "servo_arm": (0.35, 0.55, 0.95), "pushrod": (0.95, 0.90, 0.10), "cansat_payload": (0.90, 0.30, 0.60),
     "spring": (0.65, 0.65, 0.15), "chute_pack": (0.95, 0.50, 0.05), "com": (0.10, 0.75, 0.80),
     "radio_log": (0.55, 0.85, 0.20), "fcu": (0.05, 0.45, 0.35),
-    "gps": (0.10, 0.30, 0.75), "gps_ground_plane": (0.80, 0.50, 0.20),   # v0.8: blue GY-NEO6MV2 board, copper plate
+    "gps": (0.10, 0.30, 0.75), "gps_ground_plane": (0.80, 0.50, 0.20),   # v0.8: blue GPS board (GY-NEO6MV2 then, NEO-7M now), copper plate
     "gns": (0.15, 0.55, 0.55),     # v0.8.1: the GNS board (ATmega128A #4)
     "carrier": (0.10, 0.50, 0.30),     # v0.9 CAD-2 VTOL: the one avionics carrier PCB (green)
     "buffer_pack": (0.95, 0.80, 0.15),  # v0.9 CAD-2 VTOL hybrid: the 6S 650 mAh buffer

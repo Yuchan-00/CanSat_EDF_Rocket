@@ -654,7 +654,8 @@ with their 5.5 mm bullets (sleeve OD 8 ASSUMED) one at a time:
   `electronics.nav`, formerly the flight computer `fc`: same box at the same spot, 50 × 50 × 15, Z 440–490;
   ATmega128A minimum-system board with the GY-521 MPU-6050 and barometer modules on a 4-ch level shifter, so the
   IMU stays where the v0.5 FC had it; barometer part: BMP280 module, user decision 2026-11-04, instead of the GY-63
-  MS5611 - the firmware still has only the MS5611 driver, BMP280 driver: next control round). (−x face): battery box `battery_x/y/z`, misc-electronics box `misc_x/y/z`
+  MS5611 - since the 2026-11-10 control round the default NAV driver is the BMP280's, `hal/bmp280.*`; the MS5611 driver is a
+  build option, env `nav_ms5611`). (−x face): battery box `battery_x/y/z`, misc-electronics box `misc_x/y/z`
   (default preset: 20 (x) × 40 (y) × 30 (z), Z 362.9–392.9, below the battery because
   `avionics_module.battery_above_misc` (v0.3); 5 V logic UBEC, buzzer, arming switch, wiring - v0.6.2: the LoRa
   module, OpenLog and radio level shifter moved to the radio/log box of §5.3, `electronics.misc.mass_g` 60 → 40).
@@ -1090,8 +1091,10 @@ rate limit `servo.rate_limit_deg_s` + saturation. Sensors and estimator
 gyro (0.005 °/s/√Hz, ±2000 °/s, 16.4 LSB per °/s, slowly drifting bias up to
 0.5 °/s, DLPF 2.8 ms); gyro bias and accelerometer levelling only on the pad,
 gyro-only quaternion integration after launch (an accelerometer under thrust
-reads the thrust axis, not gravity); MS5611 baro 0.25 m RMS at 50 Hz with
-0.1 s latency (the bought part is a BMP280; BMP280 baro model: next control round). Truth + noise and a Mahony filter remain as options. Linear loop
+reads the thrust axis, not gravity); BMP280 baro 0.44 m RMS with 0.055 m steps at 50 Hz and
+0.1 s latency (2026-11-10 control round, `sim/sim6dof.py` `BARO_MODELS`: the noise is 2.5 x the datasheet figure - E, the
+datasheet value itself A, not measured on the part; the altitude-filter crossover went 0.5 -> 0.4 Hz with it; the MS5611
+model, 0.25 m RMS, stays selectable). Truth + noise and a Mahony filter remain as options. Linear loop
 margins with the frame hold, delay and servo lag are computed by
 `sim/loop_margins.py`; the tuned gains must keep phase margin ≥ 30° and gain
 margin ≥ 2 on both axes. Thrust lag 8.7. The powered-flight spin/saturation
@@ -1133,7 +1136,7 @@ from the 5 V logic UBEC with a common ground (no level shifter on the inter-chip
 
 | chip | board, place | runs | links |
 |---|---|---|---|
-| NAV | `electronics.nav`, tray +x face (the v0.5 FC spot, §5.2) | MPU-6050 + barometer on I2C 400 kHz (level shifter; firmware: MS5611 driver, part: BMP280 - driver next control round), pad alignment / gyro-only attitude estimator, tilt, altitude filter, sensor health. No flight decisions | nlink SPI master (§10.5) |
+| NAV | `electronics.nav`, tray +x face (the v0.5 FC spot, §5.2) | MPU-6050 + barometer on I2C 400 kHz (level shifter; part and default driver: BMP280 since 2026-11-10, MS5611 driver = build option `nav_ms5611`), pad alignment / gyro-only attitude estimator, tilt, altitude filter, sensor health. No flight decisions | nlink SPI master (§10.5) |
 | FCU | `electronics.fcu`, flat on the intake bulkhead (§5.2) | onboard supervisor (commands + I1–I10, §8.8), attitude controller + mixer, the 6 PWM outputs, battery ADC, arm switch, LED / buzzer, OpenLog log. Every flight decision | nlink SPI slave; ilink USART1 (§10.4); log USART0 TX |
 | COM | `electronics.com`, under the payload bulkhead (§5.3) | LoRa radio driver (§10.3), uplink decoding → IL_CMD, TELEM built from the FCU's IL_SNAP, link status. No flight decisions | ilink USART0; radio USART1 (lora_uart) or SPI (sx127x) |
 
@@ -1183,8 +1186,10 @@ unplug the nlink connector (FCU PB1 = ISP SCK); COM - unplug the ilink connector
 * Hardware: NAV - MPU-6050 (GY-521) + barometer on I2C 400 kHz through a BSS138 level shifter (the
   ATmega128's TWI V_IH at 5 V is 3.5 V, above a 3.3 V sensor's output). Barometer part: BMP280 module (TYE-BMP29,
   Devicemart no=15442588, 3.3 V, I2C 0x77 with CSB and SDO tied to 3.3 V; carrier PCB rev 2c J2; user decision
-  2026-11-04, instead of the GY-63 MS5611). The firmware still has only the MS5611 driver (`hal/ms5611.*`,
-  `core/ms5611_math.*`) and cannot read the BMP280; BMP280 driver: next control round. COM - since 2026-11-06 the default radio is the ESP-12E bridge of §10.7 on USART1 (vehicle_radio = esp_bridge); the fallback is the LoRa module of §10.3 on USART1
+  2026-11-04, instead of the GY-63 MS5611). Since the 2026-11-10 control round the NAV builds the BMP280 driver by default
+  (`hal/bmp280.*`, `core/bmp280_math.*`, selected in `hal/baro.h` from `flight_computer.nav.baro_sensor`: forced mode,
+  pressure x4 / temperature x1 oversampling, IIR off - datasheet values, A, not measured on the part); the MS5611 driver
+  (`hal/ms5611.*`, `core/ms5611_math.*`) is a build option (env `nav_ms5611`). COM - since 2026-11-06 the default radio is the ESP-12E bridge of §10.7 on USART1 (vehicle_radio = esp_bridge); the fallback is the LoRa module of §10.3 on USART1
   (lora_uart) or SPI (sx127x) through a second BSS138 module, with its own 3.3 V regulator (both in the radio/log
   box, §5.3). FCU - OpenLog serial SD logger on USART0 TX (57 600 baud, shared with the ISP pins); 6 hardware PWM
   outputs on Timer1 (OC1A/B/C = vanes 1–3) and Timer3 (OC3A = vane 4, OC3B = ESC, OC3C = release servo), Fast PWM
@@ -1403,8 +1408,8 @@ co-simulation, host tests, crosscheck) unless marked E; **none is measured on ha
 vertical / attitude / mixer, outputs, log), COM (LoRa), GNS (GPS receiver, GPS filter, position controller; glink to
 the NAV) - architecture, wiring and mass as v0.8.1. The VTOL carrier rev 2c has no 5th chip footprint (the user removed
 it 2026-11-05), so the P3 fallback (move NAV work to a 5th ATmega128A; trigger in `SPEC_firmware_v09.md` §1.3) is no
-longer on the board: using it needs a board respin (user decision). The NAV firmware reads the MS5611; the bought
-barometer is a BMP280 (§10.2 hardware; BMP280 driver: next control round). Every VTOL env names its vehicle configuration with `-D FC_VCFG`
+longer on the board: using it needs a board respin (user decision). The NAV firmware reads the bought barometer, a BMP280, by default
+since the 2026-11-10 control round (§10.2 hardware; the MS5611 driver is a build option, env `nav_ms5611`). Every VTOL env names its vehicle configuration with `-D FC_VCFG`
 (0 battery, 1 tether, 2 hybrid; = the FCU's `PWR_SRC`); `tools/gen_firmware_params.py` emits one constant set per
 configuration from `cad/exports/cadquery_report_vtol{,_tether,_hybrid}.json`, the ballistic envs keep the rocket set
 (`cadquery_report.json`; `mission.config` stays 'rocket'). The header refuses a VTOL AVR build without `FC_VCFG`, a VTOL
@@ -1585,7 +1590,8 @@ Korean round report: `docs/v0.9_펌웨어_결과.md` §11; wiring and build: `fi
   `link.uart_baud` 9600 (Ebyte module / `firmware/ground_bridge`).
 * **Not in this round (control-relevant):** an ESP-NOW link model; the logic-battery telemetry (FCU PF3,
   `flight_computer.logic_battery_monitor`; TELEM v1-v5 have no free field and a longer battery-build reply changes the
-  sim's link timing); any onboard low-battery action; the BMP280 driver; tether `bec_min_v`.
+  sim's link timing); any onboard low-battery action; the BMP280 driver; tether `bec_min_v`. (Done since, in the 2026-11-10
+  control round: the ESP-NOW link model and the BMP280 driver with its sim barometer model.)
 
 ## 11. Sizing (`sizing/sizing.py`)
 
@@ -1712,8 +1718,8 @@ holds every hole / rib / bay-part / GPS clearance and raises when short.
 
 **Avionics bay.** The carrier PCB (`electronics.carrier`, 76 × 70 × 15, 50 g ASSUMED: 4 × ATmega128A NAV / FCU / COM /
 GNS, sensor modules (GY-521, BMP280), shifters, LDO, ESP-12E, OpenLog; rev 2c has no 5th chip footprint - the user
-removed it 2026-11-05; the `carrier.model` text in params still names the GY-63, LoRa and the 5th footprint until the
-next control round) takes the v0.6.3 FCU spot
+removed it 2026-11-05; the `carrier.model` text in params was aligned with rev 2c in the 2026-11-10
+control round) takes the v0.6.3 FCU spot
 on the intake bulkhead with every FCU rule (`_fcu`, C25: bore 5.34 mm, tray 2.00, motor-lead hole 3.00, joint zone
 4, vent holes 90 / 270 reachable for the tie). Tray 112 mm from bulkhead + 20: battery (-x) and ESC (+x) at the tray
 bottom + 2, misc box (25 g) above the ESC (`misc_side` +x). No NAV / COM / GNS / radio box / GPS entry / vent slots.

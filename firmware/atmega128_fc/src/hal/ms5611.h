@@ -1,4 +1,5 @@
-/* ms5611.h - MS5611 (GY-63) barometer as a non-blocking state machine.
+/* ms5611.h - MS5611 (GY-63) barometer as a non-blocking state machine.  Since 2026-11-10 a BUILD OPTION (env
+ * nav_ms5611, -D FC_BARO_SENSOR=FC_BARO_MS5611): the default NAV build drives the BMP280 (hal/bmp280.h, hal/baro.h).
  *
  * One measurement cycle every FC_BARO_DIV control ticks (control.baro_hz); the phase
  * is tick % FC_BARO_DIV (kept as a counter by the caller), so the schedule is fixed

@@ -1,9 +1,9 @@
 {
   "generator": "cadquery",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "48acb7692009197802c7c7f5ec293ba65686581309365763a1678884e4382bde",
+  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
   "tolerance_mm3": 1.0,
-  "runtime_s": 139.90819811820984,
+  "runtime_s": 172.50902223587036,
   "summary": {
     "PASS": 27,
     "WARN": 5,
@@ -704,11 +704,11 @@
       "id": "C17",
       "title": "all presets build without exceptions",
       "status": "PASS",
-      "measured": "BUDGET_90mm_6S: ok (56 parts); KAIST_90mm_12S: ok (48 parts, 1.7 s)",
+      "measured": "BUDGET_90mm_6S: ok (56 parts); KAIST_90mm_12S: ok (48 parts, 2.2 s)",
       "detail": "",
       "values": {
         "BUDGET_90mm_6S": "ok (56 parts)",
-        "KAIST_90mm_12S": "ok (48 parts, 1.7 s)"
+        "KAIST_90mm_12S": "ok (48 parts, 2.2 s)"
       }
     },
     {

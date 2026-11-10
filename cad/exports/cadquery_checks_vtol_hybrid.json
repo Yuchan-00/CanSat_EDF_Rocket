@@ -1,9 +1,9 @@
 {
   "generator": "cadquery",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "48acb7692009197802c7c7f5ec293ba65686581309365763a1678884e4382bde",
+  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
   "tolerance_mm3": 1.0,
-  "runtime_s": 124.8969042301178,
+  "runtime_s": 171.72443175315857,
   "summary": {
     "PASS": 24,
     "WARN": 2,
@@ -585,8 +585,8 @@
       "measured": "T/W = 2.024 (30.3 N / 1527 g)",
       "detail": "printed 566 g of 1527 g",
       "values": {
-        "tw": 2.0238409512124327,
-        "mass_g": 1526.7998199902308
+        "tw": 2.02384100283624,
+        "mass_g": 1526.799781044869
       }
     },
     {
@@ -644,11 +644,11 @@
       "id": "C17",
       "title": "all presets build without exceptions",
       "status": "PASS",
-      "measured": "BUDGET_90mm_6S: ok (53 parts); KAIST_90mm_12S: ok (48 parts, 1.7 s)",
+      "measured": "BUDGET_90mm_6S: ok (53 parts); KAIST_90mm_12S: ok (48 parts, 2.4 s)",
       "detail": "",
       "values": {
         "BUDGET_90mm_6S": "ok (53 parts)",
-        "KAIST_90mm_12S": "ok (48 parts, 1.7 s)"
+        "KAIST_90mm_12S": "ok (48 parts, 2.4 s)"
       }
     },
     {
@@ -1617,17 +1617,17 @@
           "270": 1.0
         },
         "tip_over": {
-          "cg_height_mm": 232.50949245681193,
+          "cg_height_mm": 232.50949620797525,
           "fin_tip_r_mm": 123.4,
-          "angle_toward_a_fin_deg": 27.956278971568786,
-          "angle_between_fins_deg": 20.570284788543493,
-          "cg_lateral_offset_mm": 2.318505317712411,
+          "angle_toward_a_fin_deg": 27.956278588793115,
+          "angle_between_fins_deg": 20.57028448446653,
+          "cg_lateral_offset_mm": 2.3185053307120764,
           "cg_xy_mm": [
-            2.3095623800247838,
-            -0.20344168952056924
+            2.3095623924588327,
+            -0.2034416965131493
           ],
-          "angle_toward_a_fin_with_offset_deg": 27.510402180138826,
-          "angle_between_fins_with_offset_deg": 20.185495519023622
+          "angle_toward_a_fin_with_offset_deg": 27.510401799030706,
+          "angle_between_fins_with_offset_deg": 20.18549521666714
         }
       }
     },
@@ -1639,20 +1639,20 @@
       "detail": "W 14.97 N, q_exit 1524 Pa at hover, vane force 1.226 N each, lever 195.5 mm (CG z 232.5 - hinge 37)",
       "values": {
         "cg_xy_mm": [
-          2.3095623800247838,
-          -0.20344168952056924
+          2.3095623924588327,
+          -0.2034416965131493
         ],
-        "offset_mm": 2.318505317712411,
-        "trim_fraction": 0.10600075359873759,
-        "trim_deg": 2.120015071974752,
-        "authority_Nm": 0.47939408272837253,
-        "trim_fraction_cg_only": 0.07480937079592603,
+        "offset_mm": 2.3185053307120764,
+        "trim_fraction": 0.10600075197115287,
+        "trim_deg": 2.1200150394230572,
+        "authority_Nm": 0.4793940796980105,
+        "trim_fraction_cg_only": 0.07480936978003815,
         "trim_fraction_cd_band": [
-          0.09976246986809419,
-          0.11223903971887549
+          0.09976246836285985,
+          0.11223903796893674
         ],
-        "trim_fraction_status": 0.11223903971887549,
-        "lead_drag_N": 0.495436898370123,
+        "trim_fraction_status": 0.11223903796893674,
+        "lead_drag_N": 0.49543688573259903,
         "lead_drag": {
           "cd_ASSUMED": 1.0,
           "cd_band_ASSUMED": [

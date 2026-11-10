@@ -113,7 +113,7 @@
 #define VC_KT_R_MIN 0.25f              /* learn only while r >= this (sim/vertical_ctrl.py KT_R_MIN_ASSUMED; the division
                                         * guard - tools/test_gen_firmware_params.py checks they are equal) */
 #define VC_TAKEOFF_SETTLE_MS 500u      /* take-off check: h0 latched this long after the ramp (sim/vertical_ctrl.py
-                                        * TAKEOFF_SETTLE_S_ASSUMED 0.5 s >= baro latency 0.1 s + 1 / (2 pi 0.5 Hz); the sim
+                                        * TAKEOFF_SETTLE_S_ASSUMED 0.5 s >= baro latency 0.1 s + 1 / (2 pi 0.4 Hz) = 0.498 s; the sim
                                         * tests check they are equal) */
 #define VC_TAKEOFF_SETTLE_TICKS(hz) ((VC_TAKEOFF_SETTLE_MS * (uint32_t)(hz) + 999u) / 1000u)   /* = ticks_ge(0.5 s, hz) */
 

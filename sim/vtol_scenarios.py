@@ -78,7 +78,7 @@ Renderer log contract (``export_npz``, read by ``tools/sim_video.py``; ``.npz``,
                      vc_k_thrust [N] (the learnt thrust ratio k_T, v0.7.1b), vc_low_alt [N] (LAND in the flare band)
 
 v0.8 (GPS position hold; architect 2026-10-21, params mission.vtol.position_hold):
-* ``base_vtol`` builds the GPS build by default (``GPS_DEFAULT`` = ``sim.sim6dof.GpsSim()``, the NEO-6M model; the tuned
+* ``base_vtol`` builds the GPS build by default (``GPS_DEFAULT`` = ``sim.sim6dof.GpsSim()``, the NEO-7M class model; the tuned
   position gains of the profile from ``sim/out/vtol_gains.json`` "position"); ``gps=None`` = the v0.7.1 build,
   ``gps_off`` = the v0.8 build without the GPS (indoor fallback / the before of the position hold on the same plant),
   ``v071_build``, ``with_gps`` (receiver fields replaced).
@@ -277,7 +277,7 @@ VERTICAL_CRITERIA_TEXT_KO = ("수직 기준: 인터록 작동 없음; 착지 확
                              "호버링 고도 오차 RMS 0.5 m 이하; 착지 감지 신호로 착지 확인")
 
 # ---- v0.8: GPS position hold (architect 2026-10-21; params mission.vtol.position_hold) ----
-GPS_DEFAULT = GpsSim()                    # u-blox NEO-6M receiver model with its stated sources (sim.sim6dof.GpsSim)
+GPS_DEFAULT = GpsSim()                    # u-blox NEO-7M class receiver model with its stated sources (sim.sim6dof.GpsSim)
 PGAIN_KEYS = ("kp_pos", "kv", "ki", "kd")  # position-loop gains the tuner chooses (sim.position_ctrl.PositionParams)
 # the v0.8 criteria: params position_hold.criteria_v08_ASSUMED (``v08_criteria``) + these, each with its source
 V08_SK_RMS_MAX_M = 1.0                    # review v0.8 (9): "quote station keeping as ~1 m RMS / 2.5 m max until a real
@@ -319,12 +319,12 @@ V08_CRITERIA_TEXT_KO = ("v0.8 기준(위치 유지): 인터록 없음; 착지 �
                         "오차 RMS 0.5 m 이하; 호버링 중 유지점 이탈(밀기 구간 제외) 최대 3.0 m(현장)/2.5 m(시연); 제어기 항법 "
                         "기준 거리 RMS 0.5 m 이하; 기울기 명령 한계 이내; 3 N·s 이하 밀기는 6초 안에 1 m 이내로 복귀. 실제 "
                         "위치 유지 RMS는 비행마다 보고하고, 시나리오 계열별 20개 이상 시드의 중앙값(목표 1.0 m 이하)으로 판정")
-MODEL_NOTES_GPS = ("GPS (v0.8): u-blox NEO-6M model (sim.sim6dof.GpsSim): UBX bytes over the UART incl. the NAV's boot "
-                   "configuration; 5 Hz; latency 0.22 s ASSUMED; per-axis position wander Gauss-Markov 2.12 m / 200 s "
+MODEL_NOTES_GPS = ("GPS (v0.8): u-blox NEO-7M class model (sim.sim6dof.GpsSim): UBX bytes over the UART incl. the NAV's boot "
+                   "configuration; 5 Hz; latency 0.12 s ASSUMED (the NAV compensates 0.22 s); per-axis position wander Gauss-Markov 2.12 m / 200 s "
                    "ASSUMED + 0.2 m white + satellite-set steps; velocity 0.10 m/s white + 0.02 m/s / 10 s. Open sky only - "
                    "no position hold indoors. Station keeping quoted as ~1 m RMS / 2.5 m max until a real module is measured. "
                    "No magnetometer: heading = pad set-up + gyro + GPS-velocity correction.")
-MODEL_NOTES_GPS_KO = ("GPS(v0.8): u-blox NEO-6M 모델 - 5 Hz, 지연 0.22초(가정), 위치 오차가 천천히 ~2 m 떠돎(가정). 하늘이 열린 "
+MODEL_NOTES_GPS_KO = ("GPS(v0.8): u-blox NEO-7M급 모델 - 5 Hz, 지연 0.12초(가정; NAV 보정값은 0.22초), 위치 오차가 천천히 ~2 m 떠돎(가정). 하늘이 열린 "
                       "실외에서만 위치 유지(실내 불가). 실제 모듈을 측정하기 전까지 위치 유지 성능은 RMS ~1 m / 최대 2.5 m로 "
                       "표기. 지자기 센서 없음: 방향 = 패드 설치 방향 + 자이로 + GPS 속도 보정.")
 
@@ -505,7 +505,7 @@ def params_sha256() -> str:
 def vtol_sensors(estimator: str = VTOL_ESTIMATOR, vibration_g: float = VTOL_ACCEL_VIBRATION_RMS_G_ASSUMED,
                  **kw: Any) -> SensorConfig:
     """The VTOL build's sensor model: the v0.7.1 NAV estimator (gated Mahony) and the ASSUMED accelerometer vibration;
-    every other field the SensorConfig default (MPU-6050 / MS5611 models)."""
+    every other field the SensorConfig default (MPU-6050 / BMP280 models; 2026-11-10)."""
     return SensorConfig(attitude_estimator=estimator, accel_vibration_rms_mps2=vibration_g * G0, **kw)
 
 

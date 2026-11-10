@@ -383,6 +383,10 @@ static uint8_t type_payload_len(uint8_t type)
         return LP_TELEM4_PAYLOAD_LEN;
     if (type == LP_TYPE_TELEM5)
         return LP_TELEM5_PAYLOAD_LEN;
+    if (type == LP_TYPE_TELEM6)                        /* 2026-11-10: the logic-battery tail */
+        return LP_TELEM6_PAYLOAD_LEN;
+    if (type == LP_TYPE_TELEM7)
+        return LP_TELEM7_PAYLOAD_LEN;
 #endif
     return 0xFFu;
 }
@@ -402,6 +406,10 @@ static uint8_t type_accept_bit(uint8_t type)
         return LP_ACCEPT_TELEM4;
     if (type == LP_TYPE_TELEM5)
         return LP_ACCEPT_TELEM5;
+    if (type == LP_TYPE_TELEM6)
+        return LP_ACCEPT_TELEM6;
+    if (type == LP_TYPE_TELEM7)
+        return LP_ACCEPT_TELEM7;
 #endif
     return 0u;
 }

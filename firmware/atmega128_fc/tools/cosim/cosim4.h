@@ -69,18 +69,28 @@ double plant_tilt_deg(const plant_t *p);
 void plant_euler(const plant_t *p, double *roll, double *pitch, double *yaw);
 
 /* ------------------------------------------------------------------ TWI sensor models (twi_models.c) */
-/* An MPU-6050 at 0x68 and an MS5611 at 0x77 on the NAV's TWI (timing82/profile/harness/navflight.c's register models),
- * their values from the plant (twi_set_truth); and simavr 1.8's TWI byte timing corrected to the bus clock the NAV
+/* An MPU-6050 at 0x68 and the barometer at 0x77 on the NAV's TWI - an MS5611 (timing82/profile/harness/navflight.c's
+ * register models) or, with twi_models_set_baro(TWI_BARO_BMP280) before twi_models_init, a BMP280 (2026-11-10: the NAV's
+ * default barometer; both chips answer at 0x77, so the model is the one the NAV image was built for) - their values
+ * from the plant (twi_set_truth); and simavr 1.8's TWI byte timing corrected to the bus clock the NAV
  * programs (TWBR / TWPS): simavr schedules each TWI state change N microseconds ahead for an N-bit step (9 us per byte
  * at any clock); with twi_fix the harness re-schedules it to N SCL periods (22.5 us per byte at 400 kHz). */
 typedef struct {
     uint64_t msgs, reads, burst_reads, bursts, ms_cmds, d1_convs, d2_convs, adc_reads, adc_early, prom_reads;
+    /* BMP280: forced measurements started / finished, 0xF7 burst reads, of them while a measurement ran (the previous
+     * sample was returned), trimming reads, resets, ctrl_meas writes while measuring, normal-mode writes (not modelled) */
+    uint64_t bmp_forced, bmp_done, bmp_data_reads, bmp_early, bmp_calib_reads, bmp_resets, bmp_busy_writes,
+        bmp_normal_writes;
     uint64_t rescaled, rescale_hist[16], not_found;
     uint64_t scl_cycles_per_bit;
 } twi_stats_t;
 
 void twi_models_init(avr_t *nav, int fix_byte_time, uint64_t seed, double noise_gyro, double noise_accel,
                      double noise_pa);
+#define TWI_BARO_MS5611 0
+#define TWI_BARO_BMP280 1
+void twi_models_set_baro(int kind);              /* before twi_models_init; default TWI_BARO_MS5611 */
+const char *twi_models_baro_name(void);
 void twi_set_truth(const double gyro[3], const double accel[3], double p_pa);
 void twi_models_reset(void);                     /* the NAV was reset: the sensors keep power (state kept), the bus idles */
 const twi_stats_t *twi_models_stats(void);

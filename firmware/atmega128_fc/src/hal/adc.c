@@ -25,6 +25,40 @@ bool adc_poll(uint16_t *counts)
     return true;
 }
 
+#if FC_LOGIC_BAT
+#define ADC_MUX_REFS ((uint8_t)((1 << REFS1) | (1 << REFS0)))   /* internal 2.56 V (the invariant in adc.h) */
+static uint8_t s_mux = VBAT_ADC_CHANNEL;            /* the channel of the conversion running / last started */
+
+bool adc_poll_mux(uint16_t *counts, uint8_t *ch, uint8_t next_ch)
+{
+    if (ADCSRA & (1 << ADSC))
+        return false;
+    *counts = ADCW;
+    *ch = s_mux;
+    s_mux = (uint8_t)(next_ch & 0x07u);
+    ADMUX = (uint8_t)(ADC_MUX_REFS | s_mux);         /* single-ended, same reference: no settling time needed */
+    ADCSRA |= (1 << ADSC);
+    return true;
+}
+
+uint16_t adc_read_blocking(uint8_t ch)
+{
+    uint16_t w = 0, c;
+    while ((ADCSRA & (1 << ADSC)) && ++w != 0u) {     /* bounded: the running conversion (104 us at 125 kHz) */
+    }
+    ADMUX = (uint8_t)(ADC_MUX_REFS | (ch & 0x07u));
+    ADCSRA |= (1 << ADSC);
+    w = 0;
+    while ((ADCSRA & (1 << ADSC)) && ++w != 0u) {
+    }
+    c = ADCW;
+    s_mux = VBAT_ADC_CHANNEL;
+    ADMUX = (uint8_t)(ADC_MUX_REFS | (VBAT_ADC_CHANNEL & 0x07u));
+    ADCSRA |= (1 << ADSC);                            /* adc_poll_mux's first result: a V_cell conversion */
+    return c;
+}
+#endif
+
 uint16_t adc_entropy_seed(uint8_t n)
 {
     uint16_t s = 0, w;

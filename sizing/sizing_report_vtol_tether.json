@@ -3,12 +3,12 @@
   "config": "vtol_tether",
   "power_source": "tether",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
   "cad_report": "cad/exports/cadquery_report_vtol_tether.json",
   "source": "cadquery_report_vtol_tether.json",
-  "mass_g": 1405.7998199902308,
-  "cad_mass_g": 1405.7998199902308,
-  "weight_N": 13.786186804707196,
+  "mass_g": 1405.799781044869,
+  "cad_mass_g": 1405.799781044869,
+  "weight_N": 13.786186422783665,
   "lead_drag": {
     "area_mm2": 325.0,
     "cd_ASSUMED": 1.0,
@@ -21,119 +21,119 @@
       0.025623459238449036,
       0.03843518885767356
     ],
-    "hover_drag_N": 0.4561731626020846,
-    "thrust_for_tw_1p3_kgf": 1.8880114980652993,
+    "hover_drag_N": 0.4561731499645607,
+    "thrust_for_tw_1p3_kgf": 1.8880114457610593,
     "thrust_for_tw_1p3_kgf_band": [
-      1.875599103154655,
-      1.9005892736613428
+      1.87559905119428,
+      1.9005892210086561
     ],
     "label": "E (Cd ASSUMED, drag area from Layout.ml_jet_drag)"
   },
   "com_mm": [
-    2.9137589482148667,
-    -0.220952322316183,
-    219.7939997482211
+    2.913758978457408,
+    -0.22095233039573162,
+    219.79400346999284
   ],
   "inertia_diag_kg_m2": [
-    0.029262760920716273,
-    0.02953248056701805,
-    0.0032223051792708264
+    0.02926276003391855,
+    0.02953247967496747,
+    0.0032223050211185283
   ],
-  "printed_mass_g": 565.5964402019343,
-  "vane_lever_arm_mm": 182.7939997482211,
+  "printed_mass_g": 565.5964012565724,
+  "vane_lever_arm_mm": 182.79400346999287,
   "vehicle_h_mm": 475.29999999999995,
   "footprint_d_mm": 246.8,
   "tip_over": {
-    "cg_height_mm": 219.7939997482211,
+    "cg_height_mm": 219.79400346999284,
     "fin_tip_r_mm": 123.4,
-    "angle_toward_a_fin_deg": 29.31137020304883,
-    "angle_between_fins_deg": 21.652798149014412
+    "angle_toward_a_fin_deg": 29.311369788895583,
+    "angle_between_fins_deg": 21.65279781629308
   },
   "tw_table": [
     {
       "thrust_kgf": 2.0,
       "thrust_N": 19.6133,
-      "tw": 1.4226776611864258,
+      "tw": 1.4226777005993614,
       "tw_ok_1p3": true,
-      "u_hover": 0.8383912630717925,
+      "u_hover": 0.8383912514586698,
       "hover_possible": true,
       "mass_for_tw_1p3_g": 1538.4615384615383,
-      "hover_power_W_P1": 694.7425981059463,
-      "hover_current_A_P1": 31.294711626393976,
-      "tw1p3_power_W_P1": 1029.766968268905,
-      "hover_power_W_P2": 1334.1868445531254,
-      "hover_current_A_P2": 60.09850651140205,
-      "tw1p3_power_W_P2": 1977.5691684450483
+      "hover_power_W_P1": 694.7425692359025,
+      "hover_current_A_P1": 31.294710325941555,
+      "tw1p3_power_W_P1": 1029.7669254769162,
+      "hover_power_W_P2": 1334.1867891109619,
+      "hover_current_A_P2": 60.09850401400729,
+      "tw1p3_power_W_P2": 1977.5690862671183
     },
     {
       "thrust_kgf": 2.3,
       "thrust_N": 22.555294999999997,
-      "tw": 1.6360793103643896,
+      "tw": 1.6360793556892654,
       "tw_ok_1p3": true,
-      "u_hover": 0.7818038840011162,
+      "u_hover": 0.7818038731718236,
       "hover_possible": true,
       "mass_for_tw_1p3_g": 1769.230769230769,
-      "hover_power_W_P1": 694.7425981059463,
-      "hover_current_A_P1": 31.294711626393976,
-      "tw1p3_power_W_P1": 1029.766968268905,
-      "hover_power_W_P2": 1081.8570849015318,
-      "hover_current_A_P2": 48.732301121690625,
-      "tw1p3_power_W_P2": 1603.5589201763535
+      "hover_power_W_P1": 694.7425692359025,
+      "hover_current_A_P1": 31.294710325941555,
+      "tw1p3_power_W_P1": 1029.7669254769162,
+      "hover_power_W_P2": 1081.8570399449372,
+      "hover_current_A_P2": 48.732299096618796,
+      "tw1p3_power_W_P2": 1603.558853540428
     },
     {
       "thrust_kgf": 2.6,
       "thrust_N": 25.49729,
-      "tw": 1.8494809595423536,
+      "tw": 1.8494810107791697,
       "tw_ok_1p3": true,
-      "u_hover": 0.7353177805940647,
+      "u_hover": 0.7353177704086824,
       "hover_possible": true,
       "mass_for_tw_1p3_g": 2000.0,
-      "hover_power_W_P1": 694.7425981059463,
-      "hover_current_A_P1": 31.294711626393976,
-      "tw1p3_power_W_P1": 1029.766968268905,
-      "hover_power_W_P2": 900.1225163609688,
-      "hover_current_A_P2": 40.54605929553914,
-      "tw1p3_power_W_P2": 1334.1868445531252
+      "hover_power_W_P1": 694.7425692359025,
+      "hover_current_A_P1": 31.294710325941555,
+      "tw1p3_power_W_P1": 1029.7669254769162,
+      "hover_power_W_P2": 900.1224789563579,
+      "hover_current_A_P2": 40.546057610646756,
+      "tw1p3_power_W_P2": 1334.1867891109619
     },
     {
       "thrust_kgf": 3.09,
       "thrust_N": 30.302548499999997,
-      "tw": 2.198036986533028,
+      "tw": 2.198037047426013,
       "tw_ok_1p3": true,
-      "u_hover": 0.6745008510410427,
+      "u_hover": 0.6745008416980767,
       "hover_possible": true,
       "mass_for_tw_1p3_g": 2376.923076923077,
-      "hover_power_W_P1": 694.7425981059463,
-      "hover_current_A_P1": 31.294711626393976,
-      "tw1p3_power_W_P1": 1029.766968268905,
-      "hover_power_W_P2": 694.7425981059463,
-      "hover_current_A_P2": 31.294711626393976,
-      "tw1p3_power_W_P2": 1029.766968268905
+      "hover_power_W_P1": 694.7425692359025,
+      "hover_current_A_P1": 31.294710325941555,
+      "tw1p3_power_W_P1": 1029.7669254769162,
+      "hover_power_W_P2": 694.7425692359025,
+      "hover_current_A_P2": 31.294710325941555,
+      "tw1p3_power_W_P2": 1029.7669254769162
     }
   ],
   "vane_authority_at_hover": {
-    "thrust_N": 13.786186804707196,
-    "q_e_Pa": 1358.653060169457,
-    "force_per_vane_N": 1.092693624987048,
-    "lever_arm_mm": 182.7939997482211,
-    "M_pitch_Nm": 0.39947567642153053,
-    "M_roll_Nm": 0.12238168599854939,
-    "I_xx_kg_m2": 0.029262760920716273,
-    "I_zz_kg_m2": 0.0032223051792708264,
-    "alpha_pitch_rad_s2": 13.65133240516365,
-    "alpha_roll_rad_s2": 37.979545446481595
+    "thrust_N": 13.786186422783665,
+    "q_e_Pa": 1358.6530225302183,
+    "force_per_vane_N": 1.092693594715776,
+    "lever_arm_mm": 182.79400346999287,
+    "M_pitch_Nm": 0.3994756734882291,
+    "M_roll_Nm": 0.12238168260816693,
+    "I_xx_kg_m2": 0.02926276003391855,
+    "I_zz_kg_m2": 0.0032223050211185283,
+    "alpha_pitch_rad_s2": 13.65133271862243,
+    "alpha_roll_rad_s2": 37.97954625837554
   },
   "vane_authority_at_thrust_nominal": {
     "thrust_N": 30.302548499999997,
     "q_e_Pa": 2986.36967811875,
     "force_per_vane_N": 2.4017810026703823,
-    "lever_arm_mm": 182.7939997482211,
-    "M_pitch_Nm": 0.8780623119948242,
+    "lever_arm_mm": 182.79400346999287,
+    "M_pitch_Nm": 0.8780623298725856,
     "M_roll_Nm": 0.26899947229908283,
-    "I_xx_kg_m2": 0.029262760920716273,
-    "I_zz_kg_m2": 0.0032223051792708264,
-    "alpha_pitch_rad_s2": 30.00613354200659,
-    "alpha_roll_rad_s2": 83.48044562307862
+    "I_xx_kg_m2": 0.02926276003391855,
+    "I_zz_kg_m2": 0.0032223050211185283,
+    "alpha_pitch_rad_s2": 30.00613506227099,
+    "alpha_roll_rad_s2": 83.48044972033951
   },
   "targets_g": {
     "vtol_battery": 1650.0,
@@ -141,9 +141,9 @@
     "vtol_tether": 1400.0
   },
   "parts_g": {
-    "propulsion_module": 301.17451760981294,
+    "propulsion_module": 301.1744786959602,
     "intake_module": 122.59781505557473,
-    "avionics_module": 57.740401819530774,
+    "avionics_module": 57.74040178802158,
     "avionics_logo": 0.9021768102375674,
     "avionics_tray": 14.219413911095419,
     "top_cap": 35.15343805026615,
@@ -296,7 +296,7 @@
     "tether_power_lead": 34.1
   },
   "legal": {
-    "takeoff_mass_kg": 1.4057998199902308,
+    "takeoff_mass_kg": 1.405799781044869,
     "operator_certificate": "4종 (250 g 초과 ~ 2 kg 이하)",
     "aircraft_registration_required": false
   },
@@ -311,47 +311,47 @@
     "rows": [
       {
         "thrust_kgf": 2.0,
-        "tw_supply_P1": 1.3642944352639448,
-        "hover_W_P1": 694.7425981059463,
-        "hover_tether_A_P1": 29.644019328669838,
-        "hover_v_esc_P1": 23.436180849944144,
-        "tw_supply_P2": 0.9817345541979224,
-        "hover_W_P2": 1334.1868445531254,
-        "hover_tether_A_P2": 62.028329722041725,
-        "hover_v_esc_P2": 21.509314381538516
+        "tw_supply_P1": 1.3642944730594693,
+        "hover_W_P1": 694.7425692359025,
+        "hover_tether_A_P1": 29.64401799655644,
+        "hover_v_esc_P1": 23.43618092920489,
+        "tw_supply_P2": 0.9817345813952573,
+        "hover_W_P2": 1334.1867891109619,
+        "hover_tether_A_P2": 62.028326610569835,
+        "hover_v_esc_P2": 21.509314566671094
       },
       {
         "thrust_kgf": 2.3,
-        "tw_supply_P1": 1.51677988623579,
-        "hover_W_P1": 694.7425981059463,
-        "hover_tether_A_P1": 29.644019328669838,
-        "hover_v_esc_P1": 23.436180849944144,
-        "tw_supply_P2": 1.1289947373276106,
-        "hover_W_P2": 1081.8570849015318,
-        "hover_tether_A_P2": 48.48023435401794,
-        "hover_v_esc_P2": 22.31542605593593
+        "tw_supply_P1": 1.5167799282556722,
+        "hover_W_P1": 694.7425692359025,
+        "hover_tether_A_P1": 29.64401799655644,
+        "hover_v_esc_P1": 23.43618092920489,
+        "tw_supply_P2": 1.1289947686045456,
+        "hover_W_P2": 1081.8570399449372,
+        "hover_tether_A_P2": 48.480232040347154,
+        "hover_v_esc_P2": 22.315426193599343
       },
       {
         "thrust_kgf": 2.6,
-        "tw_supply_P1": 1.51677988623579,
-        "hover_W_P1": 694.7425981059463,
-        "hover_tether_A_P1": 29.644019328669838,
-        "hover_v_esc_P1": 23.436180849944144,
-        "tw_supply_P2": 1.276254920457299,
-        "hover_W_P2": 900.1225163609688,
-        "hover_tether_A_P2": 39.38088663365517,
-        "hover_v_esc_P2": 22.856837245297516
+        "tw_supply_P1": 1.5167799282556722,
+        "hover_W_P1": 694.7425692359025,
+        "hover_tether_A_P1": 29.64401799655644,
+        "hover_v_esc_P1": 23.43618092920489,
+        "tw_supply_P2": 1.2762549558138343,
+        "hover_W_P2": 900.1224789563579,
+        "hover_tether_A_P2": 39.38088481025632,
+        "hover_v_esc_P2": 22.85683735378975
       },
       {
         "thrust_kgf": 3.09,
-        "tw_supply_P1": 1.51677988623579,
-        "hover_W_P1": 694.7425981059463,
-        "hover_tether_A_P1": 29.644019328669838,
-        "hover_v_esc_P1": 23.436180849944144,
-        "tw_supply_P2": 1.51677988623579,
-        "hover_W_P2": 694.7425981059463,
-        "hover_tether_A_P2": 29.644019328669838,
-        "hover_v_esc_P2": 23.436180849944144
+        "tw_supply_P1": 1.5167799282556722,
+        "hover_W_P1": 694.7425692359025,
+        "hover_tether_A_P1": 29.64401799655644,
+        "hover_v_esc_P1": 23.43618092920489,
+        "tw_supply_P2": 1.5167799282556722,
+        "hover_W_P2": 694.7425692359025,
+        "hover_tether_A_P2": 29.64401799655644,
+        "hover_v_esc_P2": 23.43618092920489
       }
     ]
   }

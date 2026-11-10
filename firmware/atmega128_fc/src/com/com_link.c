@@ -278,17 +278,13 @@ bool com_link_job(uint32_t tick)
             s_st.replies_superseded++;               /* the previous TELEM is still waiting for the radio */
 #if FC_VTOL
         {
-            /* v0.9 RP1: the snapshot's power tail (both SNAP layouts: the bytes after the SNAP2 / SNAP3 fields) */
+            /* v0.9 RP1: the snapshot's power tail (both SNAP layouts: the bytes after the SNAP2 / SNAP3 fields);
+             * 2026-11-10: its logic-battery byte (SNAP2 spare / SNAP3 spare3) - the rule is lp_encode_vtol_reply's
+             * (core/link_proto_v09.h): TELEM v4 / v5 (power), v6 / v7 (logic battery), else v2 / v3 */
             const uint8_t pf = s_snap_v3 ? s_snap.s3.pw_flags : s_snap.s2.pw_flags;
             const uint8_t va = s_snap_v3 ? s_snap.s3.pw_vaux : s_snap.s2.pw_vaux;
-            const uint8_t sq = COM_SNAP_SEQ(s_snap);
-            if (LP_PWR_TAIL_DUE(pf))                 /* a power build: TELEM v5 (47 B) / v4 (41 B) */
-                s_tlm_n = s_src.v3 ? lp_encode_telem5(LINK_VEHICLE_ID, sq, &t, va, pf, s_tlm)
-                                   : lp_encode_telem4(LINK_VEHICLE_ID, sq, &t, va, pf, s_tlm);
-            else if (s_src.v3)
-                s_tlm_n = lp_encode_telem3(LINK_VEHICLE_ID, sq, &t, s_tlm);   /* TELEM v3, 45 bytes */
-            else
-                s_tlm_n = lp_encode_telem2(LINK_VEHICLE_ID, sq, &t, s_tlm);   /* TELEM v2, 39 bytes */
+            const uint8_t lb = s_snap_v3 ? s_snap.s3.spare3 : s_snap.s2.spare;
+            s_tlm_n = lp_encode_vtol_reply(LINK_VEHICLE_ID, COM_SNAP_SEQ(s_snap), &t, s_src.v3, va, pf, lb, s_tlm);
         }
 #else
         s_tlm_n = lp_encode_telem(LINK_VEHICLE_ID, COM_SNAP_SEQ(s_snap), &t, s_tlm);

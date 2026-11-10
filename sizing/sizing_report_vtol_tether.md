@@ -1,6 +1,6 @@
 # VTOL 크기 산정 - 전원 tether
 
-CAD 보고서 `cad/exports/cadquery_report_vtol_tether.json` (params sha256 `01ffc621423b9051…`).
+CAD 보고서 `cad/exports/cadquery_report_vtol_tether.json` (params sha256 `3419c5fea63506dc…`).
 
 * 질량 1405.8 g (출력 부품 565.6 g), CG z 219.8 mm, 베인 팔 182.8 mm, Ixx 0.0293 kg m², 높이 475.3 mm, 발자국 Ø246.8 mm
 * 넘어짐 각: 핀 쪽 29.3°, 핀 사이 21.7°

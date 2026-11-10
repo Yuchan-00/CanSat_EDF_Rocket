@@ -140,7 +140,8 @@ SAMPLING: dict[str, Any] = {
     "gyro_bias_sigma_scale": (0.25, 1.5),   # x the ASSUMED 0.25 deg/s Gauss-Markov bias wander
     "accel_bias_g": (0.0, 0.02),
     "vibration_g": (0.0, 0.3),              # accelerometer vibration RMS at hover (0.1 g = the scenario value)
-    "baro_noise_m": (0.1, 0.5),
+    "baro_noise_m": (0.176, 0.88),          # 0.4 .. 2 x the BMP280 model's 0.44 m (2026-11-10; MS5611: 0.1 .. 0.5 = the
+                                            # same factors x 0.25 m; sim.sim6dof.BARO_MODELS)
     "baro_thrust_offset_m": (0.0, 1.5),     # true static-pressure error at hover thrust (params note: uncalibrated 0..1.5)
     "baro_comp_residual_sigma_m": 0.1,      # tether-calibration residual, normal, clipped +-0.3 m: comp = true - residual
     "mass_scale": (0.95, 1.05),
@@ -200,7 +201,9 @@ SAMPLING_DEMO_LIGHT: dict[str, Any] = {
 V08_STREAM = 0x0E8
 GPS_MODES = ("on", "off", "both", "v071")   # GPS build / the v0.8 build without the GPS / paired on + off / the v0.7.1 build
 SAMPLING_GPS: dict[str, Any] = {
-    "latency_s": (0.15, 0.30),              # the true latency (the NAV assumes params 0.22 s; AP u-blox 6 0.22, M8 0.12)
+    "latency_s": (0.08, 0.30),              # the true latency (the NAV assumes params 0.22 s; AP u-blox 6 0.22, u-blox 7 /
+                                            # M8 0.12).  2026-11-10 (NEO-7M class): the lower end 0.15 -> 0.08 (0.68 x the
+                                            # nominal, as 0.15 was of 0.22); the upper end is kept - a wider spread
     "latency_jitter_s": (0.0, 0.05),
     "pos_gm_sigma_m": (1.5, 3.0),           # around DS 2.5 m CEP = 2.12 m per axis ("GPS quality")
     "pos_gm_tau_s": (60.0, 300.0),          # no data sheet value (researcher: 100-300 s)

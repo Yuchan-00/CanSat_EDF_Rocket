@@ -3,7 +3,7 @@
  * Why (architect 2026-10-21 20:30, params flight_computer.architecture_v081 / gns / glink, electronics.gns): the v0.8
  * integration measured the three-chip GPS build as not flyable (NAV mandatory work 98.7 % mean / 119.5 % max of the 4 ms
  * tick, FCU time-critical 83.3 % / 89.2 % with ISRs, no ilink command decoded in position hold).  This board runs the
- * u-blox NEO-6M (USART1 PD2 / PD3 through a BSS138, GPS_BAUD 8N1 after the boot configuration), UBX, the GPS-aided
+ * u-blox GPS receiver (NEO-7M; NEO-6M in v0.8 - USART1 PD2 / PD3 through a BSS138, GPS_BAUD 8N1 after the boot configuration), UBX, the GPS-aided
  * horizontal filter (core/gps_nav.h) and the position controller (core/position_ctrl.h) at 50 Hz; it exchanges one STATE /
  * RESULT pair per cycle with the NAV over the glink (USART0 PE0 / PE1, GLINK_BAUD, hal/glink_uart.h; core/glink_proto.h);
  * the NAV copies the RESULT into the nlink v4 slot and the FCU applies the tilt setpoint.  The GNS makes NO safety
@@ -189,7 +189,7 @@ int main(void)
     timer_init();                                          /* Timer2: the 4 ms poll tick (Timer0: no lead hook here) */
     nav_timebase_init();                                   /* Timer1: the 0.5 us time base (the bench's figures) */
     glink_uart_init();                                     /* USART0: the glink, RX interrupt on */
-    gps_uart_init();                                       /* USART1: the NEO-6M at GPS_BAUD (the configurator switches) */
+    gps_uart_init();                                       /* USART1: the GPS receiver at GPS_BAUD (the configurator switches) */
     sei();
     fc_default_gns(&g_gns, true);                          /* the boot configurator on: CFG-PRT / RATE / MSG / NAV5, MON-VER */
 #ifdef FC_SIMBENCH

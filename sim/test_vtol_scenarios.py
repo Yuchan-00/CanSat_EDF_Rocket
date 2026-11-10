@@ -44,8 +44,8 @@ from sim import vtol_campaign as vc  # noqa: E402
 from sim import vtol_scenarios as vs  # noqa: E402
 from sim.onboard import State  # noqa: E402
 from sim.fc_timing import FC_COMPUTE_DELAY_S_MEASURED, FC_VTOL_ESC_EXTRA_S_ASSUMED, FCTiming  # noqa: E402
-from sim.sim6dof import (FlightSim, GpsReceiverPlant, GpsSim, Gust, Push, Scenario, SimOptions,  # noqa: E402
-                         body_radius_mm, compute_metrics, neo_m8n, push_with_impulse, vtol_aero_geometry,
+from sim.sim6dof import (LEGACY_SENSOR_SET, FlightSim, GpsReceiverPlant, GpsSim, Gust, Push, Scenario,  # noqa: E402
+                         SensorConfig, SimOptions, body_radius_mm, compute_metrics, neo_m8n, push_with_impulse, vtol_aero_geometry,
                          vtol_link_budget, vtol_round_trip)
 from sim.vertical_ctrl import TD_NAMES, VerticalParams  # noqa: E402
 from sim.controller import gains_from_control, vtol_overrides  # noqa: E402
@@ -125,13 +125,21 @@ def test_vtol_round_trip_is_the_link_models_vtol_mode(radio):
     b = vtol_link_budget(cfg)
     assert b["telem_frame_bytes"] == lp.TELEM2_FRAME_BYTES == 39
     assert b["reply_timeout_s"] == rt2["reply_timeout_s"]
-    fs = FlightSim(VEH, hop71(radio=radio))
-    assert fs.link_rt == rt2 and fs.gp.reply_timeout_s == rt2["reply_timeout_s"]
     rt3 = vtol_round_trip(cfg, gps=True)
     assert rt3 == lm.round_trip(cfg, mode=lp.MODE_VTOL, gps=True) and rt3["downlink_s"] > rt2["downlink_s"]
     assert vtol_link_budget(cfg, gps=True)["telem_frame_bytes"] == lp.TELEM3_FRAME_BYTES == 45
+    # 2026-11-10: the battery build on the carrier replies with the logic-battery tail (TELEM v6 40 B / v7 46 B) and the
+    # ground's timeout is built on it; without the tail (lbat_telemetry False) the v0.8 frames
+    rt6, rt7 = vtol_round_trip(cfg, lbat=True), vtol_round_trip(cfg, gps=True, lbat=True)
+    assert rt6 == lm.round_trip(cfg, mode=lp.MODE_VTOL, lbat=True) and rt6["downlink_s"] > rt2["downlink_s"]
+    assert rt7 == lm.round_trip(cfg, mode=lp.MODE_VTOL, gps=True, lbat=True) and rt7["downlink_s"] > rt3["downlink_s"]
+    assert vtol_link_budget(cfg, gps=True, lbat=True)["telem_frame_bytes"] == lp.TELEM7_FRAME_BYTES == 46
+    fs = FlightSim(VEH, hop71(radio=radio))
+    assert fs.lbat_link and fs.link_rt == rt6 and fs.gp.reply_timeout_s == rt6["reply_timeout_s"]
     fg = FlightSim(VEH, hop(radio=radio))
-    assert fg.link_rt == rt3 and fg.gp.reply_timeout_s == rt3["reply_timeout_s"]
+    assert fg.lbat_link and fg.link_rt == rt7 and fg.gp.reply_timeout_s == rt7["reply_timeout_s"]
+    f0 = FlightSim(VEH, hop(radio=radio, lbat_telemetry=False))
+    assert not f0.lbat_link and f0.link_rt == rt3 and f0.gp.reply_timeout_s == rt3["reply_timeout_s"]
 
 
 def test_gust_envelope():
@@ -165,10 +173,18 @@ V08_VEHICLE_DIGESTS = {
     "pin_kill": (1001, "49a98d851167c5cf20fe67f372fe3f13b009d3cd753878c7b5f6af72a34b019a"),
 }
 PLANT_OFF = {"vane_play_deg": 0.0, "rotor_inertia_kg_m2": 0.0}     # v0.9: the pre-v0.9 plant (regression pins)
+# 2026-11-10: pinned to the lora_uart link model the snapshots flew (the default model follows link.vehicle_radio = the
+# ESP bridge since the control round); the pins check that the code path is unchanged under the same link model.
+# 2026-11-10 (BMP280 default): and to the barometer model the snapshots flew, BARO_MODELS["MS5611"] (0.25 m RMS, no
+# output steps), with the altitude-filter crossover they flew (0.5 Hz; the default is 0.4 Hz since the BMP280
+# retune) = sim6dof.LEGACY_SENSOR_SET - the digests are unchanged, so the code path under the legacy sensor set is
+# bit-identical
+PIN_BARO = LEGACY_SENSOR_SET
 BALLISTIC_PINS = [
     Scenario(name="pin_flight", t_end=7.0, seed=11, wind_mps=3.0, wind_dir_deg=40.0, gust_mps=5.0,
-             gust_t0_after_launch_s=1.5, gust_duration_s=1.0),
-    Scenario(name="pin_kill", t_end=4.0, seed=12, kill_time_s=2.5, packet_loss=0.1)]
+             gust_t0_after_launch_s=1.5, gust_duration_s=1.0, radio="lora_uart", sensors=SensorConfig(**PIN_BARO)),
+    Scenario(name="pin_kill", t_end=4.0, seed=12, kill_time_s=2.5, packet_loss=0.1, radio="lora_uart",
+             sensors=SensorConfig(**PIN_BARO))]
 
 
 @pytest.fixture(scope="module")
@@ -214,12 +230,15 @@ def test_v071_vtol_build_is_bit_identical_to_the_v071_code(veh071, monkeypatch):
     controller and the estimator are inert with their flags off)."""
     monkeypatch.setattr(vs, "_VEH", veh071)
     p = veh071.params
+    # 2026-11-10: the v0.7.1 link (lora_uart model, TELEM v2 - no logic-battery tail): the code path under the same link
+    # (and the barometer model + altitude-filter crossover the snapshot flew: LEGACY_SENSOR_SET, see PIN_BARO)
+    link071 = dict(radio="lora_uart", lbat_telemetry=False, sensors=vs.vtol_sensors(**PIN_BARO))
     cases = {"hop": vs.base_vtol("R_hop", "hop", None, seed=70, t_end=30.0, gps=None,
                                  vtol_script=(vs.OpStep("on", t=1.0), vs.OpStep("off", phase="HOLD", after=1.0)),
-                                 **PLANT_OFF),
+                                 **PLANT_OFF, **link071),
              "push": vs.scenario_demo(p, None, name="R_push", t_end=16.0, vtol_script=vs.demo_script(t_off=12.0),
                                       pushes=(Push(9.0, 0.3, 10.0, azimuth_deg=30.0, z_body_m=0.4, offset_deg=10.0),),
-                                      wind_mps=1.0, turbulence_sigma_mps=0.2, gps=None, **PLANT_OFF)}
+                                      wind_mps=1.0, turbulence_sigma_mps=0.2, gps=None, **PLANT_OFF, **link071)}
     g = vs.attitude_gains(p)
     for name, sc in cases.items():
         fs = FlightSim(veh071, sc, g)
@@ -303,7 +322,8 @@ def test_hop_goes_through_the_real_ground_link(hop_run):
     names = [r["name"] for r in lk["records"]]
     assert names == ["ON", "OFF"]
     assert all(r["result"].startswith("accepted") for r in lk["records"])
-    assert lk["budget"]["telem_frame_bytes"] == lp.TELEM3_FRAME_BYTES       # v0.8 GPS build: TELEM v3
+    assert lk["budget"]["telem_frame_bytes"] == lp.TELEM7_FRAME_BYTES       # v0.8 GPS build: TELEM v3 (2026-11-10: + the
+    assert lk["lbat_telemetry"] and lk["radio"] == "esp_bridge"            # logic-battery tail, TELEM v7; ESP link model)
     ex = [e for e in lk["exec_log"] if e["cmd"] != lp.CMD_NONE]
     assert [(e["cmd"], e["code"]) for e in ex] == [(lp.CMD_ON, 0), (lp.CMD_OFF, 0)]
     assert m["on_decision_to_exec_s"] > 0.0 and m["off_decision_to_exec_s"] > 0.0
@@ -923,7 +943,7 @@ def test_build_flags_select_the_v08_build_and_the_v071_fallback():
 
 def test_gps_receiver_uart_model_and_boot_configuration():
     """The receiver (plant): factory 9600 baud + NMEA, the NAV's configurator probes 38400 (no answer), configures at
-    9600 -> 38400, CFG-RATE 5 Hz, CFG-MSG x3, CFG-NAV5 (every ACK checked), MON-VER u-blox 6; then NAV-POSLLH / SOL /
+    9600 -> 38400, CFG-RATE 5 Hz, CFG-MSG x3, CFG-NAV5 (every ACK checked), MON-VER u-blox 7 (the NEO-7M class default, 2026-11-10); then NAV-POSLLH / SOL /
     VELNED per epoch, the last byte latency_s after the measurement."""
     gp = gn.NavGpsParams.from_params(P)
     rx = GpsReceiverPlant(GpsSim(), seed=5, t_power=0.0)
@@ -948,13 +968,13 @@ def test_gps_receiver_uart_model_and_boot_configuration():
             else:
                 rx.nav_tx(t, a[1], baud[0])
     cf = nav.cfg
-    assert cf.done and cf.cfg_ok and cf.ver_ok and cf.ver.module == gn.MODULE_UBLOX6
+    assert cf.done and cf.cfg_ok and cf.ver_ok and cf.ver.module == gn.MODULE_UBLOX7
     assert rx.baud == gn.GPS_BAUD and rx.meas_ms == 200 and not rx.nmea and len(rx.enabled) == 3
     assert rx.dyn == gn.DYN_AIRBORNE_1G and rx.stats["bytes_lost_baud"] > 0         # the factory NMEA at 9600 was lost
     # 5 Hz epochs once configured; each completes ~latency_s after its measurement (+ <= one 4 ms tick)
     assert len(epochs) >= 25
     lat = [ta - te for ta, te in epochs[-10:]]
-    assert all(0.22 - 1e-9 <= x <= 0.22 + dt + 1e-9 for x in lat)
+    assert GpsSim().latency_s == 0.12 and all(0.12 - 1e-9 <= x <= 0.12 + dt + 1e-9 for x in lat)
     assert snap.flag(gn.GF_FIX_OK) and snap.flag(gn.GF_CFG_OK) and snap.flag(gn.GF_VER_OK)
     # a receiver that NAKs CFG-NAV5: the configuration is not OK (the flag the ground sees), the rest still works
     rx2 = GpsReceiverPlant(GpsSim(nak_ids=(gn.ID_CFG_NAV5,), backup_config=True), seed=5, t_power=0.0)
@@ -1004,7 +1024,7 @@ def test_gps_hop_holds_the_hold_point_and_lands_there(gps_hop_run):
     L = res.log
     assert m["gps_build"] and m["interlock_codes"] == [] and not m["rejections"] and m["landed_normally"]
     g = res.vtol["gps"]
-    assert g["configurator"]["cfg_ok"] and g["configurator"]["hw"] == gn.HW_UBLOX6
+    assert g["configurator"]["cfg_ok"] and g["configurator"]["hw"] == gn.HW_UBLOX7
     assert len(g["hold_captures"]) == 1 and g["hold_captures"][0]["phase"] == "HOLD"
     hold = L["phase"] == lp.PHASE_HOLD
     assert np.all(L["pos_mode"][hold & (L["t"] > m["t_hold_s"] + 0.2)] == 2)       # MODE_POS
@@ -1014,7 +1034,7 @@ def test_gps_hop_holds_the_hold_point_and_lands_there(gps_hop_run):
         assert m[k] is not None and m[k] >= 0.0
     assert m["nav_rms_m"] < m["sk_rms_m"] + 0.5               # the control error is the small part (GPS wander dominates)
     assert m["tilt_sp_max_deg"] <= m["tilt_cap_deg"] + vs.V08_TILT_SP_TOL_DEG
-    assert res.link["budget"]["telem_frame_bytes"] == lp.TELEM3_FRAME_BYTES
+    assert res.link["budget"]["telem_frame_bytes"] == lp.TELEM7_FRAME_BYTES      # 2026-11-10: TELEM v3 + the logic tail
     assert res.vtol["gps"]["slot_sets"] > 100 and res.vtol["gps"]["slot_broken"] == 0
     # the frame the FCU flies on carries the previous tick's altitude (v0.8 NAV order)
     assert np.array_equal(L["h_pub"][1:], L["h_est"][:-1])
@@ -1036,7 +1056,7 @@ def test_gps_hop_export_follows_renderer_contract_v5(gps_hop_run, tmp_path):
         assert ok.any() and np.all(hp[ok, 2] == 0.0) and np.all(np.isnan(hp[~ok, 2]))
         assert set(np.unique(d["gps_fix"])) <= {0, 3}
         mj = json.loads(str(d["meta"]))
-    assert mj["gps_on"] is True and meta["gps"]["module_hw"] == gn.HW_UBLOX6
+    assert mj["gps_on"] is True and meta["gps"]["module_hw"] == gn.HW_UBLOX7
     assert mj["criteria"]["station_keeping_max_m"] == V["position_hold"]["criteria_v08_ASSUMED"]["station_keeping_max_m"]
     assert "open sky" in mj["notes"].lower() or "OPEN SKY" in mj["notes"]
     spec = importlib.util.spec_from_file_location("sim_video_t5", os.path.join(PROJECT_ROOT, "tools", "sim_video.py"))

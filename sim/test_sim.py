@@ -2157,6 +2157,56 @@ def _tlm_bytes(seq: int, state: int = lp.STATE_SAFE, ack: int = 0, t_ms: int = 0
     return lp.encode_telemetry(90, seq, t)
 
 
+def test_telem_v6_v7_logic_battery_tail(veh):
+    """2026-11-10 control round: TELEM v6 (0x25) / v7 (0x26) = TELEM v2 / v3 + lbat u8 (0.02 V); the tail rule
+    (non-zero snapshot byte, no power tail), encode / decode round trips, the old frames unchanged byte for byte,
+    LEN_MAX unchanged, and the ground's display / warning (warning only)."""
+    assert (lp.TYPE_TELEM6, lp.TYPE_TELEM7) == (0x25, 0x26)
+    assert (lp.TELEM6_PAYLOAD_LEN, lp.TELEM7_PAYLOAD_LEN, lp.TELEM6_FRAME_BYTES, lp.TELEM7_FRAME_BYTES) == (32, 38, 40, 46)
+    assert lp.LEN_MAX == 42 and lp.MAX_PAYLOAD_LEN == lp.TELEM5_PAYLOAD_LEN       # TELEM v5 stays the longest
+    assert len(set(lp.PAYLOAD_LEN.values())) == len(lp.PAYLOAD_LEN)               # one length per TYPE (decoder rule)
+    assert lp.lbat_quant(4.2) == 210 and lp.lbat_quant(3.0) == 150 and lp.lbat_quant(0.0) == 1 and lp.lbat_quant(9.9) == 255
+    assert lp.lbat_quant(None) == 1 and lp.lbat_quant(float("nan")) == 1 and lp.lbat_quant(3.61) == 181
+    assert lp.logic_tail_due(181) and not lp.logic_tail_due(lp.LBAT_NONE) and not lp.logic_tail_due(181, 0x40)
+    kw = dict(state=lp.STATE_POWERED, flags=0x2F, reason=0, ack_seq=4, nonce=0x1234, t_ms=5000, h_m=1.5, vz_mps=0.1,
+              roll_deg=1.0, pitch_deg=-1.0, yaw_deg=3.0, tilt_deg=1.4, throttle=0.6, vcell_v=3.9, loop_max_us=2800.0)
+    t2 = lp.Telemetry.from_physical(**kw, phase=lp.PHASE_HOLD, h_tgt_m=1.5)
+    t3 = lp.Telemetry.from_physical(**kw, phase=lp.PHASE_HOLD, h_tgt_m=1.5, gps=(0x2F, 9, 12, 2, 0.4))
+    t6 = lp.Telemetry.from_physical(**kw, phase=lp.PHASE_HOLD, h_tgt_m=1.5, lbat_q=193)
+    t7 = lp.with_logic_tail(t3, 193)
+    assert t6 == lp.with_logic_tail(t2, 193) and t6.lbat_v == pytest.approx(3.86) and t6.has_lbat and not t2.has_lbat
+    assert (t6.wire_type, t7.wire_type) == (lp.TYPE_TELEM6, lp.TYPE_TELEM7)
+    assert t6.pack() == t2.pack() + bytes([193]) and t7.pack() == t3.pack() + bytes([193])
+    assert lp.with_logic_tail(t2, lp.LBAT_NONE) is t2                          # no monitor: TELEM v2 unchanged
+    t1 = lp.Telemetry.from_physical(**kw)
+    assert lp.with_logic_tail(t1, 193) is t1                                   # the ballistic TELEM v1 never carries it
+    t5 = lp.with_power_tail(t3, 190, 0x80 | 0x01)
+    assert lp.with_logic_tail(t5, 193) is t5                                   # the power builds keep TELEM v5
+    with pytest.raises(ValueError):
+        lp.replace(t5, lbat_q=193)
+    with pytest.raises(ValueError):
+        lp.replace(t2, lbat_q=0)                                               # LBAT_NONE never travels
+    dec = lp.FrameDecoder(90, lp.TELEM_TYPES)
+    frames = dec.feed(lp.encode_telemetry(90, 7, t6) + lp.encode_telemetry(90, 8, t7) + lp.encode_telemetry(90, 9, t3))
+    assert [lp.decode_telemetry(f) for f in frames] == [t6, t7, t3] and [f.type for f in frames] == [0x25, 0x26, 0x22]
+    old = lp.FrameDecoder(90, lp.TELEM_TYPES_V09)                              # a v0.9 ground: wrong_type, nothing else
+    assert old.feed(lp.encode_telemetry(90, 7, t6)) == [] and old.stats["wrong_type"] == 1
+    # the ground: show it, warn below the params threshold (A) once, clear with hysteresis; nothing is sent for it
+    gp = GroundParams.from_params(veh.params, reply_timeout_s=0.25, t_link_default_s=0.06, mode=lp.MODE_VTOL)
+    w = float(veh.params["flight_computer"]["logic_battery_monitor"]["ground_warn_below_v_ASSUMED"])
+    assert gp.lbat_warn_v == w == 3.6
+    gs = GroundAssist(gp)
+    for i, v in enumerate((3.90, 3.58, 3.56, 3.62, 3.70, 3.50)):
+        tl = lp.Telemetry.from_physical(**{**kw, "t_ms": 1000 * (i + 1)}, phase=lp.PHASE_HOLD, h_tgt_m=1.5,
+                                        lbat_q=lp.lbat_quant(v))
+        gs.receive(lp.encode_telemetry(90, 0, tl), float(i))
+        assert gs.lbat_v == pytest.approx(v)
+    ev = [e for _, e in gs.events if "LOGIC BATTERY LOW" in e or "logic battery" in e]
+    assert len([e for e in ev if "LOW" in e]) == 2 and any("back above 3.65" in e for e in ev)
+    assert gs.lbat_low and gs.vtol_status()["lbat_low"] and "로직 배터리 3.50 V" in gs.vtol_status()["lbat_ko"]
+    assert gs.queue == type(gs.queue)() and gs.pending is None and not gs.records       # a warning only
+
+
 def _up(frame: bytes) -> tuple[int, lp.Command]:
     (fr,) = lp.FrameDecoder(90, (lp.TYPE_CMD,)).feed(frame)
     return fr.seq, lp.decode_command(fr)
@@ -2209,12 +2259,48 @@ def test_ground_rtt_estimate_and_stale_reply():
     gs.receive(_tlm_bytes(0, ack=0, t_ms=10), 0.3)
     gs.poll(0.3)
     gs.receive(_tlm_bytes(0, ack=0, t_ms=20), 0.8)
-    assert gs.t_link == pytest.approx(0.4)                           # mean of 0.3 and 0.5
+    # 2026-11-10 R-ESP1: max(mean of 0.3 and 0.5 = 0.4, latest 0.5) - a rise counts at once (v0.4..v0.9: the mean 0.4)
+    assert gs.t_link == pytest.approx(0.5)
     gs.poll(1.0)
     gs.receive(_tlm_bytes(5, ack=0, t_ms=30), 1.2)                   # header SEQ != request SEQ: no RTT sample
     assert gs.stats["stale_replies"] == 1 and len(gs.rtt_all) == 2
     gs.receive(_tlm_bytes(0, ack=0, t_ms=25), 1.3)                   # older vehicle time: data ignored
     assert gs.latest.t_ms == 30
+    assert gs.rtt_all[-1][1] == pytest.approx(0.3)                   # (its SEQ answered the 1.0 s request: RTT 0.3)
+    assert gs.t_link == pytest.approx(0.4)                           # a fall: the mean of 0.5 and 0.3 (> latest 0.3)
+
+
+def test_ground_late_reply_is_a_round_trip_sample():
+    """2026-11-10 R-ESP1 (a): a reply after its request's timeout but before the next request is a round-trip sample
+    ("late"), so t_link follows a link whose delay rose above the reply timeout (an ESP-timed ground on a slower link);
+    a reply that could belong to an older unanswered request with the same SEQ is not measured ("stale")."""
+    gs = GroundAssist(_gp(rtt_window=8, reply_timeout_s=0.25, t_link_default_s=0.06, poll_hz=2.0))
+    assert gs.poll(0.0) is not None
+    gs.receive(_tlm_bytes(0, ack=0, t_ms=10), 0.06)                  # on time: RTT 0.06
+    assert gs.t_link == pytest.approx(0.06)
+    assert gs.poll(0.5) is not None
+    assert gs.poll(0.75) is None and gs.stats["timeouts"] == 1      # no reply within 0.25 s: a timeout
+    gs.receive(_tlm_bytes(0, ack=0, t_ms=20), 0.99)                  # ... the reply at 0.49 s: late, measured
+    assert gs.stats["late_replies"] == 1 and gs.stats["stale_replies"] == 0
+    assert gs.t_link == pytest.approx(0.49)                          # max(mean 0.275, latest 0.49): at once
+    assert any("late reply" in e for _, e in gs.events)
+    assert gs.reply_timeout() == pytest.approx(0.49 + 0.04)          # (c) the next request waits for such a reply
+    gs.receive(_tlm_bytes(0, ack=0, t_ms=21), 1.0)                   # a second copy: already answered -> stale
+    assert gs.stats["stale_replies"] == 1 and gs.stats["late_replies"] == 1
+    # an unanswered request, then the next heartbeat with the same SEQ: its late reply is ambiguous (not measured)
+    g3 = GroundAssist(_gp(rtt_window=8, reply_timeout_s=0.25, t_link_default_s=0.06, poll_hz=2.0))
+    assert g3.poll(0.0) is not None and g3.poll(0.25) is None        # no reply: a timeout
+    assert g3.poll(0.5) is not None and g3.poll(0.75) is None        # the next heartbeat (same SEQ), no reply in time
+    g3.receive(_tlm_bytes(0, ack=0, t_ms=30), 0.9)                   # could be the 0.0 s request's: not measured
+    assert not g3.rtt_all and g3.stats["stale_replies"] == 1 and g3.stats["late_replies"] == 0
+    assert g3.t_link == 0.06 and g3.reply_timeout() == 0.25
+    # the adaptive timeout is limited, and never below the configured one
+    g2 = GroundAssist(_gp(reply_timeout_s=0.25, poll_hz=2.0))
+    g2.rtts.append(3.0)
+    assert g2.reply_timeout() == pytest.approx(1.0)
+    g2.rtts.clear()
+    g2.rtts.append(0.05)
+    assert g2.reply_timeout() == 0.25
 
 
 def test_ground_assist_auto_cut_rule():
@@ -2485,10 +2571,85 @@ def test_link_loss_rate_seeded_outage_and_collision(veh):
     gone = m.send("up", b"\x00" * 13, 10.0)
     assert not ok.lost and gone.lost == "outage"
     assert [tr.data for tr in m.deliver("up", 100.0)] == [ok.data] and m.stats["outage"] == 1
-    m = lm.LinkModel(lm.LinkConfig.from_params(p, loss=0.0), seed=1)
+    m = lm.LinkModel(lm.LinkConfig.from_params(p, radio="lora_uart", loss=0.0), seed=1)   # the LoRa half-duplex model
     u = m.send("up", b"\x00" * 13, 0.0)
     d = m.send("down", b"\x00" * 36, u.t_air_start)                    # both radios on air at once
     assert u.lost == d.lost == "collision"
+
+
+def test_link_esp_bridge_model(veh):
+    """2026-11-10: the ESP-NOW bridge model - selected by link.vehicle_radio, hand values of one hop (two 38400-baud UART
+    legs, the bridge processing, 802.11b DCF access and the frame at 1 Mbps), the MAC-retry bound behind the reply
+    timeout, the retry draws on their own stream (the loss draws keep the one-draw-per-frame sequence), no collisions
+    (CSMA/CA), and the study hook that steps the link model mid-run."""
+    p = veh.params
+    lk = p["flight_computer"]["link"]
+    assert lk["vehicle_radio"] == "esp_bridge" and lm.model_radio(p) == "esp_bridge" and lk["radio"] == "lora_uart"
+    cfg = lm.LinkConfig.from_params(p)
+    assert cfg.radio == "esp_bridge" and cfg.esp_uart_baud == lk["esp_bridge"]["uart_baud"] == 38400
+    assert cfg.esp_air_rate_bps == lk["esp_bridge"]["air_rate_bps"] == 1e6
+    old = json.loads(json.dumps(p))
+    old["flight_computer"]["link"]["vehicle_radio"] = "sx127x"
+    assert lm.model_radio(old) == "sx127x"
+    del old["flight_computer"]["link"]["vehicle_radio"]
+    assert lm.model_radio(old) == "lora_uart" == lm.LinkConfig.from_params(old).radio      # v0.9 files: link.radio
+    baud, rate = 38400.0, 1e6
+    access = lm.DSSS_DIFS_S + 0.5 * lm.DSSS_CW_MIN * lm.DSSS_SLOT_S
+    assert access == pytest.approx(360e-6)
+    air13 = 192e-6 + 8 * (lm.ESPNOW_FRAME_OVERHEAD_BYTES_ASSUMED + 13) / rate
+    up = lm.GROUND_SERIAL_LATENCY_S_ASSUMED + 2 * 130 / baud + lm.ESP_HOP_PROCESS_S_ASSUMED + access + air13
+    air36 = 192e-6 + 8 * (lm.ESPNOW_FRAME_OVERHEAD_BYTES_ASSUMED + 36) / rate
+    down = 2 * 360 / baud + lm.ESP_HOP_PROCESS_S_ASSUMED + access + air36 + lm.GROUND_SERIAL_LATENCY_S_ASSUMED
+    assert lm.hop_timing(cfg, "up", 13).arrival == pytest.approx(up, rel=1e-12)
+    assert lm.hop_timing(cfg, "down", 36).arrival == pytest.approx(down, rel=1e-12)
+    rt = lm.round_trip(cfg)
+    assert rt["rtt_mean_s"] == pytest.approx(up + lm.FC_REPLY_DELAY_S + down)
+    assert 0.045 < rt["rtt_mean_s"] < 0.065                                 # the README's ~0.06 s (E)
+    # one retry: ACK timeout + DIFS + CW 63 / 2 slots + the frame again; the worst = every attempt on both hops
+    assert lm.esp_hop_extra_s(13, rate, 1) == pytest.approx(lm.DSSS_ACK_TIMEOUT_S + lm.DSSS_DIFS_S + 31.5 * 20e-6 + air13)
+    r = lm.ESP_MAC_ATTEMPTS_ASSUMED - 1
+    assert rt["rtt_worst_s"] == pytest.approx(rt["rtt_mean_s"] + lm.esp_hop_extra_s(13, rate, r)
+                                              + lm.esp_hop_extra_s(36, rate, r))
+    assert rt["reply_timeout_s"] == pytest.approx(rt["uplink_worst_s"] + lm.FC_REPLY_ALLOWANCE_S + rt["downlink_worst_s"]
+                                                  + lm.REPLY_TIMEOUT_MARGIN_S_ASSUMED)
+    # the half-duplex discipline still holds against the COM's 80 ms reply window, and one lost frame stays far from
+    # the pad link-loss interlock (the generator's check: poll interval + timeout < link_loss_disarm_s)
+    assert rt["reply_timeout_s"] - (rt["uplink_worst_s"] + rt["downlink_worst_s"]) >= 0.080 + 0.02
+    gap = max(1.0 / cfg.poll_hz, rt["rtt_worst_s"]) + max(1.0 / cfg.poll_hz, rt["reply_timeout_s"])
+    assert gap < float(p["mission"]["link_loss_disarm_s"])
+    for kw, nb in (({}, 36), ({"mode": "vtol"}, 39), ({"mode": "vtol", "gps": True}, 45),
+                   ({"mode": "vtol", "lbat": True}, 40), ({"mode": "vtol", "gps": True, "lbat": True}, 46)):
+        b = lm.budget(cfg, **kw)
+        assert b["telem_frame_bytes"] == nb and b["poll_hz_achievable"]
+        assert b["downlink"]["uart_to_esp"] == pytest.approx(nb * 10 / baud)
+    # retry distribution: the truncated geometric of an independent-attempt channel with loss after the last attempt
+    pmf = lm.esp_retry_pmf(0.05)
+    assert len(pmf) == lm.ESP_MAC_ATTEMPTS_ASSUMED and sum(pmf) == pytest.approx(1.0) and pmf == sorted(pmf, reverse=True)
+    assert lm.esp_attempt_fail(0.05) ** lm.ESP_MAC_ATTEMPTS_ASSUMED == pytest.approx(0.05)
+    assert lm.esp_retry_pmf(0.0)[0] == 1.0
+    a, b2 = lm.LinkModel(cfg, seed=5), lm.LinkModel(lm.LinkConfig.from_params(p, radio="lora_uart"), seed=5)
+    n = 4000
+    for i in range(n):
+        a.send("up", b"\x00" * 13, i * 1.0)
+        b2.send("up", b"\x00" * 13, i * 1.0)
+    assert [bool(t.lost) for t in a.log] == [bool(t.lost) for t in b2.log]        # the same loss draws as LoRa
+    ks = [t.retries for t in a.log if not t.lost]
+    assert max(ks) <= r and min(ks) == 0 and a.stats["retries"] == sum(t.retries for t in a.log)
+    for k in range(3):
+        assert ks.count(k) / len(ks) == pytest.approx(pmf[k], abs=4 * math.sqrt(pmf[k] * (1 - pmf[k]) / len(ks)))
+    t_k = [t for t in a.log if not t.lost and t.retries == 2][0]
+    assert t_k.t_arrival - t_k.t_tx == pytest.approx(lm.hop_timing(cfg, "up", 13, retries=2).arrival)
+    with pytest.raises(ValueError):
+        lm.hop_timing(lm.LinkConfig.from_params(p, radio="lora_uart"), "up", 13, retries=1)
+    m = lm.LinkModel(lm.LinkConfig.from_params(p, loss=0.0), seed=1)
+    u = m.send("up", b"\x00" * 13, 0.0)
+    d = m.send("down", b"\x00" * 36, u.t_air_start)                    # CSMA/CA: no collision
+    assert u.lost == d.lost == ""
+    s = lm.LinkModel(lm.LinkConfig.from_params(p, loss=0.0), seed=1,
+                     cfg_schedule=[(5.0, lm.LinkConfig.from_params(p, radio="lora_uart", loss=0.0))])
+    e1, e2 = s.send("up", b"\x00" * 13, 4.0), s.send("up", b"\x00" * 13, 5.0)
+    assert (e1.radio, e2.radio) == ("esp_bridge", "lora_uart")
+    assert e2.t_arrival - 5.0 == pytest.approx(lm.hop_timing(lm.LinkConfig.from_params(p, radio="lora_uart"), "up", 13).arrival)
 
 
 # =========================================================================== #
@@ -2524,13 +2685,16 @@ def test_sim_assist_off_limiter_cuts(veh):
     "mass only (2,585.71 g, E; 13.5 g under the CAD report).  At the CAD mass (2,599.21 g, M) the same scenario (seed 4, "
     "14 s, assist off) reaches a predicted apogee of at most 148.71 m < the 150 m I4 limit inside the window, so there "
     "is no I4 cut before 14 s.  Nothing is loosened: whether the scenario should change (e.g. a longer t_end) is a "
-    "user decision.  strict: if this starts to pass (a mass or model change), pytest reports it so the note is revisited."))
+    "user decision.  strict: if this starts to pass (a mass or model change), pytest reports it so the note is revisited.  "
+    "2026-11-10: pinned to the lora_uart link model the note was measured on - on the ESP-NOW model (the default since the "
+    "2026-11-10 control round) the operator's ARM / LAUNCH exchanges are ~0.4 s shorter, the launch comes earlier and the "
+    "I4 cut falls inside the 14 s window (it passes there); the window question stays the user's."))
 def test_sim_assist_off_limiter_cuts_at_cad_mass():
     """The same scenario and assertions as test_sim_assist_off_limiter_cuts, on the CAD-report vehicle."""
     v = load_vehicle(prefer="cad")
     if "internal estimate" in v.mass_source:
         pytest.skip("no usable CAD report")
-    sc = Scenario(name="t", t_end=14.0, seed=4, assist=False, packet_loss=0.0)
+    sc = Scenario(name="t", t_end=14.0, seed=4, assist=False, packet_loss=0.0, radio="lora_uart")
     m = compute_metrics(FlightSim(v, sc).run())
     assert m["cut_by"] is not None and m["cut_by"].startswith("I4") and m["t_abort_s"] is None
 

@@ -1,6 +1,6 @@
 # 산정 보고서 (sizing) — preset `KAIST_90mm_12S`
 
-- params.json sha256: `01ffc621423b9051…`
+- params.json sha256: `3419c5fea63506dc…`
 - 구조물 질량 출처: **CAD report: cadquery_report_KAIST_90mm_12S.json**
 - EDF: JP Hobby 90mm 12-blade EDF, 12S, 4250-1080KV outrunner (JPH6007-10x family) — 공칭 추력 52.5 N / 피크 59.8 N, 12S 44.4 V
 - 전장 941 mm, 핀 포함 외경 238 mm, 동체 OD 120 mm

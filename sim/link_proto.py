@@ -42,6 +42,15 @@ transmitted low byte first.  VEH = ``flight_computer.link.vehicle_id``.
   per TYPE); LEN_MAX grows to 42 (v0.8: 40) in every build - the decoders take the longest frame of any build.  The
   power reason codes R_W_LOST 0x30 .. R_W_D2 0x33 and REJ_POWER 0x58 (v0.9 power rules, ``sim.onboard``) are defined
   here since RP1 (``sim.power_link`` re-exports them).
+* Downlink ``TYPE_TELEM6`` (0x25, TELEM v6, 2026-11-10 control round, the VTOL battery build on the carrier rev 2c
+  without the GPS), 32 payload bytes ``TELEM2_FMT + "B"``, and ``TYPE_TELEM7`` (0x26, TELEM v7, the same build with the
+  GPS), 38 payload bytes ``TELEM3_FMT + "B"``: the TELEM v2 / v3 bytes, then the logic-battery tail - lbat u8, the
+  FCU's PF3 reading of the 1S logic pack in 0.02 V steps (``LBAT_SCALE``; 4.20 V = 210), 1..255 (``LBAT_NONE`` 0 never
+  travels: in the snapshot it means "this build has no monitor").  A frame carries the tail exactly when the FCU's
+  snapshot has a non-zero lbat byte and no power tail (``logic_tail_due``): the tether / hybrid builds keep TELEM v4 /
+  v5, the rocket and every build without the monitor keep TELEM v1 - v3 byte for byte.  LEN_MAX stays 42 (TELEM5).
+  The ground shows it and warns below ``flight_computer.logic_battery_monitor.ground_warn_below_v_ASSUMED``; the
+  vehicle takes no action on it (a user decision).
 * Downlink SEQ = the SEQ of the uplink frame the telemetry answers (so the ground
   can tell a late reply to an older request from the current one).
 
@@ -91,6 +100,8 @@ TYPE_TELEM2 = 0x21                     # v0.7 TELEM v2 (VTOL build)
 TYPE_TELEM3 = 0x22                     # v0.8 TELEM v3 (VTOL build with GPS position hold)
 TYPE_TELEM4 = 0x23                     # v0.9 TELEM v4 (RP1): TELEM v2 + the power tail (tether / hybrid builds)
 TYPE_TELEM5 = 0x24                     # v0.9 TELEM v5 (RP1): TELEM v3 + the power tail (tether / hybrid builds with GPS)
+TYPE_TELEM6 = 0x25                     # 2026-11-10 TELEM v6: TELEM v2 + the logic-battery tail (carrier battery build)
+TYPE_TELEM7 = 0x26                     # 2026-11-10 TELEM v7: TELEM v3 + the logic-battery tail (carrier battery build + GPS)
 HEADER_BYTES = 3                       # VEH, TYPE, SEQ
 CMD_FMT = "<BHH"
 TELEM_FMT = "<BBBBHIhhhhhHHHH"
@@ -99,6 +110,11 @@ TELEM3_FMT = TELEM2_FMT + "BBBBH"      # + gps_flags u8, num_sv u8, hacc u8 (0.1
 PWR_TAIL_FMT = "BB"                    # v0.9 power tail: v_aux u8 (0.125 V), pwr_flags u8 (sim.power_link PF_* | build << 6)
 TELEM4_FMT = TELEM2_FMT + PWR_TAIL_FMT
 TELEM5_FMT = TELEM3_FMT + PWR_TAIL_FMT
+LBAT_TAIL_FMT = "B"                    # 2026-11-10 logic-battery tail: lbat u8 (LBAT_SCALE)
+TELEM6_FMT = TELEM2_FMT + LBAT_TAIL_FMT
+TELEM7_FMT = TELEM3_FMT + LBAT_TAIL_FMT
+LBAT_SCALE = 50.0                      # lbat u8 = round(V x 50): 0.02 V steps, 0.02 .. 5.10 V
+LBAT_NONE = 0                          # the snapshot's "this build has no logic-battery monitor" (never sent)
 PWR_TAIL_BUILD_SHIFT = 6               # pwr_flags bits 6-7 = the power build (sim.power_link PF_BUILD_SHIFT); 0 = battery
 CMD_PAYLOAD_LEN = struct.calcsize(CMD_FMT)        # 5
 TELEM_PAYLOAD_LEN = struct.calcsize(TELEM_FMT)    # 28
@@ -106,9 +122,13 @@ TELEM2_PAYLOAD_LEN = struct.calcsize(TELEM2_FMT)  # 31
 TELEM3_PAYLOAD_LEN = struct.calcsize(TELEM3_FMT)  # 37
 TELEM4_PAYLOAD_LEN = struct.calcsize(TELEM4_FMT)  # 33
 TELEM5_PAYLOAD_LEN = struct.calcsize(TELEM5_FMT)  # 39
+TELEM6_PAYLOAD_LEN = struct.calcsize(TELEM6_FMT)  # 32
+TELEM7_PAYLOAD_LEN = struct.calcsize(TELEM7_FMT)  # 38
 PAYLOAD_LEN = {TYPE_CMD: CMD_PAYLOAD_LEN, TYPE_TELEM: TELEM_PAYLOAD_LEN, TYPE_TELEM2: TELEM2_PAYLOAD_LEN,
-               TYPE_TELEM3: TELEM3_PAYLOAD_LEN, TYPE_TELEM4: TELEM4_PAYLOAD_LEN, TYPE_TELEM5: TELEM5_PAYLOAD_LEN}
-TELEM_TYPES = (TYPE_TELEM, TYPE_TELEM2, TYPE_TELEM3, TYPE_TELEM4, TYPE_TELEM5)
+               TYPE_TELEM3: TELEM3_PAYLOAD_LEN, TYPE_TELEM4: TELEM4_PAYLOAD_LEN, TYPE_TELEM5: TELEM5_PAYLOAD_LEN,
+               TYPE_TELEM6: TELEM6_PAYLOAD_LEN, TYPE_TELEM7: TELEM7_PAYLOAD_LEN}
+TELEM_TYPES = (TYPE_TELEM, TYPE_TELEM2, TYPE_TELEM3, TYPE_TELEM4, TYPE_TELEM5, TYPE_TELEM6, TYPE_TELEM7)
+TELEM_TYPES_V09 = (TYPE_TELEM, TYPE_TELEM2, TYPE_TELEM3, TYPE_TELEM4, TYPE_TELEM5)   # the v0.9 ground decoder
 TELEM_TYPES_V08 = (TYPE_TELEM, TYPE_TELEM2, TYPE_TELEM3)    # the v0.8 ground decoder (and its test vectors)
 MAX_PAYLOAD_LEN = max(PAYLOAD_LEN.values())
 LEN_MIN = HEADER_BYTES                 # an empty payload is a well-formed frame (dropped later: no such TYPE)
@@ -120,6 +140,8 @@ TELEM2_FRAME_BYTES = FRAME_OVERHEAD + HEADER_BYTES + TELEM2_PAYLOAD_LEN  # 39
 TELEM3_FRAME_BYTES = FRAME_OVERHEAD + HEADER_BYTES + TELEM3_PAYLOAD_LEN  # 45
 TELEM4_FRAME_BYTES = FRAME_OVERHEAD + HEADER_BYTES + TELEM4_PAYLOAD_LEN  # 41
 TELEM5_FRAME_BYTES = FRAME_OVERHEAD + HEADER_BYTES + TELEM5_PAYLOAD_LEN  # 47
+TELEM6_FRAME_BYTES = FRAME_OVERHEAD + HEADER_BYTES + TELEM6_PAYLOAD_LEN  # 40
+TELEM7_FRAME_BYTES = FRAME_OVERHEAD + HEADER_BYTES + TELEM7_PAYLOAD_LEN  # 46
 DIST_NONE = 0xFFFF                     # TELEM v3 dist: no hold point
 DIST_SCALE = 10.0                      # 0.1 m
 HACC_NONE = 255
@@ -441,8 +463,9 @@ class Telemetry:
 
     TELEM v1 (TYPE_TELEM, ballistic build): ``phase`` and ``h_tgt_dm`` are None.  TELEM v2 (TYPE_TELEM2, VTOL
     build): both are integers.  TELEM v3: + the GPS fields.  v0.9 (RP1): ``v_aux_q`` / ``pwr_flags`` set (the power
-    tail, both or neither, on a v2 / v3 telemetry) -> TELEM v4 / v5.  ``pack`` / ``wire_type`` follow from which one it
-    is."""
+    tail, both or neither, on a v2 / v3 telemetry) -> TELEM v4 / v5.  2026-11-10: ``lbat_q`` set (the logic-battery
+    tail, on a v2 / v3 telemetry without the power tail) -> TELEM v6 / v7.  ``pack`` / ``wire_type`` follow from which
+    one it is."""
 
     state: int
     flags: int
@@ -468,6 +491,7 @@ class Telemetry:
     dist_dm: int | None = None    # TELEM v3: 0.1 m from the hold point, DIST_NONE = no hold point
     v_aux_q: int | None = None    # TELEM v4 / v5 power tail: v_aux, 0.125 V (sim.power_link.quant_v)
     pwr_flags: int | None = None  # TELEM v4 / v5 power tail: sim.power_link PF_* | build << 6
+    lbat_q: int | None = None     # TELEM v6 / v7 logic-battery tail: 0.02 V (LBAT_SCALE), 1..255
 
     V3_FIELDS = ("gps_flags", "num_sv", "hacc_dm", "pos_mode", "dist_dm")
     PWR_FIELDS = ("v_aux_q", "pwr_flags")
@@ -501,18 +525,25 @@ class Telemetry:
                 raise ValueError("the power tail extends TELEM v2 / v3 (TELEM v4 / v5): phase and h_tgt_dm are needed")
             _check_u("v_aux_q", self.v_aux_q, U8)
             _check_u("pwr_flags", self.pwr_flags, U8)
+        if self.lbat_q is not None:
+            if self.phase is None:
+                raise ValueError("the logic-battery tail extends TELEM v2 / v3 (TELEM v6 / v7): phase and h_tgt_dm are needed")
+            if self.v_aux_q is not None:
+                raise ValueError("a TELEM carries the power tail (v4 / v5) or the logic-battery tail (v6 / v7), not both")
+            _check_u("lbat_q", self.lbat_q, (1, 0xFF))
 
     @classmethod
     def from_physical(cls, *, state: int, flags: int, reason: int, ack_seq: int, nonce: int, t_ms: int, h_m: float,
                       vz_mps: float, roll_deg: float, pitch_deg: float, yaw_deg: float, tilt_deg: float,
                       throttle: float, vcell_v: float, loop_max_us: float, phase: int | None = None,
                       h_tgt_m: float | None = None, gps: tuple | None = None,
-                      pwr: tuple | None = None) -> "Telemetry":
+                      pwr: tuple | None = None, lbat_q: int | None = None) -> "Telemetry":
         """``phase`` / ``h_tgt_m`` given (VTOL build) -> TELEM v2; h_tgt is quantised like h (0.1 m).  ``gps`` =
         (gps_flags, num_sv, hacc_dm, pos_mode, dist_m) given as well -> TELEM v3: dist quantised to 0.1 m in
         [0, 0xFFFE], NaN (no hold point) -> DIST_NONE.  ``pwr`` = (v_aux_q, pwr_flags), the wire integers of the
         ``sim.power_link`` tail: appended (TELEM v4 / v5) only when its build bits (pwr_flags >> 6) are not the battery
-        build - the rule ``power_tail_due`` (the COM's and the 6-DOF's)."""
+        build - the rule ``power_tail_due`` (the COM's and the 6-DOF's).  ``lbat_q`` (the snapshot's logic-battery byte):
+        appended (TELEM v6 / v7) when ``logic_tail_due`` (non-zero, no power tail)."""
         g: dict = {}
         if gps is not None:
             gf, sv, ha, pm, dist = gps
@@ -521,6 +552,8 @@ class Telemetry:
                      pos_mode=int(pm) & 0xFF, dist_dm=dd)
         if pwr is not None and phase is not None and power_tail_due(int(pwr[1])):
             g.update(v_aux_q=int(pwr[0]), pwr_flags=int(pwr[1]))
+        if lbat_q is not None and phase is not None and logic_tail_due(int(lbat_q), int(g.get("pwr_flags") or 0)):
+            g.update(lbat_q=int(lbat_q))
         return cls(state=state, flags=flags, reason=reason, ack_seq=ack_seq, nonce=nonce, t_ms=t_ms & 0xFFFFFFFF,
                    h_dm=quantize(h_m, H_SCALE, I16), vz_cms=quantize(vz_mps, VZ_SCALE, I16),
                    roll_cdeg=quantize(roll_deg, ANGLE_SCALE, I16), pitch_cdeg=quantize(pitch_deg, ANGLE_SCALE, I16),
@@ -545,6 +578,16 @@ class Telemetry:
         return self.pwr_flags is not None
 
     @property
+    def has_lbat(self) -> bool:
+        """2026-11-10: the logic-battery tail is present (TELEM v6 = v2 + tail, TELEM v7 = v3 + tail)."""
+        return self.lbat_q is not None
+
+    @property
+    def lbat_v(self) -> float | None:
+        """The logic battery [V] of a TELEM v6 / v7, else None."""
+        return None if self.lbat_q is None else self.lbat_q / LBAT_SCALE
+
+    @property
     def power_tail(self) -> tuple[int, int] | None:
         """(v_aux_q, pwr_flags) of a TELEM v4 / v5, else None (``sim.power_link.PowerTelem(*power_tail)``)."""
         return None if self.pwr_flags is None else (self.v_aux_q, self.pwr_flags)
@@ -552,9 +595,9 @@ class Telemetry:
     @property
     def wire_type(self) -> int:
         if self.is_v3:
-            return TYPE_TELEM5 if self.has_pwr else TYPE_TELEM3
+            return TYPE_TELEM5 if self.has_pwr else (TYPE_TELEM7 if self.has_lbat else TYPE_TELEM3)
         if self.is_v2:
-            return TYPE_TELEM4 if self.has_pwr else TYPE_TELEM2
+            return TYPE_TELEM4 if self.has_pwr else (TYPE_TELEM6 if self.has_lbat else TYPE_TELEM2)
         return TYPE_TELEM
 
     @property
@@ -633,7 +676,7 @@ class Telemetry:
         return [n for b, n in FLAG_NAMES.items() if self.flags & b]
 
     def wire_values(self) -> tuple:
-        """The payload's integers in wire order (v1: 15, v2: 17, v3: 22, v4: 19, v5: 24)."""
+        """The payload's integers in wire order (v1: 15, v2: 17, v3: 22, v4: 19, v5: 24, v6: 18, v7: 23)."""
         v = (self.state, self.flags, self.reason, self.ack_seq, self.nonce, self.t_ms, self.h_dm, self.vz_cms,
              self.roll_cdeg, self.pitch_cdeg, self.yaw_cdeg, self.tilt_cdeg, self.throttle_milli, self.vcell_mv,
              self.loop_max_us)
@@ -643,15 +686,18 @@ class Telemetry:
             v += tuple(getattr(self, n) for n in self.V3_FIELDS)
         if self.has_pwr:
             v += (self.v_aux_q, self.pwr_flags)
+        if self.has_lbat:
+            v += (self.lbat_q,)
         return v
 
     def pack(self) -> bytes:
         """28-byte TELEM v1, 31-byte TELEM v2 (v1 + phase u8 + h_tgt i16), 37-byte TELEM v3 (v2 + the GPS fields),
-        33-byte TELEM v4 (v2 + v_aux u8 + pwr_flags u8) or 39-byte TELEM v5 (v3 + the same two bytes)."""
+        33-byte TELEM v4 (v2 + v_aux u8 + pwr_flags u8) or 39-byte TELEM v5 (v3 + the same two bytes), 32-byte TELEM v6
+        (v2 + lbat u8) or 38-byte TELEM v7 (v3 + lbat u8)."""
         if self.is_v3:
-            fmt = TELEM5_FMT if self.has_pwr else TELEM3_FMT
+            fmt = TELEM5_FMT if self.has_pwr else (TELEM7_FMT if self.has_lbat else TELEM3_FMT)
         elif self.is_v2:
-            fmt = TELEM4_FMT if self.has_pwr else TELEM2_FMT
+            fmt = TELEM4_FMT if self.has_pwr else (TELEM6_FMT if self.has_lbat else TELEM2_FMT)
         else:
             fmt = TELEM_FMT
         return struct.pack(fmt, *self.wire_values())
@@ -671,14 +717,57 @@ class Telemetry:
             return cls(*v[:17], v_aux_q=v[17], pwr_flags=v[18])
         if len(payload) == TELEM5_PAYLOAD_LEN:
             return cls(*struct.unpack(TELEM5_FMT, payload))
+        if len(payload) == TELEM6_PAYLOAD_LEN:
+            v = struct.unpack(TELEM6_FMT, payload)
+            return cls(*v[:17], lbat_q=v[17])
+        if len(payload) == TELEM7_PAYLOAD_LEN:
+            v = struct.unpack(TELEM7_FMT, payload)
+            return cls(*v[:22], lbat_q=v[22])
         raise ValueError(f"TELEM payload is {TELEM_PAYLOAD_LEN} (v1), {TELEM2_PAYLOAD_LEN} (v2), {TELEM3_PAYLOAD_LEN} "
-                         f"(v3), {TELEM4_PAYLOAD_LEN} (v4) or {TELEM5_PAYLOAD_LEN} (v5) bytes, got {len(payload)}")
+                         f"(v3), {TELEM4_PAYLOAD_LEN} (v4), {TELEM5_PAYLOAD_LEN} (v5), {TELEM6_PAYLOAD_LEN} (v6) or "
+                         f"{TELEM7_PAYLOAD_LEN} (v7) bytes, got {len(payload)}")
 
 
 def power_tail_due(pwr_flags: int) -> bool:
     """RP1 rule (the COM firmware's and the 6-DOF's): a reply carries the power tail (TELEM v4 / v5) exactly when the
     tail's build bits (pwr_flags >> PWR_TAIL_BUILD_SHIFT) are not the battery build (0)."""
     return ((int(pwr_flags) >> PWR_TAIL_BUILD_SHIFT) & 0x03) != 0
+
+
+def lbat_quant(v: float | None) -> int:
+    """The FCU's logic-battery byte for ``v`` volts: round(v x LBAT_SCALE) clamped to 1..255 (C: LP_LBAT_QUANT in
+    core/link_proto_v09.h); None / NaN (no reading) -> 1 (the lowest level: the ground warns)."""
+    if v is None or v != v:
+        return 1
+    return min(max(quantize(float(v), LBAT_SCALE, (0, 0xFF)), 1), 0xFF)
+
+
+def lbat_q_from_counts(counts: int, q_x1024: int) -> int:
+    """The FCU's lbat byte from its 10-bit PF3 code, in integers (main.c, params_gen.h LOGIC_BAT_Q_X1024 = round(V per
+    count x LBAT_SCALE x 1024)): (counts x q_x1024 + 512) >> 10, clamped to 1..255."""
+    return min(max((int(counts) * int(q_x1024) + 512) >> 10, 1), 0xFF)
+
+
+def logic_tail_due(lbat_q: int, pwr_flags: int = 0) -> bool:
+    """2026-11-10 rule (the COM firmware's and the 6-DOF's): a reply carries the logic-battery tail (TELEM v6 / v7)
+    exactly when the snapshot's lbat byte is not ``LBAT_NONE`` and it carries no power tail (``power_tail_due``)."""
+    return int(lbat_q) != LBAT_NONE and not power_tail_due(int(pwr_flags))
+
+
+def lbat_build(p: dict, mode: str | None = None) -> bool:
+    """True when the VTOL battery build of this params file reads the logic battery and sends TELEM v6 / v7: mode (None:
+    ``mission_mode(p)``) is 'vtol' and ``flight_computer.logic_battery_monitor.telemetry_builds`` is 'vtol_battery' (the
+    carrier rev 2c).  The power builds (tether / hybrid) never do - their callers exclude them (power tail)."""
+    m = mission_mode(p) if mode is None else check_mode(mode)
+    lbm = (p.get("flight_computer") or {}).get("logic_battery_monitor") or {}
+    return m == MODE_VTOL and lbm.get("telemetry_builds") == "vtol_battery"
+
+
+def with_logic_tail(tlm: Telemetry, lbat_q: int) -> Telemetry:
+    """``tlm`` (TELEM v2 / v3) with the logic-battery tail if ``logic_tail_due`` (-> TELEM v6 / v7), else unchanged."""
+    if tlm.phase is None or not logic_tail_due(lbat_q, tlm.pwr_flags or 0):
+        return tlm
+    return replace(tlm, lbat_q=int(lbat_q))
 
 
 def with_power_tail(tlm: Telemetry, v_aux_q: int, pwr_flags: int) -> Telemetry:
@@ -730,10 +819,9 @@ def decode_command(frame: Frame) -> Command:
 
 
 def decode_telemetry(frame: Frame) -> Telemetry:
-    """TELEM (v1), TELEM2 (v2), TELEM3 (v3), TELEM4 (v4) or TELEM5 (v5) frame -> Telemetry; the payload length must be
-    its TYPE's."""
+    """TELEM (v1) .. TELEM7 (v7) frame -> Telemetry; the payload length must be its TYPE's."""
     if frame.type not in TELEM_TYPES:
-        raise ValueError(f"frame type 0x{frame.type:02X} is not TELEM / TELEM2 / TELEM3 / TELEM4 / TELEM5")
+        raise ValueError(f"frame type 0x{frame.type:02X} is not TELEM / TELEM2 .. TELEM7")
     if len(frame.payload) != PAYLOAD_LEN[frame.type]:
         raise ValueError(f"TYPE 0x{frame.type:02X} payload is {PAYLOAD_LEN[frame.type]} bytes, got {len(frame.payload)}")
     return Telemetry.unpack(frame.payload)
@@ -1143,13 +1231,73 @@ def make_test_vectors(vehicle_id: int, seed: int = 20261013) -> dict:
     add_stream("telem5_inside_bad_candidate", bytes([SYNC0, SYNC1, LEN_MAX]) + valid_down5[3] +
                bytes(r4.randrange(256) for _ in range(LEN_MAX)), down5,
                "a fake header (LEN_MAX) whose body contains a TELEM5 frame: found again after the CRC failure")
+
+    # ---- 2026-11-10 control round: TELEM v6 / v7 (the logic-battery tail, TYPE_TELEM6 32 B / TYPE_TELEM7 38 B); own RNG
+    # so every vector above keeps its bytes
+    r5 = random.Random(seed + 11)
+    down7 = TELEM_TYPES                                         # the 2026-11-10 ground decoder: v1 .. v7
+
+    def rnd_v2b() -> list:
+        return [r5.randrange(0, 6), r5.randrange(0, 256), r5.randrange(0, 256), r5.randrange(0, 256),
+                r5.randrange(0, 0x10000), r5.randrange(0, 0x100000000), *[r5.randrange(-0x8000, 0x8000) for _ in range(5)],
+                *[r5.randrange(0, 0x10000) for _ in range(4)], r5.randrange(0, 6), r5.randrange(-0x8000, 0x8000)]
+
+    t6_cases = [Telemetry(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, PHASE_NONE, 0, lbat_q=1),
+                Telemetry(5, 0xFF, 0xFF, 255, 0xFFFF, 0xFFFFFFFF, 32767, -32768, -32768, 32767, -1, 65535, 65535, 65535,
+                          65535, 255, -32768, lbat_q=255),
+                Telemetry.from_physical(state=STATE_POWERED, flags=FLAG_ARM_SWITCH | FLAG_SENSORS_OK | FLAG_ALIGNED
+                                        | FLAG_LINK_OK | FLAG_CONTROL_ACTIVE, reason=REASON_NONE, ack_seq=9, nonce=0x4242,
+                                        t_ms=12000, h_m=1.5, vz_mps=0.02, roll_deg=0.3, pitch_deg=-0.6, yaw_deg=2.0,
+                                        tilt_deg=0.7, throttle=0.61, vcell_v=3.98, loop_max_us=2790.0, phase=PHASE_HOLD,
+                                        h_tgt_m=1.5, lbat_q=lbat_quant(3.86))]
+    for i in range(5):
+        t6_cases.append(Telemetry(*rnd_v2b(), lbat_q=r5.randrange(1, 256)))
+    t7_cases = [Telemetry(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, PHASE_NONE, 0, 0, 0, 0, 0, 0, lbat_q=1),
+                Telemetry.from_physical(state=STATE_POWERED, flags=FLAG_ARM_SWITCH | FLAG_SENSORS_OK | FLAG_ALIGNED
+                                        | FLAG_LINK_OK | FLAG_CONTROL_ACTIVE, reason=REASON_NONE, ack_seq=12, nonce=0x5A5A,
+                                        t_ms=21384, h_m=1.52, vz_mps=-0.04, roll_deg=0.75, pitch_deg=-1.5, yaw_deg=12.0,
+                                        tilt_deg=3.68, throttle=0.918, vcell_v=4.12, loop_max_us=2875.0, phase=PHASE_HOLD,
+                                        h_tgt_m=1.5, gps=(0x2F, 9, 25, 2, 0.734), lbat_q=lbat_quant(3.58))]
+    for i in range(5):
+        t7_cases.append(Telemetry(*rnd_v2b(), r5.randrange(256), r5.randrange(256), r5.randrange(256), r5.randrange(5),
+                                  r5.randrange(0x10000), lbat_q=r5.randrange(1, 256)))
+    valid_down6: list[bytes] = []
+    for i, tlm in enumerate(t6_cases):
+        b = encode_telemetry(vid, (i * 47 + 5) & 0xFF, tlm)
+        valid_down6.append(b)
+        add(f"telem6_{i}", b, down7)
+    valid_down7: list[bytes] = []
+    for i, tlm in enumerate(t7_cases):
+        b = encode_telemetry(vid, (i * 53 + 9) & 0xFF, tlm)
+        valid_down7.append(b)
+        add(f"telem7_{i}", b, down7)
+    for i, b in enumerate(valid_down6[:2] + valid_down7[:2]):
+        j = r5.randrange(6, len(b) - 2)
+        bad = bytearray(b)
+        bad[j] ^= 1 << r5.randrange(0, 8)
+        add(f"corrupt_telem67_bitflip_{i}", bytes(bad), down7, f"bit flip in byte {j} -> CRC mismatch")
+    add("telem6_on_v09_decoder", valid_down6[2], down5, "a TELEM6 frame fed to a v0.9 ground decoder: wrong_type")
+    add("telem7_on_v09_decoder", valid_down7[1], down5, "a TELEM7 frame fed to a v0.9 ground decoder: wrong_type")
+    add("telem7_on_uplink", valid_down7[1], up, "a TELEM7 frame fed to the vehicle's CMD decoder: wrong_type")
+    add("telem6_len_31", encode_frame(vid, TYPE_TELEM6, 3, valid_down2[3][6:-2]), down7,
+        "TYPE TELEM6 with a 31-byte v2 payload (no tail): bad_payload_len")
+    add("telem7_len_39", encode_frame(vid, TYPE_TELEM7, 3, valid_down5[2][6:-2]), down7,
+        "TYPE TELEM7 with the 39-byte v5 payload: bad_payload_len")
+    add("telem3_len_38", encode_frame(vid, TYPE_TELEM3, 3, valid_down7[1][6:-2]), down7,
+        "TYPE TELEM3 with the 38-byte v7 payload: bad_payload_len")
+    add_stream("telem_v1_to_v7_mixed_with_noise", valid_down[1] + bytes(r5.randrange(256) for _ in range(5))
+               + valid_down6[2] + valid_down3[2] + valid_down7[1] + bytes(r5.randrange(256) for _ in range(4))
+               + valid_down5[2] + valid_down6[0] + valid_down4[0] + valid_down7[0], down7,
+               "TELEM v1 .. v7 frames between noise, one 2026-11-10 ground decoder")
     return {
         "_doc": ("LoRa link byte vectors (SPEC 10.3), generated by sim/link_proto.py make_test_vectors(); each vector is fed to a "
                  "fresh FrameDecoder(vehicle_id, accept_types); expected_frames are normative, see make_test_vectors() for the "
                  "counters. Telemetry fields are the wire integers (h 0.1 m, v_z cm/s, angles 0.01 deg, throttle x1000, mV, us; "
                  "TELEM2 (v0.7 VTOL, TYPE 0x21) adds phase and h_tgt_dm (0.1 m); TELEM3 (v0.8 VTOL + GPS, TYPE 0x22) adds "
                  "gps_flags, num_sv, hacc_dm (0.1 m), pos_mode, dist_dm (0.1 m, 0xFFFF none); TELEM4 / TELEM5 (v0.9 power "
-                 "builds, TYPE 0x23 / 0x24) add v_aux_q (0.125 V) and pwr_flags to TELEM2 / TELEM3; LEN_MAX 42)."),
+                 "builds, TYPE 0x23 / 0x24) add v_aux_q (0.125 V) and pwr_flags to TELEM2 / TELEM3; TELEM6 / TELEM7 "
+                 "(2026-11-10, the carrier battery build, TYPE 0x25 / 0x26) add lbat_q (0.02 V) to TELEM2 / TELEM3; "
+                 "LEN_MAX 42)."),
         "seed": seed, "vehicle_id": vid,
         "crc16_ccitt_false_check": {"ascii": "123456789", "crc": crc16_ccitt(b"123456789")},
         "constants": {"SYNC": [SYNC0, SYNC1], "TYPE_CMD": TYPE_CMD, "TYPE_TELEM": TYPE_TELEM, "TYPE_TELEM2": TYPE_TELEM2,
@@ -1160,7 +1308,9 @@ def make_test_vectors(vehicle_id: int, seed: int = 20261013) -> dict:
                       "TYPE_TELEM4": TYPE_TELEM4, "TYPE_TELEM5": TYPE_TELEM5, "TELEM4_FRAME_BYTES": TELEM4_FRAME_BYTES,
                       "TELEM5_FRAME_BYTES": TELEM5_FRAME_BYTES, "PWR_TAIL_BUILD_SHIFT": PWR_TAIL_BUILD_SHIFT,
                       "R_W_LOST": R_W_LOST, "R_W_SAG": R_W_SAG, "R_W_BUF": R_W_BUF, "R_W_D2": R_W_D2,
-                      "REJ_POWER": REJ_POWER},
+                      "REJ_POWER": REJ_POWER, "TYPE_TELEM6": TYPE_TELEM6, "TYPE_TELEM7": TYPE_TELEM7,
+                      "TELEM6_FRAME_BYTES": TELEM6_FRAME_BYTES, "TELEM7_FRAME_BYTES": TELEM7_FRAME_BYTES,
+                      "LBAT_SCALE": LBAT_SCALE},
         "scaling": [
             {"field": "h_dm", "physical": 12.25, "int": quantize(12.25, H_SCALE, I16)},
             {"field": "h_dm", "physical": -12.25, "int": quantize(-12.25, H_SCALE, I16)},

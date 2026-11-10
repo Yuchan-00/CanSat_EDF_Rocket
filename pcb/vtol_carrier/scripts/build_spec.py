@@ -51,6 +51,9 @@ PIO = "firmware/atmega128_fc/platformio.ini"
 CADR = "cad/exports/cadquery_report_vtol.json"
 CADC = "cad/exports/cadquery_checks_vtol.md"
 HW = "docs/v0.9_하드웨어_변경.md"
+# 2026-11-11: the P3 study is not in this repository - its kept copy is the deliverables folder
+# B:/0)AI_Cad/CanSat_v0.9/02_펌웨어/설계/제안3_5번째칩 (README.md); rev 2c has no 5th-chip footprint.  The label below is
+# unchanged because the spec and the KiCad IR quote it
 P3 = "fw09/p3/README.md (scratch study, P3 fifth-chip proposal)"
 USER4 = "user decision 2026-11-04"
 USER5 = "user decision 2026-11-05"
@@ -1379,7 +1382,7 @@ def narrative(spots: dict) -> dict:
                          "stay open)",
             "boot_modes": "reset with GPIO0 high / GPIO2 high / GPIO15 low = run from flash; GPIO0 low (J3 shunt 1-2) = "
                           f"UART download ({ESPA})",
-            "uart": "UART0 at the COM's link baud (params link.uart_baud 9600, line 2242 - bridge firmware decides; "
+            "uart": "UART0 at the ESP bridge's baud (params flight_computer.link.esp_bridge.uart_baud 38400 8N1 - the COM's esp_bridge backend and firmware/esp_bridge use it; link.uart_baud 9600 is the LoRa fallback's only; corrected 2026-11-11, this text said 9600; "
                     "115200 also fine for the shifters); the ESP prints a boot log at 74880 baud on TXD0 after each "
                     "reset: the COM receives garbage bytes then (link_proto sync + CRC rejects them, A - check "
                     "com_link)",
@@ -1495,7 +1498,7 @@ def firmware_followup() -> list[dict]:
         {"area": "ESP-12E bridge firmware (new, runs on the ESP8266)", "owner": "firmware round (user decides)",
          "items": ["transparent UART0 <-> Wi-Fi bridge only (UDP or TCP), no flight logic (project rule: all flight "
                    "computing on the ATmega128s)",
-                   f"UART0 at the COM's link baud: {P} flight_computer.link.uart_baud 9600 (line 2242) unless the COM "
+                   f"UART0 at the ESP bridge's baud: {P} flight_computer.link.esp_bridge.uart_baud 38400 (hal/esp_bridge.c; link.uart_baud 9600 is the LoRa fallback's - corrected 2026-11-11); it changes only if the COM "
                    "driver changes it",
                    "Wi-Fi mode: ESP as access point (laptop / phone joins) or station to a ground AP / a second ESP8266 - "
                    "user decision; fixed channel, no power save during flight (latency), TX power setting",
@@ -1505,7 +1508,7 @@ def firmware_followup() -> list[dict]:
         {"area": "COM radio driver", "owner": "firmware round (user decides)",
          "items": ["the lora_uart backend (firmware/atmega128_fc/src/hal/lora_uart.c) drives M0 / M1 (PC3 / PC4, open "
                    "on this board) low and reads AUX (PC5, open = ready through its pull-up, line 69-70): with a "
-                   "transparent ESP bridge at 9600 8N1 it may work UNCHANGED (E) - verify on the bench",
+                   "transparent ESP bridge at 9600 8N1 it may work UNCHANGED (E) - not the route taken: the COM has its own esp_bridge backend at 38400 (hal/esp_bridge.c, 2026-11-06)",
                    "PC6 (ESP RST through Q5) is untouched by the lora_uart build (Hi-Z -> ESP runs); a driver change may "
                    "pulse it low to restart a hung bridge",
                    "sim/link_model.py EBYTE_* timing constants (line 11-17) and the lora_uart air-rate model "

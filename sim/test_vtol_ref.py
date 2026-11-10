@@ -2569,13 +2569,18 @@ def test_link_budget_sizes_the_telem2_downlink():
         assert lm.round_trip(cfg) == lm.round_trip(cfg, mode=lp.MODE_BALLISTIC) == lm.round_trip(cfg, telem_bytes=36)
         assert b1["downlink_s"] == lm.hop_timing(cfg, "down", 36).arrival                  # the v0.6.3 numbers
         assert b2["downlink_s"] == lm.hop_timing(cfg, "down", 39).arrival > b1["downlink_s"]
-        assert b2["reply_timeout_s"] - b1["reply_timeout_s"] == pytest.approx(b2["downlink_s"] - b1["downlink_s"])
-        assert b2["sx127x"]["toa_telem_s"] == lm.lora_time_on_air(39, cfg.sf, cfg.bw_hz, cfg.cr_denom, cfg.preamble)
+        w2, w1 = (b2.get("downlink_worst_s", b2["downlink_s"]), b1.get("downlink_worst_s", b1["downlink_s"]))   # esp: + retries
+        assert b2["reply_timeout_s"] - b1["reply_timeout_s"] == pytest.approx(w2 - w1)
+        if r == "esp_bridge":                                                 # 2026-11-10: the ESP-NOW bridge model
+            assert b2["downlink"]["uart_to_esp"] == pytest.approx(39 * 10 / cfg.esp_uart_baud)
+        else:
+            assert b2["sx127x"]["toa_telem_s"] == lm.lora_time_on_air(39, cfg.sf, cfg.bw_hz, cfg.cr_denom, cfg.preamble)
         assert b2["poll_hz_achievable"] == (1.0 / b2["rtt_worst_s"] >= cfg.poll_hz)
         d = (b2["downlink_s"] - b1["downlink_s"]) * 1e3
-        assert d == pytest.approx(16.25 if r == "lora_uart" else 8.25, abs=0.01), (r, d)
+        # esp_bridge: 3 bytes on both 38400-baud UART legs + 24 us on air at 1 Mbps
+        assert d == pytest.approx({"lora_uart": 16.25, "sx127x": 8.25, "esp_bridge": 1.5865}[r], abs=0.01), (r, d)
     with pytest.raises(ValueError):
-        lm.round_trip(lm.LinkConfig.from_params(P), telem_bytes=40)
+        lm.round_trip(lm.LinkConfig.from_params(P), telem_bytes=43)   # 2026-11-10: 40 is TELEM v6 now
     try:                                                                      # the sim's own wrapper agrees (if present)
         from sim.sim6dof import vtol_round_trip
     except Exception:  # pragma: no cover

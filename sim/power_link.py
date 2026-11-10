@@ -161,13 +161,13 @@ def telem4_budget(cfg, lm_mod=None) -> dict:
             import link_model as lm_mod  # type: ignore
     lp_ = lm_mod.lp
     out: dict = {"radio": cfg.radio, "poll_hz": cfg.poll_hz}
-    up = lm_mod.hop_timing(cfg, "up", lp_.CMD_FRAME_BYTES).arrival
     for name, nb in (("telem2", lp_.TELEM2_FRAME_BYTES), ("telem3", lp_.TELEM3_FRAME_BYTES), ("telem4", TELEM4_FRAME_BYTES),
                      ("telem5", TELEM5_FRAME_BYTES), ("telem3_plus3", lp_.TELEM3_FRAME_BYTES + 3)):
         hop = lm_mod.hop_timing(cfg, "down", nb)
-        worst = up + lm_mod.FC_REPLY_DELAY_S + hop.arrival
-        allowed = up + lm_mod.FC_REPLY_ALLOWANCE_S + hop.arrival
-        out[name] = {"frame_bytes": nb, "air_s": hop.parts["air"], "downlink_s": hop.arrival, "rtt_s": worst,
-                     "reply_timeout_s": lm_mod.REPLY_TIMEOUT_FACTOR_ASSUMED * allowed + lm_mod.REPLY_TIMEOUT_MARGIN_S_ASSUMED,
-                     "max_poll_hz": 1.0 / worst, "poll_ok": 1.0 / worst >= cfg.poll_hz}
+        # 2026-11-10: the link model's own round trip (the esp_bridge model's timeout covers the MAC retries; the LoRa
+        # numbers are the formulas this function used before, bit for bit)
+        rt = lm_mod.round_trip_bytes(cfg, nb)
+        out[name] = {"frame_bytes": nb, "air_s": hop.parts["air"], "downlink_s": hop.arrival, "rtt_s": rt["rtt_mean_s"],
+                     "reply_timeout_s": rt["reply_timeout_s"], "max_poll_hz": rt["max_poll_hz"],
+                     "poll_ok": rt["max_poll_hz"] >= cfg.poll_hz}
     return out

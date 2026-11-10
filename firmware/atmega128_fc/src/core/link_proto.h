@@ -34,6 +34,13 @@
  *            byte-identical (fw09 SPEC section 7 row 21); their uplink decoder accepts CMD only, so a candidate with
  *            LEN 41 / 42 is noise there either way - it is counted bad_len at its LEN byte instead of bad_crc 43 / 44
  *            bytes later (every frame found is the same, as the failed candidate's bytes are re-parsed).
+ *   downlink LP_TYPE_TELEM6 (0x25) 32 bytes / LP_TYPE_TELEM7 (0x26) 38 bytes (2026-11-10 control round, the VTOL battery
+ *            build on the carrier rev 2c): the TELEM v2 / v3 bytes, then the logic-battery tail lbat u8 (the FCU's PF3
+ *            reading, LP_LBAT_SCALE = 50 per volt: 0.02 V steps, 1..255).  The FCU sends it in the snapshot's spare byte
+ *            (SNAP2 spare / SNAP3 spare3; 0 = LP_LBAT_NONE, this build has no monitor); the COM appends it exactly when
+ *            that byte is not 0 and the snapshot carries no power tail (LP_LBAT_TAIL_DUE; sim/link_proto.py
+ *            logic_tail_due) - one COM image for every build, every other build keeps its TELEM byte for byte.
+ *            LP_LEN_MAX stays 42.  Only in the LP_RP1 builds (the ballistic images never send or accept them).
  *
  * Mission modes (v0.7, params.json mission.mode, a BUILD-TIME choice, params_gen.h MISSION_MODE): VTOL (the
  * ground sends ON / OFF / UP / DOWN and KILL, SPEC 8.9) and BALLISTIC (the v0.4-v0.6.3 ARM / LAUNCH /
@@ -73,6 +80,8 @@
 #define LP_TYPE_TELEM3 0x22u                                        /* v0.8 TELEM v3 (VTOL build with GPS position hold) */
 #define LP_TYPE_TELEM4 0x23u                                        /* v0.9 TELEM v4: TELEM v2 + the power tail (RP1) */
 #define LP_TYPE_TELEM5 0x24u                                        /* v0.9 TELEM v5: TELEM v3 + the power tail (RP1) */
+#define LP_TYPE_TELEM6 0x25u                                        /* 2026-11-10 TELEM v6: TELEM v2 + the logic-battery tail */
+#define LP_TYPE_TELEM7 0x26u                                        /* 2026-11-10 TELEM v7: TELEM v3 + the logic-battery tail */
 /* v0.9 RP1: 1 = the v0.9 link sizes (LEN_MAX 42); 0 = the ballistic AVR images (FC_MODE_BALLISTIC), byte-identical to
  * v0.8.1 (LEN_MAX 40) - see the TELEM4 / TELEM5 paragraph above */
 #if defined(__AVR__) && defined(FC_MODE_BALLISTIC)
@@ -90,6 +99,12 @@
 #define LP_PWR_TAIL_DUE(pwr_flags) ((((uint8_t)(pwr_flags) >> LP_PWR_TAIL_BUILD_SHIFT) & 0x03u) != 0u)
 #define LP_TELEM4_PAYLOAD_LEN (LP_TELEM2_PAYLOAD_LEN + LP_PWR_TAIL_BYTES)    /* 33 */
 #define LP_TELEM5_PAYLOAD_LEN (LP_TELEM3_PAYLOAD_LEN + LP_PWR_TAIL_BYTES)    /* 39 */
+#define LP_LBAT_TAIL_BYTES 1u                                       /* 2026-11-10 logic-battery tail: lbat u8 */
+#define LP_LBAT_NONE 0u                                             /* snapshot lbat byte: no monitor in this build */
+#define LP_LBAT_SCALE 50u                                           /* lbat = round(V x 50): 0.02 V steps */
+#define LP_LBAT_TAIL_DUE(lbat, pwr_flags) ((uint8_t)(lbat) != LP_LBAT_NONE && !LP_PWR_TAIL_DUE(pwr_flags))
+#define LP_TELEM6_PAYLOAD_LEN (LP_TELEM2_PAYLOAD_LEN + LP_LBAT_TAIL_BYTES)   /* 32 */
+#define LP_TELEM7_PAYLOAD_LEN (LP_TELEM3_PAYLOAD_LEN + LP_LBAT_TAIL_BYTES)   /* 38 */
 #if LP_RP1
 #define LP_MAX_PAYLOAD_LEN 39u                                      /* TELEM v5 (v0.8: 37) */
 #else
@@ -104,6 +119,8 @@
 #define LP_TELEM3_FRAME_BYTES (LP_FRAME_OVERHEAD + LP_HEADER_BYTES + LP_TELEM3_PAYLOAD_LEN) /* 45 */
 #define LP_TELEM4_FRAME_BYTES (LP_FRAME_OVERHEAD + LP_HEADER_BYTES + LP_TELEM4_PAYLOAD_LEN) /* 41 */
 #define LP_TELEM5_FRAME_BYTES (LP_FRAME_OVERHEAD + LP_HEADER_BYTES + LP_TELEM5_PAYLOAD_LEN) /* 47 */
+#define LP_TELEM6_FRAME_BYTES (LP_FRAME_OVERHEAD + LP_HEADER_BYTES + LP_TELEM6_PAYLOAD_LEN) /* 40 */
+#define LP_TELEM7_FRAME_BYTES (LP_FRAME_OVERHEAD + LP_HEADER_BYTES + LP_TELEM7_PAYLOAD_LEN) /* 46 */
 #define LP_FRAME_MAX_BYTES (LP_FRAME_OVERHEAD + LP_LEN_MAX)        /* 47 (v0.7: 39, v0.8: 45) */
 #define LP_DIST_NONE 0xFFFFu                                        /* TELEM v3 dist: no hold point */
 #define LP_DIST_SCALE 10u                                           /* TELEM v3 dist: 0.1 m */
@@ -306,6 +323,8 @@ uint8_t  lp_encode_telem3(uint8_t veh, uint8_t seq, const lp_telem_t *t, uint8_t
 #define LP_ACCEPT_TELEM3 0x08u                 /* v0.8: the ground of a VTOL + GPS vehicle also accepts TELEM3 */
 #define LP_ACCEPT_TELEM4 0x10u                 /* v0.9 RP1: the ground of a tether / hybrid vehicle: TELEM4 */
 #define LP_ACCEPT_TELEM5 0x20u                 /* v0.9 RP1: ... and TELEM5 (the power builds with the GPS) */
+#define LP_ACCEPT_TELEM6 0x40u                 /* 2026-11-10: the ground of the carrier battery build: TELEM6 */
+#define LP_ACCEPT_TELEM7 0x80u                 /* 2026-11-10: ... and TELEM7 (with the GPS) */
 #define LP_ANY_VEHICLE (-1)
 #define LP_DEC_QUEUE (LP_FRAME_MAX_BYTES + 4u)  /* replay queue; <= LP_FRAME_MAX_BYTES + 1 are ever pending */
 #define LP_DEC_MAX_OUT 4u                      /* frames one input byte can complete (<= 46 replayed bytes, >= 13 per frame) */

@@ -8,7 +8,9 @@ Totals are computed, never typed.
 
 What changes against the rocket budget (tools/budget_bom.py): the four ATmega128 minimum-system boards, their AMS1117 /
 level-shifter modules and the ilink / nlink / glink harnesses become ONE carrier PCB (fabrication + parts, ASSUMED: no
-quote taken); the GPS pod parts become the cap's GPS parts; the recovery rows (chute fabric, lines, ejection spring) go;
+quote taken; pcb/vtol_carrier rev 2c: 4 layers, 4 chips and no 5th-chip footprint, the ESP-12E soldered on, no LoRa
+nets); the 5 V logic UBEC and the user's LoRa modules go (2026-11-11): the carrier takes its 5 V from a separate 1S
+logic pack through a Pololu S9V11F5S6CMA module switched by an MTS-102 toggle - three devicemart rows (budget_bom.DM); the GPS pod parts become the cap's GPS parts; the recovery rows (chute fabric, lines, ejection spring) go;
 the release servo stays in the 5-servo set as a spare.  The tether / hybrid variants add the on-vehicle kit and list the
 ground equipment kits of the tether report.
 
@@ -30,8 +32,12 @@ import budget_bom as bb  # noqa: E402  (the rocket budget's researched rows)
 OUT_DIR = os.path.join(ROOT, "docs", "budget")
 G = 9.80665
 DROP = ("ATmega128 최소 시스템 보드", "I2C 레벨 시프터", "AMS1117-3.3", "ilink 배선", "nlink 배선", "glink 배선",
-        "GPS 포드 부품", "립스톱 나일론", "낙하산 줄", "사출 스프링")
-CARRIER_PCB_KRW_ASSUMED = 15000      # 2-layer 76 x 70 mm, 5 pcs + shipping (JLCPCB class; no quote taken)
+        "GPS 포드 부품", "립스톱 나일론", "낙하산 줄", "사출 스프링",
+        # 2026-11-11 (carrier rev 2c): no UBEC (1S logic pack + Pololu module on the board), no LoRa nets
+        "5 V 3 A UBEC", "LoRa 모듈 2개")
+# the v0.9 CAD-2 guesses, made for a 2-layer 76 x 70 mm board; rev 2c is 4 layers (pcb/vtol_carrier) - NOT re-estimated,
+# no quote taken (a 4-layer order costs more: ASSUMED low)
+CARRIER_PCB_KRW_ASSUMED = 15000      # 5 pcs + shipping (JLCPCB class; no quote taken)
 CARRIER_PARTS_KRW_ASSUMED = 45000    # 4 x ATmega128A TQFP-64 (~8,000 each) + crystals, regulators, BSS138, passives, headers
 CAP_GPS_PARTS_KRW_ASSUMED = 3000     # FR4 copper-clad 40 x 40, JST-GH pair, 28 AWG 4-core 0.4 m, foam tape
 
@@ -62,12 +68,21 @@ def main(argv: list[str] | None = None) -> int:
     tcost = {i["item"]: i["krw"] for i in tether["costs_krw"]["items"]}
     rows = [r for r in bb.MUST if not any(r[1].startswith(d) or d in r[1] for d in DROP)]
     dropped = [r for r in bb.MUST if r not in rows]
-    rows.append(("비행 컴퓨터", "VTOL 캐리어 PCB 제작 (2층 76 x 70 mm, 5장) (ASSUMED)", CARRIER_PCB_KRW_ASSUMED, 0, "",
-                 "추정값 - 견적 안 받음. ATmega128A 4개(NAV·FCU·COM·GNS) + 5번째 자리(미실장), 센서 모듈·LoRa·OpenLog 헤더, "
-                 "레벨 시프터·레귤레이터 온보드. 흡입 격벽 위 FCU 자리에 폼 테이프 + 케이블 타이"))
-    rows.append(("비행 컴퓨터", "캐리어 부품: ATmega128A TQFP-64 x4, 16 MHz 크리스털 x4, AMS1117 x2, BSS138, 수동 소자, 헤더 "
+    rows.append(("비행 컴퓨터", "VTOL 캐리어 PCB 제작 (rev 2c, 4층, 5장) (ASSUMED)", CARRIER_PCB_KRW_ASSUMED, 0, "",
+                 "추정값 - 견적 안 받음 (v0.9 CAD-2의 2층 기판 추정값 그대로; 4층은 더 비쌀 수 있음). ATmega128A 4개"
+                 "(NAV·FCU·COM·GNS; 5번째 칩 자리 없음), ESP-12E 납땜 자리, BMP280·GY-521·OpenLog·Pololu 5 V 모듈 헤더, "
+                 "레벨 시프터·레귤레이터 온보드 (pcb/vtol_carrier). 흡입 격벽 위 FCU 자리에 폼 테이프 + 케이블 타이"))
+    rows.append(("비행 컴퓨터", "캐리어 부품: ATmega128A TQFP-64 x4, 16 MHz 크리스털 x4, AMS1117, BSS138, 수동 소자, 헤더·커넥터 "
                  "(ASSUMED)", CARRIER_PARTS_KRW_ASSUMED, 0, "",
-                 "추정값 - 가격 조사 안 함. 기존 보드 4개·레벨 시프터 3개·AMS1117 3개·하네스 3개를 대신함"))
+                 "추정값 - 가격 조사 안 함 (v0.9 CAD-2 추정값 그대로, rev 2c 부품표로 다시 계산하지 않음). 기존 보드 4개·레벨 "
+                 "시프터 3개·AMS1117 3개·하네스 3개를 대신함. ESP-12E·BMP280·GY-521·OpenLog·GPS는 각자의 줄"))
+    for key, name, note in (
+            ("logic_battery", "로직 전원 1S 리튬폴리머 3.7 V 4200 mAh [DTP105565P]",
+             "캐리어 J14. 6S 팩과 분리된 로직 전원 (configs.vtol.logic_power). 충전기 1S 설정 필요"),
+            ("boost", "Pololu 5 V 승강압 모듈 S9V11F5S6CMA (#2870, 저전압 차단 조정)",
+             "캐리어 J6. 1S 팩 -> 5 V 로직. 로켓 예산의 5 V UBEC를 대신함"),
+            ("toggle", "로직 전원 토글 스위치 MTS-102 (2단 3P, 듀폰 하네스)", "캐리어 J15")):
+        rows.append(("비행 컴퓨터", name, bb.DM[key][1], 0, bb.dm_url(key), bb.DM_NOTE + ". " + note))
     rows.append(("항법", f"GPS 캡 부품: FR4 동박 {L.p['top_cap']['gps']['ground_plane_side']:g} mm 접지판, JST-GH 1쌍, 28 AWG "
                  "4심 0.4 m, 폼 테이프 (ASSUMED)", CAP_GPS_PARTS_KRW_ASSUMED, 0, "", "추정값. GPS는 탑캡 위에 테이프로 고정"))
     ext = list(L.sl_ext_len)
@@ -126,6 +141,9 @@ def main(argv: list[str] | None = None) -> int:
     with open(os.path.join(a.out_dir, "bom_vtol.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump({"params_sha256": sha, "total_krw_battery_vtol": total, "rows": rows, "dropped_rows": dropped,
                    "tether_vehicle_add_krw": t_add, "hybrid_vehicle_add_krw": h_add, "vehicle_kits": vehicle_hybrid,
+                   "devicemart_parts": {k: {"goods_no": v[0], "krw_incl_vat": v[1], "url": bb.dm_url(k)}
+                                        for k, v in bb.DM.items()},
+                   "devicemart_read": list(bb.DM_READ),
                    "ground_kits": kits, "pla_g": pla_g, "pla_rolls": pla_rolls, "pla_by_colour": pla_by_colour,
                    "vehicle_mass_g": masses,
                    "thrust_nominal_N_unverified": thrust_n}, f, ensure_ascii=False, indent=1)

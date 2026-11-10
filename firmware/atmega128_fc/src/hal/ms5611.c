@@ -1,5 +1,8 @@
-/* ms5611.c - see ms5611.h.  Commands: MS5611-01BA03 datasheet. */
+/* ms5611.c - see ms5611.h (compiled only for FC_BARO_SENSOR == FC_BARO_MS5611, hal/baro.h).  Commands: MS5611-01BA03
+ * datasheet. */
 #include "ms5611.h"
+
+#if FC_BARO_SENSOR == FC_BARO_MS5611
 
 #include <avr/wdt.h>
 #include <util/delay.h>
@@ -151,3 +154,5 @@ bool ms5611_background(ms5611_t *b)
     }
     return false;
 }
+
+#endif /* FC_BARO_SENSOR == FC_BARO_MS5611 */

@@ -637,7 +637,7 @@
   },
   "pins_open": "2 ADC, 4 GPIO16, 5 GPIO14, 6 GPIO12, 7 GPIO13, 19 GPIO4, 20 GPIO5; 9-14 flash pins (must stay open)",
   "boot_modes": "reset with GPIO0 high / GPIO2 high / GPIO15 low = run from flash; GPIO0 low (J3 shunt 1-2) = UART download (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them)",
-  "uart": "UART0 at the COM's link baud (params link.uart_baud 9600, line 2242 - bridge firmware decides; 115200 also fine for the shifters); the ESP prints a boot log at 74880 baud on TXD0 after each reset: the COM receives garbage bytes then (link_proto sync + CRC rejects them, A - check com_link)",
+  "uart": "UART0 at the ESP bridge's baud (params flight_computer.link.esp_bridge.uart_baud 38400 8N1 - the COM's esp_bridge backend and firmware/esp_bridge use it; link.uart_baud 9600 is the LoRa fallback's only; corrected 2026-11-11, this text said 9600; 115200 also fine for the shifters); the ESP prints a boot log at 74880 baud on TXD0 after each reset: the COM receives garbage bytes then (link_proto sync + CRC rejects them, A - check com_link)",
   "flashing": [
    "fit J26 (COM held in reset: PC6 Hi-Z -> RST high via Q5's pull-ups; PD3 Hi-Z -> the ESP RXD0 line idles high)",
    "fit a shunt on J3 pins 1-2 (IO0 to GND)",
@@ -6253,7 +6253,7 @@
    "owner": "firmware round (user decides)",
    "items": [
     "transparent UART0 <-> Wi-Fi bridge only (UDP or TCP), no flight logic (project rule: all flight computing on the ATmega128s)",
-    "UART0 at the COM's link baud: params.json flight_computer.link.uart_baud 9600 (line 2242) unless the COM driver changes it",
+    "UART0 at the ESP bridge's baud: params.json flight_computer.link.esp_bridge.uart_baud 38400 (hal/esp_bridge.c; link.uart_baud 9600 is the LoRa fallback's - corrected 2026-11-11); it changes only if the COM driver changes it",
     "Wi-Fi mode: ESP as access point (laptop / phone joins) or station to a ground AP / a second ESP8266 - user decision; fixed channel, no power save during flight (latency), TX power setting",
     "boot log at 74880 baud on TXD0 after reset (cannot be disabled without GPIO15 tricks, A) - the COM must tolerate it",
     "optional: use GPIO4 (open on this board) as a 'bridge ready' line in a later board revision"
@@ -6263,7 +6263,7 @@
    "area": "COM radio driver",
    "owner": "firmware round (user decides)",
    "items": [
-    "the lora_uart backend (firmware/atmega128_fc/src/hal/lora_uart.c) drives M0 / M1 (PC3 / PC4, open on this board) low and reads AUX (PC5, open = ready through its pull-up, line 69-70): with a transparent ESP bridge at 9600 8N1 it may work UNCHANGED (E) - verify on the bench",
+    "the lora_uart backend (firmware/atmega128_fc/src/hal/lora_uart.c) drives M0 / M1 (PC3 / PC4, open on this board) low and reads AUX (PC5, open = ready through its pull-up, line 69-70): with a transparent ESP bridge at 9600 8N1 it may work UNCHANGED (E) - not the route taken: the COM has its own esp_bridge backend at 38400 (hal/esp_bridge.c, 2026-11-06)",
     "PC6 (ESP RST through Q5) is untouched by the lora_uart build (Hi-Z -> ESP runs); a driver change may pulse it low to restart a hung bridge",
     "sim/link_model.py EBYTE_* timing constants (line 11-17) and the lora_uart air-rate model (params.json link.lora_uart_air_rate_bps 2400, line 2245) do not describe Wi-Fi: re-derive / measure the link latency and loss (control-relevant only through the link-loss timers)"
    ]

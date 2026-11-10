@@ -4597,10 +4597,10 @@ def push_row_text(p: PushInfo, lang: str, t_now: float | None = None) -> str:
 def gps_caveats(lang: str) -> list[str]:
     """The GPS statements every v0.8 card carries (physical limits; numbers: GPS_QUOTE_* / GPS_WANDER_M, sources there)."""
     if lang == "ko":
-        return [f"GPS 위치 유지 (u-blox NEO-6M 모델): GPS 위치 자체가 약 {GPS_WANDER_M:g} m 범위에서 천천히 흔들림 (모델 가정) - "
+        return [f"GPS 위치 유지 (u-blox NEO-7M급 모델): GPS 위치 자체가 약 {GPS_WANDER_M:g} m 범위에서 천천히 흔들림 (모델 가정) - "
                 f"실제 모듈을 측정하기 전에는 제자리 유지를 '약 {GPS_QUOTE_RMS_M:g} m RMS, 최대 {GPS_QUOTE_MAX_M:g} m'로 표기",
                 "GPS는 하늘이 열린 실외에서만 작동: 실내에서는 위치 유지 불가 (자세만 유지하고 바람에 밀림)"]
-    return [f"GPS position hold (u-blox NEO-6M model): the GPS position itself wanders ~{GPS_WANDER_M:g} m (model "
+    return [f"GPS position hold (u-blox NEO-7M class model): the GPS position itself wanders ~{GPS_WANDER_M:g} m (model "
             f"assumption) - station keeping is quoted as ~{GPS_QUOTE_RMS_M:g} m RMS / {GPS_QUOTE_MAX_M:g} m max until a "
             "real module is measured",
             "GPS needs open sky: no position hold indoors (attitude only, the vehicle drifts with the air)"]

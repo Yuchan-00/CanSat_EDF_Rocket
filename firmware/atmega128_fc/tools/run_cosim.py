@@ -47,8 +47,10 @@ Measured (cycle-exact; every interrupt that really ran is in the window, with th
   link  sample -> PWM register: the NAV's IMU sample (the MPU-6050 burst read starts FC_IMU_LEAD_COUNTS before its tick)
         -> the FCU's last vane compare-register write, through NAV tick, frame delivered, FCU tick start.
 Not exercised by the co-simulation builds, added analytically (and said so in the report):
-  - the NAV's I2C traffic (synthetic sensors, no TWI interrupt): one MS5611 bus script (11 TWI interrupts, longest path
-    from the NAV flight ELF) inside the time-critical part of every tick in MS5611 phases 0 and D1; the MPU-6050 burst
+  - the NAV's I2C traffic (synthetic sensors, no TWI interrupt): the barometer driver's bus scripts (params_gen.h
+    FC_BARO_SENSOR; BMP280: the forced write, 4 TWI interrupts, in phase BMP280_START_PHASE and the data read, 11, in
+    phase BMP280_READ_PHASE; MS5611: one script of 11 in phases 0 and D1; longest path from the NAV flight ELF) inside
+    the time-critical part of the tick that starts them; the MPU-6050 burst
     (19 TWI interrupts + the Timer0 lead ISR with mpu6050_start_async) runs in the FC_IMU_LEAD_COUNTS before the tick,
     outside the time-critical part (reported);
   - the IMU lead itself: simavr's Timer0 ignores the TCNT0 preload timer.c sets (measured: its compare fires 7 cycles
@@ -60,9 +62,9 @@ Not exercised by the co-simulation builds, added analytically (and said so in th
 
 Criteria (PASS / FAIL in the report; exit status 0 only if all pass):
   normal flight, every run: FCU time-critical part <= 80 % (every interrupt incl. the busy log port); NAV time-critical
-  part <= 80 % (+ the MS5611 script, + the whole MPU-6050 burst as a bound); sample -> PWM register <= the 6-DOF sim's
+  part <= 80 % (+ the barometer script, + the whole MPU-6050 burst as a bound); sample -> PWM register <= the 6-DOF sim's
   compute delay (sim/fc_timing.py FC_COMPUTE_DELAY_S_MEASURED, 4.71 ms; the count over one control tick is reported);
-  the NAV's frame-ready increase from one tick to the next (+ the MS5611 script) inside the FCU's frame-timeout margin;
+  the NAV's frame-ready increase from one tick to the next (+ the barometer script) inside the FCU's frame-timeout margin;
   0 missed ticks on both chips; no
   navigation frame lost and no FCU reply refused after the first; no wrong data accepted (every frame the FCU used
   equals bit for bit the one the NAV sent, the NAV accepted exactly the valid replies); the FCU's background ends before
@@ -702,7 +704,7 @@ def analyse(ev: Ev, s: Scn, lay: dict, layn: dict, k: dict) -> dict:
     resp_missing = 0 if s.isr_resp else ISR_RESP                # diagnostic run: simavr's own interrupt charge
     lead_cyc = k["imu_lead_cycles"]
     log_udre = k["isr_fcu"]["log_udre"]["normal"]
-    twi_script = k["twi_script_cycles"]
+    twi_phase = k["twi_phase_cycles"]
     res: dict = {"scenario": s.name, "backend": s.backend, "kind": s.kind, "com_start_delay_us": s.delay_us,
                  "nav_start_delay_us": s.nav_delay_us, "wire_bits": s.wire_bits, "isr_resp": s.isr_resp,
                  "ilink_byte_cycles": il_byte, "log_byte_cycles": log_byte}
@@ -722,7 +724,7 @@ def analyse(ev: Ev, s: Scn, lay: dict, layn: dict, k: dict) -> dict:
         x["miso_damaged"] = x["miso"][:10] != x["miso_clean10"]
         x["mosi_damaged"] = x["frx_bytes"] != x["mosi"]
 
-    # ---- NAV ticks (their exchange, their sb record, MS5611 phase)
+    # ---- NAV ticks (their exchange, their sb record, barometer phase)
     nts = ev.NT
     for n in nts:
         n["sb"] = decode_struct(layn, "nav_sb_tick_t", ev.NB[(n["ep"], n["tick"])]) if ev.NB.get((n["ep"], n["tick"])) else None
@@ -733,7 +735,7 @@ def analyse(ev: Ev, s: Scn, lay: dict, layn: dict, k: dict) -> dict:
         n["phase"] = n["tick"] % k["baro_div"]
         sim_only = sum(n["isr"][v][0] + (reti + resp_missing) * n["isr"][v][1] for v in ("v15", "v19"))
         n["sim_only_cyc"] = sim_only
-        n["twi_cyc"] = twi_script if n["phase"] in (0, k["ms5611_d1_phase"]) else 0
+        n["twi_cyc"] = twi_phase.get(n["phase"], 0)
         if n["x"] is not None:
             n["crit_cyc"] = n["x"]["ss_hi"] - n["t2"] + resp_missing * n["nisr"]
             n["crit_equiv_cyc"] = n["crit_cyc"] - sim_only + n["twi_cyc"]
@@ -962,7 +964,7 @@ def analyse(ev: Ev, s: Scn, lay: dict, layn: dict, k: dict) -> dict:
 
     def nav_view(n: dict) -> dict:
         return {"ep": n["ep"], "tick": n["tick"], "t_s": round(n["t2"] / F_CPU, 4), "pad": bool(n["sb"]["pad"]),
-                "fcu_state_seen": dl.state_name(n["sb"]["fcu_state"]), "ms5611_phase": n["phase"],
+                "fcu_state_seen": dl.state_name(n["sb"]["fcu_state"]), "baro_phase": n["phase"],
                 "crit_us": round(n["crit_cyc"] / CYC_US, 1), "crit_equiv_us": round(n["crit_equiv_cyc"] / CYC_US, 1),
                 "crit_bound_us": round(n["crit_bound_cyc"] / CYC_US, 1),
                 "ready_us": round(n["ready_cyc"] / CYC_US, 1), "twi_added_us": round(n["twi_cyc"] / CYC_US, 1),
@@ -993,7 +995,7 @@ def analyse(ev: Ev, s: Scn, lay: dict, layn: dict, k: dict) -> dict:
         "max_bound_fraction": round(max(n["crit_bound_cyc"] for n in nv) / tick_cyc, 4) if nv else None,
         "flight_max_equiv_us": round(max(n["crit_equiv_cyc"] for n in nflight) / CYC_US, 1) if nflight else None,
         "pad_max_equiv_us": round(max(n["crit_equiv_cyc"] for n in npad) / CYC_US, 1) if npad else None,
-        "flight_max_by_ms5611_phase_us": {str(ph): round(max(n["crit_equiv_cyc"] for n in nflight if n["phase"] == ph) / CYC_US, 1)
+        "flight_max_by_baro_phase_us": {str(ph): round(max(n["crit_equiv_cyc"] for n in nflight if n["phase"] == ph) / CYC_US, 1)
                                           for ph in sorted({n["phase"] for n in nflight})},
         "frame_ready_after_tick_us": {"pad": stats([n["ready_cyc"] / CYC_US for n in npad]),
                                       "flight": stats([n["ready_cyc"] / CYC_US for n in nflight]),
@@ -1438,6 +1440,23 @@ def ms5611_d1_phase(gen: dict) -> int:
     return -(-h["MS5611_D1_CONV_MAX_US"] // gen["FC_TICK_US"])
 
 
+def baro_twi_phases(gen: dict) -> dict:
+    """phase (tick % FC_BARO_DIV) -> TWI interrupts of the barometer script the NAV starts in it, for the driver the
+    default NAV envs build (run_nav_simbench.py baro_sensor(): params_gen.h FC_BARO_SENSOR), from the driver's header:
+    BMP280 (hal/bmp280.h): the forced write in BMP280_START_PHASE, the data read BMP280_MEAS_TICKS =
+    ceil(BMP280_MEAS_MAX_US / FC_TICK_US) ticks later; MS5611 (hal/ms5611.h): the same script in phases 0 and
+    MS5611_D1_PHASE"""
+    sensor = rnv.baro_sensor(FW)
+    scripts = rnv.BARO_TWI_SCRIPTS[sensor]
+    if sensor == "BMP280":
+        h = header_defines(os.path.join(FW, "src", "hal", "bmp280.h"), ("BMP280_MEAS_MAX_US", "BMP280_START_PHASE"))
+        start = h["BMP280_START_PHASE"]
+        read = (start + -(-h["BMP280_MEAS_MAX_US"] // gen["FC_TICK_US"])) % gen["FC_BARO_DIV"]
+        return {start: min(scripts.values()), read: max(scripts.values())}
+    n = max(scripts.values())
+    return {0: n, ms5611_d1_phase(gen): n}
+
+
 def consts(builds: dict) -> dict:
     gen = header_defines(os.path.join(FW, "src", "params_gen.h"),
                          ("FC_LOOP_HZ", "FC_TICK_US", "ONB_LINK_ABORT_TICKS", "ONB_ABORT_RELEASE_TICKS", "ILINK_BAUD",
@@ -1447,14 +1466,16 @@ def consts(builds: dict) -> dict:
     isr_n = rnv.isr_table(builds["nav"]["elf"])
     pwm_addr, outs = pwm_registers()
     twi = isr_n["twi"]["longest"]
+    twi_ph = baro_twi_phases(gen)
     k = {"loop_hz": gen["FC_LOOP_HZ"], "tick_us": gen["FC_TICK_US"], "link_abort_ticks": gen["ONB_LINK_ABORT_TICKS"],
          "abort_release_ticks": gen["ONB_ABORT_RELEASE_TICKS"], "ilink_baud": gen["ILINK_BAUD"],
-         "imu_fail_ticks": gen["ONB_IMU_FAIL_TICKS"], "baro_div": gen["FC_BARO_DIV"], "ms5611_d1_phase": ms5611_d1_phase(gen),
+         "imu_fail_ticks": gen["ONB_IMU_FAIL_TICKS"], "baro_div": gen["FC_BARO_DIV"], "baro_sensor": rnv.baro_sensor(FW),
+         "twi_phase_interrupts": twi_ph, "twi_phase_cycles": {ph: n * twi for ph, n in twi_ph.items()},
          "frame_timeout_us": gen["NLINK_FRAME_TIMEOUT_US"], "nlink_xfer_us": gen["NLINK_XFER_US"],
          "imu_lead_counts": gen["FC_IMU_LEAD_COUNTS"], "imu_lead_cycles": gen["FC_IMU_LEAD_COUNTS"] * gen["FC_T2_PRESCALER"],
          "isr_fcu": isr_f, "isr_nav": isr_n,
-         "twi_script_interrupts": rnv.TWI_SCRIPT_INTERRUPTS, "twi_isr_cycles": twi,
-         "twi_script_cycles": rnv.TWI_SCRIPT_INTERRUPTS * twi,
+         "twi_script_interrupts": max(twi_ph.values()), "twi_isr_cycles": twi,
+         "twi_script_cycles": max(twi_ph.values()) * twi,
          "mpu_burst_interrupts": MPU_BURST_INTERRUPTS,
          "mpu_burst_isr_cycles": MPU_BURST_INTERRUPTS * twi + isr_n["imu_lead_timer0"]["longest"],
          "nav_isr_stack_not_exercised_bytes": max(isr_n["twi"].get("stack_bytes", 0),
@@ -1573,14 +1594,17 @@ def summarize(results: dict, scns: list[Scn], builds: dict, cos: dict, lay: dict
                            "nav_delays_us": sorted({s.nav_delay_us for s in scns if s.kind == "normal"}),
                            "runs": len(normal)},
                  "analytic_additions": {
-                     "nav_ms5611_twi_script_us": round(k["twi_script_cycles"] / CYC_US, 1),
-                     "nav_ms5611_twi_phases": [0, k["ms5611_d1_phase"]],
+                     "nav_baro_sensor": k["baro_sensor"],
+                     "nav_baro_twi_script_us": round(k["twi_script_cycles"] / CYC_US, 1),
+                     "nav_baro_twi_us_by_phase": {str(ph): round(c / CYC_US, 1)
+                                                  for ph, c in sorted(k["twi_phase_cycles"].items())},
                      "nav_mpu_burst_isr_us": round(k["mpu_burst_isr_cycles"] / CYC_US, 1),
                      "imu_lead_us": k["imu_lead_cycles"] / CYC_US,
                      "fcu_log_udre_cycles": k["isr_fcu"]["log_udre"]["normal"],
                      "_doc": "added to the measured co-simulation figures (not exercised by the cosim builds): the NAV's "
-                             "MS5611 bus script (11 TWI interrupts, longest path in the nav flight ELF) to every NAV tick in "
-                             "MS5611 phases 0 and D1 (it runs during the estimator: it delays the frame); a continuously busy "
+                             "barometer bus scripts (nav_baro_sensor; TWI interrupts x the longest path in the nav flight "
+                             "ELF) to the NAV ticks of the phases that start them (nav_baro_twi_us_by_phase; they run during "
+                             "the estimator: they delay the frame); a continuously busy "
                              "FCU log port (one UDRE interrupt per byte time) to the FCU's figures; the IMU lead at "
                              "FC_IMU_LEAD_COUNTS x FC_T2_PRESCALER before the NAV's Timer2 compare (simavr's Timer0 ignores "
                              "timer.c's TCNT0 preload; the Timer0 interrupt simavr runs at the tick and the NAV's simbench "
@@ -1639,8 +1663,8 @@ def summarize(results: dict, scns: list[Scn], builds: dict, cos: dict, lay: dict
             "nav_crit_bound_max_us": max(r["nav_crit"]["max_bound_us"] or 0 for r in rr),
             "nav_crit_flight_max_equiv_us": max(r["nav_crit"]["flight_max_equiv_us"] or 0 for r in rr),
             "nav_crit_pad_max_equiv_us": max(r["nav_crit"]["pad_max_equiv_us"] or 0 for r in rr),
-            "nav_crit_flight_max_by_ms5611_phase_us": {ph: max(r["nav_crit"]["flight_max_by_ms5611_phase_us"].get(ph, 0) for r in rr)
-                                                      for ph in sorted({p for r in rr for p in r["nav_crit"]["flight_max_by_ms5611_phase_us"]})},
+            "nav_crit_flight_max_by_baro_phase_us": {ph: max(r["nav_crit"]["flight_max_by_baro_phase_us"].get(ph, 0) for r in rr)
+                                                      for ph in sorted({p for r in rr for p in r["nav_crit"]["flight_max_by_baro_phase_us"]})},
             "nav_frame_ready_flight_with_twi_max_us": max(r["nav_crit"]["frame_ready_after_tick_us"]["flight_with_twi"].get("max", 0) for r in rr),
             "nav_frame_ready_largest_increase_us": max(r["nav_crit"]["frame_ready_largest_increase_tick_to_tick_us"] or 0 for r in rr),
             "nav_background_end_before_imu_lead_min_us": min(r["nav_crit"]["background_end_before_imu_lead_min_us"] for r in rr),
@@ -1796,7 +1820,7 @@ def summarize(results: dict, scns: list[Scn], builds: dict, cos: dict, lay: dict
               "limit_us": limit_us, "worst": {"run": wr["scenario"], **wr["fcu_crit"]["worst_tick"]},
               "normal_by_backend": {b: v["fcu_crit_all_max_us"] for b, v in by_b.items()}})
         wn = max(normal + faults, key=lambda r: r["nav_crit"]["max_bound_us"] or 0)
-        crit(f"NAV time-critical part (tick -> frame delivered, + the MS5611 script in phases 0 / D1, + the whole MPU-6050 "
+        crit(f"NAV time-critical part (tick -> frame delivered, + the {k['baro_sensor']} script in its phases, + the whole MPU-6050 "
              f"burst as an upper bound) <= {CRIT_LIMIT:.0%} of the tick (every run)",
              (wn["nav_crit"]["max_bound_us"] or 0) <= limit_us,
              {"max_bound_us": wn["nav_crit"]["max_bound_us"], "fraction": wn["nav_crit"]["max_bound_fraction"],
@@ -1821,7 +1845,7 @@ def summarize(results: dict, scns: list[Scn], builds: dict, cos: dict, lay: dict
                   "nav_tick_to_vane_max_us": v["latency_nav_tick_to_vane_equiv_max_us"],
                   "worst": v["latency_worst"]} for b, v in by_b.items()})
         margin = k["frame_timeout_us"] - tick_us
-        crit(f"NAV frame-ready increase from one tick to the next (+ the MS5611 TWI script) < the FCU's frame-timeout "
+        crit(f"NAV frame-ready increase from one tick to the next (+ the {k['baro_sensor']} TWI script) < the FCU's frame-timeout "
              f"margin ({margin} us = NLINK_FRAME_TIMEOUT_US - FC_TICK_US; every normal run, the pad -> flight switch "
              f"included)", all(v["nav_frame_ready_largest_increase_us"] < margin for v in by_b.values()),
              {b: {"largest_increase_us": v["nav_frame_ready_largest_increase_us"], "margin_us": margin}
@@ -1937,8 +1961,8 @@ def print_summary(rep: dict) -> None:
         print(f"  NAV time-critical part (tick -> frame delivered, + TWI): max {v['nav_crit_equiv_max_us']} us "
               f"(+ the whole MPU burst as a bound: {v['nav_crit_bound_max_us']} us) = "
               f"{100 * (v['nav_crit_equiv_max_us'] or 0) / t:.2f} % (run {n.get('run')}, tick {n.get('tick')}, phase "
-              f"{n.get('ms5611_phase')}, pad {n.get('pad')}); flight {v['nav_crit_flight_max_equiv_us']} / pad "
-              f"{v['nav_crit_pad_max_equiv_us']} us; by phase {v['nav_crit_flight_max_by_ms5611_phase_us']}")
+              f"{n.get('baro_phase')}, pad {n.get('pad')}); flight {v['nav_crit_flight_max_equiv_us']} / pad "
+              f"{v['nav_crit_pad_max_equiv_us']} us; by phase {v['nav_crit_flight_max_by_baro_phase_us']}")
         lt = v["latency_imu_sample_to_vane_equiv_us"]
         print(f"  sample -> vane register: {lt} us; parts max: "
               f"{ {kk: vv.get('max') for kk, vv in v['latency_parts_us'].items()} }; ticks over one tick "

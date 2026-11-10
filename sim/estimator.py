@@ -110,7 +110,7 @@ the NAV publishes the cheap gyro prediction and corrects afterwards; per NAV tic
      frame of tick k+1.
   6. GPS (``sim.gps_nav``): parse the UART bytes, configurator, epochs; ``NavGpsFilter.tick`` with a_k, q_k and
      g_k - b_k (fusion at k mod 5 == 0, the 50 Hz step + snapshot at k mod 5 == 4).
-  7. Background (MS5611 math).
+  7. Background (barometer math: BMP280, or the MS5611 build option).
 Consequences, stated: the attitude the FCU flies on is the integration of this tick's gyro from last tick's corrected
 attitude (identical to v0.7.1 between corrections); h / v_z are one tick (4 ms) older than in v0.7.1.  The ballistic
 NAV keeps the v0.6.3 order and ``PadAlignGyroEstimator`` bit for bit.

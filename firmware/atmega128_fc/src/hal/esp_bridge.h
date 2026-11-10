@@ -34,6 +34,11 @@
  *     ACK / retry; the vehicle side is the same as an Ebyte module with AUX idle.
  *   - no RSSI (RADIO_RSSI_NONE) and IL_STAT shows the backend as "not sx127x" (sim/ilink_proto.py STAT_SX127X clear,
  *     unchanged protocol).
+ *   - radio_stats()->ok (IL_STAT_RADIO_OK, the COM LED; 2026-11-10 control round, review F4 - it was always true): set
+ *     from the first byte the ESP put on the COM's RXD1 since this COM boot (the ROM boot log inside the boot window
+ *     after a cold boot, any link byte after it or after a warm boot) and never cleared.  It says "an ESP is on the
+ *     line and its UART runs", nothing about the ESP-NOW link (only the ground's replies show that); an absent or
+ *     dead ESP keeps it clear (the LED blinks "radio not ok", the FCU logs it - no flight decision uses it).
  *
  * Invariant: the ISRs only move (or, inside the boot window, drop) bytes; radio_send copies a whole frame or nothing;
  * every function returns within a bounded time.

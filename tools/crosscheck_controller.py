@@ -3078,10 +3078,11 @@ PARAM_EXEMPT = {
     "vc.takeoff_ticks": "build variant (the take-off check's time: 0 without it)",
     "vc.takeoff_climb_m": "build variant (the take-off check's climb: 0 without it)",
     "vc.takeoff_settle_ticks": "build variant (the take-off check's settle time: 0 without it)",
-    # the 6-DOF's simulated MS5611 is delayed by SensorConfig.baro_latency_s (0.1 s, SPEC 9) and its filter compensates
-    # that delay; the NAV compensates the real conversion schedule (hal/ms5611.h MS5611_LATENCY_S 15.9 ms) - a sensor
-    # model pairing, not a vehicle constant (the replays hand both sides the recorded latency)
-    "altv.latency_s": "sensor model (6-DOF baro delay 0.1 s vs the chip's MS5611 schedule 15.9 ms)",
+    # the 6-DOF's simulated barometer is delayed by SensorConfig.baro_latency_s (0.1 s, SPEC 9) and its filter compensates
+    # that delay; the NAV compensates the real measurement schedule (hal/baro.h BARO_LATENCY_S: BMP280 forced x4
+    # 16.75 ms since 2026-11-10, MS5611 15.9 ms) - a sensor model pairing, not a vehicle constant (the replays hand both
+    # sides the recorded latency)
+    "altv.latency_s": "sensor model (6-DOF baro delay 0.1 s vs the chip's barometer schedule: BMP280 16.75 ms / MS5611 15.9 ms)",
 }
 PARAM_REL_TOL = 1e-6        # float32 constants: the C rounds once (params_gen.h %.9g) or derives a few in float32 at init
                             # (alpha = 1 - expf(..), x dt); 1e-6 relative = ~8 ulp - G1 differences are 0.2-0.6 relative
@@ -3807,7 +3808,8 @@ def check_ilink_v2(vid: int, loop_hz: int, seed: int, n_streams: int, n_snaps: i
             continue
         if kind == "telem":
             fc, fp = bytes.fromhex(a[2:]), bytes.fromhex(b[2:])
-            ok = (len(fc) == len(fp) and len(fc) in (lp.TELEM2_FRAME_BYTES, lp.TELEM4_FRAME_BYTES)   # v0.9 RP1: TELEM4
+            ok = (len(fc) == len(fp) and len(fc) in (lp.TELEM2_FRAME_BYTES, lp.TELEM4_FRAME_BYTES,   # v0.9 RP1: TELEM4
+                                                     lp.TELEM6_FRAME_BYTES)   # 2026-11-10: a non-zero spare -> TELEM6
                   and lp.crc16_ccitt(fc[2:-2]) == (fc[-2] | fc[-1] << 8))
             other = [j for j in range(min(len(fc), len(fp)) - 2) if fc[j] != fp[j] and not 20 <= j < 26]
             diffs = [abs(int.from_bytes(fc[o:o + 2], "little", signed=True) - int.from_bytes(fp[o:o + 2], "little", signed=True))
@@ -6960,12 +6962,39 @@ def check_telem4(a) -> dict:
     return st
 
 
+def check_telem67(a) -> dict:
+    """2026-11-10 control round: TELEM v6 / v7 (core/link_proto_v09.c lp_encode_telem6 / 7) vs the reference's bytes: the
+    TELEM2 / TELEM3 payload of a random Telemetry + the lbat byte (sim.link_proto with_logic_tail -> encode_telemetry)."""
+    rng = random.Random(a.seed + 106)
+    fin, fout = os.path.join(BUILD, "t67_in.txt"), os.path.join(BUILD, "t67_out.txt")
+    rows, want = [], []
+    for k in range(a.telem4_n):
+        v7 = k % 2 == 1
+        tl = _rand_telem3(rng) if v7 else _rand_telem2(rng)
+        lb = rng.randrange(1, 256)
+        veh, seq = rng.randrange(256), rng.randrange(256)
+        rows.append(f"{7 if v7 else 6} {veh} {seq} {lb} 0 {tl.pack().hex()}")
+        want.append(lp.encode_telemetry(veh, seq, lp.with_logic_tail(tl, lb)).hex())
+    with open(fin, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(rows) + "\n")
+    run_exe(["--telem4-vectors", fin, fout])
+    with open(fout, "r", encoding="utf-8") as f:
+        got = f.read().split()
+    bad = sum(1 for g, w in zip(got, want) if g != w) + abs(len(got) - len(want))
+    lens = sorted({len(w) // 2 for w in want})
+    st = {"frames": len(want), "mismatches": bad, "frame_bytes": lens, "pass": bad == 0 and lens == [40, 46]}
+    if st["pass"]:
+        for path in (fin, fout):
+            os.remove(path)
+    return st
+
+
 def telem4_link_budget(ref: Ref) -> dict:
     """sim.power_link.telem4_budget for both radio backends (the link_model formulas, params flight_computer.link)."""
     from sim import link_model as lmm
     from sim import power_link as pl
     out = {}
-    for radio in ("lora_uart", "sx127x"):
+    for radio in getattr(lmm, "RADIOS", ("lora_uart", "sx127x")):         # 2026-11-10: + esp_bridge
         try:
             cfg = lmm.LinkConfig.from_params(ref.p, radio=radio)
         except TypeError:
@@ -7006,6 +7035,10 @@ def run_v09_sections(ref: Ref, a, report: dict) -> list[str]:
     report["telem4"] = t4
     print(f"== v0.9 TELEM v4 / v5 prototype: {t4['frames']} frames ({t4['frame_bytes']} B), mismatches {t4['mismatches']} -> "
           f"{'PASS' if t4['pass'] else 'FAIL'}")
+    t67 = check_telem67(a)
+    report["telem67"] = t67
+    print(f"== 2026-11-10 TELEM v6 / v7 (logic-battery tail): {t67['frames']} frames ({t67['frame_bytes']} B), mismatches "
+          f"{t67['mismatches']} -> {'PASS' if t67['pass'] else 'FAIL'}")
     try:
         report["telem4_budget"] = telem4_link_budget(ref)
         for radio, b in report["telem4_budget"].items():
@@ -7015,7 +7048,7 @@ def run_v09_sections(ref: Ref, a, report: dict) -> list[str]:
         report["telem4_budget"] = {"error": repr(exc)}
         print(f"   link budget: {exc!r}")
     report["v09_wall_s"] = round(time.perf_counter() - t0, 1)
-    return ["vertical_v09", "power_monitor", "onboard_power", "telem4"]
+    return ["vertical_v09", "power_monitor", "onboard_power", "telem4", "telem67"]
 
 
 # --------------------------------------------------------------------------- #

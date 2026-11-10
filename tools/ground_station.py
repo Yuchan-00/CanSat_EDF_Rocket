@@ -39,9 +39,10 @@ Radio hardware (the bytes on the serial port are the bytes on air), ``--link-hw`
   (M0 = M1 = 0) on a USB-UART adapter, UART at ``link.uart_baud`` 8N1;
 * ``sx127x`` (LoRa fallback): the USB <-> LoRa bridge in ``firmware/ground_bridge`` (Arduino Nano
   + SX1276-class module), same bytes, serial at ``link.uart_baud``.
-The link MODEL (``--radio``: reply timeout, default link delay, the practice link) stays
-``flight_computer.link.radio`` (lora_uart): ``sim.link_model`` has no Wi-Fi model and the LoRa
-timing is the pessimistic case for the ESP bridge (longer reply timeout, same 2 Hz polling).
+The link MODEL (``--radio``: reply timeout, default link delay, the practice link): 2026-11-10 the model of
+``--link-hw`` (``link_model_of``; ``sim.link_model`` has the ESP-NOW model ``esp_bridge`` since the control round), so
+the reply timeout always matches the radio on ``--port``; ``--radio`` still overrides it.  (2026-11-06 .. 11-09 the model
+stayed lora_uart.)
 
 Modes::
 
@@ -90,7 +91,7 @@ and ON is refused here while the latest TELEM v3 shows the GPS not ready (the ve
 reject it with REJ_GPS; the Korean REJ_GPS text says what to wait for).  The buttons are
 unchanged: the vehicle sets its hold point itself at the end of the climb; the pad heading
 (the vane-1 mark toward ``position_hold.heading.pad_azimuth_deg``) is a set-up rule shown in
-the ON confirmation.  Practice (``--sim``) with the GPS build runs the NEO-6M receiver model
+the ON confirmation.  Practice (``--sim``) with the GPS build runs the NEO-7M class receiver model
 (``sim.sim6dof.GpsReceiverPlant``, ``sim.vtol_scenarios.GPS_DEFAULT``: factory 9600 baud at
 power-on, TTFF, ~2 m wander), the NAV's GPS part (``sim.gps_nav.NavGps``: configuration,
 epochs, filter) and the nlink slots into the real ``FcuStack`` with the position loop -
@@ -192,7 +193,7 @@ from sim import power_link as pl  # noqa: E402
 from sim.ground_station_logic import (POS_MODE_TEXT_KO, POWER_ALARM_KO, REASON_TEXT_KO, GroundAssist,  # noqa: E402
                                       GroundParams, gps_status_ko, power_on_window_ok, power_status_ko, power_tail_of,
                                       reason_text_ko)
-from sim.link_model import RADIOS, LinkConfig, round_trip  # noqa: E402
+from sim.link_model import RADIOS, LinkConfig, model_radio, round_trip  # noqa: E402
 from sim.onboard import vtol_profiles, vtol_values  # noqa: E402
 
 DEFAULT_LOG_DIR = os.path.join(ROOT, "logs", "ground_station")
@@ -266,18 +267,23 @@ def link_timing(p: dict, radio: str | None, mode: str | None = None, gps: bool |
     39-byte TELEM v2 frame (``round_trip(cfg, mode='vtol')``, v0.7.1 - the same numbers as the v0.7 path through
     ``sim.sim6dof.vtol_round_trip``, which now calls it), the v0.8 GPS build (``gps_build``) with the 45-byte TELEM v3
     frame (``round_trip(cfg, mode='vtol', gps=True)``); v0.9 RP1: a tether / hybrid build (``power``, default params
-    power.source) with TELEM v4 (41 B) / v5 (47 B) - ``round_trip(cfg, mode='vtol', gps=..., power=True)``."""
+    power.source) with TELEM v4 (41 B) / v5 (47 B) - ``round_trip(cfg, mode='vtol', gps=..., power=True)``; 2026-11-10:
+    the battery build on the carrier (``link_proto.lbat_build``) with TELEM v6 (40 B) / v7 (46 B).  ``radio`` None: the
+    params' link model (``sim.link_model.model_radio``: link.vehicle_radio when modelled)."""
     mode = lp.mission_mode(p) if mode is None else lp.check_mode(mode)
     g = gps_build(p, mode, gps)
     pw = power_build_of(p, mode, power) != pl.PWR_BATTERY
+    lb = (not pw) and lp.lbat_build(p, mode)          # 2026-11-10: the carrier battery build's TELEM v6 / v7
     cfg = LinkConfig.from_params(p, radio=radio)
     if mode == lp.MODE_VTOL:
-        rt = round_trip(cfg, mode=lp.MODE_VTOL, gps=g, power=True) if pw else round_trip(cfg, mode=lp.MODE_VTOL, gps=g)
+        rt = (round_trip(cfg, mode=lp.MODE_VTOL, gps=g, power=True) if pw else
+              round_trip(cfg, mode=lp.MODE_VTOL, gps=g, lbat=lb))
     else:
         rt = round_trip(cfg)
-    return {"radio": cfg.radio, "mode": mode, "gps": g, "power_tail": pw, "reply_timeout_s": rt["reply_timeout_s"],
+    return {"radio": cfg.radio, "mode": mode, "gps": g, "power_tail": pw, "lbat_tail": lb,
+            "reply_timeout_s": rt["reply_timeout_s"],
             "t_link_default_s": rt["rtt_mean_s"], "rtt_worst_s": rt["rtt_worst_s"], "max_poll_hz": rt["max_poll_hz"],
-            "poll_hz": cfg.poll_hz, "uart_baud": cfg.uart_baud}
+            "poll_hz": cfg.poll_hz, "uart_baud": cfg.esp_uart_baud if cfg.radio == "esp_bridge" else cfg.uart_baud}
 
 
 def ground_params(p: dict, radio: str | None, target_m: float | None = None, mode: str | None = None,
@@ -376,7 +382,7 @@ class VirtualVehicle:
 
     VTOL + GPS build (v0.8, ``gps``; default params.json ``mission.vtol.position_hold.enabled``): the FCU stack is the
     GPS build (ON gate, V11-V14, the position loop, TELEM v3); its GPS slots come from the real chain of
-    ``sim/sim6dof.py``: the NEO-6M receiver model (``GpsReceiverPlant`` with ``sim.vtol_scenarios.GPS_DEFAULT``, powered
+    ``sim/sim6dof.py``: the NEO-7M class receiver model (``GpsReceiverPlant`` with ``sim.vtol_scenarios.GPS_DEFAULT``, powered
     at t = 0 with its factory configuration) -> UART bytes -> ``sim.gps_nav.NavGps`` (configuration, epochs, the GPS
     filter on the NAV quaternion and the body specific force) -> ``nlink_proto.GpsSlotTx``; the FCU gets the v0.8 NAV
     frame's fields (h / v_z one tick old, cos_tilt / tilt of the published quaternion, the slot).  The vehicle's pad
@@ -606,7 +612,10 @@ class VirtualVehicle:
         # sensors -> altitude filter (as sim6dof: held at the pad reference while the NAV's lagged state is SAFE/ARMED)
         h_baro = None
         if k % self.n_baro == 0:
-            self.baro_q.append(self.h + rng.gauss(0.0, sens.baro_noise_m))
+            hb = self.h + rng.gauss(0.0, sens.baro_noise_m)
+            if sens.baro_quant_m > 0.0:                      # the barometer's output step (sim.sim6dof.BARO_MODELS)
+                hb = math.floor(hb / sens.baro_quant_m + 0.5) * sens.baro_quant_m
+            self.baro_q.append(hb)
             if len(self.baro_q) > self.n_lat:
                 h_baro = self.baro_q.popleft()
         pad = self.nav_states[0] in self._pad_states
@@ -703,6 +712,8 @@ class VirtualVehicle:
             pw = getattr(out, "pwr", None)
             if pw is not None:                     # v0.9 RP1: a tether / hybrid build replies with TELEM v4 / v5
                 tlm = lp.with_power_tail(tlm, pw.v_aux_q, pw.flags)
+            if getattr(self.fs, "lbat_link", False):   # 2026-11-10: the carrier battery build's TELEM v6 / v7
+                tlm = lp.with_logic_tail(tlm, self.fs.lbat_q)
             self.link.send("down", lp.encode_telemetry(self.vehicle_id, out.reply_seq, tlm), t_reply)
         if out.release and self.t_release is None:
             self.t_release = t
@@ -1445,8 +1456,11 @@ class GroundStation:
             lines.append(f"flags  {fl} | nonce 0x{t.nonce:04X}")
             err = (f"{t.h_m - t.h_tgt_m:+6.2f} m" if t.is_v2 and t.phase in (lp.PHASE_CLIMB, lp.PHASE_HOLD) else "   -   ")
             lines.append(f"h {t.h_m:7.2f} m   v_z {t.vz_mps:+7.2f} m/s   h - target {err}   tilt {t.tilt_deg:6.2f} deg")
+            lb = ""
+            if t.has_lbat:                                 # 2026-11-10 TELEM v6 / v7: the logic battery (warning only)
+                lb = f" | logic {t.lbat_v:4.2f} V" + (" LOW" if gs.lbat_low else "")
             lines.append(f"att    roll {t.roll_deg:+7.2f}  pitch {t.pitch_deg:+7.2f}  yaw {t.yaw_deg:+8.2f} deg | "
-                         f"throttle {t.throttle:5.3f} | V_cell {t.vcell_v:4.2f} V | loop_max {t.loop_max_us} us")
+                         f"throttle {t.throttle:5.3f} | V_cell {t.vcell_v:4.2f} V | loop_max {t.loop_max_us} us{lb}")
             lines.append(self._gps_line(t))
             if pwr_line:                                   # v0.9 RP1: the TELEM v4 / v5 tail when the frame has it
                 lines.append(f"PWR    {power_status_ko(self.power_build, t, power_tail_of(t))}")
@@ -1525,6 +1539,8 @@ class GroundStation:
                        f"{pctl.MODE_NAMES.get(t.pos_mode, str(t.pos_mode))} d {d} m GNS {GNS_HEALTH[gns_health(t)][0]}")
             if self.power_build != pl.PWR_BATTERY:       # v0.9: the bus of a tether build (V_in = 6 x vcell)
                 gps += f" | {pl.PWR_NAMES[self.power_build]} bus {6.0 * t.vcell_v:.1f} V"
+            if t.has_lbat:                               # 2026-11-10: the logic battery (TELEM v6 / v7)
+                gps += f" | logic {t.lbat_v:.2f} V" + (" LOW" if gs.lbat_low else "")
             return (f"[{now:7.2f}] {t.state_name:<9} {t.phase_name if t.is_v2 else '?':<6} h {t.h_m:6.2f} tgt {tgt} "
                     f"vz {t.vz_mps:+6.2f} tilt {t.tilt_deg:5.2f} thr {t.throttle:5.3f} Vc {t.vcell_v:4.2f} | delay "
                     f"{gs.t_link:4.2f} s loss {'-' if lw is None else f'{lw:.0f}'} % age {a:4.2f} | {t.reason_name}{gps}")
@@ -1859,6 +1875,15 @@ def default_link_hw(p: dict) -> str:
     return hw if hw in LINK_HW else str(lk["radio"])
 
 
+def link_model_of(p: dict, link_hw: str | None, radio: str | None = None) -> str:
+    """2026-11-10: the link model the station times its requests with: --radio if given, else the model of the ground
+    hardware --link-hw (every LINK_HW has one in sim.link_model.RADIOS), else the params' model (model_radio) - so the
+    reply timeout always matches the radio on --port (the ESP model's 0.25 s timeout would cut a LoRa reply)."""
+    if radio is not None:
+        return radio
+    return link_hw if link_hw in RADIOS else model_radio(p)
+
+
 def serial_baud(p: dict, link_hw: str, baud: int | None = None) -> int:
     """--baud, else the UART baud of that hardware: link.esp_bridge.uart_baud for the ESP bridge (the same on both ESPs and
     the COM, firmware/esp_bridge), link.uart_baud for the LoRa module / the SX127x bridge"""
@@ -1888,8 +1913,10 @@ def build_arg_parser(p: dict) -> argparse.ArgumentParser:
     ap.add_argument("--mode", choices=tuple(lp.MISSION_MODES), default=lp.mission_mode(p),
                     help="the vehicle build: vtol (ON / OFF / UP / DOWN / KILL) or ballistic (ARM ... KILL); "
                          "default params.json mission.mode")
-    ap.add_argument("--radio", choices=RADIOS, default=lk["radio"],
-                    help="radio backend: sets the reply timeout / default link delay (sim.link_model) and the practice link")
+    ap.add_argument("--radio", choices=RADIOS, default=None,
+                    help="radio link MODEL: sets the reply timeout / default link delay (sim.link_model) and the practice "
+                         "link; default (2026-11-10): the model of --link-hw (esp_bridge / lora_uart / sx127x), so the "
+                         "timeout always matches the hardware on --port")
     ap.add_argument("--preset", default=None, help="params.json preset (default: the file's preset)")
     ap.add_argument("--profile", choices=vtol_profiles(p) if "vtol" in p["mission"] else None, default=None,
                     help="VTOL: the vehicle's FCU build profile (default mission.vtol.profile; demo = the indoor push "
@@ -1929,6 +1956,7 @@ def main(argv: list[str] | None = None) -> int:
     p = load_params(known.preset)
     ap = build_arg_parser(p)
     a = ap.parse_args(argv)
+    a.radio = link_model_of(p, a.link_hw, a.radio)   # 2026-11-10: default = the model of the hardware on --port
     if a.list_ports:
         for s in list_ports() or ["(no serial ports found)"]:
             print(s)

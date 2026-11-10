@@ -212,7 +212,7 @@ and outputs u = 0).  Per tick, dt = 1 / loop_hz:
    h by 0.98 m within 1.2 s of the motor start with the vehicle ON the pad, 'passed' latched and a T/W 0.93 vehicle ran
    its motor 19.8 s on the pad (14.8 s at u_max); the offset follows the thrust, which is at u_max when the ramp ends,
    and reaches the NAV h after the baro latency plus the altitude filter's response, so the settle time is
-   ``TAKEOFF_SETTLE_S_ASSUMED`` (>= baro latency 0.1 s (SPEC 9) + 1 / (2 pi altitude crossover 0.5 Hz) = 0.42 s).
+   ``TAKEOFF_SETTLE_S_ASSUMED`` (>= baro latency 0.1 s (SPEC 9) + 1 / (2 pi altitude crossover 0.4 Hz) = 0.498 s).
    passed (latched for the flight) once h0 is latched and h >= h0 + takeoff_climb_m (``takeoff_passed`` also gates the
    position loop's engagement, ``sim.position_ctrl`` step 1).  Until then, in FLY, a tick with the take-off ramp over
    (cap = u_max) and the loop saturated at it (sat == +1) adds 1 to ``takeoff_run``; any other tick sets it to 0 (the
@@ -263,7 +263,8 @@ KT_R_MIN_ASSUMED = 0.25             # thrust learning (4b): learn only while the
                                     # ~ 0.30 once the EDF lag has settled.  core/vertical_ctrl.h VC_KT_R_MIN must equal it
 TAKEOFF_SETTLE_S_ASSUMED = 0.5      # take-off check (6): h0 latched this long after the ramp ends: >= the baro latency
                                     # 0.1 s (SPEC 9, SensorConfig.baro_latency_s) + 1 / (2 pi x the NAV altitude-filter
-                                    # crossover 0.5 Hz, SensorConfig.altitude_crossover_hz) = 0.42 s, rounded up (the
+                                    # crossover 0.4 Hz, SensorConfig.altitude_crossover_hz) = 0.498 s (0.42 s at the
+                                    # 0.5 Hz of before 2026-11-10; a lower crossover needs a longer settle), rounded up (the
                                     # physics review's "about 0.5 s"); core/vertical_ctrl.h VC_TAKEOFF_SETTLE_S must equal it
 TAKEOFF_SEARCH_VZ_FRAC_ASSUMED = 0.5   # v0.9 take-off thrust search (3b): runs only while the NAV v_z is not above this
                                     # fraction of climb_rate_mps (field 0.5, demo 0.25 m/s): the vehicle does not climb, or

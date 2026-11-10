@@ -194,6 +194,8 @@ static struct {
     uint8_t rx[SB_TELEM_FRAME_BYTES], rx_n;  /* the TELEM (VTOL: TELEM2 .. 5) the COM handed to the radio (hook copy) */
     uint16_t uplinks, replies, tlm_bad, out_of_window, unmatched, launches, refused_seen, expired_seen;
     uint32_t age_max;                        /* longest IL_CMD queued -> TELEM handed to the radio, raw counts */
+    bool rx_seen;                            /* 2026-11-10 (F4): the first uplink byte went into the radio driver ... */
+    uint32_t first_rx_tick;                  /* ... in this COM tick (com_timer_ticks) */
 } s_g;
 
 static uint8_t s_reset_cause;
@@ -309,6 +311,7 @@ static struct {
     il_cmd_t q[ONB_MAX_FRAMES];
     uint8_t nq;
     uint16_t cmds, cmd_bad, snaps, nonce_rej, stats, stat_bad, wrong_frames;
+    uint16_t st_radio_ok, st_radio_nok;                 /* 2026-11-10 (F4): STATs with / without IL_STAT_RADIO_OK */
     /* supervisor model (VTOL: ON -> ARMED / SPOOL for ONB_V_SPOOL_TICKS -> POWERED / CLIMB at 1 m/s -> HOLD at the
      * hover target; the phase and the target go into the SNAP2) */
     uint8_t state, reason, last_seq, phase;
@@ -510,25 +513,32 @@ static uint8_t fcu_snap_payload(uint8_t reply_seq, uint32_t tick, uint8_t pay[SB
          * 5th; 2 wired_buffer: TETHER_OK + BUF_SHARE, BUF_LOW on every 5th) and v_aux (19.75 .. 23.625 V) */
         const uint8_t build = (uint8_t)(s_f.snaps % 3u), k5 = (uint8_t)(s_f.snaps % 5u == 4u);
         const bool v2_only = (s_f.snaps & 3u) == 3u;      /* every 4th: an ONB_NO_GPS FCU's SNAP2 */
+        /* 2026-11-10: the logic-battery byte (SNAP3 spare3 / SNAP2 spare, 3.00 .. 4.26 V): every power build's snapshot
+         * carries one (the power tail must win: TELEM v5 / v4); the battery build's SNAP2 / SNAP3 alternate between none
+         * (TELEM v2 / v3) and one (TELEM v6 / v7) - SNAP2 one in three without (only ~3 per run, the 2nd of them never
+         * becomes TELEM: a D5 fault) - so each of the six VTOL replies is built */
+        static uint8_t s_lb_n2, s_lb_n3;
+        const uint8_t lbv = (uint8_t)(150u + (s_f.snaps & 63u));
+        const uint8_t lb = build ? lbv : (v2_only ? ((s_lb_n2++ % 3u) ? lbv : 0u) : ((s_lb_n3++ & 1u) ? lbv : 0u));
         s3.pw_vaux = build ? (uint8_t)(158u + (s_f.snaps & 31u)) : 0u;
         s3.pw_flags = build == 0u ? 0u : (uint8_t)((build << LP_PWR_TAIL_BUILD_SHIFT) | 0x01u |
                                                    (build == 1u ? (k5 ? 0x02u : 0u) : (0x08u | (k5 ? 0x04u : 0u))));
-        s3.spare3 = 0;
+        s3.spare3 = lb;
         s_f.snaps++;
         if (v2_only) {                                 /* the same SNAP fields, the SNAP2 tail in place */
             const uint8_t ph = s3.phase, va = s3.pw_vaux, pf = s3.pw_flags;
             const float ht = s3.h_tgt_m;
             u.s2.phase = ph;
-            u.s2.spare = 0;
+            u.s2.spare = lb;
             u.s2.h_tgt_m = ht;
             u.s2.pw_vaux = va;
             u.s2.pw_flags = pf;
             il_pack_snap2(&u.s2, pay);
-            *tlm_type = build ? LP_TYPE_TELEM4 : LP_TYPE_TELEM2;
+            *tlm_type = build ? LP_TYPE_TELEM4 : (lb ? LP_TYPE_TELEM6 : LP_TYPE_TELEM2);
             return IL_SNAP2_LEN;
         }
         il_pack_snap3(&s3, pay);
-        *tlm_type = build ? LP_TYPE_TELEM5 : LP_TYPE_TELEM3;
+        *tlm_type = build ? LP_TYPE_TELEM5 : (lb ? LP_TYPE_TELEM7 : LP_TYPE_TELEM3);
         return IL_SNAP3_LEN;
     }
 #undef s
@@ -701,6 +711,24 @@ static void fcu_tx(void)
     }
 }
 
+/* -- 2026-11-10 (review F4): the RADIO_OK bit a STAT must carry.  lora_uart / sx127x: set in every STAT (unchanged).
+ *    esp_bridge: radio_stats()->ok is "a byte from the ESP since this COM boot" (hal/esp_bridge.h) and the bench's only
+ *    ESP bytes are the injected uplink frames: clear in every STAT built (st.com_ticks) before the tick of the first
+ *    injected byte, set in every STAT built after it; a STAT built in that very tick may carry either -- */
+static bool sb_radio_ok_expected(const il_stat_t *st)
+{
+    const bool set = (st->flags & IL_STAT_RADIO_OK) != 0u;
+#if FC_LINK_RADIO == FC_RADIO_ESP_BRIDGE
+    if (!s_g.rx_seen || st->com_ticks < s_g.first_rx_tick)
+        return !set;
+    if (st->com_ticks > s_g.first_rx_tick)
+        return set;
+    return true;
+#else
+    return set;
+#endif
+}
+
 /* -- FCU: one STAT, its pacing (D4) and its content -- */
 static void fcu_stat(const il_frame_t *fr, uint32_t start)
 {
@@ -709,8 +737,12 @@ static void fcu_stat(const il_frame_t *fr, uint32_t start)
     uint8_t kind;
     il_unpack_stat(fr->payload, &st);
     ok = st.params_tag == FC_PARAMS_TAG && (st.flags & IL_STAT_SX127X) == SB_BACKEND_FLAG &&
-         (st.flags & IL_STAT_RADIO_OK) != 0u && ((st.flags & IL_STAT_BOOT) != 0u) == (s_f.stats == 0u) &&
+         sb_radio_ok_expected(&st) && ((st.flags & IL_STAT_BOOT) != 0u) == (s_f.stats == 0u) &&
          st.reset_cause == s_reset_cause && st.cmd_forwarded == s_f.cmds;   /* every IL_CMD before it has arrived */
+    if (st.flags & IL_STAT_RADIO_OK)
+        s_f.st_radio_ok++;
+    else
+        s_f.st_radio_nok++;
     if (s_f.stats == 0u) {
         kind = COM_STAT_KIND_BOOT;
         s_f.st_boot++;
@@ -848,6 +880,8 @@ static void report(uint32_t tick)
     p = put_u(p, "ga=", (uint32_t)(s_g.have_tlm && s_g.tlm_ack == s_g.gseq));
     p = put_u(p, "st=", s_f.stats);
     p = put_u(p, "sx=", s_f.stat_bad);
+    p = put_u(p, "rk=", s_f.st_radio_ok);                  /* 2026-11-10 (F4): STATs with RADIO_OK */
+    p = put_u(p, "rz=", s_f.st_radio_nok);                 /* ... and without (esp_bridge: before the first ESP byte) */
     p = put_u(p, "cb=", s_f.cmd_bad);
     p = put_u(p, "nr=", s_f.nonce_rej);
     p = put_u(p, "tb=", s_g.tlm_bad);
@@ -1111,6 +1145,10 @@ static void ground_bytes(void)
     }
     if (k == 0u)
         return;
+    if (!s_g.rx_seen) {                                    /* 2026-11-10 (F4): the ESP's first byte (sb_radio_ok_expected) */
+        s_g.rx_seen = true;
+        s_g.first_rx_tick = com_timer_ticks();
+    }
     radio_inject_rx(s_g.txb + s_g.pos, k);
     s_g.pos = (uint8_t)(s_g.pos + k);
     if (s_g.pos >= s_g.n) {                                /* the uplink record: arrival of the last byte */
@@ -1136,7 +1174,8 @@ static void ground_rx(void)
          * (co-sim: the real FCU's snapshot is not known here - any VTOL TYPE with its length) */
         const uint8_t ty = f[4];
         const uint8_t want_n = ty == LP_TYPE_TELEM2 ? LP_TELEM2_FRAME_BYTES : ty == LP_TYPE_TELEM3 ? LP_TELEM3_FRAME_BYTES :
-                               ty == LP_TYPE_TELEM4 ? LP_TELEM4_FRAME_BYTES : ty == LP_TYPE_TELEM5 ? LP_TELEM5_FRAME_BYTES : 0u;
+                               ty == LP_TYPE_TELEM4 ? LP_TELEM4_FRAME_BYTES : ty == LP_TYPE_TELEM5 ? LP_TELEM5_FRAME_BYTES :
+                               ty == LP_TYPE_TELEM6 ? LP_TELEM6_FRAME_BYTES : ty == LP_TYPE_TELEM7 ? LP_TELEM7_FRAME_BYTES : 0u;
         if (want_n == 0u || s_g.rx_n != want_n || f[0] != LP_SYNC0 || f[1] != LP_SYNC1 || f[3] != LINK_VEHICLE_ID
 #ifndef FC_COSIM
             || (s_f.snap_pay_seq[seq & 3u] == seq && s_f.snap_tlm_type[seq & 3u] != ty)

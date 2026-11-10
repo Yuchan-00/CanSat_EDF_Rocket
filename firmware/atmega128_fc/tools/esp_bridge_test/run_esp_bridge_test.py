@@ -109,8 +109,9 @@ def build_image(gcc: str, objcopy: str, variant: str, reset_cause: int) -> tuple
     return hexf, ""
 
 
-def simulate(sim_exe: str, hexf: str, variant: str, span_ms: float) -> tuple[str, int]:
-    s = sh([sim_exe, hexf, f"garbage_ms={GARBAGE_MS:g}", f"span_ms={span_ms:g}", f"frame_ms={FRAME_MS:g}", "max_ms=1300"],
+def simulate(sim_exe: str, hexf: str, variant: str, span_ms: float, garbage_ms: float = GARBAGE_MS,
+             frame_ms: float = FRAME_MS) -> tuple[str, int]:
+    s = sh([sim_exe, hexf, f"garbage_ms={garbage_ms:g}", f"span_ms={span_ms:g}", f"frame_ms={frame_ms:g}", "max_ms=1300"],
            timeout=600)
     con = s.stdout + s.stderr
     with open(os.path.join(OUT, f"console_{variant}.txt"), "w", encoding="utf-8", newline="\n") as f:
@@ -130,11 +131,24 @@ def parse(con: str) -> dict:
         "tx": re.search(r"TX t=(\d+) q=(\d) q2=(\d)", con),
         "busy": re.search(r"TX busy=(\d)", con),
         "stats": re.search(r"EB stats rx=(\d+) err=(\d+) ovf=(\d+) disc=(\d+) txf=(\d+) ok=(\d+)", con),
+        "ok": [(int(t), int(v)) for t, v in re.findall(r"OK t=(\d+) ok=(\d)", con)],
         "sim": re.search(r"SIM cycles=(\d+) state=(-?\d+)", con),
     }
 
 
-def reply_checks(d: dict, con: str, rc: int, ubrr: int, baud: int) -> dict:
+def ok_checks(d: dict, first_byte_us: float | None) -> dict:
+    """2026-11-10 (review F4): radio_stats()->ok = "a byte from the ESP since this COM boot": clear after radio_init, set
+    once at the first byte the ESP put on RXD1 (within a few byte times of its injection) and never cleared; never set
+    when the ESP sends nothing (``first_byte_us`` None)."""
+    ok = d["ok"]
+    if first_byte_us is None:
+        return {"ESP silent: ok stays clear (an absent / dead ESP is reported)": ok == [ok[0]] and ok[0][1] == 0
+                and bool(d["stats"]) and d["stats"].group(6) == "0"}
+    return {"ok clear after radio_init, set once at the ESP's first byte (within 3 ms), never cleared":
+            len(ok) == 2 and ok[0][1] == 0 and ok[1][1] == 1 and first_byte_us <= ok[1][0] <= first_byte_us + 3000}
+
+
+def reply_checks(d: dict, con: str, rc: int, ubrr: int, baud: int, ok_end: str = "1") -> dict:
     u1, tx, busy, stats, sim = d["u1"], d["tx"], d["busy"], d["stats"], d["sim"]
     frame47 = bytes((0xA5 ^ (i * 37)) & 0xFF for i in range(47))
     bit_us = 16 * (ubrr + 1) / 16.0                     # one bit at UBRR, U2X 0, 16 MHz
@@ -148,8 +162,8 @@ def reply_checks(d: dict, con: str, rc: int, ubrr: int, baud: int) -> dict:
             and abs(bit_us / (1e6 / baud) - 1.0) <= 0.002,
         "reply leaves at once (first byte out one byte time after radio_send: no busy-line wait)":
             bool(tx) and bool(u1) and u1[0][0] - int(tx.group(1)) < byte_us_sim + 50.0,
-        "transmitter idle 200 ms later, one tx_frame": bool(busy) and busy.group(1) == "0" and bool(stats)
-                                                     and stats.group(5) == "1" and stats.group(6) == "1",
+        f"transmitter idle 200 ms later, one tx_frame (ok {ok_end} at the end)": bool(busy) and busy.group(1) == "0"
+                                                     and bool(stats) and stats.group(5) == "1" and stats.group(6) == ok_end,
         "simulation ended normally": "EB end" in con and bool(sim) and rc == 0,
     }, (round(sum(gaps) / len(gaps), 2) if gaps else None)
 
@@ -206,6 +220,8 @@ def run() -> dict:
     }
     rc_checks, byte_mean = reply_checks(d, con, rc, ubrr, baud)
     c.update(rc_checks)
+    c.update(ok_checks(d, inj[0] if inj else None))
+    parse_ok_cold = d["ok"]
     checks.update({f"cold: {k}": v for k, v in c.items()})
     with open(hexf, "rb") as f:
         sha = hashlib.sha256(f.read()).hexdigest()
@@ -232,11 +248,26 @@ def run() -> dict:
     }
     rc_checks, byte_mean_w = reply_checks(d, con, rc, ubrr, baud)
     c.update(rc_checks)
+    c.update(ok_checks(d, d["inj"][0] if d["inj"] else None))
     checks.update({f"warm: {k}": v for k, v in c.items()})
     with open(hexf, "rb") as f:
         sha_w = hashlib.sha256(f.read()).hexdigest()
     out["variants"]["warm"] = {"injections_us": d["inj"], "rx_bytes": len(rx), "u1_byte_us_mean": byte_mean_w,
-                               "hex_sha256": sha_w}
+                               "hex_sha256": sha_w, "ok": d["ok"]}
+    out["variants"]["cold"]["ok"] = parse_ok_cold
+
+    # ---- 2026-11-10 (review F4): a silent ESP (absent / dead: nothing on RXD1), cold COM boot --------------------------
+    hexf, why = build_image(gcc, objcopy, "cold", 0)
+    if not hexf:
+        return {"status": "FAIL", "why": why}
+    con, rc = simulate(sim_exe, hexf, "silent", 5000.0, garbage_ms=5000.0, frame_ms=5000.0)
+    d = parse(con)
+    c = {"nothing injected, nothing received": not d["inj"] and not d["rx"]}
+    rc_checks, _ = reply_checks(d, con, rc, ubrr, baud, ok_end="0")
+    c.update(rc_checks)
+    c.update(ok_checks(d, None))
+    checks.update({f"silent: {k}": v for k, v in c.items()})
+    out["variants"]["silent"] = {"ok": d["ok"], "rx_bytes": len(d["rx"])}
     out["checks"] = checks
     out["status"] = "PASS" if all(checks.values()) else "FAIL"
     return out
@@ -252,7 +283,7 @@ def main() -> int:
         return 1
     for name, v in res["variants"].items():
         print(f"esp_bridge_test {res['env']} {name}: " + ", ".join(f"{k} {val}" for k, val in v.items()
-                                                                  if k != "hex_sha256") + f", hex {v['hex_sha256'][:16]}")
+                                                                  if k != "hex_sha256") + (f", hex {v['hex_sha256'][:16]}" if 'hex_sha256' in v else ""))
     for k, v in res["checks"].items():
         print(f"   {'ok  ' if v else 'FAIL'} {k}")
     print(f"esp_bridge_test: {res['status']} ({len(res['checks'])} checks)")

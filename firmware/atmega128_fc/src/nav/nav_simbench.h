@@ -6,7 +6,7 @@
  * v0.6.2, same trajectory and pad timing): the raw MPU-6050 burst (still converted by mpu6050_convert) is prepared
  * after the previous tick's measurement - still on the pad (small gyro offsets, 1 g) while the vehicle state is
  * SAFE / ARMED, oscillating rates (1.3 / 0.9 / 0.5 Hz, 0.6 / 0.5 / 0.3 rad/s) and 15 m/s^2 of thrust otherwise;
- * the MS5611 bus transfers are skipped while its compensation (int64) and altitude (powf) still run in their
+ * the barometer bus transfers are skipped while its compensation and altitude (powf) still run in their
  * phases (datasheet PROM, D1 / D2 around the datasheet example).  No I2C slave: the Timer0 lead hook is not set,
  * the TWI interrupts and the I2C bus time are added analytically by run_nav_simbench.py (avr-objdump of the ELF).
  * The console is the simbench-only USART0 (hal/uart_log.c, 57600 8N1); the flight NAV has no log port.
@@ -49,7 +49,7 @@
  *          (SS high): window max (cm), pad / flight-mode max (cp / cf, cumulative); frame ready after the Timer2
  *          ISR's own Timer1 stamp (fr window max, fp / ff pad / flight max, fn min, jx = the largest increase from
  *          one tick to the next - the FCU's tick spacing is the tick plus that - all cumulative; jx two's complement);
- *          incl. the background (tm); missed ticks; never-touched stack; longest background job (MS5611 math step);
+ *          incl. the background (tm); missed ticks; never-touched stack; longest background job (barometer math step);
  *          the simbench's own work; section maxima of the window: sensors | estimator + tilt + altitude | frame build +
  *          nl_encode_nav | nlink_spi_exchange | FCU reply decode + LED | background (us, Timer1);
  *   "SN t= st= fv= fb= ex= rs= lm= rc= rd="   0.5 s later: valid / refused FCU replies at the NAV, exchanges (driver),
@@ -68,7 +68,7 @@
  *   and "lp=" (ticks whose compute ended past the floor and pushed at once, cumulative), before "s=".
  *
  * v0.8.1 VTOL build (the four-chip set: USART1 = the glink to the GNS, hal/glink_uart.h; the v0.8 GPS side, its synthetic
- * NEO-6M and the lines SG / SI / SH / SJ of v0.8 moved to the GNS bench, src/gns/gns_simbench.h):
+ * receiver (a NEO-6M model) and the lines SG / SI / SH / SJ of v0.8 moved to the GNS bench, src/gns/gns_simbench.h):
  *   - the synthetic FCU decodes the nlink v4 frame (nl_decode_nav4), feeds its slot into the FCU's own slot receiver
  *     (core/nlink_proto.h nl_gns_rx: sets, broken cycles, TILT parts) and checks every TILT part's timing: the synthetic GNS
  *     writes its cycle m into the TILT part's y component, which must ride in the frame of NAV tick 5 m + 4 + L
@@ -104,7 +104,7 @@
 #error "FC_COSIM is a variant of the simbench: build it with -D FC_SIMBENCH -D FC_COSIM (env nav_cosim)"
 #endif
 
-/* v0.9 (fw09 WP-S): env nav_cosim_twi = nav_cosim + NAV_SB_TWI - the REAL MPU-6050 / MS5611 drivers on the TWI (the
+/* v0.9 (fw09 WP-S): env nav_cosim_twi = nav_cosim + NAV_SB_TWI - the REAL MPU-6050 / barometer (BMP280; MS5611 as the build option) drivers on the TWI (the
  * four-core co-simulation's tools/cosim/twi_models.c answers them from its closed-loop plant): the synthetic sources below
  * are not used (their functions stay, empty), the flight build's sensor init and its Timer0 IMU-lead hook run, and the
  * tick marker and the report lines stay.  nav_main.c selects its sensor sources with NAV_SB_SYNTH_SENSORS (1 = the
@@ -132,7 +132,7 @@
 #include <stdint.h>
 
 #include "fc_mode.h"
-#include "hal/ms5611.h"
+#include "hal/baro.h"
 #if FC_VTOL
 #include "core/glink_proto.h"
 #endif
@@ -199,7 +199,7 @@ void           nav_sb_init(void);            /* boot: console, [cosim: tick mark
 void           nav_sb_boot_line(uint8_t reset_cause);
 void           nav_sb_prepare(uint32_t next_tick, uint8_t state);
 const uint8_t *nav_sb_imu_raw(void);         /* synthetic MPU-6050 burst, converted by mpu6050_convert */
-void           nav_sb_baro(uint32_t tick, uint8_t phase, ms5611_t *b);
+void           nav_sb_baro(uint32_t tick, uint8_t phase, baro_t *b);
 void           nav_sb_mark(uint8_t i);
 void           nav_sb_bg_step(uint16_t us);  /* one background job's duration */
 uint16_t       nav_sb_ready_us(void);        /* now - the Timer2 ISR's Timer1 stamp of the current tick, us */

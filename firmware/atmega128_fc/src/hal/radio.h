@@ -37,7 +37,8 @@ typedef struct {
     uint16_t tx_timeouts;                   /* lora_uart: AUX never became ready; sx127x: no TxDone */
     int8_t   rssi_dbm;                      /* last packet, RADIO_RSSI_NONE if unknown */
     int8_t   snr_q4;                        /* last packet SNR x 4 (sx127x) */
-    bool     ok;                            /* sx127x: RegVersion read back 0x12; lora_uart: always */
+    bool     ok;                            /* sx127x: RegVersion read back 0x12; lora_uart: always; esp_bridge (2026-11-10):
+                                               a byte from the ESP since this COM boot (hal/esp_bridge.h) */
     uint8_t  version;                       /* sx127x RegVersion */
 } radio_stats_t;
 

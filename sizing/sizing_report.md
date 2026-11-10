@@ -1,6 +1,6 @@
 # 산정 보고서 (sizing) — preset `BUDGET_90mm_6S`
 
-- params.json sha256: `01ffc621423b9051…`
+- params.json sha256: `3419c5fea63506dc…`
 - 구조물 질량 출처: **CAD report: cadquery_report.json**
 - EDF: Hobbyocean 90mm 12-blade EDF, 6S 1450KV (AliExpress 1005007300026404) — 공칭 추력 30.302548499999997 N / 피크 37.1672035 N, 6S 22.2 V
 - 전장 856 mm, 핀 포함 외경 247 mm, 동체 OD 120 mm

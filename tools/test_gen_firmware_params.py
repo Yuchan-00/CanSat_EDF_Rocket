@@ -408,13 +408,15 @@ def test_platformio_nav_and_fcu_filters_and_env_names():
     assert {"nav", "nav_simbench", "nav_cosim"} <= set(envs)
     nav_c = _section(ini, "nav_common")
     assert re.findall(r"-D\s*(FC_ROLE_\w+)", nav_c) == ["FC_ROLE_NAV"] and "ILINK_USART" not in nav_c
-    for f in ("-<*>", "+<nav/>", "+<core/>", "+<hal/twi.c>", "+<hal/mpu6050.c>", "+<hal/ms5611.c>", "+<hal/nlink_spi.c>",
+    for f in ("-<*>", "+<nav/>", "+<core/>", "+<hal/twi.c>", "+<hal/mpu6050.c>", "+<hal/bmp280.c>", "+<hal/ms5611.c>",
+              "+<hal/nlink_spi.c>",
               "+<hal/watchdog.c>", "+<hal/stack.c>", "+<hal/timer.c>"):
         assert f in nav_c, f
     for f in ("pwm.c", "ilink_uart.c", "lora_uart.c", "sx127x.c", "adc.c", "+<*>"):
         assert f not in nav_c, f
     fcu_c = _section(ini, "fcu_common")
-    for f in ("-<nav/>", "-<com/>", "-<hal/twi.c>", "-<hal/mpu6050.c>", "-<hal/ms5611.c>", "-<hal/lora_uart.c>",
+    for f in ("-<nav/>", "-<com/>", "-<hal/twi.c>", "-<hal/mpu6050.c>", "-<hal/bmp280.c>", "-<hal/ms5611.c>",
+              "-<hal/lora_uart.c>",
               "-<hal/sx127x.c>"):
         assert f in fcu_c, f
     assert "-D FC_ROLE_FCU" in fcu_c
@@ -700,8 +702,12 @@ def test_ballistic_mode_header_keeps_the_v063_macros(tmp_path, header):
         assert mb[name] == mv[name], name
     # the reply the build sends sizes the SX127x TX timeout: TELEM (36 B) vs TELEM2 (39 B) / v0.8 with GPS TELEM3 (45 B)
     assert d["telem_bytes"] == 36 and "ToA(TELEM 36 B)" in gfp.render(d)
-    vt_bytes = gfp.derive()["telem_bytes"]
-    assert vt_bytes in (39, 45) and f"ToA(TELEM{2 if vt_bytes == 39 else 3} {vt_bytes} B)" in header
+    # 2026-11-10: the VTOL battery build's reply carries the logic battery (TELEM6 40 B / with GPS TELEM7 46 B)
+    vt = gfp.derive()
+    vt_bytes = vt["telem_bytes"]
+    vt_name = {39: "TELEM2", 45: "TELEM3", 40: "TELEM6", 46: "TELEM7"}[vt_bytes]
+    lbat_build = BASE["flight_computer"]["logic_battery_monitor"]["telemetry_builds"] == "vtol_battery"
+    assert vt_bytes == (46 if lbat_build else 45) and f"ToA({vt_name} {vt_bytes} B)" in header
     assert int(mb["SX127X_TX_TIMEOUT_TICKS"].rstrip("UL")) <= int(mv["SX127X_TX_TIMEOUT_TICKS"].rstrip("UL"))
     # the link budget: the VTOL build's downlink is the longer frame
     for r in d["budgets"]:
@@ -1534,9 +1540,14 @@ def test_esp_bridge_backend_macros(base, header):
     assert m["ESP_UART_BAUD"] == "38400UL" and m["ESP_UART_UBRR"] == "25" and m["ESP_UART_U2X"] == "0"
     assert abs(F_CPU / (16 * 26) / 38400 - 1) <= lk["esp_bridge"]["uart_max_error"]
     assert m["ESP_RESET_HOLD_MS"] == "2U" and m["ESP_BOOT_TICKS"] == "100UL"           # 400 ms at 250 Hz
-    # the LoRa backend macros stay (fallback) and the link budget is still the LoRa model's
-    assert m["LINK_UART_BAUD"] == "9600UL" and "lora_uart (selected)" in header
-    assert base["vradio"] == "esp_bridge" and base["radio"] == "lora_uart"
+    # the LoRa backend macros stay (fallback).  2026-11-10: the link MODEL follows the vehicle radio (sim/link_model.py
+    # model_radio), the LoRa one stays in the header as the fallback budget and sizes LINK_RTT_WORST_MS
+    assert m["LINK_UART_BAUD"] == "9600UL" and "esp_bridge (selected)" in header and "lora_uart (selected)" not in header
+    assert base["vradio"] == "esp_bridge" and base["radio"] == "esp_bridge" and base["fallback"] == "lora_uart"
+    assert set(base["budgets"]) >= {"esp_bridge", "lora_uart", "sx127x"}
+    fb, sel = base["budgets"]["lora_uart"], base["budgets"]["esp_bridge"]
+    assert sel["rtt_worst_s"] < fb["rtt_worst_s"]
+    assert int(m["LINK_RTT_WORST_MS"].rstrip("UL")) == round(fb["rtt_worst_s"] * 1000)
 
 
 def test_vehicle_radio_defaults_to_the_link_model(tmp_path):
@@ -1567,12 +1578,54 @@ def test_logic_battery_pin_and_scale(base, header):
     m = macros(header)
     assert base["fcu_pins"]["logic_bat_adc"] == ("F", 3) and m["LOGIC_BAT_ADC_CHANNEL"] == "3"
     assert float(m["LOGIC_BAT_V_PER_COUNT"].rstrip("f")) == pytest.approx(2.56 / 1024 * 2, rel=1e-7)
-    for name in ("LOGIC_BAT_ADC_CHANNEL", "LOGIC_BAT_V_PER_COUNT"):      # no firmware source reads it (telemetry: next round)
-        for root, _, files in os.walk(os.path.join(ROOT, "firmware", "atmega128_fc", "src")):
-            for fn in files:
-                if fn.endswith((".c", ".h")) and fn != "params_gen.h":
-                    with open(os.path.join(root, fn), encoding="utf-8", errors="replace") as f:
-                        assert name not in f.read(), (fn, name)
+    # 2026-11-10: the VTOL battery FCU sends it (TELEM v6 / v7): one PF3 conversion per second and the integer scale of
+    # the lbat byte (0.02 V steps) from the same divider
+    assert BASE["flight_computer"]["logic_battery_monitor"]["telemetry_builds"] == "vtol_battery"
+    assert m["LOGIC_BAT_TELEM"] == "1" and m["LOGIC_BAT_DIV_TICKS"] == f"{int(base['loop_hz'])}U" == "250U"
+    q = int(m["LOGIC_BAT_Q_X1024"].rstrip("UL"))
+    assert q == round(2.56 / 1024 * 2 * lp.LBAT_SCALE * 1024) == 256
+    for counts in (0, 1, 600, 772, 840, 1023):                           # the header's integers == the sim's reader
+        assert lp.lbat_q_from_counts(counts, q) == min(255, max(1, (counts * q + 512) >> 10))
+    assert lp.lbat_q_from_counts(772, q) == 193                          # 3.86 V on the 47k / 47k divider
+    # which firmware source reads PF3: only the FCU's main.c, and only inside an FC_LOGIC_BAT block (hal/adc.h: VTOL
+    # battery build without a power monitor) - the rocket FCU has no divider.  The float scale stays unused (no float
+    # in the tick: the integer LOGIC_BAT_Q_X1024 is the one in the code)
+    src = os.path.join(ROOT, "firmware", "atmega128_fc", "src")
+    users = {}
+    for root, _, files in os.walk(src):
+        for fn in files:
+            if fn.endswith((".c", ".h")) and fn != "params_gen.h":
+                with open(os.path.join(root, fn), encoding="utf-8", errors="replace") as f:
+                    text = f.read()
+                assert "LOGIC_BAT_V_PER_COUNT" not in text, fn
+                code = re.sub(r"/\*.*?\*/", lambda mm: "\n" * mm.group(0).count("\n"), text, flags=re.S)
+                if "LOGIC_BAT_ADC_CHANNEL" in code:
+                    users[os.path.relpath(os.path.join(root, fn), src).replace(os.sep, "/")] = code
+    assert sorted(users) == ["main.c"]
+    stack, n_uses = [], 0                                                # the open #if chain: the branch text now active
+    for line in users["main.c"].splitlines():
+        t = line.strip()
+        if t.startswith("#if"):
+            stack.append(t)
+        elif t.startswith(("#elif", "#else")):
+            stack[-1] = t
+        elif t.startswith("#endif"):
+            stack.pop()
+        elif "LOGIC_BAT_ADC_CHANNEL" in t:
+            n_uses += 1
+            assert any(re.match(r"#(if|elif) FC_LOGIC_BAT\b", c) for c in stack), (line, stack)
+    assert n_uses >= 2 and not stack
+    with open(os.path.join(src, "hal", "adc.h"), encoding="utf-8", errors="replace") as f:
+        adc_h = f.read()
+    assert "#if FC_VTOL && !PM_ANY && defined(LOGIC_BAT_TELEM) && defined(FC_VCFG) && defined(FC_VCFG_BATTERY)" in adc_h
+    assert "#if LOGIC_BAT_TELEM && FC_VCFG == FC_VCFG_BATTERY\n#define FC_LOGIC_BAT 1" in adc_h
+
+
+def test_logic_battery_telemetry_only_on_the_vtol_battery_build(tmp_path):
+    d = derive_with(tmp_path, fc_set("logic_battery_monitor.telemetry_builds", "none"))
+    assert macros(gfp.render(d))["LOGIC_BAT_TELEM"] == "0" and d["telem_bytes"] in (39, 45)   # TELEM2 / TELEM3 again
+    db = derive_with(tmp_path, _mode("ballistic"))                       # the rocket: TELEM v1, whatever the flag says
+    assert db["telem_bytes"] == 36
 
 
 @pytest.mark.parametrize("mut, needles", [

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Generate ``firmware/atmega128_fc/src/params_gen.h`` for the three ATmega128A of the flight computer.
 
-v0.6.3 (``flight_computer.architecture``): one header serves every chip - the NAV (MPU-6050 + MS5611 on
+v0.6.3 (``flight_computer.architecture``): one header serves every chip - the NAV (MPU-6050 + barometer - BMP280 by default - on
 I2C, attitude estimator, altitude filter; pins ``flight_computer.nav.pins``), the FCU (onboard supervisor,
-attitude control, PWM, log; pins ``flight_computer.pins``) and the COM (LoRa radio, uplink decoding, TELEM
+attitude control, PWM, log; pins ``flight_computer.pins``) and the COM (radio - ESP-12E bridge by default, LoRa fallback - uplink decoding, TELEM
 building; pins ``flight_computer.com.pins``).  NAV -> FCU: the nlink SPI (``flight_computer.nlink``, SPEC
 10.5; NAV master, FCU slave, both on the ATmega128 SPI pins PB0-PB3 with PB0 = SS); FCU <-> COM: the ilink
 UART (``flight_computer.ilink``, SPEC 10.4).  Each chip's pin table is checked on its own.
@@ -164,9 +164,13 @@ TIMER13_PRESCALERS = {1: 1, 8: 2, 64: 3, 256: 4, 1024: 5}     # ATmega128 Timer1
 ADC_PRESCALERS = {2: 1, 4: 2, 8: 3, 16: 4, 32: 5, 64: 6, 128: 7}
 ADC_CLK_MAX_HZ = 200_000                     # ATmega128 datasheet: 50..200 kHz for 10-bit resolution
 UART_MAX_ERR = 0.02                          # baud error limit
-# 2026-11-06: COM radio backends (params flight_computer.link.vehicle_radio; FC_LINK_RADIO): the two LoRa ones of
-# sim/link_model.py RADIOS and the ESP8266 Wi-Fi bridge (hal/esp_bridge.c, firmware/esp_bridge)
-VEHICLE_RADIOS = tuple(lm.RADIOS) + ("esp_bridge",)
+# 2026-11-06: COM radio backends (params flight_computer.link.vehicle_radio; FC_LINK_RADIO): the two LoRa ones and the
+# ESP8266 Wi-Fi bridge (hal/esp_bridge.c, firmware/esp_bridge) - since 2026-11-10 all three are sim/link_model.py RADIOS
+VEHICLE_RADIOS = tuple(dict.fromkeys(tuple(lm.RADIOS) + ("esp_bridge",)))
+# 2026-11-10: NAV barometer drivers (params flight_computer.nav.baro_sensor; FC_BARO_SENSOR, src/hal/baro.h).  A params
+# file without the key (snapshots older than 2026-11-10) builds the MS5611 driver it was written for.
+BARO_SENSORS = ("bmp280", "ms5611")
+BARO_SENSOR_LEGACY = "ms5611"
 ESP_UART_CLK_HZ = 80_000_000                 # ESP8266 UART clock (= firmware/esp_bridge/gen_esp_bridge_config.py; A)
 ILINK_MAX_ERR = 0.01                         # ilink (U2X = 0): both chips run the same UBRR from 16 MHz crystals,
                                              # so they agree with each other; the tighter limit keeps the frames
@@ -220,7 +224,7 @@ CHIP_SIGNALS = {
                 fixed={"link_uart_rx": "RXD1", "link_uart_tx": "TXD1", "lora_spi_nss": "SS", "lora_spi_sck": "SCK",
                        "lora_spi_mosi": "MOSI", "lora_spi_miso": "MISO"},
                 gpio=("led", "link_m0", "link_m1", "link_aux", "lora_dio0", "lora_reset"), adc=()),
-    # v0.8.1: the GNS board (flight_computer.gns): the NEO-6M on USART1, glink to the NAV on USART0 (its ISP pins)
+    # v0.8.1: the GNS board (flight_computer.gns): the GPS receiver (NEO-7M; NEO-6M in v0.8) on USART1, glink to the NAV on USART0 (its ISP pins)
     "gns": dict(where="flight_computer.gns.pins", pwm=(),
                 fixed={"gps_rx": "RXD1", "gps_tx": "TXD1", "glink_rx": "RXD0", "glink_tx": "TXD0"},
                 gpio=("led",), adc=()),
@@ -1452,7 +1456,8 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
     if v_adc_full >= vref:
         raise GenError(f"full pack gives {v_adc_full:.2f} V at the ADC pin >= Vref {vref} V")
     # 2026-11-06: the logic-battery monitor (flight_computer.logic_battery_monitor; carrier rev 2c PF3, 47k / 47k): scale
-    # and pin only - no firmware reads it yet (its telemetry needs a TELEM change, params ... .status)
+    # and pin.  2026-11-10: the VTOL battery FCU reads it (hal/adc.h FC_LOGIC_BAT) and sends it in TELEM v6 / v7; the
+    # rocket FCU (no divider) and the power builds do not
     lbm = fc.get("logic_battery_monitor")
     lbat = None
     if isinstance(lbm, dict):
@@ -1463,7 +1468,14 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
             raise GenError(f"logic battery: a full 1S cell gives {LIPO_V_MAX_CELL * lrb / (lrt + lrb):.2f} V at PF"
                            f"{fcu_pins['logic_bat_adc'][1]} >= Vref {lvref} V")
         lbat = {"ch": fcu_pins["logic_bat_adc"][1], "v_per_count": lvref / 1024.0 * (lrt + lrb) / lrb,
-                "warn_v": float(lbm["ground_warn_below_v_ASSUMED"]), "r_top": lrt, "r_bot": lrb}
+                "warn_v": float(lbm["ground_warn_below_v_ASSUMED"]), "r_top": lrt, "r_bot": lrb,
+                # 2026-11-10: the TELEM v6 / v7 byte from the code in integers (sim.link_proto.lbat_q_from_counts):
+                # lbat = (counts x Q_X1024 + 512) >> 10, Q_X1024 = round(v_per_count x LBAT_SCALE x 1024)
+                "telem": lp.lbat_build(p, lp.MODE_VTOL),
+                "q_x1024": int(round(lvref / 1024.0 * (lrt + lrb) / lrb * lp.LBAT_SCALE * 1024.0))}
+        if lbat["q_x1024"] <= 0 or abs(lbat["q_x1024"] / 1024.0 - lbat["v_per_count"] * lp.LBAT_SCALE) > 1e-3:
+            raise GenError(f"logic battery: LOGIC_BAT_Q_X1024 {lbat['q_x1024']} does not represent "
+                           f"{lbat['v_per_count'] * lp.LBAT_SCALE:.6f} lbat steps per count within 0.1 %")
     adc_ps = next((bits for div, bits in sorted(ADC_PRESCALERS.items()) if f_cpu / div <= ADC_CLK_MAX_HZ), None)
     adc_div = next(div for div, bits in ADC_PRESCALERS.items() if bits == adc_ps)
 
@@ -1504,6 +1516,9 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
 
     log_div = divider(fc["log_hz"], "flight_computer.log_hz")
     baro_div = divider(ctl["baro_hz"], "control.baro_hz")
+    baro_sensor = str(fc.get("nav", {}).get("baro_sensor", BARO_SENSOR_LEGACY))
+    if baro_sensor not in BARO_SENSORS:
+        raise GenError(f"flight_computer.nav.baro_sensor {baro_sensor!r} not in {BARO_SENSORS}")
     imu_hz = int(ctl["imu_hz"])
     if 1000 % imu_hz:
         raise GenError("MPU-6050 with DLPF on samples at 1 kHz / (1 + SMPLRT_DIV): imu_hz must divide 1000")
@@ -1577,9 +1592,14 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
     # ---- LoRa link (SPEC 10.3) -------------------------------------------------
     lk = fc["link"]
     cl = cfg["link"]
-    radio = str(lk["radio"])
+    # 2026-11-10: the link MODEL follows vehicle_radio (sim.link_model.model_radio: the esp_bridge model); link.radio is
+    # the LoRa fallback's model and must be one of the LoRa ones
+    fallback = str(lk["radio"])
+    if fallback not in lm.LORA_RADIOS:
+        raise GenError(f"flight_computer.link.radio {fallback!r} (the LoRa fallback model) not in {lm.LORA_RADIOS}")
+    radio = lm.model_radio(p)
     if radio not in lm.RADIOS:
-        raise GenError(f"flight_computer.link.radio {radio!r} not in {lm.RADIOS}")
+        raise GenError(f"link model {radio!r} not in {lm.RADIOS}")
     # 2026-11-06: the COM backend the plain envs build (flight_computer.link.vehicle_radio, default link.radio).  link.radio
     # stays the link MODEL of sim/link_model.py (the budgets below, the ground's reply timeout): the model has no Wi-Fi,
     # and the LoRa model is the pessimistic case for the ESP-NOW bridge (E, docs/v0.9_펌웨어_결과.md 11장)
@@ -1600,8 +1620,8 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
     if bytes_per_tick > 8:
         warnings.append(f"link UART {link_baud} baud delivers {bytes_per_tick:.1f} bytes per tick; RX ring sized for <= 8")
     gps_tlm = bool(mode == lp.MODE_VTOL and vt and vt["spv"].gps_hold)
-    telem_bytes = (lp.TELEM3_FRAME_BYTES if gps_tlm else
-                   (lp.TELEM2_FRAME_BYTES if mode == lp.MODE_VTOL else lp.TELEM_FRAME_BYTES))   # the reply this build sends
+    lbat_tlm = bool(mode == lp.MODE_VTOL and lp.lbat_build(p, mode))   # 2026-11-10: the battery build's TELEM v6 / v7
+    telem_bytes = lm.telem_frame_bytes(mode, gps=gps_tlm, lbat=lbat_tlm)                 # the reply this build sends
     sx = sx127x_registers(lk, cl, loop_hz, warnings, telem_bytes=telem_bytes)
     spi_max = float(cl["sx127x_spi_hz_max"])
     spi = None
@@ -1618,7 +1638,7 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
     budgets = {}
     for r in lm.RADIOS:
         cfg_r = lm.LinkConfig.from_params(p, radio=r)
-        b = lm.budget(cfg_r, mode=mode, gps=gps_tlm)             # v0.7.1: sized for the reply frame of this build
+        b = lm.budget(cfg_r, mode=mode, gps=gps_tlm, lbat=lbat_tlm)   # v0.7.1: sized for the reply frame of this build
         if int(b["telem_frame_bytes"]) != telem_bytes:
             raise GenError(f"sim/link_model.py budget(mode={mode!r}) sizes the downlink for {b['telem_frame_bytes']} B, "
                            f"this build sends {telem_bytes} B")
@@ -1630,9 +1650,11 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
         b["single_loss_gap_s"] = req_ok + req_lost
         budgets[r] = b
     bsel = budgets[radio]
-    if bsel["single_loss_gap_s"] >= float(ms["link_loss_disarm_s"]):
-        raise GenError(f"{radio}: one lost frame leaves the vehicle {bsel['single_loss_gap_s']:.3f} s without an uplink, "
-                       f">= link_loss_disarm_s {ms['link_loss_disarm_s']} s - every lost frame would disarm on the pad")
+    for r_chk in dict.fromkeys((radio, fallback)):          # 2026-11-10: the model and the LoRa fallback
+        if budgets[r_chk]["single_loss_gap_s"] >= float(ms["link_loss_disarm_s"]):
+            raise GenError(f"{r_chk}: one lost frame leaves the vehicle {budgets[r_chk]['single_loss_gap_s']:.3f} s without "
+                           f"an uplink, >= link_loss_disarm_s {ms['link_loss_disarm_s']} s - every lost frame would disarm "
+                           "on the pad")
     if not bsel["poll_hz_achievable"]:
         warnings.append(f"{radio}: link.poll_hz {lk['poll_hz']} Hz is not reachable - the worst round trip is "
                         f"{bsel['rtt_worst_s'] * 1e3:.0f} ms, so the ground polls at {1.0 / bsel['poll_interval_s']:.2f} Hz")
@@ -1754,7 +1776,7 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
         stat_div=int(stat_div), r_series=r_series, params_tag=params_tag,
         f_cpu=f_cpu, presc=presc, top=top, counts_per_us=counts_per_us, frame_hz=int(frame_hz),
         loop_hz=loop_hz, dt=dt, tick_us=int(tick_us), t2=t2, imu_lead_counts=imu_lead_counts, imu_read_s=imu_read_s,
-        count_s=count_s, log_div=log_div, baro_div=baro_div, imu_hz=imu_hz,
+        count_s=count_s, log_div=log_div, baro_div=baro_div, baro_sensor=baro_sensor, imu_hz=imu_hz,
         smplrt_div=smplrt_div, i2c_hz=i2c_hz, twbr=twbr, ubrr_log=ubrr_log,
         log_baud=int(fc["log_baud"]), log_hz=int(fc["log_hz"]),
         adc_ch=adc_ch, r_top=r_top, r_bot=r_bot, vref=vref, vbat_per_count=vbat_per_count, adc_ps=adc_ps, adc_div=adc_div,
@@ -1763,7 +1785,7 @@ def _derive_one(params_path: str, cad_path: str | None, cfg_path: str, vcfg: str
         sens=sens, imu_idx=imu_idx, imu_sgn=imu_sgn, pad_still=gc, gfs=gfs, afs=afs, dlpf=dlpf,
         pad_still_ticks=ticks_ge(float(gc["duration_s"]), loop_hz),
         arm_debounce_ticks=max(1, ticks_ge(float(cfg["arm_switch_debounce_s"]), loop_hz)),
-        radio=radio, vradio=vradio, esp=esp, vid=vid, link_baud=link_baud, ubrr_link=ubrr_link, lk=lk, sx=sx, spi=spi, aux_wait_ticks=aux_wait_ticks,
+        radio=radio, fallback=fallback, vradio=vradio, esp=esp, vid=vid, link_baud=link_baud, ubrr_link=ubrr_link, lk=lk, sx=sx, spi=spi, aux_wait_ticks=aux_wait_ticks,
         seed_conv=seed_conv, budgets=budgets, gps_uart=gps_uart, gns_pins=gns_pins,
     )
 
@@ -2363,7 +2385,13 @@ def _render_one(d: dict, top: dict) -> list[str]:
     define("FC_LOG_HZ", str(d["log_hz"]), "flight_computer.log_hz")
     define("FC_LOG_DIV", str(d["log_div"]), "control ticks per log record")
     define("FC_BARO_HZ", str(round(d["loop_hz"] / d["baro_div"])), "control.baro_hz")
-    define("FC_BARO_DIV", str(d["baro_div"]), "control ticks per MS5611 pressure sample")
+    define("FC_BARO_DIV", str(d["baro_div"]), "control ticks per barometer pressure sample")
+    w("#define FC_BARO_MS5611                     1   /* hal/ms5611.c (GY-63) */")
+    w("#define FC_BARO_BMP280                     2   /* 2026-11-10: hal/bmp280.c (Bosch BMP280, forced mode) */")
+    w("#ifndef FC_BARO_SENSOR                     /* a PlatformIO env may force the other driver */")
+    define("FC_BARO_SENSOR", {"ms5611": "FC_BARO_MS5611", "bmp280": "FC_BARO_BMP280"}[d["baro_sensor"]],
+           f"flight_computer.nav.baro_sensor = {d['baro_sensor']} (src/hal/baro.h)")
+    w("#endif")
     define("FC_IMU_HZ", str(d["imu_hz"]), "control.imu_hz (MPU-6050 internal sample rate)")
     define("FC_MPU_SMPLRT_DIV", str(d["smplrt_div"]), "1 kHz / (1 + div) with the DLPF on")
     define("FC_I2C_HZ", f"{d['i2c_hz']}UL", "flight_computer.i2c_hz")
@@ -2408,8 +2436,14 @@ def _render_one(d: dict, top: dict) -> list[str]:
         lb = d["lbat"]
         define("LOGIC_BAT_ADC_CHANNEL", str(lb["ch"]), pins["logic_bat_adc"])
         define("LOGIC_BAT_V_PER_COUNT", cf(lb["v_per_count"]),
-               f"2.56 V/1024 * ({lb['r_top'] / 1e3:g}k+{lb['r_bot'] / 1e3:g}k)/{lb['r_bot'] / 1e3:g}k "
-               "(2026-11-06: not read by the firmware yet)")
+               f"2.56 V/1024 * ({lb['r_top'] / 1e3:g}k+{lb['r_bot'] / 1e3:g}k)/{lb['r_bot'] / 1e3:g}k")
+        define("LOGIC_BAT_TELEM", "1" if lb["telem"] else "0",
+               "2026-11-10: the VTOL battery FCU (FC_VCFG 0) reads PF3 and sends lbat (TELEM v6 / v7; "
+               "logic_battery_monitor.telemetry_builds)")
+        define("LOGIC_BAT_DIV_TICKS", f"{int(d['loop_hz'])}U", "one PF3 conversion per second (the V_cell one of that tick "
+                                                                "is skipped)")
+        define("LOGIC_BAT_Q_X1024", f"{lb['q_x1024']}UL", f"lbat = (counts x {lb['q_x1024']} + 512) >> 10, 1..255 "
+                                                         f"(link_proto.h LP_LBAT_SCALE {int(lp.LBAT_SCALE)} per volt)")
     _render_v09_power_hw(d, define, w)
     w("")
     w("/* ---- mixer plant (SPEC 8.3-8.5; SI, rad) ---- */")
@@ -2489,7 +2523,8 @@ def _render_one(d: dict, top: dict) -> list[str]:
     w("#ifndef FC_LINK_RADIO                      /* a PlatformIO env may force another backend */")
     define("FC_LINK_RADIO", {"lora_uart": "FC_RADIO_LORA_UART", "sx127x": "FC_RADIO_SX127X",
                              "esp_bridge": "FC_RADIO_ESP_BRIDGE"}[d["vradio"]],
-           f"flight_computer.link.vehicle_radio = {d['vradio']} (link model: link.radio = {d['radio']})")
+           f"flight_computer.link.vehicle_radio = {d['vradio']} (link model {d['radio']}, LoRa fallback model "
+           f"link.radio = {d['fallback']})")
     w("#endif")
     es = d["esp"]
     if es is not None:
@@ -2527,7 +2562,7 @@ def _render_one(d: dict, top: dict) -> list[str]:
     define("SX127X_RSSI_OFFSET", str(sx["rssi_offset"]), "packet RSSI = offset + RegPktRssiValue (datasheet 5.5.5)")
     define("SX127X_TX_TIMEOUT_TICKS", f"{sx['tx_timeout_ticks']}UL",
            f"{sx['tx_timeout_s'] * 1e3:.0f} ms = factor x ToA("
-           f"{ {lp.TELEM3_FRAME_BYTES: 'TELEM3', lp.TELEM2_FRAME_BYTES: 'TELEM2'}.get(sx['telem_bytes'], 'TELEM')}"
+           f"{ {lp.TELEM3_FRAME_BYTES: 'TELEM3', lp.TELEM2_FRAME_BYTES: 'TELEM2', lp.TELEM7_FRAME_BYTES: 'TELEM7', lp.TELEM6_FRAME_BYTES: 'TELEM6'}.get(sx['telem_bytes'], 'TELEM')}"
            f" {sx['telem_bytes']} B) {sx['toa_tlm'] * 1e3:.1f} ms + margin")
     div, spr, spi2x = d["spi"]
     define("SX127X_SPI_SPR", str(spr), f"SPI F_CPU/{div} = {d['f_cpu'] / div / 1e3:.0f} kHz (<= fc_config sx127x_spi_hz_max)")
@@ -2540,7 +2575,10 @@ def _render_one(d: dict, top: dict) -> list[str]:
         w(f" *     poll every {b['poll_interval_s'] * 1e3:.0f} ms ({1 / b['poll_interval_s']:.2f} Hz, link.poll_hz "
           f"{b['poll_hz']:g}), uplink gap after one lost frame {b['single_loss_gap_s'] * 1e3:.0f} ms")
     w(" */")
-    define("LINK_RTT_WORST_MS", f"{round(d['budgets'][d['radio']]['rtt_worst_s'] * 1e3)}U", "selected radio (informative)")
+    # 2026-11-10: the slowest backend's (the LoRa fallback model): the benches' / co-simulation's synthetic grounds poll
+    # at it with every COM backend (their LoRa COMs must keep up); the selected model's number is in the comment above
+    define("LINK_RTT_WORST_MS", f"{round(d['budgets'][d['fallback']]['rtt_worst_s'] * 1e3)}U",
+           f"the LoRa fallback model {d['fallback']} (the synthetic grounds' poll period; informative)")
     define("LINK_SINGLE_LOSS_GAP_MS", f"{round(d['budgets'][d['radio']]['single_loss_gap_s'] * 1e3)}U",
            "< link_loss_disarm_s, checked by the generator")
     w("")
@@ -2619,6 +2657,7 @@ def _render_one(d: dict, top: dict) -> list[str]:
     cfg = d["cfg"]
     define("CAL_MPU6050_ADDR", f"0x{int(cfg['i2c_addr']['mpu6050']):02X}", "7-bit")
     define("CAL_MS5611_ADDR", f"0x{int(cfg['i2c_addr']['ms5611']):02X}", "7-bit")
+    define("CAL_BMP280_ADDR", f"0x{int(cfg['i2c_addr'].get('bmp280', 0x77)):02X}", "7-bit (SDO high = 0x77, low = 0x76)")
     gc = d["pad_still"]
     define("CAL_PAD_STILL_TICKS", f"{d['pad_still_ticks']}U", f"{gc['duration_s']} s still before 'aligned'")
     define("CAL_PAD_STILL_RAD_S", cf(math.radians(float(gc["rate_dps"]))), f"{gc['rate_dps']} deg/s")

@@ -950,7 +950,7 @@
       ]
     },
     "nav": {
-      "model": "NAV board: ATmega128A minimum-system board (16 MHz crystal) + GY-521 MPU-6050 + GY-63 MS5611 on a 4-ch level shifter (3.3 V side) - v0.6.3: the sensor computer, at the v0.5 flight-computer spot",
+      "model": "NAV board: ATmega128A minimum-system board (16 MHz crystal) + GY-521 MPU-6050 + BMP280 barometer module (TYE-BMP29, I2C 0x77; 2026-11: the bought part and the default NAV driver, flight_computer.nav.baro_sensor - the GY-63 MS5611 of v0.5 .. v0.9 stays a firmware build option) on a 4-ch level shifter (3.3 V side) - v0.6.3: the sensor computer, at the v0.5 flight-computer spot",
       "mass_g": 40.0,
       "dims_lwh": [
         50.0,
@@ -971,7 +971,7 @@
       "note": "v0.6.3: lies flat on the intake bulkhead's top face (inside the intake spigot, below the avionics tray), edges along x / y, centred on the axis, on foam_t double-sided foam tape + a cable tie through two bulkhead vent holes. ASSUMED mass (bare board + harness) - weigh it. dims = x length x y width x z height"
     },
     "com": {
-      "model": "ATmega128A minimum-system board #2 (COM: LoRa radio, uplink decoding, TELEM building), same board type as the FCU",
+      "model": "ATmega128A minimum-system board #2 (COM: vehicle radio - the ESP-12E Wi-Fi bridge since 2026-11-06, LoRa the fallback, model_note_2026_11_06 - uplink decoding, TELEM building), same board type as the FCU",
       "mass_g": 20.0,
       "dims_lwh": [
         50.0,
@@ -995,7 +995,7 @@
       "note": "v0.6 (user, 2026-10-15): moved from the tray's misc box to the payload-bulkhead underside beside the COM board (raises the CG for static margin; the antenna hangs vertically along the avionics wall, far from the ESC and motor leads). ASSUMED mass (moved out of misc: 60 -> 40 g) - weigh it. Fixed with double-sided foam tape + a cable tie; dims = x length x y width x z height, box centred at r_center on theta_deg, hanging from the bulkhead underside"
     },
     "misc": {
-      "items": "5 V logic UBEC, buzzer, arming switch, wiring (servos run from the ESC's 5 V / 7 A BEC); v0.6: the LoRa module, OpenLog and radio level shifter moved to electronics.radio_log",
+      "items": "5 V logic UBEC, buzzer, arming switch, wiring (servos run from the ESC's 5 V / 7 A BEC); v0.6: the radio module (2026-11-06: an ESP-12E, LoRa the fallback), OpenLog and radio level shifter moved to electronics.radio_log",
       "mass_g": 40.0,
       "dims_lwh": [
         30.0,
@@ -1006,16 +1006,17 @@
     },
     "release_servo_count": 1,
     "gps": {
-      "module": "u-blox NEO-6M on a GY-NEO6MV2 board (user 2026-10-21: 'a standard Arduino GPS'); upgrade path u-blox NEO-M8N",
+      "module": "u-blox NEO-7M module SZH-NT07 (devicemart no=10895400; the part bought 2026-11 - user 2026-10-21: 'a standard Arduino GPS', then planned as a NEO-6M on a GY-NEO6MV2 board); upgrade path u-blox NEO-M8N. board_mass_g, the pod / cap dimensions and the lead below are still the GY-NEO6MV2 vendor data (A) - measure the NEO-7M board and its patch",
       "board_mass_g": 17.0,
       "board_mass_note": "board 36 x 25.8 x 4 mm + 25.5 x 25.5 x 8.8 mm patch, 17 g with the antenna (vendor data via the v0.8 research; weigh the real part)",
       "pod_mass_g_ASSUMED": 22.0,
-      "mount": "option B of the v0.8 CAD study: external pod on the payload-module tube at theta 192 deg (opposite the release pod), lid top 1 mm below the nose-separation edge; antenna face +Z, 0 % sky blocked; >= 172 mm from the LoRa box / ESC / UBEC / motor leads; no wire crosses a separation interface; antenna ~321 mm from the CG (lever-arm correction in the NAV)",
+      "mount": "option B of the v0.8 CAD study: external pod on the payload-module tube at theta 192 deg (opposite the release pod), lid top 1 mm below the nose-separation edge; antenna face +Z, 0 % sky blocked; >= 172 mm from the radio box (LoRa then, an ESP-12E since 2026-11-06) / ESC / UBEC / motor leads; no wire crosses a separation interface; antenna ~321 mm from the CG (lever-arm correction in the NAV)",
       "interface": "NAV USART1 (PD2 RXD1 / PD3 TXD1), 38400 8N1, U2X 0, UBRR 25 (+0.16 %); BOTH lines level-shifted (GPS RX not 5 V tolerant, abs max 3.6 V; GPS TX 3.3 V leaves 0.3 V over the ATmega128A V_IH 3.0 V) - spare channels of the NAV's BSS138 shifter (verify on the board)",
       "power": "3.3 V rail of the shifter, ~45 mA (board); backup cell keeps hot start (TTFF ~1 s) if powered within ~4 h",
-      "price_krw": 8000,
-      "rf_notes": "ASSUMED / to bench-test: the pigment of the PLA Matte Ivory White pod lid (white since the livery round 2026-11-04 - white PLA is usually TiO2-pigmented, A; was the carbon-black PLA Matte Black) at 1575 MHz - effect NOT VERIFIED (A), LoRa 922 MHz 14 dBm, ESC/BEC switching noise, 16 MHz clock harmonics at 1568 / 1584 MHz - compare u-center C/N0 and satellite count with / without the lid and with the motor running before relying on it",
-      "accuracy_note": "datasheet: 2.5 m CEP horizontal (24 h static), 0.1 m/s CEP velocity, max 5 Hz; latency not specified - 0.22 s ASSUMED (ArduPilot u-blox 6 value); the position WANDERS ~2 m: position hold is to within a couple of metres, velocity damping is tight. GPS needs OPEN SKY - no position hold indoors."
+      "price_krw": 9460,
+      "price_note": "NEO-7M SZH-NT07 at devicemart, sale price incl. VAT, read 2026-11-05 and again 2026-11-11 (docs/budget); was 8000 (GY-NEO6MV2 at eleparts, excl. VAT, 2026-10-21). No code reads this key",
+      "rf_notes": "ASSUMED / to bench-test: the pigment of the PLA Matte Ivory White pod lid (white since the livery round 2026-11-04 - white PLA is usually TiO2-pigmented, A; was the carbon-black PLA Matte Black) at 1575 MHz - effect NOT VERIFIED (A), the vehicle radio (ESP-12E 2.4 GHz 20 dBm since 2026-11-06 - its effect on the GPS front end NOT measured, A; the LoRa fallback 922 MHz 14 dBm), ESC/BEC switching noise, 16 MHz clock harmonics at 1568 / 1584 MHz - compare u-center C/N0 and satellite count with / without the lid and with the motor running before relying on it",
+      "accuracy_note": "NEO-6M datasheet values the v0.8 design was made with: 2.5 m CEP horizontal (24 h static), 0.1 m/s CEP velocity, max 5 Hz; latency not specified - 0.22 s ASSUMED (ArduPilot u-blox 6 value), which the NAV latency compensation still uses (flight_computer.nav.gps.latency_s_ASSUMED). The bought NEO-7M: same class of accuracy, max 10 Hz (A - its datasheet is not on disk); the firmware runs it at 5 Hz, the sim's receiver model is the NEO-7M since the 2026-11-10 control round (sim/sim6dof.py, latency 0.12 s A); the position WANDERS ~2 m: position hold is to within a couple of metres, velocity damping is tight. GPS needs OPEN SKY - no position hold indoors."
     },
     "gns": {
       "model": "ATmega128A minimum-system board #4 (GNS: GPS + position hold), same board type as the FCU / COM, + the GPS level-shifter channels",
@@ -1093,7 +1094,7 @@
         "phase_centre_below_patch_top_ASSUMED": 2.0,
         "board_standoff_h": 6.0,
         "board_bottom_clear": 3.0,
-        "source": "GY-NEO6MV2 board 36 x 25.8 x 4 mm, ceramic patch on a u.FL lead 25.5 x 25.5 x 8.8 mm (Addicore AD231, via the v0.8 GPS research report_gps-research.json); air gap 3 mm patch face -> PLA lid (detuning margin, rule of thumb of the v0.8 CAD study); phase centre 2 mm under the patch face ASSUMED.  Measure the real board and patch before printing"
+        "source": "GY-NEO6MV2 board 36 x 25.8 x 4 mm, ceramic patch on a u.FL lead 25.5 x 25.5 x 8.8 mm (Addicore AD231, via the v0.8 GPS research report_gps-research.json) - NOT re-measured for the NEO-7M module SZH-NT07 bought in 2026-11 (A: same class of board and patch; its vendor dimensions are not on disk); air gap 3 mm patch face -> PLA lid (detuning margin, rule of thumb of the v0.8 CAD study); phase centre 2 mm under the patch face ASSUMED.  Measure the real board and patch before printing"
       },
       "ground_plane": {
         "side": 50.0,
@@ -1230,7 +1231,7 @@
     "spin_rate_abort_dps": 720.0,
     "rate_abort_persist_s": 0.02,
     "gyro_saturation_abort": true,
-    "supervisor_note": "v0.4: onboard = attitude control + interlocks I1-I10 (SPEC 8.8); launch / throttle / cut / release are ground commands over LoRa; target_altitude_m, apogee_detect_vz_mps, apogee_confirm_s and coast_timeout_s are used by the ground station assist mode.",
+    "supervisor_note": "v0.4: onboard = attitude control + interlocks I1-I10 (SPEC 8.8); launch / throttle / cut / release are ground commands over the radio link (LoRa then; the ESP8266 Wi-Fi bridge since 2026-11-06, link.vehicle_radio); target_altitude_m, apogee_detect_vz_mps, apogee_confirm_s and coast_timeout_s are used by the ground station assist mode.",
     "budget_note": "100 A ESC (120 A peak 10 s): full throttle on a fresh pack draws ~114 A for the first seconds (proxy table 124 A @ 25.2 V); bench-measure current before flight",
     "apogee_limit_m": 150.0,
     "link_loss_abort_s": 3.0,
@@ -1310,7 +1311,7 @@
       "vz_ref_feedforward": true,
       "vz_ref_feedforward_note": "v0.7.1: v_cmd = dh_ref/dt + alt_kp (h_ref - h): the rate of the rate-limited reference is fed forward, removing the ~climb_rate / alt_kp ramp lag (0.96 m peak on UP) that dominated the hold RMS in v0.7.0",
       "baro_thrust_comp_m": 0.0,
-      "baro_thrust_comp_note": "v0.7.1: static-pressure error of the MS5611 with the fan running, as an altitude [m] at hover thrust (positive = the baro reads high, e.g. the electronics bay vented to the intake plenum), scaled with the commanded thrust T(u) / (m g). 0.0 = not calibrated. Measure it on the tether before the first free flight (build guide): hover tethered at a known height, compare h with a tape. The 6-DOF draws the true value as a plant variable (uncalibrated 0..1.5 m, calibrated residual)",
+      "baro_thrust_comp_note": "v0.7.1: static-pressure error of the barometer (BMP280 since 2026-11-10, MS5611 before - the error is the bay's, not the sensor's) with the fan running, as an altitude [m] at hover thrust (positive = the baro reads high, e.g. the electronics bay vented to the intake plenum), scaled with the commanded thrust T(u) / (m g). 0.0 = not calibrated. Measure it on the tether before the first free flight (build guide): hover tethered at a known height, compare h with a tape. The 6-DOF draws the true value as a plant variable (uncalibrated 0..1.5 m, calibrated residual)",
       "profile": "field",
       "profiles": {
         "field": {},
@@ -1404,7 +1405,7 @@
           "controller_nav_frame_rms_m": 0.5
         },
         "demo_rules": "OUTDOOR only (GPS needs open sky); demo wind <= 4 m/s mean; spectators >= 10 m from the hold point and NOT downwind; the pusher uses a padded pole >= 2.5 m held LEVEL, stands upwind, pushes only in the safe band (0.33-0.42 m above the exit plane), <= 3 N s, pushes >= 3 s apart; a dedicated KILL operator; GPS fix shown on the ground station before ON",
-        "note": "v0.8 (user 2026-10-21): hover must hold position against wind and hand pushes; the user chose a standard Arduino GPS (NEO-6M). Prototype (scratch snapshot, 2,000+ runs): station keeping 0.6-0.7 m RMS (max ~2 m, mostly GPS wander) in calm / 3-8 m/s wind / swinging direction / gusts, 3 N s pushes back within 0.5 m in ~1.7 s, touchdown <= 0.5 m/s over the ground in 95 % of field runs; GPS off drifts 13-139 m.",
+        "note": "v0.8 (user 2026-10-21): hover must hold position against wind and hand pushes; the user chose a standard Arduino GPS (NEO-6M then; the part bought in 2026-11 is a NEO-7M, electronics.gps.module). Prototype (scratch snapshot, 2,000+ runs): station keeping 0.6-0.7 m RMS (max ~2 m, mostly GPS wander) in calm / 3-8 m/s wind / swinging direction / gusts, 3 N s pushes back within 0.5 m in ~1.7 s, touchdown <= 0.5 m/s over the ground in 95 % of field runs; GPS off drifts 13-139 m.",
         "review_v08_decisions": "architect 2026-10-21 ~12:20, from the independent prototype review (scratchpad v08/report_gps-hold-review.json; all MUST be implemented): (1) NAV GPS filter = fixed-gain 3-state filter per axis (precomputed gains + innovation gates for 5 Hz, a second gain set for the first ~10 s / after a reset, no covariance propagation), delayed-state buffer indexed by tick, epoch work split so no NAV tick exceeds its free time (measured prototype: 1.02 ms per 50 Hz step, 7.4 ms per epoch - too slow; fixed-gain: 0.56 / 0.64 ms); (2) FCU position loop trig-free (compare squares, sqrt only when a limit acts, a_lim cached on k_T change, atan series, heading cos/sin from the NAV) and split into <= 0.2 ms background jobs; mind the FCU stack (966 B < 1024 B); (3) nlink keeps its 72 B frame: a 5 B ROTATING SLOT aligned with the NAV 50 Hz step carries px/py, vx/vy, reset delta, heading cos/sin (Q15), status (fix ok, ON-gate ok, reset counter, sats, accuracy class); (4) spin guard releases only with the estimated tilt within ~5 deg of the loop limit (tilt_guard_excess_deg 5) and no new tilt demand while the vertical controller is saturated high; tuning and validation on DIFFERENT seeds (fresh seeds showed a GPS-only I2 abort at 0.85 m); (5) wind envelope: operator limits field 6 m/s mean / gusts 8 m/s, demo 4 m/s; evaluate with near-ground turbulence intensity 0.2; touchdown policy in wind: tilt fades over the last ~0.3 m; (6) yaw: 1-state yaw Kalman update weighted by the information in each window (sigma ~ sigma_dv / |dv|), optional heading-alignment manoeuvre after the climb; (7) GPS-IMU plausibility rule -> GPS unusable -> attitude-only + LAND (tilt at its limit > ~3 s while |v| does not fall; |v_nav| > v_max + 1 m/s for 2 s; repeated resets); (8) UBX: match messages by iTOW, stamp epochs from a learned tick-to-iTOW offset, configure at 9600 and 38400 with ACK checks, poll MON-VER, gate on gpsFixOK + hAcc + sAcc + numSV; (9) quote station keeping as ~1 m RMS / 2.5 m max until a real module is measured (10 min static log on the pod with the EDF at hover throttle and LoRa transmitting; fit the error time constants into the sim).",
         "wind_limits_mps": {
           "field_mean": 5.0,
@@ -1595,7 +1596,7 @@
           "note": "v0.6: 120 -> 100 g because 20 g of it (OpenLog, LoRa/logging parts) is now electronics.radio_log; total electronics mass unchanged"
         },
         "nav": {
-          "model": "ATmega128A-AU flight-computer board (16 MHz crystal, 5 V), with GY-521 MPU-6050 IMU + GY-63 MS5611 baro on a 4-ch BSS138 I2C level shifter (3.3 V side)",
+          "model": "ATmega128A-AU flight-computer board (16 MHz crystal, 5 V), with GY-521 MPU-6050 IMU + a barometer module (BMP280 TYE-BMP29 since 2026-11, the GY-63 MS5611 before) on a 4-ch BSS138 I2C level shifter (3.3 V side)",
           "mass_g": 45.0,
           "dims_lwh": [
             50.0,
@@ -1744,7 +1745,7 @@
           "note": "v0.9 CAD-2 VTOL: two tall lightening holes in the tray between the centre spine (|y| < y_inner) and the strap-slot bands (|y| > y_outer), z_margin from the tray ends (printed flat, no overhang)",
           "y_outer_note": "v0.9 fix round: 28 -> 33 (the tray is 107.5 wide now; the hole keeps 4.25 mm to the strap-slot band, Layout.tray_hole_walls) - sizing/vtol_strength.py re-checks the tray"
         },
-        "vtol_note": "v0.9 CAD-2 VTOL avionics bay: carrier PCB on the intake bulkhead (z +3..+18), tray from +20: battery (-x face) and ESC (+x face) at the tray bottom + 2, misc box (UBEC, buzzer, wiring junction) above the ESC; tray top 1 mm over the battery; the top cap's skirt covers the spigot; no NAV / GNS / GPS entry / vent slots (the windows ventilate)",
+        "vtol_note": "v0.9 CAD-2 VTOL avionics bay: carrier PCB on the intake bulkhead (z +3..+18), tray from +20: battery (-x face) and ESC (+x face) at the tray bottom + 2, misc box (buzzer, wiring junction; the UBEC planned here is not fitted with carrier rev 2c - electronics.misc.items) above the ESC; tray top 1 mm over the battery; the top cap's skirt covers the spigot; no NAV / GNS / GPS entry / vent slots (the windows ventilate)",
         "tray_plane_x": 14.6,
         "tray_w": 107.5,
         "tray_plane_note": "v0.9 fix round (2026-10-28, reviewer defects) (mass reviewer: 'lateral CG 3.1 mm toward +x uses 9 % of the hover pitch authority'): the tray plane moves 25 -> tray_plane_x toward the axis so the battery (-x face) balances the ESC / misc / motor leads (+x); tray_w grows so the tray keeps its 1.8 mm engagement in the rails (rail_y follows the bore at the new x); C33 checks the lateral CG"
@@ -1755,7 +1756,7 @@
         "radio_log": null,
         "gns": null,
         "carrier": {
-          "model": "VTOL avionics carrier PCB (one board): 4 x ATmega128A TQFP-64 (NAV, FCU, COM, GNS - the v0.8.1 roles and links unchanged) + an unpopulated footprint for an optional 5th ATmega128A (timing study), GY-521 MPU-6050 + GY-63 MS5611 modules, BSS138 level shifters, AMS1117-3.3, 5 V buck for the logic, LoRa module + antenna and OpenLog on headers, servo / ESC / GPS / ISP headers",
+          "model": "VTOL avionics carrier PCB (one board): 4 x ATmega128A TQFP-64 (NAV, FCU, COM, GNS - the v0.8.1 roles and links unchanged; rev 2c has NO 5th-chip footprint), GY-521 MPU-6050 + BMP280 (TYE-BMP29) modules, BSS138 level shifters, AMS1117-3.3, an ESP-12E Wi-Fi module soldered on (the vehicle radio), a Pololu S9V11F5S6CMA 5 V step-up/step-down module fed from the separate 1S logic pack (J14 / J15, configs.vtol.logic_power), OpenLog on a socket, servo / ESC / GPS / ISP headers (pcb/vtol_carrier rev 2c, 4 layers). The mass breakdown keys below keep their v0.9 CAD-2 names and ESTIMATED values (gy521_gy63_modules, lora_module_and_antenna: now the GY-521 + BMP280 and the ESP-12E) - not re-estimated, weigh the assembled board",
           "mass_g": 50.0,
           "mass_g_ASSUMED": true,
           "dims_lwh": [
@@ -1785,10 +1786,10 @@
             "gns": 26.6,
             "radio_log": 20.0
           },
-          "note": "v0.9 CAD-2 VTOL (user decision 2): ONE carrier instead of the four ATmega128A minimum-system boards (~127 g incl. the radio box today). Flat on the intake bulkhead on foam_t foam tape + a cable tie through the two vent holes (90 / 270 deg), at the v0.6.3 FCU spot (dims = x length x y width x z height incl. components; 76 x 70 keeps 4 mm to the motor-lead joint zone, 3 mm to the motor-lead hole, the vent holes uncovered and the corners 5.3 mm inside the intake spigot bore). The servo leads end on it as on the FCU. Mass is an ESTIMATE (breakdown above) - weigh the assembled board. A 4-layer layout and the 5th MCU footprint are the PCB round's job."
+          "note": "v0.9 CAD-2 VTOL (user decision 2): ONE carrier instead of the four ATmega128A minimum-system boards (~127 g incl. the radio box today). Flat on the intake bulkhead on foam_t foam tape + a cable tie through the two vent holes (90 / 270 deg), at the v0.6.3 FCU spot (dims = x length x y width x z height incl. components; 76 x 70 keeps 4 mm to the motor-lead joint zone, 3 mm to the motor-lead hole, the vent holes uncovered and the corners 5.3 mm inside the intake spigot bore). The servo leads end on it as on the FCU. Mass is an ESTIMATE (breakdown above) - weigh the assembled board. PCB round result (2026-11-05, pcb/vtol_carrier rev 2c): 4 layers, no 5th MCU footprint (it did not fit), ESP-12E instead of the LoRa header, 1S logic pack + Pololu 5 V module instead of a buck from the 6S pack."
         },
         "misc": {
-          "items": "5 V logic UBEC (or the carrier's buck), buzzer, wiring junction / harness; the arming switch sits in the top cap (top_cap.switch_hole)",
+          "items": "buzzer, wiring junction / harness; the arming switch sits in the top cap (top_cap.switch_hole). v0.9 CAD-2 planned a 5 V logic UBEC here (or a buck on the carrier); carrier rev 2c takes its 5 V from the 1S logic pack through the Pololu S9V11F5S6CMA on the board (configs.vtol.logic_power), so no UBEC is fitted - mass_g and the box NOT re-estimated (A)",
           "mass_g": 25.0,
           "dims_lwh": [
             15.0,
@@ -1850,7 +1851,7 @@
             "connector_pair_g_ASSUMED": 1.0,
             "slack_mm": 60.0
           },
-          "note": "GPS on TOP of the cap (open sky, no lid): the patch face up on a 40 mm copper-clad ground plane taped to the plate at 180 deg (50 mm in the rocket pod; 40 mm keeps 3 mm to the hardpoint eye and the plate edge), the GY-NEO6MV2 board taped at 270 deg (long side tangential); the lead drops through lead_hole (beside the board, over the battery-side half of the bay, clear of the tray plane) to the GNS on the carrier. patch / board dims as payload_module.gps_pod.stack (vendor data, measure). Masses ASSUMED (ground plane scaled from 4.5 g at 50 mm)"
+          "note": "GPS on TOP of the cap (open sky, no lid): the patch face up on a 40 mm copper-clad ground plane taped to the plate at 180 deg (50 mm in the rocket pod; 40 mm keeps 3 mm to the hardpoint eye and the plate edge), the GPS board (NEO-7M SZH-NT07; dims here = the GY-NEO6MV2's, not re-measured, A) taped at 270 deg (long side tangential); the lead drops through lead_hole (beside the board, over the battery-side half of the bay, clear of the tray plane) to the GNS on the carrier. patch / board dims as payload_module.gps_pod.stack (vendor data, measure). Masses ASSUMED (ground plane scaled from 4.5 g at 50 mm)"
         },
         "switch_hole": {
           "d": 6.5,
@@ -2014,7 +2015,7 @@
           "gps_sky": {
             "receiver_elev_mask_deg_ASSUMED": 5.0,
             "max_blocked_sky_above_mask_pct": 1.0,
-            "note": "no GPS elevation-mask rule existed (C30 only required the patch top to be the vehicle top except named exceptions). The u-blox 6 (NEO-6M) default minimum satellite elevation is 5 deg (A, receiver description CFG-NAV5 default) and the firmware's CFG-NAV5 sets dynModel only (mask 0x0001, firmware/atmega128_fc/src/core/gps_ubx.h), so the receiver keeps it. Rule set in this round (E, C41): the collar may shade at most max_blocked_sky_above_mask_pct of the sky above that mask, seen from the patch centre (azimuth width x elevation band above the mask, the collar top taken at its nearest point - conservative); its top elevation angle is reported"
+            "note": "no GPS elevation-mask rule existed (C30 only required the patch top to be the vehicle top except named exceptions). The u-blox 6 / 7 (NEO-6M, and the NEO-7M bought in 2026-11) default minimum satellite elevation is 5 deg (A, receiver description CFG-NAV5 default) and the firmware's CFG-NAV5 sets dynModel only (mask 0x0001, firmware/atmega128_fc/src/core/gps_ubx.h), so the receiver keeps it. Rule set in this round (E, C41): the collar may shade at most max_blocked_sky_above_mask_pct of the sky above that mask, seen from the patch centre (azimuth width x elevation band above the mask, the collar top taken at its nearest point - conservative); its top elevation angle is reported"
           },
           "print_note": "the collar stands 17.2 mm up from the plate's top face, so the cap can no longer print top face down without supports under the whole top face (17 mm, ~110 cm^2, the GPS / tape face on support). Battery-build cap prints UPRIGHT (skirt rim on the bed, top face up, collar up - make_v09_print_files), with tree supports from the bed under the plate, ribs, hub, washer recess and rim ring inside the skirt (like the rocket payload module's bulkhead). The switch hole is vertical through the plate: no support is generated inside it (nothing overhangs there; make_v09_print_files measures it on the G-code), but the plate's underside round the hole - the inner nut's seat - prints on support interface: scrape / sand it flat. The tether / hybrid cap (no collar) keeps the top-face-down, no-support plan. Review fix (2026-11-05, F6): printed upright, the hardpoint load path (rib tips, hub, the load-washer recess) also prints on support interface - its proof-load rib factor is only 1.03 (C38, from a top-face-down print), so catch-line / proof loads are applied only with a cap printed top face down (the tether / hybrid cap), never with this collared cap, and the washer recess is faced flat; the skirt mouth (radial clearance 0.2 mm on the avionics spigot) is now the first layer, so this slice sets elefant_foot_compensation (make_v09_print_files COLLAR_CAP_OVERRIDES, A) - check the fit on the spigot on the first print",
           "in_flight_mass_note": "the collar is part of the logic-power kit: behind in_flight_mass_model (false: the report's top cap mass entry is the cap without the switch hole AND without the collar; the pending-mass report carries the printed cap with both)"
@@ -2412,7 +2413,7 @@
   },
   "flight_computer": {
     "mcu": "ATmega128A",
-    "architecture": "v0.6.3: three ATmega128A - NAV (MPU-6050 + MS5611 on I2C, attitude estimator, altitude filter, pad alignment; at the end of its 250 Hz tick it pushes the navigation frame to the FCU over the nlink SPI as the SPI master, SPEC 10.5), FCU (onboard supervisor I1-I10, attitude controller, PWM outputs, OpenLog log; SPI slave, its tick starts when a complete navigation frame has arrived) and COM (LoRa link, SPEC 10.4). Every flight computation runs on an ATmega128A",
+    "architecture": "v0.6.3: three ATmega128A - NAV (MPU-6050 + barometer on I2C - BMP280 since 2026-11-10, MS5611 a build option, nav.baro_sensor - attitude estimator, altitude filter, pad alignment; at the end of its 250 Hz tick it pushes the navigation frame to the FCU over the nlink SPI as the SPI master, SPEC 10.5), FCU (onboard supervisor I1-I10, attitude controller, PWM outputs, OpenLog log; SPI slave, its tick starts when a complete navigation frame has arrived) and COM (radio link, SPEC 10.4: the ESP8266 Wi-Fi bridge since 2026-11-06, LoRa the fallback - link.vehicle_radio); v0.8.1 added the 4th chip GNS (GPS + position hold, architecture_v081). Every flight computation runs on an ATmega128A",
     "f_cpu_hz": 16000000,
     "vcc_V": 5.0,
     "toolchain": "avr-gcc (PlatformIO atmelavr, MegaCore ATmega128 board), C99; ported-to-CodeVisionAVR notes in firmware/README",
@@ -2445,13 +2446,15 @@
       "v_tether_adc": "PF1/ADC1 (V_tether before D1; divider 47k/4.7k + 100 nF, internal 2.56 V ref, 0.0275 V/count, 28.1 V full scale; ASSUMED until the v0.9 carrier PCB is routed)",
       "v_buffer_adc": "PF2/ADC2 (V_buffer before D2, hybrid build; divider 47k/4.7k + 100 nF, internal 2.56 V ref; ASSUMED until the v0.9 carrier PCB is routed)",
       "buf_isign": "PC3 (buffer-current sign, digital input, high = the buffer discharges; telemetry PF_BUF_SHARE only; ASSUMED until the v0.9 carrier PCB is routed)",
-      "logic_bat_adc": "PF3/ADC3 (logic battery monitor, VTOL carrier rev 2c: 1S pack after the switch through 47k / 47k + 100 nF, internal 2.56 V ref; flight_computer.logic_battery_monitor; NOT read by the firmware yet)"
+      "logic_bat_adc": "PF3/ADC3 (logic battery monitor, VTOL carrier rev 2c: 1S pack after the switch through 47k / 47k + 100 nF, internal 2.56 V ref; flight_computer.logic_battery_monitor; read once per second by the VTOL battery build only, hal/adc.h FC_LOGIC_BAT)"
     },
     "nav": {
-      "role": "NAV: MPU-6050 + MS5611 (I2C 400 kHz via the 3.3 V level shifter), pad alignment / gyro-only attitude estimator, tilt, altitude filter, sensor health; at the end of every tick it pushes the navigation frame to the FCU as the nlink SPI master and receives the FCU's state bytes in the same exchange. No flight decisions: commands, interlocks, control and outputs stay on the FCU",
+      "role": "NAV: MPU-6050 + barometer (BMP280 by default, MS5611 as a build option - baro_sensor; I2C 400 kHz via the 3.3 V level shifter), pad alignment / gyro-only attitude estimator, tilt, altitude filter, sensor health; at the end of every tick it pushes the navigation frame to the FCU as the nlink SPI master and receives the FCU's state bytes in the same exchange. No flight decisions: commands, interlocks, control and outputs stay on the FCU",
       "mcu": "ATmega128A",
       "f_cpu_hz": 16000000,
       "tick_hz": 250,
+      "baro_sensor": "bmp280",
+      "baro_sensor_note": "2026-11-10: the NAV barometer driver the plain envs build (FC_BARO_SENSOR, firmware/atmega128_fc/src/hal/baro.h): bmp280 = Bosch BMP280 on the module TYE-BMP29, I2C 0x77, forced mode, pressure x4 / temperature x1 oversampling, IIR off, one measurement per 20 ms baro cycle (datasheet BST-BMP280-DS001 3.3 / 3.6.2 / 3.8.1 - written from the published datasheet, ASSUMED until checked against the PDF and the part); ms5611 = the GY-63 driver of v0.5 .. v0.9, kept as a build option (PLATFORMIO_BUILD_FLAGS=-DFC_BARO_SENSOR=FC_BARO_MS5611 or this key). A params file without the key builds ms5611.",
       "pins": {
         "i2c_scl": "PD0/SCL",
         "i2c_sda": "PD1/SDA",
@@ -2520,7 +2523,7 @@
     },
     "link": {
       "radio": "lora_uart",
-      "radio_note": "the link MODEL of sim/link_model.py (its RADIOS: the sim's link timing, the ground station's reply timeout and practice link, the generator's link budget) and a LoRa fallback backend. 2026-11-06: the COM is built for vehicle_radio; the model stays lora_uart - sim/link_model.py has no Wi-Fi model and the LoRa timing is the pessimistic case for the ESP-NOW bridge (E); an ESP-NOW link model changes the assist / link-loss timing (control-relevant, next round)",
+      "radio_note": "the LoRa FALLBACK link model of sim/link_model.py and the LoRa fallback backend (lora_uart or sx127x). 2026-11-10 control round: the link model follows vehicle_radio whenever sim/link_model.py has a model for it (sim.link_model.model_radio: RADIOS = lora_uart, sx127x, esp_bridge) - the sim's link timing, the ground station's reply timeout / default link delay and the generator's link budget use the esp_bridge model now; this key is used when vehicle_radio is set back to a LoRa backend (the fallback) and by the explicit LoRa studies. (2026-11-06: the model was lora_uart while sim/link_model.py had no Wi-Fi model)",
       "vehicle_radio": "esp_bridge",
       "vehicle_radio_note": "the COM backend the plain com / com_wired / com_wired_buffer / com_ballistic envs build (FC_LINK_RADIO; tools/gen_firmware_params.py): esp_bridge = the ESP8266 (VTOL carrier: ESP-12E U7 soldered; rocket: an ESP-12E on the hand-wired COM board, firmware/README.md 0.10) running firmware/esp_bridge, a transparent UART <-> ESP-NOW bridge - the frame protocol is unchanged. User 2026-11-05: Wi-Fi adopted for the vehicle link, the rocket uses the ESP too. Fallback: lora_uart (Ebyte) or sx127x - set this key back, regenerate, rebuild; the envs com_lora_uart / com_sx127x / com_esp_bridge always build all three",
       "uart_baud": 9600,
@@ -2547,6 +2550,8 @@
         "boot_note": "the COM holds the ESP's RST low (PC6) from its first instructions, for reset_hold_ms in radio_init, then releases it and drops every UART byte for boot_discard_ms (the ESP8266 ROM boot log at 74880 baud; the bridge sketch is up after ~100-300 ms, A); the ESP sends no ready byte - a request before the bridge is up is a lost packet for the ground. 2026-11-06 review: only on a cold COM boot (power-on, or no reset flag); after a COM watchdog / brown-out / external reset the ESP is left running and no window opens (as the Ebyte module, which a COM reset does not touch). PC6 is open-drain: driven low to hold RST, released to input (Hi-Z) - the Q5 pull-ups raise RST, so a manual RST-GND short never shorts a driven-high pin",
         "espnow_channel": 1,
         "phy_mode": "11b",
+        "air_rate_bps": 1000000,
+        "air_rate_note": "2026-11-10: the ESP-NOW bit rate the link model (sim/link_model.py esp_bridge) times the frames at - 1 Mbps 802.11b DSSS, long preamble (A, as bit_rate_note: measure on the real ESPs; a higher rate only shortens the ~1 ms on air, the round trip is dominated by the two 38400-baud UART hops per direction)",
         "bit_rate_note": "ESP-NOW frames at 1 Mbps (the ESP-NOW default, A: Espressif ESP-NOW user guide, not on disk); 802.11b PHY (WiFi.setPhyMode); sensitivity ~-98 dBm at 1 Mbps vs ~-72 dBm at 802.11n high rates (A, pcb/vtol_carrier/spec/carrier_spec.json radio_decision_2026_11_05)",
         "tx_power_dbm_vehicle": 20.0,
         "tx_power_dbm_ground": 20.0,
@@ -2561,7 +2566,7 @@
       "sim_packet_loss": 0.05,
       "frequency_note": "Korea: KC-certified module in the 920 MHz band (920.9-923.3 MHz used here for sx127x); 433 MHz legality not verified - check rra.go.kr"
     },
-    "model_note": "SBUS removed in v0.4; the LoRa module is the only radio; v0.6: the radio moved to the COM ATmega128A (flight_computer.com); 2026-11-06: the vehicle radio is the ESP8266 Wi-Fi bridge (link.vehicle_radio), LoRa the fallback; the sim keeps the LoRa link model (link.radio)",
+    "model_note": "SBUS removed in v0.4; the LoRa module is the only radio; v0.6: the radio moved to the COM ATmega128A (flight_computer.com); 2026-11-06: the vehicle radio is the ESP8266 Wi-Fi bridge (link.vehicle_radio), LoRa the fallback; 2026-11-10: the sim's link model follows link.vehicle_radio (sim/link_model.py esp_bridge), link.radio is the LoRa fallback's model",
     "logic_battery_monitor": {
       "pin": "flight_computer.pins.logic_bat_adc (FCU PF3/ADC3)",
       "applies_to_note": "the VTOL carrier (rev 2c) only; the rocket's hand-wired FCU has no PF3 divider (its logic runs from the 5 V logic UBEC, electronics misc) - PF3 unconnected there",
@@ -2569,8 +2574,10 @@
       "r_bottom_ohm": 47000,
       "vref_v": 2.56,
       "ground_warn_below_v_ASSUMED": 3.6,
+      "ground_warn_note": "A: 3.6 V under load leaves the 1S pack (DTP105565P, 3.0 V cut-off) its last ~10-15 % (E, typical LiPo discharge curve, not measured on this pack) and keeps the Pololu 5 V boost (S9V11F5S6CMA, input >= 2 V, A) far from its limit - measure the pack's discharge curve under the logic load and set this; the ground warns once below it (0.05 V hysteresis), the vehicle does nothing",
+      "telemetry_builds": "vtol_battery",
       "source": "pcb/vtol_carrier/spec/carrier_spec.json rev 2c (VBAT_LOGIC_SW -> 47k / 47k -> FCU PF3, populated; 2.10 V at 4.2 V, 1.50 V at 3.0 V); 1S DTP105565P 3.0-4.2 V",
-      "status": "2026-11-06: pin and scale here and in params_gen.h (LOGIC_BAT_*); NOT read by the firmware and NOT in the telemetry: TELEM v1-v5 have no free byte or bit, and a new TELEM type lengthens the battery build's reply, which changes sim/link_model.py's link timing of every battery flight (the RP1 precedent: TUNE pair comparison + comparison videos) - a control-procedure change for the next round; no onboard action (ARM refusal / LAND) without a control round"
+      "status": "2026-11-10 control round: read by the FCU of the VTOL battery build (FC_VCFG 0: fcu, fcu_demo, fcu_nogps, the fcu_bench_* and fcu_simbench builds; params_gen.h LOGIC_BAT_TELEM) once per second on PF3 (the battery-voltage conversion of that tick is skipped) and sent in the reply snapshot's spare byte (SNAP2 spare / SNAP3 spare3, lbat 0.02 V steps); the COM sends TELEM v6 (40 B) / v7 (46 B) = TELEM v2 / v3 + 1 byte (sim/link_proto.py TYPE_TELEM6 / TYPE_TELEM7). The ground station shows it and warns below ground_warn_below_v_ASSUMED; NO onboard action (ARM refusal / LAND on the logic battery is a user decision). The rocket FCU and the tether / hybrid builds do not read it (no divider / their power tail) and keep their TELEM. (2026-11-06: pin and scale only, not read)"
     },
     "architecture_v081": "v0.8.1 (architect 2026-10-21 20:30, after the v0.8 integration measured the 3-chip GPS build: NAV mandatory work 98.7 % mean / 119.5 % max of the 4 ms tick, FCU time-critical 83.3 % (89.2 % with ISRs), FCU background starved (no ilink CMD decoded in position hold -> V1 LAND), FCU stack free 436 B, IMU->vane up to 16.4 ms; the no-GPS v0.8 build passes timing): FOUR ATmega128A. GNS (GPS navigation + station keeping) = a 4th board: NEO-6M on its USART1 (PD2/PD3, 38400, level-shifted), UBX parsing, the GPS-aided horizontal filter (gps_nav) and the position controller (position_ctrl) at 50 Hz; NAV keeps the attitude / altitude estimators (the passing no-GPS v0.8 load) and links to the GNS over glink; the FCU no longer runs the position controller (RAM / background back to the no-GPS build) and takes the tilt setpoint + GPS status from the nlink rotating slot that the NAV fills from the GNS. Every flight computation stays on ATmega128A boards.",
     "gns": {

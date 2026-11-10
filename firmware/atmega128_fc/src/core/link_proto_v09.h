@@ -11,7 +11,14 @@
  * from onb_tlm_src_t pw_vaux / pw_flags, filled by onboard_update in the power builds, 0 / 0 in the battery build); the
  * COM appends them unchanged.  Invariant: the tail bytes are the reference's PowerTelem.encode() exactly, and a frame
  * encoded here decodes in sim/link_proto.py to the Telemetry with the same v_aux_q / pwr_flags.  Not compiled into the
- * ballistic images (no caller; LP_RP1 0 has no TELEM4 / TELEM5 in its decoder). */
+ * ballistic images (no caller; LP_RP1 0 has no TELEM4 / TELEM5 in its decoder).
+ *
+ * 2026-11-10 control round: TELEM v6 / v7 (the logic-battery tail, link_proto.h) and lp_encode_vtol_reply, the COM's
+ * reply rule for a VTOL snapshot in one place (com/com_link.c and the host tests call it):
+ *   power tail due (LP_PWR_TAIL_DUE)      -> TELEM v5 (v3) / v4 (v2)
+ *   else lbat byte not 0 (LP_LBAT_TAIL_DUE) -> TELEM v7 (v3) / v6 (v2)
+ *   else                                   -> TELEM v3 / v2
+ * sim/ilink_proto.py telem_frame_from_snap is the reference. */
 #ifndef FC_LINK_PROTO_V09_H
 #define FC_LINK_PROTO_V09_H
 
@@ -30,5 +37,13 @@ uint8_t lp_encode_telem5(uint8_t veh, uint8_t seq, const lp_telem_t *t, uint8_t 
 /* payloads -> fields (the ground bridge's / the host tests' decode; the TELEM v2 / v3 part as lp_unpack_telem2 / 3) */
 void    lp_unpack_telem4(const uint8_t in[LP_TELEM4_PAYLOAD_LEN], lp_telem_t *t, uint8_t *v_aux, uint8_t *pwr_flags);
 void    lp_unpack_telem5(const uint8_t in[LP_TELEM5_PAYLOAD_LEN], lp_telem_t *t, uint8_t *v_aux, uint8_t *pwr_flags);
+/* 2026-11-10: TELEM v6 / v7 = TELEM v2 / v3 + lbat u8 */
+uint8_t lp_encode_telem6(uint8_t veh, uint8_t seq, const lp_telem_t *t, uint8_t lbat, uint8_t out[LP_TELEM6_FRAME_BYTES]);
+uint8_t lp_encode_telem7(uint8_t veh, uint8_t seq, const lp_telem_t *t, uint8_t lbat, uint8_t out[LP_TELEM7_FRAME_BYTES]);
+void    lp_unpack_telem6(const uint8_t in[LP_TELEM6_PAYLOAD_LEN], lp_telem_t *t, uint8_t *lbat);
+void    lp_unpack_telem7(const uint8_t in[LP_TELEM7_PAYLOAD_LEN], lp_telem_t *t, uint8_t *lbat);
+/* the COM's reply to a VTOL snapshot (rule above); v3 = a SNAP3 (GPS fields); returns the frame length */
+uint8_t lp_encode_vtol_reply(uint8_t veh, uint8_t seq, const lp_telem_t *t, bool v3, uint8_t pw_vaux, uint8_t pw_flags,
+                             uint8_t lbat, uint8_t out[LP_FRAME_MAX_BYTES]);
 
 #endif /* FC_LINK_PROTO_V09_H */

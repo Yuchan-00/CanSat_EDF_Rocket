@@ -3,7 +3,7 @@
  * tools/run_gns_simbench.py builds, runs and judges the single-chip bench (host_test/build/gns_simbench_report.json).
  *
  * The GNS firmware is unchanged except for its PEERS (never a line of the measured code):
- *   - a synthetic u-blox NEO-6M on the GPS UART (both builds: simavr has no receiver on RXD1) - the v0.8 NAV bench's
+ *   - a synthetic u-blox receiver (a NEO-6M model; the bought part is a NEO-7M) on the GPS UART (both builds: simavr has no receiver on RXD1) - the v0.8 NAV bench's
  *     receiver, moved here with the GPS: factory 9600 baud with NMEA; parses the frames the GNS queues (hal/gps_uart.c's
  *     copies) and answers RCV_RESP_TICKS later at its own baud (CFG-PRT for another baud -> switches, no ACK; the other CFG
  *     frames -> ACK-ACK; MON-VER poll -> a 100-byte MON-VER of a u-blox 6); once a NAV message is enabled and the rate is

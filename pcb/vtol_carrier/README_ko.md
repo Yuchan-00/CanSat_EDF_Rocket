@@ -161,6 +161,7 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 determinism.py           # 두 번 �
 
 - 펌웨어: FCU PF3 로직 배터리 읽기, BMP280 드라이버와 기압 모델 (제어 관련 → 전/후 비교 영상 규칙), NEO-7M 설정, `sim/tether.py:171`, PE5(사출 서보 PWM)는 이제 보드에 이어진 것이 없음.
 - params/문서 충돌 (고치지 않음): 5번째 칩, LoRa ↔ ESP-12E, 6S ↔ 1S 로직 전원, 사출 서보 헤더.
+- 2026-11-11 갱신 (2026-11-10 제어 라운드): `spec/carrier_spec.json`의 `esp12e.uart` 설명을 9600에서 38400으로 고쳤습니다 (params `flight_computer.link.esp_bridge.uart_baud`. `link.uart_baud` 9600은 예비 LoRa 링크 것). 글만 고쳤고 `scripts/build_spec.py`의 같은 문장도 고쳤습니다. 넷리스트·배치·거버는 다시 만들지 않았습니다. 그래서 `kicad/placement.json`과 `kicad/schematic_manifest.json`의 `spec_sha256`은 고치기 전 사양 파일의 값입니다. 위 두 줄 중 BMP280 드라이버와 기압 모델은 만들었고(NAV 기본 빌드), params.json의 설명 글(5번째 칩, LoRa, 로직 전원)도 rev 2c에 맞췄습니다.
 - 앞면 실크 공간: 이름 20개가 뒷면입니다. 하네스 끝에 라벨을 붙이는 것을 권합니다.
 
 ## 10. 파일

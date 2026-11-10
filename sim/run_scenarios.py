@@ -7,7 +7,7 @@ sample -> output-register delay (``sim.fc_timing.FC_COMPUTE_DELAY_S_MEASURED``,
 phase to the control tick) and decoded at the pulse falling edge, then servo lag
 + rate limit + saturation; MPU-6050 gyro integrated by the firmware estimator
 (pad alignment, gyro-only after launch; the NAV's pad -> flight switch 2 ticks
-behind the supervisor); MS5611 baro; the measured on-vehicle link delays of
+behind the supervisor); barometer (BMP280 model since 2026-11-10, sim6dof.BARO_MODELS); the measured on-vehicle link delays of
 ``sim.link_model``.
 
 Scenarios (v0.4: every flight runs the ground station, the LoRa link model and
@@ -138,7 +138,9 @@ def scenario_s1(sensors: SensorConfig, gains: dict | None = None, t_end: float =
 
 def _link_desc(veh: Vehicle, loss: float | None = None, radio: str | None = None) -> str:
     lk = veh.params["flight_computer"]["link"]
-    return f"{radio or lk['radio']} link, {100.0 * (lk['sim_packet_loss'] if loss is None else loss):.0f} % packet loss"
+    # 2026-11-10: the scenario's link model (sim.link_model.model_radio: link.vehicle_radio when modelled)
+    return (f"{radio or link_model.model_radio(veh.params)} link, "
+            f"{100.0 * (lk['sim_packet_loss'] if loss is None else loss):.0f} % packet loss")
 
 
 def scenario_s2(veh: Vehicle, sensors: SensorConfig, timing: FCTiming | None = None) -> Scenario:
@@ -1000,9 +1002,9 @@ def write_link_sections(A, ctx: dict[str, Any]) -> None:
     A("\n## Ground link (SPEC §10.3, `sim/link_model.py`)\n")
     A(f"Frames: uplink CMD {lp.CMD_FRAME_BYTES} bytes, downlink TELEM {lp.TELEM_FRAME_BYTES} bytes "
       f"(`sim/link_proto.py`). The ground polls at `link.poll_hz` = {lk['poll_hz']} Hz but never while a reply is outstanding "
-      f"(half-duplex), so the request rate is min(poll_hz, 1 / round trip). Vehicle id {lk['vehicle_id']}, default radio "
-      f"`{lk['radio']}`.\n")
-    A("| quantity | lora_uart | sx127x |\n|---|---|---|")
+      f"(half-duplex), so the request rate is min(poll_hz, 1 / round trip). Vehicle id {lk['vehicle_id']}, link model "
+      f"`{link_model.model_radio(p)}` (link.vehicle_radio; the LoRa fallback model is link.radio `{lk['radio']}`).\n")
+    A("| quantity | " + " | ".join(link_model.RADIOS) + " |\n|" + "---|" * (len(link_model.RADIOS) + 1))
     bud = {r: link_model.budget(link_model.LinkConfig.from_params(p, radio=r)) for r in link_model.RADIOS}
     rows = [("uplink one-way (CMD) [ms]", lambda b: f"{b['uplink_s'] * 1e3:.1f}"),
             ("  of which on air [ms]", lambda b: f"{b['uplink']['air'] * 1e3:.1f}"),
@@ -1019,7 +1021,7 @@ def write_link_sections(A, ctx: dict[str, Any]) -> None:
                  lambda b: f"{loss_tolerance(b, lk['poll_hz'], ms['link_loss_disarm_s'])} / "
                            f"{loss_tolerance(b, lk['poll_hz'], ms['link_loss_abort_s'])}"))
     for lab, fn in rows:
-        A(f"| {lab} | {fn(bud['lora_uart'])} | {fn(bud['sx127x'])} |")
+        A(f"| {lab} | " + " | ".join(fn(bud[r]) for r in link_model.RADIOS) + " |")
     b0 = bud["lora_uart"]
     A(f"\nlora_uart on air = (8 x bytes + {link_model.EBYTE_AIR_OVERHEAD_BITS_ASSUMED:.0f} bits ASSUMED overhead) / "
       f"`lora_uart_air_rate_bps` ({lk['lora_uart_air_rate_bps']} bps); UART {lk['uart_baud']} baud 8N1 on both ends of each hop. "
@@ -1213,7 +1215,9 @@ def write_report(path: str, ctx: dict[str, Any]) -> None:
       f"+-{sensors.accel_range_g:.0f} g / {sensors.accel_lsb_per_g:.0f} LSB/g, bias {sensors.accel_bias_mps2 / 9.80665 * 1e3:.0f} mg "
       f"(ASSUMED residual after an offset calibration; the datasheet's uncalibrated +-50 mg would level the pad attitude wrong by up to "
       f"{math.degrees(math.atan(0.05)):.1f} deg).")
-    A(f"* MS5611 barometer: {sensors.baro_noise_m:.2f} m RMS at `control.baro_hz` = {p['control']['baro_hz']} Hz, "
+    A(f"* BMP280 barometer (forced mode, pressure x4, IIR off): {sensors.baro_noise_m:.2f} m RMS (ESTIMATE: 2.5 x the "
+      f"datasheet noise, the margin of the MS5611 model it replaces), {sensors.baro_quant_m * 100.0:.1f} cm steps, at "
+      f"`control.baro_hz` = {p['control']['baro_hz']} Hz, "
       f"{sensors.baro_latency_s:.2f} s latency (compensated in the altitude filter).")
     A(f"* Attitude estimate (default for S1-S5, `pad_gyro`): on the pad (IDLE/ARMED) gyro bias = running mean then EMA with "
       f"tau = {sensors.pad_avg_tau_s:.1f} s (ASSUMED, exported to gains.json as `est_pad_avg_tau_s`), roll/pitch levelled from the "
@@ -1479,7 +1483,8 @@ def write_report(path: str, ctx: dict[str, Any]) -> None:
     A("* Release servo: ejection at the tick the supervisor opens it (after release_after_cut_s / abort_release_delay_s); its "
       "frame latch and 90 deg travel are not modelled.")
     A("* Gyro scale-factor and cross-axis errors of the MPU-6050 are not modelled (only noise, bias drift, range, quantisation).")
-    A("* Altitude complementary filter 0.5 Hz, zeta 0.7, baro latency compensated (feeds the telemetry and the interlocks only).")
+    A(f"* Altitude complementary filter {SensorConfig().altitude_crossover_hz:g} Hz, zeta {SensorConfig().altitude_zeta:g}, "
+      "baro latency compensated (feeds the telemetry and the interlocks only).")
     A("* Battery: 4.15 V/cell fresh, -0.55 V over the capacity, -0.25 V/cell IR sag at full throttle.")
     A("* Ground link: every `*_ASSUMED` constant of `sim/link_model.py` (listed in the Ground link section); latency is "
       "deterministic per frame size (no module jitter), losses are independent per frame; the ground station runs at the "

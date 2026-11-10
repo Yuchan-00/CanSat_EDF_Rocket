@@ -146,7 +146,9 @@ typedef struct {
 typedef struct {                       /* IL_TYPE_SNAP2 (57 bytes): the SNAP fields, then these */
     il_snap_t s;
     uint8_t  phase;                    /* LP_PHASE_* */
-    uint8_t  spare;                    /* reserved: the FCU sends 0, the COM ignores it (kept for a bit-exact repack) */
+    uint8_t  spare;                    /* 2026-11-10: the logic battery lbat (LP_LBAT_*; 0 = no monitor in this build): the
+                                          COM's TELEM v6 (link_proto_v09.h lp_encode_vtol_reply); il_snap2_from_tlm_src
+                                          sets 0, the carrier battery FCU fills it (main.c) */
     float    h_tgt_m;                  /* altitude target [m] (the supervisor's, 0 outside SPOOL / CLIMB / HOLD) */
     uint8_t  pw_vaux, pw_flags;        /* v0.9 RP1: the TELEM v4 power tail (0, 0 in the battery build) */
 } il_snap2_t;
@@ -159,7 +161,7 @@ typedef struct {                       /* IL_TYPE_SNAP3 (62 bytes): the SNAP fie
     uint8_t  num_sv, hacc_dm, pos_mode;   /* hacc 0.1 m (LP_HACC_NONE = none), pos_mode POS_MODE_* */
     float    dist_m;                   /* distance from the hold point [m], NaN = no hold point */
     uint8_t  pw_vaux, pw_flags;        /* v0.9 RP1: the TELEM v5 power tail (0, 0 in the battery build) */
-    uint8_t  spare3;                   /* v0.9 RP1: reserved (the FCU sends 0, the COM ignores it): LEN 65 */
+    uint8_t  spare3;                   /* v0.9 RP1: LEN 65; 2026-11-10: the logic battery lbat (as SNAP2 spare): TELEM v7 */
 } il_snap3_t;
 
 typedef struct {                       /* 36 bytes, in this order */

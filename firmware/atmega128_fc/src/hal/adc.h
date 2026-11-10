@@ -20,6 +20,28 @@ bool adc_poll(uint16_t *counts);      /* true when a new 10-bit result was read 
 uint16_t adc_entropy_seed(uint8_t n);
 
 #include "../core/power_mon.h"
+#include "../fc_mode.h"
+
+/* 2026-11-10 control round: the logic-battery monitor (FCU PF3, VTOL carrier rev 2c: 1S pack through 47k / 47k) is read by
+ * the VTOL battery build (FC_VCFG 0, no power monitor) when params_gen.h LOGIC_BAT_TELEM is 1; the rocket FCU (no
+ * divider) and the tether / hybrid builds (their own ADC chain) do not.  One PF3 conversion every LOGIC_BAT_DIV_TICKS
+ * ticks in place of that tick's V_cell conversion (adc_poll_mux); the byte goes to the reply snapshot (main.c). */
+#if FC_VTOL && !PM_ANY && defined(LOGIC_BAT_TELEM) && defined(FC_VCFG) && defined(FC_VCFG_BATTERY)
+#if LOGIC_BAT_TELEM && FC_VCFG == FC_VCFG_BATTERY
+#define FC_LOGIC_BAT 1
+#endif
+#endif
+#ifndef FC_LOGIC_BAT
+#define FC_LOGIC_BAT 0
+#endif
+#if FC_LOGIC_BAT
+/* adc_poll with a channel: the result of the conversion started by the previous call (*ch = its channel), then the next
+ * conversion on next_ch (VBAT_ADC_CHANNEL or LOGIC_BAT_ADC_CHANNEL); false while still converting (nothing changes) */
+bool     adc_poll_mux(uint16_t *counts, uint8_t *ch, uint8_t next_ch);
+/* boot only (blocking, ~0.2 ms): one conversion of ch, then a V_cell conversion left running for adc_poll_mux */
+uint16_t adc_read_blocking(uint8_t ch);
+#endif
+
 #if PM_ANY
 /* v0.9 power builds (core/power_mon.h): one conversion chain per tick over V_in (VBAT_ADC_CHANNEL) and, in wired_buffer,
  * V_tether / V_buffer (PWR_V_*_ADC_CHANNEL; PF1 / PF2 PROPOSED - PF4-PF7 are the JTAG pins), chained in the ADC

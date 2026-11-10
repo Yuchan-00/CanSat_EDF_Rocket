@@ -34,8 +34,9 @@ follows that state, not the true liftoff.
 
 Sensors: MPU-6050 gyro/accelerometer (``sim.estimator.Mpu6050``: noise,
 slowly varying gyro bias, on-chip DLPF, +-2000 deg/s range, int16
-quantisation), MS5611 barometer (``control.baro_hz``, 0.25 m RMS, 0.1 s
-latency).  Attitude estimate (``SensorConfig.attitude_estimator``):
+quantisation), BMP280 barometer (``control.baro_hz``; ``BARO_MODELS``: 0.44 m
+RMS, 0.055 m steps, 0.1 s latency; the MS5611 of v0.5 .. v0.9 stays selectable).
+Attitude estimate (``SensorConfig.attitude_estimator``):
 ``pad_gyro`` = the firmware estimator (``sim.estimator.PadAlignGyroEstimator``:
 gyro bias + accelerometer levelling on the pad, gyro-only after launch;
 default), ``truth_noise`` = truth + 0.5 deg noise (BNO085-class reference) or
@@ -120,7 +121,7 @@ VTOL v0.7.1 (architect 2026-10-20; every item behind ``if vt`` / a VTOL-only Sce
   facing the person at the push height (re-evaluated from the attitude every physics
   step: the pole tip slides on the round body; an optional tangential offset -> yaw
   torque), plant only; logged as push_force / push_point / push_active;
-* sensors: the MS5611 static-pressure error with the fan running
+* sensors: the barometer's static-pressure error with the fan running
   (``baro_thrust_offset_m`` x T / (m g), sensor side) and the firmware's compensation
   (``baro_thrust_comp_m``; ``SensorConfig.baro_comp_lagged_whatif`` = a WHAT-IF filter
   with the compensation through the thrust lag and the baro latency); accelerometer
@@ -150,8 +151,8 @@ VTOL v0.8 (GPS position hold; architect 2026-10-21, params mission.vtol.position
 flight_computer.nav.gps; every item behind ``Scenario.gps`` / ``Scenario.nav_v08`` - with both at their defaults a VTOL
 scenario runs the v0.7.1 statements and the v0.7.1 supervisor build, ``gps=False`` / ``takeoff_check=False``):
 
-* GPS receiver (plant, ``GpsSim`` / ``GpsReceiverPlant``): u-blox NEO-6M on the GY-NEO6MV2 board (``neo_m8n`` = the
-  upgrade path) at the CAD antenna phase centre (``Layout.gps_antenna_xyz``, option-B pod; the true lever arm is that point
+* GPS receiver (plant, ``GpsSim`` / ``GpsReceiverPlant``): u-blox NEO-7M class (2026-11-10: the part on the vehicle;
+  ``neo_6m`` = the NEO-6M model of v0.8 .. v0.9, ``neo_m8n`` = the upgrade path) at the CAD antenna phase centre (``Layout.gps_antenna_xyz``, option-B pod; the true lever arm is that point
   minus the plant CG, the NAV subtracts its params / CAD constant); UART-level: the receiver answers the NAV's boot
   configuration (CFG-PRT at 9600 or 38400, CFG-RATE, CFG-MSG, CFG-NAV5 with ACK / NAK, MON-VER) and, once configured,
   sends NAV-POSLLH, NAV-SOL and NAV-VELNED of every epoch (the GPS-time grid of the configured rate) as UBX bytes at its
@@ -299,25 +300,35 @@ WIND_DIR_RATE_TAU_S_ASSUMED = 5.0           # random-walk wind direction: correl
                                             # Gauss-Markov), so the direction wanders smoothly instead of jumping
 
 
-def vtol_round_trip(cfg: LinkConfig, gps: bool = False, power: bool = False) -> dict[str, float]:
+def vtol_round_trip(cfg: LinkConfig, gps: bool = False, power: bool = False, lbat: bool = False) -> dict[str, float]:
     """The VTOL build's ground round trip: ``sim.link_model.round_trip(cfg, mode='vtol')`` (TELEM v2, 39 B; v0.7.1 -
     the link model now sizes the reply itself, this name is kept for the callers); v0.8 ``gps``: TELEM v3, 45 B; v0.9
-    RP1 ``power`` (the tether / hybrid builds): TELEM v4 41 B / with ``gps`` TELEM v5 47 B."""
+    RP1 ``power`` (the tether / hybrid builds): TELEM v4 41 B / with ``gps`` TELEM v5 47 B; 2026-11-10 ``lbat`` (the
+    battery build with the logic-battery tail): TELEM v6 40 B / with ``gps`` TELEM v7 46 B."""
     if power:
         return round_trip(cfg, mode=lp.MODE_VTOL, gps=bool(gps), power=True)
+    if lbat:
+        return round_trip(cfg, mode=lp.MODE_VTOL, gps=bool(gps), lbat=True)
     if gps:
         return round_trip(cfg, mode=lp.MODE_VTOL, gps=True)
     return round_trip(cfg, mode=lp.MODE_VTOL)
 
 
-def vtol_link_budget(cfg: LinkConfig, gps: bool = False, power: bool = False) -> dict:
+def vtol_link_budget(cfg: LinkConfig, gps: bool = False, power: bool = False, lbat: bool = False) -> dict:
     """``sim.link_model.budget(cfg, mode='vtol')`` (TELEM v2 downlink frame; v0.8 ``gps``: TELEM v3; v0.9 ``power``:
-    TELEM v4 / v5)."""
+    TELEM v4 / v5; 2026-11-10 ``lbat``: TELEM v6 / v7)."""
     if power:
         return link_budget(cfg, mode=lp.MODE_VTOL, gps=bool(gps), power=True)
+    if lbat:
+        return link_budget(cfg, mode=lp.MODE_VTOL, gps=bool(gps), lbat=True)
     if gps:
         return link_budget(cfg, mode=lp.MODE_VTOL, gps=True)
     return link_budget(cfg, mode=lp.MODE_VTOL)
+
+
+# 2026-11-10: the logic battery the 6-DOF reports in the TELEM v6 / v7 tail (the plant has no logic pack; only the frame
+# length matters to the run - the value is a mid-discharge 1S pack under the logic load, A)
+SIM_LOGIC_BAT_V_ASSUMED = 3.85
 
 
 def power_tail_link(sp: Any, src: str | None) -> bool:
@@ -531,7 +542,8 @@ def push_with_impulse(impulse_ns: float, duration_s: float, **kw: Any) -> Push:
 
 
 # --------------------------------------------------------------------------- #
-# v0.8 GPS receiver (plant side): u-blox NEO-6M on a GY-NEO6MV2 board (NEO-M8N = the upgrade path)
+# v0.8 GPS receiver (plant side).  2026-11-10: u-blox NEO-7M class by default (the part on the vehicle); the NEO-6M
+# model of v0.8 .. v0.9 = neo_6m(), the NEO-M8N upgrade path = neo_m8n()
 # --------------------------------------------------------------------------- #
 GPS_SITE_LAT_E7_ASSUMED = 365000000       # the field's latitude (36.5 N, central Korea): only the metres per 1e-7 deg
 GPS_SITE_LON_E7_ASSUMED = 1275000000      # (127.5 E)
@@ -543,21 +555,34 @@ GPS_CFG_RESPONSE_S_ASSUMED = 0.03         # the receiver's ACK / MON-VER answer 
 GPS_NO_FIX_HACC_MM = 4_294_967            # hAcc / vAcc reported without a fix (u-blox reports kilometres) ASSUMED
 GPS_NMEA_BYTES_PER_EPOCH_ASSUMED = 420    # factory output (GGA, GLL, GSA, 2 GSV, RMC, VTG) ~420 B per 1 Hz epoch
 GPS_UART_BITS_PER_BYTE = 10               # 8N1
-GPS_HW = {"NEO-6M": (gn.HW_UBLOX6, "7.03 (45969)"), "NEO-M8N": (gn.HW_UBLOX8, "ROM CORE 3.01 (107888)")}
+GPS_HW = {"NEO-6M": (gn.HW_UBLOX6, "7.03 (45969)"), "NEO-M8N": (gn.HW_UBLOX8, "ROM CORE 3.01 (107888)"),
+          # u-blox 7: hwVersion 00070000, firmware 1.00 (59842) - ASSUMED (the usual u-blox 7 ROM string; the NAV only
+          # reports the module generation, sim.gps_nav.MonVer.module)
+          "NEO-7M": (gn.HW_UBLOX7, "1.00 (59842)")}
 GPS_NAV_MSGS = ((gn.CLS_NAV, gn.ID_NAV_POSLLH, "p"), (gn.CLS_NAV, gn.ID_NAV_SOL, "s"), (gn.CLS_NAV, gn.ID_NAV_VELNED, "v"))
 
 
 @dataclass(frozen=True)
 class GpsSim:
     """The receiver model of one run (plant side) and the set-up the scenario flies with.  Sources: DS = data sheet
-    (u-blox NEO-6 GPS.G6-HW-09005-E; NEO-M8 UBX-15031086), AP = ArduPilot AP_GPS_UBLOX, ASSUMED = no source (the
-    review's quote applies: station keeping ~1 m RMS / 2.5 m max until a real module is measured on the pod).  Windows
-    are absolute sim times [t0, t1)."""
+    (u-blox NEO-6 GPS.G6-HW-09005-E; NEO-7 GPS.G7-HW-11004; NEO-M8 UBX-15031086), AP = ArduPilot AP_GPS_UBLOX,
+    ASSUMED = no source (the review's quote applies: station keeping ~1 m RMS / 2.5 m max until a real module is
+    measured on the pod).  Windows are absolute sim times [t0, t1).
 
-    receiver: str = "NEO-6M"                # "NEO-6M" | "NEO-M8N" (MON-VER hwVersion, the rate limit)
-    rate_hz_max: float = 5.0                # DS NEO-6M max navigation rate (M8N: 10 Hz single GNSS); CFG-RATE above it: NAK
-    latency_s: float = 0.22                 # measurement -> last byte of the epoch at the NAV: AP u-blox 6 lag (M8 0.12) -
-                                            # ASSUMED (no data sheet value); the NAV assumes params latency_s_ASSUMED
+    2026-11-10 (control round, plant change): the default is the NEO-7M class the vehicle carries (was the NEO-6M:
+    ``neo_6m()``).  What changes against the NEO-6M model: the MON-VER answer (u-blox 7), the rate limit (10 Hz; the NAV
+    still asks for params rate_hz = 5 Hz) and the latency (0.12 s instead of 0.22 s).  The data sheets are not in the
+    repository and no NEO-7M has been measured: every u-blox 7 number here is ASSUMED.  The accuracy figures are the
+    same in both data sheets (2.5 m CEP, 0.1 m/s), so the error model is unchanged.  The NAV keeps compensating
+    params ``flight_computer.nav.gps.latency_s_ASSUMED`` (0.22 s) until the user decides otherwise: the 0.10 s
+    difference is inside the campaign's latency spread (``sim.vtol_campaign.SAMPLING_GPS``)."""
+
+    receiver: str = "NEO-7M"                # "NEO-7M" | "NEO-6M" | "NEO-M8N" (MON-VER hwVersion, the rate limit)
+    rate_hz_max: float = 10.0               # DS NEO-7 max navigation rate 10 Hz ASSUMED (NEO-6M: 5 Hz; M8N: 10 Hz single
+                                            # GNSS); CFG-RATE above it: NAK
+    latency_s: float = 0.12                 # measurement -> last byte of the epoch at the NAV: AP lag of the u-blox 7 / M8
+                                            # generations (u-blox 6: 0.22) - ASSUMED (no data sheet value, not measured);
+                                            # the NAV assumes params latency_s_ASSUMED
     latency_jitter_s: float = 0.0           # extra delivery delay U(0, j) per epoch ASSUMED (review stress 0.1 s)
     pos_gm_sigma_m: float = 2.12            # DS 2.5 m CEP (24 h static) -> 2.12 m 1-sigma per axis; the same at minute scale
                                             # ASSUMED
@@ -609,6 +634,14 @@ class GpsSim:
             raise ValueError(f"GpsSim.chain {self.chain!r} not in (None, 'fcu', 'gns')")
         if not (0.0 <= self.sky_blocked < 1.0 and self.latency_s >= 0.0 and self.latency_jitter_s >= 0.0):
             raise ValueError("GpsSim: need 0 <= sky_blocked < 1, latency_s >= 0, latency_jitter_s >= 0")
+
+
+def neo_6m(**kw: Any) -> GpsSim:
+    """The NEO-6M model of v0.8 .. v0.9 (GY-NEO6MV2; the default until 2026-11-10): DS 5 Hz, AP u-blox 6 lag 0.22 s
+    (= the latency the NAV compensates, params latency_s_ASSUMED).  Kept for the before / after of that change."""
+    d: dict[str, Any] = dict(receiver="NEO-6M", rate_hz_max=5.0, latency_s=0.22)
+    d.update(kw)
+    return GpsSim(**d)
 
 
 def neo_m8n(**kw: Any) -> GpsSim:
@@ -857,11 +890,44 @@ class GpsReceiverPlant:
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
+# Barometer models (SensorConfig fields).  2026-11-10 control round: the NAV's barometer is the Bosch BMP280 in forced
+# mode, pressure oversampling x4, IIR filter off (firmware hal/bmp280.h); before: the MS5611 (GY-63).
+#   BMP280   noise: datasheet (BST-BMP280-DS001) noise table, "standard resolution" (x4), IIR off: 2.1 Pa RMS - ASSUMED
+#            (the datasheet is not in the repository) = 0.175 m at sea level.  The MS5611 model's 0.25 m (task brief)
+#            is 2.5 x its datasheet figure (0.012 mbar at OSR 4096 = 0.10 m, ASSUMED); the same margin is kept:
+#            0.175 m x 2.5 = 0.44 m (ESTIMATE; the field value needs a bench measurement of the module).
+#            steps: x4 oversampling = 18 bit = 0.66 Pa per LSB (datasheet resolution table, ASSUMED) = 0.055 m; the
+#            firmware's Q24.8 Pa result and its float altitude are finer.
+#            lag:   forced mode + IIR off: no filter state in the sensor.  The driver publishes a sample 16.75 ms after
+#            the middle of its pressure sampling (hal/bmp280.h BMP280_LATENCY_S; MS5611: 15.9 ms); the model keeps the
+#            0.1 s of SPEC section 9 for both (conservative, unchanged).
+#   MS5611   the v0.5 .. v0.9 model: ``replace(sens, **BARO_MODELS["MS5611"])``; bit-identical to those versions
+#            together with the altitude-filter crossover they flew, ``**LEGACY_SENSOR_SET`` (below).
+# Altitude-filter retune that goes with the BMP280 model (2026-11-10, SensorConfig.altitude_crossover_hz 0.5 ->
+# 0.4 Hz; the one value feeds the ballistic AltitudeFilter and the VTOL filter, NAV firmware ALT_CROSSOVER_HZ /
+# ALTV_K1..3).  Why it was needed: with 0.44 m of barometer noise the 0.5 Hz filter carries enough noise in v_z and
+# the accelerometer-bias state that the baro-lost landing (dead reckoning from the state at the loss) no longer
+# reached the ground in 2 of 8 seeds (sim/test_vtol_scenarios.py test_baro_lost_landing_reaches_the_ground, seeds
+# 70 .. 77: 6 / 8 at 0.5 Hz, 8 / 8 at 0.4 Hz - MEASURED).  Chosen on TUNE 7400 and the deterministic scenarios only
+# (PASS of 156 field samples: MS5611 model 20, BMP280 + NEO-7M at 0.5 Hz 14, at 0.4 Hz 18, at 0.35 Hz 16 - MEASURED;
+# differences of +-2 are threshold jitter).  0.4 Hz keeps the take-off settle rule without an FCU change:
+# baro latency 0.1 s + 1 / (2 pi 0.4 Hz) = 0.498 s <= sim/vertical_ctrl.py TAKEOFF_SETTLE_S_ASSUMED 0.5 s; a lower
+# crossover would not (0.35 Hz: 0.555 s).
+BARO_PA_PER_M_SEA_LEVEL = 1.225 * 9.80665          # dp / dh at sea level, ISA [Pa / m]
+BARO_MODELS: dict[str, dict[str, float]] = {
+    "BMP280": {"baro_noise_m": 0.44, "baro_quant_m": 0.055},
+    "MS5611": {"baro_noise_m": 0.25, "baro_quant_m": 0.0},
+}
+# the sensor / filter set the v0.5 .. v0.9 snapshots flew (regression pins: SensorConfig(**LEGACY_SENSOR_SET))
+LEGACY_SENSOR_SET: dict[str, float] = {**BARO_MODELS["MS5611"], "altitude_crossover_hz": 0.5}
+
+
 @dataclass
 class SensorConfig:
-    """Sensor + estimator model: GY-521 MPU-6050 and GY-63 MS5611
-    (``params.electronics.fc``).  Each field says where its number comes from:
-    datasheet, the task brief of the ATmega128 retune, SPEC §9, or ASSUMED."""
+    """Sensor + estimator model: GY-521 MPU-6050 and the BMP280 barometer
+    (2026-11-10; ``BARO_MODELS``: the GY-63 MS5611 of v0.5 .. v0.9 stays
+    selectable).  Each field says where its number comes from: datasheet, the
+    task brief of the ATmega128 retune, SPEC §9, or ASSUMED."""
 
     # MPU-6050 gyro, FS_SEL = 3
     gyro_noise_density_rad_s_sqrthz: float = math.radians(0.005)   # MPU-6050 datasheet (task brief)
@@ -877,9 +943,10 @@ class SensorConfig:
     accel_bias_mps2: float = 0.01 * G0                              # ASSUMED 10 mg residual after offset calibration
     accel_range_g: float = 16.0                                     # ASSUMED AFS_SEL = 3
     accel_lsb_per_g: float = 2048.0                                 # AFS_SEL = 3 sensitivity (datasheet)
-    # MS5611 barometer (rate = control.baro_hz)
-    baro_noise_m: float = 0.25                                      # task brief
-    baro_latency_s: float = 0.1                                     # SPEC §9
+    # BMP280 barometer (rate = control.baro_hz; BARO_MODELS["BMP280"], the numbers' sources there)
+    baro_noise_m: float = BARO_MODELS["BMP280"]["baro_noise_m"]     # white, per sample [m RMS]
+    baro_quant_m: float = BARO_MODELS["BMP280"]["baro_quant_m"]     # output step [m]; 0 = none (the MS5611 model)
+    baro_latency_s: float = 0.1                                     # SPEC §9 (kept: covers the driver's 16.75 ms)
     # attitude estimators
     attitude_estimator: str = "pad_gyro"                            # "pad_gyro" (firmware) | "truth_noise" | "mahony"
     pad_avg_tau_s: float = 2.0                                      # ASSUMED firmware pad-averaging time constant
@@ -890,7 +957,9 @@ class SensorConfig:
     mahony_kp: float = 1.0                                          # ASSUMED (legacy mahony mode)
     mahony_ki: float = 0.05                                         # ASSUMED (gyro-bias learning)
     mahony_accel_gate: float = 0.08                                 # ASSUMED: use accel only when ||a|-g|/g < gate
-    altitude_crossover_hz: float = 0.5                              # ASSUMED complementary-filter crossover
+    altitude_crossover_hz: float = 0.4                              # complementary-filter crossover; 0.5 until
+                                                                    # 2026-11-10 (retuned for the BMP280 noise on
+                                                                    # TUNE 7400, the note above BARO_MODELS)
     altitude_zeta: float = 0.7                                      # ASSUMED
     # ---- v0.7.1 VTOL build only (a ballistic run never reads them) ----
     accel_vibration_rms_mps2: float = 0.0                           # accelerometer vibration at hover thrust (ASSUMED,
@@ -976,7 +1045,8 @@ class Scenario:
     apogee_limit_m: float | None = None         # onboard I4 override (S3 only)
     # ground link
     assist: bool = True                     # ground assist mode (auto-CUT / auto-RELEASE)
-    radio: str | None = None                # None -> flight_computer.link.radio
+    radio: str | None = None                # None -> sim.link_model.model_radio (2026-11-10: link.vehicle_radio when modelled,
+                                            # the ESP bridge; else link.radio, the LoRa fallback)
     packet_loss: float | None = None        # None -> flight_computer.link.sim_packet_loss
     link_outage_after_launch_s: float | None = None   # total link loss from this long after LAUNCH executes (S6)
     link_seed: int | None = None            # None -> derived from seed
@@ -1012,7 +1082,13 @@ class Scenario:
     ground_z_m: float | None = None         # VTOL landing surface away from the pad [m, exit-plane height]; None -> the
                                             # level the pad's feet stand on, -(plate_t + leg_h + foot_t)
     link_outages: tuple = ()                # absolute [t0, t1) windows of total link loss
-    baro_fail_t_s: float | None = None      # fault: the MS5611 delivers nothing from this time (VTOL)
+    # 2026-11-10 study hook: ((t_from_launch_s, radio), ...) - frames sent from launch + t on that link model (e.g. the
+    # ESP link's latency stepping to the LoRa model's); the ground keeps the timeout / t_link default of ``radio``
+    link_radio_steps: tuple = ()
+    # 2026-11-10: the logic-battery tail (TELEM v6 / v7) of the VTOL battery build on the carrier; None -> params
+    # flight_computer.logic_battery_monitor.telemetry_builds (sim.link_proto.lbat_build); a ballistic run never has it
+    lbat_telemetry: bool | None = None
+    baro_fail_t_s: float | None = None      # fault: the barometer delivers nothing from this time (VTOL)
     imu_fail_t_s: float | None = None       # fault: IMU / NAV failure from this time - NAV outputs frozen (VTOL)
     mass_scale: float = 1.0                 # plant mass and inertia x this (the controllers keep the nominal model)
     cg_offset_mm: tuple = (0.0, 0.0)        # plant CG offset from the thrust axis, body (x, y) [mm]
@@ -1034,7 +1110,7 @@ class Scenario:
     wind_speed_mod_frac: float = 0.0        # mean-wind speed x (1 + frac sin(2 pi t / period)) ...
     wind_speed_mod_period_s: float = 20.0   # ... period
     pushes: tuple = ()                      # hand pushes (Push, absolute times) - plant only
-    baro_thrust_offset_m: float = 0.0       # plant: true MS5611 static-pressure error with the fan running, as an altitude
+    baro_thrust_offset_m: float = 0.0       # plant: true barometer static-pressure error with the fan running, as an altitude
                                             # at the nominal hover thrust (m_nominal g) [m, + = reads high], x T / (m g)
     baro_thrust_comp_m: float | None = None # firmware compensation (VtolAltitudeFilter); None -> params
                                             # mission.vtol.baro_thrust_comp_m (0.0 = not calibrated)
@@ -1260,8 +1336,12 @@ class FlightSim:
         self.pwr_link = self.vtol and power_tail_link(self.sp, scenario.power_source or (
             getattr(vehicle, "power_source", None) if str(getattr(vehicle, "hardware_config", "rocket")) == "vtol"
             else None))
-        self.link_rt = (vtol_round_trip(self.link_cfg, gps=self.gps_on, power=self.pwr_link) if self.vtol
-                        else round_trip(self.link_cfg))
+        # 2026-11-10: the carrier's battery build replies with the logic-battery tail (TELEM v6 / v7)
+        self.lbat_link = bool(self.vtol and not self.pwr_link and (
+            lp.lbat_build(p, self.mode) if scenario.lbat_telemetry is None else scenario.lbat_telemetry))
+        self.lbat_q = lp.lbat_quant(SIM_LOGIC_BAT_V_ASSUMED) if self.lbat_link else lp.LBAT_NONE
+        self.link_rt = (vtol_round_trip(self.link_cfg, gps=self.gps_on, power=self.pwr_link, lbat=self.lbat_link)
+                        if self.vtol else round_trip(self.link_cfg))
         self.gp = GroundParams.from_params(p, reply_timeout_s=self.link_rt["reply_timeout_s"],
                                            t_link_default_s=self.link_rt["rtt_mean_s"],
                                            target_altitude_m=scenario.target_altitude_m,
@@ -1271,6 +1351,7 @@ class FlightSim:
         self.link = LinkModel(self.link_cfg, seed=lseed + 7919)
         if scenario.link_outages:
             self.link.outages.extend((float(a), float(b)) for a, b in scenario.link_outages)
+        self.link_steps = tuple((float(a), str(r)) for a, r in scenario.link_radio_steps)   # armed at launch (run loop)
         self.vehicle_id = int(p["flight_computer"]["link"]["vehicle_id"])
         self.uplink_decoder = lp.FrameDecoder(self.vehicle_id, (lp.TYPE_CMD,))
         if operator is not None:
@@ -1887,6 +1968,7 @@ class FlightSim:
         accel_noise = rng.normal(0.0, sig_a, size=(n_tot, 3))
         att_noise = rng.normal(0.0, sens.att_noise_rad, size=(n_max, 3))
         baro_noise = rng.normal(0.0, sens.baro_noise_m, size=n_max // n_baro + 2)
+        baro_q = float(sens.baro_quant_m)
         ramp_start = n_pre + (0 if sc.bypass_state_machine else int(round(sc.launch_time_s / dt_c)))
         gyro_bias = gyro_bias_process(rng, n_tot, dt_c, sens.gyro_bias_sigma_rad_s, sens.gyro_bias_tau_s,
                                       sens.gyro_bias_max_rad_s,
@@ -2214,10 +2296,13 @@ class FlightSim:
             h_baro: float | None = None
             if k % n_baro == 0:
                 if vt and sc.baro_thrust_offset_m:
-                    # VTOL plant: the MS5611's static-pressure error with the fan running, x T / (m g) (sensor side)
-                    baro_queue.append(h_true + baro_noise[k // n_baro] + sc.baro_thrust_offset_m * max(x[13], 0.0) / w_hover_nom)
+                    # VTOL plant: the barometer's static-pressure error with the fan running, x T / (m g) (sensor side)
+                    hb = h_true + baro_noise[k // n_baro] + sc.baro_thrust_offset_m * max(x[13], 0.0) / w_hover_nom
                 else:
-                    baro_queue.append(h_true + baro_noise[k // n_baro])
+                    hb = h_true + baro_noise[k // n_baro]
+                if baro_q > 0.0:
+                    hb = math.floor(hb / baro_q + 0.5) * baro_q          # the sensor's output step (no random draw)
+                baro_queue.append(hb)
                 if len(baro_queue) > n_lat:
                     h_baro = baro_queue.popleft()
             # VTOL faults: baro silent (the NAV filter gets no correction), IMU / NAV dead (NAV outputs frozen)
@@ -2369,11 +2454,18 @@ class FlightSim:
                     pw_tx = getattr(out, "pwr", None)
                     if pw_tx is not None:          # v0.9 RP1: the power builds' TELEM v4 / v5 (battery build: unchanged)
                         tlm_tx = lp.with_power_tail(tlm_tx, pw_tx.v_aux_q, pw_tx.flags)
+                    if self.lbat_link:             # 2026-11-10: the carrier battery build's TELEM v6 / v7
+                        tlm_tx = lp.with_logic_tail(tlm_tx, self.lbat_q)
                     link.send("down", lp.encode_telemetry(self.vehicle_id, out.reply_seq, tlm_tx), t_reply)
                 if state == State.ARMED and prev_state != State.ARMED:
                     self.ctrl.set_yaw_reference(q_est)
                 if state == State.POWERED and t_launch is None:
                     t_launch = t
+                    for dt_step, r_step in self.link_steps:     # 2026-11-10 study hook (no-op by default)
+                        link.cfg_schedule.append((t + dt_step, LinkConfig.from_params(self.p, radio=r_step,
+                                                                                      loss=self.link_cfg.loss)))
+                        events.append((t + dt_step, f"FAULT link model {self.link_cfg.radio} -> {r_step} from launch + "
+                                                    f"{dt_step:.2f} s (ground keeps its {self.link_cfg.radio} timeout)"))
                     if sc.link_outage_after_launch_s is not None:
                         t_out = t + sc.link_outage_after_launch_s
                         link.outages.append((t_out, float("inf")))
@@ -2865,8 +2957,9 @@ class FlightSim:
             events.sort(key=lambda te: te[0])
             link_rec = {
                 "radio": self.link_cfg.radio, "loss": self.link_cfg.loss,
-                "budget": (vtol_link_budget(self.link_cfg, gps=self.gps_on, power=self.pwr_link) if vt
-                           else link_budget(self.link_cfg)),
+                "budget": (vtol_link_budget(self.link_cfg, gps=self.gps_on, power=self.pwr_link, lbat=self.lbat_link)
+                           if vt else link_budget(self.link_cfg)),
+                "lbat_telemetry": self.lbat_link, "radio_steps": list(self.link_steps),
                 "link_stats": dict(link.stats), "ground_stats": dict(gs.stats),
                 "uplink_decoder": dict(self.uplink_decoder.stats), "downlink_decoder": dict(gs.decoder.stats),
                 "rtt": [r for _, r in gs.rtt_all], "records": [vars(r).copy() | {"name": r.name} for r in gs.records],

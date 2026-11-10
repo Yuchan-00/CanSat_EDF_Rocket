@@ -1,18 +1,33 @@
 {
   "meta": {
-    "params_sha256": "9317ddab0b59cd92a5c8a05e26910c7ee15430d14813b48e6963c48025903292",
+    "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
     "preset": "BUDGET_90mm_6S",
     "density_g_cm3": 1.31,
     "config": "vtol",
     "source": "cad/exports/cadquery/stl_vtol (CadQuery twin of this params.json)",
     "slicer": "Bambu Lab P2S 0.4 nozzle / 0.20mm Standard @BBL P2S / Bambu PLA Matte @BBL P2S + class overrides",
     "part_g": "the part's own extrusion (G-code features minus Support*, Brim, Skirt, Custom / prime)",
-    "date": "2026-11-05 23:03"
+    "date": "2026-11-11 01:28"
   },
   "parts": {
+    "top_cap@no_logic_switch_hole": {
+      "part_g": 35.15343805026615,
+      "filament_g": 35.19034851711248,
+      "removed_g": 0.03690548839615561,
+      "solid_volume_mm3": 27506.061524352142,
+      "solid_mass_g_at_rho": 36.03294059690131,
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "stl": "cad/exports/cadquery/stl_vtol/top_cap.stl",
+      "stl_sha256": "7ca026da8fcb6d349f995fe936614663e65daf355b0af2d159867bbb9cde3b3f",
+      "part_z_centroid_design_mm": 471.45682184251433,
+      "time_s": 2575.51953125,
+      "support": "none",
+      "variant_note": "kept by make_v09_print_files 2026-11-05: the slice of the top_cap geometry 'no_logic_switch_hole' (solid 27506.06 mm^3) that other builds / the flight-mass model still use; the 'top_cap' entry is the printed part (solid 27469.83 mm^3)"
+    },
     "propulsion_module": {
-      "part_g": 301.17451760981294,
-      "filament_g": 301.24202857564416,
+      "part_g": 301.1744786959602,
+      "filament_g": 301.241965557259,
       "removed_g": 0.06747999227562573,
       "solid_volume_mm3": 278983.8842515567,
       "solid_mass_g_at_rho": 365.4688883695393,
@@ -20,8 +35,8 @@
       "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
       "stl": "cad/exports/cadquery/stl_vtol/propulsion_module.stl",
       "stl_sha256": "898e8b80a0c768c084b2b940c487b9d6d7052733b8e0234a561fd7a65d6dce93",
-      "part_z_centroid_design_mm": 86.64490853855926,
-      "time_s": 32211.35546875,
+      "part_z_centroid_design_mm": 86.64490762699201,
+      "time_s": 32211.353515625,
       "support": "none"
     },
     "intake_module": {
@@ -39,9 +54,9 @@
       "support": "normal(auto)"
     },
     "avionics_module": {
-      "part_g": 57.740401819530774,
+      "part_g": 57.74040178802158,
       "filament_g": 238.85999999999999,
-      "removed_g": 180.21742137023165,
+      "removed_g": 180.21742140174084,
       "solid_volume_mm3": 45432.59573668314,
       "solid_mass_g_at_rho": 59.51670041505492,
       "class": "B_shell",
@@ -49,11 +64,11 @@
       "stl": "cad/exports/cadquery/stl_vtol/avionics_module.stl",
       "stl_sha256": "9ad9ee7cc5c33e767b839f0ebfee287bc45bb65dc12795e783f55617e724a580",
       "part_z_centroid_design_mm": 402.8364987231736,
-      "time_s": 59275.05908203125,
+      "time_s": 59272.68017578125,
       "support": "none",
       "filament": "1 (white)",
       "two_colour": {
-        "time_s": 59275.05908203125,
+        "time_s": 59272.68017578125,
         "swaps": 576,
         "swaps_by_direction": {
           "T0->T1": 288,
@@ -83,17 +98,17 @@
           "white_to_orange": 150.0,
           "orange_to_white": 210.0
         },
-        "added_time_s": 51983.06689453125,
+        "added_time_s": 51977.6845703125,
         "added_filament_g": 180.45,
         "cli_default_flush": {
-          "time_s": 56046.24267578125,
+          "time_s": 56043.0400390625,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 255.9,
           "swaps": 576
         },
         "single_colour_control": {
-          "time_s": 7291.9921875,
+          "time_s": 7294.99560546875,
           "filament_g": 58.41,
           "part_g": 58.41172678249842
         },
@@ -146,16 +161,16 @@
           }
         },
         "mass_basis": {
-          "pipeline_plain_module_g": 58.59847492934827,
+          "pipeline_plain_module_g": 58.598474897839075,
           "resolved_white_g": 57.55365367268092,
           "resolved_orange_g": 0.9021768102375674,
           "resolved_single_colour_control_g": 58.41172678249842,
           "livery_delta_resolved_g": 0.04410370042007372,
-          "module_total_g": 58.642578629768344,
-          "avionics_module_g": 57.740401819530774,
+          "module_total_g": 58.64257859825915,
+          "avionics_module_g": 57.74040178802158,
           "inlay_g": 0.9021768102375674,
           "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
-          "pipeline_plain_module_time_s": 8805.4384765625
+          "pipeline_plain_module_time_s": 8805.421875
         }
       }
     },
@@ -175,7 +190,7 @@
       "filament": "2 (orange)",
       "note": "printed with avionics_module (one 2-filament object); its time / purge / tower are in that entry",
       "two_colour": {
-        "time_s": 59275.05908203125,
+        "time_s": 59272.68017578125,
         "swaps": 576,
         "swaps_by_direction": {
           "T0->T1": 288,
@@ -205,17 +220,17 @@
           "white_to_orange": 150.0,
           "orange_to_white": 210.0
         },
-        "added_time_s": 51983.06689453125,
+        "added_time_s": 51977.6845703125,
         "added_filament_g": 180.45,
         "cli_default_flush": {
-          "time_s": 56046.24267578125,
+          "time_s": 56043.0400390625,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 255.9,
           "swaps": 576
         },
         "single_colour_control": {
-          "time_s": 7291.9921875,
+          "time_s": 7294.99560546875,
           "filament_g": 58.41,
           "part_g": 58.41172678249842
         },
@@ -268,16 +283,16 @@
           }
         },
         "mass_basis": {
-          "pipeline_plain_module_g": 58.59847492934827,
+          "pipeline_plain_module_g": 58.598474897839075,
           "resolved_white_g": 57.55365367268092,
           "resolved_orange_g": 0.9021768102375674,
           "resolved_single_colour_control_g": 58.41172678249842,
           "livery_delta_resolved_g": 0.04410370042007372,
-          "module_total_g": 58.642578629768344,
-          "avionics_module_g": 57.740401819530774,
+          "module_total_g": 58.64257859825915,
+          "avionics_module_g": 57.74040178802158,
           "inlay_g": 0.9021768102375674,
           "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
-          "pipeline_plain_module_time_s": 8805.4384765625
+          "pipeline_plain_module_time_s": 8805.421875
         }
       }
     },
@@ -294,6 +309,20 @@
       "part_z_centroid_design_mm": null,
       "time_s": 1595.803466796875,
       "support": "none"
+    },
+    "top_cap": {
+      "part_g": 37.77077033659431,
+      "filament_g": 64.51850628456322,
+      "removed_g": 26.747732576471417,
+      "solid_volume_mm3": 29573.81439065509,
+      "solid_mass_g_at_rho": 38.74169685175817,
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "stl": "cad/exports/cadquery/stl_vtol/top_cap.stl",
+      "stl_sha256": "73693478070a34437fa0db82d30c64cefd28a73c53fef3e76755efc5745490f1",
+      "part_z_centroid_design_mm": 472.257761564524,
+      "time_s": 10107.1884765625,
+      "support": "tree(auto)"
     },
     "vane": {
       "part_g": 3.5646482835837023,
@@ -350,35 +379,6 @@
       "part_z_centroid_design_mm": null,
       "time_s": 224.1349334716797,
       "support": "none"
-    },
-    "top_cap@no_logic_switch_hole": {
-      "part_g": 35.15343805026615,
-      "filament_g": 35.19034851711248,
-      "removed_g": 0.03690548839615561,
-      "solid_volume_mm3": 27506.061524352142,
-      "solid_mass_g_at_rho": 36.03294059690131,
-      "class": "A_load_path",
-      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
-      "stl": "cad/exports/cadquery/stl_vtol/top_cap.stl",
-      "stl_sha256": "7ca026da8fcb6d349f995fe936614663e65daf355b0af2d159867bbb9cde3b3f",
-      "part_z_centroid_design_mm": 471.45682184251433,
-      "time_s": 2575.51953125,
-      "support": "none",
-      "variant_note": "kept by make_v09_print_files 2026-11-05: the slice of the top_cap geometry 'no_logic_switch_hole' (solid 27506.06 mm^3) that other builds / the flight-mass model still use; the 'top_cap' entry is the printed part (solid 27469.83 mm^3)"
-    },
-    "top_cap": {
-      "part_g": 37.77077033659431,
-      "filament_g": 64.51850628456322,
-      "removed_g": 26.747732576471417,
-      "solid_volume_mm3": 29573.81439065509,
-      "solid_mass_g_at_rho": 38.74169685175817,
-      "class": "A_load_path",
-      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
-      "stl": "cad/exports/cadquery/stl_vtol/top_cap.stl",
-      "stl_sha256": "73693478070a34437fa0db82d30c64cefd28a73c53fef3e76755efc5745490f1",
-      "part_z_centroid_design_mm": 472.257761564524,
-      "time_s": 10107.1884765625,
-      "support": "tree(auto)"
     }
   }
 }

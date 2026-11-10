@@ -5,7 +5,7 @@
     "kind": "CadQuery twin STL (cad/exports/cadquery/stl) - NOT the Fusion 360 path",
     "why": "make_print_files.py makes print files only from a Fusion run of the current params.json and script; the v0.9 Fusion GUI run has not been made",
     "replaced_by": "python tools/make_print_files.py after the Fusion run (then delete this folder)",
-    "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+    "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
     "preset": "BUDGET_90mm_6S",
     "stl_sha256": {
       "propulsion_module": "4f8b7f39600f8556b1d49b5e117c107a070605ced2d356141132953bb2d45f88",
@@ -346,7 +346,7 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 60829.2197265625,
+      "time_s": 60828.3876953125,
       "filament_mm": 39244.55,
       "filament_g": 303.74,
       "settings_in_gcode": {
@@ -460,8 +460,8 @@
       "runs": {
         "two_colour": {
           "ok": true,
-          "main_predication_s": 12677.0,
-          "total_predication_s": 61277.23046875,
+          "main_predication_s": 12676.16796875,
+          "total_predication_s": 61276.3984375,
           "filament_change_times": 576,
           "feature_type_times_s": {
             "Bridge": 6.157353401184082,
@@ -475,8 +475,8 @@
             "Prime tower": 6279.8701171875,
             "Sparse infill": 0.593492329120636,
             "Top surface": 44.25127029418945,
-            "Travel": 5024.828125,
-            "Undefined": 5023.2587890625
+            "Travel": 5023.990234375,
+            "Undefined": 5022.4208984375
           },
           "slice_info_used": {
             "1": {
@@ -505,7 +505,7 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 14.1,
+          "cli_wall_s": 12.1,
           "part_g_by_tool": {
             "0": 122.43052185012112,
             "1": 0.9024106714648034
@@ -578,12 +578,12 @@
             20.0,
             205.0
           ],
-          "time_s": 60829.2197265625
+          "time_s": 60828.3876953125
         },
         "two_colour_cli_default_flush": {
           "ok": true,
-          "main_predication_s": 12677.08984375,
-          "total_predication_s": 65339.44921875,
+          "main_predication_s": 12676.234375,
+          "total_predication_s": 65338.59375,
           "filament_change_times": 576,
           "feature_type_times_s": {
             "Bridge": 6.157353401184082,
@@ -597,8 +597,8 @@
             "Prime tower": 6279.8701171875,
             "Sparse infill": 0.593492329120636,
             "Top surface": 44.25127029418945,
-            "Travel": 5024.8271484375,
-            "Undefined": 5023.2578125
+            "Travel": 5023.990234375,
+            "Undefined": 5022.4208984375
           },
           "slice_info_used": {
             "1": {
@@ -627,7 +627,7 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 14.1,
+          "cli_wall_s": 13.1,
           "part_g_by_tool": {
             "0": 122.43052185012112,
             "1": 0.9024106714648034
@@ -700,7 +700,7 @@
             20.0,
             205.0
           ],
-          "time_s": 64891.4384765625
+          "time_s": 64890.5830078125
         },
         "single_colour_control": {
           "ok": true,
@@ -744,7 +744,7 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 12.1,
+          "cli_wall_s": 14.4,
           "part_g_by_tool": {
             "0": 123.30228242715461
           },
@@ -820,14 +820,14 @@
       },
       "added_vs_single_colour": {
         "flush_150_210": {
-          "time_s": 51761.36328125,
+          "time_s": 51760.53125,
           "purge_g": 135.82088375205979,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 180.44,
           "swaps": 576
         },
         "flush_280_cli_default": {
-          "time_s": 55823.58203125,
+          "time_s": 55822.7265625,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
           "filament_g": 255.89,
@@ -1451,7 +1451,7 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 18777.119140625,
+      "time_s": 18777.68359375,
       "filament_mm": 53645.75,
       "filament_g": 169.03342671941311,
       "settings_in_gcode": {
@@ -1463,9 +1463,9 @@
         "support_type": "normal(auto)",
         "wall_loops": "3"
       },
-      "support_time_s": 2767.4334106445312,
+      "support_time_s": 2767.5635375976562,
       "part_g": 141.19613556741928,
-      "removed_g": 27.837281793699713,
+      "removed_g": 27.837281793699706,
       "feature_g": {
         "Sparse infill": 43.47764209864055,
         "Inner wall": 35.553527881940774,
@@ -1473,7 +1473,7 @@
         "Outer wall": 18.778476998650394,
         "Support": 14.450730172357881,
         "Bridge": 12.382459777166803,
-        "Support interface": 10.02077130647861,
+        "Support interface": 10.0207713064786,
         "Top surface": 5.2706188615529195,
         "Support transition": 3.365780314863223,
         "Overhang wall": 0.2599752267994097,
@@ -1487,7 +1487,7 @@
     }
   },
   "totals": {
-    "time_s": 170942.39012908936,
+    "time_s": 170942.12255096436,
     "filament_g": 1474.7030155730945,
     "part_g": 1083.0952219451,
     "vehicle_part_g": 941.8990863776808,

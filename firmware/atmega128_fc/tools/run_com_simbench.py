@@ -274,7 +274,8 @@ def check_telem(sbt: list[tuple[int, bytes, bytes]], vid: int, loop_hz: int) -> 
     for seq, payload, frame in sbt:
         ref = il.telem_frame_from_snap(il.Snap.unpack(payload), vid, loop_hz)
         tn = {lp.TYPE_TELEM: "TELEM", lp.TYPE_TELEM2: "TELEM2", lp.TYPE_TELEM3: "TELEM3", lp.TYPE_TELEM4: "TELEM4",
-              lp.TYPE_TELEM5: "TELEM5"}.get(frame[4] if len(frame) > 4 else -1, "?")
+              lp.TYPE_TELEM5: "TELEM5", lp.TYPE_TELEM6: "TELEM6", lp.TYPE_TELEM7: "TELEM7"}.get(
+            frame[4] if len(frame) > 4 else -1, "?")
         st["by_type"][tn] = st["by_type"].get(tn, 0) + 1          # v0.9 RP1: the TELEM TYPEs the COM built
         if frame == ref:
             st["exact"] += 1
@@ -305,7 +306,7 @@ def reply_window_check(p: dict, win_ticks: int, tick_hz: int, cl_max_us: dict, p
     out: dict = {"window_ms": round(w * 1e3, 3), "window_ticks": win_ticks, "telem_frame_bytes": MODES[MODE]["telem_bytes"],
                  "radios": {}}
     ok = True
-    for radio in lm.RADIOS:
+    for radio in lm.LORA_RADIOS:
         cfg = lm.LinkConfig.from_params(p, radio=radio)
         # the ground's reply timeout for THIS mode's reply frame (v0.8: the station waits round_trip(cfg, mode='vtol',
         # gps=True) for a TELEM3 - tools/ground_station.py link_timing; v0.7.1 used the TELEM v1 timeout here)
@@ -333,18 +334,20 @@ def reply_window_check(p: dict, win_ticks: int, tick_hz: int, cl_max_us: dict, p
         ok = ok and r["pass"]
         out["radios"][radio] = r
     if "esp_bridge" in cl_max_us:
-        # 2026-11-06: the ESP bridge backend has no link model of its own (sim/link_model.py RADIOS); its window is checked
-        # against the lora_uart model (the ground's longest timeout, the pessimistic case) with its own measured
-        # uplink -> IL_CMD time and a radio start of 0 (no busy line: the reply goes to the UART at once)
-        cfg = lm.LinkConfig.from_params(p, radio="lora_uart")
+        # 2026-11-10: the ESP bridge's own link model (sim/link_model.py esp_bridge; 2026-11-06 it was checked against the
+        # lora_uart model).  The worst delivered exchange: every MAC attempt on the uplink (it reaches the COM latest)
+        # and on the downlink (it arrives / leaves the air latest), against the ground's esp_bridge reply timeout; the
+        # COM's own measured uplink -> IL_CMD time and a radio start of 0 (no busy line: the reply goes to the UART at once)
+        cfg = lm.LinkConfig.from_params(p, radio="esp_bridge")
         rt = lm.round_trip(cfg, telem_bytes=MODES[MODE]["telem_bytes"])
-        up = lm.hop_timing(cfg, "up", lp.CMD_FRAME_BYTES)
-        down = lm.hop_timing(cfg, "down", MODES[MODE]["telem_bytes"])
-        arrive_bound = rt["reply_timeout_s"] - rt["uplink_s"] - down.arrival
-        air_bound = rt["reply_timeout_s"] + up.air_start - rt["uplink_s"] - down.air_end
+        r_w = lm.ESP_MAC_ATTEMPTS_ASSUMED - 1
+        up = lm.hop_timing(cfg, "up", lp.CMD_FRAME_BYTES, retries=r_w)
+        down = lm.hop_timing(cfg, "down", MODES[MODE]["telem_bytes"], retries=r_w)
+        arrive_bound = rt["reply_timeout_s"] - up.arrival - down.arrival
+        air_bound = rt["reply_timeout_s"] + lm.hop_timing(cfg, "up", lp.CMD_FRAME_BYTES).air_start - up.arrival - down.air_end
         cl = cl_max_us["esp_bridge"] * 1e-6
-        r = {"model": "lora_uart (the ESP bridge has no link model; pessimistic)",
-             "reply_timeout_ms": round(rt["reply_timeout_s"] * 1e3, 1), "uplink_at_com_ms": round(rt["uplink_s"] * 1e3, 1),
+        r = {"model": "esp_bridge (sim/link_model.py, every MAC attempt on both hops)",
+             "reply_timeout_ms": round(rt["reply_timeout_s"] * 1e3, 1), "uplink_at_com_ms": round(up.arrival * 1e3, 1),
              "bound_arrive_before_timeout_ms": round(arrive_bound * 1e3, 1),
              "bound_off_air_before_next_request_ms": round(air_bound * 1e3, 1),
              "uplink_to_il_cmd_ms": round(cl * 1e3, 2), "radio_start_idle_ms": 0.0, "radio_start_worst_ms": 0.0,
@@ -435,6 +438,7 @@ def bench(env: str, builds: dict, text: str, vid: int, loop_hz: int) -> dict:
     s["counters"] = {"uplinks_sent": last.get("up"), "il_cmd_at_fcu": last.get("fw"), "snaps": last.get("sn"),
                      "telem_to_radio": last.get("rp"), "ground_state": STATES[last["gs"]] if last.get("gs", 9) < 6 else last.get("gs"),
                      "ground_seq_acked": last.get("ga"), "stats_at_fcu": last.get("st"), "stat_check_failures": last.get("sx"),
+                     "stats_radio_ok": last.get("rk"), "stats_radio_not_ok": last.get("rz"),
                      "il_cmd_check_failures": last.get("cb"), "nonce_rejections": last.get("nr"),
                      "telem_bad_at_ground": last.get("tb"), "burst_newest_reply_sent": last.get("bl"),
                      "wrong_type_frames_at_fcu": last.get("wf"),
@@ -494,6 +498,15 @@ def bench(env: str, builds: dict, text: str, vid: int, loop_hz: int) -> dict:
         MODES[MODE]["start"]: c["ground_state"] == "POWERED" and c["nonce_rejections"] == 0,
         "every IL_STAT valid (tag, backend, BOOT once, gap >= 1 / stat_hz, cmd_forwarded)":
             (c["stats_at_fcu"] or 0) >= s["windows"] * div // (div + quiet) and c["stat_check_failures"] == 0,
+        # 2026-11-10 (review F4): the RADIO_OK bit.  LoRa backends: in every STAT (as before).  esp_bridge: "a byte from
+        # the ESP since this COM boot" - clear in the boot STAT (built before the synthetic ground's first byte at 0.2 s),
+        # set in every STAT built after that byte (the per-STAT rule is in com_simbench.c sb_radio_ok_expected and counts
+        # in stat_check_failures above)
+        "RADIO_OK: LoRa in every STAT; esp_bridge clear before the ESP's first byte (the boot STAT), set after it":
+            ((c["stats_radio_not_ok"] or 0) >= 1 and (c["stats_radio_ok"] or 0) >= 1
+             and (c["stats_radio_ok"] or 0) + (c["stats_radio_not_ok"] or 0) == (c["stats_at_fcu"] or 0))
+            if s["radio"] == "esp_bridge" else
+            (c["stats_radio_not_ok"] == 0 and c["stats_radio_ok"] == c["stats_at_fcu"]),
         burst_check: len(burst) == 1 and (g["replies_superseded"] or 0) > 0
                      and ((c["burst_newest_reply_sent"] == 1 and g["burst_newest_expired"] == 0 and g["replies_expired"] == 0)
                           or (s["radio"] == "sx127x" and c["burst_newest_reply_sent"] == 0 and g["burst_newest_expired"] == 1
@@ -523,6 +536,10 @@ def bench(env: str, builds: dict, text: str, vid: int, loop_hz: int) -> dict:
         f"flight stack free >= {STACK_MIN_FREE} B": s["stack"]["flight_free_bytes"] >= STACK_MIN_FREE,
         "console complete, no hook event lost": c["console_dropped"] == 0 and lastd.get("ev") == 0,
     }
+    if MODE == "vtol":                        # 2026-11-10: the COM built every VTOL reply, TELEM v6 / v7 included
+        bt = s["telem_check"]["by_type"]
+        checks["every VTOL TELEM TYPE built (v2 - v7: power tail, logic-battery tail, neither)"] = all(
+            bt.get(f"TELEM{k}", 0) > 0 for k in range(2, 8))
     s["checks"] = checks
     s["pass"] = all(checks.values())
     lat = s["latency_us"]

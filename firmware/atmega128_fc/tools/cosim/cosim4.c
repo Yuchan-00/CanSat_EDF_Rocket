@@ -4,7 +4,7 @@
  * + the v0.8.1 GNS core on the glink); tools/run_cosim4.py builds and runs it, analyses the event files and judges the
  * co-simulation rows of SPEC section 7.  tools/cosim/cosim.c / tools/run_cosim.py stay for the ballistic 3-core build.
  *
- *   NAV  Intel HEX of env nav_cosim_twi (closed loop: the REAL MPU-6050 / MS5611 drivers on the TWI, twi_models.c) or
+ *   NAV  Intel HEX of env nav_cosim_twi (closed loop: the REAL MPU-6050 / barometer drivers on the TWI, twi_models.c) or
  *        nav_cosim (open loop: synthetic sensors): the real nlink SPI MASTER (hal/nlink_spi.c), the real glink USART1,
  *        the tick marker on PORTA (src/nav/nav_simbench.h) and its report lines on USART0 (a simbench-only console)
  *   FCU  Intel HEX of env fcu_cosim* : the real nlink SPI SLAVE with its SPI_STC interrupt, the real ilink USART1 with its
@@ -158,6 +158,7 @@
  *           GQ t hex                     the GNS's g_gns_cosim_report every 250 ms (gnsrep=)
  *           MG ... / MX ...              the GNS core's figures; the corrections' and the plant's counters
  *   arguments gns=<hex> [gns_delay_us=0] [gps=a:n] [gnsrep=a:n] [twi=0|1] [twifix=1] [t0fix=1] [plant=0|1]
+ *           [baro=ms5611|bmp280]  the barometer model at 0x77 (twi=1): the one the NAV image was built for
  *           [pl_dt_us=250] [pl_log_ms=20] [pwm_map=v1,v2,v3,v4,esc] [pl_<name>=value ...] [nl_lose_byte=30]
  *
  * Invariant: the harness only wires, observes and injects the configured faults - it never writes a firmware's RAM
@@ -421,6 +422,11 @@ static void parse_args(int argc, char **argv)
         else if (!strcmp(argv[i], "twi")) g_twi_on = atoi(v);
         else if (!strcmp(argv[i], "twifix")) g_twifix = atoi(v);
         else if (!strcmp(argv[i], "twidbg")) g_twi_debug_n = atoi(v);
+        else if (!strcmp(argv[i], "baro")) {
+            if (!strcmp(v, "bmp280")) twi_models_set_baro(TWI_BARO_BMP280);
+            else if (!strcmp(v, "ms5611")) twi_models_set_baro(TWI_BARO_MS5611);
+            else die("baro=%s: ms5611 or bmp280", v);
+        }
         else if (!strcmp(argv[i], "t0fix")) g_t0fix = atoi(v);
         else if (!strcmp(argv[i], "plant")) g_plant_on = atoi(v);
         else if (!strcmp(argv[i], "pwm_map")) parse_ints(v, g_pwm_map, 5, "pwm_map");
@@ -1945,6 +1951,12 @@ int main(int argc, char **argv)
                 (unsigned long long)ts->rescaled, (unsigned long long)ts->not_found,
                 (unsigned long long)ts->scl_cycles_per_bit);
         for (v = 0; v < 16u; v++) fprintf(g_out, "%s%llu", v ? "," : "", (unsigned long long)ts->rescale_hist[v]);
+        fprintf(g_out, " baro=%s bmp_forced=%llu bmp_done=%llu bmp_data_reads=%llu bmp_early=%llu bmp_calib_reads=%llu "
+                       "bmp_resets=%llu bmp_busy_writes=%llu bmp_normal_writes=%llu", twi_models_baro_name(),
+                (unsigned long long)ts->bmp_forced, (unsigned long long)ts->bmp_done,
+                (unsigned long long)ts->bmp_data_reads, (unsigned long long)ts->bmp_early,
+                (unsigned long long)ts->bmp_calib_reads, (unsigned long long)ts->bmp_resets,
+                (unsigned long long)ts->bmp_busy_writes, (unsigned long long)ts->bmp_normal_writes);
         fprintf(g_out, " plant=%d h_max=%.4f td_v=%.4f touchdowns=%u liftoffs=%u tilt_max_deg=%.3f gps_writes=%llu "
                        "x=%.4f y=%.4f h=%.4f\n", g_plant_on, g_pl.h_max, g_pl.td_v, g_pl.touchdowns, g_pl.liftoffs,
                 g_pl.tilt_max_deg, (unsigned long long)g_gps_writes, g_pl.x, g_pl.y, g_pl.h);

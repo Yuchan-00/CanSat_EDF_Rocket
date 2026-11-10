@@ -7,6 +7,7 @@
  *   RX t=<us> b=<hex>                             every byte radio_read returned
  *   TX t=<us> q=<1 queued> q2=<0: second send refused while busy>   one 47-byte reply at 900 ms
  *   TX busy=<radio_tx_busy() 200 ms later>
+ *   OK t=<us> ok=<radio_stats()->ok>             after radio_init and at every change (2026-11-10, review F4)
  *   EB stats rx=.. err=.. ovf=.. disc=.. txf=.. ok=.. boot_ticks=.. hold_ms=..
  *   EB end
  * Times are Timer1 microseconds since main() (clk / 8, extended in software).  Ends with a sleep, interrupts off.
@@ -57,7 +58,7 @@ int main(void)
 {
     uint8_t frame[47], buf[8], i, n;
     uint32_t t, t_rel;
-    bool sent = false, checked = false;
+    bool sent = false, checked = false, ok_prev;
     const radio_stats_t *rs;
     TCCR1A = 0;
     TCCR1B = (uint8_t)(1 << CS11);                      /* clk / 8: 2 counts per us */
@@ -76,10 +77,16 @@ int main(void)
     radio_init();
     t_rel = now_us();
     printf("EB init t=%lu hold_us=%lu\n", (unsigned long)t_rel, (unsigned long)(t_rel - t));
+    ok_prev = radio_stats()->ok;
+    printf("OK t=%lu ok=%u\n", (unsigned long)now_us(), ok_prev);
     for (;;) {
         t = now_us();
         if (t >= 1200000UL)
             break;
+        if (radio_stats()->ok != ok_prev) {             /* 2026-11-10 (F4): the ESP-present flag */
+            ok_prev = radio_stats()->ok;
+            printf("OK t=%lu ok=%u\n", (unsigned long)now_us(), ok_prev);
+        }
         (void)radio_service(t / 4000u);                  /* the COM tick (COM_TICK_HZ 250) */
         n = radio_read(buf, sizeof buf);
         for (i = 0; i < n; i++)

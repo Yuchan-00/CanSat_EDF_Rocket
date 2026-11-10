@@ -2,13 +2,13 @@
  *
  * v0.6.3 (params.json flight_computer.architecture, SPEC 10.4 / 10.5): every flight computation runs on an
  * ATmega128A, split over three chips built from this one source tree (platformio.ini):
- *   NAV  -D FC_ROLE_NAV  MPU-6050 + MS5611 on I2C, pad alignment / gyro-only attitude estimator, tilt, altitude
+ *   NAV  -D FC_ROLE_NAV  MPU-6050 + barometer (BMP280 by default, MS5611 = build option, hal/baro.h) on I2C, pad alignment / gyro-only attitude estimator, tilt, altitude
  *                        filter, sensor health; pushes the navigation frame to the FCU every tick (nlink SPI
  *                        master).  No flight decisions.
  *   FCU  -D FC_ROLE_FCU  onboard supervisor (commands + interlocks I1-I10), attitude control, PWM outputs,
  *                        OpenLog log; nlink SPI slave (its tick starts on the NAV's frame), ilink to the COM.
  *                        Every flight decision.
- *   COM  -D FC_ROLE_COM  LoRa radio driver, uplink decoding, TELEM building from the FCU's snapshot, status.
+ *   COM  -D FC_ROLE_COM  radio driver (hal/radio.h: the ESP-12E bridge by default, LoRa the fallback), uplink decoding, TELEM building from the FCU's snapshot, status.
  *                        No flight decisions.
  *
  * Every assignment below comes from params.json - FCU: flight_computer.pins, NAV: flight_computer.nav.pins,
@@ -45,7 +45,8 @@
  *
  * ---- NAV (navigation computer: sensors on TWI, nlink SPI master) ------------------------------------------------
  *  I2C SCL / SDA       PD0 / PD1  TWI 400 kHz, 5 V side of the BSS138 shifter; 3.3 V side to
- *                                 GY-521 (MPU-6050 0x68) and GY-63 (MS5611 0x77)
+ *                                 GY-521 (MPU-6050 0x68) and the barometer module (BMP280 TYE-BMP29 0x77;
+ *                                 the GY-63 MS5611 of the build option also 0x77)
  *  MPU INT (optional)  PE6 INT6   not used by the baseline firmware (polled at the 250 Hz tick)
  *  nlink SS            PB0        output, high = idle (made an output BEFORE the SPI is enabled as master)
  *  nlink SCK           PB1 SCK    output -> FCU PB1 (also the NAV's own ISP SCK)
@@ -55,7 +56,7 @@
  *  ISP                 PE0/PE1/PB1/RESET  while the NAV is held in reset its PB0-PB2 float: the FCU's SS
  *                                 pull-up keeps the FCU's SPI idle while the programmer clocks PB1
  *
- * ---- COM (LoRa link processor, ilink on USART0) -----------------------------------------------------------------
+ * ---- COM (radio link processor: ESP-12E bridge by default, LoRa fallback; ilink on USART0) -----------------------------------------------------------------
  *  ilink RX            PE0 RXD0   <- 1 kOhm <- FCU PD3 TXD1.  PE0 is also the COM's ISP PDI:
  *                                 unplug the ilink connector to program the COM (left plugged by
  *                                 mistake, the resistor caps the FCU-vs-programmer current at 5 mA)
@@ -94,8 +95,8 @@
  *
  * ---- v0.8.1: GNS (the fourth ATmega128A: GPS receiver, UBX, GPS filter, position controller; -D FC_ROLE_GNS) ------
  * (params flight_computer.gns.pins, electronics.gns, electronics.gps; src/gns/gns_main.c)
- *  GPS RX              PD2 RXD1   <- NEO-6M TX through the GNS's BSS138 channel (GPS_BAUD 8N1 after the boot config)
- *  GPS TX              PD3 TXD1   -> BSS138 -> NEO-6M RX (3.3 V side: the receiver's RX is not 5 V tolerant)
+ *  GPS RX              PD2 RXD1   <- GPS receiver TX (NEO-7M; NEO-6M in v0.8) through the GNS's BSS138 channel (GPS_BAUD 8N1 after the boot config)
+ *  GPS TX              PD3 TXD1   -> BSS138 -> GPS receiver RX (3.3 V side: the receiver's RX is not 5 V tolerant)
  *  glink RX            PE0 RXD0   <- NAV PD3 TXD1 (GLINK_BAUD 8N1).  PE0 is the GNS's ISP PDI
  *  glink TX            PE1 TXD0   -> NAV PD2 RXD1.  PE1 is the GNS's ISP PDO: unplug the glink to program the GNS
  *  status LED          PC0        active high, 1k resistor (GNS_LED_* below)

@@ -1513,15 +1513,55 @@ static float lpf_alpha(float f_c, float dt)
     return dt / (1.0f / (2.0f * FC_PI_F * f_c) + dt);
 }
 
+#if FC_LOGIC_BAT
+/* 2026-11-10 (hal/adc.h FC_LOGIC_BAT): the logic battery for the reply snapshot (SNAP2 spare / SNAP3 spare3 -> the COM's
+ * TELEM v6 / v7), sim/link_proto.py lbat_q_from_counts; never LP_LBAT_NONE once read (boot) */
+static uint8_t g_lbat_q;
+static uint16_t g_lbat_div;
+#if defined(FC_SIMBENCH)
+#define SB_LBAT_COUNTS 772u                              /* simbench: a synthetic 3.86 V logic pack (no ADC model) */
+#endif
+
+static uint8_t lbat_q_of(uint16_t counts)
+{
+    const uint32_t q = ((uint32_t)counts * LOGIC_BAT_Q_X1024 + 512u) >> 10;
+    return q < 1u ? 1u : (q > 255u ? 255u : (uint8_t)q);
+}
+#endif
+
 /* the battery ADC result of the conversion started in the previous tick (simbench: a synthetic 4.0 V per cell) */
 static bool battery_sample(uint16_t *counts)
 {
 #if defined(FC_SIMBENCH)
+#if FC_LOGIC_BAT
+    if (++g_lbat_div >= LOGIC_BAT_DIV_TICKS) {        /* the flight build's PF3 slot: no V_cell sample this tick */
+        g_lbat_div = 0;
+        g_lbat_q = lbat_q_of(SB_LBAT_COUNTS);
+        return false;
+    }
+#endif
     *counts = simbench_adc();
     return true;
 #elif PM_ANY
     *counts = adc_chain_vin();                        /* v0.9: the chain's V_in (the tether node / the bus) */
     return *counts != PM_CODE_NONE;
+#elif FC_LOGIC_BAT
+    /* 2026-11-10: every LOGIC_BAT_DIV_TICKS ticks the conversion started now is PF3's; a PF3 result updates g_lbat_q and
+     * is not a V_cell sample (the 2 Hz V_cell filter skips that tick) */
+    uint8_t ch;
+    uint8_t next;
+    if (g_lbat_div < LOGIC_BAT_DIV_TICKS)
+        g_lbat_div++;
+    next = g_lbat_div >= LOGIC_BAT_DIV_TICKS ? (uint8_t)LOGIC_BAT_ADC_CHANNEL : (uint8_t)VBAT_ADC_CHANNEL;
+    if (!adc_poll_mux(counts, &ch, next))
+        return false;                                 /* still converting (cannot in 4 ms): the PF3 slot waits a tick */
+    if (next == (uint8_t)LOGIC_BAT_ADC_CHANNEL)
+        g_lbat_div = 0;
+    if (ch == (uint8_t)LOGIC_BAT_ADC_CHANNEL) {
+        g_lbat_q = lbat_q_of(*counts);
+        return false;
+    }
+    return true;
 #else
     return adc_poll(counts);
 #endif
@@ -1765,6 +1805,11 @@ int main(void)
 #endif
 
     seed = adc_entropy_seed(LINK_NONCE_SEED_CONVERSIONS);   /* LAUNCH nonce seed (SPEC 10.3) */
+#if FC_LOGIC_BAT && defined(FC_SIMBENCH)
+    g_lbat_q = lbat_q_of(SB_LBAT_COUNTS);
+#elif FC_LOGIC_BAT
+    g_lbat_q = lbat_q_of(adc_read_blocking(LOGIC_BAT_ADC_CHANNEL));   /* 2026-11-10: valid from the first reply */
+#endif
 #if PM_ANY
     adc_chain_init();                                     /* v0.9: the power monitor's conversion chain */
 #if PM_BUF
@@ -2192,8 +2237,14 @@ int main(void)
                 g_snap_dropped++;                               /* the previous one never left: the newest wins */
 #if FC_VTOL && ONB_HAS_GPS
             il_snap3_from_tlm_src(g_so.reply_seq, &g_so.tlm, g_nav.q, &g_snap);   /* + the GPS fields (TELEM v3) */
+#if FC_LOGIC_BAT
+            g_snap.spare3 = g_lbat_q;                            /* 2026-11-10: the logic battery -> TELEM v7 */
+#endif
 #elif FC_VTOL
             il_snap2_from_tlm_src(g_so.reply_seq, &g_so.tlm, g_nav.q, &g_snap);   /* + phase, target (TELEM v2) */
+#if FC_LOGIC_BAT
+            g_snap.spare = g_lbat_q;                             /* 2026-11-10: the logic battery -> TELEM v6 */
+#endif
 #else
             il_snap_from_tlm_src(g_so.reply_seq, &g_so.tlm, g_nav.q, &g_snap);
 #endif

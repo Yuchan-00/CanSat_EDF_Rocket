@@ -1,7 +1,7 @@
 {
   "generator": "sizing",
   "preset": "KAIST_90mm_12S",
-  "params_sha256": "01ffc621423b90517ea1accb82bb4a85c84d8e8f25d27e12e0b441c45e77595e",
+  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
   "structure_source": "CAD report: cadquery_report_KAIST_90mm_12S.json",
   "cad_report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\cad\\exports\\cadquery_report_KAIST_90mm_12S.json",
   "parts": {

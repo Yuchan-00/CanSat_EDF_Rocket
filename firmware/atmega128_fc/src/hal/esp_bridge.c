@@ -36,6 +36,7 @@ static volatile uint8_t s_rx[ESP_BRIDGE_RX_BUF];
 static volatile uint8_t s_rx_head, s_rx_tail;        /* head: ISR writes, tail: main reads */
 static volatile uint16_t s_rx_errors_isr, s_rx_overflow_isr, s_rx_bytes_isr, s_rx_discard_isr;
 static volatile uint8_t s_booting;                    /* 1: inside the boot window, the RX ISR drops every byte */
+static volatile uint8_t s_alive;                      /* 2026-11-10 (F4): a byte from the ESP since this COM boot */
 static volatile uint8_t s_tx[ESP_BRIDGE_TX_BUF];
 static volatile uint8_t s_tx_head, s_tx_tail;        /* head: main writes, tail: ISR sends */
 static uint32_t s_boot_t0;
@@ -47,6 +48,7 @@ ISR(USART1_RX_vect)
     const uint8_t st = UCSR1A;
     const uint8_t b = UDR1;
     uint8_t h;
+    s_alive = 1u;                                     /* the ESP drives its TXD0: present (radio_stats ok) */
     if (s_booting) {                                  /* the ESP's 74880-baud boot log: not link bytes */
         s_rx_discard_isr++;
         return;
@@ -108,10 +110,11 @@ void radio_init(void)
         }
     }
     s_booting = cold ? 1u : 0u;                               /* warm: the ESP kept running, its bytes are link bytes */
+    s_alive = 0u;                                             /* ok from the ESP's first byte on (radio_stats) */
     s_have_t0 = false;
     UCSR1B = (uint8_t)((1 << RXEN1) | (1 << TXEN1) | (1 << RXCIE1));
     ESP_RST_DDR &= (uint8_t)~(1 << ESP_RST_BIT);              /* release (Hi-Z): the ESP boots / keeps running */
-    s_stats.ok = true;
+    s_stats.ok = false;                                       /* 2026-11-10 (F4): not before the ESP's first byte */
     s_stats.version = 0;
     s_stats.rssi_dbm = RADIO_RSSI_NONE;
     s_stats.snr_q4 = 0;
@@ -178,6 +181,7 @@ const radio_stats_t *radio_stats(void)
         s_stats.rx_bytes = s_rx_bytes_isr;
         s_stats.rx_errors = s_rx_errors_isr;
         s_stats.rx_overflow = s_rx_overflow_isr;
+        s_stats.ok = s_alive != 0u;                           /* sticky: set by the RX ISR (or an injected byte) */
     }
     return &s_stats;
 }
@@ -200,6 +204,8 @@ void radio_inject_rx(const uint8_t *bytes, uint8_t n)
 {
     uint8_t i;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        if (n != 0u)
+            s_alive = 1u;                                     /* the bench's ESP bytes: as on the pin */
         for (i = 0; i < n; i++) {
             uint8_t h = (uint8_t)((s_rx_head + 1u) & (ESP_BRIDGE_RX_BUF - 1u));
             if (h == s_rx_tail) {

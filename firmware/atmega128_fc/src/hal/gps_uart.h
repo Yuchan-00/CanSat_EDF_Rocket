@@ -1,6 +1,6 @@
-/* gps_uart.h - the GNS board's USART1 to the u-blox NEO-6M GPS receiver (v0.8.1 four-chip set: params flight_computer.gns,
+/* gps_uart.h - the GNS board's USART1 to the u-blox GPS receiver (NEO-7M; NEO-6M in v0.8) (v0.8.1 four-chip set: params flight_computer.gns,
  * electronics.gps; v0.8 ran this driver on the NAV, whose USART1 is the glink since v0.8.1): PD2 RXD1 <- GPS TX, PD3 TXD1
- * -> GPS RX, both through the GNS's BSS138 level shifter (the NEO-6M's RX is not 5 V tolerant), GPS_BAUD 8N1 (params_gen.h
+ * -> GPS RX, both through the GNS's BSS138 level shifter (the receiver's RX is not 5 V tolerant), GPS_BAUD 8N1 (params_gen.h
  * GPS_UBRR, U2X 0), interrupt-driven rings.  The frames are core/gps_ubx.h's business; this layer moves bytes.  (Below,
  * "the NAV" / "NAV tick" of the v0.8 text read "the GNS" / "its 4 ms poll", src/gns/gns_main.c.)
  *

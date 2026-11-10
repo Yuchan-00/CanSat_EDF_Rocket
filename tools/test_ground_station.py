@@ -11,7 +11,7 @@ the NAV quaternion and the body-z specific force, so the touchdown detector v2 c
 operator text of every VTOL reason code is shown (reason line, interlock message) and the status block stays within the
 console width with those wide characters; the VTOL link timing equals ``sim.link_model.round_trip(cfg, mode='vtol')``.
 v0.8: the VTOL tests above run the build without GPS (``gps=False``: env fcu_nogps, TELEM v2 - unchanged behaviour); the
-GPS build (params ``mission.vtol.position_hold.enabled``, the default) is covered by: a ``--sim`` hop through the NEO-6M
+GPS build (params ``mission.vtol.position_hold.enabled``, the default) is covered by: a ``--sim`` hop through the NEO-7M class
 receiver model, the NAV's GPS part and the FCU's position loop (ON refused here until the TELEM v3 shows the GPS ready,
 then take-off, VEL -> POS hold, UP / DOWN, landing; the TELEM v3 log columns decode again from the raw bytes; the GPS
 line of the status block; replay); the GPS lost in the hover (``sim gps off``: V11, DR -> ATT, LAND, SAFE); the ON
@@ -671,6 +671,23 @@ def vtol_hop(tmp_path_factory):
                     max_time=120.0, gps=False)
 
 
+def test_vtol_practice_hop_sends_the_logic_battery(vtol_hop):
+    """2026-11-10: the practice vehicle is the carrier battery build: its replies are TELEM v6 (no GPS here) with the
+    logic-battery byte (sim.sim6dof SIM_LOGIC_BAT_V_ASSUMED), the station keeps it, shows it and does not warn above
+    the params threshold; the reply timeout is the ESP model's for that frame."""
+    st, vv, rows = vtol_hop
+    from sim.sim6dof import SIM_LOGIC_BAT_V_ASSUMED
+    dec = lp.FrameDecoder(VID, lp.TELEM_TYPES)
+    frs = [f for r in rows if r["kind"] == "TLM" for f in dec.feed(bytes.fromhex(r["hex"]))]
+    assert frs and all(f.type == lp.TYPE_TELEM6 for f in frs)
+    assert all(lp.decode_telemetry(f).lbat_q == lp.lbat_quant(SIM_LOGIC_BAT_V_ASSUMED) for f in frs)
+    assert st.gs.lbat_v == pytest.approx(lp.lbat_quant(SIM_LOGIC_BAT_V_ASSUMED) / lp.LBAT_SCALE) and not st.gs.lbat_low
+    assert any("logic battery 3.86 V" in e for _, e in st.gs.events)
+    assert "logic 3.86 V" in " ".join(st.status_lines(60.0, 200))
+    lt = gsm.link_timing(P, None, "vtol", False)
+    assert lt["radio"] == "esp_bridge" and lt["lbat_tail"] and st.gs.gp.reply_timeout_s == lt["reply_timeout_s"]
+
+
 def test_vtol_practice_hop_takes_off_holds_and_lands(vtol_hop):
     st, vv, rows = vtol_hop
     s = gsm.summarize_log(rows)
@@ -855,13 +872,19 @@ def test_vtol_link_timing_equals_the_link_model():
     """v0.7.1: the VTOL timing is sim.link_model.round_trip(cfg, mode='vtol') (the 39-byte TELEM2 reply); v0.8: the GPS
     build's is round_trip(cfg, mode='vtol', gps=True) (the 45-byte TELEM3 reply), the default (position_hold.enabled)"""
     from sim.link_model import LinkConfig, round_trip
-    for radio in ("lora_uart", "sx127x"):
+    lb = lp.lbat_build(P, "vtol")                    # 2026-11-10: the carrier battery build replies with TELEM v6 / v7
+    assert lb
+    for radio in ("lora_uart", "sx127x", "esp_bridge"):
         for gps in (False, True):
-            rt = round_trip(LinkConfig.from_params(P, radio=radio), mode=lp.MODE_VTOL, gps=gps)
+            rt = round_trip(LinkConfig.from_params(P, radio=radio), mode=lp.MODE_VTOL, gps=gps, lbat=lb)
             lt = gsm.link_timing(P, radio, "vtol", gps)
-            assert lt["gps"] is gps and (lt["reply_timeout_s"], lt["t_link_default_s"], lt["rtt_worst_s"]) == \
+            assert lt["gps"] is gps and lt["lbat_tail"] is lb and (lt["reply_timeout_s"], lt["t_link_default_s"],
+                                                                   lt["rtt_worst_s"]) == \
                    (rt["reply_timeout_s"], rt["rtt_mean_s"], rt["rtt_worst_s"])
         assert gsm.link_timing(P, radio, "vtol")["gps"] is bool(V["position_hold"]["enabled"])
+        lt_t = gsm.link_timing(P, radio, "vtol", True, "tether")             # the power builds keep TELEM v5 (no tail)
+        assert lt_t["power_tail"] and not lt_t["lbat_tail"]
+        assert not gsm.link_timing(P, radio, "ballistic")["lbat_tail"]
 
 
 def test_vtol_profile_option_rules():
@@ -1188,7 +1211,10 @@ def test_link_hw_default_and_baud_follow_the_vehicle_radio():
     assert gsm.serial_baud(P, a.link_hw, a.baud) == lk["uart_baud"]          # the Ebyte / SX127x bridge baud, unchanged
     a = ap.parse_args(["--port", "COM9", "--baud", "115200"])
     assert gsm.serial_baud(P, a.link_hw, a.baud) == 115200
-    assert a.radio == lk["radio"] == "lora_uart"                            # the link MODEL stays the LoRa one
+    # 2026-11-10: the link MODEL follows the hardware (--link-hw) unless --radio is given: the ESP model with the ESP
+    assert a.radio is None and gsm.link_model_of(P, a.link_hw, a.radio) == "esp_bridge" == lk["vehicle_radio"]
+    assert gsm.link_model_of(P, "lora_uart") == "lora_uart" and gsm.link_model_of(P, "esp_bridge", "sx127x") == "sx127x"
+    assert gsm.link_timing(P, "lora_uart")["reply_timeout_s"] > 2 * gsm.link_timing(P, "esp_bridge")["reply_timeout_s"]
     old = {**P, "flight_computer": {**P["flight_computer"], "link": {k: v for k, v in lk.items() if k != "vehicle_radio"}}}
     assert gsm.default_link_hw(old) == lk["radio"]
 

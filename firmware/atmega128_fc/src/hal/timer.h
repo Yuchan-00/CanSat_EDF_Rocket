@@ -32,8 +32,9 @@ bool     timer_period_due(void);      /* FC_TICK_US have passed since the last r
 uint32_t timer_ticks(void);           /* control ticks since boot */
 void     timer_wait_tick(void);       /* sleep until the next tick ISR */
 bool     timer_tick_pending(void);    /* the next tick has fired (background work must stop) */
-#if defined(FC_ROLE_GNS)
-bool     timer_tick_take(void);       /* v0.8.1 GNS: the tick has fired since the last call (the flag is cleared) */
+#if defined(FC_ROLE_GNS) || defined(FC_ROLE_NAV)
+bool     timer_tick_take(void);       /* v0.8.1 GNS: the tick has fired since the last call (the flag is cleared);
+                                       * NAV (2026-11-10): drops a tick that fired during the boot initialisation */
 #endif
 /* sleep until the next interrupt of any kind, unless the tick has fired or work() reports work - both are
  * checked with interrupts off, so an interrupt that makes either true cannot be slept through */

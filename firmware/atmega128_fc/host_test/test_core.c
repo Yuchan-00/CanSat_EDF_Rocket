@@ -56,6 +56,7 @@
 #include "../src/core/link_proto.h"
 #include "../src/core/log_record.h"
 #include "../src/core/mixer.h"
+#include "../src/core/bmp280_math.h"
 #include "../src/core/ms5611_math.h"
 #include "../src/core/nlink_proto.h"
 #include "../src/core/onboard.h"
@@ -65,7 +66,9 @@
 #include "../src/core/thrust_model.h"
 #include "../src/gains.h"
 #include "../src/hal/pwm.h"          /* pwm_us_to_counts only: a portable inline (no AVR header) */
-#include "../src/hal/ms5611.h"       /* fw09 --consts: MS5611_LATENCY_S, the NAV's alt filter latency (macros only) */
+#include "../src/hal/baro.h"         /* fw09 --consts: BARO_LATENCY_S, the NAV's alt filter latency (macros only) */
+#include "../src/hal/bmp280.h"       /* 2026-11-10: the BMP280 schedule macros (macros and types only) */
+#include "../src/hal/ms5611.h"       /* the MS5611 schedule macros (the build option) */
 #include "../src/params_gen.h"
 #include "glink_vectors_gen.h"
 #include "gps_vectors_gen.h"
@@ -517,6 +520,105 @@ static void test_ms5611(void)
     }
 }
 
+/* BMP280 datasheet appendix 8.1: the compensation in double precision (the reference the integer code of 3.11.3 is
+ * checked against; written from the published datasheet) */
+static double bmp280_ref_double(const bmp280_calib_t *c, uint32_t adc_p, uint32_t adc_t, double *t_c)
+{
+    double var1 = ((double)adc_t / 16384.0 - (double)c->t1 / 1024.0) * (double)c->t2;
+    double var2 = ((double)adc_t / 131072.0 - (double)c->t1 / 8192.0);
+    double p;
+    int32_t t_fine;
+    var2 = var2 * var2 * (double)c->t3;
+    t_fine = (int32_t)(var1 + var2);
+    *t_c = (var1 + var2) / 5120.0;
+    var1 = (double)t_fine / 2.0 - 64000.0;
+    var2 = var1 * var1 * (double)c->p6 / 32768.0;
+    var2 = var2 + var1 * (double)c->p5 * 2.0;
+    var2 = var2 / 4.0 + (double)c->p4 * 65536.0;
+    var1 = ((double)c->p3 * var1 * var1 / 524288.0 + (double)c->p2 * var1) / 524288.0;
+    var1 = (1.0 + var1 / 32768.0) * (double)c->p1;
+    p = 1048576.0 - (double)adc_p;
+    p = (p - var2 / 4096.0) * 6250.0 / var1;
+    var1 = (double)c->p9 * p * p / 2147483648.0;
+    var2 = p * (double)c->p8 / 32768.0;
+    return p + (var1 + var2 + (double)c->p7) / 16.0;
+}
+
+/* 2026-11-10: the BMP280 integer compensation (core/bmp280_math.c) against the datasheet's calculation example (3.12:
+ * its trimming parameters and raw values; t_fine and T are the table's, the pressure is compared with the appendix 8.1
+ * double formula because the table's pressure is that formula's) and against the double formula on the driver's
+ * operating grid (temperature x1 = adc_T in steps of 16; the integer T code drops the lower bits). */
+static void test_bmp280(void)
+{
+    /* dig_T1..T3, dig_P1..P9 of the example as the registers 0x88 .. 0x9F hold them (little endian) */
+    static const uint8_t raw[BMP280_CALIB_LEN] = {
+        0x70, 0x6B, 0x43, 0x67, 0x18, 0xFC, 0x7D, 0x8E, 0x43, 0xD6, 0xD0, 0x0B,
+        0x27, 0x0B, 0x8C, 0x00, 0xF9, 0xFF, 0x8C, 0x3C, 0xF8, 0xC6, 0x70, 0x17};
+    static const uint8_t data[6] = {0x65, 0x5A, 0xC0, 0x7E, 0xED, 0x00};      /* 0xF7 .. 0xFC: adc_P 415148, adc_T 519888 */
+    bmp280_calib_t c, z;
+    bmp280_pwork_t w;
+    int32_t temp = -1, t_fine;
+    uint32_t p_q8 = 1u, adc_p, adc_t, q;
+    double t_c, p_ref, worst = 0.0, prev;
+    bmp280_calib_parse(raw, &c);
+    CHECK(c.t1 == 27504u && c.t2 == 26435 && c.t3 == -1000, "dig_T1..T3 parsed (%u %d %d)", c.t1, c.t2, c.t3);
+    CHECK(c.p1 == 36477u && c.p2 == -10685 && c.p3 == 3024 && c.p4 == 2855 && c.p5 == 140 && c.p6 == -7 &&
+          c.p7 == 15500 && c.p8 == -14600 && c.p9 == 6000, "dig_P1..P9 parsed");
+    CHECK(bmp280_calib_ok(&c), "example trimming parameters accepted");
+    adc_p = bmp280_raw20(data);
+    adc_t = bmp280_raw20(data + 3);
+    CHECK(adc_p == 415148UL && adc_t == 519888UL, "raw 20-bit values (%lu %lu)", (unsigned long)adc_p, (unsigned long)adc_t);
+    t_fine = bmp280_t_fine(&c, adc_t);
+    CHECK(t_fine == 128422L, "datasheet example t_fine = 128422 (got %ld)", (long)t_fine);
+    CHECK(bmp280_compensate(&c, adc_p, adc_t, &temp, &p_q8), "example compensates");
+    CHECK(temp == 2508, "datasheet example T = 2508 (25.08 C) (got %ld)", (long)temp);
+    CHECK(p_q8 == 25767233UL, "example P = 25767233 / 256 Pa (got %lu)", (unsigned long)p_q8);
+    p_ref = bmp280_ref_double(&c, adc_p, adc_t, &t_c);
+    printf("info: BMP280 example: int64 %.4f Pa, double formula %.4f Pa, T %.4f C\n", p_q8 / 256.0, p_ref, t_c);
+    CHECK_NEAR(t_c, 25.08, 0.01, "double-formula T of the example");
+    CHECK_NEAR(p_ref, 100653.27, 0.05, "double-formula P of the example (datasheet table: 100653.27 Pa)");
+    CHECK_NEAR(p_q8 / 256.0, p_ref, 0.05, "int64 P of the example = the double formula");
+    /* the two background steps of the driver = the one-call form */
+    CHECK(bmp280_p_part1(&c, t_fine, &w), "step 1 (non-zero divisor)");
+    CHECK(bmp280_p_part2(&c, adc_p, &w) == p_q8, "step 1 + step 2 = bmp280_compensate");
+    /* the operating grid: about 300 .. 1100 hPa, -20 .. +60 C around the example */
+    for (adc_t = 400000UL; adc_t <= 620000UL; adc_t += 16UL * 500UL) {
+        prev = 1e12;
+        for (adc_p = 250000UL; adc_p <= 500000UL; adc_p += 1237UL) {
+            double e;
+            if (!bmp280_compensate(&c, adc_p, adc_t, &temp, &q)) {
+                CHECK(0, "grid point compensates");
+                continue;
+            }
+            e = fabs(q / 256.0 - bmp280_ref_double(&c, adc_p, adc_t, &t_c));
+            if (e > worst) worst = e;
+            CHECK(q / 256.0 < prev, "P falls as adc_P rises");
+            prev = q / 256.0;
+        }
+    }
+    printf("info: BMP280 int64 vs double formula on the x1 temperature grid: worst %.4f Pa\n", worst);
+    CHECK(worst <= 0.15, "int64 code within 0.15 Pa of the double formula (worst %.4f Pa)", worst);
+    /* refused, never guessed */
+    z = c;
+    z.p1 = 0;
+    temp = -77;
+    p_q8 = 77u;
+    CHECK(!bmp280_calib_ok(&z), "dig_P1 = 0 rejected");
+    CHECK(!bmp280_compensate(&z, 415148UL, 519888UL, &temp, &p_q8) && temp == -77 && p_q8 == 77u,
+          "zero divisor: no result, outputs untouched");
+    memset(&z, 0xFF, sizeof z);
+    CHECK(!bmp280_calib_ok(&z), "erased (all 1) trimming parameters rejected");
+    memset(&z, 0, sizeof z);
+    CHECK(!bmp280_calib_ok(&z), "all-0 trimming parameters rejected");
+    /* the driver's schedule (hal/bmp280.h): the read comes after the longest measurement, inside the cycle */
+    CHECK(BMP280_MEAS_TICKS * FC_TICK_US >= BMP280_MEAS_MAX_US, "read after the longest measurement");
+    CHECK(BMP280_MEAS_TICKS < FC_BARO_DIV, "read before the next forced write");
+    CHECK(BMP280_READ_PHASE == (BMP280_START_PHASE + BMP280_MEAS_TICKS) % FC_BARO_DIV && BMP280_READ_PHASE != BMP280_START_PHASE,
+          "read phase = start phase + the measurement ticks");
+    CHECK(BMP280_START_PHASE < FC_BARO_DIV, "start phase inside the baro cycle");
+    CHECK_NEAR(BMP280_LATENCY_S, ((FC_BARO_DIV + 1) * (double)FC_TICK_US - 7250.0) * 1e-6, 1e-7, "BMP280_LATENCY_S");
+}
+
 static void test_log(void)
 {
     const uint8_t abcde[5] = {'a', 'b', 'c', 'd', 'e'};
@@ -732,6 +834,34 @@ static void test_link_proto(void)
               LV_DIST_NONE == LP_DIST_NONE && LP_ACCEPT_TELEM3 == 8u, "v0.8 TELEM3: TYPE 0x22, 45-byte frame, dist 0xFFFF");
     }
     CHECK(LV_VEHICLE_ID == LINK_VEHICLE_ID, "vectors built for vehicle %d, params %d", LV_VEHICLE_ID, LINK_VEHICLE_ID);
+    /* 2026-11-10: TELEM v6 / v7 (the logic-battery tail) and the COM's reply rule (lp_encode_vtol_reply) */
+    CHECK(LP_TYPE_TELEM6 == 0x25u && LP_TYPE_TELEM7 == 0x26u && LP_TELEM6_FRAME_BYTES == 40 && LP_TELEM7_FRAME_BYTES == 46 &&
+          LP_ACCEPT_TELEM6 == 64u && LP_ACCEPT_TELEM7 == 128u && LP_LBAT_SCALE == 50u && LP_LEN_MAX == 42,
+          "TELEM6 0x25 / 40 B, TELEM7 0x26 / 46 B, accept bits 64 / 128, lbat 0.02 V, LEN_MAX still 42");
+    {
+        lp_telem_t t, u;
+        uint8_t fr[LP_FRAME_MAX_BYTES], lb = 0, n;
+        memset(&t, 0, sizeof t);
+        t.state = 2u; t.flags = 0x2Fu; t.ack_seq = 4u; t.nonce = 0x1234u; t.t_ms = 5000u; t.h_dm = 15; t.vz_cms = 10;
+        t.phase = 3u; t.h_tgt_dm = 15; t.gps_flags = 0x2Fu; t.num_sv = 9u; t.hacc_dm = 12u; t.pos_mode = 2u; t.dist_dm = 4u;
+        n = lp_encode_vtol_reply(LINK_VEHICLE_ID, 7u, &t, false, 0u, 0u, 193u, fr);
+        CHECK(n == LP_TELEM6_FRAME_BYTES && fr[4] == LP_TYPE_TELEM6 && fr[3u + 1u + LP_HEADER_BYTES + LP_TELEM2_PAYLOAD_LEN - 1u] == 193u,
+              "rule: SNAP2 with lbat 193 -> TELEM6, the byte after the TELEM2 fields");
+        lp_unpack_telem6(fr + 3u + LP_HEADER_BYTES, &u, &lb);
+        CHECK(lb == 193u && u.phase == t.phase && u.h_tgt_dm == t.h_tgt_dm && u.nonce == t.nonce, "TELEM6 unpacks");
+        n = lp_encode_vtol_reply(LINK_VEHICLE_ID, 7u, &t, true, 0u, 0u, 193u, fr);
+        lp_unpack_telem7(fr + 3u + LP_HEADER_BYTES, &u, &lb);
+        CHECK(n == LP_TELEM7_FRAME_BYTES && fr[4] == LP_TYPE_TELEM7 && lb == 193u && u.dist_dm == t.dist_dm,
+              "rule: SNAP3 with lbat -> TELEM7");
+        CHECK(lp_encode_vtol_reply(LINK_VEHICLE_ID, 7u, &t, true, 0u, 0u, LP_LBAT_NONE, fr) == LP_TELEM3_FRAME_BYTES &&
+              fr[4] == LP_TYPE_TELEM3 &&
+              lp_encode_vtol_reply(LINK_VEHICLE_ID, 7u, &t, false, 0u, 0u, LP_LBAT_NONE, fr) == LP_TELEM2_FRAME_BYTES &&
+              fr[4] == LP_TYPE_TELEM2, "rule: no monitor (lbat 0) -> TELEM3 / TELEM2 unchanged");
+        CHECK(lp_encode_vtol_reply(LINK_VEHICLE_ID, 7u, &t, true, 190u, 0x81u, 193u, fr) == LP_TELEM5_FRAME_BYTES &&
+              fr[4] == LP_TYPE_TELEM5 &&
+              lp_encode_vtol_reply(LINK_VEHICLE_ID, 7u, &t, false, 190u, 0x41u, 193u, fr) == LP_TELEM4_FRAME_BYTES &&
+              fr[4] == LP_TYPE_TELEM4, "rule: a power build's tail wins over the logic battery (TELEM5 / TELEM4)");
+    }
     /* serial-number arithmetic */
     CHECK(lp_seq_newer(1, 0) && lp_seq_newer(127, 0) && !lp_seq_newer(128, 0) && !lp_seq_newer(0, 0) &&
           lp_seq_newer(3, 250) && !lp_seq_newer(250, 3), "seq_newer: 1..127 ahead is newer, wrap-around");
@@ -844,7 +974,7 @@ static void test_link_proto(void)
             const lv_frame_t *e = &v->frames[j];
             CHECK(all[j].veh == e->veh && all[j].type == e->type && all[j].seq == e->seq && all[j].len == e->len &&
                   memcmp(all[j].payload, e->payload, e->len) == 0, "vector %s frame %d fields", v->name, j);
-            if (e->kind >= 2 && e->kind <= 6) {
+            if (e->kind >= 2 && e->kind <= 8) {
                 lp_telem_t t;
                 long long f[LV_NF];
                 uint8_t va = 0, pf = 0;
@@ -857,18 +987,23 @@ static void test_link_proto(void)
                     lp_unpack_telem3(all[j].payload, &t);
                 else if (e->kind == 5)                     /* v0.9 RP1: TELEM v4 / v5 */
                     lp_unpack_telem4(all[j].payload, &t, &va, &pf);
-                else
+                else if (e->kind == 6)
                     lp_unpack_telem5(all[j].payload, &t, &va, &pf);
+                else if (e->kind == 7)                     /* 2026-11-10: TELEM v6 / v7 (lbat in f[22]) */
+                    lp_unpack_telem6(all[j].payload, &t, &va);
+                else
+                    lp_unpack_telem7(all[j].payload, &t, &va);
                 telem_fields(&t, f);
                 f[22] = va;
                 f[23] = pf;
                 for (q = 0; q < LV_NF; q++)
                     CHECK(f[q] == e->f[q], "vector %s telem field %d: %lld vs %lld", v->name, q, f[q], e->f[q]);
                 {
-                    static const uint8_t ty[7] = {0, 0, LP_TYPE_TELEM, LP_TYPE_TELEM2, LP_TYPE_TELEM3, LP_TYPE_TELEM4,
-                                                  LP_TYPE_TELEM5};
-                    static const uint8_t ln[7] = {0, 0, LP_TELEM_PAYLOAD_LEN, LP_TELEM2_PAYLOAD_LEN, LP_TELEM3_PAYLOAD_LEN,
-                                                  LP_TELEM4_PAYLOAD_LEN, LP_TELEM5_PAYLOAD_LEN};
+                    static const uint8_t ty[9] = {0, 0, LP_TYPE_TELEM, LP_TYPE_TELEM2, LP_TYPE_TELEM3, LP_TYPE_TELEM4,
+                                                  LP_TYPE_TELEM5, LP_TYPE_TELEM6, LP_TYPE_TELEM7};
+                    static const uint8_t ln[9] = {0, 0, LP_TELEM_PAYLOAD_LEN, LP_TELEM2_PAYLOAD_LEN, LP_TELEM3_PAYLOAD_LEN,
+                                                  LP_TELEM4_PAYLOAD_LEN, LP_TELEM5_PAYLOAD_LEN, LP_TELEM6_PAYLOAD_LEN,
+                                                  LP_TELEM7_PAYLOAD_LEN};
                     CHECK(all[j].type == ty[e->kind] && all[j].len == ln[e->kind], "vector %s telem TYPE / LEN", v->name);
                 }
             } else if (e->kind == 1) {
@@ -1421,7 +1556,7 @@ static void test_ilink_proto(void)
     for (i = 0; i < ILV_N_TELEM; i++) {
         const ilv_telem_t *v = &ILV_TELEM[i];
         onb_tlm_src_t src;
-        uint8_t fr[LP_FRAME_MAX_BYTES], n, seq;
+        uint8_t fr[LP_FRAME_MAX_BYTES], n, seq, pva = 0, pfl = 0, lbat = LP_LBAT_NONE;
         int j, a, other = 0, ang = 0;
         memset(&src, 0, sizeof src);
         if (v->snap_n == IL_SNAP3_LEN) {               /* VTOL + GPS COM: SNAP3 -> TELEM3 (v0.9: TELEM5 with a tail) */
@@ -1429,11 +1564,13 @@ static void test_ilink_proto(void)
             il_unpack_snap3(v->snap, &s);
             il_snap3_to_tlm_src(&s, &src);
             seq = s.s.reply_seq;
+            pva = s.pw_vaux; pfl = s.pw_flags; lbat = s.spare3;   /* 2026-11-10: + the logic battery (TELEM7) */
         } else if (v->snap_n == IL_SNAP2_LEN) {        /* VTOL COM: SNAP2 -> TELEM2 */
             il_snap2_t s;
             il_unpack_snap2(v->snap, &s);
             il_snap2_to_tlm_src(&s, &src);
             seq = s.s.reply_seq;
+            pva = s.pw_vaux; pfl = s.pw_flags; lbat = s.spare;    /* 2026-11-10: + the logic battery (TELEM6) */
         } else {
             il_snap_t s;
             CHECK(v->snap_n == IL_SNAP_LEN, "telem %s: snapshot length %u", v->name, v->snap_n);
@@ -1441,10 +1578,18 @@ static void test_ilink_proto(void)
             il_snap_to_tlm_src(&s, &src);
             seq = s.reply_seq;
         }
-        n = onboard_telemetry_frame(&src, ILV_LOOP_HZ, ILV_VEHICLE_ID, seq, fr);
-        CHECK(n == v->telem_n && n == (v->snap_n == IL_SNAP3_LEN ? (LP_PWR_TAIL_DUE(src.pw_flags) ? LP_TELEM5_FRAME_BYTES :
+        if (v->snap_n == IL_SNAP_LEN) {
+            n = onboard_telemetry_frame(&src, ILV_LOOP_HZ, ILV_VEHICLE_ID, seq, fr);
+        } else {                                       /* the VTOL COM's reply (com/com_link.c: lp_encode_vtol_reply) */
+            lp_telem_t t;
+            onboard_telemetry(&src, ILV_LOOP_HZ, &t);
+            n = lp_encode_vtol_reply(ILV_VEHICLE_ID, seq, &t, v->snap_n == IL_SNAP3_LEN, pva, pfl, lbat, fr);
+        }
+        CHECK(n == v->telem_n && n == (v->snap_n == IL_SNAP3_LEN ? (LP_PWR_TAIL_DUE(pfl) ? LP_TELEM5_FRAME_BYTES :
+                                                                    LP_LBAT_TAIL_DUE(lbat, pfl) ? LP_TELEM7_FRAME_BYTES :
                                                                     LP_TELEM3_FRAME_BYTES) :
-                                       v->snap_n == IL_SNAP2_LEN ? (LP_PWR_TAIL_DUE(src.pw_flags) ? LP_TELEM4_FRAME_BYTES :
+                                       v->snap_n == IL_SNAP2_LEN ? (LP_PWR_TAIL_DUE(pfl) ? LP_TELEM4_FRAME_BYTES :
+                                                                    LP_LBAT_TAIL_DUE(lbat, pfl) ? LP_TELEM6_FRAME_BYTES :
                                                                     LP_TELEM2_FRAME_BYTES) : LP_TELEM_FRAME_BYTES),
               "telem %s: frame length %u (want %u)", v->name, n, v->telem_n);
         for (j = 0; j < n - 2; j++)
@@ -4068,6 +4213,12 @@ static int run_telem4_vectors(const char *in, const char *out)
         if (kind == 4u) {
             lp_unpack_telem2(pl, &t);
             n = lp_encode_telem4((uint8_t)veh, (uint8_t)seq, &t, (uint8_t)va, (uint8_t)fl, fr);
+        } else if (kind == 6u) {                       /* 2026-11-10: TELEM v6 / v7, va = lbat (fl ignored) */
+            lp_unpack_telem2(pl, &t);
+            n = lp_encode_telem6((uint8_t)veh, (uint8_t)seq, &t, (uint8_t)va, fr);
+        } else if (kind == 7u) {
+            lp_unpack_telem3(pl, &t);
+            n = lp_encode_telem7((uint8_t)veh, (uint8_t)seq, &t, (uint8_t)va, fr);
         } else {
             lp_unpack_telem3(pl, &t);
             n = lp_encode_telem5((uint8_t)veh, (uint8_t)seq, &t, (uint8_t)va, (uint8_t)fl, fr);
@@ -4638,7 +4789,7 @@ static int run_ilink_vectors(const char *in, const char *out)
             const long veh = strtol(p, &end, 10), hz = strtol(end, &end, 10);
             onb_tlm_src_t src;
             lp_telem_t t;
-            uint8_t seq;
+            uint8_t seq, lbat = LP_LBAT_NONE;
             n = parse_hex(end, buf, (int)sizeof buf);
             memset(&src, 0, sizeof src);
             if (n == (int)IL_SNAP3_LEN) {              /* v0.9 RP1: the VTOL + GPS COM (SNAP3 -> TELEM3 / TELEM5) */
@@ -4646,11 +4797,13 @@ static int run_ilink_vectors(const char *in, const char *out)
                 il_unpack_snap3(buf, &s);
                 il_snap3_to_tlm_src(&s, &src);
                 seq = s.s.reply_seq;
+                lbat = s.spare3;                       /* 2026-11-10: the logic battery (TELEM7) */
             } else if (n == (int)IL_SNAP2_LEN) {
                 il_snap2_t s;
                 il_unpack_snap2(buf, &s);
                 il_snap2_to_tlm_src(&s, &src);
                 seq = s.s.reply_seq;
+                lbat = s.spare;                        /* 2026-11-10: the logic battery (TELEM6) */
             } else if (n == (int)IL_SNAP_LEN) {
                 il_snap_t s;
                 il_unpack_snap(buf, &s);
@@ -4661,13 +4814,11 @@ static int run_ilink_vectors(const char *in, const char *out)
                 return 3;
             }
             onboard_telemetry(&src, (uint16_t)hz, &t);
-            if (src.v2 && LP_PWR_TAIL_DUE(src.pw_flags))   /* v0.9 RP1: the COM's rule (com/com_link.c) */
-                put_hex_line(fo, 'P', fr, src.v3 ? lp_encode_telem5((uint8_t)veh, seq, &t, src.pw_vaux, src.pw_flags, fr)
-                                                 : lp_encode_telem4((uint8_t)veh, seq, &t, src.pw_vaux, src.pw_flags, fr));
+            if (src.v2)                                /* the COM's rule (com/com_link.c: lp_encode_vtol_reply) */
+                put_hex_line(fo, 'P', fr, lp_encode_vtol_reply((uint8_t)veh, seq, &t, src.v3, src.pw_vaux, src.pw_flags,
+                                                               lbat, fr));
             else
-                put_hex_line(fo, 'P', fr, src.v3 ? lp_encode_telem3((uint8_t)veh, seq, &t, fr) :
-                                          src.v2 ? lp_encode_telem2((uint8_t)veh, seq, &t, fr) :
-                                                   lp_encode_telem((uint8_t)veh, seq, &t, fr));
+                put_hex_line(fo, 'P', fr, lp_encode_telem((uint8_t)veh, seq, &t, fr));
         } else if (kind == 'F') {                      /* 20 numbers: SNAP; 22 (+ phase, h_tgt_m bits): SNAP2 */
             double v[22];
             onb_tlm_src_t src;
@@ -7618,7 +7769,7 @@ static int run_consts(const char *out)
     fc_default_plant(&mp);
     fc_vtol_gains(&ag);
     fc_default_mahony(&mh);
-    fc_default_alt_vtol(&av, MS5611_LATENCY_S);
+    fc_default_alt_vtol(&av, BARO_LATENCY_S);
 #define CF(key, x) fprintf(fo, "%s %.9g\n", key, (double)(x))
 #define CI(key, x) fprintf(fo, "%s %ld\n", key, (long)(x))
 #ifdef FC_VEHICLE
@@ -7646,7 +7797,8 @@ static int run_consts(const char *out)
     CF("macro.VEH_IXX_KG_M2", VEH_IXX_KG_M2);
     CF("macro.VEH_IYY_KG_M2", VEH_IYY_KG_M2);
     CF("macro.VEH_IZZ_KG_M2", VEH_IZZ_KG_M2);
-    CF("macro.MS5611_LATENCY_S", MS5611_LATENCY_S);
+    CF("macro.BARO_LATENCY_S", BARO_LATENCY_S);
+    CI("macro.FC_BARO_SENSOR", FC_BARO_SENSOR);
 #define PF_(f) CF("plant." #f, mp.f)
     PF_(l_v_m); PF_(r_v_m); PF_(s_v_m2); PF_(cl_alpha); PF_(a_e_m2); PF_(t_max_n); PF_(throttle_exp); PF_(delta_max_rad);
     PF_(pwm_center_us); PF_(pwm_us_per_deg);
@@ -7781,6 +7933,7 @@ int main(int argc, char **argv)
     test_estimator();
     test_edf();
     test_ms5611();
+    test_bmp280();
     test_log();
     test_pwm_counts();
     test_link_proto();

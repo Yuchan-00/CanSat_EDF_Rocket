@@ -100,7 +100,7 @@ bool timer_tick_pending(void)
     return s_tick_flag != 0;
 }
 
-#if defined(FC_ROLE_GNS)
+#if defined(FC_ROLE_GNS) || defined(FC_ROLE_NAV)
 bool timer_tick_take(void)
 {
     bool f;

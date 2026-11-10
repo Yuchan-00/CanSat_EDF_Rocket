@@ -1,9 +1,9 @@
 {
   "generator": "cadquery",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "48acb7692009197802c7c7f5ec293ba65686581309365763a1678884e4382bde",
+  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
   "tolerance_mm3": 1.0,
-  "runtime_s": 145.5630989074707,
+  "runtime_s": 200.33280730247498,
   "summary": {
     "PASS": 29,
     "WARN": 3,
@@ -586,8 +586,8 @@
       "measured": "T/W = 1.869 (30.3 N / 1654 g)",
       "detail": "printed 566 g of 1654 g",
       "values": {
-        "tw": 1.868537422963651,
-        "mass_g": 1653.699819990231
+        "tw": 1.8685374669685348,
+        "mass_g": 1653.699781044869
       }
     },
     {
@@ -645,11 +645,11 @@
       "id": "C17",
       "title": "all presets build without exceptions",
       "status": "PASS",
-      "measured": "BUDGET_90mm_6S: ok (43 parts); KAIST_90mm_12S: ok (48 parts, 1.7 s)",
+      "measured": "BUDGET_90mm_6S: ok (43 parts); KAIST_90mm_12S: ok (48 parts, 2.3 s)",
       "detail": "",
       "values": {
         "BUDGET_90mm_6S": "ok (43 parts)",
-        "KAIST_90mm_12S": "ok (48 parts, 1.7 s)"
+        "KAIST_90mm_12S": "ok (48 parts, 2.3 s)"
       }
     },
     {
@@ -1633,17 +1633,17 @@
           "270": 1.0
         },
         "tip_over": {
-          "cg_height_mm": 245.324093839456,
+          "cg_height_mm": 245.3240976045558,
           "fin_tip_r_mm": 123.4,
-          "angle_toward_a_fin_deg": 26.702765175440867,
-          "angle_between_fins_deg": 19.579476872248367,
-          "cg_lateral_offset_mm": 1.3378103477761805,
+          "angle_toward_a_fin_deg": 26.702764822439107,
+          "angle_between_fins_deg": 19.579476594606874,
+          "cg_lateral_offset_mm": 1.3378103370296839,
           "cg_xy_mm": [
-            1.324558926616389,
-            -0.18783018005066282
+            1.3245589148990191,
+            -0.18783018613899516
           ],
-          "angle_toward_a_fin_with_offset_deg": 26.455344299191268,
-          "angle_between_fins_with_offset_deg": 19.35745668676802
+          "angle_toward_a_fin_with_offset_deg": 26.45534395065986,
+          "angle_between_fins_with_offset_deg": 19.357456412604435
         }
       }
     },
@@ -1655,20 +1655,20 @@
       "detail": "W 16.22 N, q_exit 1651 Pa at hover, vane force 1.328 N each, lever 208.3 mm (CG z 245.3 - hinge 37)",
       "values": {
         "cg_xy_mm": [
-          1.324558926616389,
-          -0.18783018005066282
+          1.3245589148990191,
+          -0.18783018613899516
         ],
-        "offset_mm": 1.3378103477761805,
-        "trim_fraction": 0.07073479951300585,
-        "trim_deg": 1.414695990260117,
-        "authority_Nm": 0.5532722666850449,
-        "trim_fraction_cg_only": 0.04051079848361403,
+        "offset_mm": 1.3378103370296839,
+        "trim_fraction": 0.07073479791954547,
+        "trim_deg": 1.4146959583909093,
+        "authority_Nm": 0.5532722636546832,
+        "trim_fraction_cg_only": 0.04051079742603185,
         "trim_fraction_cd_band": [
-          0.06468999910050893,
-          0.07677959998001123
+          0.06468999761421984,
+          0.07677959827938076
         ],
-        "trim_fraction_status": 0.07677959998001123,
-        "lead_drag_N": 0.5366151468739582,
+        "trim_fraction_status": 0.07677959827938076,
+        "lead_drag_N": 0.5366151342364343,
         "lead_drag": {
           "cd_ASSUMED": 1.0,
           "cd_band_ASSUMED": [
@@ -3102,26 +3102,26 @@
         "parts_in_report": [],
         "top_cap_entry_mm3": 27506.061524352142,
         "flight_model": {
-          "mass_g": 1653.699819990231,
+          "mass_g": 1653.699781044869,
           "com_mm": [
-            1.324558926616389,
-            -0.18783018005066282,
-            245.324093839456
+            1.3245589148990191,
+            -0.18783018613899516,
+            245.3240976045558
           ],
-          "lateral_offset_mm": 1.3378103477761805
+          "lateral_offset_mm": 1.3378103370296839
         },
         "with_logic_power": {
-          "mass_g": 1747.7066025487038,
+          "mass_g": 1747.706563603342,
           "com_mm": [
-            -1.0273676889158017,
-            -0.05075511656405831,
-            252.92751129956014
+            -1.027367752412528,
+            -0.05075511927036839,
+            252.9275150315725
           ],
-          "lateral_offset_mm": 1.028620654121638
+          "lateral_offset_mm": 1.028620717674556
         },
-        "c33_trim_now": 0.07677959998001123,
+        "c33_trim_now": 0.07677959827938076,
         "c33_status_now": "WARN",
-        "c33_trim_full": 0.009775179563913819,
+        "c33_trim_full": 0.009775178118376231,
         "c33_status_full": "PASS"
       }
     },
@@ -3214,25 +3214,25 @@
           "limit_pct": 1.0
         },
         "side_load_E": {
-          "F_N": 17.139146953884246,
-          "mass_g": 1747.7066025487038,
-          "sigma_arc_nominal_mpa": 4.017384485695263,
+          "F_N": 17.139146571960712,
+          "mass_g": 1747.706563603342,
+          "sigma_arc_nominal_mpa": 4.017384396173091,
           "kt_notch_A": 1.3,
-          "sigma_arc_mpa": 5.222599831403842,
-          "sigma_ring_mpa": 0.31163340621162366,
+          "sigma_arc_mpa": 5.222599715025018,
+          "sigma_ring_mpa": 0.3116333992672797,
           "allow_mpa": 15.0,
-          "factor": 2.8721327469518143
+          "factor": 2.8721328109535476
         },
         "plate_root_E": {
           "cases_mpa": {
-            "side load (moment F x h)": 13.307924517071852,
-            "inverted set-down (share x W x dyn + mu x it on the rim)": 20.49789754167248
+            "side load (moment F x h)": 13.307924220522112,
+            "inverted set-down (share x W x dyn + mu x it on the rim)": 20.49789708490357
           },
-          "sigma_mpa": 20.49789754167248,
+          "sigma_mpa": 20.49789708490357,
           "allow_bending_mpa": 53.0,
-          "factor": 2.585631033243792,
-          "factor_vs_tensile": 1.463564735798373,
-          "inverted_load_N": 19.967938198700093,
+          "factor": 2.585631090861208,
+          "factor_vs_tensile": 1.4635647684120048,
+          "inverted_load_N": 19.967937753740635,
           "boss_r_mm": 12.9,
           "b_farthest_support_mm": 50.647787423147555,
           "b_nearest_support_mm": 11.499999999999993,
