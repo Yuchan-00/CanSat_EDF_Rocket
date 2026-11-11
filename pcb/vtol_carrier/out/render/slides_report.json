@@ -1,0 +1,55 @@
+{
+ "board_box_px_a1": [
+  431,
+  53,
+  1473,
+  1012
+ ],
+ "generated_by": "scripts/render_rev3.py --slides-only",
+ "inputs": {
+  "a1_as_delivered_top.png": "b9607c49459a08da3e4db47fa664cfb3be974f4ca7c5493a133cf86ee1f2a1b9",
+  "a2_as_delivered_front.png": "41d5c8a671bcc7265691ec7e3b1ad066439d8690d708527fd06aec7b24ace945",
+  "a3_as_delivered_bottom.png": "8d19c080d4b44ff37b73caafdaf533ac0a382c51457eba50431f005ff2a16933",
+  "b1_completed_top.png": "4e59865d538258a9ae5a02dff80eef5c43c85b87fc6c866c6d7c1f112c46d752",
+  "b2_completed_front.png": "c4fe85db632ca58c26de60a802212ccca436ec9ce6d85f48d3fb7155e1ac8552",
+  "b3_completed_back.png": "63abcd041869ebd653eac5fac63802e149fe4c3e7fc7a57863b69d87fdb7baf4",
+  "b4_completed_side_limit.png": "65a6d669f5c152c55a31e0f786020bb5e2e11ef8f8b78363517b582b6e9efb11",
+  "c1_gy521_on_J1.png": "7b9222806f11fc75b9a7e3d10ba75f2eeee5cc255251cb9b7ef2da98eb9837a5",
+  "c2_bmp280_in_J2.png": "2ebdabf9c1bbd85456b478978bf79040c0cf8b2425cadaf9ad28747322b3e523",
+  "c3_openlog_in_J5.png": "8a9fe0b8fa5301b2f137714f3681ca562151b7d6413c94d21a16da76612cceb6",
+  "c4_esp12f_keepout.png": "ab147bd3b22c0d191a2a0b6737e33702666da6dc0c3b3b6d2201e01a6c21cacc",
+  "c5_mcu_pin1.png": "a74da8eca92c4227607b93c0bf3a0c90d9618cd049b023a871740739a3c3e733",
+  "d1_gps_plug_J7.png": "a5430e1fe32eda4f9791b9433c18f0937e10fa1307d7e1bef8264bf4c1a8ccaa",
+  "d2_neo7m_top_cap.png": "5aca690d27ce680c586d8be1f4c9176cdf6b96076ef32da61828e9d39da20bee"
+ },
+ "label": "composed illustrations; '가정' marks assumed dimensions / routes; not fit evidence",
+ "schema": "vtol_carrier.render_slides/1",
+ "slides": {
+  "e1": {
+   "file": "e1_delivered_vs_completed.png",
+   "sha256": "fab857a5be3ddaaf5e569240d5b364e415ad9691c84a8f70c669d8c0af17cb8c"
+  },
+  "e2a": {
+   "file": "e2a_gy521_J1.png",
+   "sha256": "f0bc629688f69e635d8c45b91def79c53f47cd546eb366a08e56fd3c980c8800"
+  },
+  "e2b": {
+   "file": "e2b_bmp280_J2.png",
+   "sha256": "153a0600ff743d2d946cb18944081ff4b25ef687662ec8d628db7cb4fc4c717c"
+  },
+  "e2c": {
+   "file": "e2c_openlog_J5.png",
+   "sha256": "d412917138509f449c46f81356de811947a74c93e3fefcab70170ff600130070"
+  },
+  "e3": {
+   "file": "e3_gps_lead_J7.png",
+   "sha256": "2621066b12a411ee65b7ba714bcc372269c9194f39656a047793ad476a2fac50"
+  },
+  "e4": {
+   "file": "e4_overview_callouts.png",
+   "sha256": "33868b182a09776ea8d0bf2c09b05ef221328a295ef299a71e4076c0ef096f07"
+  }
+ },
+ "source_board": "vtol_carrier.kicad_pcb",
+ "source_board_sha256": "32bf9856575563cefdafe4491dae46af3f4eb165b60ecc81d94155423cacc1a3"
+}

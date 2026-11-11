@@ -14,7 +14,7 @@ The picture carries a Korean banner with the word '가정' (slides_ko.annotate).
 
 Run with the CAD interpreter (CadQuery + PyVista + trimesh), never with KiCad's python:
     PYTHONDONTWRITEBYTECODE=1 "<main checkout>/.venv/Scripts/python.exe" -B -X utf8 scripts/render_d2_scene.py
-        [--board kicad/render_completed.kicad_pcb] [--out out/render/spike_d2_neo7m_top_cap.png]
+        [--board kicad/render_completed.kicad_pcb] [--out out/render/d2_neo7m_top_cap.png]
         [--board-label "rev 3 기판"]
 The PNG is written by VTK (GPU / driver dependent pixels): it is a picture, not a byte-reproducible artifact.
 """
@@ -326,7 +326,7 @@ def render(scene: dict, png: Path, board_label: str) -> None:
             x = 36.0 if side == "L" else WIDTH - 36.0 - 590.0
             callouts.append(slides_ko.Callout(text if not assumed else text + f" ({slides_ko.ASSUMED_WORD})", t[key], (x, y), assumed))
             y_next = y + 92.0
-    banner = (f"시험 그림 d2: NEO-7M을 차체 윗뚜껑 위에 두고 리드선을 캐리어 기판 J7까지 내린 모습입니다. "
+    banner = (f"그림 d2: NEO-7M을 차체 윗뚜껑 위에 두고 리드선을 캐리어 기판 J7까지 내린 모습입니다. "
               f"차체 형상은 cad/layout.py (vtol), 기판은 {board_label}. "
               f"GPS 모듈 치수와 방향, 리드선 경로는 가정 값이며 간섭 검사는 하지 않았습니다.")
     slides_ko.annotate(pil, callouts, out=png, size=24, banner=banner, banner_assumed=True)
@@ -335,7 +335,7 @@ def render(scene: dict, png: Path, board_label: str) -> None:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--board", type=Path, default=ROOT / "kicad" / "render_completed.kicad_pcb")
-    ap.add_argument("--out", type=Path, default=ROOT / "out" / "render" / "spike_d2_neo7m_top_cap.png")
+    ap.add_argument("--out", type=Path, default=ROOT / "out" / "render" / "d2_neo7m_top_cap.png")
     ap.add_argument("--board-label", default="rev 3 기판 (render_completed.kicad_pcb)")
     args = ap.parse_args(argv)
     if not args.board.is_file():

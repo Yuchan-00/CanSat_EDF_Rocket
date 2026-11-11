@@ -1,0 +1,9 @@
+﻿pair,order,boards,setup,stencil,feeder_types,feeder_loading,smt_joints_per_board,smt_joints,tht_joints_per_board,tht_hand_soldering,confirm_parts_placement,components_tier1,components_with_loss_and_minimum,sum_E,standard_only_fees_applicability_NOT_VERIFIED,sum_E_with_standard_only_fees
+main,Economic,2,8.18,1.53,11,33.77,342,1.09,39,4.86,0.45,20.95,30.36,80.24,,
+main,Standard,2,25.56,8.21,34,52.02,342,1.09,39,4.86,0.45,20.95,30.36,122.55,31.85,154.4
+main,Economic,5,8.18,1.53,11,33.77,342,2.74,39,6.78,0.45,52.37,56.8,110.25,,
+main,Standard,5,25.56,8.21,34,52.02,342,2.74,39,6.78,0.45,52.37,56.8,152.56,31.85,184.41
+with_mcu,Economic,2,8.18,1.53,12,36.84,598,1.91,39,4.86,0.45,69.03,78.44,132.21,,
+with_mcu,Standard,2,25.56,8.21,35,53.55,598,1.91,39,4.86,0.45,69.03,78.44,172.98,31.85,204.83
+with_mcu,Economic,5,8.18,1.53,12,36.84,598,4.78,39,6.78,0.45,172.58,159.84,218.4,,
+with_mcu,Standard,5,25.56,8.21,35,53.55,598,4.78,39,6.78,0.45,172.58,159.84,259.17,31.85,291.02

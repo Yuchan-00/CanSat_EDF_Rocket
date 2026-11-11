@@ -1,0 +1,20 @@
+﻿item,qty per board,qty for 2 boards,plugs into / used at,purchase channel (suggestion),stock / price,source
+ATmega128A-AU (TQFP-64),4,8,U1 U2 U3 U4 footprints (user solders 64 pins each),LCSC C6510 or a domestic distributor - not needed if the *_with_mcu files are ordered,NOT_VERIFIED (not fetched),REV3_PLAN 8 / 9; spec fit jlc_optional
+GY-521 MPU-6050 module (SZH-EK007),1,2,"J1 (solder the module's own 1x8 strip, 2 mm foam support)",devicemart no=1247052,NOT_VERIFIED (not fetched),spec user_parts.imu: GY-521 MPU-6050 SZH-EK007 (devicemart 1247052) - as before
+BMP280 module TYE-BMP29,1,2,J2 socket (right-angle 6-pin header of the module),devicemart no=15442588,NOT_VERIFIED (not fetched),spec user_parts.barometer
+right-angle 1x6 2.54 mm pin strip (only if the BMP280 comes with a straight header),1,2,BMP280 module -> J2,domestic shop (any RA 2.54 mm strip cut to 6),NOT_VERIFIED (not fetched),REV3_PLAN 8 (header type NOT_VERIFIED)
+NEO-7M GPS module SZH-NT07,1,2,vehicle top cap; lead to J7,devicemart no=10895400,NOT_VERIFIED (not fetched),spec user_parts.gps
+"GPS lead JST-GH 1.25 mm 4-pin, both ends",1,2,J7 <-> NEO-7M,ready-made lead (domestic shop) or 2 x GHR-04V-S (LCSC C160418) + 8 x SSHL-002T-P0.2 (LCSC C189897) + crimp tool,NOT_VERIFIED (not fetched),REV3_PLAN 9
+SparkFun OpenLog DEV-13712,1,2,J5 socket,SparkFun distributor / domestic shop,NOT_VERIFIED (not fetched),REV3_PLAN 8 (D5)
+microSD card,1,2,OpenLog,any shop,NOT_VERIFIED (not fetched),REV3_PLAN 9
+right-angle 1x6 2.54 mm pin header for the OpenLog,1,2,"solder onto the OpenLog, plug into J5",domestic shop or LCSC C55629820,NOT_VERIFIED (not fetched),REV3_PLAN 8 / 9
+logic battery 1S Li-Po DTP105565P 3.7 V 4200 mAh,1,2,J14 (Molex 5264-type plug; mating and polarity NOT_VERIFIED - meter first),devicemart no=16021596,NOT_VERIFIED (not fetched),spec user_parts.logic_battery
+power switch MTS-102 + JST-PH 2-pin lead,1,2,J15,switch: domestic shop; lead: ready-made PH 2.0 mm 2-pin or PHR-2 (LCSC C157955) + 2 x SPH-002T-P0.5S (LCSC C111515),NOT_VERIFIED (not fetched),REV3_PLAN 9
+arm switch + 2-pin 2.54 mm Dupont lead,1,2,J16,domestic shop,NOT_VERIFIED (not fetched),REV3_PLAN 9
+buzzer + JST-PH 2-pin lead,1,2,J17,domestic shop (PHR-2 C157955 + SPH-002T-P0.5S C111515 at LCSC),NOT_VERIFIED (not fetched),REV3_PLAN 9
+"2x3 2.54 mm pin header (programming, option A)",5,10,"J3, J19, J20, J21, J22 (bare holes in the tie band)",domestic shop or LCSC C65114 - or a 2x3 pogo-pin ISP adapter instead (contact NOT_VERIFIED),NOT_VERIFIED (not fetched),REV3_PLAN 8 (D6 A)
+1x2 2.54 mm pin header + shunt (reset hold),3,6,"J24, J25, J26",domestic shop or LCSC C55629809 + C100114,NOT_VERIFIED (not fetched),REV3_PLAN 8 (D6 A)
+USBasp programmer (target power jumper OPEN),1,1,J19..J22 (ISP of the four MCUs),domestic shop,NOT_VERIFIED (not fetched),REV3_PLAN 9 / 15
+"USB-serial adapter, 3.3 V logic",1,1,"J3 (ESP-12F flashing, 3.3 V only)",domestic shop,NOT_VERIFIED (not fetched),REV3_PLAN 9 / 15
+3 mm foam tape,1,2,board underside (after the THT leads are flush-cut),domestic shop,NOT_VERIFIED (not fetched),REV3_PLAN 9 / 15
+cable tie,1,2,across the tie band x -3..+3 mm,domestic shop,NOT_VERIFIED (not fetched),REV3_PLAN 9 / 15

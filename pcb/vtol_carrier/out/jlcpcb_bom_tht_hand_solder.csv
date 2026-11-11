@@ -1,7 +1,0 @@
-﻿Comment,Designator,Footprint,LCSC Part #
-1x6 2.54 mm right-angle socket (module lies flat),"J2,J5",PinSocket_1x06_P2.54mm_Horizontal,C55629861
-"1x3 2.54 mm right-angle header (S, +, -)","J8,J9,J10,J11,J12",PinHeader_1x03_P2.54mm_Horizontal,C55629817
-"Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",J14,Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical,C5364642
-JST-PH 2.0 2-pin vertical: lead to an external logic power switch,"J15,J17",JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,C131337
-1x2 right-angle header,J16,PinHeader_1x02_P2.54mm_Horizontal,C55629816
-1x4 right-angle header,J18,PinHeader_1x04_P2.54mm_Horizontal,C55629818

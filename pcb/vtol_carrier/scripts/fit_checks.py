@@ -13,6 +13,8 @@ is labelled "A / NOT_VERIFIED" and never PASS. No part is moved and no limit is 
  (b) module_keepouts  outlines of the plugged modules built from spec/module_dimensions.json (tags carried through),
                   parts under them with height and clearance against CLEARANCE_MIN
  (c) tht_leads    lead protrusion under the board against the 1.5 mm foam-tape rule
+ (d) reflow_rating      rated reflow peak per JLC-fitted part vs JLC's oven (scripts/order_checks.py)
+ (e) connector_drawings J14 / J15 / J17 / J7 / U7 footprints vs drawings and JLC's library record
 """
 from __future__ import annotations
 
@@ -315,6 +317,17 @@ def main() -> int:
     over = [r["ref"] for r in leads if isinstance(r.get("under_board_nominal_mm"), float) and r["under_board_nominal_mm"] > LEAD_LIMIT]
     unknown = [r["ref"] for r in leads if r.get("under_board_nominal_mm") is None]
 
+    # (d) reflow rating table and (e) connector drawing check (export step; scripts/order_checks.py)
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import order_checks  # noqa: E402
+
+    gate_path = ROOT / "out" / "jlc_gate_report.json"
+    gate = json.loads(gate_path.read_text(encoding="utf-8")) if gate_path.is_file() else None
+    reflow = order_checks.reflow_rating(spec, gate)
+    reflow["gate_report"] = {"file": "out/jlc_gate_report.json", "started_at": (gate or {}).get("started_at")}
+    conn = order_checks.connector_drawings(b)
+    errors += conn["errors"]
+
     try:
         board_rel = board_path.resolve().relative_to(ROOT).as_posix()
     except ValueError:
@@ -333,6 +346,8 @@ def main() -> int:
         "tht_leads": {"rule_mm": LEAD_LIMIT, "board_thickness_mm": BOARD_T, "over_rule_nominal": over, "not_verified": unknown,
                       "note": "solder fillet height is not included (NOT_VERIFIED); alternate socket C55629861 has 3.2 mm tails -> 1.6 mm under the board",
                       "rows": leads},
+        "reflow_rating": reflow,
+        "connector_drawings": conn,
     }
     rep = ROOT / "out" / "fit_checks.json"
     rep.write_bytes((json.dumps(out, indent=1, ensure_ascii=False) + "\n").encode("utf-8"))

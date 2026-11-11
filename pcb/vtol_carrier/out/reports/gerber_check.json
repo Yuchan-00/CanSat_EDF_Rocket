@@ -1,28 +1,80 @@
 {
  "copper_layers": 4,
- "gerber_check": {
-  "status": "PASS",
-  "message": "12 files, 4 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Copper,L3', 'Copper,L4', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+ "layers": "F.Cu,In1.Cu,In2.Cu,B.Cu,F.Paste,B.Paste,F.SilkS,B.SilkS,F.Mask,B.Mask,Edge.Cuts",
+ "sets": {
+  "main": {
+   "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip",
+   "zip_sha256": "edc46afbdecfa418fb4ec7d4ba6733ea4f76f95817837863a82a83f4e6cc8c9f",
+   "files": [
+    "vtol_carrier-B_Cu.gbl",
+    "vtol_carrier-B_Mask.gbs",
+    "vtol_carrier-B_Paste.gbp",
+    "vtol_carrier-B_Silkscreen.gbo",
+    "vtol_carrier-Edge_Cuts.gm1",
+    "vtol_carrier-F_Cu.gtl",
+    "vtol_carrier-F_Mask.gts",
+    "vtol_carrier-F_Paste.gtp",
+    "vtol_carrier-F_Silkscreen.gto",
+    "vtol_carrier-In1_Cu.g1",
+    "vtol_carrier-In2_Cu.g2",
+    "vtol_carrier-job.gbrjob",
+    "vtol_carrier.drl"
+   ],
+   "gerber_check": {
+    "status": "PASS",
+    "message": "12 files, 4 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Copper,L3', 'Copper,L4', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+   },
+   "drill_check": {
+    "status": "PASS",
+    "message": "1 drill file(s)"
+   },
+   "f_paste_flashes": 347
+  },
+  "with_mcu": {
+   "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip",
+   "zip_sha256": "b386018ef3a107a0c5037dc37679dc989074f203b9412af5b4f34aa758d8a2ed",
+   "files": [
+    "vtol_carrier-B_Cu.gbl",
+    "vtol_carrier-B_Mask.gbs",
+    "vtol_carrier-B_Paste.gbp",
+    "vtol_carrier-B_Silkscreen.gbo",
+    "vtol_carrier-Edge_Cuts.gm1",
+    "vtol_carrier-F_Cu.gtl",
+    "vtol_carrier-F_Mask.gts",
+    "vtol_carrier-F_Paste.gtp",
+    "vtol_carrier-F_Silkscreen.gto",
+    "vtol_carrier-In1_Cu.g1",
+    "vtol_carrier-In2_Cu.g2",
+    "vtol_carrier-job.gbrjob",
+    "vtol_carrier.drl"
+   ],
+   "gerber_check": {
+    "status": "PASS",
+    "message": "12 files, 4 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Copper,L3', 'Copper,L4', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+   },
+   "drill_check": {
+    "status": "PASS",
+    "message": "1 drill file(s)"
+   },
+   "f_paste_flashes": 603
+  }
  },
- "drill_check": {
-  "status": "PASS",
-  "message": "1 drill file(s)"
+ "paste_variant": {
+  "refs": [
+   "U1",
+   "U2",
+   "U3",
+   "U4"
+  ],
+  "pads_changed": 256,
+  "pads_with_paste_before": 603,
+  "pads_with_paste_after": 347
  },
- "files": [
-  "vtol_carrier-B_Cu.gbl",
-  "vtol_carrier-B_Mask.gbs",
-  "vtol_carrier-B_Paste.gbp",
-  "vtol_carrier-B_Silkscreen.gbo",
-  "vtol_carrier-drl_map.pdf",
-  "vtol_carrier-Edge_Cuts.gm1",
-  "vtol_carrier-F_Cu.gtl",
-  "vtol_carrier-F_Mask.gts",
-  "vtol_carrier-F_Paste.gtp",
-  "vtol_carrier-F_Silkscreen.gto",
-  "vtol_carrier-In1_Cu.g1",
-  "vtol_carrier-In2_Cu.g2",
-  "vtol_carrier-job.gbrjob",
-  "vtol_carrier.drl"
- ],
- "zip": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\pcb\\vtol_carrier\\out\\vtol_carrier_gerber.zip"
+ "date_fields_normalised": {
+  "lines": 73,
+  "value": "2026-11-11T00:00:00+09:00"
+ },
+ "variant_layers_other_than_f_paste_differing": [],
+ "paste_decision": "default zip: no paste apertures on U1..U4 (the user hand-solders the MCUs on clean pads); with_mcu zip: paste on U1..U4, upload it ONLY together with the *_with_mcu BOM / CPL. Whether JLC would itself leave unplaced parts without paste is NOT_VERIFIED, so the two zips are kept.",
+ "paste_flash_difference": 256
 }

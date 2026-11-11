@@ -9,8 +9,8 @@ Measures (M = from the board file; plug sizes are A):
   * smallest drill-edge distance between holes of different nets (hole_to_hole rule 0.5 mm)
   * silkscreen texts on F.SilkS / B.SilkS
   * AMS1117 U6 -> input / output capacitor pad distances
-  * ESP-12E: pin 8 (VCC) -> 100 nF copper path, its GND via, bulk capacitor distances; copper / pads / pours inside
-    the antenna rule area on both layers (spec esp12e.antenna)
+  * ESP-12F (U7, footprint RF_Module:ESP-12E): pin 8 (VCC) -> 100 nF copper path, its GND via, bulk capacitor
+    distances; copper / pads / pours inside the antenna rule area on all copper layers (spec esp12e.antenna)
   * minimum track width per power / servo net (spec layout_rules: logic-battery path >= 1.0 mm, servo >= 1.5 mm)
   * mated-plug envelopes of the fitted lead connectors vs the CAD bore, joint screws and motor-lead joint zone
     (kicad/work/cad_envelope.json from scripts/cad_envelope.py; review MF-1..MF-7)
@@ -369,7 +369,7 @@ def u6_caps(fps) -> dict:
 
 
 def esp_metrics(board, fps, rule_area) -> dict:
-    """ESP-12E VCC decoupling and the antenna rule area (KiCad coords x0, y0, x1, y1)."""
+    """ESP-12F (U7) VCC decoupling and the antenna rule area (KiCad coords x0, y0, x1, y1)."""
     p8 = pad_of(fps, "U7", "8")
     c54 = pad_of(fps, "C54", "1")
     out = {"pin8_to_C54_copper_mm": path_len(board, "+3V3", p8, c54)}
@@ -600,7 +600,7 @@ def main() -> int:
         "hole_to_hole": hole_to_hole(board),
         "silk": silk(board),
         "u6_cap_distance_mm": u6_caps(fps),
-        "esp12e": esp_metrics(board, fps, pdata["antenna_rule_area"]),
+        "esp12f": esp_metrics(board, fps, pdata["antenna_rule_area"]),
         "min_track_width_mm": min_widths(board, ["VBAT_LOGIC_RAW", "VBAT_LOGIC", "VBAT_LOGIC_SW", "BOOST_SW", "SERVO_5V", "GND_PWR", "+5V", "+3V3", "GPS_VCC"]),
         "plug_fit": plug_fit(board, fps, cad),
         "net_clusters": net_clusters(board),

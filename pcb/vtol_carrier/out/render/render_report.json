@@ -1,0 +1,469 @@
+{
+ "attached": {
+  "C": [
+   "J14 <- molex_22035025_J14.step",
+   "J1 <- gy521_on_J1.step",
+   "J2 <- bmp280_in_J2.step",
+   "J5 <- openlog_in_J5.step",
+   "J7 <- gh_plug_in_J7.step"
+  ],
+  "D": [
+   "J14 <- molex_22035025_J14.step"
+  ],
+  "L": [
+   "J14 <- molex_22035025_J14.step",
+   "J1 <- gy521_on_J1.step",
+   "J2 <- bmp280_in_J2.step",
+   "J5 <- openlog_in_J5.step",
+   "J7 <- gh_plug_in_J7.step",
+   "J1 <- height_limit_frame.step (marker)"
+  ]
+ },
+ "derived_boards": {
+  "render_as_delivered.kicad_pcb": "7ff73ee1737fb247ea8c22adfe09199e3d0a5b84b9c4136b4bbadbc6911ebfc9",
+  "render_completed.kicad_pcb": "b56950264531fa3fbc09907fab7f5862bb07cac954b4b97d3f23148b10b52ac8",
+  "render_completed_limit.kicad_pcb": "cbb63bbeb80ed7e875e77628ca1b5191ac34aeb24bd88d63f4a27e5762fff3ea"
+ },
+ "focus_mm": {
+  "c1": [
+   111.9,
+   123.99
+  ],
+  "c2": [
+   111.18,
+   81.13
+  ],
+  "c3": [
+   129.6,
+   109.46
+  ],
+  "c4": [
+   86.75,
+   77.2
+  ],
+  "c5": [
+   85.85,
+   103.45
+  ],
+  "d1": [
+   66.98,
+   124.612
+  ]
+ },
+ "generated_by": "scripts/render_rev3.py",
+ "hidden": {
+  "C": [
+   "J1"
+  ],
+  "D": [
+   "U1",
+   "U2",
+   "U3",
+   "U4",
+   "J1"
+  ],
+  "L": [
+   "J1"
+  ]
+ },
+ "kicad_cli_version": "10.0.6",
+ "label": "illustrations; module dimensions are F / A as tagged in spec/module_dimensions.json; not fit evidence",
+ "library_models_missing": [
+  "J14: ${KICAD10_3DMODEL_DIR}/Connector_Molex.3dshapes/Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical.step"
+ ],
+ "models": {
+  "bmp280_in_J2": "d7f468086e013ea356b82ab054a91e3c1a490c5b78cb9b2ca0146c992a4519dd",
+  "gh_plug_in_J7": "90a660dda8810b214ac5d8da6aadd01498760cc73392b9d17103ebb8f3241cae",
+  "gy521_on_J1": "fa168788d457128e7902c6eafd444c843e9edb3d880a7e4720f265328585195a",
+  "height_limit_frame": "08f09a25275b1d4364ad681465e71b7e650ece44c3f878cdc12c4e5951bbdeff",
+  "molex_22035025_J14": "a3149c9feacc2e2b45848f38cc35b8218a220f9cf148acfdb5e9187093bf18c6",
+  "neo7m_module": "92ae719495a52c5036acedcfdcdb9a085e4c7a5c96ae23d1c8bea4c483c067b5",
+  "openlog_in_J5": "84417ea621e2bb83e2f73e36e674d43b59209a5fd026c646a38af4a06d19d889"
+ },
+ "project_model_used": {
+  "J14": "molex_22035025_J14.step"
+ },
+ "quality": "high",
+ "schema": "vtol_carrier.render_rev3/1",
+ "size_requested": [
+  1920,
+  1080
+ ],
+ "source_board": "vtol_carrier.kicad_pcb",
+ "source_board_sha256": "32bf9856575563cefdafe4491dae46af3f4eb165b60ecc81d94155423cacc1a3",
+ "views": {
+  "a1": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "1"
+   ],
+   "board": "render_as_delivered.kicad_pcb",
+   "file": "a1_as_delivered_top.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "b9607c49459a08da3e4db47fa664cfb3be974f4ca7c5493a133cf86ee1f2a1b9",
+   "what": "as delivered by JLCPCB, top"
+  },
+  "a2": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "0.9",
+    "--rotate",
+    "-45,0,30",
+    "--perspective",
+    "--floor"
+   ],
+   "board": "render_as_delivered.kicad_pcb",
+   "file": "a2_as_delivered_front.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "41d5c8a671bcc7265691ec7e3b1ad066439d8690d708527fd06aec7b24ace945",
+   "what": "as delivered by JLCPCB, 3/4 front"
+  },
+  "a3": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "bottom",
+    "--zoom",
+    "1"
+   ],
+   "board": "render_as_delivered.kicad_pcb",
+   "file": "a3_as_delivered_bottom.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "8d19c080d4b44ff37b73caafdaf533ac0a382c51457eba50431f005ff2a16933",
+   "what": "as delivered by JLCPCB, bottom"
+  },
+  "b1": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "1"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "b1_completed_top.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "4e59865d538258a9ae5a02dff80eef5c43c85b87fc6c866c6d7c1f112c46d752",
+   "what": "completed, top"
+  },
+  "b2": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "0.9",
+    "--rotate",
+    "-45,0,30",
+    "--perspective",
+    "--floor"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "b2_completed_front.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "c4fe85db632ca58c26de60a802212ccca436ec9ce6d85f48d3fb7155e1ac8552",
+   "what": "completed, 3/4 front"
+  },
+  "b3": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "0.9",
+    "--rotate",
+    "-50,0,-150",
+    "--perspective",
+    "--floor"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "b3_completed_back.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "63abcd041869ebd653eac5fac63802e149fe4c3e7fc7a57863b69d87fdb7baf4",
+   "what": "completed, 3/4 back"
+  },
+  "b4": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "front",
+    "--zoom",
+    "1"
+   ],
+   "board": "render_completed_limit.kicad_pcb",
+   "file": "b4_completed_side_limit.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "65a6d669f5c152c55a31e0f786020bb5e2e11ef8f8b78363517b582b6e9efb11",
+   "what": "completed, side elevation with the 13.4 mm limit frame"
+  },
+  "c1": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "2.4",
+    "--rotate",
+    "-55,0,125",
+    "--perspective",
+    "--floor",
+    "--pivot",
+    "1.190,-2.399,0"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "c1_gy521_on_J1.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "7b9222806f11fc75b9a7e3d10ba75f2eeee5cc255251cb9b7ef2da98eb9837a5",
+   "what": "GY-521 soldered on J1"
+  },
+  "c2": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "2.4",
+    "--rotate",
+    "-65,0,70",
+    "--perspective",
+    "--floor",
+    "--pivot",
+    "1.118,1.887,0"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "c2_bmp280_in_J2.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "2ebdabf9c1bbd85456b478978bf79040c0cf8b2425cadaf9ad28747322b3e523",
+   "what": "BMP280 plugged into J2"
+  },
+  "c3": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "2.4",
+    "--rotate",
+    "-65,0,-70",
+    "--perspective",
+    "--floor",
+    "--pivot",
+    "2.960,-0.946,0"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "c3_openlog_in_J5.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "8a9fe0b8fa5301b2f137714f3681ca562151b7d6413c94d21a16da76612cceb6",
+   "what": "OpenLog plugged into J5, microSD side"
+  },
+  "c4": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "2.4",
+    "--rotate",
+    "-50,0,25",
+    "--perspective",
+    "--floor",
+    "--pivot",
+    "-1.325,2.280,0"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "c4_esp12f_keepout.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "ab147bd3b22c0d191a2a0b6737e33702666da6dc0c3b3b6d2201e01a6c21cacc",
+   "what": "ESP-12F with its antenna keep-out"
+  },
+  "c5": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "2.8",
+    "--rotate",
+    "-40,0,20",
+    "--perspective",
+    "--floor",
+    "--pivot",
+    "-1.415,-0.345,0"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "c5_mcu_pin1.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "a74da8eca92c4227607b93c0bf3a0c90d9618cd049b023a871740739a3c3e733",
+   "what": "one ATmega128A with the pin-1 mark"
+  },
+  "d1": {
+   "args": [
+    "-w",
+    "1920",
+    "-h",
+    "1080",
+    "--quality",
+    "high",
+    "--background",
+    "opaque",
+    "--side",
+    "top",
+    "--zoom",
+    "2.6",
+    "--rotate",
+    "-60,0,35",
+    "--perspective",
+    "--floor",
+    "--pivot",
+    "-3.302,-2.461,0"
+   ],
+   "board": "render_completed.kicad_pcb",
+   "file": "d1_gps_plug_J7.png",
+   "png_size": [
+    1904,
+    1064
+   ],
+   "rendered": true,
+   "sha256": "a5430e1fe32eda4f9791b9433c18f0937e10fa1307d7e1bef8264bf4c1a8ccaa",
+   "what": "JST-GH plug and the GPS lead at J7"
+  }
+ }
+}

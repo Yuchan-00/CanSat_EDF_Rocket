@@ -16,7 +16,11 @@ Sub-commands (each writes out/reports/rev3_<name>.json; exit 0 = PASS, 1 = FAIL,
   fit               fit sets and JLC BOM lines == plan; netlist components == spec parts
   nets              the five new nets == plan; nothing of rev 2c lost except J6
   determinism       spec + schematic built twice: byte-identical
+  export-files      JLC BOM / CPL pairs and gerber zips of checks_exports.py: headers, fit sets, one line per code,
+                    CPL == rotation table, silk marks of the orientation-deciding parts, zips differ only in F.Paste
+  export-determinism  BOM / CPL / zips written twice into temp folders + rotation table rebuilt: byte-identical
   all               determinism, export, then the rest; summary in out/reports/rev3_checks.json
+                    (export-files / export-determinism are run on their own, after checks_exports.py)
 
 The export step re-uses ``fit_report`` and ``check_fit_files`` (BOM / CPL designators against the fit sets), the PCB
 step ``expected_pad_nets`` (U8 / U9 pad -> net table for the pads of the .kicad_pcb).
@@ -818,9 +822,181 @@ def check_determinism() -> dict:
         "byte_identical": not differing, "netlist_without_date_line": netlist})
 
 
+# ------------------------------------------------------------------------------------------- JLC order files
+BOM_HEADER = ["Comment", "Designator", "Footprint", "JLCPCB Part #\uff08optional\uff09"]
+CPL_HEADER = ["Designator", "Mid X", "Mid Y", "Layer", "Rotation"]
+#: symbols whose orientation decides the function: each such JLC-fitted part needs its silk mark (routing_rules.json)
+POLAR_SYMBOL = re.compile(r"^(Device:C_Polarized|Device:LED|Device:D_Schottky|Transistor_|Regulator_|RF_Module:|"
+                          r"Comparator:|MCU_|Connector_Generic:Conn_02x03_Counter_Clockwise|"
+                          r"Connector_Generic_MountingPin:)")
+KICAD_FP_DIR = Path("C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints")
+
+
+def read_csv(path: Path) -> tuple[list[str], list[list[str]]]:
+    import csv as _csv
+    raw = path.read_bytes()
+    rows = list(_csv.reader(raw.decode("utf-8-sig").splitlines()))
+    return rows[0], rows[1:]
+
+
+def library_silk_items(lib_id: str) -> int:
+    lib, name = lib_id.split(":", 1)
+    f = KICAD_FP_DIR / f"{lib}.pretty" / f"{name}.kicad_mod"
+    text = f.read_text(encoding="utf-8")
+    return len(re.findall(r'\((?:fp_line|fp_poly|fp_circle|fp_arc|fp_rect)[^()]*(?:\([^()]*(?:\([^()]*\)[^()]*)*\)[^()]*)*?\(layer "F\.SilkS"\)', text))
+
+
+def check_export_files() -> dict:
+    spec = load_json(SPEC)
+    plan = load_json(PLAN)
+    problems, pairs = [], {}
+    table_path = OUT / "cpl_rotation_table.csv"
+    if not table_path.is_file():
+        return write_report("export_files", {"result": NOT_VERIFIED, "reason": "out/cpl_rotation_table.csv missing"})
+    th, trows = read_csv(table_path)
+    table = {r[0]: dict(zip(th, r)) for r in trows}
+    for with_mcu, suffix in ((False, ""), (True, "_with_mcu")):
+        bom_p, cpl_p = OUT / f"jlcpcb_bom{suffix}.csv", OUT / f"jlcpcb_cpl{suffix}.csv"
+        if not bom_p.is_file() or not cpl_p.is_file():
+            problems.append(f"missing {bom_p.name} / {cpl_p.name}")
+            continue
+        bh, brows = read_csv(bom_p)
+        ch, crows = read_csv(cpl_p)
+        p: dict = {"bom": posix(bom_p), "cpl": posix(cpl_p), "bom_sha256": sha256_file(bom_p),
+                   "cpl_sha256": sha256_file(cpl_p), "bom_lines": len(brows), "cpl_rows": len(crows),
+                   "bom_header_exact": bh == BOM_HEADER, "cpl_header_exact": ch == CPL_HEADER,
+                   "utf8_bom_prefix": bom_p.read_bytes()[:3] == b"\xef\xbb\xbf"}
+        if bh != BOM_HEADER or ch != CPL_HEADER:
+            problems.append(f"{suffix or 'main'}: header {bh} / {ch}")
+        bom_refs = [r for row in brows for r in row[1].split(",")]
+        if any(" " in row[1] for row in brows):
+            problems.append(f"{suffix or 'main'}: space in a designator cell")
+        codes = Counter(row[3] for row in brows)
+        p["duplicate_codes"] = [c for c, n in codes.items() if n > 1]
+        p["codes_not_C_number"] = [c for c in codes if not re.fullmatch(r"C\d+", c)]
+        fit = check_fit_files(spec, bom_refs, [r[0] for r in crows], with_mcu)
+        p["fit_set_check"] = fit
+        main_refs = set(fit_report(spec, False)["jlc_designators"])
+        if not with_mcu:
+            p["forbidden_refs_present"] = sorted(set(bom_refs + [r[0] for r in crows]) & set(NOT_JLC_OPTION_A),
+                                                 key=natural)
+        else:
+            p["added_against_main"] = sorted(set(bom_refs) - main_refs, key=natural)
+            if p["added_against_main"] != list(MCUS):
+                problems.append(f"with_mcu adds {p['added_against_main']}, expected {list(MCUS)}")
+        want_lines = len(plan["bom_lines"]) + (1 if with_mcu else 0)
+        if len(brows) != want_lines:
+            problems.append(f"{suffix or 'main'}: {len(brows)} BOM lines, plan gives {want_lines}")
+        bad_rows = []
+        for r in crows:
+            ok = (re.fullmatch(r"-?\d+\.\d{4}mm", r[1]) and re.fullmatch(r"-?\d+\.\d{4}mm", r[2]) and r[3] == "T"
+                  and re.fullmatch(r"\d{1,3}", r[4]) and int(r[4]) < 360)
+            t = table.get(r[0])
+            same = t is not None and abs(float(r[1][:-2]) - float(t["CPL Mid X (mm)"])) < 5e-5 and \
+                abs(float(r[2][:-2]) - float(t["CPL Mid Y (mm)"])) < 5e-5 and \
+                (int(r[4]) - float(t["CPL rotation"])) % 360 == 0
+            if not ok or not same:
+                bad_rows.append(r)
+        p["cpl_rows_bad_format_or_not_equal_to_table"] = bad_rows
+        p["orientation_critical_not_verified"] = sorted(
+            (r for r in fit_report(spec, with_mcu)["jlc_designators"]
+             if table[r]["kind"] != "non-polar 2-pad" and table[r]["status"] != "EE_FIT"), key=natural)
+        for key in ("duplicate_codes", "codes_not_C_number", "cpl_rows_bad_format_or_not_equal_to_table"):
+            if p[key]:
+                problems.append(f"{suffix or 'main'}: {key} {p[key][:5]}")
+        if fit["result"] != PASS:
+            problems.append(f"{suffix or 'main'}: fit-set check FAIL")
+        if not with_mcu and p["forbidden_refs_present"]:
+            problems.append(f"main pair contains {p['forbidden_refs_present']}")
+        pairs["with_mcu" if with_mcu else "main"] = p
+    # polarity / pin-1 silk marks of every orientation-deciding JLC-fitted part
+    rr_path = REP / "routing_rules.json"
+    rr = load_json(rr_path)
+    marks = {m["ref"]: m for m in rr["checks"]["silkscreen"]["marks"]}
+    parts = {q["refdes"]: q for q in spec["parts"]}
+    mcu_refs = fit_report(spec, True)["jlc_designators"]
+    need = sorted((r for r in mcu_refs if POLAR_SYMBOL.match(parts[r]["symbol"])), key=natural)
+    silk = {"board_sha256_of_report": rr["board"]["sha256"], "board_sha256_now": sha256_file(KICAD / "vtol_carrier.kicad_pcb"),
+            "required": need, "missing_or_not_ok": [r for r in need if not marks.get(r, {}).get("ok")]}
+    other = sorted(set(mcu_refs) - set(need), key=natural)
+    lib_marks = {}
+    for r in other:
+        if table.get(r, {}).get("kind") == "non-polar 2-pad":
+            continue
+        lib_marks[r] = library_silk_items(parts[r]["footprint"])
+    silk["other_orientation_critical_library_silk_items"] = lib_marks
+    silk["other_without_library_silk"] = [r for r, n in lib_marks.items() if n == 0]
+    if silk["missing_or_not_ok"] or silk["board_sha256_of_report"] != silk["board_sha256_now"]:
+        problems.append(f"silk marks missing / not ok: {silk['missing_or_not_ok']} (or report of another board)")
+    if silk["other_without_library_silk"]:
+        problems.append(f"no library silkscreen at all: {silk['other_without_library_silk']}")
+    # the two gerber zips: same members, only F.Paste differs, by exactly the U1..U4 pads
+    import zipfile as _zip
+    zips = {}
+    za, zb = OUT / "vtol_carrier_gerber.zip", OUT / "vtol_carrier_gerber_with_mcu.zip"
+    if za.is_file() and zb.is_file():
+        with _zip.ZipFile(za) as a, _zip.ZipFile(zb) as b:
+            na, nb = sorted(a.namelist()), sorted(b.namelist())
+            diff = [n for n in na if n in nb and a.read(n) != b.read(n)]
+            fa = len(re.findall(rb"D03\*", a.read("vtol_carrier-F_Paste.gtp")))
+            fb = len(re.findall(rb"D03\*", b.read("vtol_carrier-F_Paste.gtp")))
+            layers = [n for n in na if n.endswith((".gtl", ".g1", ".g2", ".gbl"))]
+        mcu_pads = 64 * len(MCUS)
+        zips = {"members_equal": na == nb, "members": na, "differing_members": diff, "f_paste_flashes": [fa, fb],
+                "copper_files": layers, "expected_difference": mcu_pads}
+        if na != nb or diff != ["vtol_carrier-F_Paste.gtp"] or fb - fa != mcu_pads or len(layers) != 4:
+            problems.append(f"gerber zips: {zips['differing_members']} differ, paste flashes {fa} / {fb}, "
+                            f"copper files {layers}")
+    else:
+        problems.append("gerber zips missing")
+    result = FAIL if problems else PASS
+    return write_report("export_files", {
+        "result": result, "tool": "scripts/rev3_checks.py export-files", "spec_sha256": sha256_file(SPEC),
+        "problems": problems, "pairs": pairs, "silk_marks": silk, "gerber_zips": zips,
+        "not_verified": ["JLC's upload parser: header strings, UTF-8 BOM, unit suffix, sign of Y and the THT rows are "
+                         "in the format of JLC's sample files, but only JLC's upload preview shows every line matched",
+                         "rotation rows listed under orientation_critical_not_verified (and the assumption that JLC's "
+                         "0 deg is the EasyEDA footprint) - JLC's 'Confirm Parts Placement'"]})
+
+
+def check_export_determinism() -> dict:
+    """BOM / CPL / both gerber zips written twice into temporary folders (checks_exports.py --files-only) and the
+    rotation table rebuilt: all byte-identical to the files in out/."""
+    files = ["jlcpcb_bom.csv", "jlcpcb_cpl.csv", "jlcpcb_bom_with_mcu.csv", "jlcpcb_cpl_with_mcu.csv",
+             "vtol_carrier_gerber.zip", "vtol_carrier_gerber_with_mcu.zip"]
+    base = {f: sha256_file(OUT / f) for f in files}
+    runs, problems = [], []
+    kpy = "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/python.exe"
+    rot = [OUT / "cpl_rotation_table.csv", OUT / "reports" / "cpl_rotation.json", OUT / "cpl_rotation_check.png"]
+    rot_before = {posix(p.relative_to(ROOT)): sha256_file(p) for p in rot}
+    r = run([kpy, "-B", "cpl_rotation.py"], cwd=SCRIPTS, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+    rot_after = {posix(p.relative_to(ROOT)): sha256_file(p) for p in rot}
+    if r.returncode != 0 or rot_before != rot_after:
+        problems.append(f"cpl_rotation.py exit {r.returncode}, outputs changed: "
+                        f"{[k for k in rot_before if rot_before[k] != rot_after[k]]}")
+    for n in (1, 2):
+        with tempfile.TemporaryDirectory() as tmp:
+            env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", CARRIER_EXPORT_DIR=tmp)
+            r = run([sys.executable, "-X", "utf8", "-B", "checks_exports.py", "--files-only"], cwd=SCRIPTS, env=env)
+            got = {f: sha256_file(Path(tmp) / f) for f in files}
+            runs.append({"run": n, "exit": r.returncode, "sha256": got})
+            if r.returncode != 0:
+                problems.append(f"run {n} exit {r.returncode}: {(r.stderr or r.stdout)[-300:]}")
+            diff = [f for f in files if got[f] != base[f]]
+            if diff:
+                problems.append(f"run {n}: not byte-identical to out/: {diff}")
+    return write_report("export_determinism", {
+        "result": FAIL if problems or any(v is None for v in base.values()) else PASS,
+        "tool": "scripts/rev3_checks.py export-determinism", "files": files, "sha256_out": base, "runs": runs,
+        "cpl_rotation_outputs": {"before": rot_before, "after": rot_after}, "problems": problems,
+        "note": "the gerber / drill / job files carry KiCad's export time; checks_exports.py writes the fixed "
+                "RELEASE_STAMP into those fields (comment / attribute lines only), so the zips are comparable"})
+
+
 # ---------------------------------------------------------------------------------------------------------- CLI
 CHECKS = {"export": check_export, "netlist-vs-spec": check_netlist_vs_spec, "mcu-pinmap": check_mcu_pinmap,
-          "u8-u9": check_u8_u9, "fit": check_fit, "nets": check_nets, "determinism": check_determinism}
+          "u8-u9": check_u8_u9, "fit": check_fit, "nets": check_nets, "determinism": check_determinism,
+          "export-files": check_export_files, "export-determinism": check_export_determinism}
 ALL_ORDER = ("determinism", "export", "netlist-vs-spec", "mcu-pinmap", "u8-u9", "fit", "nets")
 
 
@@ -831,7 +1007,8 @@ def brief(name: str, rep: dict) -> dict:
             "mcu-pinmap": ("pins_compared",), "u8-u9": (), "fit": ("prog_headers", "not_fitted_by_jlc"),
             "nets": ("named_nets_rev2c", "named_nets_rev3", "nets_lost", "nets_added", "components_removed",
                      "components_added", "no_connects_removed", "no_connects_added"),
-            "determinism": ("files", "byte_identical")}[name]
+            "determinism": ("files", "byte_identical"), "export-files": ("gerber_zips",),
+            "export-determinism": ("sha256_out",)}[name]
     out = {"result": rep["result"], "report": rep["report"], **{k: rep.get(k) for k in keys}}
     if name == "netlist-vs-spec":
         out["differences"] = len(rep.get("pin_differences", [])) + len(rep.get("component_differences", []))
