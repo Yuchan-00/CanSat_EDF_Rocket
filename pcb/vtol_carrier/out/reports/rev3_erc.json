@@ -7,7 +7,7 @@
  "tool_version": "10.0.6",
  "kicad_version_in_report": "10.0.6",
  "erc_report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/erc.json",
- "erc_report_date": "2026-11-11T01:30:07",
+ "erc_report_date": "2026-11-11T16:10:31",
  "included_severities": [
   "error",
   "warning",
@@ -54,9 +54,9 @@
  },
  "netlist": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
-  "sha256": "299785ca80a14c92cc51f29e3e38322ef22f7c8aaf66af9e69eae44dede13896",
+  "sha256": "3cdd8048a0a29029ea3103bada35dcd34ffc673aa30220364bd8508ee0f46b81",
   "tool": "Eeschema 10.0.6",
-  "export_date_in_file": "2026-11-11T01:30:07",
+  "export_date_in_file": "2026-11-11T16:10:32",
   "components": 174,
   "named_nets": 105,
   "unconnected_single_pin_nets": 183

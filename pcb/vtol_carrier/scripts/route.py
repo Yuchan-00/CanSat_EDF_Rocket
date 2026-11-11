@@ -292,11 +292,20 @@ def keep_nets(text: str, keep: set[str]) -> str:
             if body.startswith("(wire") and pm:
                 wdt = float(pm.group(2)) + 2 * CLEAR_UM
                 pts = pm.group(3).split()
-                keepouts.append(f'(keepout "" (path {pm.group(1)} {wdt:g} {" ".join(pts)}))')
-                # Freerouting ends a path keep-out flat at its end points, the KiCad track has round ends: a GLINK_G2N
-                # via sat 0.0069 mm from a 2.4 mm trunk end (attempt a4, kicad-cli DRC, M) -> a circle at every vertex
-                for k in range(0, len(pts) - 1, 2):
-                    keepouts.append(f'(keepout "" (circle {pm.group(1)} {wdt:g} {pts[k]} {pts[k + 1]}))')
+                xy = [(float(pts[k]), float(pts[k + 1])) for k in range(0, len(pts) - 1, 2)]
+                # one polygon per segment plus a circle at every vertex. M (attempts a4, a5, Freerouting log "Keepout
+                # zone 'null' was skipped ... degenerate"): the multi-vertex path keep-out of the trunk was dropped
+                # on load (COM_RESET via and B.Cu wire on the 2.4 mm trunk); path keep-outs also end flat
+                for (ax, ay), (bx, by) in zip(xy, xy[1:]):
+                    if ax == bx and ay == by:
+                        continue
+                    ln = ((bx - ax) ** 2 + (by - ay) ** 2) ** 0.5
+                    nx_, ny_ = -(by - ay) / ln * wdt / 2, (bx - ax) / ln * wdt / 2
+                    poly = [(ax + nx_, ay + ny_), (bx + nx_, by + ny_), (bx - nx_, by - ny_), (ax - nx_, ay - ny_)]
+                    keepouts.append(f'(keepout "" (polygon {pm.group(1)} 0  ' + "  ".join(
+                        f"{round(x)} {round(y)}" for x, y in poly + poly[:1]) + "))")
+                for vx, vy in xy:
+                    keepouts.append(f'(keepout "" (circle {pm.group(1)} {wdt:g} {round(vx)} {round(vy)}))')
             elif body.startswith("(via"):
                 vm = re.match(r'\(via "Via\[0-\d\]_(\d+):\d+_um"\s+(\S+)\s+(\S+)', body)
                 dia = float(vm.group(1)) + 2 * CLEAR_UM
@@ -492,7 +501,13 @@ def finish(board) -> dict:
     dangling = remove_dangling_vias(board)
     board.BuildConnectivity()
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    # rev 3: the KIID generator is re-seeded before every step that creates items: the zone filler (threads) draws a
+    # varying number of ids (M: two replays gave the same copper but 34 different silkscreen uuids, hence item order)
+    seed_ids("finish:leftovers")
     leftovers = close_leftovers_step(board)
+    seed_ids("finish:ripup")
+    ripped = ripup_step(board)
+    seed_ids("finish:stitch")
     stitch = add_stitching_vias(board)
     board.BuildConnectivity()
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
@@ -500,9 +515,14 @@ def finish(board) -> dict:
 
     # GND / +5V pad islands (e.g. an F.Cu pour island holding the NT1 ground tie): joined after the stitching vias,
     # which are the nearest main-cluster targets
+    seed_ids("finish:islands")
     leftovers += close_leftovers.close_islands(board)
+    # the island tracks were added after the last fill: without a refill the pours still lie under them (M, a6: 8
+    # clearance errors +5V track vs. the F.Cu GND pour that vanish with --refill-zones)
+    pcbnew.ZONE_FILLER(board).Fill(board.Zones())
     import silk
 
+    seed_ids("finish:silk")
     silk_log = silk.add_silk(board)
     board.Save(str(BOARD))
     narrowed = fix_small_clearance(board)
@@ -517,6 +537,7 @@ def finish(board) -> dict:
     return {"vias_shrunk_after_inflation": shrunk, "neckdowns_widened_to_0.127mm": fixed, "dangling_vias_removed": dangling,
             "segments": n_segs, "routed_vias": n_vias - len(dangling), "gnd_stitching_vias": len(stitch),
             "tracks_narrowed_for_clearance": narrowed, "power_tracks_widened": widened, "leftovers_routed_by_script": leftovers,
+            "ripup": ripped,
             "dangling_track_stubs_removed": stubs, "silk": silk_log, "routed_board_sha256": sha(BOARD)}
 
 
@@ -621,6 +642,29 @@ def close_leftovers_step(board) -> list[dict]:
     return res
 
 
+def ripup_step(board) -> dict:
+    """rev 3: connections still open after close_leftovers go to ripup.py (local, transactional rip-up of signal nets
+    only, deterministic). The open nets come from kicad-cli DRC."""
+    import ripup
+
+    if os.environ.get("CARRIER_RIPUP", "1") == "0":
+        return {"skipped": "CARRIER_RIPUP=0"}
+    rep = WORK / "drc_ripup.json"
+    board.Save(str(BOARD))
+    subprocess.run([str(KICAD_CLI), "pcb", "drc", "--refill-zones", "--format", "json", "--units", "mm", "-o", str(rep), str(BOARD)],
+                   capture_output=True, text=True, encoding="utf-8", errors="replace")
+    d = json.loads(rep.read_text(encoding="utf-8"))
+    nets = sorted({m for u in d.get("unconnected_items", []) for it in u.get("items", [])
+                   for m in re.findall(r"\[([^\]]+)\]", it.get("description", ""))})
+    if not nets:
+        return {"open_nets_in": [], "applied": False}
+    res = ripup.run(board, nets)
+    if res.get("applied"):
+        board.BuildConnectivity()
+        pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    return res
+
+
 def remove_dangling_tracks(board) -> list[dict]:
     """rev 2c (rev-2b review PF-m5): delete the track stubs kicad-cli DRC reports as 'track_dangling' (Freerouting
     leftovers that end nowhere), up to 3 rounds (a removed stub can expose the next one). Only tracks flagged by DRC
@@ -628,7 +672,7 @@ def remove_dangling_tracks(board) -> list[dict]:
     cli = KICAD_CLI
     rep = WORK / "drc_dangling.json"
     removed = []
-    for _round in range(3):
+    for _round in range(8):  # rev 3: chains of stubs longer than 3 (M: ESP_GPIO2, COM_LED left after 3 rounds)
         board.Save(str(BOARD))
         subprocess.run([str(cli), "pcb", "drc", "--severity-all", "--format", "json", "--units", "mm", "-o", str(rep), str(BOARD)],
                        capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -693,6 +737,37 @@ def lock_all(board) -> int:
     return n
 
 
+#: rev 3: the wide nets are routed first and fix their copper before any signal exists. M (attempts a5, a6): 1.5 mm
+#: servo / 0.5 mm +3V3 tracks passed right at signal passives (R42.1, R54.2) and left no escape, so those pads stayed
+#: open. In the servo and power stages every SMD pad of another net (not MCU / ESP) gets a keep-out = pad + HALO on its
+#: layer: with the 0.13 mm clearance the wide track keeps HALO + 0.13 mm from the pad, room for one 0.2 mm track
+#: (0.13 + 0.2 + 0.13 = 0.46 mm). Only a keep-out in these two stages' DSN: no rule of the board is changed.
+HALO_MM = float(os.environ.get("CARRIER_HALO", "0.4"))
+#: never in a halo: MCU / ESP pad rows (pitch 0.8 mm, the supply pins must be reachable) and the plane / fan-out nets
+HALO_SKIP_REFS = {"U1", "U2", "U3", "U4", "U7"}
+HALO_SKIP_NETS = {"GND", "+5V", "SERVO_5V", "GND_PWR"}
+
+
+def halo_keepouts(board, stage_nets_set: set[str]) -> list[str]:
+    if HALO_MM <= 0:
+        return []
+    out = []
+    u = lambda v: int(round(pcbnew.ToMM(v) * 1000))  # um
+    d = int(round(HALO_MM * 1000))
+    for fp in sorted(board.GetFootprints(), key=lambda f: f.GetReference()):
+        if fp.GetReference() in HALO_SKIP_REFS:
+            continue
+        for pad in sorted(fp.Pads(), key=lambda p: (p.GetNumber(), p.GetPosition().x, p.GetPosition().y)):
+            net = pad.GetNetname()
+            if not net or pad.HasHole() or net in stage_nets_set or net in HALO_SKIP_NETS or net.startswith("unconnected-"):
+                continue
+            lay = "F.Cu" if pad.IsOnLayer(pcbnew.F_Cu) else "B.Cu"
+            bb = pad.GetBoundingBox()
+            x0, y0, x1, y1 = u(bb.GetLeft()) - d, -(u(bb.GetTop()) - d), u(bb.GetRight()) + d, -(u(bb.GetBottom()) + d)
+            out.append(f'(keepout "" (polygon {lay} 0  {x0} {y0}  {x1} {y0}  {x1} {y1}  {x0} {y1}  {x0} {y0}))')
+    return out
+
+
 def run_stage(board, tag: str, nets: set[str], done: set[str], via: str | None, passes: int, threads: str,
               keep_bplane: bool) -> dict:
     dsn, ses = WORK / f"vtol_carrier_{tag}.dsn", WORK / f"vtol_carrier_{tag}.ses"
@@ -700,6 +775,11 @@ def run_stage(board, tag: str, nets: set[str], done: set[str], via: str | None, 
     text = keep_nets(dsn.read_text(encoding="utf-8"), nets | done)
     if via:
         text = only_via(text, via)
+    if tag in ("servo", "power"):
+        halos = halo_keepouts(board, nets)
+        if halos:
+            k = re.search(r'\(via "Via\[0-\d\]_', text).start()
+            text = text[:k] + "\n    ".join(halos) + "\n    " + text[k:]
     dsn.write_text(text, encoding="utf-8", newline="\n")
     st = freerouting(dsn, ses, passes, threads, tag)
     st.update({"nets_routed_here": len(nets), "via": via or "all", "b_cu_gnd_plane_in_dsn": keep_bplane})

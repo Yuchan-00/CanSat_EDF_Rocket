@@ -1,0 +1,74 @@
+2026-11-11 14:55:27.405 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-11 14:55:27.691 INFO   Hardware: 16 CPU cores, 446 CPU score, 4026 MB RAM
+2026-11-11 14:55:27.692 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-11 14:55:27.694 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-11 14:55:28.741 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-11 14:55:28.813 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:28.813 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:29.017 INFO   [2CBE74\BB3DE4] Loading board file 'vtol_carrier_power.dsn'...
+2026-11-11 14:55:29.031 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:29.032 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:29.361 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:29.361 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:29.385 INFO   [2CBE74\BB3DE4] Job '2CBE74\BB3DE4' started at 2026-11-11T05:55:29.385796700Z.
+2026-11-11 14:55:29.734 INFO   [2CBE74\BB3DE4] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-11 14:55:29.901 INFO   [2CBE74\BB3DE4] Fanout stage started on board '278c6c504a45d47210f67483a5fbca64' with 44 of 608 SMD pins needing fanout (564 already connected, 0 netless).
+2026-11-11 14:55:31.406 INFO   [2CBE74\BB3DE4] Fanout pass #1 on board '51b670928679b48709393d06b94abb8b' completed in 1.32 seconds with 25 SMD pins fanouted, 18 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-11 14:55:31.941 INFO   [2CBE74\BB3DE4] Fanout pass #2 on board '51b670928679b48709393d06b94abb8b' completed in 0.47 seconds with 12 SMD pins fanouted, 12 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-11 14:55:31.976 INFO   [2CBE74\BB3DE4] Fanout stage completed: started with 608 total SMD pins, completed in 1.96 seconds, escaped pins: 28/608 (4.6%), using 2.02 total CPU seconds, 0.64 GB total allocated, and 137.4 MB peak heap usage.
+2026-11-11 14:55:32.138 INFO   [2CBE74\BB3DE4] Auto-routing stage started on board '51b670928679b48709393d06b94abb8b' with baseline score 333.33 for 26 unrouted items.
+2026-11-11 14:55:36.418 INFO   [2CBE74\BB3DE4] Auto-routing pass #1 on board '51b670928679b48709393d06b94abb8b' was completed in 4.19 seconds with score 794.87 (8 unrouted and 0 violations), using 6.61 CPU seconds and the job allocated 3.16 GB of memory so far.
+2026-11-11 14:55:38.452 INFO   [2CBE74\BB3DE4] Auto-routing pass #2 on board '5d242ac1dc4672b99f317bb30c0dbdbe' was completed in 1.94 seconds with score 230.77 (34 unrouted and 0 violations), using 8.58 CPU seconds and the job allocated 4.49 GB of memory so far.
+2026-11-11 14:55:41.181 INFO   [2CBE74\BB3DE4] Auto-routing pass #3 on board '82b5ba0d527c70cdb656699a68525483' was completed in 2.65 seconds with score 410.26 (23 unrouted and 0 violations), using 10.58 CPU seconds and the job allocated 5.94 GB of memory so far.
+2026-11-11 14:55:43.493 INFO   [2CBE74\BB3DE4] Auto-routing pass #4 on board 'cdb907f3788e4d93139b555f83f043a2' was completed in 2.24 seconds with score 307.69 (28 unrouted and 0 violations), using 13.53 CPU seconds and the job allocated 8.20 GB of memory so far.
+2026-11-11 14:55:45.936 INFO   [2CBE74\BB3DE4] Auto-routing pass #5 on board '2c6e2fdd1d3a6f82669d5175b6fb7457' was completed in 2.38 seconds with score 333.33 (26 unrouted and 0 violations), using 15.52 CPU seconds and the job allocated 9.74 GB of memory so far.
+2026-11-11 14:55:48.342 INFO   [2CBE74\BB3DE4] Auto-routing pass #6 on board 'de2d8737da7c33becb0a40b8e6eebd02' was completed in 2.35 seconds with score 307.69 (28 unrouted and 0 violations), using 17.50 CPU seconds and the job allocated 11.28 GB of memory so far.
+2026-11-11 14:55:50.698 INFO   [2CBE74\BB3DE4] Auto-routing pass #7 on board '0b63c34b8f84328e69dd59a5e41fb149' was completed in 2.29 seconds with score 333.33 (26 unrouted and 0 violations), using 20.42 CPU seconds and the job allocated 13.66 GB of memory so far.
+2026-11-11 14:55:53.370 INFO   [2CBE74\BB3DE4] Auto-routing pass #8 on board '5d242ac1dc4672b99f317bb30c0dbdbe' was completed in 0.00 seconds with score 794.87 (8 unrouted and 0 violations), using 22.39 CPU seconds and the job allocated 15.19 GB of memory so far.
+2026-11-11 14:55:54.826 INFO   [2CBE74\BB3DE4] Auto-routing pass #9 on board '5d242ac1dc4672b99f317bb30c0dbdbe' was completed in 1.44 seconds with score 230.77 (34 unrouted and 0 violations), using 24.33 CPU seconds and the job allocated 16.68 GB of memory so far.
+2026-11-11 14:55:56.990 INFO   [2CBE74\BB3DE4] Auto-routing pass #10 on board '82b5ba0d527c70cdb656699a68525483' was completed in 2.15 seconds with score 410.26 (23 unrouted and 0 violations), using 26.30 CPU seconds and the job allocated 18.48 GB of memory so far.
+2026-11-11 14:55:59.321 INFO   [2CBE74\BB3DE4] Auto-routing pass #11 on board 'cdb907f3788e4d93139b555f83f043a2' was completed in 2.27 seconds with score 307.69 (28 unrouted and 0 violations), using 28.27 CPU seconds and the job allocated 19.88 GB of memory so far.
+2026-11-11 14:56:01.619 INFO   [2CBE74\BB3DE4] Auto-routing pass #12 on board '5d242ac1dc4672b99f317bb30c0dbdbe' was completed in 0.00 seconds with score 794.87 (8 unrouted and 0 violations), using 31.25 CPU seconds and the job allocated 22.38 GB of memory so far.
+2026-11-11 14:56:03.080 INFO   [2CBE74\BB3DE4] Auto-routing pass #13 on board '5d242ac1dc4672b99f317bb30c0dbdbe' was completed in 1.45 seconds with score 230.77 (34 unrouted and 0 violations), using 32.22 CPU seconds and the job allocated 23.14 GB of memory so far.
+2026-11-11 14:56:05.274 INFO   [2CBE74\BB3DE4] Auto-routing pass #14 on board '82b5ba0d527c70cdb656699a68525483' was completed in 2.19 seconds with score 410.26 (23 unrouted and 0 violations), using 34.20 CPU seconds and the job allocated 24.96 GB of memory so far.
+2026-11-11 14:56:07.388 INFO   [2CBE74\BB3DE4] Auto-routing pass #15 on board 'cdb907f3788e4d93139b555f83f043a2' was completed in 2.10 seconds with score 307.69 (28 unrouted and 0 violations), using 36.17 CPU seconds and the job allocated 26.50 GB of memory so far.
+2026-11-11 14:56:09.746 INFO   [2CBE74\BB3DE4] Auto-routing pass #16 on board '5d242ac1dc4672b99f317bb30c0dbdbe' was completed in 0.00 seconds with score 794.87 (8 unrouted and 0 violations), using 39.16 CPU seconds and the job allocated 29.02 GB of memory so far.
+2026-11-11 14:56:11.223 INFO   [2CBE74\BB3DE4] Auto-routing pass #17 on board '5d242ac1dc4672b99f317bb30c0dbdbe' was completed in 1.46 seconds with score 230.77 (34 unrouted and 0 violations), using 40.16 CPU seconds and the job allocated 29.70 GB of memory so far.
+2026-11-11 14:56:13.393 INFO   [2CBE74\BB3DE4] Auto-routing pass #18 on board '82b5ba0d527c70cdb656699a68525483' was completed in 2.16 seconds with score 410.26 (23 unrouted and 0 violations), using 42.16 CPU seconds and the job allocated 31.48 GB of memory so far.
+2026-11-11 14:56:13.401 INFO   [2CBE74\BB3DE4] The router's best score (794.87) has not improved by more than 0.5 points since pass #8. Stopping the auto-router after 18 passes (8 items still unconnected).
+The following connections could not be routed -- please review your design (e.g. check pad clearances, trace width rules, and available routing space):
+  Net '+3V3' (18 unrouted connections):
+    - R43-2  ->  R45-2
+    - R60-2  ->  Q6-1
+    - R51-2  ->  R53-2
+    - Q11-1  ->  R51-2
+    - Q2-1  ->  R43-2
+    - Q2-1  ->  Q1-1
+    - Q5-1  ->  C52-1
+    - R58-2  ->  U7-8
+    - R56-2  ->  R50-2
+    - R50-2  ->  Q8-1
+    - R48-2  ->  C53-1
+    - Q8-1  ->  R41-2
+    - Q4-1  ->  R62-2
+    - R50-2  ->  Q11-1
+    - R62-2  ->  Q7-1
+    - Q4-1  ->  R53-2
+    - R43-2  ->  R41-2
+    - Q3-1  ->  C45-1
+  Net 'COM_AVCC' (1 unrouted connection):
+    - U3-64  ->  C20-1
+  Net 'FCU_AVCC' (2 unrouted connections):
+    - C12-1  ->  L2-2
+    - C12-1  ->  U2-64
+  Net 'GNS_AVCC' (1 unrouted connection):
+    - U4-64  ->  C28-1
+  Net 'NAV_AVCC' (1 unrouted connection):
+    - C4-1  ->  U1-64
+2026-11-11 14:56:13.727 INFO   [2CBE74\BB3DE4] Auto-routing stage completed: started with 40 unrouted nets, completed in 43.93 seconds, final score: 794.87 (8 unrouted and 0 violations), using 43.14 total CPU seconds, 32.32 GB total allocated, and 318.6 MB peak heap usage.
+2026-11-11 14:56:13.806 INFO   [2CBE74\BB3DE4] Skipping optimization stage: the board has 8 unrouted connection(s) (optimizer only runs on completely routed boards).
+2026-11-11 14:56:13.857 INFO   [2CBE74\BB3DE4] Job '2CBE74\BB3DE4' finished with state: COMPLETED (elapsed: 44.47 seconds, finished at UTC: 2026-11-11T05:56:13.856304900Z).
+2026-11-11 14:56:13.860 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\impl\route\a7\kicad\work\vtol_carrier_power.ses' (SES)...
+2026-11-11 14:56:13.863 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\impl\route\a7\kicad\work\vtol_carrier_power.ses' (23324 bytes).
+
+--- stderr ---

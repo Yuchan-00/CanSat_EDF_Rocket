@@ -9,8 +9,8 @@ Invariants
 ----------
 * Only DRC 'unconnected_items' are touched, only signal nets and the low-current *_AVCC filter nets (never GND /
   +5V / +3V3 / servo / logic-battery nets), only new copper is added - nothing existing is moved or deleted.
-* Every grid point of the path keeps the class clearance (0.13 mm) + half the track width + a 0.07 mm margin (covers
-  the diagonal steps between grid points) to every pad, track, via and footprint copper of another net on that layer,
+* Every grid point of the path keeps the class clearance (0.13 mm) + half the track width + a 0.02 mm margin (covers
+  the diagonal steps between grid points: at most 0.009 mm sagitta on a 0.14 mm step) to every pad, track, via and footprint copper of another net on that layer,
   0.3 mm + margin to the board edge, and stays outside the rule areas (ESP-12E antenna keep-out). A via also keeps
   0.5 mm drill-to-drill (+ margin) to every other hole, its 0.6 mm pad the clearance on BOTH outer layers, and never
   sits in or touches an SMD pad, not even one of its own net.
@@ -29,7 +29,7 @@ import pcbnew
 STEP = 0.1
 W = 0.2
 CLR = 0.13
-MARGIN = 0.07
+MARGIN = 0.02
 VIA_D, VIA_DRILL = 0.6, 0.3
 HOLE_GAP = 0.5 + 0.05
 VIA_COST = 2.5
@@ -50,8 +50,8 @@ def _bb(item):
 def track_widths(net: str) -> tuple[float, ...]:
     """Signal nets 0.2 mm; the AVCC filter nets 0.3 mm, else 0.2 mm (class 0.5 mm, but an ATmega128A AVCC pin draws
     < 1 mA with the ADC on - A, datasheet not on disk; 0.2 mm 1 oz carries ~1 A, E)."""
-    # 0.15 mm (>= the 0.127 mm 2-layer minimum, board minimum 0.1 mm) only when 0.2 mm finds no path
-    return (0.3, W, 0.15) if net.endswith("_AVCC") else (W, 0.15)
+    # rev 3: never below the 0.2 mm class width (the rev 2c 0.15 mm fallback is gone; ripup.py takes over)
+    return (0.3, W) if net.endswith("_AVCC") else (W,)
 
 
 def route_one(board, net: str, a: tuple, b: tuple, la: int | None, lb: int | None, region: float = 5.0,
@@ -288,7 +288,7 @@ def close_islands(board, nets: tuple[str, ...] = ("GND", "+5V")) -> list[dict]:
             r = {"net": net, "routed": False, "island": [f"{x.GetParentFootprint().GetReference()}.{x.GetNumber()}" for x in cl]}
             for bx, by, lb in sorted(targets, key=lambda t: (math.hypot(t[0] - ax, t[1] - ay), t[0], t[1]))[:25]:
                 for w in (0.4, 0.3, W):
-                    rr = route_one(board, net, (ax, ay), (bx, by), la, lb, 2.5, w)
+                    rr = route_one(board, net, (ax, ay), (bx, by), la, lb, 4.0, w)
                     if rr["routed"]:
                         r = {**rr, "island": r["island"], "width_mm": w}
                         break
@@ -298,12 +298,24 @@ def close_islands(board, nets: tuple[str, ...] = ("GND", "+5V")) -> list[dict]:
     return out
 
 
-def close(board, drc_report: dict) -> list[dict]:
+def _canonical(drc_report: dict) -> list[list[dict]]:
+    """rev 3: kicad-cli lists the unconnected items in a varying order and with either end first (M: two replays of
+    the same sessions routed BOOST_EN from different ends). Sorted by net and end position -> deterministic result."""
     out = []
     for v in drc_report.get("unconnected_items", []):
         its = v.get("items", [])
         if len(its) != 2:
             continue
+        key = lambda it: (round(float(it["pos"]["x"]), 4), round(float(it["pos"]["y"]), 4), it.get("description", ""))
+        its = sorted(its, key=key)
+        out.append(its)
+    out.sort(key=lambda its: (its[0].get("description", ""), [(round(float(i["pos"]["x"]), 4), round(float(i["pos"]["y"]), 4)) for i in its]))
+    return out
+
+
+def close(board, drc_report: dict) -> list[dict]:
+    out = []
+    for its in _canonical(drc_report):
         m = re.search(r"\[([^\]]+)\]", its[0].get("description", ""))
         if not m:
             continue

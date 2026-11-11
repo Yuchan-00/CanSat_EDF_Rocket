@@ -1,0 +1,1220 @@
+{
+ "tool": "scripts/routing_checks.py (pcbnew 10.0.6)",
+ "board": {
+  "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
+  "sha256": "32bf9856575563cefdafe4491dae46af3f4eb165b60ecc81d94155423cacc1a3"
+ },
+ "result": "FAIL",
+ "results": {
+  "boost_sw": "PASS",
+  "vout_vias": "PASS",
+  "gnd_vias": "PASS",
+  "in1_under_block": "PASS",
+  "boost_fb": "PASS",
+  "l5_keepout": "PASS",
+  "battery_path": "FAIL",
+  "crystals": "PASS",
+  "u8_u9_pads": "PASS",
+  "mcu_pinmap": "PASS",
+  "rule_file": "PASS",
+  "silkscreen": "PASS"
+ },
+ "checks": {
+  "boost_sw": {
+   "result": "PASS",
+   "label": "M",
+   "layers": [
+    "F.Cu"
+   ],
+   "vias": 0,
+   "track_length_mm": 1.174,
+   "pad_centre_distance_U8.5_L5.2_mm": 2.043,
+   "pad_edge_gap_mm": 0.464,
+   "widths_mm": [
+    0.35
+   ],
+   "criterion": "F.Cu only, 0 vias, track length <= straight distance between the two pad centres"
+  },
+  "vout_vias": {
+   "rows": [
+    {
+     "pad": "C57.1",
+     "vias_within_1.5mm": [
+      {
+       "at": [
+        131.7,
+        129.75
+       ],
+       "to_pad_mm": 0.65,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        130.8,
+        129.75
+       ],
+       "to_pad_mm": 0.65,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      }
+     ]
+    },
+    {
+     "pad": "C43.1",
+     "vias_within_1.5mm": [
+      {
+       "at": [
+        127.1,
+        133.15
+       ],
+       "to_pad_mm": 0.55,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        127.1,
+        134.05
+       ],
+       "to_pad_mm": 0.55,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      }
+     ]
+    }
+   ],
+   "distinct_vias_in_plane": 4,
+   "distinct_vias": 4,
+   "result": "PASS",
+   "label": "M",
+   "criterion": ">= 3 distinct +5V vias within 1.5 mm of the C57.1 / C43.1 pads, each inside the In2 +5V fill"
+  },
+  "gnd_vias": {
+   "rows": [
+    {
+     "pad": "U8.4",
+     "vias_within_1.5mm": [
+      {
+       "at": [
+        132.75,
+        134.35
+       ],
+       "to_pad_mm": 0.85,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      }
+     ]
+    },
+    {
+     "pad": "C57.2",
+     "vias_within_1.5mm": [
+      {
+       "at": [
+        126.7,
+        131.008
+       ],
+       "to_pad_mm": 1.0,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        128.275,
+        130.05
+       ],
+       "to_pad_mm": 0.35,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      }
+     ]
+    },
+    {
+     "pad": "C43.2",
+     "vias_within_1.5mm": [
+      {
+       "at": [
+        126.15,
+        133.6
+       ],
+       "to_pad_mm": 0.3,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      }
+     ]
+    },
+    {
+     "pad": "C41.2",
+     "vias_within_1.5mm": [
+      {
+       "at": [
+        121.8,
+        133.6
+       ],
+       "to_pad_mm": 0.55,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        120.675,
+        131.287
+       ],
+       "to_pad_mm": 1.413,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      }
+     ]
+    }
+   ],
+   "distinct_vias_in_plane": 6,
+   "distinct_vias": 6,
+   "result": "PASS",
+   "label": "M",
+   "criterion": ">= 3 distinct GND vias within 1.5 mm of U8.4 / C57.2 / C43.2 / C41.2 inside the In1 GND fill, at least one at each of U8.4, C57.2, C43.2"
+  },
+  "in1_under_block": {
+   "result": "PASS",
+   "label": "M",
+   "block_box_kicad_mm": [
+    121.42,
+    129.44,
+    137.79,
+    134.79
+   ],
+   "block_refs": [
+    "U8",
+    "L5",
+    "C57",
+    "C43",
+    "R63",
+    "R64",
+    "C58"
+   ],
+   "grid_mm": 0.1,
+   "covered_percent": 83.6,
+   "covered_pieces": 1,
+   "tracks_on_In1_in_box": 0,
+   "non_gnd_vias_through_the_plane_in_box": [
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      129.3,
+      134.38
+     ]
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      136.85,
+      129.6
+     ]
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      124.05,
+      132.05
+     ]
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      123.2,
+      132.05
+     ]
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      136.75,
+      134.25
+     ]
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      136.85,
+      130.6
+     ]
+    },
+    {
+     "net": "+5V",
+     "at": [
+      122.175,
+      131.737
+     ]
+    },
+    {
+     "net": "+5V",
+     "at": [
+      127.1,
+      133.15
+     ]
+    },
+    {
+     "net": "+5V",
+     "at": [
+      125.2,
+      131.008
+     ]
+    },
+    {
+     "net": "+5V",
+     "at": [
+      131.7,
+      129.75
+     ]
+    },
+    {
+     "net": "+5V",
+     "at": [
+      127.1,
+      134.05
+     ]
+    },
+    {
+     "net": "+5V",
+     "at": [
+      130.8,
+      129.75
+     ]
+    }
+   ],
+   "criterion": "no track on In1 inside the block box and the In1 GND fill inside the box is one connected piece (the anti-pads of the listed vias are the only openings); covered share reported"
+  },
+  "boost_fb": {
+   "result": "PASS",
+   "label": "M",
+   "sense_tap": {
+    "from": "R63.1",
+    "to": "C43.1",
+    "f_cu_track_path_mm": 3.065,
+    "vias_on_the_way": 0,
+    "+5V_vias_at_R63.1": [],
+    "ok": true
+   },
+   "distance_from_switch_node": {
+    "package_gap_U8.1_to_BOOST_SW_or_L5_mm": 0.806,
+    "min_gap_of_tracks_and_other_pads_mm": 1.058,
+    "items": [
+     {
+      "item": "track F.Cu (129.19, 132.35)-(130.14, 133.30)",
+      "gap_mm": 1.058,
+      "nearest": "pad U8.5"
+     },
+     {
+      "item": "track F.Cu (129.19, 130.71)-(129.19, 132.35)",
+      "gap_mm": 2.339,
+      "nearest": "pad U8.5"
+     },
+     {
+      "item": "track F.Cu (129.08, 130.61)-(129.19, 130.71)",
+      "gap_mm": 3.109,
+      "nearest": "pad L5.2"
+     },
+     {
+      "item": "track F.Cu (129.08, 130.35)-(129.08, 130.61)",
+      "gap_mm": 3.234,
+      "nearest": "pad L5.2"
+     },
+     {
+      "item": "track F.Cu (129.08, 129.89)-(129.08, 130.35)",
+      "gap_mm": 3.275,
+      "nearest": "pad L5.2"
+     },
+     {
+      "item": "track F.Cu (129.00, 129.81)-(129.08, 129.89)",
+      "gap_mm": 3.435,
+      "nearest": "pad L5.2"
+     }
+    ],
+    "tracks_inside_L5_courtyard": [],
+    "ok": true
+   },
+   "criterion": "R63.1 reaches C43.1 on F.Cu track with no via on the way and no +5V via at R63.1 (the divider senses the capacitor pad, not the plane); no BOOST_FB track / via / other pad is nearer to BOOST_SW copper or an L5 pad than the U8.1 pad is by its package, none inside the L5 courtyard"
+  },
+  "l5_keepout": {
+   "result": "PASS",
+   "label": "M",
+   "rule_areas_under_L5_kicad_mm": [
+    [
+     133.95,
+     131.0,
+     135.85,
+     133.8
+    ]
+   ],
+   "L5_body_box_kicad_mm": [
+    132.93,
+    130.25,
+    136.88,
+    134.55
+   ],
+   "copper_in_rule_area": [],
+   "signal_copper_under_body_on_F_Cu": [],
+   "gnd_copper_under_body_on_F_Cu_information": [
+    "via GND (132.75, 134.35)"
+   ],
+   "criterion": "an F.Cu rule area exists between the L5 pads, no F.Cu track or via of any net touches it, and no F.Cu track / via of a signal net (any net other than L5's own two nets and GND) lies under the L5 body box; GND tracks / vias under the body are listed as information"
+  },
+  "battery_path": {
+   "result": "FAIL",
+   "label": "E",
+   "copper_resistance_ohm_20C": 0.03231,
+   "target_ohm": 0.035,
+   "resistance_target_met": true,
+   "copper_resistance_ohm_60C": 0.03739,
+   "width_rule_met": false,
+   "current_carrying_length_narrower_than_2mm": 16.1,
+   "legs": [
+    {
+     "net": "VBAT_LOGIC_RAW",
+     "from": "J14.1",
+     "to": "Q10.3",
+     "ohm": 0.00225,
+     "segments_carrying_ge_20pct": 3,
+     "vias_carrying_ge_20pct": 0,
+     "min_width_carrying_mm": 1.0,
+     "length_carrying_mm": 8.1,
+     "narrower_than_2mm": {
+      "length_mm": 1.07,
+      "widths_mm": [
+       1.0
+      ],
+      "segments": [
+       {
+        "layer": "F.Cu",
+        "w": 1.0,
+        "len": 1.071,
+        "a": [
+         69.9,
+         71.18
+        ],
+        "b": [
+         70.9,
+         71.56
+        ],
+        "share": 1.0
+       }
+      ]
+     }
+    },
+    {
+     "net": "VBAT_LOGIC",
+     "from": "Q10.2",
+     "to": "J15.1",
+     "ohm": 0.00478,
+     "segments_carrying_ge_20pct": 4,
+     "vias_carrying_ge_20pct": 0,
+     "min_width_carrying_mm": 1.0,
+     "length_carrying_mm": 15.54,
+     "narrower_than_2mm": {
+      "length_mm": 3.93,
+      "widths_mm": [
+       1.0
+      ],
+      "segments": [
+       {
+        "layer": "F.Cu",
+        "w": 1.0,
+        "len": 1.273,
+        "a": [
+         71.85,
+         73.44
+        ],
+        "b": [
+         72.75,
+         74.34
+        ],
+        "share": 1.0
+       },
+       {
+        "layer": "F.Cu",
+        "w": 1.0,
+        "len": 2.662,
+        "a": [
+         72.75,
+         74.34
+        ],
+        "b": [
+         72.75,
+         77.0
+        ],
+        "share": 1.0
+       }
+      ]
+     }
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "from": "J15.2",
+     "to": "L5.1",
+     "ohm": 0.02528,
+     "segments_carrying_ge_20pct": 23,
+     "vias_carrying_ge_20pct": 3,
+     "min_width_carrying_mm": 1.5,
+     "length_carrying_mm": 135.49,
+     "narrower_than_2mm": {
+      "length_mm": 11.1,
+      "widths_mm": [
+       1.5,
+       1.56
+      ],
+      "segments": [
+       {
+        "layer": "F.Cu",
+        "w": 1.5,
+        "len": 1.0,
+        "a": [
+         136.85,
+         127.6
+        ],
+        "b": [
+         136.85,
+         128.6
+        ],
+        "share": 0.27
+       },
+       {
+        "layer": "F.Cu",
+        "w": 1.5,
+        "len": 1.0,
+        "a": [
+         136.85,
+         128.6
+        ],
+        "b": [
+         136.85,
+         129.6
+        ],
+        "share": 0.46
+       },
+       {
+        "layer": "F.Cu",
+        "w": 1.5,
+        "len": 1.0,
+        "a": [
+         136.85,
+         129.6
+        ],
+        "b": [
+         136.85,
+         130.6
+        ],
+        "share": 0.67
+       },
+       {
+        "layer": "F.Cu",
+        "w": 1.5,
+        "len": 1.3,
+        "a": [
+         136.85,
+         130.6
+        ],
+        "b": [
+         136.85,
+         131.9
+        ],
+        "share": 1.0
+       },
+       {
+        "layer": "B.Cu",
+        "w": 1.56,
+        "len": 6.8,
+        "a": [
+         96.6,
+         110.61
+        ],
+        "b": [
+         103.4,
+         110.61
+        ],
+        "share": 1.0
+       }
+      ]
+     }
+    }
+   ],
+   "model": "sheet resistance 0.491 mOhm/square (35 um, rho 1.72e-8 Ohm m, 20 C); via barrel 1.53 mOhm at 0.3 mm drill / 1.16 mOhm at 0.4 mm (18 um plating A, 1.6 mm); pads and zone copper not charged; NOT included: Q10 channel, the switch and its lead, connector contacts, the battery lead, the GND return in the In1 plane",
+   "criterion": "copper resistance J14.1 -> Q10.3 + Q10.2 -> J15.1 + J15.2 -> L5.1 <= 0.035 Ohm AND no current-carrying (>= 20 %) segment narrower than 2.0 mm"
+  },
+  "crystals": {
+   "result": "PASS",
+   "label": "M",
+   "xtal_path_rows": 16,
+   "rows_differing_from_rev2c": [],
+   "xtal_nets_differing_from_rev2c": [],
+   "XTAL1_pin24_to_crystal_mm": [
+    5.96,
+    5.96,
+    5.96,
+    5.96
+   ],
+   "XTAL1_worst_mm": 5.96,
+   "XTAL1_limit_mm": 5.96,
+   "xtal_nets": {
+    "COM_XTAL1": {
+     "track_mm": 7.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    },
+    "COM_XTAL2": {
+     "track_mm": 4.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    },
+    "FCU_XTAL1": {
+     "track_mm": 7.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    },
+    "FCU_XTAL2": {
+     "track_mm": 4.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    },
+    "GNS_XTAL1": {
+     "track_mm": 7.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    },
+    "GNS_XTAL2": {
+     "track_mm": 4.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    },
+    "NAV_XTAL1": {
+     "track_mm": 7.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    },
+    "NAV_XTAL2": {
+     "track_mm": 4.29,
+     "vias": 0,
+     "layers": [
+      "F.Cu"
+     ]
+    }
+   },
+   "reference": {
+    "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/out/reports/board_metrics.json",
+    "sha256": "a89d6cfa4772bb44d2735083334d1e29dbf33da2243ee78e0b6345d93779927e"
+   },
+   "criterion": "the 16 XTAL copper paths (4 MCUs x 4) and the 8 XTAL net lengths / via counts / layers equal the archived rev 2c values; XTAL1 pin 24 -> crystal <= 5.96 mm"
+  },
+  "u8_u9_pads": {
+   "result": "PASS",
+   "label": "M",
+   "differences": [],
+   "parts": {
+    "U8": {
+     "footprint": "SOT-563",
+     "pads": {
+      "1": "BOOST_FB",
+      "2": "BOOST_EN",
+      "3": "VBAT_LOGIC_SW",
+      "4": "GND",
+      "5": "BOOST_SW",
+      "6": "+5V"
+     },
+     "expected": {
+      "1": "BOOST_FB",
+      "2": "BOOST_EN",
+      "3": "VBAT_LOGIC_SW",
+      "4": "GND",
+      "5": "BOOST_SW",
+      "6": "+5V"
+     }
+    },
+    "U9": {
+     "footprint": "SOT-23-6",
+     "pads": {
+      "1": "BOOST_EN",
+      "2": "GND",
+      "3": "UVLO_SENSE",
+      "4": "UVLO_REF",
+      "5": "UVLO_REF",
+      "6": "VBAT_LOGIC_SW"
+     },
+     "expected": {
+      "1": "BOOST_EN",
+      "2": "GND",
+      "3": "UVLO_SENSE",
+      "4": "UVLO_REF",
+      "5": "UVLO_REF",
+      "6": "VBAT_LOGIC_SW"
+     }
+    }
+   },
+   "source": "scripts/rev3_checks.py expected_pad_nets (datasheet pin table x design intent)"
+  },
+  "mcu_pinmap": {
+   "result": "PASS",
+   "label": "M",
+   "pads_compared": 256,
+   "differences": [],
+   "reference": {
+    "file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/scout/rev2c_mcu_pinmap.json",
+    "sha256": "707c6ae0d43a4f3a6de085a6ec7c239d5eb2ec0c38ed35edaf8951bf0f7ceedc"
+   }
+  },
+  "rule_file": {
+   "result": "PASS",
+   "label": "M",
+   "sections": {
+    "board/design_settings/rules": {
+     "equal": true,
+     "sha256_rev3": "4b82ef5099c86e575670d5bb9f8937d6ff021da586cff745f5aed078f15a1a09",
+     "sha256_rev2c": "4b82ef5099c86e575670d5bb9f8937d6ff021da586cff745f5aed078f15a1a09"
+    },
+    "board/design_settings/rule_severities": {
+     "equal": true,
+     "sha256_rev3": "8edcdc263b05294370654fdfb22f96367f57219c2212e8f548a0f4535ca197c8",
+     "sha256_rev2c": "8edcdc263b05294370654fdfb22f96367f57219c2212e8f548a0f4535ca197c8"
+    },
+    "board/design_settings/track_widths": {
+     "equal": true,
+     "sha256_rev3": "25e21aadfedfe8506cf9ef7d1ded1c51c534205a7de725c21dc84051f5f004dc",
+     "sha256_rev2c": "25e21aadfedfe8506cf9ef7d1ded1c51c534205a7de725c21dc84051f5f004dc"
+    },
+    "board/design_settings/via_dimensions": {
+     "equal": true,
+     "sha256_rev3": "2efbf6ec3c3f5be63ec3bd7a718bd2daea3ab7f53f6df153f45959628185e8c2",
+     "sha256_rev2c": "2efbf6ec3c3f5be63ec3bd7a718bd2daea3ab7f53f6df153f45959628185e8c2"
+    },
+    "net_settings/classes": {
+     "equal": true,
+     "sha256_rev3": "01b8ac28370aa96aeccbdcb5b8534a38ac43910ed380b7440a20b158a27ac81e",
+     "sha256_rev2c": "01b8ac28370aa96aeccbdcb5b8534a38ac43910ed380b7440a20b158a27ac81e"
+    },
+    "net_settings/netclass_patterns": {
+     "equal": true,
+     "only_rev3": [],
+     "only_rev2c": []
+    }
+   },
+   "sections_differing": [],
+   "file_sha256": {
+    "rev3": "a64b7bfe58b8532d8f7c3c1193967f0f8ef0c2b0da35bee7bcced7a0ab273b33",
+    "rev2c": "a64b7bfe58b8532d8f7c3c1193967f0f8ef0c2b0da35bee7bcced7a0ab273b33"
+   },
+   "note": "the raw file hashes differ whenever pcbnew rewrites the project file on save (window / layer presets, net-name pattern list); the rule sections are compared as canonical JSON. Pattern-list changes (nets added / removed by rev 3) are listed, not judged",
+   "criterion": "design rules, rule severities, predefined track / via sizes and the net classes are equal to the archived rev 2c project file"
+  },
+  "silkscreen": {
+   "result": "PASS",
+   "label": "M",
+   "marks": [
+    {
+     "ref": "C45",
+     "footprint": "CP_EIA-3216-18_Kemet-A",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "C47",
+     "footprint": "CP_Elec_6.3x5.4",
+     "library_mark": {
+      "silk_graphics": 10,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "C52",
+     "footprint": "CP_EIA-3528-21_Kemet-B",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "D1",
+     "footprint": "LED_0603_1608Metric",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "D2",
+     "footprint": "LED_0603_1608Metric",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "D3",
+     "footprint": "LED_0603_1608Metric",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "D4",
+     "footprint": "LED_0603_1608Metric",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "D6",
+     "footprint": "D_SOD-123",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "J7",
+     "footprint": "JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical",
+     "library_mark": {
+      "silk_graphics": 6,
+      "pin1_triangle": false,
+      "triangle_to_pad1_mm": null,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       63.8,
+       134.0
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q1",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       115.8,
+       111.6
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q10",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "Q11",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       93.0,
+       93.8
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q2",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       119.0,
+       108.4
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q3",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       107.2,
+       131.3
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q4",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       86.4,
+       112.5
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q5",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "Q6",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       71.3,
+       134.0
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q7",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       68.2,
+       124.5
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q8",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       109.6,
+       88.6
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "Q9",
+     "footprint": "SOT-23",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.435,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       129.1,
+       67.8
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "U1",
+     "footprint": "TQFP-64_14x14mm_P0.8mm",
+     "library_mark": {
+      "silk_graphics": 9,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.5,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "U2",
+     "footprint": "TQFP-64_14x14mm_P0.8mm",
+     "library_mark": {
+      "silk_graphics": 9,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.5,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       104.0,
+       90.8
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "U3",
+     "footprint": "TQFP-64_14x14mm_P0.8mm",
+     "library_mark": {
+      "silk_graphics": 9,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.5,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       75.6,
+       96.8
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "U4",
+     "footprint": "TQFP-64_14x14mm_P0.8mm",
+     "library_mark": {
+      "silk_graphics": 9,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.5,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "U6",
+     "footprint": "SOT-223-3_TabPin2",
+     "library_mark": {
+      "silk_graphics": 5,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.425,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       135.6,
+       120.8
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "U7",
+     "footprint": "ESP-12E",
+     "library_mark": {
+      "silk_graphics": 8,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.668,
+      "covered_by": []
+     },
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       77.2,
+       73.0
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "ref": "U8",
+     "footprint": "SOT-563",
+     "library_mark": {
+      "silk_graphics": 3,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.36,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    },
+    {
+     "ref": "U9",
+     "footprint": "SOT-23-6",
+     "library_mark": {
+      "silk_graphics": 7,
+      "pin1_triangle": true,
+      "triangle_to_pad1_mm": 0.425,
+      "covered_by": []
+     },
+     "extra_mark": null,
+     "extra_mark_at": [],
+     "ok": true
+    }
+   ],
+   "marks_not_ok": [],
+   "extra_marks_placed": 14,
+   "library_mark_only": [
+    "C45",
+    "C47",
+    "C52",
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D6",
+    "Q10",
+    "Q5",
+    "U1",
+    "U4",
+    "U8",
+    "U9"
+   ],
+   "revision_text": [
+    [
+     "rev 3",
+     "F.Silkscreen"
+    ]
+   ],
+   "pin_order_names": {
+    "J1": [
+     [
+      "GY-521 5V G SCL SDA nc nc G INT",
+      "B.Silkscreen"
+     ]
+    ],
+    "J2": [
+     [
+      "BMP280 3V G SCL SDA 3V 3V",
+      "B.Silkscreen"
+     ]
+    ],
+    "J5": [
+     [
+      "OPENLOG nc RXI nc 5V G G",
+      "B.Silkscreen"
+     ]
+    ],
+    "J7": [
+     [
+      "GPS 3V3|5V",
+      "B.Silkscreen"
+     ],
+     [
+      "GPS V TX RX G",
+      "B.Silkscreen"
+     ]
+    ]
+   },
+   "boost_block_designators": {
+    "L5": "F.SilkS (footprint designator)",
+    "U8": "B.Silkscreen (board text beneath the part)",
+    "U9": "B.Silkscreen (board text beneath the part)"
+   },
+   "criterion": "every listed footprint keeps its library F.SilkS polarity / pin-1 graphics with none of them under another part's body (F.Fab box) or on a pad (extra '+', 'K' or dot marks are counted separately); the text 'rev 3' exists; J1 / J2 / J5 / J7 carry a name with the pin order; U8 / U9 / L5 designators exist on a silkscreen layer"
+  }
+ }
+}

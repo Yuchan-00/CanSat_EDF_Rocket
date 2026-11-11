@@ -1,0 +1,33 @@
+2026-11-11 14:55:13.784 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-11 14:55:14.079 INFO   Hardware: 16 CPU cores, 367 CPU score, 4026 MB RAM
+2026-11-11 14:55:14.079 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-11 14:55:14.081 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-11 14:55:15.130 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-11 14:55:15.171 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:15.171 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:15.395 INFO   [B540C9\2334A5] Loading board file 'vtol_carrier_servo.dsn'...
+2026-11-11 14:55:15.414 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:15.414 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:15.739 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:15.739 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-11 14:55:15.765 INFO   [B540C9\2334A5] Job 'B540C9\2334A5' started at 2026-11-11T05:55:15.765713500Z.
+2026-11-11 14:55:16.180 INFO   [B540C9\2334A5] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-11 14:55:16.345 INFO   [B540C9\2334A5] Fanout stage started on board 'd29a51f5c5df65a9213abf1789268f91' with 3 of 608 SMD pins needing fanout (605 already connected, 0 netless).
+2026-11-11 14:55:16.962 INFO   [B540C9\2334A5] Fanout pass #1 on board 'bd99043b970974aeb052c6de0655323e' completed in 0.44 seconds with 2 SMD pins fanouted, 1 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-11 14:55:17.240 INFO   [B540C9\2334A5] Fanout pass #2 on board 'bd99043b970974aeb052c6de0655323e' completed in 0.23 seconds with 0 SMD pins fanouted, 1 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-11 14:55:17.269 INFO   [B540C9\2334A5] Fanout stage completed: started with 608 total SMD pins, completed in 0.81 seconds, escaped pins: 2/608 (0.3%), using 0.92 total CPU seconds, 0.36 GB total allocated, and 127.3 MB peak heap usage.
+2026-11-11 14:55:17.450 INFO   [B540C9\2334A5] Auto-routing stage started on board 'bd99043b970974aeb052c6de0655323e' with baseline score 121.21 for 9 unrouted items.
+2026-11-11 14:55:18.674 INFO   [B540C9\2334A5] Auto-routing pass #1 on board 'bd99043b970974aeb052c6de0655323e' was completed in 1.12 seconds with score 1000.00 (0 unrouted and 0 violations), using 1.64 CPU seconds and the job allocated 0.52 GB of memory so far.
+2026-11-11 14:55:18.836 INFO   [B540C9\2334A5] Auto-routing pass #2 on board '3df090d7bb5b23668208b91a12a691d6' was completed in 0.08 seconds with score 1000.00 (0 unrouted and 0 violations), using 2.64 CPU seconds and the job allocated 0.81 GB of memory so far.
+2026-11-11 14:55:19.009 INFO   [B540C9\2334A5] Auto-routing stage completed: started with 11 unrouted nets, completed in 2.78 seconds, final score: 1000.00 (0 unrouted and 0 violations), using 2.64 total CPU seconds, 0.81 GB total allocated, and 143.5 MB peak heap usage.
+2026-11-11 14:55:19.162 INFO   [B540C9\2334A5] Optimization stage started on board '3df090d7bb5b23668208b91a12a691d6'. Baseline router score: 1000.00, optimizer score: 813.70, incomplete connections: 0, clearance violations: 0.
+2026-11-11 14:55:22.851 INFO   [B540C9\2334A5] Stopping optimization pass #1 early after 12 consecutive items could not be improved.
+2026-11-11 14:55:23.274 INFO   [B540C9\2334A5] Optimizer pass #1 on board '89e68744ec6f311ad35aa444adb93b1c' was completed in 3.76 seconds with the score of 814.22 (0 unrouted and 0 violations).
+2026-11-11 14:55:23.391 INFO   [B540C9\2334A5] Optimizer pass #1: optimizer score 813.70 -> 814.22 (IMPROVED, 0.0642%), router score: 1000.00, incomplete connections: 0, clearance violations: 0.
+2026-11-11 14:55:23.391 INFO   [B540C9\2334A5] Stopping optimizer because the improvement in this pass (0.0642%) is below the threshold (2.50%).
+2026-11-11 14:55:23.569 INFO   [B540C9\2334A5] Optimization stage completed:. Baseline router score: 1000.00, baseline optimizer score: 813.70, final router score: 1000.00, final optimizer score: 814.22, completed in 4.33 seconds, using 15.64 total CPU seconds, 2.75 GB total allocated, and 505.3 MB peak heap usage.
+2026-11-11 14:55:23.634 INFO   [B540C9\2334A5] Job 'B540C9\2334A5' finished with state: COMPLETED (elapsed: 7.87 seconds, finished at UTC: 2026-11-11T05:55:23.633191100Z).
+2026-11-11 14:55:23.646 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\impl\route\a7\kicad\work\vtol_carrier_servo.ses' (SES)...
+2026-11-11 14:55:23.650 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\impl\route\a7\kicad\work\vtol_carrier_servo.ses' (14876 bytes).
+
+--- stderr ---

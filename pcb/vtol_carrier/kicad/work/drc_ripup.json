@@ -1,0 +1,251 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-11T16:11:51",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "vtol_carrier.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+3V3] on B.Cu, 길이 3.1533 mm",
+                    "pos": {
+                        "x": 85.5333,
+                        "y": 111.6098
+                    },
+                    "uuid": "710aba2d-16cf-46f4-ac20-09c60249bc92"
+                },
+                {
+                    "description": "패드 1 [+3V3]의 Q4 위F.Cu",
+                    "pos": {
+                        "x": 88.2625,
+                        "y": 112.85
+                    },
+                    "uuid": "b58ee992-d30b-50ff-8b3a-49d88ea50475"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+3V3] on F.Cu, 길이 3.2110 mm",
+                    "pos": {
+                        "x": 105.6574,
+                        "y": 90.7875
+                    },
+                    "uuid": "d0a88413-7615-4282-aae5-6c5874b1c3da"
+                },
+                {
+                    "description": "패드 1 [+3V3]의 Q8 위F.Cu",
+                    "pos": {
+                        "x": 110.15,
+                        "y": 86.5375
+                    },
+                    "uuid": "5497328e-0e0e-5426-a1b5-410132e402c0"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 0.9120 mm",
+                    "pos": {
+                        "x": 76.2,
+                        "y": 121.35
+                    },
+                    "uuid": "f35080d2-a48a-45df-9b61-71ad3198634f"
+                },
+                {
+                    "description": "패드 1 [+5V]의 C25 위F.Cu",
+                    "pos": {
+                        "x": 76.74,
+                        "y": 123.3
+                    },
+                    "uuid": "43342fb2-3eed-52d3-8375-ec49ef159ccc"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.0
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "2의 PTH 패드[GND]J16",
+                    "pos": {
+                        "x": 123.66,
+                        "y": 75.79
+                    },
+                    "uuid": "6d9b82c0-eefa-5c77-ac44-8ea1ebdec555"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [COM_RESET] on B.Cu, 길이 1.2824 mm",
+                    "pos": {
+                        "x": 96.7107,
+                        "y": 108.9864
+                    },
+                    "uuid": "573c8f48-2c8c-433f-a2d9-cad38ed38f85"
+                },
+                {
+                    "description": "배선 [COM_RESET] on F.Cu, 길이 0.1820 mm",
+                    "pos": {
+                        "x": 96.5517,
+                        "y": 110.5422
+                    },
+                    "uuid": "845a942e-7746-4914-8306-526bcae71ed2"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [ESP_TXD0] on B.Cu, 길이 3.5946 mm",
+                    "pos": {
+                        "x": 101.7809,
+                        "y": 83.9884
+                    },
+                    "uuid": "7d4947a1-020f-497b-9f04-2b05fd2e29ca"
+                },
+                {
+                    "description": "배선 [ESP_TXD0] on F.Cu, 길이 1.2223 mm",
+                    "pos": {
+                        "x": 95.95,
+                        "y": 93.2375
+                    },
+                    "uuid": "4e6df35c-64de-4449-8e2f-d008f066ef93"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [COM_RESET] on F.Cu, 길이 0.3796 mm",
+                    "pos": {
+                        "x": 101.0817,
+                        "y": 112.4
+                    },
+                    "uuid": "ebc74bc0-9f17-493d-afe5-af00e353c654"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [ESP_GPIO15] on F.Cu, 길이 0.1101 mm",
+                    "pos": {
+                        "x": 95.985,
+                        "y": 85.5467
+                    },
+                    "uuid": "0ef247df-e9a6-4b01-803e-22e5b120a528"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [ESP_TXD0] on F.Cu, 길이 1.2223 mm",
+                    "pos": {
+                        "x": 95.95,
+                        "y": 93.2375
+                    },
+                    "uuid": "4e6df35c-64de-4449-8e2f-d008f066ef93"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [ESP_GPIO2] on F.Cu, 길이 2.6024 mm",
+                    "pos": {
+                        "x": 100.7569,
+                        "y": 81.3556
+                    },
+                    "uuid": "35821326-6d69-4d46-9a74-f5acaa5c0964"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [COM_LED] on B.Cu, 길이 0.5082 mm",
+                    "pos": {
+                        "x": 75.0951,
+                        "y": 110.0912
+                    },
+                    "uuid": "ad301530-73ac-4d3a-8136-7a65dfb52052"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        }
+    ]
+}
