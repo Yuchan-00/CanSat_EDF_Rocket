@@ -1,6 +1,6 @@
 {
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274",
+ "board_sha256": "7b858d8d065abb78203f3c07c8756fff26e28e880fe285c7c6f5770a8cdd1166",
  "tool": "pcbnew 10.0.6",
  "label": "M (bounding boxes measured on the board file)",
  "outline_centre_lines": [
@@ -30,12 +30,6 @@
    "jlc"
   ],
   [
-   "U8",
-   0.35,
-   "-y",
-   "jlc"
-  ],
-  [
    "L5",
    0.45,
    "-y",
@@ -55,12 +49,6 @@
   ],
   [
    "C41",
-   0.55,
-   "-y",
-   "jlc"
-  ],
-  [
-   "C43",
    0.55,
    "-y",
    "jlc"
@@ -156,6 +144,18 @@
    "jlc"
   ],
   [
+   "C43",
+   0.95,
+   "-y",
+   "jlc"
+  ],
+  [
+   "C57",
+   0.95,
+   "-y",
+   "jlc"
+  ],
+  [
    "C60",
    0.95,
    "-y",
@@ -170,6 +170,18 @@
   [
    "R65",
    0.95,
+   "-y",
+   "jlc"
+  ],
+  [
+   "C58",
+   1.05,
+   "-y",
+   "jlc"
+  ],
+  [
+   "R64",
+   1.05,
    "-y",
    "jlc"
   ],
@@ -226,14 +238,16 @@
  ],
  "pads_under_0p3": [],
  "bodies_under_2p5_by_fit": {
-  "jlc": 26,
-  "with_mcu_jlc_plus_jlc_optional": 27,
+  "jlc": 28,
+  "with_mcu_jlc_plus_jlc_optional": 29,
   "not_fitted_by_jlc_in_default_order": 6,
   "refs_by_fit": {
    "jlc": [
     "C41",
     "C43",
     "C44",
+    "C57",
+    "C58",
     "C60",
     "D6",
     "J2",
@@ -252,10 +266,10 @@
     "L5",
     "R59",
     "R60",
+    "R64",
     "R65",
     "U6",
     "U7",
-    "U8",
     "U9"
    ],
    "jlc_optional": [
@@ -276,9 +290,9 @@
   "label": "M (zone fills refilled in memory, tracks, vias, pads; distance to the straight outline lines, corner arcs not modelled)",
   "min_per_side": {
    "-x": 0.3,
-   "+y": 0.3,
+   "+y": 0.4,
    "+x": 0.3,
-   "-y": 0.3
+   "-y": 0.4
   },
   "per_layer": {
    "F.Cu": {
@@ -287,7 +301,7 @@
      "zone GND"
     ],
     "+y": [
-     0.3,
+     0.4,
      "zone GND"
     ],
     "+x": [
@@ -295,7 +309,7 @@
      "zone GND"
     ],
     "-y": [
-     0.3,
+     0.4,
      "track VBAT_LOGIC_SW"
     ]
    },
@@ -305,7 +319,7 @@
      "zone GND"
     ],
     "+y": [
-     0.3,
+     0.4,
      "zone GND"
     ],
     "+x": [
@@ -313,7 +327,7 @@
      "zone GND"
     ],
     "-y": [
-     0.3,
+     0.4,
      "zone GND"
     ]
    },
@@ -323,7 +337,7 @@
      "zone +5V"
     ],
     "+y": [
-     0.3,
+     0.4,
      "zone +5V"
     ],
     "+x": [
@@ -331,7 +345,7 @@
      "zone +5V"
     ],
     "-y": [
-     0.3,
+     0.4,
      "zone +5V"
     ]
    },
@@ -341,7 +355,7 @@
      "zone GND"
     ],
     "+y": [
-     0.3,
+     0.4,
      "zone GND"
     ],
     "+x": [
@@ -349,8 +363,8 @@
      "zone GND"
     ],
     "-y": [
-     0.3,
-     "zone GND"
+     0.4,
+     "track VBAT_LOGIC_SW"
     ]
    }
   }
@@ -452,10 +466,6 @@
   "-y": {
    "jlc_fitted_bodies_under_2p5": [
     [
-     "U8",
-     0.35
-    ],
-    [
      "L5",
      0.45
     ],
@@ -473,7 +483,11 @@
     ],
     [
      "C43",
-     0.55
+     0.95
+    ],
+    [
+     "C57",
+     0.95
     ],
     [
      "C60",
@@ -482,6 +496,14 @@
     [
      "R65",
      0.95
+    ],
+    [
+     "C58",
+     1.05
+    ],
+    [
+     "R64",
+     1.05
     ],
     [
      "J7",
@@ -500,8 +522,8 @@
      2.15
     ]
    ],
-   "count": 12,
-   "min_mm": 0.35,
+   "count": 14,
+   "min_mm": 0.45,
    "overhanging": []
   }
  },
@@ -511,6 +533,8 @@
     "C41",
     "C43",
     "C44",
+    "C57",
+    "C58",
     "C60",
     "J14",
     "J16",
@@ -519,13 +543,13 @@
     "L5",
     "R59",
     "R60",
+    "R64",
     "R65",
     "U4",
     "U7",
-    "U8",
     "U9"
    ],
-   "count_without_rail": 16,
+   "count_without_rail": 18,
    "min_distance_at_rail_edges_mm": 0.29,
    "overhang_at_rail_edges": []
   },
@@ -557,5 +581,5 @@
  },
  "jlc_acceptance": "NOT_VERIFIED (only JLC's DFM result and quote after the upload decide)",
  "csv": "out/edge_distance.csv",
- "csv_sha256": "41c3f01749c6707c883e3ec89b207a86c8537bf8b84f2d958c013c33e06855a4"
+ "csv_sha256": "4861c9b9cc6d08deed4a63f41cbc1e9b1bb1c5f0aecfe238d15541b2f583aa32"
 }

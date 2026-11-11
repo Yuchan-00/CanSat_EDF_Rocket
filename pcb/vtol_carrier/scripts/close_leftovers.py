@@ -313,8 +313,58 @@ def _canonical(drc_report: dict) -> list[list[dict]]:
     return out
 
 
-def close(board, drc_report: dict) -> list[dict]:
+def _net_clusters(board, net: str) -> list[list[tuple[float, float, int | None]]]:
+    """Copper clusters of a signal net as lists of anchor points (x, y, layer index 0 = F.Cu / 1 = B.Cu / None = both):
+    pad centres, via centres, track ends. Two items are joined when their copper touches on a common outer layer.
+    Pure geometry of the board, deterministic order (independent of the DRC report)."""
+    items = []
+    for fp in sorted(board.GetFootprints(), key=lambda f: f.GetReference()):
+        for p in sorted(fp.Pads(), key=lambda p: (p.GetNumber(), p.GetPosition().x, p.GetPosition().y)):
+            if p.GetNetname() == net:
+                lays = [lay for lay in (pcbnew.F_Cu, pcbnew.B_Cu) if p.IsOnLayer(lay)]
+                la = None if p.HasHole() else (0 if p.IsOnLayer(pcbnew.F_Cu) else 1)
+                items.append((p, lays, [(_mm(p.GetPosition().x), _mm(p.GetPosition().y), la)], 1))
+    for t in sorted((t for t in board.GetTracks() if t.GetNetname() == net),
+                    key=lambda t: (t.GetClass(), t.GetLayer(), t.GetStart().x, t.GetStart().y, t.GetEnd().x, t.GetEnd().y)):
+        if t.GetClass() == "PCB_VIA":
+            items.append((t, [pcbnew.F_Cu, pcbnew.B_Cu], [(_mm(t.GetPosition().x), _mm(t.GetPosition().y), None)], 0))
+        elif t.GetLayer() in (pcbnew.F_Cu, pcbnew.B_Cu):
+            li = 0 if t.GetLayer() == pcbnew.F_Cu else 1
+            items.append((t, [t.GetLayer()], [(_mm(t.GetStart().x), _mm(t.GetStart().y), li), (_mm(t.GetEnd().x), _mm(t.GetEnd().y), li)], 0))
+    parent = list(range(len(items)))
+
+    def find(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if find(i) == find(j):
+                continue
+            for lay in items[i][1]:
+                if lay in items[j][1] and items[i][0].GetEffectiveShape(lay).Collide(items[j][0].GetEffectiveShape(lay), 0):
+                    parent[find(i)] = find(j)
+                    break
+    groups: dict[int, list[int]] = {}
+    for i in range(len(items)):
+        groups.setdefault(find(i), []).append(i)
     out = []
+    for idx in groups.values():
+        anchors = sorted({a for i in idx for a in items[i][2]}, key=lambda a: (a[0], a[1], -1 if a[2] is None else a[2]))
+        out.append((sum(items[i][3] for i in idx), anchors))
+    out.sort(key=lambda c: (-c[0], c[1][0][0], c[1][0][1]))   # most pads first, then by its first anchor
+    return [c[1] for c in out]
+
+
+def close(board, drc_report: dict) -> list[dict]:
+    """The DRC report only says WHICH nets are open. relayout step, M: kicad-cli reported the open BOOST_EN connection
+    between different item pairs in two replays of the same sessions (stub at U9.1 <-> a track end at (121.13, 123.25)
+    or at (124.0, 130.20)), and the routed result differed. The ends are therefore chosen here from the board's own
+    copper clusters: every smaller cluster is joined to the nearest anchor of another cluster (distance, then
+    coordinates), largest cluster first."""
+    out = []
+    nets = []
     for its in _canonical(drc_report):
         m = re.search(r"\[([^\]]+)\]", its[0].get("description", ""))
         if not m:
@@ -322,18 +372,31 @@ def close(board, drc_report: dict) -> list[dict]:
         net = m.group(1)
         if net in NO_TOUCH:
             out.append({"net": net, "routed": False, "reason": "power / plane net - not routed by this step"})
-            continue
-        ax, ay, la = _endpoint(board, its[0])
-        bx, by, lb = _endpoint(board, its[1])
-        r = None
-        for w in track_widths(net):
-            for region in (MARGIN_REGION, 12.0, 25.0):  # widen the search window when the local one has no path
-                r = route_one(board, net, (ax, ay), (bx, by), la, lb, region, w)
-                if r["routed"]:
-                    r["search_window_mm"] = region
-                    r["width_mm"] = w
-                    break
-            if r["routed"]:
+        elif net not in nets:
+            nets.append(net)
+    for net in sorted(nets):
+        failed: set = set()
+        for _round in range(16):
+            cl = _net_clusters(board, net)
+            rest = [c for c in cl[1:] if tuple(c) not in failed]
+            if len(cl) < 2 or not rest:
                 break
-        out.append(r)
+            small = rest[0]
+            others = [a for c in cl if c is not small for a in c]
+            (ax, ay, la), (bx, by, lb) = min(((a, b) for a in small for b in others),
+                                             key=lambda ab: (round(math.hypot(ab[0][0] - ab[1][0], ab[0][1] - ab[1][1]), 4),
+                                                             ab[0][0], ab[0][1], ab[1][0], ab[1][1]))
+            r = None
+            for w in track_widths(net):
+                for region in (MARGIN_REGION, 12.0, 25.0):  # widen the search window when the local one has no path
+                    r = route_one(board, net, (ax, ay), (bx, by), la, lb, region, w)
+                    if r["routed"]:
+                        r["search_window_mm"] = region
+                        r["width_mm"] = w
+                        break
+                if r["routed"]:
+                    break
+            out.append(r)
+            if not r["routed"]:
+                failed.add(tuple(small))
     return out

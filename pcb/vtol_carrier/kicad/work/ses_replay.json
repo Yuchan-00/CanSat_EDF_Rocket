@@ -2,6 +2,26 @@
  "fanout": true,
  "stages": [
   [
+   "seed_servo",
+   "seed_servo.ses"
+  ],
+  [
+   "seed_power",
+   "seed_power.ses"
+  ],
+  [
+   "seed_signals",
+   "seed_signals.ses"
+  ],
+  [
+   "seed_gnd",
+   "seed_gnd.ses"
+  ],
+  [
+   "seed_complete",
+   "seed_complete.ses"
+  ],
+  [
    "servo",
    "vtol_carrier_servo.ses"
   ],
@@ -22,6 +42,6 @@
    "vtol_carrier_complete.ses"
   ]
  ],
- "unrouted_board_sha256": "4a7ccfed934503ef8eb9bdc99a50d91be0320e63eb0b455e9f203a49ec22c4b7",
- "source": "rev 3 live run a7, 2026-11-11 14:55-15:30 KST: route.py 40 5, CARRIER_SEED=0, CARRIER_RIPUP=0, CARRIER_HALO=0.4 (default), Freerouting 2.5.0, on unrouted board 4a7ccfed. route_log.json is the log of that live run; the board itself is the replay (route_reuse_log.json), which adds close_leftovers and ripup.py."
+ "unrouted_board_sha256": "c94bd350abf67d8db66a7659c2dfef581b644426270c219970a8306f1c5f0322",
+ "source": "rev 3 relayout live run, 2026-11-11 (scratch tree, then installed): route.py 40 5 with CARRIER_SEED_DIR = the a7 sessions (kicad/work/seed_a7, ECO seed: 97 of 105 nets start with their a7 routes), CARRIER_HALO=0.4 (default), rip-up on, Freerouting 2.5.0, on unrouted board c94bd350. route_log.json is the log of that live run; its own board (ae82789f) had 1 kicad-cli clearance error made by route.widen_power (stale bounding box, fixed in route.py afterwards). The board itself is the replay of these sessions with the fixed clean-up (route_reuse_log.json)."
 }

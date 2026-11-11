@@ -261,36 +261,36 @@
    "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C41": {
-   "x": 122.15,
+   "x": 125.15,
    "y": 133.6,
-   "rot": 180.0,
+   "rot": 0.0,
    "side": "top",
    "how": "power",
-   "why": "boost input capacitor 1 left of C43, pad 1 (VBAT) toward U8 pin 3"
+   "why": "boost input capacitor directly below U8: pad 1 (VBAT) under pin 3 (VIN), pad 2 (GND) under pin 4 on the F.Cu GND bar"
   },
   "C42": {
    "x": 72.6,
    "y": 69.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (66.7, 73.45)"
+   "how": "power",
+   "why": "second input capacitor at the switch-lead header J15, delivered rev 3 spot (no 1206 spot is left in the boost corner)"
   },
   "C43": {
-   "x": 126.75,
-   "y": 133.6,
-   "rot": 180.0,
+   "x": 130.9,
+   "y": 132.4,
+   "rot": 270.0,
    "side": "top",
    "how": "power",
-   "why": "boost output capacitor 2 left of U8 (0.6 mm courtyard gap), pad 1 (+5V) toward U8"
+   "why": "boost output capacitor 2 upright beside L5: pad 1 (+5V) up, pad 2 (GND) down on the common F.Cu GND bar"
   },
   "C44": {
    "x": 95.9,
    "y": 131.9,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (131.75, 122.5)"
+   "how": "power",
+   "why": "LDO input capacitor at its delivered rev 3 spot"
   },
   "C45": {
    "x": 127.65,
@@ -298,7 +298,7 @@
    "rot": 180.0,
    "side": "top",
    "how": "power",
-   "why": "LDO output tantalum between the NAV bulk capacitor and C57, pad 1 (+3V3) toward the U6 tab"
+   "why": "LDO output tantalum between the NAV bulk capacitor and the boost block, pad 1 (+3V3) toward the U6 tab"
   },
   "C46": {
    "x": 111.6,
@@ -389,20 +389,20 @@
    "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C57": {
-   "x": 129.75,
-   "y": 131.3,
-   "rot": 180.0,
+   "x": 128.6,
+   "y": 132.4,
+   "rot": 270.0,
    "side": "top",
    "how": "power",
-   "why": "boost output capacitor 1 directly above U8: pad 1 (+5V) at pin 6 (hot loop)"
+   "why": "boost output capacitor 1 upright beside C43: pad 1 (+5V) 0.95 mm from U8 pin 6, pad 2 (GND) on the F.Cu GND bar with U8 pin 4 (hot loop on the top layer)"
   },
   "C58": {
-   "x": 122.95,
-   "y": 130.85,
-   "rot": 0.0,
+   "x": 120.6,
+   "y": 133.1,
+   "rot": 90.0,
    "side": "top",
    "how": "power",
-   "why": "feed-forward capacitor left of R63 (below the former D1 spot, 1.0 mm clear of the NAV pad ring): pad 2 (BOOST_FB) 1.6 mm from R63 pad 2"
+   "why": "feed-forward capacitor upright beside R64: pad 2 (BOOST_FB) up, level with R64 pad 1"
   },
   "C59": {
    "x": 119.9,
@@ -682,7 +682,7 @@
    "rot": 180.0,
    "side": "top",
    "how": "power",
-   "why": "boost inductor in the +x/-y corner, pad 2 (BOOST_SW) next to U8 pin 5"
+   "why": "boost inductor in the +x/-y corner, pad 2 (BOOST_SW) toward U8"
   },
   "NT1": {
    "x": 124.25,
@@ -1253,20 +1253,20 @@
    "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R63": {
-   "x": 125.2,
-   "y": 130.97,
-   "rot": 90.0,
+   "x": 123.0,
+   "y": 130.4,
+   "rot": 0.0,
    "side": "top",
    "how": "power",
-   "why": "FB divider top resistor beside R64: pad 2 (BOOST_FB) level with R64 pad 1"
+   "why": "FB divider top resistor west of U8: pad 2 (BOOST_FB) 1.3 mm from U8 pin 1, pad 1 (+5V) sensed at C57 pad 1 by its own track"
   },
   "R64": {
-   "x": 126.7,
-   "y": 130.97,
+   "x": 122.08,
+   "y": 133.1,
    "rot": 270.0,
    "side": "top",
    "how": "power",
-   "why": "FB divider bottom resistor left of C57: pad 1 (BOOST_FB) up, pad 2 (GND) beside the C57 GND pad"
+   "why": "FB divider bottom resistor upright below R63: pad 1 (BOOST_FB) up, pad 2 (GND) down"
   },
   "R65": {
    "x": 113.5,
@@ -1297,8 +1297,8 @@
    "y": 120.5,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (130.14, 133.8)"
+   "how": "power",
+   "why": "BOOST_EN pull-down at its delivered rev 3 spot (first free spot found from the former U8 pin 2 position)"
   },
   "U1": {
    "x": 116.6,
@@ -1349,12 +1349,12 @@
    "why": "ESP-12E, antenna end at the +y edge (y +35), rule area 4 mm each side (spec esp12e.antenna)"
   },
   "U8": {
-   "x": 130.85,
-   "y": 133.8,
+   "x": 125.7,
+   "y": 131.5,
    "rot": 0.0,
    "side": "top",
    "how": "power",
-   "why": "boost converter: pins 4-6 (GND / SW / VOUT) toward L5, pins 1-3 away from it"
+   "why": "boost converter: pins 4-6 (GND / SW / VOUT) toward C57 / L5, pins 1-3 away from them, pins 3 / 4 above the C41 pads"
   },
   "U9": {
    "x": 117.8,
@@ -1362,7 +1362,7 @@
    "rot": 0.0,
    "side": "top",
    "how": "power",
-   "why": "cut-off comparator in the edge strip under the NAV, 11 mm from U8 pin 2 (BOOST_EN is low impedance)"
+   "why": "cut-off comparator in the edge strip under the NAV (BOOST_EN is low impedance)"
   },
   "Y1": {
    "x": 128.27,
@@ -1591,9 +1591,9 @@
    117.43
   ],
   "C41": [
-   119.85,
+   122.85,
    132.45,
-   124.45,
+   127.45,
    134.75
   ],
   "C42": [
@@ -1603,10 +1603,10 @@
    71.6
   ],
   "C43": [
-   124.45,
-   132.45,
-   129.05,
-   134.75
+   129.75,
+   130.1,
+   132.05,
+   134.7
   ],
   "C44": [
    94.92,
@@ -1688,15 +1688,15 @@
   ],
   "C57": [
    127.45,
-   130.15,
-   132.05,
-   132.45
+   130.1,
+   129.75,
+   134.7
   ],
   "C58": [
-   121.47,
-   130.12,
-   124.43,
-   131.58
+   119.87,
+   131.62,
+   121.33,
+   134.58
   ],
   "C59": [
    118.42,
@@ -2335,16 +2335,16 @@
    117.13
   ],
   "R63": [
-   124.47,
-   129.49,
-   125.93,
-   132.45
+   121.52,
+   129.67,
+   124.48,
+   131.13
   ],
   "R64": [
-   125.97,
-   129.49,
-   127.43,
-   132.45
+   121.35,
+   131.62,
+   122.81,
+   134.58
   ],
   "R65": [
    112.77,
@@ -2407,10 +2407,10 @@
    90.3
   ],
   "U8": [
-   129.65,
-   132.85,
-   132.05,
-   134.75
+   124.5,
+   130.55,
+   126.9,
+   132.45
   ],
   "U9": [
    115.75,
@@ -3586,7 +3586,7 @@
      "C4",
      "C5",
      "C8",
-     "C41",
+     "C58",
      "C59",
      "C60",
      "J1",
@@ -3615,7 +3615,7 @@
      118.78,
      89.05
     ],
-    "rule": "parts <= 1.1 mm high only (module ~1.5 mm above the board in a right-angle socket, A)",
+    "rule": "placement rule: parts <= 1.1 mm high under the module (module height above the board: spec/module_dimensions.json, A)",
     "max_h": 1.1,
     "parts_under": [
      "C10",
@@ -3653,7 +3653,7 @@
      137.6,
      118.55
     ],
-    "rule": "parts <= 1.1 mm high only (module ~1.5 mm above the board in a right-angle socket, A)",
+    "rule": "placement rule: parts <= 1.1 mm high under the module (module height above the board: spec/module_dimensions.json, A)",
     "max_h": 1.1,
     "parts_under": [
      "C6",
@@ -3816,12 +3816,12 @@
     },
     "how_counts": {
      "anchor": 29,
-     "auto": 7,
+     "auto": 4,
      "cluster": 26,
      "esp": 2,
      "keep": 93,
      "moved": 1,
-     "power": 16
+     "power": 19
     },
     "greedy_parts_not_at_rev2c_spot": [
      "C41",
@@ -4126,9 +4126,9 @@
     },
     "rev3_parts": {
      "U8": {
-      "to_Y1_pads_mm": 11.077,
-      "nearest_Y1": "U8.1 -> Y1.4",
-      "to_U1_xtal_pins_mm": 12.559,
+      "to_Y1_pads_mm": 8.783,
+      "nearest_Y1": "U8.6 -> Y1.3",
+      "to_U1_xtal_pins_mm": 8.83,
       "nearest_U1": "U8.1 -> U1.23"
      },
      "L5": {
@@ -4138,30 +4138,32 @@
       "nearest_U1": "L5.2 -> U1.23"
      },
      "C57": {
-      "to_Y1_pads_mm": 9.116,
-      "nearest_Y1": "C57.2 -> Y1.4",
-      "to_U1_xtal_pins_mm": 9.945,
-      "nearest_U1": "C57.2 -> U1.23"
+      "to_Y1_pads_mm": 8.709,
+      "nearest_Y1": "C57.1 -> Y1.4",
+      "to_U1_xtal_pins_mm": 9.744,
+      "nearest_U1": "C57.1 -> U1.23"
      },
      "C43": {
-      "to_Y1_pads_mm": 11.399,
-      "nearest_Y1": "C43.1 -> Y1.3",
-      "to_U1_xtal_pins_mm": 11.445,
-      "nearest_U1": "C43.2 -> U1.23"
+      "to_Y1_pads_mm": 8.809,
+      "nearest_Y1": "C43.1 -> Y1.4",
+      "to_U1_xtal_pins_mm": 10.963,
+      "nearest_U1": "C43.1 -> U1.23"
      },
      "C41": {
-      "to_Y1_pads_mm": 11.891,
-      "nearest_Y1": "C41.1 -> Y1.3",
-      "to_U1_xtal_pins_mm": 11.418,
+      "to_Y1_pads_mm": 11.363,
+      "nearest_Y1": "C41.2 -> Y1.3",
+      "to_U1_xtal_pins_mm": 11.415,
       "nearest_U1": "C41.1 -> U1.23"
      }
     },
     "rev3_BOOST_SW_pads_min_mm": {
-     "to_Y1_pads": 10.797,
-     "to_U1_xtal_pins": 13.463
+     "to_Y1_pads": 9.281,
+     "to_U1_xtal_pins": 9.545
     },
     "closer_than_rev2c_pins": [
-     "C57"
+     "U8",
+     "C57",
+     "C43"
     ],
     "placement_note_met": false
    },

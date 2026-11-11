@@ -249,7 +249,46 @@ def gather() -> tuple[Facts, dict]:
     a, b_ = r41[("C41", "U8.3")], r41[("C41", "L5.1")]
     F.put("입력 커패시터 경로", f"C41 → U8 VIN: 패드 간격 {a['pad_edge_gap_mm']:g} mm, 구리 길이 {a['copper_path_mm']:g} mm (비아 {a['vias_on_path']}개); "
           f"C41 → L5 입력: 구리 길이 {b_['copper_path_mm']:g} mm", "out/reports/routing_rules.json input_cap", "M (길이는 배선 모델, E)")
-    F.put("승압부 배치 FAIL", [k for k in ("hot_loop", "input_cap") if res.get(k) != "PASS"], "out/reports/routing_rules.json", "M")
+    # relayout step checks (measured on the routed board): top-layer GND piece, input capacitor paths, FB, rail edges
+    BOOST_KEYS = ("hot_loop", "input_cap", "hot_loop_top_gnd", "input_cap_vin", "input_cap_l5", "fb_clear_of_caps")
+    tg, iv, il = rr["checks"].get("hot_loop_top_gnd"), rr["checks"].get("input_cap_vin"), rr["checks"].get("input_cap_l5")
+    fbc, rec = rr["checks"].get("fb_clear_of_caps"), rr["checks"].get("rail_edge_copper")
+    if None in (tg, iv, il, fbc, rec):
+        raise SystemExit("docs_ko: routing_rules.json lacks the relayout checks - run routing_checks.py")
+    F.put("승압부 배치 FAIL", [k for k in BOOST_KEYS if res.get(k) != "PASS"], "out/reports/routing_rules.json", "M")
+    F.put("승압부 배치 PASS", [k for k in BOOST_KEYS if res.get(k) == "PASS"], "out/reports/routing_rules.json", "M")
+    F.put("윗면 GND 한 덩어리", f"{tg['result']} ({', '.join(tg['fcu_gnd_piece'])} 이 "
+          + ("같은 윗면 GND 구리 한 덩어리 위에 있음" if tg["all_on_one_piece"] else "서로 다른 윗면 GND 구리 조각에 있음")
+          + f"; 자기 비아가 있는 패드 {sum(1 for v in tg['pads_with_own_via'].values() if v)} / {len(tg['pads_with_own_via'])})",
+          "out/reports/routing_rules.json hot_loop_top_gnd", "M")
+    F.put("입력 커패시터", iv["input_capacitor"], "out/reports/routing_rules.json input_cap_vin.input_capacitor", "M")
+    F.put("입력 커패시터 VIN 경로", f"{iv['result']}: {iv['input_capacitor']} → U8 VIN 구리 길이 {iv['copper_path_to_U8.3_mm']:g} mm "
+          f"(비아 {iv['vias_on_path']}개, 기준 {iv['limit_mm']:g} mm 이하), GND 패드가 U8 GND와 같은 윗면 구리: "
+          + ("예" if iv["gnd_pad_on_the_U8.4_piece"] else "아니오"), "out/reports/routing_rules.json input_cap_vin", "M (길이는 배선 모델, E)")
+    F.put("입력 커패시터 L5 경로", f"{il['result']}: {il['input_capacitor']} → L5 입력 패드 구리 길이 {il['copper_path_to_L5.1_mm']:g} mm "
+          f"(기준 {il['limit_mm']:g} mm 이하; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 {il['pad_edge_distance_U8.3_to_L5.1_mm']:g} mm)",
+          "out/reports/routing_rules.json input_cap_l5", "M (길이는 배선 모델, E)")
+    F.put("FB 선과 출력 커패시터", f"{fbc['result']} (출력 커패시터 패드 사이를 지나는 FB 구리 {len(fbc['boost_fb_copper_inside'])}곳, "
+          f"가장 가까운 간격 {fbc['min_gap_boost_fb_track_to_output_cap_pad_mm']:g} mm, FB 선 길이 {fbc['boost_fb_f_cu_track_length_mm']:g} mm)",
+          "out/reports/routing_rules.json fb_clear_of_caps", "M")
+    rmin = rec["min_copper_to_edge_mm"]
+    rail_min = min(v for k, v in rmin.items() if "rail" in k)
+    F.put("레일 변 구리 이격", f"{rec['result']}: 레일이 붙는 두 76 mm 변에서 {rail_min:g} mm 이상 (기준 {rec['limit_mm_rail_edges']:g} mm), "
+          f"나머지 두 변 {min(v for k, v in rmin.items() if 'rail' not in k):g} mm (보드 규칙 0.3 mm)",
+          "out/reports/routing_rules.json rail_edge_copper", "M")
+    F.put("레일 변 구리 이격 값", f"{rail_min:g}", "out/reports/routing_rules.json rail_edge_copper", "M")
+    sw = rr["checks"]["boost_sw"]
+    F.put("SW 선", f"{sw['result']}: 길이 {sw['track_length_mm']:g} mm, 폭 {'/'.join(f'{w:g}' for w in sw['widths_mm'])} mm, 비아 {sw['vias']}개, F.Cu만",
+          "out/reports/routing_rules.json boost_sw", "M")
+    # the same checks measured on the board before the relayout (evidence file written once by the relayout step)
+    BEF = "out/reports/routing_rules_before_relayout.json"
+    bef = load(BEF)["checks"]
+    F.put("재배치 전 VIN 경로", f"{bef['input_cap_vin']['copper_path_to_U8.3_mm']:g} mm", BEF + " input_cap_vin (재배치 전 보드)", "M (배선 모델, E)")
+    F.put("재배치 전 L5 경로", f"{bef['input_cap_l5']['copper_path_to_L5.1_mm']:g} mm", BEF + " input_cap_l5 (재배치 전 보드)", "M (배선 모델, E)")
+    F.put("재배치 전 SW 선 길이", f"{bef['boost_sw']['track_length_mm']:g} mm", BEF + " boost_sw (재배치 전 보드)", "M")
+    F.put("재배치 전 좁은 길이", f"{bef['battery_path']['current_carrying_length_narrower_than_2mm']:g} mm", BEF + " battery_path (재배치 전 보드)", "M")
+    F.put("재배치 전 레일 변 구리", f"{min(v for k, v in bef['rail_edge_copper']['min_copper_to_edge_mm'].items() if 'rail' in k):g} mm",
+          BEF + " rail_edge_copper (재배치 전 보드)", "M")
     # edge: who fits the bodies near the edge (review J7) and copper to the rail edges (review J2)
     bf = edge["bodies_under_2p5_by_fit"]
     F.put("가장자리 2.5 mm 안 JLC 실장", bf["jlc"], "out/reports/edge_distance.json bodies_under_2p5_by_fit", "M")
@@ -398,7 +437,7 @@ S17: list[tuple[str, str, str, list[str]]] = [
     ("22 uF 1206 capacitors", "new",
      "22 uF 1206 커패시터의 5 V 직류 바이어스 감소량은 제조사 곡선으로 확인하지 않았습니다 (NOT_VERIFIED). 출력 실효 용량은 4 uF 이상이어야 하며 "
      "레일 전체 용량으로 보면 여유가 있습니다 (E).", ["4 uF"]),
-    ("Placement of the power block", "covered", "ORDER 0장 B (승압부 배치 검사 FAIL), README 1장", []),
+    ("Placement of the power block", "covered", "ORDER 0장 B (승압부 재배치와 남은 FAIL), README 1장", []),
     ("U8 uses a generic connector symbol", "new",
      "U8은 일반 커넥터 심볼을 써서 ERC가 U8 핀에 대한 근거를 주지 않습니다. 대신 패드-네트 표 검사(U8/U9 패드표)가 근거입니다.", []),
     ("CPL rotations for SOT-563", "covered", "README 5장 'CPL 회전', ORDER 3장 4번", []),
@@ -501,10 +540,19 @@ def readme(F: Facts, ctx: dict) -> str:
       "도구는 이 규칙을 느슨하게 하지 않았습니다. 그대로 주문할지, 배선을 고칠지는 사용자가 정할 일입니다 "
       f"({p('out/ORDER_ko.md')} 0장).")
     A("")
-    A(f"독립 검토 뒤 추가한 승압부 배치 검사(계획 12장의 '두 출력 커패시터를 IC에서 2 mm 안', '입력 커패시터를 L5 / VIN 끝에')도 "
-      f"FAIL입니다 ({F.v('승압부 배치 FAIL')}): {F.v('출력 커패시터 간격')}; 출력 커패시터 GND와 U8 GND의 윗면 구리 연결: "
-      f"{F.v('출력 커패시터 GND 윗면 연결')}; {F.v('입력 커패시터 경로')}. 고치려면 모서리 배치를 다시 하고 새로 배선해야 하며, 이것도 사용자 결정입니다 "
-      f"({p('out/ORDER_ko.md')} 0장 B). 실제 영향(스위칭 과전압, 입력 리플)은 보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다.")
+    A("독립 검토(E-R1 / E-R2 / E-R3) 뒤 승압 IC U8 주변을 다시 배치하고 새로 배선했습니다 (재배치 단계). 지금 보드에서 잰 값(M):")
+    A("")
+    A(f"- 윗면 GND: {F.v('윗면 GND 한 덩어리')}. 출력 커패시터 C57이 U8 바로 옆에서 VOUT 핀과 GND 핀을 윗면 구리로 잇습니다.")
+    A(f"- 입력 커패시터: {F.v('입력 커패시터 VIN 경로')}.")
+    A(f"- 되먹임(FB) 선: {F.v('FB 선과 출력 커패시터')}.")
+    A(f"- 통과한 승압부 검사: {F.v('승압부 배치 PASS')}. **아직 FAIL인 검사: {F.v('승압부 배치 FAIL')}.**")
+    A(f"- 남은 편차 1 (hot_loop): {F.v('출력 커패시터 간격')}. 계획 12장은 두 출력 커패시터 모두 IC에서 2 mm 안을 요구하지만, "
+      "1206 커패시터는 U8의 VOUT / GND 핀 옆에 하나만 놓을 수 있어 둘째(C43)는 C57 바로 옆, 같은 윗면 +5V / GND 구리 위에 두었습니다.")
+    A(f"- 남은 편차 2 (input_cap_l5): {F.v('입력 커패시터 L5 경로')}. U8의 VIN 핀과 L5 입력 패드가 떨어져 있어 커패시터 하나로 "
+      "두 곳 모두 몇 mm 안에 둘 수 없습니다. 둘째 입력 커패시터 C42는 스위치 단자 J15 옆 그대로입니다 (모서리에 1206 자리가 더 없음).")
+    A(f"- SW 선: {F.v('SW 선')}. 두 출력 커패시터 몸체 아래(패드 사이)를 지나므로 전보다 깁니다. 실제 영향(스위칭 과전압, 입력 리플, 발열)은 "
+      "보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다.")
+    A(f"- 자세한 내용과 선택지: {p('out/ORDER_ko.md')} 0장 B.")
     A("")
     A("| 항목 | 결과 | 표시 |")
     A("|---|---|---|")
@@ -586,8 +634,10 @@ def readme(F: Facts, ctx: dict) -> str:
     A("## 5. 확인되지 않은 것 (NOT_VERIFIED)")
     A("")
     for t in [
-        f"배터리 경로 폭 규칙 FAIL ({F.v('2 mm보다 좁은 길이')})과 승압부 배치 FAIL ({F.v('승압부 배치 FAIL')}): "
+        f"배터리 경로 폭 규칙 FAIL ({F.v('2 mm보다 좁은 길이')})과 승압부에 남은 FAIL ({F.v('승압부 배치 FAIL')}): "
         f"사용자 결정 전까지 도구 판정은 {F.v('출고 판정')} 입니다.",
+        "재배치한 승압부의 전기적 효과: SW 선이 두 출력 커패시터 아래를 지나 길어졌고(1장), U8과 크리스털 Y1 사이가 가까워졌습니다. "
+        "스위칭 과전압, 입력 리플, 잡음 영향은 보드에서 재기 전까지 NOT_VERIFIED입니다.",
         f"모듈 끼움, 보수적 경우: OpenLog 아랫면 부품을 1.2 mm로 잡으면 꽂는 길에서 {F.v('모듈 간섭 보수적 충돌')} 이 겹치고, "
         f"{F.v('모듈 간섭 보수적 0.5 mm 미만')} 은 {F.v('모듈 최소 간격')} 보다 가깝습니다 (A). OpenLog 아랫면 높이를 재고, 막을 수 있는 부품을 "
         "납땜하기 전에 실제로 꽂아 보십시오.",
@@ -691,12 +741,17 @@ def order(F: Facts, ctx: dict) -> str:
     A("")
     A(f"출고 판정: **{F.v('출고 판정')}** ({F.v('출고 판정 이유')}).")
     A("")
-    A("결정할 문제는 두 가지(A, B)이고, 둘 다 고치려면 배치·배선을 다시 해야 합니다. 한 번에 같이 고치는 것이 효율적입니다.")
+    A("결정할 문제는 두 가지(A, B)입니다. B의 큰 문제(승압 IC 주변의 고전류 루프와 입력 커패시터)는 재배치 단계에서 고쳤고, "
+      "아래에는 고친 뒤에도 남은 것만 적었습니다.")
     A("")
     A("### A. 배터리 전원 경로의 구리 폭")
     A("")
     A(f"- 무엇이 문제인가: 배터리 → 승압 회로로 가는 전원 경로의 구리 폭을 계획은 2.0 mm 이상(또는 면)으로 정했는데, {F.v('2 mm보다 좁은 길이')} 구간이 "
       f"더 좁습니다: {F.v('좁은 구간')}.")
+    A(f"- 재배치 단계에서 줄인 것: 좁은 길이 {F.v('재배치 전 좁은 길이')} → {F.v('2 mm보다 좁은 길이')} (Q10 → J15 구간을 2.0 mm로 넓히고 L5 앞 비아를 패드 바로 위로 옮김). "
+      "남은 구간은 모양 때문에 2.0 mm 한 줄이 들어가지 않습니다: 케이블타이 띠를 건너는 곳은 프로그래밍 단자 구멍 사이 틈이 1.86 mm라 1.56 mm가 한계이고 "
+      "(scripts/build_pcb.py VBAT_TRUNK 설명, M), Q10(SOT-23) 3번 패드로 들어가는 짧은 구간은 옆 패드와 C42 패드에 막히며, L5 입력 패드는 폭이 1.5 mm입니다. "
+      "이 검사와 2.0 mm / 0.035 Ohm 기준은 바꾸지 않았으므로 FAIL로 남습니다.")
     A(f"- 영향(E): 구리 저항은 20 C에서 {F.v('배터리 경로 저항 20C')} 로 목표 {F.v('배터리 경로 목표')} 안이지만, 60 C에서는 {F.v('배터리 경로 저항 60C')} 로 넘습니다. "
       "저항이 크면 방전 끝에서 저전압 차단이 켜졌다 꺼졌다 할 여유가 줄어듭니다 (계획 17장).")
     A("- 선택지 (도구가 정하지 않습니다):")
@@ -704,18 +759,23 @@ def order(F: Facts, ctx: dict) -> str:
       "보드를 받으면 7장의 '배터리에서 U8 입력까지 저항' 측정을 꼭 하십시오.")
     A("  2. 고친 뒤 주문: 해당 구간의 미리 그린 배선이나 배치를 바꾸고 배선을 새로 해야 합니다 (시간이 걸리고, 결과가 달라질 수 있음). 사용자의 승인이 필요합니다.")
     A("")
-    A("### B. 승압 IC U8 주변 배치 (독립 전기 검토 E-R1 / E-R2, 검사 hot_loop / input_cap)")
+    A("### B. 승압 IC U8 주변 배치 (독립 전기 검토 E-R1 / E-R2 / E-R3 뒤 재배치함)")
     A("")
-    A("- 계획 12장: 두 출력 커패시터 C57 / C43은 IC에서 2 mm 안, GND 비아는 커패시터 패드에 바로; 입력 커패시터 C41 / C42는 L5 / VIN 끝에. "
-      "데이터시트(TPS61023)도 입력·출력 커패시터를 VIN / VOUT 핀과 GND 핀 모두에 가깝게 두라고 합니다 (F).")
-    A(f"- 측정(M): {F.v('출력 커패시터 간격')}. 출력 커패시터 GND 패드와 U8 GND 핀의 윗면 구리 연결: {F.v('출력 커패시터 GND 윗면 연결')}. "
-      f"{F.v('입력 커패시터 경로')}. 되먹임(FB) 선이 출력 커패시터 C57 아래를 지나는 구간: {F.v('FB 선이 출력 커패시터 아래')} (정보).")
-    A("- 영향(E, NOT_VERIFIED): 스위칭 고전류 루프가 커져 SW / +5V 핀에 순간 과전압과 입력 리플이 생길 수 있습니다. 데이터시트의 SW / VOUT 절대 최대는 "
-      "7 V (10 ns 동안 8 V) 입니다 (F, tps61023.txt:172-174). 얼마나 되는지는 보드에서 재기 전에는 모릅니다.")
-    A("- 왜 이번에 고치지 않았나: 모서리(+x / -y)가 부품으로 꽉 차 있어 배치 단계에서 더 가까운 1206 자리를 찾지 못했습니다. 고치려면 U6, C45, 되먹임 "
-      "저항 등 모서리 전체를 다시 배치하거나 더 작은 입력 커패시터를 추가(부품 변경)하고, 새로 배선해야 합니다. 사용자 승인이 필요합니다.")
+    A("- 고친 것 (재배치 단계, 모두 지금 보드에서 잰 값 M):")
+    A(f"  - 윗면 GND: {F.v('윗면 GND 한 덩어리')}. 전에는 출력 커패시터의 GND가 내층과 비아 하나로만 U8 GND 핀에 돌아갔습니다.")
+    A(f"  - 입력 커패시터: {F.v('입력 커패시터 VIN 경로')}. 전에는 구리 길이 {F.v('재배치 전 VIN 경로')} 였습니다.")
+    A(f"  - 되먹임(FB) 선: {F.v('FB 선과 출력 커패시터')}. 전에는 C57 패드 사이를 지났습니다.")
+    A(f"- 남은 것 1 (검사 hot_loop FAIL): {F.v('출력 커패시터 간격')}. 계획 12장은 두 출력 커패시터 모두 IC에서 2 mm 안을 요구합니다. "
+      "U8(SOT-563)의 VOUT / SW / GND 핀은 한 줄에 0.5 mm 간격이라, 1206 커패시터는 SW 선을 사이에 두고 그 옆에 하나(C57)만 설 수 있습니다. "
+      "둘째(C43)는 C57 바로 옆에서 같은 윗면 +5V / GND 구리에 붙였습니다.")
+    A(f"- 남은 것 2 (검사 input_cap_l5 FAIL): {F.v('입력 커패시터 L5 경로')}. 전에는 {F.v('재배치 전 L5 경로')} 였습니다. 인덕터 L5의 입력 패드는 U8의 VIN 핀 반대쪽 "
+      "끝에 있어, 커패시터 하나를 두 곳 모두 몇 mm 안에 둘 수 없습니다. 이 모서리에 1206 자리가 하나 더 없어서 둘째 입력 커패시터 C42는 "
+      "스위치 단자 J15 옆에 그대로 두었습니다.")
+    A(f"- 달라진 점 (E, NOT_VERIFIED): {F.v('SW 선')}. SW 선이 두 출력 커패시터 몸체 아래를 지나 전({F.v('재배치 전 SW 선 길이')})보다 길어졌습니다. "
+      "데이터시트의 SW / VOUT 절대 최대는 7 V (10 ns 동안 8 V) 입니다 (F, tps61023.txt:172-174). 과전압·리플·발열이 얼마인지는 "
+      "보드에서 재기 전에는 모릅니다.")
     A("- 선택지: 1. 이대로 주문하고 7장의 오실로스코프 측정(켜질 때 VIN, 0.78 A 부하에서 SW와 +5V 과전압, 입력 리플)을 반드시 함; "
-      "2. A와 함께 고친 뒤 주문.")
+      "2. 남은 두 항목까지 없애려면 저전압 차단 회로(U9 주변)까지 옮겨 모서리 전체를 다시 배치해야 합니다 (사용자 승인 필요).")
     A("")
     A("- 아래 1~9장은 A와 B 모두 '이대로 주문'을 고를 경우를 기준으로 쓴 주문 절차입니다.")
     A("")
@@ -756,9 +816,10 @@ def order(F: Facts, ctx: dict) -> str:
     A(f"| Dimensions | {F.v('외곽')} (거버를 올리면 자동으로 읽힘 - 같은지 확인) | 사양 |")
     A("| PCB Qty | 5 | D11 기본 (PCB 5장 중 2장 실장) |")
     A(f"| PCB Thickness | {F.v('두께')} | 사양 |")
-    A("| Surface Finish | ENIG | D16 (MCU 0.8 mm 피치 패드와 나중에 납땜할 구멍에 평평한 표면; 추가 요금 NOT_VERIFIED). "
-      f"주의: 거버 zip 안의 job 파일에는 '{F.v('gbrjob 표면처리')}' 로 적혀 있습니다 (보드 적층 설정이 rev 2c 그대로; 바꾸면 배선 재생이 깨져 다음 새 배선 때 고침). "
-      "표면처리는 주문 화면에서 고른 값이 정하므로 화면에서 ENIG를 고르십시오 (JLC가 job 파일을 따르는지는 NOT_VERIFIED) |")
+    finish_note = (f"거버 zip 안의 job 파일에도 '{F.v('gbrjob 표면처리')}' 로 적혀 있습니다 (M). " if F.v('gbrjob 표면처리') == "ENIG" else
+                   f"주의: 거버 zip 안의 job 파일에는 '{F.v('gbrjob 표면처리')}' 로 적혀 있습니다. ")
+    A("| Surface Finish | ENIG | D16 (MCU 0.8 mm 피치 패드와 나중에 납땜할 구멍에 평평한 표면; 추가 요금 NOT_VERIFIED). " + finish_note
+      + "표면처리는 주문 화면에서 고른 값이 정하므로 화면에서 ENIG를 고르십시오 (JLC가 job 파일을 따르는지는 NOT_VERIFIED) |")
     A("| Solder Mask / Silkscreen | Green / White | D16 (JLC 기본값) |")
     A("| 적층(Stackup), 동박 두께, Impedance Control | JLC 기본 4층 적층, 기본 동박, 임피던스 제어 없음 | D16 |")
     A("| Via Covering | Tented | D16 |")
@@ -778,21 +839,24 @@ def order(F: Facts, ctx: dict) -> str:
       f"(with_mcu {F.v('가장자리 2.5 mm 안 with_mcu')}개). 나머지 {F.v('가장자리 2.5 mm 안 JLC 미실장')} 은 JLC가 부품을 달지 않는 자리입니다 (M).")
     A(f"- 레일 쪽 (E): 표에서 '{F.v('레일 쪽')}' 쌍(거버 화면에서 위·아래의 76 mm 긴 변)을 골랐습니다. 이 경우 레일이 없는 쪽에 2.5 mm 안 부품이 "
       f"{F.v('레일 없는 쪽 2.5 mm 안')}개 남습니다. JLC가 받아 주는지는 DFM 결과로만 압니다.")
-    A(f"- **레일을 붙이는 방식:** 구리(내층 전원면 포함)가 기판 끝에서 {F.v('구리-가장자리 최소')} 까지 옵니다 (M). JLC 기준(F)으로 V-cut 가장자리는 "
-      f"구리 이격이 {F.v('V-cut 구리 이격')}, 라우팅·마우스바이트 가장자리는 {F.v('라우팅·마우스바이트 구리 이격')} 이어야 합니다. 그래서 메모에 "
-      "'V-cut이 아닌 라우팅 탭 / 마우스바이트로 레일을 붙여 달라'고 적습니다. JLC가 V-cut만 된다고 하면 멈추십시오 (3장 5번). "
-      "구리를 0.4 mm 이상 떼는 것은 설계 변경이라 사용자 결정입니다.")
+    A(f"- **레일을 붙이는 방식:** 구리 이격(M): {F.v('레일 변 구리 이격')}. JLC 기준(F)으로 V-cut 가장자리는 구리 이격이 "
+      f"{F.v('V-cut 구리 이격')}, 라우팅·마우스바이트 가장자리는 {F.v('라우팅·마우스바이트 구리 이격')} 이어야 하므로, 레일이 붙는 두 변은 "
+      "구리 기준으로 V-cut도 가능합니다 (재배치 단계에서 면과 배선을 0.4 mm로 물림). 다만 ESP-12F 몸체가 윗변에서 0.15 mm라 "
+      "메모에는 라우팅 탭 / 마우스바이트를 먼저 부탁합니다. JLC가 어떤 방식을 받아 주는지는 DFM 결과로만 압니다 (NOT_VERIFIED).")
     A(f"- 툴링 홀 부품(H) 수: {F.v('툴링 홀(H) 부품')} (설계에 없음, M).")
     A("")
     A("메모 문장 (기본 묶음, 그대로 복사):")
     A("")
     remark_rails = ("Please add 5 mm process edge rails on the two 76 mm long edges (top and bottom in the Gerber view), "
-                    "attached with routed tabs / mouse bites, NOT V-cut: copper (incl. the inner planes) is 0.3 mm from "
-                    "those edges and the ESP-12F body is 0.15 mm from the top edge. Several parts are closer than 2.5 mm to the board edge.")
+                    "preferably attached with routed tabs / mouse bites: the ESP-12F body is 0.15 mm from the top edge. "
+                    f"Copper (incl. the inner planes) keeps {F.v('레일 변 구리 이격 값')} mm from those two edges. "
+                    "Several parts are closer than 2.5 mm to the board edge.")
     e_ = ctx["edge"]
-    if f"{min(e_['copper_to_edge_mm']['min_per_side'].values()):g}" != "0.3" or \
+    rail_cu = [e_["copper_to_edge_mm"]["min_per_side"][k] for k in ("+y", "-y")]
+    if f"{min(rail_cu):g}" != F.v("레일 변 구리 이격 값") or \
             not any(r_[0] == "U7" and f"{r_[1]:g}" == "0.15" for r_ in e_["bodies_under_0p3"]):
-        raise SystemExit("docs_ko: the English remark states copper 0.3 mm / U7 0.15 mm from the edge; edge_distance.json says otherwise")
+        raise SystemExit("docs_ko: the English remark states the rail-edge copper distance and U7 0.15 mm from the edge; "
+                         "edge_distance.json / routing_rules.json say otherwise")
     remark_tail = [
         f"The {F.v('main bom_lines_tht')} THT lines (J2/J5, J8-J12, J14, J15/J17, J16, J18) are to be soldered by JLCPCB.",
         f"{F.v('1번 핀 번호 반대')}: the pin-1 numbering of your library footprints is mirrored against ours. The CPL "
@@ -832,7 +896,7 @@ def order(F: Facts, ctx: dict) -> str:
       "보이는 것이 정상입니다. 부품 몸체(커넥터는 걸쇠·몸통 쪽)가 실크 윤곽과 맞는지로 판단하고, **180도 돌리지 마십시오.** "
       "J14(배터리)를 돌리면 배터리 극성이 바뀝니다.")
     A(f"5. DFM 결과: 가장자리 가까운 부품({F.v('가장자리 0.3 mm 안 몸체')} 등)에 대한 이의, 레일 위치, 구멍·간격 지적이 없어야 합니다. "
-      "**레일을 V-cut으로만 붙일 수 있다고 하면 멈춥니다** (구리가 가장자리에 가까움, 2장). "
+      "레일을 V-cut으로 붙이겠다고 하면 ESP-12F 몸체(윗변에서 0.15 mm)에 문제가 없는지 JLC에 확인받은 뒤에만 진행합니다 (2장). "
       "JLC가 이의를 달면 주문 방식이나 부품을 마음대로 바꾸지 말고 멈춘 뒤 다시 검토합니다.")
     A("6. 견적 금액을 4장의 추정과 비교합니다. 크게 다르면 이유를 확인합니다.")
     A("7. 결제 뒤에 올 수 있는 확인: JLC 엔지니어의 DFM 검토와 유료 'Confirm Parts Placement'(부품 위치 확인)가 결제 전인지 후인지는 "
@@ -922,7 +986,7 @@ def order(F: Facts, ctx: dict) -> str:
       "실제 배터리·스위치·리드로 배터리에서 U8 입력까지 저항을 잽니다 (전압 강하 / 입력 전류): 0.29 Ohm 이하여야 합니다. 넘으면 비행 전에 보고합니다. "
       "(0장의 배선 폭 문제 때문에 이 측정이 특히 중요합니다.) "
       "0.78 A 부하에서 U8 SW 핀(L5 쪽 패드)과 +5V(C57)의 순간 과전압, U8 입력(VIN)의 리플을 짧은 접지선으로 오실로스코프에 담습니다 "
-      "(0장 B: 승압부 배치가 계획과 다름). SW가 7 V에 가까우면 비행 전에 보고합니다.")
+      "(0장 B: 승압부를 재배치했고 SW 선이 길어짐). SW가 7 V에 가까우면 비행 전에 보고합니다.")
     A(f"6. **MCU 4개 납땜** (JLC가 안 붙였을 때): 1번 핀을 표시에 맞추고, 가는 인두·플럭스로 0.8 mm 피치 핀을 모두 확대 검사합니다. "
       f"패드 1 mm 안에 이미 붙은 부품 수: {F.v('MCU 1 mm 안 부품')} (M). U1을 GY-521보다 먼저 납땜하십시오 (GY-521이 U1 위에 걸침). "
       f"그림: {p('out/render/c5_mcu_pin1.png')}")
@@ -984,7 +1048,7 @@ def order(F: Facts, ctx: dict) -> str:
         did = d.split(":")[0]
         A(f"| {did} | {d.split(':', 1)[1].strip()} | {built.get(did, '-')} |")
     A(f"| 추가 (배선 후 발견) | 배터리 경로 폭 규칙 FAIL을 받아들이고 주문할지, 고친 뒤 주문할지 (0장 A) | 결정 전: 도구 판정 {F.v('출고 판정')} |")
-    A(f"| 추가 (독립 검토 후) | 승압부 배치 FAIL ({F.v('승압부 배치 FAIL')})을 받아들이고 주문할지, 모서리를 다시 배치·배선할지 (0장 B) | 결정 전 |")
+    A(f"| 추가 (독립 검토 후) | 재배치 뒤에도 남은 승압부 FAIL ({F.v('승압부 배치 FAIL')})을 받아들이고 주문할지 (0장 B) | 결정 전 |")
     A("")
     A("## 10. 변경 범위 표 (rev 2c 대비, 부품마다 이유 분류)")
     A("")

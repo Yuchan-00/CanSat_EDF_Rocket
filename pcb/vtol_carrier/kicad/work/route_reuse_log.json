@@ -4,6 +4,26 @@
   "fanout": true,
   "stages": [
    [
+    "seed_servo",
+    "seed_servo.ses"
+   ],
+   [
+    "seed_power",
+    "seed_power.ses"
+   ],
+   [
+    "seed_signals",
+    "seed_signals.ses"
+   ],
+   [
+    "seed_gnd",
+    "seed_gnd.ses"
+   ],
+   [
+    "seed_complete",
+    "seed_complete.ses"
+   ],
+   [
     "servo",
     "vtol_carrier_servo.ses"
    ],
@@ -24,20 +44,25 @@
     "vtol_carrier_complete.ses"
    ]
   ],
-  "unrouted_board_sha256": "4a7ccfed934503ef8eb9bdc99a50d91be0320e63eb0b455e9f203a49ec22c4b7",
-  "source": "rev 3 live run a7, 2026-11-11 14:55-15:30 KST: route.py 40 5, CARRIER_SEED=0, CARRIER_RIPUP=0, CARRIER_HALO=0.4 (default), Freerouting 2.5.0, on unrouted board 4a7ccfed. route_log.json is the log of that live run; the board itself is the replay (route_reuse_log.json), which adds close_leftovers and ripup.py."
+  "unrouted_board_sha256": "c94bd350abf67d8db66a7659c2dfef581b644426270c219970a8306f1c5f0322",
+  "source": "rev 3 relayout live run, 2026-11-11 (scratch tree, then installed): route.py 40 5 with CARRIER_SEED_DIR = the a7 sessions (kicad/work/seed_a7, ECO seed: 97 of 105 nets start with their a7 routes), CARRIER_HALO=0.4 (default), rip-up on, Freerouting 2.5.0, on unrouted board c94bd350. route_log.json is the log of that live run; its own board (ae82789f) had 1 kicad-cli clearance error made by route.widen_power (stale bounding box, fixed in route.py afterwards). The board itself is the replay of these sessions with the fixed clean-up (route_reuse_log.json)."
  },
  "ses_sha256": {
-  "vtol_carrier_servo.ses": "ab24076460e9a0ca46479514c3e5ad7bc8ca89b1803d3d223f48d97a5b0c4ccc",
-  "vtol_carrier_power.ses": "3d4b9b49d74e063e3ff13c00948618f0718a4e1ee4d02b5ebb58348674e4d2b8",
-  "vtol_carrier_signals.ses": "e85257b52e1e1888932a70441c4e249d568a4cdd094685d177964d6e971f216d",
-  "vtol_carrier_gnd.ses": "974c9546ce9821f19eefc8cbc166c5a4e670b207d2da2cd727d0095f33b18c8d",
-  "vtol_carrier_complete.ses": "79de3171a51eb71354d0b226772f59b81037bdbc51af8087e3273029045ad607"
+  "seed_servo.ses": "79a7533bfd76cb26a68758c1410f349539fd9501fe106e1c1c75cd6f2ddb6ad6",
+  "seed_power.ses": "5698917f28acfab933205794b75ab0b857d394642ec50441c10f8422b28ebab7",
+  "seed_signals.ses": "195b23e501ee84af63cb36b549c16427e87d7e69e109e99abfb11efaa37dbc2d",
+  "seed_gnd.ses": "acb46a668fe590d0dd904f185b01d2bb7502c6ad0cd87d4cd60a91a25e6e6128",
+  "seed_complete.ses": "58995e4dc02a8b603fe7e9ca1cfa186425abbae998d70a522e6c1ac99c3d96ba",
+  "vtol_carrier_servo.ses": "d10881766e4f45135c0610e61c533f3fd5c74b68152e68978a94df8d5e30c636",
+  "vtol_carrier_power.ses": "bbedc0e7b8d3c9ff038a06cb9c14c234607b54c50da2f4322f533aa10d6a1bdd",
+  "vtol_carrier_signals.ses": "1fce359308afccb8b710f30d89c1764fe558e5cbebf242a6d7b1a0b0a08e0ce2",
+  "vtol_carrier_gnd.ses": "bfbaa9a6a70f8610b33764980b748c57e217b84fde53e23847236c21640e0dff",
+  "vtol_carrier_complete.ses": "99be9a58213dd5f8f358522248e874c510433aaf0fdd534a80fa1259cc39f800"
  },
  "fanout": {
   "tool": "scripts/fanout.py",
-  "pads_considered": 124,
-  "vias_placed": 118,
+  "pads_considered": 122,
+  "vias_placed": 115,
   "not_placed": [
    [
     "C1",
@@ -65,6 +90,11 @@
     "GND"
    ],
    [
+    "C59",
+    "2",
+    "GND"
+   ],
+   [
     "NT1",
     "1",
     "GND"
@@ -81,49 +111,9 @@
  "neckdowns_widened_to_0.127mm": [],
  "dangling_vias_removed": [
   {
-   "net": "COM_LED",
-   "x": 82.644,
-   "y": 122.472
-  },
-  {
-   "net": "COM_LED",
-   "x": 90.764,
-   "y": 107.947
-  },
-  {
-   "net": "ESP_GPIO2",
-   "x": 102.921,
-   "y": 89.12
-  },
-  {
-   "net": "ESP_GPIO2",
-   "x": 102.597,
-   "y": 79.515
-  },
-  {
-   "net": "ESP_TXD0",
-   "x": 95.95,
-   "y": 92.015
-  },
-  {
-   "net": "ESP_GPIO0",
-   "x": 102.048,
-   "y": 73.168
-  },
-  {
-   "net": "FCU_ILINK_TX",
-   "x": 114.3,
-   "y": 103.563
-  },
-  {
-   "net": "NAV_LED_A",
-   "x": 128.337,
-   "y": 119.566
-  },
-  {
-   "net": "ESP_GPIO15",
-   "x": 96.095,
-   "y": 85.547
+   "net": "ESP_RXD0",
+   "x": 102.84,
+   "y": 82.915
   },
   {
    "net": "COM_RESET",
@@ -131,13 +121,48 @@
    "y": 112.668
   },
   {
-   "net": "ESP_RXD0",
-   "x": 102.84,
-   "y": 82.915
+   "net": "ESP_GPIO15",
+   "x": 96.095,
+   "y": 85.547
+  },
+  {
+   "net": "NAV_LED_A",
+   "x": 128.337,
+   "y": 119.566
+  },
+  {
+   "net": "FCU_ILINK_TX",
+   "x": 114.3,
+   "y": 103.563
+  },
+  {
+   "net": "ESP_GPIO0",
+   "x": 102.048,
+   "y": 73.168
+  },
+  {
+   "net": "ESP_GPIO2",
+   "x": 102.597,
+   "y": 79.515
+  },
+  {
+   "net": "ESP_GPIO2",
+   "x": 102.921,
+   "y": 89.12
+  },
+  {
+   "net": "COM_LED",
+   "x": 90.764,
+   "y": 107.947
+  },
+  {
+   "net": "COM_LED",
+   "x": 82.644,
+   "y": 122.472
   }
  ],
- "segments": 2308,
- "routed_vias": 327,
+ "segments": 2427,
+ "routed_vias": 322,
  "gnd_stitching_vias": 102,
  "tracks_narrowed_for_clearance": [],
  "power_tracks_widened": {
@@ -656,6 +681,41 @@
    {
     "net": "+5V",
     "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.5,
+    "length_mm": 0.28
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.25,
+    "length_mm": 2.28
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.5,
+    "length_mm": 1.44
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.25,
+    "length_mm": 0.74
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.5,
+    "length_mm": 0.78
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
     "from_mm": 0.3,
     "to_mm": 0.5,
     "length_mm": 0.79
@@ -663,9 +723,9 @@
    {
     "net": "+5V",
     "layer": "F.Cu",
-    "from_mm": 0.3,
-    "to_mm": 0.5,
-    "length_mm": 0.89
+    "from_mm": 0.2,
+    "to_mm": 0.35,
+    "length_mm": 0.73
    },
    {
     "net": "+5V",
@@ -684,9 +744,16 @@
    {
     "net": "+5V",
     "layer": "F.Cu",
-    "from_mm": 0.3,
+    "from_mm": 0.2,
     "to_mm": 0.5,
-    "length_mm": 0.79
+    "length_mm": 0.71
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.5,
+    "length_mm": 2.3
    },
    {
     "net": "+5V",
@@ -712,6 +779,13 @@
    {
     "net": "+5V",
     "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.5,
+    "length_mm": 1.07
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
     "from_mm": 0.3,
     "to_mm": 0.5,
     "length_mm": 0.79
@@ -719,23 +793,9 @@
    {
     "net": "+5V",
     "layer": "F.Cu",
-    "from_mm": 0.4,
+    "from_mm": 0.35,
     "to_mm": 0.5,
-    "length_mm": 0.7
-   },
-   {
-    "net": "+5V",
-    "layer": "F.Cu",
-    "from_mm": 0.4,
-    "to_mm": 0.5,
-    "length_mm": 0.7
-   },
-   {
-    "net": "+5V",
-    "layer": "F.Cu",
-    "from_mm": 0.2,
-    "to_mm": 0.45,
-    "length_mm": 0.54
+    "length_mm": 0.41
    },
    {
     "net": "+5V",
@@ -864,13 +924,6 @@
     "length_mm": 1.51
    },
    {
-    "net": "VBAT_LOGIC",
-    "layer": "F.Cu",
-    "from_mm": 0.6,
-    "to_mm": 1.0,
-    "length_mm": 1.27
-   },
-   {
     "net": "VBAT_LOGIC_RAW",
     "layer": "F.Cu",
     "from_mm": 0.6,
@@ -881,7 +934,7 @@
     "net": "VBAT_LOGIC_SW",
     "layer": "F.Cu",
     "from_mm": 0.6,
-    "to_mm": 1.0,
+    "to_mm": 0.85,
     "length_mm": 1.22
    },
    {
@@ -902,43 +955,43 @@
     "net": "VBAT_LOGIC_SW",
     "layer": "F.Cu",
     "from_mm": 0.4,
-    "to_mm": 0.85,
+    "to_mm": 0.75,
     "length_mm": 0.94
    },
    {
     "net": "VBAT_LOGIC_SW",
     "layer": "F.Cu",
     "from_mm": 0.4,
-    "to_mm": 0.95,
+    "to_mm": 0.7,
     "length_mm": 0.76
    },
    {
     "net": "VBAT_LOGIC_SW",
     "layer": "F.Cu",
-    "from_mm": 0.5,
-    "to_mm": 1.0,
-    "length_mm": 0.95
+    "from_mm": 0.3,
+    "to_mm": 0.45,
+    "length_mm": 1.01
    },
    {
     "net": "VBAT_LOGIC_SW",
     "layer": "F.Cu",
     "from_mm": 0.5,
     "to_mm": 1.0,
-    "length_mm": 0.95
+    "length_mm": 0.62
    },
    {
     "net": "VBAT_LOGIC_SW",
     "layer": "F.Cu",
     "from_mm": 0.3,
     "to_mm": 0.35,
-    "length_mm": 0.84
+    "length_mm": 0.54
    },
    {
     "net": "VBAT_LOGIC_SW",
     "layer": "F.Cu",
-    "from_mm": 0.8,
+    "from_mm": 0.5,
     "to_mm": 0.9,
-    "length_mm": 1.85
+    "length_mm": 0.75
    },
    {
     "net": "VBAT_LOGIC_SW",
@@ -971,9 +1024,9 @@
    {
     "net": "VBAT_LOGIC_SW",
     "layer": "B.Cu",
-    "from_mm": 0.4,
-    "to_mm": 0.6,
-    "length_mm": 8.9
+    "from_mm": 0.8,
+    "to_mm": 0.9,
+    "length_mm": 0.35
    }
   ],
   "kept": [
@@ -991,30 +1044,20 @@
     "net": "+5V",
     "layer": "F.Cu",
     "width_mm": 0.2,
-    "length_mm": 0.42,
+    "length_mm": 2.28,
     "at": [
-     125.5,
-     132.45
-    ]
-   },
-   {
-    "net": "+5V",
-    "layer": "F.Cu",
-    "width_mm": 0.2,
-    "length_mm": 2.1,
-    "at": [
-     127.6,
-     132.45
+     122.17,
+     129.67
     ]
    },
    {
     "net": "+5V",
     "layer": "F.Cu",
     "width_mm": 0.35,
-    "length_mm": 1.4,
+    "length_mm": 1.19,
     "at": [
-     131.56,
-     133.3
+     126.41,
+     131.0
     ]
    },
    {
@@ -1025,6 +1068,16 @@
     "at": [
      124.88,
      78.25
+    ]
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "width_mm": 0.8,
+    "length_mm": 11.8,
+    "at": [
+     124.95,
+     134.15
     ]
    }
   ]
@@ -1046,19 +1099,41 @@
    "reason": "power / plane net - not routed by this step"
   },
   {
+   "net": "GND",
+   "routed": false,
+   "reason": "power / plane net - not routed by this step"
+  },
+  {
+   "net": "BOOST_EN",
+   "routed": true,
+   "from": [
+    121.13,
+    127.326
+   ],
+   "to": [
+    116.685,
+    132.077
+   ],
+   "segments": 26,
+   "vias": 4,
+   "length_mm": 21.46,
+   "search_window_mm": 12.0,
+   "width_mm": 0.2
+  },
+  {
    "net": "COM_LED",
    "routed": true,
    "from": [
-    82.586,
+    82.644,
     122.472
    ],
    "to": [
     82.644,
     122.472
    ],
-   "segments": 1,
+   "segments": 0,
    "vias": 1,
-   "length_mm": 0.1,
+   "length_mm": 0.0,
    "search_window_mm": 5.0,
    "width_mm": 0.2
   },
@@ -1071,28 +1146,6 @@
    "net": "ESP_TXD0",
    "routed": false,
    "reason": "no legal path on the 0.1 mm grid"
-  },
-  {
-   "net": "GND",
-   "routed": false,
-   "reason": "power / plane net - not routed by this step"
-  },
-  {
-   "net": "BOOST_EN",
-   "routed": true,
-   "from": [
-    114.725,
-    130.9
-   ],
-   "to": [
-    117.423,
-    132.1
-   ],
-   "segments": 17,
-   "vias": 0,
-   "length_mm": 3.2,
-   "search_window_mm": 5.0,
-   "width_mm": 0.2
   },
   {
    "net": "+5V",
@@ -1607,6 +1660,22 @@
    "VANE3_PWM"
   ]
  },
+ "rail_edge_nudged": [
+  {
+   "net": "I2C_SCL_3V3",
+   "layer": "B.Cu",
+   "x": 111.4114,
+   "y_from": 65.4986,
+   "y_to": 65.501
+  },
+  {
+   "net": "I2C_SCL_3V3",
+   "layer": "B.Cu",
+   "x": 112.2426,
+   "y_from": 65.4986,
+   "y_to": 65.501
+  }
+ ],
  "dangling_track_stubs_removed": [
   {
    "net": "ESP_GPIO15",
@@ -2185,6 +2254,22 @@
      "triangle_to_pad1_mm": 0.668,
      "covered_by": []
     }
+   },
+   {
+    "ref": "U8",
+    "mark": "dot",
+    "pad1_net": "BOOST_FB",
+    "at": [
+     124.9,
+     129.7
+    ],
+    "gap_to_pad1_mm": 0.85,
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.36,
+     "covered_by": []
+    }
    }
   ],
   "polarity_marks_missed": [
@@ -2273,18 +2358,6 @@
     "why": "no free spot for an extra mark within 1.6 mm of pad 1"
    },
    {
-    "ref": "U8",
-    "mark": "dot",
-    "pad1_net": "BOOST_FB",
-    "library_mark": {
-     "silk_graphics": 3,
-     "pin1_triangle": true,
-     "triangle_to_pad1_mm": 0.36,
-     "covered_by": []
-    },
-    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
-   },
-   {
     "ref": "U9",
     "mark": "dot",
     "pad1_net": "BOOST_EN",
@@ -2323,8 +2396,8 @@
     "layer": "B.SilkS",
     "mirrored": true,
     "at": [
-     130.8,
-     133.8
+     125.7,
+     131.5
     ],
     "angle_deg": 0,
     "distance_to_part_centre_mm": 0.0,
@@ -2514,5 +2587,5 @@
    "Y4"
   ]
  },
- "routed_board_sha256": "b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274"
+ "routed_board_sha256": "7b858d8d065abb78203f3c07c8756fff26e28e880fe285c7c6f5770a8cdd1166"
 }

@@ -31,9 +31,9 @@ C29,100n,C_0603_1608Metric,jlc,True,top,False,fab,11.15,-y,10.775,-y,False,False
 C30,27p,C_0402_1005Metric,jlc,True,top,False,fab,6.09,-y,5.88,-y,False,False,False,10.78,62.81,64.62,6.09
 C31,27p,C_0402_1005Metric,jlc,True,top,False,fab,11.41,-y,11.2,-y,False,False,False,12.98,57.49,62.42,11.41
 C32,100n,C_0603_1608Metric,jlc,True,top,False,fab,17.85,-y,17.825,-y,False,False,False,27.75,51.25,46.55,17.85
-C41,22u 10V,C_1206_3216Metric,jlc,True,top,False,fab,0.55,-y,0.5,-y,True,False,False,58.5,67.75,14.2,0.55
+C41,22u 10V,C_1206_3216Metric,jlc,True,top,False,fab,0.55,-y,0.5,-y,True,False,False,61.5,67.75,11.2,0.55
 C42,22u 10V,C_1206_3216Metric,jlc,True,top,False,fab,2.65,+y,2.25,+y,False,False,False,9.75,2.65,64.55,64.05
-C43,22u,C_1206_3216Metric,jlc,True,top,False,fab,0.55,-y,0.5,-y,True,False,False,63.1,67.75,9.6,0.55
+C43,22u,C_1206_3216Metric,jlc,True,top,False,fab,0.95,-y,0.55,-y,True,False,False,68.05,65.75,6.25,0.95
 C44,10u,C_0805_2012Metric,jlc,True,top,False,fab,2.05,-y,1.65,-y,True,False,False,33.225,65.85,41.425,2.05
 C45,"22u 10V tantalum (TAJA226K010RNJ, +-10 %)",CP_EIA-3216-18_Kemet-A,jlc,True,top,False,fab,6.05,-y,6.205,-y,False,False,False,64.0,62.25,8.7,6.05
 C46,100n,C_0603_1608Metric,jlc,True,top,False,fab,22.85,+y,22.825,+y,False,False,False,48.75,22.85,25.55,46.25
@@ -47,8 +47,8 @@ C53,10u,C_0805_2012Metric,jlc,True,top,False,fab,13.875,-x,13.825,-x,False,False
 C54,100n,C_0402_1005Metric,jlc,True,top,False,fab,14.45,-x,14.44,-x,False,False,False,14.45,22.63,60.95,46.27
 C55,100n,C_0603_1608Metric,jlc,True,top,False,fab,11.85,+y,11.475,+y,False,False,False,14.45,11.85,60.65,56.45
 C56,10u,C_0805_2012Metric,jlc,True,top,False,fab,2.95,-x,2.55,-x,False,False,False,2.95,61.725,70.95,6.925
-C57,22u,C_1206_3216Metric,jlc,True,top,False,fab,2.85,-y,2.8,-y,False,False,False,66.1,65.45,6.6,2.85
-C58,1n 50V X7R,C_0603_1608Metric,jlc,True,top,False,fab,3.7,-y,3.675,-y,False,False,False,60.1,65.4,14.2,3.7
+C57,22u,C_1206_3216Metric,jlc,True,top,False,fab,0.95,-y,0.55,-y,True,False,False,65.75,65.75,8.55,0.95
+C58,1n 50V X7R,C_0603_1608Metric,jlc,True,top,False,fab,1.05,-y,0.675,-y,True,False,False,58.15,67.25,16.95,1.05
 C59,100n,C_0603_1608Metric,jlc,True,top,False,fab,4.15,-y,4.125,-y,False,False,False,57.05,64.95,17.25,4.15
 C60,100n,C_0603_1608Metric,jlc,True,top,False,fab,0.95,-y,0.575,-y,True,False,False,52.55,67.35,22.55,0.95
 D1,LED 0603 (colour A),LED_0603_1608Metric,jlc,True,top,False,fab,7.85,+x,7.825,+x,False,False,False,67.25,59.65,7.85,8.65
@@ -155,8 +155,8 @@ R59,10k,R_0603_1608Metric,jlc,True,top,False,fab,2.15,-y,1.775,-y,True,False,Fal
 R60,10k,R_0603_1608Metric,jlc,True,top,False,fab,0.537,-y,0.525,-y,True,False,False,10.35,68.537,63.95,0.537
 R61,10k,R_0603_1608Metric,jlc,True,top,False,fab,12.938,-x,12.925,-x,False,False,False,12.938,51.35,62.138,16.95
 R62,10k,R_0603_1608Metric,jlc,True,top,False,fab,14.85,-x,14.475,-x,False,False,False,14.85,50.938,59.45,18.138
-R63,150k 1%,R_0603_1608Metric,jlc,True,top,False,fab,3.18,-y,2.805,-y,False,False,False,62.737,65.12,12.338,3.18
-R64,20k 1%,R_0603_1608Metric,jlc,True,top,False,fab,3.18,-y,2.805,-y,False,False,False,64.237,65.12,10.838,3.18
+R63,150k 1%,R_0603_1608Metric,jlc,True,top,False,fab,4.138,-y,4.125,-y,False,False,False,60.15,64.938,14.15,4.138
+R64,20k 1%,R_0603_1608Metric,jlc,True,top,False,fab,1.05,-y,0.675,-y,True,False,False,59.617,67.25,15.458,1.05
 R65,470k 1%,R_0603_1608Metric,jlc,True,top,False,fab,0.95,-y,0.575,-y,True,False,False,51.037,67.35,24.038,0.95
 R66,270k 1%,R_0603_1608Metric,jlc,True,top,False,fab,4.138,-y,4.125,-y,False,False,False,54.05,64.938,20.25,4.138
 R67,3.3M 1%,R_0603_1608Metric,jlc,True,top,False,fab,3.638,-y,3.625,-y,False,False,False,51.05,65.438,23.25,3.638
@@ -167,7 +167,7 @@ U3,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,f
 U4,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,fab,1.85,-y,0.5,-y,True,False,False,16.8,54.05,45.1,1.85
 U6,AMS1117-3.3,SOT-223-3_TabPin2,jlc,True,top,False,fab,0.55,+x,0.9,+x,True,False,False,68.65,58.75,0.55,7.45
 U7,"ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)",ESP-12E,jlc,True,top,False,fab,0.15,+y,8.2,+y,True,True,False,16.7,0.15,43.2,45.75
-U8,TPS61023DRLR,SOT-563,jlc,True,top,False,fab,0.35,-y,0.525,-y,True,False,False,68.2,67.95,6.5,0.35
+U8,TPS61023DRLR,SOT-563,jlc,True,top,False,fab,2.65,-y,2.825,-y,False,False,False,63.05,65.65,11.65,2.65
 U9,TLV3012BIDBVR,SOT-23-6,jlc,True,top,False,fab,0.45,-y,0.7,-y,True,False,False,54.95,66.55,19.35,0.45
 Y1,"16 MHz, CL 18 pF, 3225 SMD (X322516MRB4SI)",Crystal_SMD_3225-4Pin_3.2x2.5mm,jlc,True,top,False,fab,8.08,+x,7.93,+x,False,False,False,64.62,55.1,8.08,12.3
 Y2,"16 MHz, CL 18 pF, 3225 SMD (X322516MRB4SI)",Crystal_SMD_3225-4Pin_3.2x2.5mm,jlc,True,top,False,fab,23.93,-y,23.78,-y,False,False,False,49.1,42.77,24.3,23.93

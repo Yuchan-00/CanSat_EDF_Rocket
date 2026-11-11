@@ -1,0 +1,433 @@
+(session "vtol_carrier_complete"
+  (base_design "vtol_carrier_complete")
+  (placement
+    (resolution um 10)
+  )
+  (was_is
+  )
+  (routes 
+    (resolution um 10)
+    (parser
+      (host_cad "KiCad's Pcbnew")
+      (host_version "10.0.6")
+    )
+    (library_out 
+      (padstack "Via[0-3]_600:300_um"
+        (shape
+          (circle F.Cu 7000 0 0)
+        )
+        (shape
+          (circle In1.Cu 7000 0 0)
+        )
+        (shape
+          (circle In2.Cu 7000 0 0)
+        )
+        (shape
+          (circle B.Cu 7000 0 0)
+        )
+        (attach off)
+      )
+      (padstack "Via[0-3]_1200:600_um"
+        (shape
+          (circle F.Cu 13000 0 0)
+        )
+        (shape
+          (circle In1.Cu 13000 0 0)
+        )
+        (shape
+          (circle In2.Cu 13000 0 0)
+        )
+        (shape
+          (circle B.Cu 13000 0 0)
+        )
+        (attach off)
+      )
+      (padstack "Via[0-3]_800:400_um"
+        (shape
+          (circle F.Cu 9000 0 0)
+        )
+        (shape
+          (circle In1.Cu 9000 0 0)
+        )
+        (shape
+          (circle In2.Cu 9000 0 0)
+        )
+        (shape
+          (circle B.Cu 9000 0 0)
+        )
+        (attach off)
+      )
+    )
+    (network_out 
+      
+      (net +3V3
+        (wire
+          (path F.Cu 5000
+            1096625 -1319500
+            1096620 -1319500
+          )
+        )
+      )
+      (net "FCU_LED_A"
+        (wire
+          (path F.Cu 2000
+            1150000 -1071120
+            1150000 -1071125
+          )
+        )
+      )
+      (net "VANE1_PWM"
+        (wire
+          (path F.Cu 2000
+            1051380 -1029500
+            1051375 -1029500
+          )
+        )
+      )
+      (net "COM_RESET"
+        (wire
+          (path F.Cu 2000
+            822500 -1111120
+            822500 -1111125
+          )
+        )
+      )
+      (net "VANE2_PWM"
+        (wire
+          (path F.Cu 2000
+            1051375 -1037500
+            1051380 -1037500
+          )
+        )
+      )
+      (net "IMU_INT_5V"
+        (wire
+          (path F.Cu 2000
+            1115375 -1329000
+            1115380 -1329000
+          )
+        )
+        (wire
+          (path F.Cu 2000
+            1162000 -1286620
+            1162000 -1286625
+          )
+        )
+      )
+      (net "I2C_SDA_3V3"
+        (wire
+          (path F.Cu 2000
+            1220500 -1072375
+            1220500 -1072380
+          )
+        )
+      )
+      (net "I2C_SCL_3V3"
+        (wire
+          (path F.Cu 2000
+            1186500 -1108375
+            1186500 -1108380
+          )
+        )
+      )
+      (net "NAV_LED"
+        (wire
+          (path F.Cu 2000
+            1202000 -1133380
+            1202000 -1133375
+          )
+        )
+      )
+      (net "NAV_LED_A"
+        (wire
+          (path F.Cu 2000
+            1297000 -1247125
+            1297000 -1247120
+          )
+        )
+      )
+      (net "GNS_LED"
+        (wire
+          (path F.Cu 2000
+            814500 -1337620
+            814500 -1337625
+          )
+        )
+      )
+      (net "BUZ_N"
+        (wire
+          (path F.Cu 2000
+            1319375 -697000
+            1319380 -697000
+          )
+        )
+      )
+      (net "IMU_INT_3V3"
+        (wire
+          (path F.Cu 2000
+            1096625 -1338500
+            1096620 -1338500
+          )
+        )
+      )
+      (net "BUZ_B"
+        (wire
+          (path F.Cu 2000
+            1300620 -687500
+            1300625 -687500
+          )
+        )
+      )
+      (net "FCU_LOG_TX"
+        (wire
+          (path F.Cu 2000
+            1051375 -933500
+            1051380 -933500
+          )
+        )
+      )
+      (net "NAV_GLINK_TX"
+        (wire
+          (path F.Cu 2000
+            1242625 -1182000
+            1242620 -1182000
+          )
+        )
+      )
+      (net "GNS_GLINK_RX"
+        (wire
+          (path F.Cu 2000
+            910500 -1184380
+            910500 -1184375
+          )
+        )
+      )
+      (net "GPS_RXD_3V3"
+        (wire
+          (path F.Cu 2000
+            744500 -1322375
+            744500 -1322380
+          )
+        )
+      )
+      (net "UVLO_SENSE"
+        (wire
+          (path F.Cu 2000
+            1166625 -1340000
+            1166620 -1340000
+          )
+        )
+      )
+      (net "FCU_LED"
+        (wire
+          (path F.Cu 2000
+            1204625 -1021500
+            1204620 -1021500
+          )
+        )
+      )
+      (net "COM_LED_A"
+        (wire
+          (path F.Cu 2000
+            797754 -1132000
+            797754 -1126879
+            785000 -1114125
+          )
+        )
+      )
+      (net "NLINK_SS"
+        (wire
+          (path F.Cu 2000
+            1178000 -1286620
+            1178000 -1286625
+          )
+        )
+        (wire
+          (path F.Cu 2000
+            1051380 -989500
+            1051375 -989500
+          )
+        )
+      )
+      (net "NLINK_SCK"
+        (wire
+          (path F.Cu 2000
+            1051375 -997500
+            1051380 -997500
+          )
+        )
+        (wire
+          (path F.Cu 2000
+            1186000 -1286620
+            1186000 -1286625
+          )
+        )
+      )
+      (net "NLINK_MOSI"
+        (wire
+          (path F.Cu 2000
+            1194000 -1286620
+            1194000 -1286625
+          )
+        )
+      )
+      (net "NLINK_MISO"
+        (wire
+          (path F.Cu 2000
+            1202000 -1286620
+            1202000 -1286625
+          )
+        )
+        (wire
+          (path F.Cu 2000
+            1051380 -1013500
+            1051375 -1013500
+          )
+        )
+      )
+      (net "VANE3_PWM"
+        (wire
+          (path F.Cu 2000
+            1068000 -1054120
+            1068000 -1054125
+          )
+        )
+      )
+      (net "ILINK_C2F"
+        (wire
+          (path F.Cu 2000
+            1148000 -1054120
+            1148000 -1054125
+          )
+        )
+      )
+      (net "FCU_ILINK_TX"
+        (wire
+          (path F.Cu 2000
+            1156000 -1054120
+            1156000 -1054125
+          )
+        )
+      )
+      (net "FCU_BUF_ISIGN"
+        (wire
+          (path F.Cu 2000
+            1204620 -997500
+            1204625 -997500
+          )
+        )
+      )
+      
+      (net "COM_LINK_RX"
+        (wire
+          (path F.Cu 2000
+            878500 -1111120
+            878500 -1111125
+          )
+        )
+      )
+      (net "I2C_SDA_5V"
+        (wire
+          (path F.Cu 2000
+            1242620 -1198000
+            1242625 -1198000
+          )
+        )
+      )
+      (net "COM_LED"
+        (wire
+          (path F.Cu 2000
+            872935 -1074986
+            870357 -1077564
+            856285 -1077564
+          )
+        )
+        (wire
+          (path B.Cu 2000
+            779927 -1142160
+            779180 -1141413
+            779180 -1134821
+            836437 -1077564
+            856285 -1077564
+          )
+        )
+        (wire
+          (path F.Cu 2000
+            884302 -1076802
+            904969 -1076802
+            907637 -1079470
+          )
+        )
+        (wire
+          (path F.Cu 1500
+            872935 -1074986
+            882486 -1074986
+            884302 -1076802
+          )
+        )
+        (via "Via[0-3]_600:300_um" 856285 -1077564
+        )
+      )
+      (net "I2C_SCL_5V"
+        (wire
+          (path F.Cu 2000
+            1242620 -1206000
+            1242625 -1206000
+          )
+        )
+      )
+      (net "GNS_GPS_TX"
+        (wire
+          (path F.Cu 2000
+            735000 -1303625
+            735595 -1304220
+          )
+        )
+      )
+      (net "NAV_ISP_MOSI"
+        (wire
+          (path F.Cu 2000
+            1114000 -1286620
+            1114000 -1286625
+          )
+        )
+      )
+      (net "GLINK_G2N"
+        (wire
+          (path F.Cu 2000
+            902500 -1184380
+            902500 -1184375
+          )
+        )
+        (wire
+          (path F.Cu 2000
+            1242620 -1190000
+            1242625 -1190000
+          )
+        )
+      )
+      (net "GNS_ISP_SCK"
+        (wire
+          (path F.Cu 2000
+            838500 -1184380
+            838500 -1184375
+          )
+        )
+      )
+      (net "UVLO_REF"
+        (wire
+          (path F.Cu 2000
+            1189375 -1340000
+            1189380 -1340000
+          )
+        )
+        (wire
+          (path F.Cu 2000
+            1189375 -1330500
+            1189380 -1330500
+          )
+        )
+      )
+    )
+  )
+)

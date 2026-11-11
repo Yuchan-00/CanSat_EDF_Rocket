@@ -2,7 +2,7 @@
  "tool": "scripts/cpl_rotation.py (pcbnew 10.0.6)",
  "board": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
-  "sha256": "b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274"
+  "sha256": "7b858d8d065abb78203f3c07c8756fff26e28e880fe285c7c6f5770a8cdd1166"
  },
  "spec_sha256": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
  "assumption_A": "JLC's 0 deg of a part = its EasyEDA footprint at 0 deg and JLC places the EasyEDA footprint origin at Mid X / Mid Y; rotation positive = counter-clockwise seen from the top (F jlc_rules.md:66). Confirmed only by JLC's placement preview / production file.",
@@ -3864,9 +3864,9 @@
    "footprint": "C_1206_3216Metric",
    "pair": "main",
    "kind": "non-polar 2-pad",
-   "kicad_rotation": 180.0,
+   "kicad_rotation": 0.0,
    "kicad_origin_mm": [
-    122.15,
+    125.15,
     133.6
    ],
    "pin_function_rows": [
@@ -3914,40 +3914,40 @@
    "pin_name_mismatches": [],
    "theta_ccw": 0,
    "correction_deg": 0,
-   "cpl_rotation": 180.0,
+   "cpl_rotation": 0.0,
    "mid_board_mm": [
-    122.15,
+    125.15,
     133.6
    ],
    "source": "EasyEDA footprint record (JLC library) easyeda_C12891.json fetched 2026-11-11T16:24:26+09:00; pad fit 0.118 mm",
    "ee_pads_board": [
     {
      "n": "2",
-     "x": 120.557,
+     "x": 126.743,
      "y": 133.6
     },
     {
      "n": "1",
-     "x": 123.743,
+     "x": 123.557,
      "y": 133.6
     }
    ],
    "ee_outline_board": [
     [
-     123.75,
-     134.4
-    ],
-    [
-     120.55,
-     134.4
-    ],
-    [
-     120.55,
+     123.55,
      132.8
     ],
     [
-     123.75,
+     126.75,
      132.8
+    ],
+    [
+     126.75,
+     134.4
+    ],
+    [
+     123.55,
+     134.4
     ]
    ],
    "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
@@ -3956,18 +3956,18 @@
     "matthewlai_rev2c": null
    },
    "kicad_pad1_board": [
-    123.625,
+    123.675,
     133.6
    ],
    "kicad_pads_board": [
     {
      "n": "1",
-     "x": 123.625,
+     "x": 123.675,
      "y": 133.6
     },
     {
      "n": "2",
-     "x": 120.675,
+     "x": 126.625,
      "y": 133.6
     }
    ],
@@ -4100,10 +4100,10 @@
    "footprint": "C_1206_3216Metric",
    "pair": "main",
    "kind": "non-polar 2-pad",
-   "kicad_rotation": 180.0,
+   "kicad_rotation": 270.0,
    "kicad_origin_mm": [
-    126.75,
-    133.6
+    130.9,
+    132.4
    ],
    "pin_function_rows": [
     [
@@ -4150,40 +4150,40 @@
    "pin_name_mismatches": [],
    "theta_ccw": 0,
    "correction_deg": 0,
-   "cpl_rotation": 180.0,
+   "cpl_rotation": 270.0,
    "mid_board_mm": [
-    126.75,
-    133.6
+    130.9,
+    132.4
    ],
    "source": "EasyEDA footprint record (JLC library) easyeda_C12891.json fetched 2026-11-11T16:24:26+09:00; pad fit 0.118 mm",
    "ee_pads_board": [
     {
      "n": "2",
-     "x": 125.157,
-     "y": 133.6
+     "x": 130.9,
+     "y": 133.993
     },
     {
      "n": "1",
-     "x": 128.343,
-     "y": 133.6
+     "x": 130.9,
+     "y": 130.807
     }
    ],
    "ee_outline_board": [
     [
-     128.35,
-     134.4
+     131.7,
+     130.8
     ],
     [
-     125.15,
-     134.4
+     131.7,
+     134.0
     ],
     [
-     125.15,
-     132.8
+     130.1,
+     134.0
     ],
     [
-     128.35,
-     132.8
+     130.1,
+     130.8
     ]
    ],
    "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
@@ -4192,19 +4192,19 @@
     "matthewlai_rev2c": null
    },
    "kicad_pad1_board": [
-    128.225,
-    133.6
+    130.9,
+    130.925
    ],
    "kicad_pads_board": [
     {
      "n": "1",
-     "x": 128.225,
-     "y": 133.6
+     "x": 130.9,
+     "y": 130.925
     },
     {
      "n": "2",
-     "x": 125.275,
-     "y": 133.6
+     "x": 130.9,
+     "y": 133.875
     }
    ],
    "pad1_offset_mm": 0.118,
@@ -5790,10 +5790,10 @@
    "footprint": "C_1206_3216Metric",
    "pair": "main",
    "kind": "non-polar 2-pad",
-   "kicad_rotation": 180.0,
+   "kicad_rotation": 270.0,
    "kicad_origin_mm": [
-    129.75,
-    131.3
+    128.6,
+    132.4
    ],
    "pin_function_rows": [
     [
@@ -5840,40 +5840,40 @@
    "pin_name_mismatches": [],
    "theta_ccw": 0,
    "correction_deg": 0,
-   "cpl_rotation": 180.0,
+   "cpl_rotation": 270.0,
    "mid_board_mm": [
-    129.75,
-    131.3
+    128.6,
+    132.4
    ],
    "source": "EasyEDA footprint record (JLC library) easyeda_C12891.json fetched 2026-11-11T16:24:26+09:00; pad fit 0.118 mm",
    "ee_pads_board": [
     {
      "n": "2",
-     "x": 128.157,
-     "y": 131.3
+     "x": 128.6,
+     "y": 133.993
     },
     {
      "n": "1",
-     "x": 131.343,
-     "y": 131.3
+     "x": 128.6,
+     "y": 130.807
     }
    ],
    "ee_outline_board": [
     [
-     131.35,
-     132.1
+     129.4,
+     130.8
     ],
     [
-     128.15,
-     132.1
+     129.4,
+     134.0
     ],
     [
-     128.15,
-     130.5
+     127.8,
+     134.0
     ],
     [
-     131.35,
-     130.5
+     127.8,
+     130.8
     ]
    ],
    "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
@@ -5882,19 +5882,19 @@
     "matthewlai_rev2c": null
    },
    "kicad_pad1_board": [
-    131.225,
-    131.3
+    128.6,
+    130.925
    ],
    "kicad_pads_board": [
     {
      "n": "1",
-     "x": 131.225,
-     "y": 131.3
+     "x": 128.6,
+     "y": 130.925
     },
     {
      "n": "2",
-     "x": 128.275,
-     "y": 131.3
+     "x": 128.6,
+     "y": 133.875
     }
    ],
    "pad1_offset_mm": 0.118,
@@ -5908,10 +5908,10 @@
    "footprint": "C_0603_1608Metric",
    "pair": "main",
    "kind": "non-polar 2-pad",
-   "kicad_rotation": 0.0,
+   "kicad_rotation": 90.0,
    "kicad_origin_mm": [
-    122.95,
-    130.85
+    120.6,
+    133.1
    ],
    "pin_function_rows": [
     [
@@ -5958,40 +5958,40 @@
    "pin_name_mismatches": [],
    "theta_ccw": 0,
    "correction_deg": 0,
-   "cpl_rotation": 0.0,
+   "cpl_rotation": 90.0,
    "mid_board_mm": [
-    122.95,
-    130.85
+    120.6,
+    133.1
    ],
    "source": "EasyEDA footprint record (JLC library) easyeda_C1588.json fetched 2026-11-11T16:24:29+09:00; pad fit 0.075 mm",
    "ee_pads_board": [
     {
      "n": "2",
-     "x": 123.65,
-     "y": 130.85
+     "x": 120.6,
+     "y": 132.4
     },
     {
      "n": "1",
-     "x": 122.25,
-     "y": 130.85
+     "x": 120.6,
+     "y": 133.8
     }
    ],
    "ee_outline_board": [
     [
-     122.15,
-     130.45
+     120.2,
+     133.9
     ],
     [
-     123.75,
-     130.45
+     120.2,
+     132.3
     ],
     [
-     123.75,
-     131.25
+     121.0,
+     132.3
     ],
     [
-     122.15,
-     131.25
+     121.0,
+     133.9
     ]
    ],
    "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
@@ -6000,19 +6000,19 @@
     "matthewlai_rev2c": null
    },
    "kicad_pad1_board": [
-    122.175,
-    130.85
+    120.6,
+    133.875
    ],
    "kicad_pads_board": [
     {
      "n": "1",
-     "x": 122.175,
-     "y": 130.85
+     "x": 120.6,
+     "y": 133.875
     },
     {
      "n": "2",
-     "x": 123.725,
-     "y": 130.85
+     "x": 120.6,
+     "y": 132.325
     }
    ],
    "pad1_offset_mm": 0.075,
@@ -17581,10 +17581,10 @@
    "footprint": "R_0603_1608Metric",
    "pair": "main",
    "kind": "non-polar 2-pad",
-   "kicad_rotation": 90.0,
+   "kicad_rotation": 0.0,
    "kicad_origin_mm": [
-    125.2,
-    130.97
+    123.0,
+    130.4
    ],
    "pin_function_rows": [
     [
@@ -17631,40 +17631,40 @@
    "pin_name_mismatches": [],
    "theta_ccw": 0,
    "correction_deg": 0,
-   "cpl_rotation": 90.0,
+   "cpl_rotation": 0.0,
    "mid_board_mm": [
-    125.2,
-    130.97
+    123.0,
+    130.4
    ],
    "source": "EasyEDA footprint record (JLC library) easyeda_C22807.json fetched 2026-11-11T16:24:55+09:00; pad fit 0.072 mm",
    "ee_pads_board": [
     {
      "n": "2",
-     "x": 125.2,
-     "y": 130.217
+     "x": 123.753,
+     "y": 130.4
     },
     {
      "n": "1",
-     "x": 125.2,
-     "y": 131.723
+     "x": 122.247,
+     "y": 130.4
     }
    ],
    "ee_outline_board": [
     [
-     124.8,
-     131.77
+     122.2,
+     130.0
     ],
     [
-     124.8,
-     130.17
+     123.8,
+     130.0
     ],
     [
-     125.6,
-     130.17
+     123.8,
+     130.8
     ],
     [
-     125.6,
-     131.77
+     122.2,
+     130.8
     ]
    ],
    "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
@@ -17673,19 +17673,19 @@
     "matthewlai_rev2c": null
    },
    "kicad_pad1_board": [
-    125.2,
-    131.795
+    122.175,
+    130.4
    ],
    "kicad_pads_board": [
     {
      "n": "1",
-     "x": 125.2,
-     "y": 131.795
+     "x": 122.175,
+     "y": 130.4
     },
     {
      "n": "2",
-     "x": 125.2,
-     "y": 130.145
+     "x": 123.825,
+     "y": 130.4
     }
    ],
    "pad1_offset_mm": 0.072,
@@ -17701,8 +17701,8 @@
    "kind": "non-polar 2-pad",
    "kicad_rotation": 270.0,
    "kicad_origin_mm": [
-    126.7,
-    130.97
+    122.08,
+    133.1
    ],
    "pin_function_rows": [
     [
@@ -17751,38 +17751,38 @@
    "correction_deg": 0,
    "cpl_rotation": 270.0,
    "mid_board_mm": [
-    126.7,
-    130.97
+    122.08,
+    133.1
    ],
    "source": "EasyEDA footprint record (JLC library) easyeda_C4184.json fetched 2026-11-11T16:24:58+09:00; pad fit 0.072 mm",
    "ee_pads_board": [
     {
      "n": "2",
-     "x": 126.7,
-     "y": 131.723
+     "x": 122.08,
+     "y": 133.853
     },
     {
      "n": "1",
-     "x": 126.7,
-     "y": 130.217
+     "x": 122.08,
+     "y": 132.347
     }
    ],
    "ee_outline_board": [
     [
-     127.1,
-     130.17
+     122.48,
+     132.3
     ],
     [
-     127.1,
-     131.77
+     122.48,
+     133.9
     ],
     [
-     126.3,
-     131.77
+     121.68,
+     133.9
     ],
     [
-     126.3,
-     130.17
+     121.68,
+     132.3
     ]
    ],
    "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
@@ -17791,19 +17791,19 @@
     "matthewlai_rev2c": null
    },
    "kicad_pad1_board": [
-    126.7,
-    130.145
+    122.08,
+    132.275
    ],
    "kicad_pads_board": [
     {
      "n": "1",
-     "x": 126.7,
-     "y": 130.145
+     "x": 122.08,
+     "y": 132.275
     },
     {
      "n": "2",
-     "x": 126.7,
-     "y": 131.795
+     "x": 122.08,
+     "y": 133.925
     }
    ],
    "pad1_offset_mm": 0.072,
@@ -23619,8 +23619,8 @@
    "kind": "orientation-critical",
    "kicad_rotation": 0.0,
    "kicad_origin_mm": [
-    130.85,
-    133.8
+    125.7,
+    131.5
    ],
    "pin_function_rows": [
     [
@@ -23697,58 +23697,58 @@
    "correction_deg": 180,
    "cpl_rotation": 180.0,
    "mid_board_mm": [
-    130.85,
-    133.8
+    125.7,
+    131.5
    ],
    "source": "EasyEDA footprint record (JLC library) easyeda_C919459.json fetched 2026-11-11T16:31:06+09:00; pad fit 0.037 mm",
    "ee_pads_board": [
     {
      "n": "5",
-     "x": 131.6,
-     "y": 133.8
+     "x": 126.45,
+     "y": 131.5
     },
     {
      "n": "2",
-     "x": 130.1,
-     "y": 133.8
+     "x": 124.95,
+     "y": 131.5
     },
     {
      "n": "3",
-     "x": 130.1,
-     "y": 134.3
+     "x": 124.95,
+     "y": 132.0
     },
     {
      "n": "1",
-     "x": 130.1,
-     "y": 133.3
+     "x": 124.95,
+     "y": 131.0
     },
     {
      "n": "4",
-     "x": 131.6,
-     "y": 134.3
+     "x": 126.45,
+     "y": 132.0
     },
     {
      "n": "6",
-     "x": 131.6,
-     "y": 133.3
+     "x": 126.45,
+     "y": 131.0
     }
    ],
    "ee_outline_board": [
     [
-     131.45,
-     134.6
+     126.3,
+     132.3
     ],
     [
-     130.25,
-     134.6
+     125.1,
+     132.3
     ],
     [
-     130.25,
-     133.0
+     125.1,
+     130.7
     ],
     [
-     131.45,
-     133.0
+     126.3,
+     130.7
     ]
    ],
    "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
@@ -23757,39 +23757,39 @@
     "matthewlai_rev2c": null
    },
    "kicad_pad1_board": [
-    130.137,
-    133.3
+    124.987,
+    131.0
    ],
    "kicad_pads_board": [
     {
      "n": "1",
-     "x": 130.137,
-     "y": 133.3
+     "x": 124.987,
+     "y": 131.0
     },
     {
      "n": "2",
-     "x": 130.137,
-     "y": 133.8
+     "x": 124.987,
+     "y": 131.5
     },
     {
      "n": "3",
-     "x": 130.137,
-     "y": 134.3
+     "x": 124.987,
+     "y": 132.0
     },
     {
      "n": "4",
-     "x": 131.562,
-     "y": 134.3
+     "x": 126.412,
+     "y": 132.0
     },
     {
      "n": "5",
-     "x": 131.562,
-     "y": 133.8
+     "x": 126.412,
+     "y": 131.5
     },
     {
      "n": "6",
-     "x": 131.562,
-     "y": 133.3
+     "x": 126.412,
+     "y": 131.0
     }
    ],
    "pad1_offset_mm": 0.037,

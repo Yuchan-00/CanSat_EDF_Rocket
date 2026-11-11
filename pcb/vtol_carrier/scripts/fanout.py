@@ -24,10 +24,13 @@ CLR = 0.15          # >= the 0.13 mm class clearance (M: 0.15 -> 25 open after r
 STUB_W = 0.3        # F.Cu stub pad -> via (short; current of one pad)
 MIN_HOLE_GAP = 0.55  # drill edge to drill edge (board rule 0.5 mm)
 EDGE = 0.3 + VIA_D / 2 + 0.05
+#: relayout step (review J2): via copper >= 0.4 mm from the two rail edges y 65 / y 135 (stricter than the rule)
+EDGE_Y = 0.4 + VIA_D / 2 + 0.05
 BX0, BY0, BX1, BY1 = 62.0, 65.0, 138.0, 135.0
 MCU_REFS = ("U1", "U2", "U3", "U4")
 #: rev 3: pads whose plane vias / tracks build_pcb.power_preroutes already placed (boost block) are skipped as well
-PREROUTED_REFS = MCU_REFS + ("U8", "C57", "C43", "C41")
+#: relayout step: R63 pad 1 / C58 pad 1 are the feedback sense node (own track to C57 pad 1) - no plane via at them
+PREROUTED_REFS = MCU_REFS + ("U8", "C57", "C43", "C41", "R63", "C58")
 
 
 def mm(v: float) -> int:
@@ -108,7 +111,7 @@ def run(board, nets: tuple[str, ...] = ("GND", "+5V")) -> dict:
         for d, a in cands:
             vx = round(cx + d * math.cos(math.radians(a)), 3)
             vy = round(cy + d * math.sin(math.radians(a)), 3)
-            if not (BX0 + EDGE <= vx <= BX1 - EDGE and BY0 + EDGE <= vy <= BY1 - EDGE):
+            if not (BX0 + EDGE <= vx <= BX1 - EDGE and BY0 + EDGE_Y <= vy <= BY1 - EDGE_Y):
                 continue
             vp = pcbnew.VECTOR2I(mm(vx), mm(vy))
             if any(r.Contains(vp) or r.Collide(vp, mm(VIA_D / 2 + 0.3)) for r in rule_areas):

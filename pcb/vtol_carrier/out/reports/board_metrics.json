@@ -483,33 +483,35 @@
  },
  "gnd": {
   "copper_layers": 4,
-  "gnd_vias": 198,
+  "gnd_vias": 197,
   "gnd_fill_polygons": {
-   "F.Cu": 66,
-   "B.Cu": 52,
+   "F.Cu": 63,
+   "B.Cu": 53,
    "In1.Cu": 2
   },
   "gnd_fill_area_mm2": {
-   "F.Cu": 1964.2,
-   "B.Cu": 2419.6,
-   "In1.Cu": 4489.8
+   "F.Cu": 1965.6,
+   "B.Cu": 2409.5,
+   "In1.Cu": 4479.8
   },
-  "plus5v_in2_fill_area_mm2": 4229.1,
+  "plus5v_in2_fill_area_mm2": 4216.7,
   "plus5v_in2_fill_polygons": 5,
-  "gnd_track_mm": 111.4,
+  "gnd_track_mm": 117.9,
   "gnd_track_widths": {
-   "0.3": 92,
-   "0.2": 27,
-   "0.4": 4,
-   "0.25": 12
+   "0.3": 91,
+   "0.2": 31,
+   "0.15": 2,
+   "0.25": 12,
+   "0.4": 5,
+   "1.0": 1
   },
   "track_length_over_adjacent_plane_pct": {
-   "F.Cu": 89.5,
+   "F.Cu": 89.6,
    "B.Cu": 86.9
   },
   "track_mm_per_layer": {
-   "F.Cu": 2130.5,
-   "B.Cu": 1937.4
+   "F.Cu": 2128.1,
+   "B.Cu": 1945.4
   },
   "nlink_pct_on_F_over_In1_GND": {
    "NLINK_SS": 35.5,
@@ -539,16 +541,17 @@
   },
   "+5V": {
    "length_by_width_mm": {
-    "0.2": 2.5,
-    "0.35": 3.4,
+    "0.2": 2.3,
+    "0.25": 3.0,
+    "0.35": 3.9,
     "0.4": 2.2,
-    "0.45": 0.5,
-    "0.5": 47.9
+    "0.5": 52.6,
+    "1.0": 3.4
    },
    "vias": {
-    "0.6/0.3": 44
+    "0.6/0.3": 41
    },
-   "track_mm": 56.6
+   "track_mm": 67.4
   },
   "+3V3": {
    "length_by_width_mm": {
@@ -564,31 +567,32 @@
   },
   "VBAT_LOGIC": {
    "length_by_width_mm": {
-    "1.0": 3.9,
-    "2.0": 11.6
+    "2.0": 15.8
    },
    "vias": {},
-   "track_mm": 15.5
+   "track_mm": 15.8
   },
   "VBAT_LOGIC_SW": {
    "length_by_width_mm": {
-    "0.35": 0.8,
-    "0.6": 8.9,
-    "0.85": 8.6,
-    "0.9": 3.0,
-    "0.95": 0.8,
-    "1.0": 27.6,
-    "1.5": 4.3,
+    "0.35": 0.5,
+    "0.45": 1.0,
+    "0.7": 0.8,
+    "0.75": 0.9,
+    "0.8": 11.8,
+    "0.85": 8.9,
+    "0.9": 2.2,
+    "1.0": 17.6,
+    "1.5": 0.8,
     "1.56": 6.8,
-    "2.0": 8.5,
+    "2.0": 5.8,
     "2.4": 77.2,
     "4.0": 44.5
    },
    "vias": {
-    "0.6/0.3": 6,
-    "0.8/0.4": 6
+    "0.6/0.3": 5,
+    "0.8/0.4": 3
    },
-   "track_mm": 190.9
+   "track_mm": 178.9
   },
   "VBAT_LOGIC_RAW": {
    "length_by_width_mm": {
@@ -600,10 +604,10 @@
   },
   "BOOST_SW": {
    "length_by_width_mm": {
-    "0.35": 1.2
+    "0.35": 6.6
    },
    "vias": {},
-   "track_mm": 1.2
+   "track_mm": 6.6
   }
  },
  "hole_to_hole": {
@@ -662,16 +666,16 @@
    "segments": 3
   },
   "VBAT_LOGIC": {
-   "min_mm": 1.0,
-   "segments": 4
+   "min_mm": 2.0,
+   "segments": 6
   },
   "VBAT_LOGIC_SW": {
    "min_mm": 0.35,
-   "segments": 31
+   "segments": 30
   },
   "BOOST_SW": {
    "min_mm": 0.35,
-   "segments": 2
+   "segments": 3
   },
   "SERVO_5V": {
    "min_mm": 1.25,
@@ -683,11 +687,11 @@
   },
   "+5V": {
    "min_mm": 0.2,
-   "segments": 69
+   "segments": 79
   },
   "+3V3": {
    "min_mm": 0.375,
-   "segments": 233
+   "segments": 239
   },
   "GPS_VCC": {
    "min_mm": 0.5,
@@ -949,7 +953,7 @@
   "Q10.2": {
    "net": "VBAT_LOGIC",
    "tracks_attached_mm": [
-    1.0
+    2.0
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
@@ -972,8 +976,7 @@
    "net": "VBAT_LOGIC_SW",
    "tracks_attached_mm": [
     0.9,
-    1.5,
-    2.0
+    1.5
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
@@ -1015,25 +1018,29 @@
   "C57.1": {
    "net": "+5V",
    "tracks_attached_mm": [
-    0.35,
     0.5,
-    0.5
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    1.0
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
   "C43.1": {
    "net": "+5V",
    "tracks_attached_mm": [
-    0.45,
     0.5,
-    0.5
+    0.5,
+    1.0
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
   "C41.1": {
    "net": "VBAT_LOGIC_SW",
    "tracks_attached_mm": [
-    1.0,
+    0.45,
     1.0
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
@@ -1075,8 +1082,8 @@
  },
  "power_narrow_outside_pad_entry": {
   "VBAT_LOGIC_SW": {
-   "segments": 7,
-   "length_mm": 22.05,
+   "segments": 10,
+   "length_mm": 26.14,
    "min_mm": 0.35
   },
   "+3V3": {
@@ -1085,8 +1092,8 @@
    "min_mm": 0.375
   },
   "+5V": {
-   "segments": 10,
-   "length_mm": 7.57,
+   "segments": 12,
+   "length_mm": 10.74,
    "min_mm": 0.2
   },
   "SERVO_5V": {

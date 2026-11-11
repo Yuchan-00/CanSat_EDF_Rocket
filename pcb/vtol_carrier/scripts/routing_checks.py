@@ -17,6 +17,14 @@ Checks -> ``out/reports/routing_rules.json``:
   hot_loop          plan line 448: C57 / C43 pads within 2.0 mm of U8.6 / U8.4, and an output-capacitor GND pad on the
                     same F.Cu GND copper piece as U8.4 (added after the rev 3 electrical review, finding E-R1)
   input_cap         plan line 449: C41 or C42 pad 1 within 2.0 mm of U8.3 / L5.1; copper path lengths (review E-R2)
+  hot_loop_top_gnd  relayout step: U8.4, C57.2, C43.2 and the input capacitor's GND pad on ONE F.Cu GND copper piece,
+                    each with its own GND via into the In1 fill on that piece (review E-R1)
+  input_cap_vin     relayout step: copper path of an input capacitor (C41 / C42) to U8.3 <= 5.0 mm and its GND pad on
+                    the U8.4 piece (review E-R2, datasheet: input capacitor close to VIN and GND)
+  input_cap_l5      relayout step: copper path of an input capacitor to L5.1 <= 5.0 mm (review E-R2, target 'a few mm')
+  fb_clear_of_caps  relayout step: no BOOST_FB copper inside the pad span of an output capacitor (review E-R3)
+  rail_edge_copper  relayout step: copper >= 0.4 mm from the two 76 mm edges y 65 / y 135 that carry the JLC rails
+                    (review J2); the 0.3 mm board rule itself is unchanged
   crystals          XTAL cluster paths and XTAL net lengths against the archived rev 2c board_metrics.json
   u8_u9_pads        pad -> net of U8 / U9 on the board against rev3_checks.expected_pad_nets (datasheet table)
   mcu_pinmap        the 256 pads of U1..U4 against the rev 2c pin map
@@ -577,6 +585,200 @@ def check_input_cap(board, fps) -> dict:
                          "limit of shape_gap and means >= 40 mm"}
 
 
+# ------------------------------------------------------------------ relayout step checks (reviews E-R1 / E-R2 / E-R3 / J2)
+FEW_MM = 5.0          # E: this script's reading of the step target "a few mm" for the input-capacitor copper paths
+RAIL_EDGE_MM = 0.4    # F: JLC capabilities page as read by the JLC reviewer (copper to V-cut edge >= 0.4 mm)
+BOARD_BOX = (62.0, 65.0, 138.0, 135.0)
+
+
+class _FcuGnd:
+    """Union of the F.Cu GND copper (zone islands, tracks, pads; vias are NOT joins): piece id of any F.Cu shape."""
+
+    def __init__(self, board, fps):
+        polys = []
+        for z in zone_of(board, "GND", pcbnew.F_Cu):
+            ps = z.GetFilledPolysList(pcbnew.F_Cu)
+            polys += [ps.UnitSet(i) for i in range(ps.OutlineCount())]
+        self.shapes = [("poly", p) for p in polys]
+        self.shapes += [("track", t.GetEffectiveShape(pcbnew.F_Cu)) for t in tracks_of(board, "GND") if t.GetLayer() == pcbnew.F_Cu]
+        self.shapes += [("pad", p.GetEffectiveShape(pcbnew.F_Cu)) for fp in fps.values() for p in fp.Pads()
+                        if p.GetNetname() == "GND" and p.IsOnLayer(pcbnew.F_Cu)]
+        n = len(self.shapes)
+        self.parent = list(range(n))
+        for i in range(n):
+            for j in range(i + 1, n):
+                if self.shapes[i][0] == "poly" and self.shapes[j][0] == "poly":
+                    continue
+                if self.find(i) != self.find(j) and self.shapes[i][1].Collide(self.shapes[j][1], 0):
+                    self.parent[self.find(i)] = self.find(j)
+
+    def find(self, i: int) -> int:
+        while self.parent[i] != i:
+            self.parent[i] = self.parent[self.parent[i]]
+            i = self.parent[i]
+        return i
+
+    def piece(self, shape):
+        hit = sorted({self.find(i) for i, (_k, s) in enumerate(self.shapes) if s.Collide(shape, 0)})
+        return hit[0] if hit else None
+
+
+def input_cap_choice(board, fps) -> tuple[str, list[dict]]:
+    """The input capacitor (C41 / C42) with the shortest copper path to U8.3; rows for both."""
+    rows = []
+    for c in ("C41", "C42"):
+        a = network(board, fps, "VBAT_LOGIC_SW", (c, "1"), ("U8", "3"))
+        b = network(board, fps, "VBAT_LOGIC_SW", (c, "1"), ("L5", "1"))
+        rows.append({"cap": c, "value": fps[c].GetValue(),
+                     "to_U8.3_copper_path_mm": a.get("shortest_copper_path_mm"), "to_U8.3_vias": a.get("vias_on_shortest_path"),
+                     "to_U8.3_ohm_E": a.get("ohm"),
+                     "to_L5.1_copper_path_mm": b.get("shortest_copper_path_mm"), "to_L5.1_vias": b.get("vias_on_shortest_path"),
+                     "to_L5.1_ohm_E": b.get("ohm"),
+                     "pad1_edge_gap_to_U8.3_mm": shape_gap(pad(fps, c, "1").GetEffectiveShape(pcbnew.F_Cu),
+                                                           pad(fps, "U8", "3").GetEffectiveShape(pcbnew.F_Cu)),
+                     "pad1_edge_gap_to_L5.1_mm": shape_gap(pad(fps, c, "1").GetEffectiveShape(pcbnew.F_Cu),
+                                                           pad(fps, "L5", "1").GetEffectiveShape(pcbnew.F_Cu))})
+    best = min(rows, key=lambda r: (r["to_U8.3_copper_path_mm"] if r["to_U8.3_copper_path_mm"] is not None else 1e9, r["cap"]))
+    return best["cap"], rows
+
+
+def check_hot_loop_top_gnd(board, fps) -> dict:
+    cin, _rows = input_cap_choice(board, fps)
+    g = _FcuGnd(board, fps)
+    items = [("U8", "4"), ("C57", "2"), ("C43", "2"), (cin, "2")]
+    piece = {f"{r}.{n}": g.piece(pad(fps, r, n).GetEffectiveShape(pcbnew.F_Cu)) for r, n in items}
+    same = len({v for v in piece.values()}) == 1 and None not in piece.values()
+    in1 = zone_of(board, "GND", pcbnew.In1_Cu)
+    vias = []
+    for v in vias_of(board, "GND"):
+        x, y = pt(v.GetPosition())
+        near = {f"{r}.{n}": round(rect_dist(x, y, box(pad(fps, r, n).GetBoundingBox())), 3) for r, n in items}
+        near = {k: d for k, d in near.items() if d <= VIA_NEAR_MM}
+        if not near:
+            continue
+        vias.append({"at": [round(x, 3), round(y, 3)], "drill_mm": mm(v.GetDrillValue()), "within_1.5mm_of": near,
+                     "in_In1_fill": in_fill(in1, pcbnew.In1_Cu, x, y), "fcu_gnd_piece": g.piece(v.GetEffectiveShape(pcbnew.F_Cu))})
+    # own via: a matching pad -> distinct via (in the In1 fill, on the pad's F.Cu piece, within 1.5 mm)
+    cand = {k: [i for i, v in enumerate(vias) if k in v["within_1.5mm_of"] and v["in_In1_fill"] and v["fcu_gnd_piece"] == piece[k]]
+            for k in piece}
+    match: dict[int, str] = {}
+
+    def assign(k: str, seen: set) -> bool:
+        for i in sorted(cand[k], key=lambda i: vias[i]["within_1.5mm_of"][k]):
+            if i in seen:
+                continue
+            seen.add(i)
+            if i not in match or assign(match[i], seen):
+                match[i] = k
+                return True
+        return False
+    own = {k: assign(k, set()) for k in sorted(piece, key=lambda k: (len(cand[k]), k))}
+    own_via = {k: vias[i]["at"] for i, k in sorted(match.items())}
+    gaps = {f"{c}.2 -> U8.4": shape_gap(pad(fps, c, "2").GetEffectiveShape(pcbnew.F_Cu), pad(fps, "U8", "4").GetEffectiveShape(pcbnew.F_Cu))
+            for c in ("C57", "C43", cin)}
+    ok = same and all(own.values())
+    return {"result": PASS if ok else FAIL, "label": "M", "input_capacitor": cin, "fcu_gnd_piece": piece,
+            "all_on_one_piece": same, "pads_with_own_via": own, "own_via_at": own_via, "gnd_vias_near_the_pads": vias,
+            "pad_edge_gap_mm": gaps,
+            "criterion": "U8.4, C57.2, C43.2 and the GND pad of the input capacitor nearest to U8.3 (by copper path) lie on ONE "
+                         "F.Cu GND copper piece (zone islands + tracks + pads; vias are not joins), and each of the four pads "
+                         "can be given its own GND via: within 1.5 mm of the pad, inside the In1 GND fill, on that F.Cu piece"}
+
+
+def check_input_cap_vin(board, fps) -> dict:
+    cin, rows = input_cap_choice(board, fps)
+    r = [x for x in rows if x["cap"] == cin][0]
+    g = _FcuGnd(board, fps)
+    pc, pu = g.piece(pad(fps, cin, "2").GetEffectiveShape(pcbnew.F_Cu)), g.piece(pad(fps, "U8", "4").GetEffectiveShape(pcbnew.F_Cu))
+    path = r["to_U8.3_copper_path_mm"]
+    ok = path is not None and path <= FEW_MM and pc is not None and pc == pu
+    return {"result": PASS if ok else FAIL, "label": "M (path length from the track / via model of network(), zone copper not modelled)",
+            "input_capacitor": cin, "copper_path_to_U8.3_mm": path, "vias_on_path": r["to_U8.3_vias"], "limit_mm": FEW_MM,
+            "gnd_pad_piece": pc, "U8.4_piece": pu, "gnd_pad_on_the_U8.4_piece": pc is not None and pc == pu, "rows": rows,
+            "criterion": f"an input capacitor (C41 / C42, 22 uF) reaches U8.3 (VIN) over <= {FEW_MM} mm of track (E: this "
+                         "script's reading of 'a few mm') and its GND pad is on the same F.Cu GND piece as U8.4"}
+
+
+def check_input_cap_l5(board, fps) -> dict:
+    _cin, rows = input_cap_choice(board, fps)
+    vals = [(x["to_L5.1_copper_path_mm"], x["cap"]) for x in rows if x["to_L5.1_copper_path_mm"] is not None]
+    best = min(vals) if vals else (None, None)
+    straight = shape_gap(pad(fps, "U8", "3").GetEffectiveShape(pcbnew.F_Cu), pad(fps, "L5", "1").GetEffectiveShape(pcbnew.F_Cu))
+    ok = best[0] is not None and best[0] <= FEW_MM
+    return {"result": PASS if ok else FAIL, "label": "M (path length from the track / via model of network(), zone copper not modelled)",
+            "input_capacitor": best[1], "copper_path_to_L5.1_mm": best[0], "limit_mm": FEW_MM,
+            "pad_edge_distance_U8.3_to_L5.1_mm": straight, "rows": rows,
+            "criterion": f"an input capacitor (C41 / C42) reaches L5.1 over <= {FEW_MM} mm of track (E: reading of 'a few mm'). "
+                         "The straight pad distance U8.3 - L5.1 is reported: one capacitor cannot be nearer to both than that"}
+
+
+def check_fb_clear_of_caps(board, fps) -> dict:
+    hits, spans = [], {}
+    fb = [(t, t.GetEffectiveShape(pcbnew.F_Cu)) for t in tracks_of(board, "BOOST_FB") if t.GetLayer() == pcbnew.F_Cu]
+    fb += [(v, v.GetEffectiveShape(pcbnew.F_Cu)) for v in vias_of(board, "BOOST_FB")]
+    for c in ("C57", "C43"):
+        bs = [box(p.GetBoundingBox()) for p in fps[c].Pads()]
+        x0, y0, x1, y1 = min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs)
+        spans[c] = [round(v, 3) for v in (x0, y0, x1, y1)]
+        rect = pcbnew.SHAPE_RECT(pcbnew.VECTOR2I(pcbnew.FromMM(x0), pcbnew.FromMM(y0)), pcbnew.FromMM(x1 - x0), pcbnew.FromMM(y1 - y0))
+        for t, sh in fb:
+            if sh.Collide(rect, 0):
+                if t.GetClass() == "PCB_VIA":
+                    hits.append({"cap": c, "via": [round(v, 2) for v in pt(t.GetPosition())]})
+                else:
+                    hits.append({"cap": c, "track": [round(v, 2) for v in (*pt(t.GetStart()), *pt(t.GetEnd()))], "w": round(mm(t.GetWidth()), 3)})
+    gap = min((shape_gap(sh, p.GetEffectiveShape(pcbnew.F_Cu)) for _t, sh in fb for c in ("C57", "C43") for p in fps[c].Pads()),
+              default=None)
+    length = round(sum(mm(t.GetLength()) for t, _s in fb if t.GetClass() != "PCB_VIA"), 3)
+    return {"result": PASS if fb and not hits else FAIL, "label": "M", "pad_span_boxes_kicad_mm": spans, "boost_fb_copper_inside": hits,
+            "min_gap_boost_fb_track_to_output_cap_pad_mm": gap, "boost_fb_f_cu_track_length_mm": length,
+            "boost_fb_vias": len(vias_of(board, "BOOST_FB")),
+            "criterion": "no BOOST_FB F.Cu track and no BOOST_FB via touches the pad span box (bounding box of both pads) of "
+                         "the output capacitors C57 / C43"}
+
+
+def check_rail_edges(board, fps) -> dict:
+    x0, y0, x1, y1 = BOARD_BOX
+    sides = {"y65 (top, rail)": lambda b: b[1] - y0, "y135 (bottom, rail)": lambda b: y1 - b[3],
+             "x62": lambda b: b[0] - x0, "x138": lambda b: x1 - b[2]}
+    rows: dict = {s: {} for s in sides}
+
+    def put(kind: str, b, what: str) -> None:
+        for s, fn in sides.items():
+            d = round(fn(b), 4)
+            cur = rows[s].get(kind)
+            if cur is None or d < cur["min_mm"]:
+                rows[s][kind] = {"min_mm": d, "item": what}
+    for z in board.Zones():
+        if z.GetIsRuleArea():
+            continue
+        for lay in z.GetLayerSet().Seq():
+            ps = z.GetFilledPolysList(lay)
+            if ps.OutlineCount():
+                put(f"zone fill {board.GetLayerName(lay)}", box(ps.BBox()), f"{z.GetNetname()} fill on {board.GetLayerName(lay)}")
+    for t in board.GetTracks():
+        if t.GetClass() == "PCB_VIA":
+            x, y = pt(t.GetPosition())
+            r = mm(t.GetWidth(pcbnew.F_Cu)) / 2
+            put("via", (x - r, y - r, x + r, y + r), f"{t.GetNetname()} via ({x:.3f}, {y:.3f})")
+        else:
+            (ax, ay), (bx, by) = pt(t.GetStart()), pt(t.GetEnd())
+            r = mm(t.GetWidth()) / 2
+            put("track", (min(ax, bx) - r, min(ay, by) - r, max(ax, bx) + r, max(ay, by) + r),
+                f"{t.GetNetname()} {t.GetLayerName()} ({ax:.3f}, {ay:.3f})-({bx:.3f}, {by:.3f}) w {2 * r:.3f}")
+    for fp in fps.values():
+        for p in fp.Pads():
+            put("pad", box(p.GetBoundingBox()), f"{fp.GetReference()}.{p.GetNumber()} {p.GetNetname()}")
+    mins = {s: min(v["min_mm"] for v in k.values()) for s, k in rows.items()}
+    rail = [s for s in sides if "rail" in s]
+    bad = [f"{s}: {k} {v['min_mm']} mm ({v['item']})" for s in rail for k, v in sorted(rows[s].items()) if v["min_mm"] < RAIL_EDGE_MM - 1e-9]
+    return {"result": PASS if not bad else FAIL, "label": "M (zones refilled in memory; distances to the straight outline lines, bounding boxes)",
+            "limit_mm_rail_edges": RAIL_EDGE_MM, "min_copper_to_edge_mm": mins, "per_edge": rows, "below_limit": bad,
+            "criterion": f"zone fills (all copper layers), tracks, vias and pads keep >= {RAIL_EDGE_MM} mm from the two 76 mm "
+                         "edges y 65 and y 135 (JLC edge rails, review J2); the other two edges are reported against the "
+                         "unchanged 0.3 mm board rule"}
+
+
 # ---------------------------------------------------------------------------------------------------- crystals
 def check_crystals(board, fps) -> dict:
     ref = json.loads((REV2C / "out" / "reports" / "board_metrics.json").read_text(encoding="utf-8"))
@@ -749,6 +951,11 @@ def main() -> int:
         "battery_path": check_battery(board, fps),
         "hot_loop": check_hot_loop(board, fps),
         "input_cap": check_input_cap(board, fps),
+        "hot_loop_top_gnd": check_hot_loop_top_gnd(board, fps),
+        "input_cap_vin": check_input_cap_vin(board, fps),
+        "input_cap_l5": check_input_cap_l5(board, fps),
+        "fb_clear_of_caps": check_fb_clear_of_caps(board, fps),
+        "rail_edge_copper": check_rail_edges(board, fps),
         "crystals": check_crystals(board, fps),
         "u8_u9_pads": check_u8_u9(fps),
         "mcu_pinmap": check_mcu(fps),

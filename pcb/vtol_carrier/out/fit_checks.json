@@ -1,8 +1,8 @@
 {
  "schema": "vtol_carrier.fit_checks/1",
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274",
- "placement_sha256": "8cb73c2e7aff7c7f2369aa10c3b507f8a2cbc9a5a9fbe9c95cf48f640256dd02",
+ "board_sha256": "7b858d8d065abb78203f3c07c8756fff26e28e880fe285c7c6f5770a8cdd1166",
+ "placement_sha256": "79b47649c720189e53928cc1e8b71076ce40cf7ebf27497aeb53c344da2bb928",
  "module_dimensions_sha256": "40d59de412501d88cf2bad976145d006efe22f416afe23d556c44c15ac6a17dd",
  "tool": "pcbnew 10.0.6",
  "labels": "positions M (board file); part heights A (kicad/placement.json part_heights_mm); module dimensions F / A as tagged; no hardware measurement",
@@ -68,6 +68,11 @@
       0.55
      ],
      [
+      "R63",
+      0.54,
+      0.55
+     ],
+     [
       "R66",
       0.54,
       0.55
@@ -81,11 +86,6 @@
       "C59",
       0.55,
       0.9
-     ],
-     [
-      "R63",
-      0.72,
-      0.55
      ],
      [
       "C3",
@@ -618,7 +618,7 @@
         "height_mm": 0.55,
         "overlap_mm2": 1.92,
         "by": "body",
-        "how": "auto",
+        "how": "power",
         "clearance_mm": 1.95,
         "clearance_conservative_mm": 0.75
        },
@@ -794,7 +794,7 @@
         "height_mm": 0.55,
         "overlap_mm2": 0.4,
         "by": "body",
-        "how": "auto",
+        "how": "power",
         "clearance_mm": 1.95,
         "clearance_conservative_mm": 0.75
        },
@@ -928,7 +928,7 @@
         "height_mm": 0.55,
         "overlap_mm2": 0.4,
         "by": "body",
-        "how": "auto",
+        "how": "power",
         "clearance_mm": 2.75
        },
        {

@@ -21286,9 +21286,9 @@
      "tool": "scripts/place.py",
      "tool_version": null
     },
-    "rotation_deg": 180.0,
+    "rotation_deg": 0.0,
     "side": "top",
-    "x_mm": 122.15,
+    "x_mm": 125.15,
     "y_mm": 133.6
    },
    {
@@ -21320,10 +21320,10 @@
      "tool": "scripts/place.py",
      "tool_version": null
     },
-    "rotation_deg": 180.0,
+    "rotation_deg": 270.0,
     "side": "top",
-    "x_mm": 126.75,
-    "y_mm": 133.6
+    "x_mm": 130.9,
+    "y_mm": 132.4
    },
    {
     "component_ref": "C44",
@@ -21558,10 +21558,10 @@
      "tool": "scripts/place.py",
      "tool_version": null
     },
-    "rotation_deg": 180.0,
+    "rotation_deg": 270.0,
     "side": "top",
-    "x_mm": 129.75,
-    "y_mm": 131.3
+    "x_mm": 128.6,
+    "y_mm": 132.4
    },
    {
     "component_ref": "C58",
@@ -21575,10 +21575,10 @@
      "tool": "scripts/place.py",
      "tool_version": null
     },
-    "rotation_deg": 0.0,
+    "rotation_deg": 90.0,
     "side": "top",
-    "x_mm": 122.95,
-    "y_mm": 130.85
+    "x_mm": 120.6,
+    "y_mm": 133.1
    },
    {
     "component_ref": "C59",
@@ -23394,10 +23394,10 @@
      "tool": "scripts/place.py",
      "tool_version": null
     },
-    "rotation_deg": 90.0,
+    "rotation_deg": 0.0,
     "side": "top",
-    "x_mm": 125.2,
-    "y_mm": 130.97
+    "x_mm": 123.0,
+    "y_mm": 130.4
    },
    {
     "component_ref": "R64",
@@ -23413,8 +23413,8 @@
     },
     "rotation_deg": 270.0,
     "side": "top",
-    "x_mm": 126.7,
-    "y_mm": 130.97
+    "x_mm": 122.08,
+    "y_mm": 133.1
    },
    {
     "component_ref": "R65",
@@ -23600,8 +23600,8 @@
     },
     "rotation_deg": 0.0,
     "side": "top",
-    "x_mm": 130.85,
-    "y_mm": 133.8
+    "x_mm": 125.7,
+    "y_mm": 131.5
    },
    {
     "component_ref": "U9",
@@ -23699,19 +23699,19 @@
     "polygon": [
      [
       62.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      135.0
+      134.6
      ],
      [
       62.0,
-      135.0
+      134.6
      ]
     ],
     "provenance": {
@@ -23732,19 +23732,19 @@
     "polygon": [
      [
       62.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      135.0
+      134.6
      ],
      [
       62.0,
-      135.0
+      134.6
      ]
     ],
     "provenance": {
@@ -23765,19 +23765,19 @@
     "polygon": [
      [
       62.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      135.0
+      134.6
      ],
      [
       62.0,
-      135.0
+      134.6
      ]
     ],
     "provenance": {
@@ -23798,19 +23798,19 @@
     "polygon": [
      [
       62.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      65.0
+      65.4
      ],
      [
       138.0,
-      135.0
+      134.6
      ],
      [
       62.0,
-      135.0
+      134.6
      ]
     ],
     "provenance": {

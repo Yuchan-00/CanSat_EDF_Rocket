@@ -2,7 +2,7 @@
  "tool": "scripts/routing_checks.py (pcbnew 10.0.6)",
  "board": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
-  "sha256": "b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274"
+  "sha256": "7b858d8d065abb78203f3c07c8756fff26e28e880fe285c7c6f5770a8cdd1166"
  },
  "result": "FAIL",
  "results": {
@@ -14,7 +14,12 @@
   "l5_keepout": "PASS",
   "battery_path": "FAIL",
   "hot_loop": "FAIL",
-  "input_cap": "FAIL",
+  "input_cap": "PASS",
+  "hot_loop_top_gnd": "PASS",
+  "input_cap_vin": "PASS",
+  "input_cap_l5": "FAIL",
+  "fb_clear_of_caps": "PASS",
+  "rail_edge_copper": "PASS",
   "crystals": "PASS",
   "u8_u9_pads": "PASS",
   "mcu_pinmap": "PASS",
@@ -29,9 +34,9 @@
     "F.Cu"
    ],
    "vias": 0,
-   "track_length_mm": 1.174,
-   "pad_centre_distance_U8.5_L5.2_mm": 2.043,
-   "pad_edge_gap_mm": 0.464,
+   "track_length_mm": 6.619,
+   "pad_centre_distance_U8.5_L5.2_mm": 6.698,
+   "pad_edge_gap_mm": 5.551,
    "widths_mm": [
     0.35
    ],
@@ -44,19 +49,19 @@
      "vias_within_1.5mm": [
       {
        "at": [
-        131.7,
-        129.75
+        128.35,
+        129.95
        ],
-       "to_pad_mm": 0.65,
+       "to_pad_mm": 0.4,
        "drill_mm": 0.3,
        "in_plane_fill": true
       },
       {
        "at": [
-        130.8,
-        129.75
+        130.0,
+        129.95
        ],
-       "to_pad_mm": 0.65,
+       "to_pad_mm": 0.64,
        "drill_mm": 0.3,
        "in_plane_fill": true
       }
@@ -67,27 +72,27 @@
      "vias_within_1.5mm": [
       {
        "at": [
-        127.1,
-        133.15
+        131.65,
+        129.95
        ],
-       "to_pad_mm": 0.55,
+       "to_pad_mm": 0.4,
        "drill_mm": 0.3,
        "in_plane_fill": true
       },
       {
        "at": [
-        127.1,
-        134.05
+        130.0,
+        129.95
        ],
-       "to_pad_mm": 0.55,
+       "to_pad_mm": 0.4,
        "drill_mm": 0.3,
        "in_plane_fill": true
       }
      ]
     }
    ],
-   "distinct_vias_in_plane": 4,
-   "distinct_vias": 4,
+   "distinct_vias_in_plane": 3,
+   "distinct_vias": 3,
    "result": "PASS",
    "label": "M",
    "criterion": ">= 3 distinct +5V vias within 1.5 mm of the C57.1 / C43.1 pads, each inside the In2 +5V fill"
@@ -99,10 +104,19 @@
      "vias_within_1.5mm": [
       {
        "at": [
-        132.75,
-        134.35
+        125.6,
+        133.2
        ],
-       "to_pad_mm": 0.85,
+       "to_pad_mm": 1.13,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        127.1,
+        132.3
+       ],
+       "to_pad_mm": 0.372,
        "drill_mm": 0.3,
        "in_plane_fill": true
       }
@@ -113,19 +127,28 @@
      "vias_within_1.5mm": [
       {
        "at": [
-        126.7,
-        131.008
+        127.1,
+        132.3
        ],
-       "to_pad_mm": 1.0,
+       "to_pad_mm": 1.166,
        "drill_mm": 0.3,
        "in_plane_fill": true
       },
       {
        "at": [
-        128.275,
-        130.05
+        128.6,
+        132.92
        ],
-       "to_pad_mm": 0.35,
+       "to_pad_mm": 0.38,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        130.9,
+        132.92
+       ],
+       "to_pad_mm": 1.451,
        "drill_mm": 0.3,
        "in_plane_fill": true
       }
@@ -136,10 +159,19 @@
      "vias_within_1.5mm": [
       {
        "at": [
-        126.15,
-        133.6
+        128.6,
+        132.92
        ],
-       "to_pad_mm": 0.3,
+       "to_pad_mm": 1.451,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        130.9,
+        132.92
+       ],
+       "to_pad_mm": 0.38,
        "drill_mm": 0.3,
        "in_plane_fill": true
       }
@@ -150,27 +182,36 @@
      "vias_within_1.5mm": [
       {
        "at": [
-        121.8,
-        133.6
+        125.6,
+        133.2
        ],
-       "to_pad_mm": 0.55,
+       "to_pad_mm": 0.45,
        "drill_mm": 0.3,
        "in_plane_fill": true
       },
       {
        "at": [
-        120.675,
-        131.287
+        127.1,
+        132.3
        ],
-       "to_pad_mm": 1.413,
+       "to_pad_mm": 0.4,
+       "drill_mm": 0.3,
+       "in_plane_fill": true
+      },
+      {
+       "at": [
+        128.6,
+        132.92
+       ],
+       "to_pad_mm": 1.4,
        "drill_mm": 0.3,
        "in_plane_fill": true
       }
      ]
     }
    ],
-   "distinct_vias_in_plane": 6,
-   "distinct_vias": 6,
+   "distinct_vias_in_plane": 4,
+   "distinct_vias": 4,
    "result": "PASS",
    "label": "M",
    "criterion": ">= 3 distinct GND vias within 1.5 mm of U8.4 / C57.2 / C43.2 / C41.2 inside the In1 GND fill, at least one at each of U8.4, C57.2, C43.2"
@@ -179,8 +220,8 @@
    "result": "PASS",
    "label": "M",
    "block_box_kicad_mm": [
-    121.42,
-    129.44,
+    119.83,
+    129.62,
     137.79,
     134.79
    ],
@@ -194,92 +235,64 @@
     "C58"
    ],
    "grid_mm": 0.1,
-   "covered_percent": 83.6,
+   "covered_percent": 85.1,
    "covered_pieces": 1,
    "tracks_on_In1_in_box": 0,
    "non_gnd_vias_through_the_plane_in_box": [
     {
      "net": "VBAT_LOGIC_SW",
      "at": [
-      129.3,
-      134.38
-     ]
-    },
-    {
-     "net": "VBAT_LOGIC_SW",
-     "at": [
-      136.85,
-      129.6
-     ]
-    },
-    {
-     "net": "VBAT_LOGIC_SW",
-     "at": [
-      124.05,
-      132.05
-     ]
-    },
-    {
-     "net": "VBAT_LOGIC_SW",
-     "at": [
-      123.2,
-      132.05
-     ]
-    },
-    {
-     "net": "VBAT_LOGIC_SW",
-     "at": [
       136.75,
-      134.25
+      134.15
      ]
     },
     {
      "net": "VBAT_LOGIC_SW",
      "at": [
-      136.85,
-      130.6
+      124.7,
+      133.9
+     ]
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      137.2,
+      130.5
+     ]
+    },
+    {
+     "net": "VBAT_LOGIC_SW",
+     "at": [
+      136.3,
+      130.5
      ]
     },
     {
      "net": "+5V",
      "at": [
-      122.175,
-      131.737
+      128.35,
+      129.95
      ]
     },
     {
      "net": "+5V",
      "at": [
-      127.1,
-      133.15
+      131.65,
+      129.95
      ]
     },
     {
      "net": "+5V",
      "at": [
-      125.2,
-      131.008
+      130.0,
+      129.95
      ]
     },
     {
-     "net": "+5V",
+     "net": "BOOST_EN",
      "at": [
-      131.7,
-      129.75
-     ]
-    },
-    {
-     "net": "+5V",
-     "at": [
-      127.1,
-      134.05
-     ]
-    },
-    {
-     "net": "+5V",
-     "at": [
-      130.8,
-      129.75
+      124.0,
+      131.5
      ]
     }
    ],
@@ -291,7 +304,7 @@
    "sense_tap": {
     "from": "R63.1",
     "to": "C43.1",
-    "f_cu_track_path_mm": 3.065,
+    "f_cu_track_path_mm": 10.475,
     "vias_on_the_way": 0,
     "+5V_vias_at_R63.1": [],
     "ok": true
@@ -301,34 +314,34 @@
     "min_gap_of_tracks_and_other_pads_mm": 1.058,
     "items": [
      {
-      "item": "track F.Cu (129.19, 132.35)-(130.14, 133.30)",
+      "item": "track F.Cu (124.99, 131.00)-(124.50, 131.00)",
       "gap_mm": 1.058,
       "nearest": "pad U8.5"
      },
      {
-      "item": "track F.Cu (129.19, 130.71)-(129.19, 132.35)",
-      "gap_mm": 2.339,
+      "item": "track F.Cu (124.50, 131.00)-(124.00, 130.50)",
+      "gap_mm": 1.526,
       "nearest": "pad U8.5"
      },
      {
-      "item": "track F.Cu (129.08, 130.61)-(129.19, 130.71)",
-      "gap_mm": 3.109,
-      "nearest": "pad L5.2"
+      "item": "pad R63.2",
+      "gap_mm": 1.974,
+      "nearest": "pad U8.5"
      },
      {
-      "item": "track F.Cu (129.08, 130.35)-(129.08, 130.61)",
-      "gap_mm": 3.234,
-      "nearest": "pad L5.2"
+      "item": "track F.Cu (123.60, 130.80)-(122.20, 132.20)",
+      "gap_mm": 2.448,
+      "nearest": "pad U8.5"
      },
      {
-      "item": "track F.Cu (129.08, 129.89)-(129.08, 130.35)",
-      "gap_mm": 3.275,
-      "nearest": "pad L5.2"
+      "item": "pad R64.1",
+      "gap_mm": 3.552,
+      "nearest": "pad U8.5"
      },
      {
-      "item": "track F.Cu (129.00, 129.81)-(129.08, 129.89)",
-      "gap_mm": 3.435,
-      "nearest": "pad L5.2"
+      "item": "track F.Cu (122.20, 132.20)-(120.80, 132.20)",
+      "gap_mm": 3.823,
+      "nearest": "pad U8.5"
      }
     ],
     "tracks_inside_L5_courtyard": [],
@@ -355,20 +368,18 @@
    ],
    "copper_in_rule_area": [],
    "signal_copper_under_body_on_F_Cu": [],
-   "gnd_copper_under_body_on_F_Cu_information": [
-    "via GND (132.75, 134.35)"
-   ],
+   "gnd_copper_under_body_on_F_Cu_information": [],
    "criterion": "an F.Cu rule area exists between the L5 pads, no F.Cu track or via of any net touches it, and no F.Cu track / via of a signal net (any net other than L5's own two nets and GND) lies under the L5 body box; GND tracks / vias under the body are listed as information"
   },
   "battery_path": {
    "result": "FAIL",
    "label": "E",
-   "copper_resistance_ohm_20C": 0.03231,
+   "copper_resistance_ohm_20C": 0.03173,
    "target_ohm": 0.035,
    "resistance_target_met": true,
-   "copper_resistance_ohm_60C": 0.03739,
+   "copper_resistance_ohm_60C": 0.03672,
    "width_rule_met": false,
-   "current_carrying_length_narrower_than_2mm": 16.1,
+   "current_carrying_length_narrower_than_2mm": 8.57,
    "legs": [
     {
      "net": "VBAT_LOGIC_RAW",
@@ -408,63 +419,32 @@
      "net": "VBAT_LOGIC",
      "from": "Q10.2",
      "to": "J15.1",
-     "ohm": 0.00478,
-     "shortest_copper_path_mm": 15.54,
+     "ohm": 0.00388,
+     "shortest_copper_path_mm": 15.77,
      "vias_on_shortest_path": 0,
-     "segments_carrying_ge_20pct": 4,
+     "segments_carrying_ge_20pct": 6,
      "vias_carrying_ge_20pct": 0,
-     "min_width_carrying_mm": 1.0,
-     "length_carrying_mm": 15.54,
+     "min_width_carrying_mm": 2.0,
+     "length_carrying_mm": 15.77,
      "narrower_than_2mm": {
-      "length_mm": 3.93,
-      "widths_mm": [
-       1.0
-      ],
-      "segments": [
-       {
-        "layer": "F.Cu",
-        "w": 1.0,
-        "len": 1.273,
-        "a": [
-         71.85,
-         73.44
-        ],
-        "b": [
-         72.75,
-         74.34
-        ],
-        "share": 1.0
-       },
-       {
-        "layer": "F.Cu",
-        "w": 1.0,
-        "len": 2.662,
-        "a": [
-         72.75,
-         74.34
-        ],
-        "b": [
-         72.75,
-         77.0
-        ],
-        "share": 1.0
-       }
-      ]
+      "length_mm": 0,
+      "widths_mm": [],
+      "segments": []
      }
     },
     {
      "net": "VBAT_LOGIC_SW",
      "from": "J15.2",
      "to": "L5.1",
-     "ohm": 0.02528,
-     "shortest_copper_path_mm": 135.49,
+     "ohm": 0.0256,
+     "shortest_copper_path_mm": 134.79,
      "vias_on_shortest_path": 1,
-     "segments_carrying_ge_20pct": 23,
-     "vias_carrying_ge_20pct": 3,
+     "segments_carrying_ge_20pct": 15,
+     "vias_carrying_ge_20pct": 2,
      "min_width_carrying_mm": 1.5,
-     "length_carrying_mm": 135.49,
+     "length_carrying_mm": 134.79,
      "narrower_than_2mm": {
-      "length_mm": 11.1,
+      "length_mm": 7.5,
       "widths_mm": [
        1.5,
        1.56
@@ -473,56 +453,14 @@
        {
         "layer": "F.Cu",
         "w": 1.5,
-        "len": 1.0,
+        "len": 0.7,
         "a": [
-         136.85,
-         127.6
+         136.8,
+         130.5
         ],
         "b": [
-         136.85,
-         128.6
-        ],
-        "share": 0.27
-       },
-       {
-        "layer": "F.Cu",
-        "w": 1.5,
-        "len": 1.0,
-        "a": [
-         136.85,
-         128.6
-        ],
-        "b": [
-         136.85,
-         129.6
-        ],
-        "share": 0.46
-       },
-       {
-        "layer": "F.Cu",
-        "w": 1.5,
-        "len": 1.0,
-        "a": [
-         136.85,
-         129.6
-        ],
-        "b": [
-         136.85,
-         130.6
-        ],
-        "share": 0.67
-       },
-       {
-        "layer": "F.Cu",
-        "w": 1.5,
-        "len": 1.3,
-        "a": [
-         136.85,
-         130.6
-        ],
-        "b": [
-         136.85,
-         131.9
+         136.8,
+         131.2
         ],
         "share": 1.0
        },
@@ -553,118 +491,399 @@
    "caps": [
     {
      "cap": "C57",
-     "gap_pad1_to_U8.6_mm": 0.925,
-     "gap_pad2_to_U8.4_mm": 3.195
+     "gap_pad1_to_U8.6_mm": 0.95,
+     "gap_pad2_to_U8.4_mm": 1.611
     },
     {
      "cap": "C43",
-     "gap_pad1_to_U8.6_mm": 2.426,
-     "gap_pad2_to_U8.4_mm": 5.375
+     "gap_pad1_to_U8.6_mm": 3.25,
+     "gap_pad2_to_U8.4_mm": 3.537
     }
    ],
    "fcu_gnd_piece": {
-    "U8.4": 239,
-    "C57.2": 307,
-    "C43.2": 305
+    "U8.4": 319,
+    "C57.2": 319,
+    "C43.2": 319
    },
-   "output_cap_gnd_joined_to_U8.4_on_F.Cu": [],
-   "information_boost_fb_under_output_cap": [
-    {
-     "cap": "C57",
-     "track": [
-      129.19,
-      132.35,
-      130.14,
-      133.3
-     ],
-     "w": 0.2
-    },
-    {
-     "cap": "C57",
-     "track": [
-      129.19,
-      130.71,
-      129.19,
-      132.35
-     ],
-     "w": 0.2
-    },
-    {
-     "cap": "C57",
-     "track": [
-      129.08,
-      130.61,
-      129.19,
-      130.71
-     ],
-     "w": 0.15
-    },
-    {
-     "cap": "C57",
-     "track": [
-      129.08,
-      129.89,
-      129.08,
-      130.35
-     ],
-     "w": 0.2
-    },
-    {
-     "cap": "C57",
-     "track": [
-      129.08,
-      130.35,
-      129.08,
-      130.61
-     ],
-     "w": 0.15
-    }
+   "output_cap_gnd_joined_to_U8.4_on_F.Cu": [
+    "C57.2",
+    "C43.2"
    ],
+   "information_boost_fb_under_output_cap": [],
    "criterion": "plan line 448: each output capacitor (C57, C43) has pad 1 within 2.0 mm (copper edge gap) of U8.6 and pad 2 within 2.0 mm of U8.4, AND at least one of C57.2 / C43.2 is on the same F.Cu GND copper piece as U8.4 (zone islands + tracks + pads, vias not counted)"
   },
   "input_cap": {
-   "result": "FAIL",
+   "result": "PASS",
    "label": "M (path lengths and ohm from the track model, E)",
    "rows": [
     {
      "cap": "C41",
      "to": "U8.3",
-     "pad_edge_gap_mm": 5.601,
-     "copper_path_mm": 23.36,
-     "vias_on_path": 2,
-     "copper_ohm_E": 0.01549,
+     "pad_edge_gap_mm": 0.798,
+     "copper_path_mm": 1.54,
+     "vias_on_path": 0,
+     "copper_ohm_E": 0.00185,
      "error": null
     },
     {
      "cap": "C41",
      "to": "L5.1",
-     "pad_edge_gap_mm": 11.801,
-     "copper_path_mm": 26.48,
+     "pad_edge_gap_mm": 11.75,
+     "copper_path_mm": 13.53,
      "vias_on_path": 2,
-     "copper_ohm_E": 0.00856,
+     "copper_ohm_E": 0.01122,
      "error": null
     },
     {
      "cap": "C42",
      "to": "U8.3",
      "pad_edge_gap_mm": 40.0,
-     "copper_path_mm": 140.46,
-     "vias_on_path": 2,
-     "copper_ohm_E": 0.03735,
+     "copper_path_mm": 157.95,
+     "vias_on_path": 4,
+     "copper_ohm_E": 0.04392,
      "error": null
     },
     {
      "cap": "C42",
      "to": "L5.1",
      "pad_edge_gap_mm": 40.0,
-     "copper_path_mm": 143.58,
+     "copper_path_mm": 142.88,
      "vias_on_path": 2,
-     "copper_ohm_E": 0.03042,
+     "copper_ohm_E": 0.03085,
      "error": null
     }
    ],
-   "shortest_copper_path_mm": 23.36,
+   "shortest_copper_path_mm": 1.54,
    "criterion": "plan line 449: at least one input capacitor (C41 / C42) with pad 1 within 2.0 mm (copper edge gap) of U8.3 (VIN) or L5.1 (the 2.0 mm figure is the plan's hot-loop distance of line 448); copper paths over tracks and vias only (zone copper not modelled); a gap of 40.0 is the search limit of shape_gap and means >= 40 mm"
+  },
+  "hot_loop_top_gnd": {
+   "result": "PASS",
+   "label": "M",
+   "input_capacitor": "C41",
+   "fcu_gnd_piece": {
+    "U8.4": 319,
+    "C57.2": 319,
+    "C43.2": 319,
+    "C41.2": 319
+   },
+   "all_on_one_piece": true,
+   "pads_with_own_via": {
+    "C43.2": true,
+    "U8.4": true,
+    "C41.2": true,
+    "C57.2": true
+   },
+   "own_via_at": {
+    "U8.4": [
+     125.6,
+     133.2
+    ],
+    "C41.2": [
+     127.1,
+     132.3
+    ],
+    "C57.2": [
+     128.6,
+     132.92
+    ],
+    "C43.2": [
+     130.9,
+     132.92
+    ]
+   },
+   "gnd_vias_near_the_pads": [
+    {
+     "at": [
+      125.6,
+      133.2
+     ],
+     "drill_mm": 0.3,
+     "within_1.5mm_of": {
+      "U8.4": 1.13,
+      "C41.2": 0.45
+     },
+     "in_In1_fill": true,
+     "fcu_gnd_piece": 319
+    },
+    {
+     "at": [
+      127.1,
+      132.3
+     ],
+     "drill_mm": 0.3,
+     "within_1.5mm_of": {
+      "U8.4": 0.372,
+      "C57.2": 1.166,
+      "C41.2": 0.4
+     },
+     "in_In1_fill": true,
+     "fcu_gnd_piece": 319
+    },
+    {
+     "at": [
+      128.6,
+      132.92
+     ],
+     "drill_mm": 0.3,
+     "within_1.5mm_of": {
+      "C57.2": 0.38,
+      "C43.2": 1.451,
+      "C41.2": 1.4
+     },
+     "in_In1_fill": true,
+     "fcu_gnd_piece": 319
+    },
+    {
+     "at": [
+      130.9,
+      132.92
+     ],
+     "drill_mm": 0.3,
+     "within_1.5mm_of": {
+      "C57.2": 1.451,
+      "C43.2": 0.38
+     },
+     "in_In1_fill": true,
+     "fcu_gnd_piece": 319
+    }
+   ],
+   "pad_edge_gap_mm": {
+    "C57.2 -> U8.4": 1.611,
+    "C43.2 -> U8.4": 3.537,
+    "C41.2 -> U8.4": 0.526
+   },
+   "criterion": "U8.4, C57.2, C43.2 and the GND pad of the input capacitor nearest to U8.3 (by copper path) lie on ONE F.Cu GND copper piece (zone islands + tracks + pads; vias are not joins), and each of the four pads can be given its own GND via: within 1.5 mm of the pad, inside the In1 GND fill, on that F.Cu piece"
+  },
+  "input_cap_vin": {
+   "result": "PASS",
+   "label": "M (path length from the track / via model of network(), zone copper not modelled)",
+   "input_capacitor": "C41",
+   "copper_path_to_U8.3_mm": 1.54,
+   "vias_on_path": 0,
+   "limit_mm": 5.0,
+   "gnd_pad_piece": 319,
+   "U8.4_piece": 319,
+   "gnd_pad_on_the_U8.4_piece": true,
+   "rows": [
+    {
+     "cap": "C41",
+     "value": "22u 10V",
+     "to_U8.3_copper_path_mm": 1.54,
+     "to_U8.3_vias": 0,
+     "to_U8.3_ohm_E": 0.00185,
+     "to_L5.1_copper_path_mm": 13.53,
+     "to_L5.1_vias": 2,
+     "to_L5.1_ohm_E": 0.01122,
+     "pad1_edge_gap_to_U8.3_mm": 0.798,
+     "pad1_edge_gap_to_L5.1_mm": 11.75
+    },
+    {
+     "cap": "C42",
+     "value": "22u 10V",
+     "to_U8.3_copper_path_mm": 157.95,
+     "to_U8.3_vias": 4,
+     "to_U8.3_ohm_E": 0.04392,
+     "to_L5.1_copper_path_mm": 142.88,
+     "to_L5.1_vias": 2,
+     "to_L5.1_ohm_E": 0.03085,
+     "pad1_edge_gap_to_U8.3_mm": 40.0,
+     "pad1_edge_gap_to_L5.1_mm": 40.0
+    }
+   ],
+   "criterion": "an input capacitor (C41 / C42, 22 uF) reaches U8.3 (VIN) over <= 5.0 mm of track (E: this script's reading of 'a few mm') and its GND pad is on the same F.Cu GND piece as U8.4"
+  },
+  "input_cap_l5": {
+   "result": "FAIL",
+   "label": "M (path length from the track / via model of network(), zone copper not modelled)",
+   "input_capacitor": "C41",
+   "copper_path_to_L5.1_mm": 13.53,
+   "limit_mm": 5.0,
+   "pad_edge_distance_U8.3_to_L5.1_mm": 10.675,
+   "rows": [
+    {
+     "cap": "C41",
+     "value": "22u 10V",
+     "to_U8.3_copper_path_mm": 1.54,
+     "to_U8.3_vias": 0,
+     "to_U8.3_ohm_E": 0.00185,
+     "to_L5.1_copper_path_mm": 13.53,
+     "to_L5.1_vias": 2,
+     "to_L5.1_ohm_E": 0.01122,
+     "pad1_edge_gap_to_U8.3_mm": 0.798,
+     "pad1_edge_gap_to_L5.1_mm": 11.75
+    },
+    {
+     "cap": "C42",
+     "value": "22u 10V",
+     "to_U8.3_copper_path_mm": 157.95,
+     "to_U8.3_vias": 4,
+     "to_U8.3_ohm_E": 0.04392,
+     "to_L5.1_copper_path_mm": 142.88,
+     "to_L5.1_vias": 2,
+     "to_L5.1_ohm_E": 0.03085,
+     "pad1_edge_gap_to_U8.3_mm": 40.0,
+     "pad1_edge_gap_to_L5.1_mm": 40.0
+    }
+   ],
+   "criterion": "an input capacitor (C41 / C42) reaches L5.1 over <= 5.0 mm of track (E: reading of 'a few mm'). The straight pad distance U8.3 - L5.1 is reported: one capacitor cannot be nearer to both than that"
+  },
+  "fb_clear_of_caps": {
+   "result": "PASS",
+   "label": "M",
+   "pad_span_boxes_kicad_mm": {
+    "C57": [
+     127.7,
+     130.35,
+     129.5,
+     134.45
+    ],
+    "C43": [
+     130.0,
+     130.35,
+     131.8,
+     134.45
+    ]
+   },
+   "boost_fb_copper_inside": [],
+   "min_gap_boost_fb_track_to_output_cap_pad_mm": 2.613,
+   "boost_fb_f_cu_track_length_mm": 4.575,
+   "boost_fb_vias": 0,
+   "criterion": "no BOOST_FB F.Cu track and no BOOST_FB via touches the pad span box (bounding box of both pads) of the output capacitors C57 / C43"
+  },
+  "rail_edge_copper": {
+   "result": "PASS",
+   "label": "M (zones refilled in memory; distances to the straight outline lines, bounding boxes)",
+   "limit_mm_rail_edges": 0.4,
+   "min_copper_to_edge_mm": {
+    "y65 (top, rail)": 0.4,
+    "y135 (bottom, rail)": 0.4,
+    "x62": 0.3005,
+    "x138": 0.3005
+   },
+   "per_edge": {
+    "y65 (top, rail)": {
+     "zone fill F.Cu": {
+      "min_mm": 0.4,
+      "item": "GND fill on F.Cu"
+     },
+     "zone fill B.Cu": {
+      "min_mm": 0.4,
+      "item": "GND fill on B.Cu"
+     },
+     "zone fill In1.Cu": {
+      "min_mm": 0.4,
+      "item": "GND fill on In1.Cu"
+     },
+     "zone fill In2.Cu": {
+      "min_mm": 0.4,
+      "item": "+5V fill on In2.Cu"
+     },
+     "track": {
+      "min_mm": 0.401,
+      "item": "I2C_SCL_3V3 B.Cu (111.411, 65.501)-(112.243, 65.501) w 0.200"
+     },
+     "via": {
+      "min_mm": 0.95,
+      "item": "GND via (133.250, 66.250)"
+     },
+     "pad": {
+      "min_mm": 1.15,
+      "item": "J2.1 +3V3"
+     }
+    },
+    "y135 (bottom, rail)": {
+     "zone fill F.Cu": {
+      "min_mm": 0.4,
+      "item": "GND fill on F.Cu"
+     },
+     "zone fill B.Cu": {
+      "min_mm": 0.4,
+      "item": "GND fill on B.Cu"
+     },
+     "zone fill In1.Cu": {
+      "min_mm": 0.4,
+      "item": "GND fill on In1.Cu"
+     },
+     "zone fill In2.Cu": {
+      "min_mm": 0.4,
+      "item": "+5V fill on In2.Cu"
+     },
+     "track": {
+      "min_mm": 0.4,
+      "item": "VBAT_LOGIC_SW F.Cu (136.750, 134.150)-(136.750, 133.400) w 0.900"
+     },
+     "via": {
+      "min_mm": 0.5018,
+      "item": "+3V3 via (74.968, 134.198)"
+     },
+     "pad": {
+      "min_mm": 0.5,
+      "item": "U4.33 unconnected-(U4-PG0-Pad33)"
+     }
+    },
+    "x62": {
+     "zone fill F.Cu": {
+      "min_mm": 0.3005,
+      "item": "GND fill on F.Cu"
+     },
+     "zone fill B.Cu": {
+      "min_mm": 0.3005,
+      "item": "GND fill on B.Cu"
+     },
+     "zone fill In1.Cu": {
+      "min_mm": 0.3005,
+      "item": "GND fill on In1.Cu"
+     },
+     "zone fill In2.Cu": {
+      "min_mm": 0.3005,
+      "item": "+5V fill on In2.Cu"
+     },
+     "track": {
+      "min_mm": 0.4238,
+      "item": "GPS_TXD_3V3 F.Cu (62.524, 125.052)-(67.765, 119.811) w 0.200"
+     },
+     "via": {
+      "min_mm": 0.95,
+      "item": "GND via (63.250, 86.250)"
+     },
+     "pad": {
+      "min_mm": 0.755,
+      "item": "J7.MP GND"
+     }
+    },
+    "x138": {
+     "zone fill F.Cu": {
+      "min_mm": 0.3005,
+      "item": "GND fill on F.Cu"
+     },
+     "zone fill B.Cu": {
+      "min_mm": 0.3005,
+      "item": "GND fill on B.Cu"
+     },
+     "zone fill In1.Cu": {
+      "min_mm": 0.3005,
+      "item": "GND fill on In1.Cu"
+     },
+     "zone fill In2.Cu": {
+      "min_mm": 0.3005,
+      "item": "+5V fill on In2.Cu"
+     },
+     "track": {
+      "min_mm": 0.45,
+      "item": "VBAT_LOGIC_SW F.Cu (136.800, 130.350)-(136.800, 131.200) w 1.500"
+     },
+     "via": {
+      "min_mm": 0.4,
+      "item": "VBAT_LOGIC_SW via (137.200, 130.500)"
+     },
+     "pad": {
+      "min_mm": 0.5,
+      "item": "L5.1 VBAT_LOGIC_SW"
+     }
+    }
+   },
+   "below_limit": [],
+   "criterion": "zone fills (all copper layers), tracks, vias and pads keep >= 0.4 mm from the two 76 mm edges y 65 and y 135 (JLC edge rails, review J2); the other two edges are reported against the unchanged 0.3 mm board rule"
   },
   "crystals": {
    "result": "PASS",
@@ -1264,8 +1483,13 @@
       "triangle_to_pad1_mm": 0.36,
       "covered_by": []
      },
-     "extra_mark": null,
-     "extra_mark_at": [],
+     "extra_mark": "dot",
+     "extra_mark_at": [
+      [
+       124.9,
+       129.7
+      ]
+     ],
      "ok": true
     },
     {
@@ -1283,7 +1507,7 @@
     }
    ],
    "marks_not_ok": [],
-   "extra_marks_placed": 14,
+   "extra_marks_placed": 15,
    "library_mark_only": [
     "C45",
     "C47",
@@ -1297,7 +1521,6 @@
     "Q5",
     "U1",
     "U4",
-    "U8",
     "U9"
    ],
    "revision_text": [

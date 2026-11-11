@@ -1,0 +1,2472 @@
+{
+ "freerouting_jar_sha256": "f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7",
+ "unrouted_board_sha256": "4a7ccfed934503ef8eb9bdc99a50d91be0320e63eb0b455e9f203a49ec22c4b7",
+ "stages": {
+  "servo": {
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_servo.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_servo.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 12.5,
+   "exit_code": 0,
+   "dsn_sha256": "a8960e4e87dea88f571c7fa8a588d000430611020473025e9dd2183e2770f087",
+   "ses_sha256": "ab24076460e9a0ca46479514c3e5ad7bc8ca89b1803d3d223f48d97a5b0c4ccc",
+   "passes_unrouted": [
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "stdout_tail": "ore 1000.00 (0 unrouted and 0 violations), using 1.64 CPU seconds and the job allocated 0.52 GB of memory so far.\n2026-11-11 14:55:18.836 INFO   [B540C9\\2334A5] Auto-routing pass #2 on board '3df090d7bb5b23668208b91a12a691d6' was completed in 0.08 seconds with score 1000.00 (0 unrouted and 0 violations), using 2.64 CPU seconds and the job allocated 0.81 GB of memory so far.\n2026-11-11 14:55:19.009 INFO   [B540C9\\2334A5] Auto-routing stage completed: started with 11 unrouted nets, completed in 2.78 seconds, final score: 1000.00 (0 unrouted and 0 violations), using 2.64 total CPU seconds, 0.81 GB total allocated, and 143.5 MB peak heap usage.\n2026-11-11 14:55:19.162 INFO   [B540C9\\2334A5] Optimization stage started on board '3df090d7bb5b23668208b91a12a691d6'. Baseline router score: 1000.00, optimizer score: 813.70, incomplete connections: 0, clearance violations: 0.\n2026-11-11 14:55:22.851 INFO   [B540C9\\2334A5] Stopping optimization pass #1 early after 12 consecutive items could not be improved.\n2026-11-11 14:55:23.274 INFO   [B540C9\\2334A5] Optimizer pass #1 on board '89e68744ec6f311ad35aa444adb93b1c' was completed in 3.76 seconds with the score of 814.22 (0 unrouted and 0 violations).\n2026-11-11 14:55:23.391 INFO   [B540C9\\2334A5] Optimizer pass #1: optimizer score 813.70 -> 814.22 (IMPROVED, 0.0642%), router score: 1000.00, incomplete connections: 0, clearance violations: 0.\n2026-11-11 14:55:23.391 INFO   [B540C9\\2334A5] Stopping optimizer because the improvement in this pass (0.0642%) is below the threshold (2.50%).\n2026-11-11 14:55:23.569 INFO   [B540C9\\2334A5] Optimization stage completed:. Baseline router score: 1000.00, baseline optimizer score: 813.70, final router score: 1000.00, final optimizer score: 814.22, completed in 4.33 seconds, using 15.64 total CPU seconds, 2.75 GB total allocated, and 505.3 MB peak heap usage.\n2026-11-11 14:55:23.634 INFO   [B540C9\\2334A5] Job 'B540C9\\2334A5' finished with state: COMPLETED (elapsed: 7.87 seconds, finished at UTC: 2026-11-11T05:55:23.633191100Z).\n2026-11-11 14:55:23.646 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_servo.ses' (SES)...\n2026-11-11 14:55:23.650 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_servo.ses' (14876 bytes).\n",
+   "nets_routed_here": 2,
+   "via": "Via[0-3]_1200:600_um",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 0,
+   "items_locked": 58,
+   "unconnected_after_import_and_fill": 187,
+   "ses": "vtol_carrier_servo.ses"
+  },
+  "power": {
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_power.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_power.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 50.3,
+   "exit_code": 0,
+   "dsn_sha256": "482e8ad288ff23d201c105e59d719d0d536760ceb4d264b9cade6ab143c67bcc",
+   "ses_sha256": "3d4b9b49d74e063e3ff13c00948618f0718a4e1ee4d02b5ebb58348674e4d2b8",
+   "passes_unrouted": [
+    [
+     1,
+     8
+    ],
+    [
+     2,
+     34
+    ],
+    [
+     3,
+     23
+    ],
+    [
+     4,
+     28
+    ],
+    [
+     5,
+     26
+    ],
+    [
+     6,
+     28
+    ],
+    [
+     7,
+     26
+    ],
+    [
+     8,
+     8
+    ],
+    [
+     9,
+     34
+    ],
+    [
+     10,
+     23
+    ],
+    [
+     11,
+     28
+    ],
+    [
+     12,
+     8
+    ],
+    [
+     13,
+     34
+    ],
+    [
+     14,
+     23
+    ],
+    [
+     15,
+     28
+    ],
+    [
+     16,
+     8
+    ],
+    [
+     17,
+     34
+    ],
+    [
+     18,
+     23
+    ]
+   ],
+   "stdout_tail": "using 40.16 CPU seconds and the job allocated 29.70 GB of memory so far.\n2026-11-11 14:56:13.393 INFO   [2CBE74\\BB3DE4] Auto-routing pass #18 on board '82b5ba0d527c70cdb656699a68525483' was completed in 2.16 seconds with score 410.26 (23 unrouted and 0 violations), using 42.16 CPU seconds and the job allocated 31.48 GB of memory so far.\n2026-11-11 14:56:13.401 INFO   [2CBE74\\BB3DE4] The router's best score (794.87) has not improved by more than 0.5 points since pass #8. Stopping the auto-router after 18 passes (8 items still unconnected).\nThe following connections could not be routed -- please review your design (e.g. check pad clearances, trace width rules, and available routing space):\n  Net '+3V3' (18 unrouted connections):\n    - R43-2  ->  R45-2\n    - R60-2  ->  Q6-1\n    - R51-2  ->  R53-2\n    - Q11-1  ->  R51-2\n    - Q2-1  ->  R43-2\n    - Q2-1  ->  Q1-1\n    - Q5-1  ->  C52-1\n    - R58-2  ->  U7-8\n    - R56-2  ->  R50-2\n    - R50-2  ->  Q8-1\n    - R48-2  ->  C53-1\n    - Q8-1  ->  R41-2\n    - Q4-1  ->  R62-2\n    - R50-2  ->  Q11-1\n    - R62-2  ->  Q7-1\n    - Q4-1  ->  R53-2\n    - R43-2  ->  R41-2\n    - Q3-1  ->  C45-1\n  Net 'COM_AVCC' (1 unrouted connection):\n    - U3-64  ->  C20-1\n  Net 'FCU_AVCC' (2 unrouted connections):\n    - C12-1  ->  L2-2\n    - C12-1  ->  U2-64\n  Net 'GNS_AVCC' (1 unrouted connection):\n    - U4-64  ->  C28-1\n  Net 'NAV_AVCC' (1 unrouted connection):\n    - C4-1  ->  U1-64\n2026-11-11 14:56:13.727 INFO   [2CBE74\\BB3DE4] Auto-routing stage completed: started with 40 unrouted nets, completed in 43.93 seconds, final score: 794.87 (8 unrouted and 0 violations), using 43.14 total CPU seconds, 32.32 GB total allocated, and 318.6 MB peak heap usage.\n2026-11-11 14:56:13.806 INFO   [2CBE74\\BB3DE4] Skipping optimization stage: the board has 8 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-11 14:56:13.857 INFO   [2CBE74\\BB3DE4] Job '2CBE74\\BB3DE4' finished with state: COMPLETED (elapsed: 44.47 seconds, finished at UTC: 2026-11-11T05:56:13.856304900Z).\n2026-11-11 14:56:13.860 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_power.ses' (SES)...\n2026-11-11 14:56:13.863 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_power.ses' (23324 bytes).\n",
+   "nets_routed_here": 6,
+   "via": "Via[0-3]_600:300_um",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 9,
+   "items_locked": 176,
+   "unconnected_after_import_and_fill": 155,
+   "ses": "vtol_carrier_power.ses"
+  },
+  "signals": {
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_signals.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_signals.ses -mp 40 -mt 5 --gui.enabled=false",
+   "seconds": 594.7,
+   "exit_code": 0,
+   "dsn_sha256": "f59d8b3e138a1505a8a4e7c0b1797fd032fe1dbf6be9df95389bf6947a57ecc9",
+   "ses_sha256": "e85257b52e1e1888932a70441c4e249d568a4cdd094685d177964d6e971f216d",
+   "passes_unrouted": [
+    [
+     1,
+     76
+    ],
+    [
+     2,
+     65
+    ],
+    [
+     3,
+     65
+    ],
+    [
+     4,
+     60
+    ],
+    [
+     5,
+     62
+    ],
+    [
+     6,
+     53
+    ],
+    [
+     7,
+     51
+    ],
+    [
+     8,
+     47
+    ],
+    [
+     9,
+     49
+    ],
+    [
+     10,
+     43
+    ],
+    [
+     11,
+     43
+    ],
+    [
+     12,
+     42
+    ],
+    [
+     13,
+     35
+    ],
+    [
+     14,
+     38
+    ],
+    [
+     15,
+     36
+    ],
+    [
+     16,
+     33
+    ],
+    [
+     17,
+     36
+    ],
+    [
+     18,
+     35
+    ],
+    [
+     19,
+     33
+    ],
+    [
+     20,
+     33
+    ],
+    [
+     21,
+     36
+    ],
+    [
+     22,
+     33
+    ],
+    [
+     23,
+     32
+    ],
+    [
+     24,
+     30
+    ],
+    [
+     25,
+     31
+    ],
+    [
+     26,
+     30
+    ],
+    [
+     27,
+     32
+    ],
+    [
+     28,
+     30
+    ],
+    [
+     29,
+     30
+    ],
+    [
+     30,
+     30
+    ],
+    [
+     31,
+     30
+    ],
+    [
+     32,
+     30
+    ],
+    [
+     33,
+     30
+    ],
+    [
+     34,
+     30
+    ]
+   ],
+   "stdout_tail": "ted connections):\n    - via  ->  Q1-1\n    - via  ->  Q2-1\n    - via  ->  Q6-1\n    - R47-2  ->  Q3-1\n    - J2-5  ->  J2-6\n    - R51-2  ->  Q11-1\n    - U6-2@1  ->  C45-1\n    - via  ->  Q4-1\n    - R50-2  ->  Q8-1\n  Net 'GNS_XTAL2' (1 unrouted connection):\n    - U4-23  ->  Y4-3\n  Net 'COM_RESET' (1 unrouted connection):\n    - J21-5  ->  J26-1\n  Net 'COM_AVCC' (1 unrouted connection):\n    - U3-64  ->  C20-1\n  Net 'FCU_AVCC' (1 unrouted connection):\n    - L2-2  ->  C12-1\n  Net 'COM_XTAL1' (2 unrouted connections):\n    - Y3-1  ->  C22-1\n    - U3-24  ->  Y3-1\n  Net 'GNS_AVCC' (1 unrouted connection):\n    - U4-64  ->  C28-1\n  Net 'NAV_XTAL1' (2 unrouted connections):\n    - Y1-1  ->  C6-1\n    - Y1-1  ->  U1-24\n  Net 'FCU_XTAL2' (1 unrouted connection):\n    - U2-23  ->  Y2-3\n  Net 'FCU_XTAL1' (2 unrouted connections):\n    - C14-1  ->  Y2-1\n    - U2-24  ->  Y2-1\n  Net 'FCU_AREF' (1 unrouted connection):\n    - U2-62  ->  C13-1\n  Net 'ESP_TXD0' (1 unrouted connection):\n    - via  ->  Q11-2\n  Net 'BOOST_EN' (1 unrouted connection):\n    - U9-1  ->  R67-2\n  Net 'NAV_XTAL2' (1 unrouted connection):\n    - U1-23  ->  Y1-3\n  Net 'NAV_AVCC' (1 unrouted connection):\n    - C4-1  ->  U1-64\n  Net 'COM_XTAL2' (1 unrouted connection):\n    - U3-23  ->  Y3-3\n  Net 'COM_LED' (1 unrouted connection):\n    - U3-35  ->  R6-1\n  Net 'GNS_XTAL1' (2 unrouted connections):\n    - C30-1  ->  Y4-1\n    - Y4-1  ->  U4-24\n2026-11-11 15:06:09.244 INFO   [AD69A2\\6A2A78] Auto-routing stage completed: started with 179 unrouted nets, completed in 588.51 seconds, final score: 818.18 (30 unrouted and 0 violations), using 579.27 total CPU seconds, 462.92 GB total allocated, and 522.4 MB peak heap usage.\n2026-11-11 15:06:09.343 INFO   [AD69A2\\6A2A78] Skipping optimization stage: the board has 30 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-11 15:06:09.410 INFO   [AD69A2\\6A2A78] Job 'AD69A2\\6A2A78' finished with state: COMPLETED (elapsed: 9 minutes 49.11 seconds, finished at UTC: 2026-11-11T06:06:09.409774200Z).\n2026-11-11 15:06:09.411 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_signals.ses' (SES)...\n2026-11-11 15:06:09.414 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_signals.ses' (131183 bytes).\n",
+   "nets_routed_here": 91,
+   "via": "all",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 172,
+   "items_locked": 1881,
+   "unconnected_after_import_and_fill": 8,
+   "ses": "vtol_carrier_signals.ses"
+  },
+  "gnd": {
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_gnd.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_gnd.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 407.4,
+   "exit_code": 0,
+   "dsn_sha256": "6b3dd5b13249d0301e59fa5eca389345038a933a56d326f3cab1cf92a3823841",
+   "ses_sha256": "974c9546ce9821f19eefc8cbc166c5a4e670b207d2da2cd727d0095f33b18c8d",
+   "passes_unrouted": [
+    [
+     1,
+     84
+    ],
+    [
+     2,
+     93
+    ],
+    [
+     3,
+     88
+    ],
+    [
+     4,
+     92
+    ],
+    [
+     5,
+     87
+    ],
+    [
+     6,
+     92
+    ],
+    [
+     7,
+     87
+    ],
+    [
+     8,
+     84
+    ],
+    [
+     9,
+     93
+    ],
+    [
+     10,
+     88
+    ],
+    [
+     11,
+     92
+    ],
+    [
+     12,
+     84
+    ],
+    [
+     13,
+     93
+    ],
+    [
+     14,
+     88
+    ],
+    [
+     15,
+     92
+    ],
+    [
+     16,
+     84
+    ],
+    [
+     17,
+     93
+    ],
+    [
+     18,
+     88
+    ]
+   ],
+   "stdout_tail": "1\n    - Y1-1  ->  U1-24\n  Net 'FCU_BUZ' (1 unrouted connection):\n    - via  ->  U2-36\n  Net 'FCU_LOG_TX' (1 unrouted connection):\n    - J20-1  ->  U2-3\n  Net 'COM_LED_A' (1 unrouted connection):\n    - R6-2  ->  D3-2\n  Net 'FCU_ISP_MOSI' (1 unrouted connection):\n    - J20-4  ->  U2-2\n  Net 'VANE4_PWM' (1 unrouted connection):\n    - U2-5  ->  via\n  Net 'ESC_PWM' (1 unrouted connection):\n    - U2-6  ->  via\n  Net 'NLINK_MOSI' (1 unrouted connection):\n    - U2-12  ->  via\n  Net 'FCU_XTAL2' (1 unrouted connection):\n    - U2-23  ->  Y2-3\n  Net 'FCU_XTAL1' (2 unrouted connections):\n    - Y2-1  ->  C14-1\n    - Y2-1  ->  U2-24\n  Net 'FCU_AREF' (1 unrouted connection):\n    - C13-1  ->  U2-62\n  Net 'BOOST_EN' (2 unrouted connections):\n    - R67-2  ->  U9-1\n    - via  ->  U9-1\n  Net 'NAV_XTAL2' (1 unrouted connection):\n    - U1-23  ->  Y1-3\n  Net 'NAV_AVCC' (2 unrouted connections):\n    - U1-64  ->  L1-2\n    - U1-64  ->  C4-1\n  Net 'I2C_SDA_5V' (1 unrouted connection):\n    - Q2-3  ->  R44-1\n  Net 'COM_XTAL2' (1 unrouted connection):\n    - U3-23  ->  Y3-3\n  Net 'COM_LED' (1 unrouted connection):\n    - R6-1  ->  U3-35\n  Net 'GNS_XTAL1' (2 unrouted connections):\n    - C30-1  ->  Y4-1\n    - Y4-1  ->  U4-24\n  Net 'I2C_SCL_5V' (1 unrouted connection):\n    - Q1-3  ->  R42-1\n  Net 'NAV_ISP_MISO' (1 unrouted connection):\n    - J19-1  ->  U1-3\n  Net 'NAV_AREF' (1 unrouted connection):\n    - via  ->  U1-62\n2026-11-11 15:12:56.143 INFO   [7D69AB\\3BD86D] Auto-routing stage completed: started with 134 unrouted nets, completed in 398.57 seconds, final score: 710.50 (84 unrouted and 154 violations), using 395.23 total CPU seconds, 232.47 GB total allocated, and 473.4 MB peak heap usage.\n2026-11-11 15:12:56.605 INFO   [7D69AB\\3BD86D] Skipping optimization stage: the board has 84 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-11 15:12:56.691 INFO   [7D69AB\\3BD86D] Job '7D69AB\\3BD86D' finished with state: COMPLETED (elapsed: 6 minutes 40.49 seconds, finished at UTC: 2026-11-11T06:12:56.690964300Z).\n2026-11-11 15:12:56.701 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_gnd.ses' (SES)...\n2026-11-11 15:12:56.704 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_gnd.ses' (20879 bytes).\n",
+   "nets_routed_here": 2,
+   "via": "Via[0-3]_600:300_um",
+   "b_cu_gnd_plane_in_dsn": true,
+   "vias_shrunk": 4,
+   "items_locked": 93,
+   "unconnected_after_import_and_fill": 8,
+   "ses": "vtol_carrier_gnd.ses"
+  },
+  "complete": {
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_complete.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_complete.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 378.9,
+   "exit_code": 0,
+   "dsn_sha256": "b59957cf7c50fbb2420e34b55ea75569e86de26997252407fda4b97084c7c64d",
+   "ses_sha256": "79de3171a51eb71354d0b226772f59b81037bdbc51af8087e3273029045ad607",
+   "passes_unrouted": [
+    [
+     1,
+     92
+    ],
+    [
+     2,
+     97
+    ],
+    [
+     3,
+     92
+    ],
+    [
+     4,
+     97
+    ],
+    [
+     5,
+     92
+    ],
+    [
+     6,
+     97
+    ],
+    [
+     7,
+     92
+    ],
+    [
+     8,
+     92
+    ],
+    [
+     9,
+     96
+    ],
+    [
+     10,
+     91
+    ],
+    [
+     11,
+     96
+    ],
+    [
+     12,
+     91
+    ],
+    [
+     13,
+     96
+    ],
+    [
+     14,
+     91
+    ],
+    [
+     15,
+     96
+    ],
+    [
+     16,
+     91
+    ],
+    [
+     17,
+     96
+    ],
+    [
+     18,
+     91
+    ],
+    [
+     19,
+     96
+    ],
+    [
+     20,
+     91
+    ]
+   ],
+   "stdout_tail": "NE4_PWM' (1 unrouted connection):\n    - U2-5  ->  via\n  Net 'ESC_PWM' (1 unrouted connection):\n    - U2-6  ->  via\n  Net 'NLINK_MOSI' (1 unrouted connection):\n    - U2-12  ->  via\n  Net 'FCU_XTAL2' (1 unrouted connection):\n    - U2-23  ->  Y2-3\n  Net 'FCU_XTAL1' (2 unrouted connections):\n    - C14-1  ->  Y2-1\n    - U2-24  ->  Y2-1\n  Net 'FCU_BUF_ISIGN' (1 unrouted connection):\n    - via  ->  via\n  Net 'FCU_LBAT_ADC' (1 unrouted connection):\n    - U2-58  ->  R16-1\n  Net 'FCU_AREF' (1 unrouted connection):\n    - U2-62  ->  C13-1\n  Net 'ESP_TXD0' (1 unrouted connection):\n    - via  ->  Q11-2\n  Net 'ESP_RST' (2 unrouted connections):\n    - U7-1  ->  via\n    - Q5-2  ->  R58-1\n  Net 'GNS_RESET' (1 unrouted connection):\n    - C32-1  ->  via\n  Net 'BOOST_EN' (2 unrouted connections):\n    - R67-2  ->  U9-1\n    - U9-1  ->  via\n  Net 'NAV_XTAL2' (1 unrouted connection):\n    - U1-23  ->  Y1-3\n  Net 'NAV_AVCC' (2 unrouted connections):\n    - L1-2  ->  U1-64\n    - C4-1  ->  U1-64\n  Net 'I2C_SDA_5V' (1 unrouted connection):\n    - Q2-3  ->  R44-1\n  Net 'COM_XTAL2' (1 unrouted connection):\n    - Y3-3  ->  U3-23\n  Net 'GNS_XTAL1' (2 unrouted connections):\n    - Y4-1  ->  C30-1\n    - Y4-1  ->  U4-24\n  Net 'I2C_SCL_5V' (1 unrouted connection):\n    - Q1-3  ->  R42-1\n  Net 'NAV_ISP_MISO' (1 unrouted connection):\n    - J19-1  ->  U1-3\n  Net 'NAV_AREF' (1 unrouted connection):\n    - via  ->  U1-62\n2026-11-11 15:19:17.586 INFO   [5D9299\\944552] Auto-routing stage completed: started with 138 unrouted nets, completed in 371.99 seconds, final score: 686.84 (91 unrouted and 153 violations), using 368.23 total CPU seconds, 195.16 GB total allocated, and 432.5 MB peak heap usage.\n2026-11-11 15:19:18.062 INFO   [5D9299\\944552] Skipping optimization stage: the board has 91 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-11 15:19:18.114 INFO   [5D9299\\944552] Job '5D9299\\944552' finished with state: COMPLETED (elapsed: 6 minutes 13.73 seconds, finished at UTC: 2026-11-11T06:19:18.114303300Z).\n2026-11-11 15:19:18.118 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_complete.ses' (SES)...\n2026-11-11 15:19:18.132 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\impl\\route\\a7\\kicad\\work\\vtol_carrier_complete.ses' (18187 bytes).\n",
+   "nets_routed_here": 0,
+   "via": "all",
+   "b_cu_gnd_plane_in_dsn": true,
+   "vias_shrunk": 1,
+   "items_locked": 59,
+   "unconnected_after_import_and_fill": 7,
+   "ses": "vtol_carrier_complete.ses"
+  }
+ },
+ "copper_layers": 4,
+ "fanout": {
+  "tool": "scripts/fanout.py",
+  "pads_considered": 124,
+  "vias_placed": 118,
+  "not_placed": [
+   [
+    "C1",
+    "2",
+    "GND"
+   ],
+   [
+    "C9",
+    "2",
+    "GND"
+   ],
+   [
+    "C17",
+    "2",
+    "GND"
+   ],
+   [
+    "C25",
+    "1",
+    "+5V"
+   ],
+   [
+    "C25",
+    "2",
+    "GND"
+   ],
+   [
+    "NT1",
+    "1",
+    "GND"
+   ]
+  ],
+  "via_mm": [
+   0.6,
+   0.3
+  ],
+  "stub_mm": 0.3,
+  "clearance_mm": 0.15
+ },
+ "prerouted": {
+  "nets": [
+   "VBAT_LOGIC_RAW",
+   "VBAT_LOGIC",
+   "VBAT_LOGIC_SW",
+   "BOOST_SW"
+  ],
+  "open_connections": 0,
+  "tool": "kicad-cli pcb drc (unconnected items)"
+ },
+ "route_order": "power_first",
+ "in2_mode": "plane",
+ "final_session": "vtol_carrier_complete.ses",
+ "replay": {
+  "fanout": true,
+  "stages": [
+   [
+    "servo",
+    "vtol_carrier_servo.ses"
+   ],
+   [
+    "power",
+    "vtol_carrier_power.ses"
+   ],
+   [
+    "signals",
+    "vtol_carrier_signals.ses"
+   ],
+   [
+    "gnd",
+    "vtol_carrier_gnd.ses"
+   ],
+   [
+    "complete",
+    "vtol_carrier_complete.ses"
+   ]
+  ],
+  "unrouted_board_sha256": "4a7ccfed934503ef8eb9bdc99a50d91be0320e63eb0b455e9f203a49ec22c4b7"
+ },
+ "vias_shrunk_after_inflation": 0,
+ "neckdowns_widened_to_0.127mm": [],
+ "dangling_vias_removed": [
+  {
+   "net": "COM_LED",
+   "x": 82.644,
+   "y": 122.472
+  },
+  {
+   "net": "COM_LED",
+   "x": 90.764,
+   "y": 107.947
+  },
+  {
+   "net": "ESP_GPIO2",
+   "x": 102.921,
+   "y": 89.12
+  },
+  {
+   "net": "ESP_GPIO2",
+   "x": 102.597,
+   "y": 79.515
+  },
+  {
+   "net": "ESP_TXD0",
+   "x": 95.95,
+   "y": 92.015
+  },
+  {
+   "net": "ESP_GPIO0",
+   "x": 102.048,
+   "y": 73.168
+  },
+  {
+   "net": "FCU_ILINK_TX",
+   "x": 114.3,
+   "y": 103.563
+  },
+  {
+   "net": "NAV_LED_A",
+   "x": 128.337,
+   "y": 119.566
+  },
+  {
+   "net": "ESP_GPIO15",
+   "x": 96.095,
+   "y": 85.547
+  },
+  {
+   "net": "COM_RESET",
+   "x": 101.35,
+   "y": 112.668
+  },
+  {
+   "net": "ESP_RXD0",
+   "x": 102.84,
+   "y": 82.915
+  }
+ ],
+ "segments": 2308,
+ "routed_vias": 327,
+ "gnd_stitching_vias": 103,
+ "tracks_narrowed_for_clearance": [],
+ "power_tracks_widened": {
+  "widened": [
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.32
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 1.92
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 1.93
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.34
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.88
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.51
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.86
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.19
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.73
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.95
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.24
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.41
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 1.08
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 1.18
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.24
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.63
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 2.76
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.37
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.49
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.66
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 1.16
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.38
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.01
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.24
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 1.32
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 8.36
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.19
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.66
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.64
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.45,
+    "length_mm": 2.18
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.4,
+    "length_mm": 0.66
+   },
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.4,
+    "length_mm": 3.21
+   },
+   {
+    "net": "+3V3",
+    "layer": "B.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.21
+   },
+   {
+    "net": "+3V3",
+    "layer": "B.Cu",
+    "from_mm": 0.375,
+    "to_mm": 0.5,
+    "length_mm": 0.72
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.12
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.71
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.91
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.92
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.89
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.45
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.71
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.35,
+    "length_mm": 2.01
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.79
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.4,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.4,
+    "to_mm": 0.5,
+    "length_mm": 0.7
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.2,
+    "to_mm": 0.45,
+    "length_mm": 0.54
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 1.15
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.5,
+    "length_mm": 0.85
+   },
+   {
+    "net": "GND_PWR",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 0.58
+   },
+   {
+    "net": "GND_PWR",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 5.97
+   },
+   {
+    "net": "GND_PWR",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.5,
+    "length_mm": 1.32
+   },
+   {
+    "net": "GND_PWR",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 0.58
+   },
+   {
+    "net": "GND_PWR",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 5.97
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 1.15
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 1.15
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 0.52
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 0.75
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.5,
+    "length_mm": 0.4
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 0.45
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.45,
+    "length_mm": 1.68
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.25,
+    "length_mm": 5.69
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.5,
+    "length_mm": 0.59
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.5,
+    "length_mm": 0.08
+   },
+   {
+    "net": "SERVO_5V",
+    "layer": "B.Cu",
+    "from_mm": 1.125,
+    "to_mm": 1.5,
+    "length_mm": 1.51
+   },
+   {
+    "net": "VBAT_LOGIC",
+    "layer": "F.Cu",
+    "from_mm": 0.6,
+    "to_mm": 1.0,
+    "length_mm": 1.27
+   },
+   {
+    "net": "VBAT_LOGIC_RAW",
+    "layer": "F.Cu",
+    "from_mm": 0.6,
+    "to_mm": 1.0,
+    "length_mm": 1.07
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.6,
+    "to_mm": 1.0,
+    "length_mm": 1.22
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.9,
+    "length_mm": 1.13
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 1.0,
+    "length_mm": 1.1
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.4,
+    "to_mm": 0.85,
+    "length_mm": 0.94
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.4,
+    "to_mm": 0.95,
+    "length_mm": 0.76
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.5,
+    "to_mm": 1.0,
+    "length_mm": 0.95
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.5,
+    "to_mm": 1.0,
+    "length_mm": 0.95
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.3,
+    "to_mm": 0.35,
+    "length_mm": 0.84
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "F.Cu",
+    "from_mm": 0.8,
+    "to_mm": 0.9,
+    "length_mm": 1.85
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.3,
+    "to_mm": 1.0,
+    "length_mm": 6.12
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.3,
+    "to_mm": 1.0,
+    "length_mm": 0.85
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.5,
+    "to_mm": 0.85,
+    "length_mm": 7.63
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.3,
+    "to_mm": 1.0,
+    "length_mm": 2.09
+   },
+   {
+    "net": "VBAT_LOGIC_SW",
+    "layer": "B.Cu",
+    "from_mm": 0.4,
+    "to_mm": 0.6,
+    "length_mm": 8.9
+   }
+  ],
+  "kept": [
+   {
+    "net": "+3V3",
+    "layer": "F.Cu",
+    "width_mm": 0.375,
+    "length_mm": 7.06,
+    "at": [
+     100.07,
+     110.06
+    ]
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "width_mm": 0.2,
+    "length_mm": 0.42,
+    "at": [
+     125.5,
+     132.45
+    ]
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "width_mm": 0.2,
+    "length_mm": 2.1,
+    "at": [
+     127.6,
+     132.45
+    ]
+   },
+   {
+    "net": "+5V",
+    "layer": "F.Cu",
+    "width_mm": 0.35,
+    "length_mm": 1.4,
+    "at": [
+     131.56,
+     133.3
+    ]
+   },
+   {
+    "net": "GND_PWR",
+    "layer": "F.Cu",
+    "width_mm": 0.5,
+    "length_mm": 0.13,
+    "at": [
+     124.88,
+     78.25
+    ]
+   }
+  ]
+ },
+ "leftovers_routed_by_script": [
+  {
+   "net": "+3V3",
+   "routed": false,
+   "reason": "power / plane net - not routed by this step"
+  },
+  {
+   "net": "+3V3",
+   "routed": false,
+   "reason": "power / plane net - not routed by this step"
+  },
+  {
+   "net": "+5V",
+   "routed": false,
+   "reason": "power / plane net - not routed by this step"
+  },
+  {
+   "net": "GND",
+   "routed": false,
+   "reason": "power / plane net - not routed by this step"
+  },
+  {
+   "net": "COM_RESET",
+   "routed": false,
+   "reason": "no legal path on the 0.1 mm grid"
+  },
+  {
+   "net": "ESP_TXD0",
+   "routed": false,
+   "reason": "no legal path on the 0.1 mm grid"
+  },
+  {
+   "net": "BOOST_EN",
+   "routed": false,
+   "reason": "no legal path on the 0.1 mm grid"
+  },
+  {
+   "net": "COM_LED",
+   "routed": true,
+   "from": [
+    82.586,
+    122.472
+   ],
+   "to": [
+    82.644,
+    122.472
+   ],
+   "segments": 1,
+   "vias": 1,
+   "length_mm": 0.1,
+   "search_window_mm": 5.0,
+   "width_mm": 0.2
+  },
+  {
+   "net": "GND",
+   "routed": false,
+   "island": [
+    "NT1.1"
+   ]
+  },
+  {
+   "net": "+5V",
+   "routed": true,
+   "from": [
+    76.74,
+    123.3
+   ],
+   "to": [
+    76.2,
+    121.35
+   ],
+   "segments": 12,
+   "vias": 0,
+   "length_mm": 2.17,
+   "island": [
+    "C25.1",
+    "U4.21"
+   ],
+   "width_mm": 0.4
+  }
+ ],
+ "ripup": {
+  "skipped": "CARRIER_RIPUP=0"
+ },
+ "dangling_track_stubs_removed": [
+  {
+   "net": "COM_RESET",
+   "layer": "F.Cu",
+   "x": 101.082,
+   "y": 112.4,
+   "length_mm": 0.38
+  },
+  {
+   "net": "ESP_GPIO15",
+   "layer": "F.Cu",
+   "x": 95.985,
+   "y": 85.547,
+   "length_mm": 0.11
+  },
+  {
+   "net": "ESP_TXD0",
+   "layer": "F.Cu",
+   "x": 95.95,
+   "y": 93.237,
+   "length_mm": 1.222
+  },
+  {
+   "net": "ESP_GPIO2",
+   "layer": "F.Cu",
+   "x": 100.757,
+   "y": 81.356,
+   "length_mm": 2.602
+  },
+  {
+   "net": "COM_LED",
+   "layer": "B.Cu",
+   "x": 75.095,
+   "y": 110.091,
+   "length_mm": 0.508
+  },
+  {
+   "net": "COM_RESET",
+   "layer": "F.Cu",
+   "x": 100.0,
+   "y": 112.4,
+   "length_mm": 1.082
+  },
+  {
+   "net": "ESP_GPIO15",
+   "layer": "F.Cu",
+   "x": 95.832,
+   "y": 85.7,
+   "length_mm": 0.217
+  },
+  {
+   "net": "ESP_GPIO2",
+   "layer": "F.Cu",
+   "x": 99.252,
+   "y": 81.356,
+   "length_mm": 1.505
+  },
+  {
+   "net": "COM_LED",
+   "layer": "B.Cu",
+   "x": 75.232,
+   "y": 110.228,
+   "length_mm": 0.194
+  },
+  {
+   "net": "ESP_GPIO15",
+   "layer": "F.Cu",
+   "x": 94.35,
+   "y": 85.7,
+   "length_mm": 1.482
+  },
+  {
+   "net": "ESP_GPIO2",
+   "layer": "F.Cu",
+   "x": 96.908,
+   "y": 83.7,
+   "length_mm": 3.315
+  },
+  {
+   "net": "COM_LED",
+   "layer": "B.Cu",
+   "x": 75.165,
+   "y": 110.295,
+   "length_mm": 0.094
+  }
+ ],
+ "silk": {
+  "names_front": [
+   {
+    "ref": "J8",
+    "text": "V1 S+-",
+    "layer": "F.SilkS",
+    "height_mm": 0.8,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J16",
+    "text": "ARM SW AG",
+    "layer": "F.SilkS",
+    "height_mm": 0.8,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J17",
+    "text": "BUZ +-",
+    "layer": "F.SilkS",
+    "height_mm": 0.8,
+    "distance_to_courtyard_mm": 0.1
+   },
+   {
+    "ref": "U7",
+    "text": "ESP-12F",
+    "layer": "F.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 1.1
+   }
+  ],
+  "names_back_mirrored": [
+   {
+    "ref": "J14",
+    "text": "1S BAT +-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J15",
+    "text": "PWR SW",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J18",
+    "text": "6S NO GND VI VT VB IS",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J12",
+    "text": "ESC S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J9",
+    "text": "V2 S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J10",
+    "text": "V3 S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J11",
+    "text": "V4 S+-",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J7",
+    "text": "GPS V TX RX G",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "JP1",
+    "text": "GPS 3V3|5V",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J3",
+    "text": "ESP 3V3 IO0 G TX RX RST G",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J1",
+    "text": "GY-521 5V G SCL SDA nc nc G INT",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J2",
+    "text": "BMP280 3V G SCL SDA 3V 3V",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J5",
+    "text": "OPENLOG nc RXI nc 5V G G",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J19",
+    "text": "ISP NAV",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J20",
+    "text": "ISP FCU",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J21",
+    "text": "ISP COM",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J22",
+    "text": "ISP GNS",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J24",
+    "text": "NAV RST",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J25",
+    "text": "FCU RST",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   },
+   {
+    "ref": "J26",
+    "text": "COM RST",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0
+   }
+  ],
+  "names_missed": [],
+  "polarity_marks": [
+   {
+    "ref": "C45",
+    "mark": "+",
+    "pad1_net": "+3V3",
+    "at": [
+     130.8,
+     128.4
+    ],
+    "gap_to_pad1_mm": 0.7102,
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "C47",
+    "mark": "+",
+    "pad1_net": "SERVO_5V",
+    "at": [
+     119.9,
+     82.5
+    ],
+    "gap_to_pad1_mm": 0.4702,
+    "library_mark": {
+     "silk_graphics": 10,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "C52",
+    "mark": "+",
+    "pad1_net": "+3V3",
+    "at": [
+     83.5,
+     92.4
+    ],
+    "gap_to_pad1_mm": 0.7102,
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "D3",
+    "mark": "K",
+    "pad1_net": "GND",
+    "at": [
+     78.1,
+     114.6
+    ],
+    "gap_to_pad1_mm": 0.7,
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "D6",
+    "mark": "K",
+    "pad1_net": "+5V",
+    "at": [
+     132.9,
+     68.3
+    ],
+    "gap_to_pad1_mm": 0.825,
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "J7",
+    "mark": "dot",
+    "pad1_net": "GPS_VCC",
+    "at": [
+     63.8,
+     134.0
+    ],
+    "gap_to_pad1_mm": 0.73,
+    "library_mark": {
+     "silk_graphics": 6,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q1",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     115.8,
+     111.6
+    ],
+    "gap_to_pad1_mm": 0.375,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q2",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     119.0,
+     108.4
+    ],
+    "gap_to_pad1_mm": 0.5942,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q3",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     107.2,
+     131.3
+    ],
+    "gap_to_pad1_mm": 1.4519,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q4",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     86.4,
+     112.5
+    ],
+    "gap_to_pad1_mm": 0.85,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q6",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     71.3,
+     134.0
+    ],
+    "gap_to_pad1_mm": 1.009,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q7",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     68.2,
+     124.5
+    ],
+    "gap_to_pad1_mm": 0.375,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q8",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     109.6,
+     88.6
+    ],
+    "gap_to_pad1_mm": 1.05,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q9",
+    "mark": "dot",
+    "pad1_net": "BUZ_B",
+    "at": [
+     129.1,
+     67.8
+    ],
+    "gap_to_pad1_mm": 0.375,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "Q11",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "at": [
+     93.0,
+     93.8
+    ],
+    "gap_to_pad1_mm": 0.475,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "U2",
+    "mark": "dot",
+    "pad1_net": "+5V",
+    "at": [
+     104.0,
+     90.8
+    ],
+    "gap_to_pad1_mm": 0.4191,
+    "library_mark": {
+     "silk_graphics": 9,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.5,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "U3",
+    "mark": "dot",
+    "pad1_net": "+5V",
+    "at": [
+     75.6,
+     96.8
+    ],
+    "gap_to_pad1_mm": 1.5782,
+    "library_mark": {
+     "silk_graphics": 9,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.5,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "U6",
+    "mark": "dot",
+    "pad1_net": "GND",
+    "at": [
+     135.6,
+     120.8
+    ],
+    "gap_to_pad1_mm": 0.425,
+    "library_mark": {
+     "silk_graphics": 5,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.425,
+     "covered_by": []
+    }
+   },
+   {
+    "ref": "U7",
+    "mark": "dot",
+    "pad1_net": "ESP_RST",
+    "at": [
+     77.2,
+     73.0
+    ],
+    "gap_to_pad1_mm": 0.425,
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.668,
+     "covered_by": []
+    }
+   }
+  ],
+  "polarity_marks_missed": [
+   {
+    "ref": "D1",
+    "mark": "K",
+    "pad1_net": "GND",
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "D2",
+    "mark": "K",
+    "pad1_net": "GND",
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "D4",
+    "mark": "K",
+    "pad1_net": "GND",
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": false,
+     "triangle_to_pad1_mm": null,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "Q5",
+    "mark": "dot",
+    "pad1_net": "+3V3",
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "Q10",
+    "mark": "dot",
+    "pad1_net": "LBAT_PFET_G",
+    "library_mark": {
+     "silk_graphics": 8,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.435,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "U1",
+    "mark": "dot",
+    "pad1_net": "+5V",
+    "library_mark": {
+     "silk_graphics": 9,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.5,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "U4",
+    "mark": "dot",
+    "pad1_net": "+5V",
+    "library_mark": {
+     "silk_graphics": 9,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.5,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "U8",
+    "mark": "dot",
+    "pad1_net": "BOOST_FB",
+    "library_mark": {
+     "silk_graphics": 3,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.36,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   },
+   {
+    "ref": "U9",
+    "mark": "dot",
+    "pad1_net": "BOOST_EN",
+    "library_mark": {
+     "silk_graphics": 7,
+     "pin1_triangle": true,
+     "triangle_to_pad1_mm": 0.425,
+     "covered_by": []
+    },
+    "why": "no free spot for an extra mark within 1.6 mm of pad 1"
+   }
+  ],
+  "revision_text": {
+   "text": "rev 3",
+   "layer": "F.SilkS",
+   "height_mm": 1.0,
+   "at": [
+    76.0,
+    90.0
+   ],
+   "outside_module_bodies_and_tie_band": true
+  },
+  "refs_first_on_silk": [
+   {
+    "ref": "L5",
+    "layer": "F.SilkS",
+    "at": [
+     136.8,
+     129.1
+    ],
+    "angle_deg": 90,
+    "distance_to_courtyard_mm": 0.297
+   },
+   {
+    "ref": "U8",
+    "layer": "B.SilkS",
+    "mirrored": true,
+    "at": [
+     130.8,
+     133.8
+    ],
+    "angle_deg": 0,
+    "distance_to_part_centre_mm": 0.0,
+    "why": "no free F.SilkS spot within 2.5 mm of the courtyard"
+   },
+   {
+    "ref": "U9",
+    "layer": "B.SilkS",
+    "mirrored": true,
+    "at": [
+     117.8,
+     133.1
+    ],
+    "angle_deg": 0,
+    "distance_to_part_centre_mm": 0.0,
+    "why": "no free F.SilkS spot within 2.5 mm of the courtyard"
+   }
+  ],
+  "pin_label_sets": [],
+  "pin_label_sets_missed": [],
+  "refs_on_silk": 9,
+  "refs_on_fab_only": [
+   "U8",
+   "U9",
+   "C1",
+   "C2",
+   "C3",
+   "C4",
+   "C5",
+   "C6",
+   "C7",
+   "C8",
+   "C9",
+   "C10",
+   "C11",
+   "C12",
+   "C13",
+   "C14",
+   "C15",
+   "C16",
+   "C17",
+   "C18",
+   "C19",
+   "C20",
+   "C21",
+   "C22",
+   "C23",
+   "C24",
+   "C25",
+   "C26",
+   "C27",
+   "C28",
+   "C29",
+   "C30",
+   "C31",
+   "C32",
+   "C41",
+   "C43",
+   "C44",
+   "C45",
+   "C46",
+   "C48",
+   "C49",
+   "C50",
+   "C51",
+   "C52",
+   "C54",
+   "C55",
+   "C56",
+   "C57",
+   "C58",
+   "C59",
+   "C60",
+   "D1",
+   "D2",
+   "D3",
+   "D4",
+   "J1",
+   "J2",
+   "J3",
+   "J7",
+   "J8",
+   "J10",
+   "J11",
+   "J12",
+   "J14",
+   "J15",
+   "J17",
+   "J18",
+   "J19",
+   "J20",
+   "J21",
+   "J22",
+   "J24",
+   "J25",
+   "J26",
+   "JP1",
+   "L1",
+   "L2",
+   "L3",
+   "L4",
+   "NT1",
+   "Q1",
+   "Q2",
+   "Q3",
+   "Q4",
+   "Q5",
+   "Q6",
+   "Q7",
+   "Q8",
+   "Q9",
+   "Q10",
+   "Q11",
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R6",
+   "R7",
+   "R8",
+   "R11",
+   "R12",
+   "R13",
+   "R14",
+   "R15",
+   "R16",
+   "R17",
+   "R18",
+   "R19",
+   "R20",
+   "R21",
+   "R23",
+   "R24",
+   "R25",
+   "R26",
+   "R27",
+   "R28",
+   "R29",
+   "R30",
+   "R31",
+   "R32",
+   "R33",
+   "R34",
+   "R35",
+   "R36",
+   "R37",
+   "R38",
+   "R39",
+   "R40",
+   "R41",
+   "R42",
+   "R43",
+   "R44",
+   "R45",
+   "R46",
+   "R47",
+   "R48",
+   "R49",
+   "R50",
+   "R51",
+   "R52",
+   "R53",
+   "R54",
+   "R55",
+   "R56",
+   "R57",
+   "R58",
+   "R59",
+   "R60",
+   "R61",
+   "R62",
+   "R63",
+   "R64",
+   "R65",
+   "R66",
+   "R67",
+   "R68",
+   "U1",
+   "U2",
+   "U3",
+   "U4",
+   "U6",
+   "U7",
+   "Y1",
+   "Y2",
+   "Y3",
+   "Y4"
+  ]
+ },
+ "routed_board_sha256": "86d3382e7434b9c210dce8615f5008d569f05aef4f5bffa3fe0920ff2106ba7f"
+}

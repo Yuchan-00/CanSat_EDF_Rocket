@@ -71,7 +71,8 @@ VIA_INFLATE_MM = 0.1
 #: (keep_nets), and no session wire of theirs is imported. M: as routable nets the 1.0 mm / 0.8 mm-via PowerHigh
 #: class left 5 tap connections open (attempt a1); as fixed wiring of a complete net Freerouting still counted
 #: "VBAT_LOGIC_SW (8 unrouted connections)" (wide tracks / T-junctions) and kept trying in every pass (attempt a2).
-PREROUTED_NETS = ("VBAT_LOGIC_RAW", "VBAT_LOGIC", "VBAT_LOGIC_SW", "BOOST_SW")
+#: relayout step: BOOST_FB is wired completely by power_preroutes as well (4 pads west of U8)
+PREROUTED_NETS = ("VBAT_LOGIC_RAW", "VBAT_LOGIC", "VBAT_LOGIC_SW", "BOOST_SW", "BOOST_FB")
 #: rev 3 ECO seed: the recorded rev 2c stage sessions (archive). Nets whose pads are identical on the rev 2c and the
 #: rev 3 unrouted board start with their rev 2c routing wherever kicad-cli DRC finds no conflict with rev 3 copper.
 SEED_DIR = Path(os.environ["CARRIER_SEED_DIR"]) if os.environ.get("CARRIER_SEED_DIR") else \
@@ -133,7 +134,8 @@ def export_dsn(board, dsn: Path, keep_bplane: bool = False, allow_in2: bool = Fa
     # clearance to the boundary (M: 8 copper_edge_clearance errors in the 2-layer try) -> 0.2 mm keepout strips along
     # the edges (+ 0.13 mm clearance = 0.33 mm) and 1.3 mm squares in the rounded corners, on every copper layer
     cu = ["F.Cu", "B.Cu"] if board.GetCopperLayerCount() == 2 else ["F.Cu", "In1.Cu", "In2.Cu", "B.Cu"]
-    rects = [(62000, 65000, 138000, 65200), (62000, 134800, 138000, 135000), (62000, 65000, 62200, 135000),
+    # relayout step (review J2): 0.3 mm strips (+ 0.13 mm = 0.43 mm) along the two rail edges y 65 / y 135
+    rects = [(62000, 65000, 138000, 65300), (62000, 134700, 138000, 135000), (62000, 65000, 62200, 135000),
              (137800, 65000, 138000, 135000), (62000, 65000, 63300, 66300), (136700, 65000, 138000, 66300),
              (62000, 133700, 63300, 135000), (136700, 133700, 138000, 135000)]
     kos = ""
@@ -495,6 +497,7 @@ def finish(board) -> dict:
     shrunk = shrink_vias(board)
     fixed = fix_neckdowns(board)
     widened = widen_power(board)
+    nudged = rail_edge_nudge(board)
     items = list(board.GetTracks())
     n_vias = sum(1 for t in items if t.GetClass() == "PCB_VIA")
     n_segs = len(items) - n_vias
@@ -537,7 +540,7 @@ def finish(board) -> dict:
     return {"vias_shrunk_after_inflation": shrunk, "neckdowns_widened_to_0.127mm": fixed, "dangling_vias_removed": dangling,
             "segments": n_segs, "routed_vias": n_vias - len(dangling), "gnd_stitching_vias": len(stitch),
             "tracks_narrowed_for_clearance": narrowed, "power_tracks_widened": widened, "leftovers_routed_by_script": leftovers,
-            "ripup": ripped,
+            "ripup": ripped, "rail_edge_nudged": nudged,
             "dangling_track_stubs_removed": stubs, "silk": silk_log, "routed_board_sha256": sha(BOARD)}
 
 
@@ -545,6 +548,8 @@ def finish(board) -> dict:
 POWER_CLASS_W = {"SERVO_5V": 1.5, "GND_PWR": 1.5, "VBAT_LOGIC_RAW": 1.0, "VBAT_LOGIC": 1.0, "VBAT_LOGIC_SW": 1.0,
                  "+5V": 0.5, "+3V3": 0.5, "GPS_VCC": 0.5}
 EDGE_CLR_MM = 0.3
+#: relayout step (review J2): copper this script lays or widens keeps 0.4 mm from the rail edges y 65 / y 135
+RAIL_EDGE_CLR_MM = 0.4
 CLASS_CLR_MM = 0.13
 
 
@@ -564,9 +569,11 @@ def widen_power(board) -> dict:
 
     tracks = list(board.GetTracks())
     items = []
+    pos_of: dict[int, list[int]] = {}
     for t in tracks:
         for lay in (pcbnew.F_Cu, pcbnew.B_Cu):
             if t.IsOnLayer(lay):
+                pos_of.setdefault(id(t), []).append(len(items))
                 items.append((lay, t.GetNetCode(), _bbmm(t), t))
     for fp in board.GetFootprints():
         for pad in fp.Pads():
@@ -591,7 +598,7 @@ def widen_power(board) -> dict:
         while w > w0 + 1e-6:
             half = w / 2
             if (min(ax, bx) - half < 62.0 + EDGE_CLR_MM or max(ax, bx) + half > 138.0 - EDGE_CLR_MM
-                    or min(ay, by) - half < 65.0 + EDGE_CLR_MM or max(ay, by) + half > 135.0 - EDGE_CLR_MM):
+                    or min(ay, by) - half < 65.0 + RAIL_EDGE_CLR_MM or max(ay, by) + half > 135.0 - RAIL_EDGE_CLR_MM):
                 w = round(w - 0.05, 3)
                 continue
             seg = pcbnew.SHAPE_SEGMENT(a, b, pcbnew.FromMM(w))
@@ -617,12 +624,50 @@ def widen_power(board) -> dict:
             w = round(w - 0.05, 3)
         if best is not None:
             t.SetWidth(pcbnew.FromMM(best))
+            # relayout step: the stored box of a widened track is refreshed. M (relayout try T3): the stale box of a
+            # +5V track widened earlier let a VBAT_LOGIC_SW stub grow to 0.0555 mm from it (kicad-cli DRC clearance)
+            for i in pos_of.get(id(t), []):
+                items[i] = (items[i][0], items[i][1], _bbmm(t), t)
             out["widened"].append({"net": net, "layer": t.GetLayerName(), "from_mm": round(w0, 3), "to_mm": best,
                                    "length_mm": round(_m.hypot(bx - ax, by - ay), 2)})
         else:
             out["kept"].append({"net": net, "layer": t.GetLayerName(), "width_mm": round(w0, 3),
                                 "length_mm": round(_m.hypot(bx - ax, by - ay), 2), "at": [round(ax, 2), round(ay, 2)]})
     return out
+
+
+def rail_edge_nudge(board) -> list[dict]:
+    """relayout step (review J2): a routed track whose copper is nearer than 0.4 mm to a rail edge (y 65 / y 135) by at
+    most 0.02 mm is moved inward: every track end at such a point (same net, same layer) goes to 0.4 mm + half the
+    widest track ending there + 1 um. M: the recorded sessions hold one such track (I2C_SCL_3V3 on B.Cu, 0.3986 mm;
+    Freerouting kept 0.33 mm to the edge when it was recorded). Larger shortfalls are left alone and fail the rail
+    check. Pre-routes and fan-out copper are never moved. Deterministic (sorted)."""
+    lim = pcbnew.FromMM(RAIL_EDGE_CLR_MM)
+    y_top, y_bot = pcbnew.FromMM(65.0), pcbnew.FromMM(135.0)
+    need: dict[tuple, int] = {}
+    tracks = sorted((t for t in board.GetTracks() if t.GetClass() == "PCB_TRACK" and _geo_key(t) not in FIXED_KEYS),
+                    key=lambda t: (t.GetNetname(), t.GetLayer(), t.GetStart().x, t.GetStart().y, t.GetEnd().x, t.GetEnd().y))
+    for t in tracks:
+        half = t.GetWidth() // 2 + 1
+        for p in (t.GetStart(), t.GetEnd()):
+            for edge, sign in ((y_top, 1), (y_bot, -1)):
+                gap = (p.y - half - edge) if sign > 0 else (edge - p.y - half)
+                if 0 <= lim - gap <= pcbnew.FromMM(0.02) and gap < lim:
+                    target = edge + sign * (lim + half + 1000)
+                    key = (t.GetNetCode(), t.GetLayer(), p.x, p.y)
+                    if key not in need or (target - need[key]) * sign > 0:
+                        need[key] = target
+    moved = []
+    for t in tracks:
+        for get, put in ((t.GetStart, t.SetStart), (t.GetEnd, t.SetEnd)):
+            p = get()
+            key = (t.GetNetCode(), t.GetLayer(), p.x, p.y)
+            if key in need:
+                put(pcbnew.VECTOR2I(p.x, need[key]))
+    for (_nc, lay, x, y), ty in sorted(need.items()):
+        moved.append({"net": board.FindNet(_nc).GetNetname(), "layer": board.GetLayerName(lay), "x": round(pcbnew.ToMM(x), 4),
+                      "y_from": round(pcbnew.ToMM(y), 4), "y_to": round(pcbnew.ToMM(ty), 4)})
+    return moved
 
 
 def close_leftovers_step(board) -> list[dict]:

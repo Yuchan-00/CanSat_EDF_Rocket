@@ -50,7 +50,8 @@ The log of the run (times, exit codes) is kicad/work/make_all_log.json (evidence
 Usage:  cd <board>/scripts && B:/Claude/.venv/Scripts/python.exe -X utf8 -B make_all.py
             [--list] [--from STEP] [--only STEP,STEP] [--skip STEP,STEP] [--no-renders] [--reroute]
   --no-renders  skips models, renders, d2, slides, present (pictures only; every order file is still built)
-  --reroute     live Freerouting (route.py 40 5, CARRIER_SEED=0, CARRIER_RIPUP=0 as the adopted attempt a7) instead of
+  --reroute     live Freerouting (route.py 40 5 with the ECO seed kicad/work/seed_a7 = sessions of attempt a7, as the
+                adopted relayout run) instead of
                 the replay: not deterministic, writes new sessions; use only after a placement change.
 """
 
@@ -155,7 +156,9 @@ def main() -> int:
     chosen = [n for n in chosen if n not in skip]
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     if reroute:
-        env.update(CARRIER_SEED="0", CARRIER_RIPUP="0")
+        # relayout step: the adopted board = a7 sessions as ECO seed (only nets with changed pads or conflicts are
+        # routed again) + the normal stages + the clean-up with rip-up
+        env.update(CARRIER_SEED_DIR=str(ROOT / "kicad" / "work" / "seed_a7"))
     log = {"tool": "scripts/make_all.py", "argv": sys.argv[1:], "reroute": reroute,
            "interpreters": {"PY": Path(sys.executable).as_posix(), "KPY": KPY.as_posix(), "MPY": MPY.as_posix()},
            "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "steps": []}

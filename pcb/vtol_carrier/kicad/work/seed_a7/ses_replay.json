@@ -1,0 +1,27 @@
+{
+ "fanout": true,
+ "stages": [
+  [
+   "servo",
+   "vtol_carrier_servo.ses"
+  ],
+  [
+   "power",
+   "vtol_carrier_power.ses"
+  ],
+  [
+   "signals",
+   "vtol_carrier_signals.ses"
+  ],
+  [
+   "gnd",
+   "vtol_carrier_gnd.ses"
+  ],
+  [
+   "complete",
+   "vtol_carrier_complete.ses"
+  ]
+ ],
+ "unrouted_board_sha256": "4a7ccfed934503ef8eb9bdc99a50d91be0320e63eb0b455e9f203a49ec22c4b7",
+ "source": "rev 3 live run a7, 2026-11-11 14:55-15:30 KST: route.py 40 5, CARRIER_SEED=0, CARRIER_RIPUP=0, CARRIER_HALO=0.4 (default), Freerouting 2.5.0, on unrouted board 4a7ccfed. route_log.json is the log of that live run; the board itself is the replay (route_reuse_log.json), which adds close_leftovers and ripup.py."
+}

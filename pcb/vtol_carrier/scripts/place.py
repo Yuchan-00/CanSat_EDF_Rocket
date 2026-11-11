@@ -352,9 +352,9 @@ MODULES = {
     "J1": ("GY-521 module ~21.2 x 16.4 mm (A)", (-1.3, 15.1, 8.89 - 10.6, 8.89 + 10.6), 2.0,
            "parts <= 2.0 mm high only (module on the 2.54 mm header spacer, A)"),
     "J2": ("BMP280 module ~15.2 x 11.5 mm (A)", (-10.55 - 11.5, -10.55, 6.35 - 7.6, 6.35 + 7.6), 1.1,
-           "parts <= 1.1 mm high only (module ~1.5 mm above the board in a right-angle socket, A)"),
+           "placement rule: parts <= 1.1 mm high under the module (module height above the board: spec/module_dimensions.json, A)"),
     "J5": ("OpenLog ~19 x 16 mm (A)", (-10.55 - 19.0, -10.55, 6.35 - 8.0, 6.35 + 8.0), 1.1,
-           "parts <= 1.1 mm high only (module ~1.5 mm above the board in a right-angle socket, A)"),
+           "placement rule: parts <= 1.1 mm high under the module (module height above the board: spec/module_dimensions.json, A)"),
 }
 
 
@@ -793,6 +793,8 @@ PWR_FIRST = ["Q10", "R14", "C47"]
 #   L5   rot 180 in the corner: pad 2 (BOOST_SW) at (133.05, 132.40), 1.5 mm right of U8 pin 5, pad 1 (VBAT) in the
 #        far corner (fed from B.Cu / a pour - no F.Cu corridor is left, routing note)
 #   U8   rot 0: hot pins 4 / 5 / 6 face L5, FB / EN / VIN face away from it
+#   (the lines below describe the first rev 3 layout; the relayout step re-arranged U8 / C57 / C43 / C41 / R63 / R64 /
+#    C58 - the reasons are in the POWER_BLOCK entries)
 #   C57  first output capacitor directly above U8: pad 1 (+5V) 0.95 mm above pin 6, pad 2 (GND) to In1 by vias
 #   C43  second output capacitor left of U8 in the edge strip (courtyard gap 0.6 mm = escape channel for pins 1-3)
 #   C41  input capacitor left of C43 (the only 1206 spot near pin 3; none exists at the L5 pad-1 end)
@@ -802,25 +804,32 @@ PWR_FIRST = ["Q10", "R14", "C47"]
 #        inside x 113..117); the pull-down R68, the LDO input capacitor C44 and the second input capacitor C42 find
 #        no spot in the corner and are placed greedily (POWER_AUTO)
 POWER_BLOCK: dict[str, tuple[float, float, float, str]] = {
-    "L5": (134.90, 132.40, 180, "boost inductor in the +x/-y corner, pad 2 (BOOST_SW) next to U8 pin 5"),
-    "U8": (130.85, 133.80, 0, "boost converter: pins 4-6 (GND / SW / VOUT) toward L5, pins 1-3 away from it"),
-    "C57": (129.75, 131.30, 180, "boost output capacitor 1 directly above U8: pad 1 (+5V) at pin 6 (hot loop)"),
-    "C43": (126.75, 133.60, 180, "boost output capacitor 2 left of U8 (0.6 mm courtyard gap), pad 1 (+5V) toward U8"),
-    "C41": (122.15, 133.60, 180, "boost input capacitor 1 left of C43, pad 1 (VBAT) toward U8 pin 3"),
+    # relayout step (rev 3 reviews E-R1 / E-R2 / E-R3): U8 above its input capacitor, the two output capacitors upright
+    # between U8 and L5 (+5V pads up, GND pads down, BOOST_SW between their pads), feedback parts west of U8
+    "L5": (134.90, 132.40, 180, "boost inductor in the +x/-y corner, pad 2 (BOOST_SW) toward U8"),
+    "C43": (130.90, 132.40, 270, "boost output capacitor 2 upright beside L5: pad 1 (+5V) up, pad 2 (GND) down on the common F.Cu GND bar"),
+    "C57": (128.60, 132.40, 270, "boost output capacitor 1 upright beside C43: pad 1 (+5V) 0.95 mm from U8 pin 6, pad 2 (GND) on the F.Cu GND bar with U8 pin 4 (hot loop on the top layer)"),
+    "U8": (125.70, 131.50, 0, "boost converter: pins 4-6 (GND / SW / VOUT) toward C57 / L5, pins 1-3 away from them, pins 3 / 4 above the C41 pads"),
+    "C41": (125.15, 133.60, 0, "boost input capacitor directly below U8: pad 1 (VBAT) under pin 3 (VIN), pad 2 (GND) under pin 4 on the F.Cu GND bar"),
     "U6": (134.05, 125.65, 270, "3.3 V LDO above L5, tab (+3V3) toward C45, body clear of the OpenLog outline"),
-    "C45": (127.65, 128.10, 180, "LDO output tantalum between the NAV bulk capacitor and C57, pad 1 (+3V3) toward the U6 tab"),
-    "R64": (126.70, 130.97, 270, "FB divider bottom resistor left of C57: pad 1 (BOOST_FB) up, pad 2 (GND) beside the C57 GND pad"),
-    "R63": (125.20, 130.97, 90, "FB divider top resistor beside R64: pad 2 (BOOST_FB) level with R64 pad 1"),
-    "C58": (122.95, 130.85, 0, "feed-forward capacitor left of R63 (below the former D1 spot, 1.0 mm clear of the NAV pad ring): pad 2 (BOOST_FB) 1.6 mm from R63 pad 2"),
-    "U9": (117.80, 133.05, 0, "cut-off comparator in the edge strip under the NAV, 11 mm from U8 pin 2 (BOOST_EN is low impedance)"),
+    "C45": (127.65, 128.10, 180, "LDO output tantalum between the NAV bulk capacitor and the boost block, pad 1 (+3V3) toward the U6 tab"),
+    "R63": (123.00, 130.40, 0, "FB divider top resistor west of U8: pad 2 (BOOST_FB) 1.3 mm from U8 pin 1, pad 1 (+5V) sensed at C57 pad 1 by its own track"),
+    "R64": (122.08, 133.10, 270, "FB divider bottom resistor upright below R63: pad 1 (BOOST_FB) up, pad 2 (GND) down"),
+    "C58": (120.60, 133.10, 90, "feed-forward capacitor upright beside R64: pad 2 (BOOST_FB) up, level with R64 pad 1"),
+    "U9": (117.80, 133.05, 0, "cut-off comparator in the edge strip under the NAV (BOOST_EN is low impedance)"),
     "C60": (115.00, 133.20, 90, "UVLO_SENSE filter capacitor beside U9 pin 3 (pad 1 down, level with pin 3)"),
     "R65": (113.50, 133.20, 90, "UVLO divider top resistor beside C60: pad 2 (UVLO_SENSE) up toward R67"),
     "R67": (113.90, 130.90, 0, "hysteresis resistor above R65 / C60 (0.1 mm below the former R46 spot, 1.0 mm clear of the NAV pad ring): pad 2 (BOOST_EN) toward U9 pin 1"),
     "R66": (116.90, 130.40, 0, "UVLO divider bottom resistor above U9: pad 1 (UVLO_SENSE) toward R67 / pin 3 side"),
     "C59": (119.90, 130.40, 0, "comparator bypass above U9: pad 1 (VBAT) 1.7 mm from U9 pin 6"),
+    # the three greedy power parts keep the spots the greedy placer gave them on the delivered rev 3 board (their
+    # targets moved with U8; a greedy re-run would move them and every part placed after them)
+    "R68": (131.90, 120.50, 0, "BOOST_EN pull-down at its delivered rev 3 spot (first free spot found from the former U8 pin 2 position)"),
+    "C44": (95.90, 131.90, 90, "LDO input capacitor at its delivered rev 3 spot"),
+    "C42": (72.60, 69.30, 90, "second input capacitor at the switch-lead header J15, delivered rev 3 spot (no 1206 spot is left in the boost corner)"),
 }
 #: power parts placed greedily right after the keep pass, in this order (targets: TARGET_HINT)
-POWER_AUTO = ["R68", "C44", "C42"]
+POWER_AUTO: list[str] = []
 #: greedy rev 2c parts the power block displaced, at explicit spots (how = "moved")
 MOVED: dict[str, tuple[float, float, float, str]] = {
     "D1": (129.70, 125.50, 90, "NAV status LED moved 7 mm from its rev 2c spot (now C58) into the slot between C3 and U6: reachable, not under a module"),

@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-11T18:50:49",
+    "date": "2026-11-11T21:05:06",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -42,7 +42,7 @@
                         "x": 95.985,
                         "y": 85.5467
                     },
-                    "uuid": "0ef247df-e9a6-4b01-803e-22e5b120a528"
+                    "uuid": "f6f31cc9-d044-4e01-9b5e-efd00e9160ec"
                 }
             ],
             "severity": "warning",
@@ -57,7 +57,7 @@
                         "x": 100.7569,
                         "y": 81.3556
                     },
-                    "uuid": "35821326-6d69-4d46-9a74-f5acaa5c0964"
+                    "uuid": "58aa5fd4-365e-4121-abff-cf535fb421d4"
                 }
             ],
             "severity": "warning",
@@ -72,7 +72,7 @@
                         "x": 75.0951,
                         "y": 110.0912
                     },
-                    "uuid": "ad301530-73ac-4d3a-8136-7a65dfb52052"
+                    "uuid": "f37690c2-40f2-4c17-a252-453e99c26949"
                 }
             ],
             "severity": "warning",

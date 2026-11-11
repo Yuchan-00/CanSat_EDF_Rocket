@@ -1,0 +1,449 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-11T20:09:23",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "seed_try.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+3V3] on B.Cu, 길이 3.1533 mm",
+                    "pos": {
+                        "x": 85.5333,
+                        "y": 111.6098
+                    },
+                    "uuid": "f959364b-77ac-4971-adb5-c03577458461"
+                },
+                {
+                    "description": "패드 1 [+3V3]의 Q4 위F.Cu",
+                    "pos": {
+                        "x": 88.2625,
+                        "y": 112.85
+                    },
+                    "uuid": "b58ee992-d30b-50ff-8b3a-49d88ea50475"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [+3V3] on F.Cu, 길이 3.2110 mm",
+                    "pos": {
+                        "x": 105.6574,
+                        "y": 90.7875
+                    },
+                    "uuid": "ef57ecc7-3114-4d38-ac52-a8ce0626a9b1"
+                },
+                {
+                    "description": "패드 1 [+3V3]의 Q8 위F.Cu",
+                    "pos": {
+                        "x": 110.15,
+                        "y": 86.5375
+                    },
+                    "uuid": "5497328e-0e0e-5426-a1b5-410132e402c0"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 1 [+5V]의 C25 위F.Cu",
+                    "pos": {
+                        "x": 76.74,
+                        "y": 123.3
+                    },
+                    "uuid": "43342fb2-3eed-52d3-8375-ec49ef159ccc"
+                },
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 0.9120 mm",
+                    "pos": {
+                        "x": 76.2,
+                        "y": 121.35
+                    },
+                    "uuid": "f35080d2-a48a-45df-9b61-71ad3198634f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.4
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.4
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[GND]J16",
+                    "pos": {
+                        "x": 123.66,
+                        "y": 75.79
+                    },
+                    "uuid": "6d9b82c0-eefa-5c77-ac44-8ea1ebdec555"
+                },
+                {
+                    "description": "영역 [GND] on F.Cu, 우선순위 0",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 65.4
+                    },
+                    "uuid": "226c3ce6-e6b5-5eda-9642-153efd323184"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [COM_RESET] on F.Cu, 길이 0.1820 mm",
+                    "pos": {
+                        "x": 96.5517,
+                        "y": 110.5422
+                    },
+                    "uuid": "52d09704-1798-4250-9c50-53e37d693253"
+                },
+                {
+                    "description": "배선 [COM_RESET] on B.Cu, 길이 1.2824 mm",
+                    "pos": {
+                        "x": 96.7107,
+                        "y": 108.9864
+                    },
+                    "uuid": "97125a14-3e5b-40d2-b77a-9dcfbca9fb6c"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [ESP_TXD0] on B.Cu, 길이 1.6898 mm",
+                    "pos": {
+                        "x": 98.1863,
+                        "y": 83.9884
+                    },
+                    "uuid": "90f79861-903c-4482-9802-2a22e6e555be"
+                },
+                {
+                    "description": "배선 [ESP_TXD0] on F.Cu, 길이 1.2223 mm",
+                    "pos": {
+                        "x": 95.95,
+                        "y": 93.2375
+                    },
+                    "uuid": "ea503b70-be63-4750-a57e-7b29fc2e8c6b"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 2 [BOOST_EN]의 R67 위F.Cu",
+                    "pos": {
+                        "x": 114.725,
+                        "y": 130.9
+                    },
+                    "uuid": "2ffe621c-b7a0-58e9-a20d-3894ea690110"
+                },
+                {
+                    "description": "패드 1 [BOOST_EN]의 U9 위F.Cu",
+                    "pos": {
+                        "x": 116.6625,
+                        "y": 132.1
+                    },
+                    "uuid": "f7c01cdd-9caa-5e73-b315-5fe2dbba96fa"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "배선 [BOOST_EN] on F.Cu, 길이 0.9875 mm",
+                    "pos": {
+                        "x": 124.9875,
+                        "y": 131.5
+                    },
+                    "uuid": "e8ff7f11-ba38-5a78-ac22-ff2fee55ab44"
+                },
+                {
+                    "description": "패드 1 [BOOST_EN]의 U9 위F.Cu",
+                    "pos": {
+                        "x": 116.6625,
+                        "y": 132.1
+                    },
+                    "uuid": "f7c01cdd-9caa-5e73-b315-5fe2dbba96fa"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 2 [BOOST_EN]의 U8 위F.Cu",
+                    "pos": {
+                        "x": 124.9875,
+                        "y": 131.5
+                    },
+                    "uuid": "3ea35d56-8d51-5c9d-90bb-851c7e3901de"
+                },
+                {
+                    "description": "패드 1 [BOOST_EN]의 R68 위F.Cu",
+                    "pos": {
+                        "x": 131.075,
+                        "y": 120.5
+                    },
+                    "uuid": "89ff7c7d-4dfb-528d-afe8-cd124e64172f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [ESP_RXD0] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.84,
+                        "y": 82.915
+                    },
+                    "uuid": "448a99ec-4960-4b4b-b824-2f8fc8230ca7"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [COM_RESET] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 101.3501,
+                        "y": 112.6684
+                    },
+                    "uuid": "7a542e4e-8a06-47bf-a4f5-da3025fbd8b8"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [ESP_GPIO15] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 96.0951,
+                        "y": 85.5467
+                    },
+                    "uuid": "abc5630d-2937-4193-a9d2-1af4eb85e207"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [NAV_LED_A] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 128.3368,
+                        "y": 119.5658
+                    },
+                    "uuid": "1de8f51b-5576-4a41-8c56-40f28d1fd674"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [FCU_ILINK_TX] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 114.3003,
+                        "y": 103.5629
+                    },
+                    "uuid": "da359232-637d-4112-9880-5c9cd7dad6fc"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [ESP_GPIO0] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.0479,
+                        "y": 73.1683
+                    },
+                    "uuid": "345a7601-a81b-4c10-8fab-31e78dfccd56"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [ESP_TXD0] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 95.95,
+                        "y": 92.0152
+                    },
+                    "uuid": "32b367c7-1e1a-4370-8fd7-50fa596c516b"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [BOOST_EN] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 124.0,
+                        "y": 131.5
+                    },
+                    "uuid": "bff7edab-a10b-59ab-8373-69befc0d14d0"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [ESP_GPIO2] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.5971,
+                        "y": 79.5154
+                    },
+                    "uuid": "06b8cbe1-85b3-47c4-820d-e8b5e727272c"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [ESP_GPIO2] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 102.9206,
+                        "y": 89.1196
+                    },
+                    "uuid": "cfc651ef-d3c7-4cf4-847b-106664f12fcd"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "비아 [COM_LED] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 90.7637,
+                        "y": 107.9472
+                    },
+                    "uuid": "3b980370-628e-4821-8a45-20a292488e41"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "배선 [COM_LED] on B.Cu, 길이 0.5082 mm",
+                    "pos": {
+                        "x": 75.0951,
+                        "y": 110.0912
+                    },
+                    "uuid": "6e1fb5c0-46b7-452d-9511-1b49fe944808"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        }
+    ]
+}
