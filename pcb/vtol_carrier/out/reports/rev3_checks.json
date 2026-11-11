@@ -4,9 +4,9 @@
  "erc_and_netlist_made_from_the_files_of_the_determinism_run": true,
  "interpreter": "B:/Claude/.venv/Scripts/python.exe",
  "python": "3.12.10",
- "spec_sha256": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
- "plan_sha256": "415d1e20a0903103d6bb4b48253ffc7054cfd3d2371c008706b906fe5c1eda15",
- "netlist_sha256": "cb5e2284e7de69e89f8819beea68e4e7c7ef8773acebc45fef4f5f4f0429d46f",
+ "spec_sha256": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
+ "plan_sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
+ "netlist_sha256": "7692567b619ba7525eca7d35cb692b4bdcf54aa3d2747c469a386fc01e941acb",
  "checks": {
   "determinism": {
    "result": "PASS",
@@ -68,7 +68,19 @@
    "prog_headers": "A",
    "not_fitted_by_jlc": [
     "J1",
+    "J2",
     "J3",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
     "J19",
     "J20",
     "J21",
@@ -83,34 +95,35 @@
     "U1",
     "U2",
     "U3",
-    "U4"
+    "U4",
+    "U7"
    ],
    "main_pair": {
     "parts": 174,
     "fit_counts": {
-     "jlc": 157,
+     "jlc": 144,
      "jlc_optional": 4,
-     "user": 1,
+     "user": 14,
      "none": 12
     },
-    "jlc_fitted_parts": 157,
-    "bom_lines": 40,
-    "bom_lines_smt": 34,
-    "bom_lines_tht": 6,
+    "jlc_fitted_parts": 144,
+    "bom_lines": 33,
+    "bom_lines_smt": 33,
+    "bom_lines_tht": 0,
     "with_mcu": false
    },
    "with_mcu_pair": {
     "parts": 174,
     "fit_counts": {
-     "jlc": 157,
+     "jlc": 144,
      "jlc_optional": 4,
-     "user": 1,
+     "user": 14,
      "none": 12
     },
-    "jlc_fitted_parts": 161,
-    "bom_lines": 41,
-    "bom_lines_smt": 35,
-    "bom_lines_tht": 6,
+    "jlc_fitted_parts": 148,
+    "bom_lines": 34,
+    "bom_lines_smt": 34,
+    "bom_lines_tht": 0,
     "with_mcu": true
    }
   },

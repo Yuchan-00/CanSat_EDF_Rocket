@@ -4,9 +4,12 @@ Invariant this module enforces: the routed board is never modified.  Three deriv
 only those are rendered:
 
     kicad/render_as_delivered.kicad_pcb     what JLCPCB ships: the 3D models of every user-fitted part are hidden
-                                            (U1..U4, the GY-521 strip in J1; no module, no GPS plug)
-    kicad/render_completed.kicad_pcb        after the user's own work: U1..U4 shown, GY-521 on J1, BMP280 in J2,
-                                            OpenLog in J5, JST-GH plug with the start of the GPS lead in J7
+                                            (spec fit jlc_optional / user: U1..U4, the GY-521 strip in J1 and, since
+                                            the user decisions of 2026-11-12, the ESP-12F U7 and the 12 through-hole
+                                            connectors; no module, no GPS plug)
+    kicad/render_completed.kicad_pcb        after the user's own work: U1..U4, U7 and the THT connectors shown,
+                                            GY-521 on J1, BMP280 in J2, OpenLog in J5, JST-GH plug with the start of
+                                            the GPS lead in J7
     kicad/render_completed_limit.kicad_pcb  the completed board plus a red frame at the 13.4 mm height limit (view b4)
 
 The module models come from ``make_module_models.py`` (kicad/3d/*.step + models_manifest.json).  Each one is written
@@ -82,9 +85,11 @@ VIEWS: tuple[dict, ...] = (
      "persp": True, "focus": ("model", "gh_plug_in_J7"), "floor": True, "what": "JST-GH plug and the GPS lead at J7"},
 )
 
-# Parts the user fits: their library models are hidden in the as-delivered copy.  J1 keeps the library pin-header
-# footprint (8 plated holes); its header model is hidden in every copy because the GY-521 model brings its own strip.
-HIDE_AS_DELIVERED = ("U1", "U2", "U3", "U4", "J1")
+# Parts the user fits: their library models are hidden in the as-delivered copy - the list comes from the spec
+# (hidden_as_delivered: fit jlc_optional / user), never from a refdes list typed here.  J1 keeps the library
+# pin-header footprint (8 plated holes); its header model is hidden in every copy because the GY-521 model brings
+# its own strip.
+USER_FITS = ("jlc_optional", "user")
 HIDE_ALWAYS = ("J1",)
 ATTACH_COMPLETED = ("gy521_on_J1", "bmp280_in_J2", "openlog_in_J5", "gh_plug_in_J7")
 PROJECT_MODEL_IF_LIBRARY_MISSING = {"J14": "molex_22035025_J14"}
@@ -180,10 +185,24 @@ def attach(fp, filename: str, offset: tuple[float, float, float] = (0.0, 0.0, 0.
     fp.Models().push_back(m)
 
 
+def hidden_as_delivered() -> tuple[str, ...]:
+    """Refs whose 3D model is not on the board JLC ships with the default file pair: every part the user fits
+    (spec fit jlc_optional = the MCUs, fit user = J1, the ESP-12F U7 and the 12 THT connectors).  HIDE_ALWAYS must be
+    part of it."""
+    spec = json.loads((ROOT / "spec" / "carrier_spec.json").read_text(encoding="utf-8"))
+    refs = [p["refdes"] for p in spec["parts"] if p.get("fit") in USER_FITS]
+    key = lambda r: (r.rstrip("0123456789"), int("".join(c for c in r if c.isdigit()) or 0))   # noqa: E731
+    refs = tuple(sorted(refs, key=lambda r: (0 if r.startswith("U") else 1, *key(r))))
+    if not refs or not set(HIDE_ALWAYS) <= set(refs):
+        raise RuntimeError(f"user-fitted refs {refs} do not contain {HIDE_ALWAYS}: check spec parts[].fit")
+    return refs
+
+
 def prepare(board_in: Path, kicad_dir: Path, manifest: dict, share: Path) -> dict:
     """Write the three derived copies; return what was done (paths, attachments, focus points, missing models)."""
     import pcbnew
     models = manifest["models"]
+    hide_delivered = hidden_as_delivered()
     d3 = kicad_dir / "3d"
     if d3.resolve() != MODELS_DIR.resolve():                    # proof runs on a scratch copy of the board
         d3.mkdir(parents=True, exist_ok=True)
@@ -231,11 +250,13 @@ def prepare(board_in: Path, kicad_dir: Path, manifest: dict, share: Path) -> dic
                 for m in fps[ref].Models():
                     if m.m_Show and not model_file_on_disk(m.m_Filename, kicad_dir, share):
                         info["library_models_missing"].append(f"{ref}: {m.m_Filename}")
-        for ref in (HIDE_AS_DELIVERED if key == "D" else HIDE_ALWAYS):
+        for ref in (hide_delivered if key == "D" else HIDE_ALWAYS):
             set_show(need(ref), False)
             hidden.append(ref)
         for ref, name in PROJECT_MODEL_IF_LIBRARY_MISSING.items():
             fp = need(ref)
+            if key == "D" and ref in hide_delivered:
+                continue        # the user fits this part (2026-11-12: J14): nothing of it is on the delivered board
             if not any(model_file_on_disk(m.m_Filename, kicad_dir, share) for m in fp.Models()):
                 set_show(fp, False)
                 attach_model(name)
@@ -488,20 +509,50 @@ def make_slides(board_in: Path, out: Path) -> dict:
                   key=lambda r: int(r[1:]))
     prog_pins = sum(pad_count(r) for r in prog)
     j1_pins = pad_count("J1")
+    # SMD modules the user solders (spec fit user with a module symbol; 2026-11-12: the ESP-12F U7) - who does what
+    # is read from the spec, the JLC row names only parts whose fit is jlc
+    user_smd = sorted(r for r, p in parts.items() if p.get("fit") == "user" and p["symbol"].startswith("RF_Module:"))
+    if parts["J7"].get("fit") != "jlc" or parts["L5"].get("fit") != "jlc":
+        raise RuntimeError("slide e1 names J7 and the boost block as JLC-fitted, the spec says otherwise")
+    # through-hole connectors the user solders (2026-11-12): fit user, plated holes, not the module strip J1
+    user_tht = sorted((r for r, p in parts.items() if p.get("fit") == "user" and r.startswith("J") and r != "J1"),
+                      key=lambda r: int(r[1:]))
+    tht_joints = sum(pad_count(r) for r in user_tht)
+    if any(parts[r].get("fit") != parts["J2"].get("fit") for r in ("J2", "J5")):
+        raise RuntimeError("slides: J2 and J5 are fitted by different parties")
+
+    def who_fits(ref: str) -> str:
+        """'JLC' / '사용자 납땜' from the spec fit of that part (never typed)."""
+        return {"jlc": "JLC", "user": "사용자 납땜", "jlc_optional": "사용자 납땜"}[parts[ref]["fit"]]
+
+    socket_by = "JLC가 단" if parts["J2"]["fit"] == "jlc" else "직접 납땜한"
+    socket_note = {r: (f"JLC: ㄱ자 소켓 {r} 실장. 사용자: " if parts[r]["fit"] == "jlc"
+                       else f"JLC: {r}는 빈 도금 구멍 (스루홀 부품은 실장하지 않음). 사용자: ㄱ자 소켓 {r}를 사서 납땜한 뒤 ")
+                   for r in ("J2", "J5")}
+    user_smd_rows = [["사용자", f"{parts[r]['value'].split(' (')[0]} 무선 모듈 ({r}) 납땜, 패드 {pad_count(r)}개 (JLC는 실장하지 않음)"]
+                     for r in user_smd]
+    esp_empty = "".join(f", {parts[r]['value'].split(' (')[0]} 자리 {r}" for r in user_smd)
+    esp_done = "".join(f", {parts[r]['value'].split(' (')[0]}" for r in user_smd)
     who = sk.Table("누가 무엇을 하나 (spec 파일 기준)", ["누가", "무엇을"], [
-        ["JLC", f"부품 {n_jlc}개 실장: ESP-12F, 소켓 J2·J5, GPS 커넥터 J7, 전원·서보 커넥터 포함"],
+        ["JLC", f"SMT 부품 {n_jlc}개 실장 (GPS 커넥터 J7, 5 V 승압 회로 포함)"
+                + (". 스루홀 부품은 실장하지 않음" if user_tht else "")],
         ["사용자", f"MCU {len(mcu)}개 ({', '.join(mcu)}) 납땜, 핀 {mcu_pins}개 (JLC에 맡기는 파일 쌍도 있음)"],
+        *user_smd_rows,
+        *([["사용자", f"스루홀 커넥터 {len(user_tht)}개 ({ref_list(user_tht)}) 납땜, {tht_joints}곳 (JLC는 실장하지 않음)"]]
+          if user_tht else []),
         ["사용자", f"GY-521: 모듈 핀 스트립 {j1_pins}핀을 J1 구멍에 납땜"],
-        ["사용자", "BMP280: ㄱ자 헤더로 J2 소켓에 꽂기"],
-        ["사용자", "OpenLog: ㄱ자 6핀 헤더를 모듈에 납땜한 뒤 J5에 꽂기"],
+        ["사용자", f"BMP280: ㄱ자 헤더로 {socket_by} J2 소켓에 꽂기"],
+        ["사용자", f"OpenLog: ㄱ자 6핀 헤더를 모듈에 납땜한 뒤 {socket_by} J5 소켓에 꽂기"],
         ["사용자", "NEO-7M: 윗뚜껑에 붙이고 4선 리드선을 J7에 꽂기"],
         ["사용자 (필요할 때)", f"프로그래밍 헤더 {len(prog)}곳 ({ref_list(prog)}, {prog_pins}핀): 빈 구멍으로 받음"],
     ], col_weights=[1.15, 3.0])
     sk.compose_slide(
         "JLC에서 받은 상태 vs 직접 장착한 뒤", [
-            sk.Panel(out / "a2_as_delivered_front.png", "JLC에서 받는 상태. MCU 자리 U1~U4, J1 구멍, 프로그래밍 구멍은 비어 있음",
+            sk.Panel(out / "a2_as_delivered_front.png", f"JLC에서 받는 상태. MCU 자리 U1~U4{esp_empty}, "
+                     + ("스루홀 커넥터 자리, " if user_tht else "") + "J1 구멍, 프로그래밍 구멍은 비어 있음",
                      badge="delivered", crop=(0.17, 0.17, 0.87, 1.0)),
-            sk.Panel(out / "b2_completed_front.png", "MCU 4개와 GY-521 납땜, BMP280·OpenLog와 GPS 플러그를 꽂은 뒤. 모듈 모양은 가정 치수",
+            sk.Panel(out / "b2_completed_front.png", f"MCU 4개{esp_done}, " + ("스루홀 커넥터, " if user_tht else "")
+                     + "GY-521 납땜, BMP280·OpenLog와 GPS 플러그를 꽂은 뒤. 모듈 모양은 가정 치수",
                      assumed=True, badge="completed", crop=(0.17, 0.17, 0.87, 1.0)),
             sk.Panel(out / "a1_as_delivered_top.png", "윗면, 받은 상태", badge="delivered", crop=(0.2, 0.0, 0.8, 1.0)),
             sk.Panel(out / "b1_completed_top.png", "윗면, 장착한 뒤 (모듈 가정 치수)", assumed=True, badge="completed",
@@ -523,17 +574,17 @@ def make_slides(board_in: Path, out: Path) -> dict:
          dims["bmp280"]["face_up"]["tag"] == "A",
          "ㄱ자 헤더로 J2 소켓에 꽂아 눕힌 모습: 모듈 밑면은 기판 위 "
          f"{models['bmp280_in_J2']['info']['underside_z']} mm, 센서 면이 기판 쪽 (가정)",
-         "JLC: ㄱ자 소켓 J2 실장. 사용자: 모듈을 J2에 꽂기. 받은 모듈에 곧은 헤더가 달려 있으면 ㄱ자 헤더로 바꿔 "
+         socket_note["J2"] + "모듈을 J2에 꽂기. 받은 모듈에 곧은 헤더가 달려 있으면 ㄱ자 헤더로 바꿔 "
          "납땜해야 합니다 (헤더 종류와 핀 인쇄 순서는 확인 안 됨, 가정)."),
         ("e2c", "J5", "openlog_in_J5", "c3_openlog_in_J5.png", "OpenLog (microSD 기록기)",
          module_pin_names(dims["openlog"]["header_x"]["src"], dims["openlog"]["header_n"]["v"]),
          dims["openlog"]["face_up"]["tag"] == "A",
          "microSD 면이 위로 오게 J5에 꽂은 모습. 가정한 맞춤이며, 실제로 들어가는지는 실물을 재서 결정합니다 (가정)",
-         "JLC: ㄱ자 소켓 J5 실장. 사용자: OpenLog에 ㄱ자 6핀 헤더를 납땜하고 J5에 꽂기. 핀 이름 순서는 "
+         socket_note["J5"] + "OpenLog에 ㄱ자 6핀 헤더를 납땜하고 J5에 꽂기. 핀 이름 순서는 "
          "OpenLog.brd 인쇄 순서(문서 값). 모듈 아래 부품 높이와 카드 돌출은 가정 값이라 맞춤은 확인 안 됨."),
     )
-    sensor_subtitle = {"J1": "사용자가 J1 구멍에 직접 납땜", "J2": "JLC가 단 소켓 J2에 꽂기",
-                       "J5": "JLC가 단 소켓 J5에 꽂기 (맞춤은 실측 후 결정)"}
+    sensor_subtitle = {"J1": "사용자가 J1 구멍에 직접 납땜", "J2": f"{socket_by} 소켓 J2에 꽂기",
+                       "J5": f"{socket_by} 소켓 J5에 꽂기 (맞춤은 실측 후 결정)"}
     for sid, ref, model, closeup, title, names, assumed, cap, note in sensors:
         box = model_box(model)
         fb = fps[ref].GetBoundingBox(False)
@@ -627,18 +678,19 @@ def make_slides(board_in: Path, out: Path) -> dict:
 
     left_x, right_x = 10, board_px[2] + 14
     calls = [
-        ("U7", 0, -4, "U7 ESP-12F 무선 모듈 (JLC 실장)\n빨간 점선 = 안테나 구리 금지 영역", False, left_x),
-        ("J14", 0, 0, "J14 1S 배터리 입력 (JLC)", False, left_x),
-        ("J10", -4, 0, f"J8~J11 날개 서보 4개 (JLC)", False, left_x),
+        ("U7", 0, -4, "U7 ESP-12F 무선 모듈 (" + {"jlc": "JLC 실장", "user": "사용자 납땜"}[parts["U7"]["fit"]]
+         + ")\n빨간 점선 = 안테나 구리 금지 영역", False, left_x),
+        ("J14", 0, 0, f"J14 1S 배터리 입력 ({who_fits('J14')})", False, left_x),
+        ("J10", -4, 0, f"J8~J11 날개 서보 4개 ({who_fits('J10')})", False, left_x),
         ("U3", 0, 0, f"U3 {role('U3').split()[0]} MCU (사용자 납땜)", False, left_x),
         ("J21", 0, 0, f"{ref_list(prog)}\n프로그래밍 헤더 자리 (빈 구멍,\n필요할 때 직접 납땜)", False, left_x),
         ("U4", 0, 0, f"U4 {role('U4').split()[0]} MCU (사용자 납땜)", False, left_x),
-        ("J7", 0, -2, "J7 GPS 리드선 커넥터 (JLC)\n플러그와 선은 그림용", True, left_x),
-        ("J2", 0, 0, "J2 BMP280 소켓 (JLC) + 모듈\n모듈은 가정 치수", True, right_x),
+        ("J7", 0, -2, f"J7 GPS 리드선 커넥터 ({who_fits('J7')})\n플러그와 선은 그림용", True, left_x),
+        ("J2", 0, 0, f"J2 BMP280 소켓 ({who_fits('J2')}) + 모듈\n모듈은 가정 치수", True, right_x),
         ("U2", 4, 2, f"U2 {role('U2').split()[0]} MCU (사용자 납땜)", False, right_x),
-        ("J5", 0, 0, "J5 OpenLog 소켓 (JLC) + 모듈\n맞춤은 실측으로 결정", True, right_x),
+        ("J5", 0, 0, f"J5 OpenLog 소켓 ({who_fits('J5')}) + 모듈\n맞춤은 실측으로 결정", True, right_x),
         ("J1", 0, 0, f"J1 GY-521 (사용자 납땜)\nU1 {role('U1').split()[0]} MCU 위에 걸침 - U1 먼저", True, right_x),
-        ("L5", 0, 0, "L5·U8 5 V 승압 회로 (JLC)", False, right_x),
+        ("L5", 0, 0, f"L5·U8 5 V 승압 회로 ({who_fits('L5')})", False, right_x),
     ]
     callouts = [sk.Callout(text, at(ref, dx, dy), (bx, at(ref, dx, dy)[1] - 30), assumed)
                 for ref, dx, dy, text, assumed, bx in calls]
@@ -646,7 +698,7 @@ def make_slides(board_in: Path, out: Path) -> dict:
                       banner="모듈, GPS 플러그와 선은 판매 페이지 값과 가정 치수로 그린 것입니다. 실제 맞춤은 실물을 재서 확인합니다.",
                       banner_assumed=True)
     sk.compose_slide("한눈에 보기: 누가 어디를 장착하나", [
-        sk.Panel(ann, "윗면, 직접 장착한 뒤 (모듈은 가정 치수). 'JLC' = JLC가 실장, '사용자' = 직접 납땜하거나 꽂음",
+        sk.Panel(ann, "윗면, 직접 장착한 뒤 (모듈은 가정 치수). 'JLC' = JLC가 실장 (SMT 부품만), '사용자 납땜' = 직접 사서 납땜",
                  assumed=True, badge="completed")], out / SLIDE_FILES["e4"], subtitle="캐리어 기판 rev 3", footer=footer)
     written["e4"] = SLIDE_FILES["e4"]
     report = {"schema": "vtol_carrier.render_slides/1", "generated_by": "scripts/render_rev3.py --slides-only",

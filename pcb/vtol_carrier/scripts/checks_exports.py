@@ -5,7 +5,8 @@ Every correctness statement about the order files comes from here (or from the s
   * kicad-cli sch export netlist + scripted comparison       -> out/vtol_carrier.net, out/reports/netlist_vs_spec.json
   * kicad-cli pcb drc --schematic-parity --severity-all --refill-zones -> out/reports/drc.json
   * scripted board-vs-IR pad-net comparison                  -> out/reports/board_vs_ir.json
-  * JLC BOM + CPL, filtered TOGETHER by the spec ``fit`` (fitsets.bom_groups; THT parts included, no --smd-only):
+  * JLC BOM + CPL, filtered TOGETHER by the spec ``fit`` (fitsets.bom_groups; no --smd-only - since the plan
+    amendments of 2026-11-12 no THT part has fit jlc, so both files are SMT only):
         out/jlcpcb_bom.csv / out/jlcpcb_cpl.csv                    default pair: U1..U4 NOT fitted by JLC
         out/jlcpcb_bom_with_mcu.csv / out/jlcpcb_cpl_with_mcu.csv  adds U1..U4 = C6510
     BOM header exactly 'Comment,Designator,Footprint,JLCPCB Part #（optional）' and CPL header
@@ -285,8 +286,10 @@ def fab_outputs() -> dict:
         export_gerbers(PCB, g_base, FAB_LAYERS)
         run([K, "pcb", "export", "drill", "--format", "excellon", "--excellon-units", "mm", "-o", str(g_base) + "/", str(PCB)])
         paste = f"{common.PROJECT_ID}-F_Paste.gtp"
-        # F.Paste from the paste variants (scripts/paste_variant.py): default set without paste on U1..U4 and on the
-        # unpopulated footprints (fit none, e.g. Q3 / R47); with_mcu set without paste on the unpopulated ones only
+        # F.Paste from the paste variants (scripts/paste_variant.py): no paste on any footprint JLC does not fit in
+        # that order - default set: U1..U4, the user-soldered ESP-12F U7 (2026-11-12) and the unpopulated footprints
+        # (fit none, e.g. Q3 / R47); with_mcu set: U7 and the unpopulated ones. The user-soldered THT connectors
+        # (2026-11-12) have no paste pads at all
         variants, g_vars = {}, {}
         for name, flag in (("main", []), ("with_mcu", ["--with-mcu"])):
             var_dir = work / f"variant_{name}"
@@ -325,7 +328,8 @@ def fab_outputs() -> dict:
                "date_fields_normalised": {"lines": changed, "value": RELEASE_STAMP},
                "variant_layers_other_than_f_paste_differing": other_diff,
                "paste_decision": "default zip: no paste apertures on U1..U4 (the user hand-solders the MCUs on clean "
-                                 "pads); both zips: no paste on unpopulated footprints (fit none); "
+                                 "pads); both zips: no paste on the user-soldered ESP-12F U7 (user decision "
+                                 "2026-11-12) and on unpopulated footprints (fit none); "
                                  "with_mcu zip: paste on U1..U4, upload it ONLY together with the *_with_mcu "
                                  "BOM / CPL. Whether JLC would itself leave unplaced parts without paste is "
                                  "NOT_VERIFIED, so the two zips are kept.",
@@ -401,7 +405,16 @@ FEES = {  # F scout/jlc_rules.md:136-151 (JLC price page, last updated Oct 22, 2
     "Standard": {"setup": 25.56, "stencil": 8.21, "feeder_per_type": 1.53, "feeder_types": "every SMT type"},
 }
 THT_ORDER, THT_JOINT, SMT_JOINT, CPP = 3.58, 0.0164, 0.0016, 0.45
-STD_ONLY = {"handling_fee_min": 14.93, "two_fixtures_1_to_29_pcs": 16.42, "packing_E": 0.5}
+
+
+def tht_fee(tht_lines: int, tht_joints: int, boards: int) -> float:
+    """Hand-soldering fee of an order. The per-order part THT_ORDER is charged only when the BOM has a through-hole
+    line (esp-user-fix step, finding V2: with 0 THT lines the table still added 3.58 USD; the order page showed no
+    hand-soldering line for the no-THT quotes, M spec/jlc_order_page_20261112.json)."""
+    return round(THT_ORDER + THT_JOINT * tht_joints * boards, 2) if tht_lines else 0.0
+
+
+STD_ONLY ={"handling_fee_min": 14.93, "two_fixtures_1_to_29_pcs": 16.42, "packing_E": 0.5}
 
 
 def price_at(prices: list[dict], qty: int) -> float:
@@ -441,7 +454,7 @@ def fee_estimate() -> dict:
                        "setup": f["setup"], "stencil": f["stencil"], "feeder_types": types,
                        "feeder_loading": round(f["feeder_per_type"] * types, 2),
                        "smt_joints_per_board": smt_joints, "smt_joints": round(SMT_JOINT * smt_joints * n, 2),
-                       "tht_joints_per_board": tht_joints, "tht_hand_soldering": round(THT_ORDER + THT_JOINT * tht_joints * n, 2),
+                       "tht_joints_per_board": tht_joints, "tht_hand_soldering": tht_fee(len(tht), tht_joints, n),
                        "confirm_parts_placement": CPP, "components_tier1": round(comp_simple, 2),
                        "components_with_loss_and_minimum": round(comp_attr, 2)}
                 row["sum_E"] = round(row["setup"] + row["stencil"] + row["feeder_loading"] + row["smt_joints"]
@@ -454,8 +467,11 @@ def fee_estimate() -> dict:
     out = {"label": "E (estimate). Fee table F scout/jlc_rules.md:136-151 (JLC price page read 2026-11-10); component "
                     "prices = today's gate records (out/jlc_gate_report.json); 'components_with_loss_and_minimum' "
                     "buys max(qty x boards + lossNumber, leastNumber) at the matching price tier (meaning of the two "
-                    "fields A). NOT included: PCB fabrication, ENIG surcharge, baking, shipping, tax. The quote on "
-                    "JLC's site is the only real price (NOT_VERIFIED).",
+                    "fields A). NOT included: PCB fabrication, surface-finish surcharge, baking, the 0.50 USD "
+                    "packaging line and the nitrogen-reflow line the order page showed, shipping, tax. The quote on "
+                    "JLC's site is the only real price; the Economic and Standard quotes read on 2026-11-12 are in "
+                    "spec/jlc_order_page_20261112.json (M) - the order guide shows those and uses this table only as a "
+                    "cross-check.",
            "requested": [r for r in rows if (r["pair"], r["order"], r["boards"]) in want], "all": rows,
            "standard_only_fees": STD_ONLY}
     write_json(REP / "jlc_fee_estimate.json", out)
@@ -469,55 +485,22 @@ def fee_estimate() -> dict:
 
 # ------------------------------------------------------------------------------------------ off-board purchase
 def off_board_purchase() -> dict:
-    """Everything the user buys elsewhere (REV3_PLAN sections 8 / 9; spec user_parts). Stock and price are
-    NOT_VERIFIED: no shop was fetched for these items (devicemart blocked this PC on 2026-11-05)."""
+    """Everything the user buys elsewhere (REV3_PLAN sections 8 / 9; spec user_parts; plan amendments of 2026-11-12:
+    the ESP-12F and the 12 through-hole connectors). The rows come from scripts/purchase_list.py; stock and price
+    only from the LCSC snapshot file named there, otherwise NOT_VERIFIED (devicemart was not fetched)."""
+    import purchase_list
+
     spec = common.load_spec()
-    fits = fitsets.fit_sets(spec["parts"])
-    mcus = fits["jlc_optional"]
-    up = spec["user_parts"]
-    nv = "NOT_VERIFIED (not fetched)"
-    rows = [
-        ["ATmega128A-AU (TQFP-64)", len(mcus), len(mcus) * 2, " ".join(mcus) + " footprints (user solders 64 pins each)",
-         "LCSC C6510 or a domestic distributor - not needed if the *_with_mcu files are ordered", nv,
-         "REV3_PLAN 8 / 9; spec fit jlc_optional"],
-        ["GY-521 MPU-6050 module (SZH-EK007)", 1, 2, "J1 (solder the module's own 1x8 strip; support about 2.5 mm = strip plastic height, A)",
-         "devicemart no=1247052", nv, "spec user_parts.imu: " + up["imu"]],
-        ["BMP280 module TYE-BMP29", 1, 2, "J2 socket (right-angle 6-pin header of the module)",
-         "devicemart no=15442588", nv, "spec user_parts.barometer"],
-        ["right-angle 1x6 2.54 mm pin strip (only if the BMP280 comes with a straight header)", 1, 2,
-         "BMP280 module -> J2", "domestic shop (any RA 2.54 mm strip cut to 6)", nv, "REV3_PLAN 8 (header type NOT_VERIFIED)"],
-        ["NEO-7M GPS module SZH-NT07", 1, 2, "vehicle top cap; lead to J7", "devicemart no=10895400", nv,
-         "spec user_parts.gps"],
-        ["GPS lead JST-GH 1.25 mm 4-pin, both ends", 1, 2, "J7 <-> NEO-7M",
-         "ready-made lead (domestic shop) or 2 x GHR-04V-S (LCSC C160418) + 8 x SSHL-002T-P0.2 (LCSC C189897) + crimp tool",
-         nv, "REV3_PLAN 9"],
-        ["SparkFun OpenLog DEV-13712", 1, 2, "J5 socket", "SparkFun distributor / domestic shop", nv, "REV3_PLAN 8 (D5)"],
-        ["microSD card", 1, 2, "OpenLog", "any shop", nv, "REV3_PLAN 9"],
-        ["right-angle 1x6 2.54 mm pin header for the OpenLog", 1, 2, "solder onto the OpenLog, plug into J5",
-         "domestic shop or LCSC C55629820", nv, "REV3_PLAN 8 / 9"],
-        ["logic battery 1S Li-Po DTP105565P 3.7 V 4200 mAh", 1, 2, "J14 (Molex 5264-type plug; mating and polarity NOT_VERIFIED - meter first)",
-         "devicemart no=16021596", nv, "spec user_parts.logic_battery"],
-        ["power switch MTS-102 + JST-PH 2-pin lead", 1, 2, "J15",
-         "switch: domestic shop; lead: ready-made PH 2.0 mm 2-pin or PHR-2 (LCSC C157955) + 2 x SPH-002T-P0.5S (LCSC C111515)",
-         nv, "REV3_PLAN 9"],
-        ["arm switch + 2-pin 2.54 mm Dupont lead", 1, 2, "J16", "domestic shop", nv, "REV3_PLAN 9"],
-        ["buzzer + JST-PH 2-pin lead", 1, 2, "J17", "domestic shop (PHR-2 C157955 + SPH-002T-P0.5S C111515 at LCSC)", nv,
-         "REV3_PLAN 9"],
-        ["2x3 2.54 mm pin header (programming, option A)", 5, 10, "J3, J19, J20, J21, J22 (bare holes in the tie band)",
-         "domestic shop or LCSC C65114 - or a 2x3 pogo-pin ISP adapter instead (contact NOT_VERIFIED)", nv, "REV3_PLAN 8 (D6 A)"],
-        ["1x2 2.54 mm pin header + shunt (reset hold)", 3, 6, "J24, J25, J26", "domestic shop or LCSC C55629809 + C100114",
-         nv, "REV3_PLAN 8 (D6 A)"],
-        ["USBasp programmer (target power jumper OPEN)", 1, 1, "J19..J22 (ISP of the four MCUs)", "domestic shop", nv,
-         "REV3_PLAN 9 / 15"],
-        ["USB-serial adapter, 3.3 V logic", 1, 1, "J3 (ESP-12F flashing, 3.3 V only)", "domestic shop", nv, "REV3_PLAN 9 / 15"],
-        ["3 mm foam tape", 1, 2, "board underside (after the THT leads are flush-cut)", "domestic shop", nv, "REV3_PLAN 9 / 15"],
-        ["cable tie", 1, 2, "across the tie band x -3..+3 mm", "domestic shop", nv, "REV3_PLAN 9 / 15"],
-    ]
-    header = ["item", "qty per board", "qty for 2 boards", "plugs into / used at", "purchase channel (suggestion)",
-              "stock / price", "source"]
+    plan = json.loads((common.ROOT / "spec" / "rev3_plan.json").read_text(encoding="utf-8"))
+    fit = json.loads((common.OUT_DIR / "fit_checks.json").read_text(encoding="utf-8"))
+    rows = purchase_list.build(spec, plan, fit)
     path = OUT / "off_board_purchase.csv"
-    write_csv(path, header, rows)
+    write_csv(path, purchase_list.CSV_HEADER, purchase_list.csv_rows(rows))
     return {"file": path.as_posix(), "rows": len(rows),
+            "rows_per_group": {g: sum(1 for r in rows if r["group"] == g) for g, _en, _ko in purchase_list.GROUPS},
+            "former_jlc_bom_lines_now_bought_by_the_user": [r["lcsc"] for r in rows if r["group"] == "a"],
+            "lcsc_snapshot": "spec/lcsc_snapshot_20261112.json" if purchase_list.LCSC.is_file() else None,
+            "group_a_cost_for_2_boards_usd_E": purchase_list.group_a_cost(rows),
             "note": "JLC does not ship loose parts with a PCBA order; the LCSC codes are separate LCSC orders. "
                     "Servos, ESC and the 6S pack are vehicle parts, not listed here."}
 
@@ -599,10 +582,12 @@ def main() -> int:
     s["release_gate"] = {"status": "ORDERABLE (tool checks only; NOT_VERIFIED - never built)" if not reasons
                          else "NOT ORDERABLE", "reasons": reasons,
                          "user_gates_not_covered": [
-                             "JLC upload preview: every BOM line matched, the 6 THT lines hand-soldered (quote)",
+                             "JLC upload preview of the current files: every BOM line matched (SMT only since "
+                             "2026-11-12; no THT line, no hand soldering by JLC)",
                              "JLC 'Confirm Parts Placement': rotation of the parts listed as NOT_VERIFIED in "
                              "out/cpl_rotation_table.csv and the polarity of C45 / C47 / C52",
-                             "JLC DFM result (edge distances, Standard PCBA rails)",
+                             "JLC DFM result (edge distances; Economic PCBA: where JLC puts its tooling holes, "
+                             "or its request for edge rails)",
                              "jlc_gate.py again on the order day, directly before paying"]}
     files = {}
     # relayout-fix step (review RR-8): files that a LATER step rewrites would be listed here with the hash of the
@@ -610,7 +595,7 @@ def main() -> int:
     # (build.written_after_checks_exports = make_manifest.LATE), after they were written.
     # REV3_REPORT_ko.md is the deliver step's hand-written report (not generated): hashed there as well.
     written_later = ("reports/determinism.json", "reports/rev3_export_files.json", "reports/rev3_export_determinism.json",
-                     "ORDER_ko.md", "REV3_REPORT_ko.md")
+                     "ORDER_ko.md", "REV3_REPORT_ko.md", "따로_살_부품_ko.md")
     for p in sorted(OUT.rglob("*")):
         rel = p.relative_to(OUT).as_posix()
         if p.is_file() and p.name != "manifest.json" and not rel.startswith(("render/", "presentation/")) \

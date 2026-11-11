@@ -11,6 +11,9 @@ Invariants this module enforces:
 * the spec equals the plan part by part: value, symbol, footprint, fit, LCSC code, role of the added parts and the
   complete pin -> net table (a plan "NC" is a declared no-connect); item / part / fit / BOM-line counts are the
   plan's. A difference is an error unless it is one of the declared ones (listed with its reason in the report);
+* plan amendments of 2026-11-12 (user decisions, plan key ``amendments``): U7 ESP-12F and the 12 through-hole
+  connectors are bought and soldered by the user (fit user), the default order is Economic (SMT only), the finish
+  lead-free HASL; the counts are 144 parts / 33 lines (33 SMT + 0 THT) since then;
 * narrative sections that still describe rev 2c (plug-in 5 V module, ESP-12E, 2 layers, 22 pF load caps) are replaced
   with guarded replacements (the old text must still contain the expected words), and a scan for stale keywords
   outside the history sections must come back empty;
@@ -53,6 +56,8 @@ DATASHEET_PINS = {
 }
 
 PROG_REFS = ("J3", "J19", "J20", "J21", "J22", "J24", "J25", "J26")
+#: ids of the plan amendments of 2026-11-12, in order (scratch impl/esp_user/amend_plan.py, amend_plan2.py)
+AMENDMENT_IDS = ("esp_by_user_economic_hasl", "tht_by_user")
 MCU_CODE = "C6510"
 #: option B (D6) BOM lines: programming headers fitted by JLC. Footprint choice and pad numbering:
 #: <scratch>/impl/foundation/optb_pads.json (EasyEDA record vs the on-disk KiCad footprint, F; drawing NOT_VERIFIED)
@@ -315,8 +320,22 @@ def plan_check(parts: list[dict], nets: list[dict], ncl: list[dict], prog: str, 
                              ("JLC BOM lines", have_lines, want_lines)):
         if have != want:
             diff("counts", name, have, want, count_why)
-    if (want_parts, want_lines) != (157, {"total": 40, "smt": 34, "tht": 6}):
-        diffs.append(f"plan BOM {want_parts} parts / {want_lines} != 157 parts / 40 lines (34 SMT + 6 THT)")
+    # plan amendments of 2026-11-12 (user decisions, plan key 'amendments'): U7 ESP-12F and the 12 THT connectors are
+    # fitted by the user, so the JLC BOM lost its lines 31 and 35-40 - before them the plan gave 157 parts / 40 lines
+    # (34 SMT + 6 THT)
+    if (want_parts, want_lines) != (144, {"total": 33, "smt": 33, "tht": 0}):
+        diffs.append(f"plan BOM {want_parts} parts / {want_lines} != 144 parts / 33 lines (33 SMT + 0 THT)")
+    if [a.get("id") for a in PLAN.get("amendments", [])] != list(AMENDMENT_IDS):
+        diffs.append(f"plan amendments {[a.get('id') for a in PLAN.get('amendments', [])]} != {list(AMENDMENT_IDS)}")
+    gone = sorted((r for b in PLAN.get("bom_lines_now_bought_by_the_user", []) for r in b["designators"]),
+                  key=fitsets.natural)
+    user_now = sorted((p["refdes"] for p in parts if p["fit"] == "user" and jlc_code_for(p)), key=fitsets.natural)
+    if gone != user_now:
+        diffs.append(f"former BOM lines now bought by the user {gone} != user-fitted parts with an LCSC code rule {user_now}")
+    for b in PLAN.get("bom_lines_now_bought_by_the_user", []):
+        for ref in b["designators"]:
+            if ref in byref and jlc_code_for(byref[ref]) != b["jlc_code"]:
+                diffs.append(f"{ref}: reference code {b['jlc_code']} != code rule {jlc_code_for(byref[ref])}")
 
     # BOM lines one by one
     groups = {g["jlc_code"]: g for g in fitsets.bom_groups(parts)}
@@ -473,8 +492,9 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
                     "spec text still said 'layers: 2' - that inconsistency is not copied (plan open_risks)",
         "stackup": ["F.Cu: signals + all parts (every JLC-fitted part is on the top side)",
                     "In1.Cu: solid GND plane (no tracks)", "In2.Cu: +5V plane", "B.Cu: signals + GND fill (no parts)"],
-        "board": "JLCPCB standard 4-layer stack-up, 1.6 mm, no impedance control; surface finish ENIG (D16); name the "
-                 "stack-up in the order (A: not fetched as a document)",
+        "board": "JLCPCB standard 4-layer stack-up, 1.6 mm, no impedance control; surface finish lead-free HASL (D16, "
+                 "user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG); name the stack-up in the order "
+                 "(A: not fetched as a document)",
         "rules": "track 0.2 mm, clearance 0.13 mm, via 0.3 / 0.6 mm, edge 0.3 mm, hole-to-hole 0.5 mm - the rev 2c rule "
                  f"file unchanged ({plan3} invariants (f); its hash is compared by the routing step); through-hole vias "
                  "only, no blind / buried vias",
@@ -589,8 +609,9 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
 
     # ---- radio / support / layout texts
     put(("esp12e", "part"),
-        "ESP-12F (Ai-Thinker ESP8266MOD: ESP8266EX + 4 MB SPI flash + PCB antenna, LCSC C82891), soldered by JLC "
-        "(castellated pads); pin-compatible with the ESP-12E the user named on 2026-11-05", "ESP-12E")
+        "ESP-12F (Ai-Thinker ESP8266MOD: ESP8266EX + 4 MB SPI flash + PCB antenna; reference part LCSC C82891), "
+        "soldered by the user after delivery (castellated pads; user decision 2026-11-12 - the plan of 2026-11-10 had "
+        "JLC fit it); pin-compatible with the ESP-12E the user named on 2026-11-05", "ESP-12E")
     put(("esp12e", "antenna", "keepout"),
         "footprint keep-out (all copper layers) + rule area 4 mm wider on both sides, no copper on any of the four "
         "layers, no parts (A)", "either layer")
@@ -608,9 +629,10 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
         "ESP-12F: VCC caps at pin 8; antenna keep-out free of copper on all four layers and of parts; the 1k series "
         "resistor next to the ESP RXD0 pin", "both layers")
     put(("user_parts", "radio"),
-        "ESP-12F (ESP8266MOD, LCSC C82891) soldered on the carrier by JLC - the user chose a soldered ESP-12E on "
-        "2026-11-05; rev 3 fits the pin-compatible ESP-12F because it is the JLC library part (plan I3). It replaced "
-        "the PLM100 LoRa module of rev 1", "ESP-12E")
+        "ESP-12F (ESP8266MOD; reference part LCSC C82891) soldered on the carrier by the user (user decision "
+        "2026-11-12; bought separately, see out/off_board_purchase.csv) - the user chose a soldered ESP-12E on "
+        "2026-11-05; rev 3 uses the pin-compatible ESP-12F that the plan picked as the JLC library part (plan I3). It "
+        "replaced the PLM100 LoRa module of rev 1", "ESP-12E")
     put(("conflicts", 0), swap("ESP-12E and 1S + boost 2026-11-05)",
                                "ESP-12E and 1S + boost 2026-11-05; rev 3 fits the pin-compatible ESP-12F)"), "ESP-12E and 1S")
 
@@ -642,7 +664,18 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
         errors.append("rev 3 text: expected 4 superseded rev 2c user decisions (5 V module x 2, 2 layers, parts sources)")
     spec["user_decisions"] = list(PLAN["user_decisions"])
     spec["user_decisions_carried_from_rev2c"] = carried
-    spec["open_risks"] = list(PLAN["open_risks"])
+    am = [a for a in PLAN.get("amendments", []) if a.get("date") == "2026-11-12"]
+    if [a.get("id") for a in am] != list(AMENDMENT_IDS):
+        errors.append(f"rev 3 text: the plan does not carry the amendments {AMENDMENT_IDS} of 2026-11-12")
+    spec["plan_amendments"] = PLAN.get("amendments", [])
+    spec["open_risks"] = [
+        "AMENDED 2026-11-12 (user decisions, plan key 'amendments'): " + "; ".join(m for a in am for m in a["meaning"])
+        + ". The entries below are the plan's risk texts of 2026-11-10, copied unchanged: where they say Standard, "
+        "rails, ENIG, baking, 'ESP-12F fitted by JLC' or 'JLC solders the 6 THT lines', the amendments hold. New with "
+        "the amendments and NOT_VERIFIED: whether JLC finds room for its tooling holes on this board in an Economic "
+        "order (or asks for edge rails), the reflow margin at 255 +-5 C for the parts rated 260 C, the hand soldering "
+        "of the ESP-12F on lead-free HASL pads next to fitted parts, and the fit of the 12 user-bought through-hole "
+        "connectors in their holes (the parts are the former BOM lines, bought loose)."] + list(PLAN["open_risks"])
     spec["rev3_plan_extract"] = {
         "label": f"F: copied verbatim from {plan3} (sha256 {PLAN_SHA256}); texts may name rev 2c parts",
         "interpretation": PLAN["interpretation"], "invariants": PLAN["invariants"], "power_block": pb,
@@ -670,39 +703,40 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
 _D_KO = (
     "D1 Pololu 모듈을 대신할 5 V 변환기: 기본 A (TPS61023 승압 + TLV3012B 저전압 차단), 권장 A",
     "D2 로직 배터리(1S) 차단 전압: 기본 유지 (꺼짐 약 3.13 V, 켜짐 약 3.59 V), 권장 유지",
-    "D3 요청 때문이 아니라 재고·도면 근거로 바꾼 부품번호 3건: 기본 유지, 권장 유지",
+    "D3 요청 때문이 아니라 재고·도면 근거로 바꾼 부품번호 3건: 기본 유지 (2026-11-12부터 그중 2건 J8~J12, J2 / J5는 사용자가 사서 납땜하는 부품, 번호는 구매 참고용)",
     "D4 ATmega128A-AU 4개를 누가 붙이는가: 기본 사용자 납땜, 권장 JLC 실장 (with_mcu 파일 쌍)",
     "D5 OpenLog 장착 방식: 기본 소켓 J5에 꽂기 (센서 모듈처럼 사용자가 장착), 권장 동일",
     "D6 프로그래밍 헤더 (J3, J19~J22, J24~J26): 기본 A (케이블타이 띠 안의 빈 도금 구멍), 자리가 확인되면 권장 B (띠 밖에 JLC 실장)",
-    "D7 스위치·부저 커넥터 J15 / J17 (JST-PH): 기본 THT, 권장 THT",
+    "D7 스위치·부저 커넥터 J15 / J17 (JST-PH): 기본 THT (2026-11-12부터 사용자가 사서 납땜)",
     "D8 레벨시프터 FET (보드당 8개): 기본 C40912, 권장 C40912",
-    "D9 JLC 주문 종류: 기본 Standard, 권장 Standard",
-    "D10 툴링 홀: 기본 설계에 넣지 않음 (JLC가 붙이는 공정 레일에 생김)",
+    "D9 JLC 주문 종류: 기본 Economic (2026-11-12 사용자 결정; 2026-11-10 계획의 기본·권장은 Standard)",
+    "D10 툴링 홀: 기본 설계에 넣지 않음 (Economic 주문에는 레일이 없어 JLC가 기판 안에 뚫음; 위치는 NOT_VERIFIED)",
     "D11 수량: 기본 PCB 5장 / 실장 2장, 권장 먼저 2장 실장",
-    "D12 모듈 소켓 J2 / J5 (1x6 직각): 기본 C22436147 + 주문일 재고 확인, 안 되면 C55629861, 그다음 C54876735",
+    "D12 모듈 소켓 J2 / J5 (1x6 직각): 기본 C22436147 (2026-11-12부터 사용자가 사서 납땜; 구하기 어려우면 C55629861, 그다음 C54876735 - 풋프린트 호환 NOT_VERIFIED)",
     "D13 배터리 전압 분압 R15 / R16 (47k / 47k): 기본 유지",
-    "D14 습기에 민감한 부품(ESP-12F, LED) 베이킹 요청: 기본 예 (주문 메모)",
+    "D14 습기에 민감한 부품(LED; ESP-12F는 2026-11-12부터 사용자가 실장) 베이킹 요청: 기본 아니오 (2026-11-12 변경; 주문 화면에서 Economic PCBA는 베이킹을 고를 수 없음; 계획은 예)",
     "D15 렌더와 맞춤 검사에 쓰는 모듈 치수: 기본 가정값 (실측 전까지 모든 그림·검사에 A 표시), 권장 실측",
-    "D16 주문 화면의 PCB 옵션: 기본 권장값 (ENIG, 녹색 마스크, 흰색 실크, JLC 기본 4층 적층, 비아 덮기)",
+    "D16 주문 화면의 PCB 옵션: 기본 무연 HASL (2026-11-12 사용자 결정; 계획의 권장은 ENIG), 녹색 마스크, 흰색 실크, JLC 기본 4층 적층, 비아 덮기 (주문 화면이 Plugged로 정함)",
     "D17 실장하지 않는 여분 기판: 기본 수락",
 )
 _USER_FIT_KO = (
     ("U1~U4", "ATmega128A-AU (TQFP-64) 4개", "기본: 사용자가 납땜 (칩당 64핀, 모두 256곳). JLC에 맡기려면 with_mcu BOM / CPL 쌍으로 주문 (LCSC C6510)"),
+    ("U7", "ESP-12F Wi-Fi 모듈 (참고 부품 LCSC C82891)", "사용자가 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC 실장). JLC BOM / CPL에 없고, 두 거버 묶음 모두 이 패드에 솔더 페이스트 구멍이 없음. 패드 수와 납땜 순서는 주문 안내서 7장"),
     ("J1", "GY-521 MPU-6050 모듈", "모듈에 딸린 1x8 핀을 기판의 도금 구멍 8개에 납땜 (모듈은 약 2.5 mm 받침 위에 눕힘 - 핀 스트립 플라스틱 높이, 가정 A). 기판에는 구멍만 있음"),
-    ("J2", "BMP280 모듈 TYE-BMP29", "직각 6핀 헤더를 JLC가 실장한 소켓 J2에 꽂음 (받은 모듈의 헤더가 일자형이면 직각 핀을 먼저 납땜 - 헤더 종류 NOT_VERIFIED)"),
+    ("J2", "BMP280 모듈 TYE-BMP29", "직각 6핀 헤더를 소켓 J2에 꽂음 (소켓은 사용자가 납땜; 받은 모듈의 헤더가 일자형이면 직각 핀을 먼저 납땜 - 헤더 종류 NOT_VERIFIED)"),
     ("J7", "NEO-7M GPS 모듈 SZH-NT07", "기체 상단 캡에 두고 4선 JST-GH 리드를 J7에 꽂음"),
-    ("J5", "SparkFun OpenLog DEV-13712", "OpenLog에 직각 1x6 핀을 납땜한 뒤 소켓 J5에 꽂음 (맞는지 NOT_VERIFIED)"),
+    ("J5", "SparkFun OpenLog DEV-13712", "OpenLog에 직각 1x6 핀을 납땜한 뒤 소켓 J5에 꽂음 (소켓은 사용자가 납땜; 맞는지 NOT_VERIFIED)"),
 )
 _NOT_VERIFIED_KO = (
     "만들거나 측정한 것은 없습니다. 전원부 수치는 모두 데이터시트 계산값(E)입니다.",
     "JLC가 이 기판을 받아 주는지는 사용자가 파일을 올리고 DFM 결과와 견적을 본 뒤에야 알 수 있습니다 (결제 전 확인).",
-    "THT 6줄을 JLC가 납땜해 주는지는 견적에 표시될 때까지 NOT_VERIFIED입니다.",
+    "스루홀 커넥터 12개와 ESP-12F는 JLC가 실장하지 않습니다 (2026-11-12 사용자 결정). 사용자가 따로 사서 납땜하며, 낱개로 산 부품이 구멍에 맞는지와 그 재고·가격은 NOT_VERIFIED입니다 (주문 안내서 6장, 7장).",
     "이 문서는 사양 단계의 내용만 담습니다. 배치·배선 뒤의 결과(전원부 자리, 배터리 경로 폭 검사, 가장자리 거리, 모듈 간섭)는 README_ko.md 와 out/reports/ 의 보고서에 있습니다.",
     "U8은 라이브러리에 전용 심볼이 없어 일반 6핀 심볼을 씁니다. ERC는 U8 핀에 대해 아무 근거도 주지 않으며, 핀-네트 표 검사(rev3_checks.py u8-u9)가 그 역할을 합니다.",
     "차단 히스테리시스 여유는 최대 부하에서 28 mV(E)입니다. 전원 경로 저항이 0.29 Ohm을 넘으면 방전 끝에서 켜짐/꺼짐을 반복할 수 있습니다 (첫 기판에서 측정).",
     "켜짐 문턱이 최대 3.73 V입니다. 쉬는 전압이 그보다 낮은 팩은 보드를 켜지 못할 수 있습니다.",
     "극성 부품과 IC의 CPL 회전은 NOT_VERIFIED입니다. 주문 때 'Confirm Parts Placement'를 켜고, 전원을 넣기 전에 탄탈 방향을 눈으로 확인하십시오.",
-    "재고는 움직입니다. spec/parts_sources.json 기록({day}) 기준으로 재고가 얇은 줄: C22436147 (소켓 J2 / J5). 주문일에는 scripts/jlc_gate.py 를 다시 돌려 모든 줄을 새로 확인합니다.",
+    "재고는 움직입니다. spec/parts_sources.json 기록({day}) 기준으로 재고가 얇은 줄: {thin}. 주문일에는 scripts/jlc_gate.py 를 다시 돌려 모든 줄을 새로 확인합니다.",
     "센서 모듈·OpenLog의 치수와 핀 순서는 가정(A)입니다. 받은 모듈의 실크를 확인하십시오.",
 )
 
@@ -721,7 +755,14 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     pb = PLAN["power_block"]
     prog = spec["prog_headers"]["option"]
     # snapshot day of the JLC records the spec was built from (make_all.py re-evaluates the cache with this day)
-    day = json.loads((board_dir / "spec" / "parts_sources.json").read_text(encoding="utf-8"))["today"]
+    src_now = json.loads((board_dir / "spec" / "parts_sources.json").read_text(encoding="utf-8"))
+    day = src_now["today"]
+    thin = ", ".join(f"{ln['jlc_code']} ({'/'.join(ln['designators'])})" for ln in src_now["lines"] if ln.get("thin_stock")) or "없음"
+    bought = PLAN["bom_lines_now_bought_by_the_user"]
+    tht_rows = [b for b in bought if b["assembly_process"] == "THT"]
+    if sorted((r for b in tht_rows for r in b["designators"]), key=fitsets.natural) != \
+            sorted((r for r in sets["user"] if r not in ("J1", "U7")), key=fitsets.natural):
+        raise SystemExit("rev3_spec.write_spec_ko: user-fitted THT parts differ from the plan's former THT BOM lines")
     L: list[str] = []
     A = L.append
     A("# VTOL 캐리어 PCB rev 3 - 전기 사양 요약")
@@ -742,9 +783,14 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("- 5 V 전원: 꽂는 Pololu 모듈(J6)을 없애고 기판 위 승압 회로로 바꿨습니다. U8 TPS61023DRLR + L5 1.0 uH + "
       "분압 R63 / R64 + C57 / C58, 그리고 저전압 차단용 비교기 U9 TLV3012BIDBVR + R65~R68 + C59 / C60 (새 부품 13개, 새 네트 5개: "
       "BOOST_SW, BOOST_FB, BOOST_EN, UVLO_SENSE, UVLO_REF).")
-    A("- 무선 모듈: ESP-12E 대신 핀이 같은 ESP-12F (JLC 라이브러리 부품 C82891). 풋프린트는 KiCad의 RF_Module:ESP-12E 를 그대로 씁니다 "
-      "(라이브러리에 ESP-12F 풋프린트가 따로 없음).")
-    A("- MCU와 센서 모듈을 뺀 모든 실장 부품을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 "
+    A("- 무선 모듈: ESP-12E 대신 핀이 같은 ESP-12F (참고 부품 LCSC C82891). 풋프린트는 KiCad의 RF_Module:ESP-12E 를 그대로 씁니다 "
+      "(라이브러리에 ESP-12F 풋프린트가 따로 없음). **2026-11-12 사용자 결정으로 이 모듈은 JLC가 아니라 사용자가 직접 납땜합니다** "
+      "(fit user: JLC BOM / CPL에 없음. 풋프린트·네트·위치는 그대로).")
+    A(f"- **스루홀 커넥터 {sum(len(b['designators']) for b in tht_rows)}개도 2026-11-12 사용자 결정으로 JLC가 아니라 사용자가 사서 납땜합니다** "
+      f"({', '.join('/'.join(b['designators']) for b in tht_rows)}; fit user). JLC 주문은 SMT 부품만 실장하고 손납땜은 없습니다. "
+      "풋프린트·네트·위치와 풋프린트의 실크 윤곽은 그대로입니다. (같은 날 검증 지적으로 아랫면 실크 이름표 가운데 핀 줄과 나란히 적힌 것의 "
+      "핀 글자 순서만 아랫면에서 본 패드 순서로 고쳤습니다: 주문 안내서 7장.)")
+    A("- MCU, 센서 모듈, ESP-12F 모듈, 스루홀 커넥터를 뺀 모든 실장 부품(모두 SMT)을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 "
       f"(재고 근거: `{root}/spec/parts_sources.json`).")
     A("- 부품마다 `fit` (누가 붙이는가) 값을 가집니다. JLC BOM / CPL은 이 값에서만 만들어집니다.")
     A("- MCU 4개의 핀 256개가 가는 네트, 기판 외곽 76 x 70 mm, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. "
@@ -803,7 +849,9 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A(f"현재 설정: **{prog}** (환경변수 `VTOL_PROG_HEADERS`, 기본 A).")
     A("- A: J3, J19~J22 (2x3), J24~J26 (1x2) 은 rev 2c와 같은 자리의 빈 도금 구멍입니다. 프로그래밍하려면 사용자가 헤더를 납땜하거나 "
       "포고핀 어댑터를 씁니다 (포고핀 접촉은 NOT_VERIFIED).")
-    A("- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; BOM 42줄, JLC 실장 165개). "
+    A("- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; "
+      f"BOM {s['jlc_bom_lines']['total'] + (0 if prog == 'B' else len(OPTION_B_LINES))}줄, "
+      f"JLC 실장 {s['jlc_fitted_parts'] + (0 if prog == 'B' else len(PROG_REFS))}개). "
       "사용자의 승인이 있어야 적용합니다. 띠 밖에 자리가 있는지 배치 단계에서 찾은 결과는 "
       f"`{root}/out/reports/programming_access.json` 에 있습니다 (사양 문서는 배치 결과를 읽지 않습니다; 요약은 `{root}/README_ko.md`).")
     A("")
@@ -813,6 +861,9 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("|---|---|---|")
     for ref, what, how in _USER_FIT_KO:
         A(f"| {ref} | {what} | {how} |")
+    for b in tht_rows:
+        A(f"| {', '.join(b['designators'])} | 스루홀 커넥터: {b['comment']} (MPN {b['mpn']}, 참고 부품 LCSC {b['jlc_code']}) "
+          f"{len(b['designators'])}개 | 사용자가 사서 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC가 손납땜). 납땜점 수·순서·방향은 주문 안내서 7장 |")
     A("")
     A("기판 밖에서 따로 사는 것(배터리, 스위치와 리드, GPS 리드, 부저, 모듈, MCU 등)의 목록은 계획서의 off_board_purchase 항목"
       f"(`{root}/spec/rev3_plan.json`)에 있고, 구매 목록 `{root}/out/off_board_purchase.csv` 와 주문 안내서 `{root}/out/ORDER_ko.md` 6장에 "
@@ -826,7 +877,7 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("## 8. 확인되지 않은 것")
     A("")
     for t in _NOT_VERIFIED_KO:
-        A("- " + t.replace("{day}", day))
+        A("- " + t.replace("{day}", day).replace("{thin}", thin))
     A("")
     A("## 9. 파일과 다시 만드는 방법")
     A("")

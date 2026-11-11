@@ -1,6 +1,6 @@
 {
  "schema": "vtol_carrier_spec/4",
- "revision": "rev 3 (2026-11-10): rev 2c with every part except the MCUs and the sensor modules taken from the JLCPCB assembly library and fitted by JLC - on-board 5 V boost converter (U8 TPS61023 + U9 TLV3012B under-voltage lock-out) instead of the Pololu module on J6, ESP-12F instead of ESP-12F, per-part 'fit' (jlc / jlc_optional / user / none), parts sources re-checked against rule I7 (spec/parts_sources.json). The MCU pin nets, outline and connector positions are those of rev 2c (archived in archive/rev2c_pololu_1s/); rev 1 (PLM100 LoRa + 2S) is in archive/rev1_plm100_2s/",
+ "revision": "rev 3 (2026-11-10, amended 2026-11-12): rev 2c with every part except the MCUs, the sensor modules and (since the user decision of 2026-11-12) the ESP-12F module taken from the JLCPCB assembly library and fitted by JLC - on-board 5 V boost converter (U8 TPS61023 + U9 TLV3012B under-voltage lock-out) instead of the Pololu module on J6, ESP-12F instead of ESP-12F, per-part 'fit' (jlc / jlc_optional / user / none), parts sources re-checked against rule I7 (spec/parts_sources.json). The MCU pin nets, outline and connector positions are those of rev 2c (archived in archive/rev2c_pololu_1s/); rev 1 (PLM100 LoRa + 2S) is in archive/rev1_plm100_2s/",
  "title": "CanSat EDF VTOL avionics carrier PCB - electrical specification (rev 3)",
  "status": "electrical spec; the KiCad schematic and board are generated from it (scripts/). NOT_VERIFIED: nothing built or measured; the checks below are scripted netlist checks, not ERC / DRC (those come only from kicad-cli reports under out/reports/)",
  "prog_headers": {
@@ -10,7 +10,7 @@
  },
  "plan": {
   "file": "spec/rev3_plan.json",
-  "sha256": "415d1e20a0903103d6bb4b48253ffc7054cfd3d2371c008706b906fe5c1eda15",
+  "sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
   "text": "spec/REV3_PLAN.md",
   "check": "checks.plan_rev3"
  },
@@ -46,7 +46,7 @@
  },
  "user_parts": {
   "barometer": "BMP280 module [SMG] TYE-BMP29 (devicemart 15442588) - replaces GY-63 MS5611",
-  "radio": "ESP-12F (ESP8266MOD, LCSC C82891) soldered on the carrier by JLC - the user chose a soldered ESP-12E on 2026-11-05; rev 3 fits the pin-compatible ESP-12F because it is the JLC library part (plan I3). It replaced the PLM100 LoRa module of rev 1",
+  "radio": "ESP-12F (ESP8266MOD; reference part LCSC C82891) soldered on the carrier by the user (user decision 2026-11-12; bought separately, see out/off_board_purchase.csv) - the user chose a soldered ESP-12E on 2026-11-05; rev 3 uses the pin-compatible ESP-12F that the plan picked as the JLC library part (plan I3). It replaced the PLM100 LoRa module of rev 1",
   "gps": "NEO-7M module SZH-NT07 (devicemart 10895400) - in the top cap, carrier has the lead connector only",
   "imu": "GY-521 MPU-6050 SZH-EK007 (devicemart 1247052) - as before",
   "logic_battery": "DTP105565P 1S 3.7 V 4200 mAh 84 g (devicemart 16021596) - user 2026-11-05"
@@ -113,20 +113,20 @@
    "NT": 1
   },
   "fit_counts": {
-   "jlc": 157,
+   "jlc": 144,
    "jlc_optional": 4,
-   "user": 1,
+   "user": 14,
    "none": 12
   },
-  "jlc_fitted_parts": 157,
+  "jlc_fitted_parts": 144,
   "jlc_bom_lines": {
-   "total": 40,
-   "smt": 34,
-   "tht": 6
+   "total": 33,
+   "smt": 33,
+   "tht": 0
   },
   "with_mcu_pair": {
-   "jlc_fitted_parts": 161,
-   "jlc_bom_lines": 41
+   "jlc_fitted_parts": 148,
+   "jlc_bom_lines": 34
   },
   "prog_headers": "A"
  },
@@ -161,7 +161,7 @@
     "In2.Cu: +5V plane",
     "B.Cu: signals + GND fill (no parts)"
    ],
-   "board": "JLCPCB standard 4-layer stack-up, 1.6 mm, no impedance control; surface finish ENIG (D16); name the stack-up in the order (A: not fetched as a document)",
+   "board": "JLCPCB standard 4-layer stack-up, 1.6 mm, no impedance control; surface finish lead-free HASL (D16, user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG); name the stack-up in the order (A: not fetched as a document)",
    "rules": "track 0.2 mm, clearance 0.13 mm, via 0.3 / 0.6 mm, edge 0.3 mm, hole-to-hole 0.5 mm - the rev 2c rule file unchanged (spec/rev3_plan.json invariants (f); its hash is compared by the routing step); through-hole vias only, no blind / buried vias",
    "keepouts": "the ESP-12F antenna keep-out applies to ALL four layers (no inner plane under the antenna)"
   },
@@ -662,7 +662,7 @@
   "no_shifter_links": "nlink, ilink, glink: all chips at 5 V (firmware/atmega128_fc/src/board.h:84, 92, 107)"
  },
  "esp12e": {
-  "part": "ESP-12F (Ai-Thinker ESP8266MOD: ESP8266EX + 4 MB SPI flash + PCB antenna, LCSC C82891), soldered by JLC (castellated pads); pin-compatible with the ESP-12E the user named on 2026-11-05",
+  "part": "ESP-12F (Ai-Thinker ESP8266MOD: ESP8266EX + 4 MB SPI flash + PCB antenna; reference part LCSC C82891), soldered by the user after delivery (castellated pads; user decision 2026-11-12 - the plan of 2026-11-10 had JLC fit it); pin-compatible with the ESP-12E the user named on 2026-11-05",
   "library": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint)",
   "pins_used": {
    "1 ~RST": "ESP_RST: Q5 LV (10k pull-up to 3V3) <- COM PC6; J3 pin 5",
@@ -1960,18 +1960,15 @@
    "symbol": "Connector_Generic:Conn_01x06",
    "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "A",
    "source": "devicemart no=15442588 (BMP280, 3.3 V, I2C/SPI, right-angle 6-pin header already soldered); replaces the GY-63 MS5611 (user decision 2026-11-04)",
    "block": "NAV",
    "note": "pin order A: VCC, GND, SCL, SDA, CSB, SDO (common GY-BMP280 order) - check the silkscreen. CSB high = I2C; SDO high = address 0x77 (= the firmware's barometer address CAL_MS5611_ADDR 0x77, firmware/atmega128_fc/src/params_gen.h:964). Module outline reserved flat beside the socket",
    "bom": {
-    "line": 35,
-    "jlc_code": "C22436147",
-    "comment": "socket 1x6 right-angle 2.54",
-    "mpn": "HC-PM254-8.5H-1x6PW",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -1999,18 +1996,15 @@
    "symbol": "Connector_Generic:Conn_01x06",
    "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.log_tx PE1/TXD0 (line 2154); firmware/README.md:204, 378-390; firmware/atmega128_fc/src/board.h:35-36; lying flat, not upright: an upright OpenLog reaches 23+ mm, over the 13.4 mm limit (rev-1 independent review 2026-11-05 MF-1)",
    "block": "LOG",
    "note": "OpenLog header order A (SparkFun: GRN, RXI, TXO, VCC, GND, BLK) - check the clone's silkscreen; solder a right-angle male header on the OpenLog so it plugs in parallel to the carrier. Reserved outline: 19 x 16 mm (A, measure) on the side the socket opens to, no parts under it (its microSD socket hangs below), card slot toward a free edge for removal. Silkscreen 'LOG GRN RXI TXO VCC GND BLK'",
    "bom": {
-    "line": 35,
-    "jlc_code": "C22436147",
-    "comment": "socket 1x6 right-angle 2.54",
-    "mpn": "HC-PM254-8.5H-1x6PW",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2041,18 +2035,15 @@
    "symbol": "Connector_Generic:Conn_01x03",
    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.vane_1_servo PB5/OC1A (line 2148); firmware/atmega128_fc/src/board.h:23",
    "block": "IO",
    "note": "silkscreen 'VANE1 S + -'",
    "bom": {
-    "line": 36,
-    "jlc_code": "C32713262",
-    "comment": "pin header 1x3 right-angle 2.54",
-    "mpn": "HX PZ2.54-1x3P WZ",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2062,18 +2053,15 @@
    "symbol": "Connector_Generic:Conn_01x03",
    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.vane_2_servo PB6/OC1B (line 2149); firmware/atmega128_fc/src/board.h:24",
    "block": "IO",
    "note": "silkscreen 'VANE2 S + -'",
    "bom": {
-    "line": 36,
-    "jlc_code": "C32713262",
-    "comment": "pin header 1x3 right-angle 2.54",
-    "mpn": "HX PZ2.54-1x3P WZ",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2083,18 +2071,15 @@
    "symbol": "Connector_Generic:Conn_01x03",
    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.vane_3_servo PB7/OC1C (line 2150); firmware/atmega128_fc/src/board.h:25",
    "block": "IO",
    "note": "silkscreen 'VANE3 S + -'",
    "bom": {
-    "line": 36,
-    "jlc_code": "C32713262",
-    "comment": "pin header 1x3 right-angle 2.54",
-    "mpn": "HX PZ2.54-1x3P WZ",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2104,18 +2089,15 @@
    "symbol": "Connector_Generic:Conn_01x03",
    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.vane_4_servo PE3/OC3A (line 2151); firmware/atmega128_fc/src/board.h:26",
    "block": "IO",
    "note": "silkscreen 'VANE4 S + -'",
    "bom": {
-    "line": 36,
-    "jlc_code": "C32713262",
-    "comment": "pin header 1x3 right-angle 2.54",
-    "mpn": "HX PZ2.54-1x3P WZ",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2125,18 +2107,15 @@
    "symbol": "Connector_Generic:Conn_01x03",
    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.esc PE4/OC3B (line 2152); firmware/atmega128_fc/src/board.h:27",
    "block": "IO",
    "note": "ESC red wire = BEC +5 V OUT into SERVO_5V (never into the logic +5V); ESC GND here is the single ground tie (NT1). Silkscreen 'ESC S + -'",
    "bom": {
-    "line": 36,
-    "jlc_code": "C32713262",
-    "comment": "pin header 1x3 right-angle 2.54",
-    "mpn": "HX PZ2.54-1x3P WZ",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2146,18 +2125,15 @@
    "symbol": "Connector_Generic:Conn_01x02",
    "footprint": "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "A",
    "source": "user decision 2026-11-04 (separate logic battery); user decision 2026-11-05 (this pack, devicemart no=16021596 product page (read by the main session 2026-11-05)); 'C5264RR' read as a Molex 5264-type 2.50 mm 2-pin housing, red / black leads (A - check the bought pack); vertical so the lead leaves upward into the free space beside the 6S pack (rev-1 independent review 2026-11-05 MF-4 bend room)",
    "block": "PWR",
    "note": "pin 1 = + (red), pin 2 = - (A: check the pack's polarity with a meter before the first plug-in - Q10 blocks a reversed pack). Silkscreen '+ - 1S LOGIC BAT 3.0-4.2V' with the + at pin 1. A 2S / 3S pack must never be plugged in (the boost converter U8, the comparator U9 and Q10 are not rated for it in this design)",
    "bom": {
-    "line": 37,
-    "jlc_code": "C5364642",
-    "comment": "Molex 22035025 SPOX 2P vertical",
-    "mpn": "22035025",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2167,18 +2143,15 @@
    "symbol": "Connector_Generic:Conn_01x02",
    "footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "A",
    "source": "user decision 2026-11-04 ('power switch'); the arm switch is NOT a power switch (params.json pins.arm_switch line 2158, firmware/README.md:319); rev-1 independent review 2026-11-05 MF-5 (rev-1 J15 unreachable with the vehicle closed); rev-2b independent review 2026-11-05 MF2-4 (a Dupont plug on a 2.54 mm vertical header rose 3.1 mm above the carrier envelope -> JST-PH vertical, mated ~11 mm like J17, A)",
    "block": "PWR",
    "note": "J15 cannot be reached with the vehicle closed (the carrier sits at z 327.1-342.1 inside the intake spigot, the bay windows start above it): flight use = a lead to a switch (>= 2 A, 2-pole contacts paralleled or a rated mini toggle, A) where it can be reached - see power.switch_reachability (user decision). Silkscreen 'LOGIC PWR SW'",
    "bom": {
-    "line": 38,
-    "jlc_code": "C131337",
-    "comment": "JST B2B-PH-K-S 2P vertical",
-    "mpn": "B2B-PH-K-S(LF)(SN)",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2188,18 +2161,15 @@
    "symbol": "Connector_Generic:Conn_01x02",
    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.arm_switch PC2 (line 2158); params.json configs.vtol.top_cap.switch_hole (line 1852-1857); firmware/atmega128_fc/src/board.h:40",
    "block": "IO",
    "note": "silkscreen 'ARM SW' (open = safe)",
    "bom": {
-    "line": 39,
-    "jlc_code": "C32713261",
-    "comment": "pin header 1x2 right-angle 2.54",
-    "mpn": "HX PZ2.54-1x2P WZ",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2209,18 +2179,15 @@
    "symbol": "Connector_Generic:Conn_01x02",
    "footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.buzzer PC1 NPN driver (line 2157); configs.vtol.electronics.misc.items (line 1788); firmware/atmega128_fc/src/board.h:39; vertical so no mated plug points at the motor-lead joint zone (rev-1 independent review 2026-11-05 MF-3)",
    "block": "IO",
    "note": "silkscreen 'BUZ + -'",
    "bom": {
-    "line": 38,
-    "jlc_code": "C131337",
-    "comment": "JST B2B-PH-K-S 2P vertical",
-    "mpn": "B2B-PH-K-S(LF)(SN)",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -2230,18 +2197,15 @@
    "symbol": "Connector_Generic:Conn_01x04",
    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "params.json pins.vbat_adc / v_tether_adc / v_buffer_adc / buf_isign (line 2155, 2165-2167); params.json power.electrical_plant_ASSUMED.adc_full_scale_v (line 2028)",
    "block": "IO",
    "note": "no GND pin on purpose: a second ground wire to the propulsion side would close a loop with the ESC lead ground; divider returns use the logic GND, tied once at NT1. Silkscreen 'VIN VTET VBUF ISGN - 6S SENSE ONLY, NO GND' with pin 1 marked",
    "bom": {
-    "line": 40,
-    "jlc_code": "C32713263",
-    "comment": "pin header 1x4 right-angle 2.54",
-    "mpn": "HX PZ2.54-1x4P WZ",
-    "library_type": "Extended",
-    "assembly": "THT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -4137,18 +4101,15 @@
    "symbol": "RF_Module:ESP-12F",
    "footprint": "RF_Module:ESP-12E",
    "populate": true,
-   "fit": "jlc",
+   "fit": "user",
    "label": "F",
    "source": "user decision 2026-11-05 ('ESP-12E 직접 납땜', 'PLM100 완전히 빼기'); KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint)",
    "block": "COM",
-   "note": "antenna end (footprint local -y, keep-out y -12.12..-4.80) flush with the +y board edge; the footprint's keep-out (all copper layers) + a board rule area 4 mm wider on both sides (no copper on any layer, no parts, A: Espressif / Ai-Thinker guidance - check). Runs ONLY a UART <-> Wi-Fi bridge (project rule: all flight computing on the ATmega128s); its firmware is a follow-up",
+   "note": "antenna end (footprint local -y, keep-out y -12.12..-4.80) flush with the +y board edge; the footprint's keep-out (all copper layers) + a board rule area 4 mm wider on both sides (no copper on any layer, no parts, A: Espressif / Ai-Thinker guidance - check). Runs ONLY a UART <-> Wi-Fi bridge (project rule: all flight computing on the ATmega128s); its firmware is a follow-up. Fitted by the user since the plan amendment of 2026-11-12 (not in the JLC BOM / CPL, no paste aperture; reference part LCSC C82891)",
    "bom": {
-    "line": 31,
-    "jlc_code": "C82891",
-    "comment": "ESP-12F",
-    "mpn": "ESP-12F(ESP8266MOD)",
-    "library_type": "Extended",
-    "assembly": "SMT"
+    "line": null,
+    "jlc_code": null,
+    "why": "fitted by the user after delivery (not in the JLC BOM / CPL)"
    }
   },
   {
@@ -6749,7 +6710,7 @@
   "plan_rev3": {
    "tool": "scripts/rev3_spec.py plan_check (run by scripts/build_spec.py)",
    "plan": "spec/rev3_plan.json",
-   "plan_sha256": "415d1e20a0903103d6bb4b48253ffc7054cfd3d2371c008706b906fe5c1eda15",
+   "plan_sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
    "result": "PASS",
    "items_compared": 175,
    "plan_actions": {
@@ -6762,29 +6723,29 @@
    "parts": 174,
    "pins_compared": 689,
    "fit_counts": {
-    "jlc": 157,
+    "jlc": 144,
     "jlc_optional": 4,
-    "user": 1,
+    "user": 14,
     "none": 12
    },
-   "jlc_fitted_parts": 157,
+   "jlc_fitted_parts": 144,
    "jlc_bom_lines": {
-    "total": 40,
-    "smt": 34,
-    "tht": 6
+    "total": 33,
+    "smt": 33,
+    "tht": 0
    },
    "plan_counts": {
     "fit": {
-     "jlc": 157,
-     "user": 1,
+     "jlc": 144,
+     "user": 14,
      "none": 12,
      "jlc_optional": 4
     },
-    "jlc_fitted_parts": 157,
+    "jlc_fitted_parts": 144,
     "jlc_bom_lines": {
-     "total": 40,
-     "smt": 34,
-     "tht": 6
+     "total": 33,
+     "smt": 33,
+     "tht": 0
     }
    },
    "new_nets": [
@@ -6965,20 +6926,20 @@
  "user_decisions": [
   "D1 Which 5 V converter replaces the Pololu module? Default: A. Recommended: A.",
   "D2 Battery cut-off thresholds of the logic pack (1S Li-ion). Default: keep. Recommended: keep.",
-  "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep.",
+  "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep. AMENDED 2026-11-12: two of the three (J8-J12, J2 / J5) are now bought and soldered by the user; the codes remain the purchase references.",
   "D4 Who fits the four ATmega128A-AU? Default: user solders them (the request excludes the MCUs from the JLC BOM). Recommended: JLC fits them.",
   "D5 How is the OpenLog fitted? It is a logger, not a sensor, and it is sold without a header. Default: plug-in; the OpenLog counts as a user-fitted module like the sensors. Recommended: plug-in.",
   "D6 Programming access: 5 x 2x3 ISP / ESP headers (J3, J19..J22) and 3 x 1x2 reset-hold jumpers (J24..J26) sit in the cable-tie band, where nothing may be fitted. Default: A. Recommended: B if the implementation finds legal positions, otherwise A.",
-  "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT.",
+  "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT. AMENDED 2026-11-12: still THT, but bought and soldered by the user (not by JLC).",
   "D8 Level-shifter FET (8 per board). Default: C40912. Recommended: C40912.",
-  "D9 JLC order type. Default: Standard. Recommended: Standard.",
-  "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9).",
+  "D9 JLC order type. Default: Economic (user decision 2026-11-12; the plan of 2026-11-10 used and recommended Standard).",
+  "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9). AMENDED 2026-11-12: Economic has no rails - the order page row is 'Tooling holes: Added by JLCPCB' (M order page 2026-11-12); where JLC puts them on this board is NOT_VERIFIED.",
   "D11 Quantities. Default: 5 PCBs / 2 assembled. Recommended: 2 assembled first.",
-  "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147.",
+  "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147. AMENDED 2026-11-12: the user buys and solders the sockets; the codes are purchase references and the JLC order-day gate no longer covers them.",
   "D13 Battery-voltage divider R15 / R16 (47k / 47k) stays as in rev 2c. Default: keep. Recommended: keep.",
-  "D14 Ask JLC to bake moisture-sensitive parts (ESP-12F, LEDs)? Default: yes (order remark). Recommended: yes.",
+  "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F). AMENDED 2026-11-12 (order page, M): 'Bake Components' is not available for Economic PCB Assembly, so it cannot be ordered with this order type.",
   "D15 Module dimensions for the renders and the fit checks. Default: assumed outlines, every picture and check labelled A until measured. Recommended: measure.",
-  "D16 PCB options on the order page that the plan did not name before. Default: as recommended. Recommended: ENIG, green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC.",
+  "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC. AMENDED 2026-11-12 (order page, M): with LeadFree HASL on this 4-layer board the page disables 'Tented' and selects 'Plugged' via covering for free.",
   "D17 Bare spare boards (PCB quantity above the assembled quantity). Default: accept. Recommended: accept."
  ],
  "conflicts": [
@@ -7682,24 +7643,6 @@
     "qty": 1
    },
    {
-    "line": 31,
-    "value": "ESP-12F",
-    "comment": "ESP-12F",
-    "footprint": "RF_Module:ESP-12E",
-    "footprint_name": "ESP-12F",
-    "source": "JLCPCB assembly library (LCSC)",
-    "part_number": "C82891",
-    "mpn": "ESP-12F(ESP8266MOD)",
-    "jlc_type": "Extended",
-    "assembly": "JLC SMT assembly",
-    "process": "SMT",
-    "refs": [
-     "U7"
-    ],
-    "dnp_refs": [],
-    "qty": 1
-   },
-   {
     "line": 32,
     "value": "TPS61023DRLR",
     "comment": "TPS61023DRLR",
@@ -7755,120 +7698,6 @@
     ],
     "dnp_refs": [],
     "qty": 4
-   },
-   {
-    "line": 35,
-    "value": "socket 1x6 right-angle 2.54",
-    "comment": "socket 1x6 right-angle 2.54",
-    "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
-    "footprint_name": "PinSocket_1x06_P2.54mm_Horizontal",
-    "source": "JLCPCB assembly library (LCSC)",
-    "part_number": "C22436147",
-    "mpn": "HC-PM254-8.5H-1x6PW",
-    "jlc_type": "Extended",
-    "assembly": "JLC THT assembly (hand soldering by JLC, manualWeld)",
-    "process": "THT",
-    "refs": [
-     "J2",
-     "J5"
-    ],
-    "dnp_refs": [],
-    "qty": 2
-   },
-   {
-    "line": 36,
-    "value": "pin header 1x3 right-angle 2.54",
-    "comment": "pin header 1x3 right-angle 2.54",
-    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-    "footprint_name": "PinHeader_1x03_P2.54mm_Horizontal",
-    "source": "JLCPCB assembly library (LCSC)",
-    "part_number": "C32713262",
-    "mpn": "HX PZ2.54-1x3P WZ",
-    "jlc_type": "Extended",
-    "assembly": "JLC THT assembly (hand soldering by JLC, manualWeld)",
-    "process": "THT",
-    "refs": [
-     "J8",
-     "J9",
-     "J10",
-     "J11",
-     "J12"
-    ],
-    "dnp_refs": [],
-    "qty": 5
-   },
-   {
-    "line": 37,
-    "value": "Molex 22035025 SPOX 2P vertical",
-    "comment": "Molex 22035025 SPOX 2P vertical",
-    "footprint": "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
-    "footprint_name": "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
-    "source": "JLCPCB assembly library (LCSC)",
-    "part_number": "C5364642",
-    "mpn": "22035025",
-    "jlc_type": "Extended",
-    "assembly": "JLC THT assembly (hand soldering by JLC, manualWeld)",
-    "process": "THT",
-    "refs": [
-     "J14"
-    ],
-    "dnp_refs": [],
-    "qty": 1
-   },
-   {
-    "line": 38,
-    "value": "JST B2B-PH-K-S 2P vertical",
-    "comment": "JST B2B-PH-K-S 2P vertical",
-    "footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-    "footprint_name": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-    "source": "JLCPCB assembly library (LCSC)",
-    "part_number": "C131337",
-    "mpn": "B2B-PH-K-S(LF)(SN)",
-    "jlc_type": "Extended",
-    "assembly": "JLC THT assembly (hand soldering by JLC, manualWeld)",
-    "process": "THT",
-    "refs": [
-     "J15",
-     "J17"
-    ],
-    "dnp_refs": [],
-    "qty": 2
-   },
-   {
-    "line": 39,
-    "value": "pin header 1x2 right-angle 2.54",
-    "comment": "pin header 1x2 right-angle 2.54",
-    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
-    "footprint_name": "PinHeader_1x02_P2.54mm_Horizontal",
-    "source": "JLCPCB assembly library (LCSC)",
-    "part_number": "C32713261",
-    "mpn": "HX PZ2.54-1x2P WZ",
-    "jlc_type": "Extended",
-    "assembly": "JLC THT assembly (hand soldering by JLC, manualWeld)",
-    "process": "THT",
-    "refs": [
-     "J16"
-    ],
-    "dnp_refs": [],
-    "qty": 1
-   },
-   {
-    "line": 40,
-    "value": "pin header 1x4 right-angle 2.54",
-    "comment": "pin header 1x4 right-angle 2.54",
-    "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
-    "footprint_name": "PinHeader_1x04_P2.54mm_Horizontal",
-    "source": "JLCPCB assembly library (LCSC)",
-    "part_number": "C32713263",
-    "mpn": "HX PZ2.54-1x4P WZ",
-    "jlc_type": "Extended",
-    "assembly": "JLC THT assembly (hand soldering by JLC, manualWeld)",
-    "process": "THT",
-    "refs": [
-     "J18"
-    ],
-    "dnp_refs": [],
-    "qty": 1
    }
   ],
   "with_mcu_extra_lines": [
@@ -7898,29 +7727,29 @@
    "main": {
     "parts": 174,
     "fit_counts": {
-     "jlc": 157,
+     "jlc": 144,
      "jlc_optional": 4,
-     "user": 1,
+     "user": 14,
      "none": 12
     },
-    "jlc_fitted_parts": 157,
-    "bom_lines": 40,
-    "bom_lines_smt": 34,
-    "bom_lines_tht": 6,
+    "jlc_fitted_parts": 144,
+    "bom_lines": 33,
+    "bom_lines_smt": 33,
+    "bom_lines_tht": 0,
     "with_mcu": false
    },
    "with_mcu": {
     "parts": 174,
     "fit_counts": {
-     "jlc": 157,
+     "jlc": 144,
      "jlc_optional": 4,
-     "user": 1,
+     "user": 14,
      "none": 12
     },
-    "jlc_fitted_parts": 161,
-    "bom_lines": 41,
-    "bom_lines_smt": 35,
-    "bom_lines_tht": 6,
+    "jlc_fitted_parts": 148,
+    "bom_lines": 34,
+    "bom_lines_smt": 34,
+    "bom_lines_tht": 0,
     "with_mcu": true
    }
   },
@@ -7932,7 +7761,20 @@
     "U4"
    ],
    "user": [
-    "J1"
+    "J1",
+    "J2",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "U7"
    ],
    "none": [
     "J3",
@@ -8010,6 +7852,33 @@
    },
    {
     "refdes": [
+     "U7"
+    ],
+    "part": "ESP-12F Wi-Fi module (Ai-Thinker ESP8266MOD, castellated; reference part LCSC C82891)",
+    "how": "user solders the module on its footprint (user decision 2026-11-12); no solder paste on these pads in either gerber set; pad count and soldering order are in the order guide (measured on the board)",
+    "on_board": "footprint only"
+   },
+   {
+    "refdes": [
+     "J2",
+     "J5",
+     "J8",
+     "J9",
+     "J10",
+     "J11",
+     "J12",
+     "J14",
+     "J15",
+     "J17",
+     "J16",
+     "J18"
+    ],
+    "part": "the 12 through-hole connectors that were JLC BOM lines 35-40: 2 x socket 1x6 right-angle 2.54 (J2/J5, MPN HC-PM254-8.5H-1x6PW, LCSC C22436147); 5 x pin header 1x3 right-angle 2.54 (J8/J9/J10/J11/J12, MPN HX PZ2.54-1x3P WZ, LCSC C32713262); 1 x Molex 22035025 SPOX 2P vertical (J14, MPN 22035025, LCSC C5364642); 2 x JST B2B-PH-K-S 2P vertical (J15/J17, MPN B2B-PH-K-S(LF)(SN), LCSC C131337); 1 x pin header 1x2 right-angle 2.54 (J16, MPN HX PZ2.54-1x2P WZ, LCSC C32713261); 1 x pin header 1x4 right-angle 2.54 (J18, MPN HX PZ2.54-1x4P WZ, LCSC C32713263)",
+    "how": "user buys and solders them (user decision 2026-11-12); the number of joints, the soldering order and the direction of each connector are in the order guide (measured on the board file)",
+    "on_board": "plated holes, silkscreen outline and pin-1 mark only"
+   },
+   {
+    "refdes": [
      "J1"
     ],
     "part": "GY-521 MPU-6050 module (SZH-EK007, devicemart 1247052)",
@@ -8022,7 +7891,7 @@
     ],
     "part": "BMP280 module TYE-BMP29 (devicemart 15442588)",
     "how": "plug its right-angle 6-pin header into socket J2 (if the delivered module has a straight header, solder a right-angle strip first - header type NOT_VERIFIED)",
-    "on_board": "socket J2 (JLC)"
+    "on_board": "socket J2 (bought and soldered by the user since 2026-11-12)"
    },
    {
     "refdes": [
@@ -8038,7 +7907,7 @@
     ],
     "part": "SparkFun OpenLog DEV-13712 (logger, treated like a sensor module: D5)",
     "how": "user solders a right-angle 1x6 pin header onto the OpenLog (6 joints on the module) and plugs it into socket J5; fit NOT_VERIFIED (D5, D15)",
-    "on_board": "socket J5 (JLC)"
+    "on_board": "socket J5 (bought and soldered by the user since 2026-11-12)"
    },
    {
     "refdes": [
@@ -8058,6 +7927,8 @@
   ],
   "off_board_purchase": [
    "4 x ATmega128A-AU (unless JLC fits them, D4) - domestic distributor or LCSC C6510",
+   "1 x ESP-12F Wi-Fi module (Ai-Thinker ESP8266MOD, 4 MB flash, PCB antenna; LCSC C82891 as the reference part) - LCSC or a domestic shop; the user solders it (user decision 2026-11-12)",
+   "the 12 through-hole connectors per board that JLC no longer fits (user decision 2026-11-12): 2 x socket 1x6 right-angle 2.54 (J2/J5, MPN HC-PM254-8.5H-1x6PW, LCSC C22436147); 5 x pin header 1x3 right-angle 2.54 (J8/J9/J10/J11/J12, MPN HX PZ2.54-1x3P WZ, LCSC C32713262); 1 x Molex 22035025 SPOX 2P vertical (J14, MPN 22035025, LCSC C5364642); 2 x JST B2B-PH-K-S 2P vertical (J15/J17, MPN B2B-PH-K-S(LF)(SN), LCSC C131337); 1 x pin header 1x2 right-angle 2.54 (J16, MPN HX PZ2.54-1x2P WZ, LCSC C32713261); 1 x pin header 1x4 right-angle 2.54 (J18, MPN HX PZ2.54-1x4P WZ, LCSC C32713263) - LCSC or a domestic shop",
    "GY-521 MPU-6050 module; BMP280 TYE-BMP29 module (+ a right-angle 1x6 pin strip if its header is straight) - devicemart (as in rev 2c)",
    "NEO-7M SZH-NT07 (devicemart) + GPS lead: a ready-made 4-wire JST-GH 1.25 mm lead (domestic shop), or 2 x GHR-04V-S housings + 8 x SSHL-002T-P0.2 contacts from LCSC (C160418, C189897; crimp tool needed)",
    "SparkFun OpenLog DEV-13712 + microSD card + one right-angle 1x6 2.54 mm pin header (any 2.54 mm right-angle strip cut to 6 pins from a domestic shop; LCSC C55629820)",
@@ -8083,7 +7954,513 @@
   "OpenLog lying flat on the carrier in a right-angle socket (outline reserved) - confirm the clone's size",
   "modules socketed or soldered (GY-521 soldered flat on its pins + support pad recommended, A)"
  ],
+ "plan_amendments": [
+  {
+   "date": "2026-11-12",
+   "by": "user decision, applied by <scratch>/impl/esp_user/amend_plan.py",
+   "request_verbatim": "아, esp도 내가 직접 실장할거야. 그럼 이코노믹으로 진행하고 pcb의 코팅도 무연으로 해줘",
+   "meaning": [
+    "U7 ESP-12F is fitted by the user (fit user), not by JLC: no BOM / CPL row, no paste aperture; footprint, nets, position and silkscreen unchanged",
+    "default order type: JLC Economic PCBA instead of Standard",
+    "PCB surface finish: lead-free HASL instead of ENIG",
+    "moisture bake: not ordered any more (reversible on the order page)"
+   ],
+   "plan_sha256_before": "415d1e20a0903103d6bb4b48253ffc7054cfd3d2371c008706b906fe5c1eda15",
+   "changed": [
+    {
+     "path": "changes[U7].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[U7].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[U7].rev3.jlc_code",
+     "from": "C82891",
+     "to": null
+    },
+    {
+     "path": "changes[U7].user_fitted_reference_code",
+     "from": null,
+     "to": "C82891"
+    },
+    {
+     "path": "changes[U7].reason",
+     "from": "(text)",
+     "to": "(text) + AMENDED 2026-11-12 (user decision): the user solders the ESP-12F after delivery; it is in neither JLC BOM / CPL pair and gets no paste aperture. Footprint, symbol, nets and position are unchanged; LCSC C82891 stays the reference part for the purchase list."
+    },
+    {
+     "path": "bom_lines[line 31, C82891, ESP-12F, U7]",
+     "from": "present",
+     "to": "removed (the other lines keep their numbers; 31 is unused)"
+    },
+    {
+     "path": "user_fitted[1]",
+     "from": null,
+     "to": "U7 ESP-12F entry"
+    },
+    {
+     "path": "off_board_purchase[1]",
+     "from": null,
+     "to": "1 x ESP-12F Wi-Fi module (Ai-Thinker ESP8266MOD, 4 MB flash, PCB antenna; LCSC C82891 as the reference part) - LCSC or a domestic shop; the user solders it (user decision 2026-11-12)"
+    },
+    {
+     "path": "user_decisions[D9]",
+     "from": "D9 JLC order type. Default: Standard. Recommended: Standard.",
+     "to": "D9 JLC order type. Default: Economic (user decision 2026-11-12; the plan of 2026-11-10 used and recommended Standard)."
+    },
+    {
+     "path": "user_decisions[D14]",
+     "from": "D14 Ask JLC to bake moisture-sensitive parts (ESP-12F, LEDs)? Default: yes (order remark). Recommended: yes.",
+     "to": "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F)."
+    },
+    {
+     "path": "user_decisions[D16]",
+     "from": "D16 PCB options on the order page that the plan did not name before. Default: as recommended. Recommended: ENIG, green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC.",
+     "to": "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC."
+    },
+    {
+     "path": "user_decision_details[D9].amended_2026_11_12",
+     "from": null,
+     "to": "2026-11-12 user decision: Economic PCBA. The Standard option stays the fallback if JLC rejects the Economic order."
+    },
+    {
+     "path": "user_decision_details[D14].amended_2026_11_12",
+     "from": null,
+     "to": "2026-11-12: baking is not ordered - the ESP-12F (the reason for the request) is fitted by the user; the LEDs alone were not judged worth the fee. The user can reverse this on the order page."
+    },
+    {
+     "path": "user_decision_details[D16].amended_2026_11_12",
+     "from": null,
+     "to": "2026-11-12 user decision: lead-free HASL instead of ENIG (order page name 'LeadFree HASL'); the board file and the gerber job file say 'HAL lead-free'."
+    },
+    {
+     "path": "user_report_ko.decisions[D9]",
+     "from": "D9: 주문 방식 (기본: Standard(권장과 같음))",
+     "to": "D9: 주문 방식 (기본: Economic - 2026-11-12 사용자 결정. 2026-11-10 계획의 기본·권장은 Standard)"
+    },
+    {
+     "path": "user_report_ko.decisions[D14]",
+     "from": "D14: 흡습 부품 베이킹 요청 (기본: 요청함(수수료 미확인))",
+     "to": "D14: 흡습 부품 베이킹 요청 (기본: 요청 안 함 - 2026-11-12 변경, ESP-12F를 사용자가 직접 실장하게 되어서. 계획은 요청함)"
+    },
+    {
+     "path": "user_report_ko.decisions[D16]",
+     "from": "D16: 표면처리·색상 등 (기본: ENIG, 녹색, JLC 기본값(추가 요금 미확인))",
+     "to": "D16: 표면처리·색상 등 (기본: 무연 HASL - 2026-11-12 사용자 결정. 계획의 권장은 ENIG. 녹색, JLC 기본값)"
+    }
+   ],
+   "not_rewritten": "every other text of this file (order_options, after_delivery, user_report_ko.order_type, open_risks, review_findings, interpretation I3, render_set ...) is the plan as settled on 2026-11-10 and may still say Standard, ENIG, 40 lines, 157 parts or 'ESP-12F fitted by JLC'. Where such a text disagrees with this amendment, the amendment holds. spec/REV3_PLAN.md was generated from the unamended file and carries a note on top.",
+   "counts_after": {
+    "jlc_bom_lines": 39,
+    "smt_lines": 33,
+    "tht_lines": 6,
+    "jlc_parts_per_board": 156,
+    "with_mcu_pair": {
+     "jlc_bom_lines": 40,
+     "jlc_parts_per_board": 160
+    }
+   },
+   "id": "esp_by_user_economic_hasl",
+   "later_amendment_same_day": "'tht_by_user': the six THT lines left the JLC assembly as well; the counts_after of this entry (39 lines / 156 parts) were valid only between the two"
+  },
+  {
+   "id": "tht_by_user",
+   "date": "2026-11-12",
+   "by": "user decision (meaning decided by the main session), applied by <scratch>/impl/esp_user/amend_plan2.py",
+   "request_verbatim": "이코노믹으로 스루홀 제외하고 어떤 부품을 따로 구매해야하는건지 리스트를 정리해줘",
+   "meaning": [
+    "all six THT lines (J2, J5; J8-J12; J14; J15, J17; J16; J18 = 12 parts) are bought and soldered by the user (fit user), not by JLC: no BOM / CPL row; footprints, nets, positions and silkscreen unchanged. The SMD connector J7 stays JLC-fitted. The JLC order is SMT only, without any hand-soldered part",
+    "moisture bake: not available for Economic PCBA on the order page, so it is not ordered",
+    "via covering: the order page selects 'Plugged' (free upgrade from Tented) with LeadFree HASL on this 4-layer board"
+   ],
+   "plan_sha256_before": "0e1dc9b1876e23278a745ae3cd8dc655e59b6b3e749c7ce7f8f7fca796f59ff2",
+   "changed": [
+    {
+     "path": "changes[J2].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J2].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J2].rev3.jlc_code",
+     "from": "C22436147",
+     "to": null
+    },
+    {
+     "path": "changes[J2].user_fitted_reference_code",
+     "from": null,
+     "to": "C22436147"
+    },
+    {
+     "path": "changes[J5].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J5].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J5].rev3.jlc_code",
+     "from": "C22436147",
+     "to": null
+    },
+    {
+     "path": "changes[J5].user_fitted_reference_code",
+     "from": null,
+     "to": "C22436147"
+    },
+    {
+     "path": "changes[J8].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J8].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J8].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J8].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J9].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J9].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J9].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J9].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J10].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J10].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J10].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J10].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J11].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J11].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J11].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J11].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J12].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J12].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J12].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J12].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J14].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J14].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J14].rev3.jlc_code",
+     "from": "C5364642",
+     "to": null
+    },
+    {
+     "path": "changes[J14].user_fitted_reference_code",
+     "from": null,
+     "to": "C5364642"
+    },
+    {
+     "path": "changes[J15].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J15].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J15].rev3.jlc_code",
+     "from": "C131337",
+     "to": null
+    },
+    {
+     "path": "changes[J15].user_fitted_reference_code",
+     "from": null,
+     "to": "C131337"
+    },
+    {
+     "path": "changes[J17].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J17].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J17].rev3.jlc_code",
+     "from": "C131337",
+     "to": null
+    },
+    {
+     "path": "changes[J17].user_fitted_reference_code",
+     "from": null,
+     "to": "C131337"
+    },
+    {
+     "path": "changes[J16].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J16].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J16].rev3.jlc_code",
+     "from": "C32713261",
+     "to": null
+    },
+    {
+     "path": "changes[J16].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713261"
+    },
+    {
+     "path": "changes[J18].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J18].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J18].rev3.jlc_code",
+     "from": "C32713263",
+     "to": null
+    },
+    {
+     "path": "changes[J18].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713263"
+    },
+    {
+     "path": "changes[J2, J5, J8-J12, J14-J18].reason / assembly_change",
+     "from": "(text)",
+     "to": "(text) + the amendment sentence"
+    },
+    {
+     "path": "bom_lines[line 35, C22436147, socket 1x6 right-angle 2.54, J2/J5]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 36, C32713262, pin header 1x3 right-angle 2.54, J8/J9/J10/J11/J12]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 37, C5364642, Molex 22035025 SPOX 2P vertical, J14]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 38, C131337, JST B2B-PH-K-S 2P vertical, J15/J17]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 39, C32713261, pin header 1x2 right-angle 2.54, J16]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 40, C32713263, pin header 1x4 right-angle 2.54, J18]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines_now_bought_by_the_user",
+     "from": null,
+     "to": "7 former BOM lines, verbatim with their JLC records of 2026-11-10 (stock / price fields are that day's, not re-checked): line 31 ESP-12F restored from the unamended plan, lines 35-40 the six THT lines"
+    },
+    {
+     "path": "user_fitted[J2].on_board",
+     "from": "socket J2 (JLC)",
+     "to": "socket J2 (bought and soldered by the user since 2026-11-12)"
+    },
+    {
+     "path": "user_fitted[J5].on_board",
+     "from": "socket J5 (JLC)",
+     "to": "socket J5 (bought and soldered by the user since 2026-11-12)"
+    },
+    {
+     "path": "user_fitted[2]",
+     "from": null,
+     "to": "entry for the 12 THT connectors"
+    },
+    {
+     "path": "off_board_purchase[2]",
+     "from": null,
+     "to": "the 12 through-hole connectors per board that JLC no longer fits (user decision 2026-11-12): 2 x socket 1x6 right-angle 2.54 (J2/J5, MPN HC-PM254-8.5H-1x6PW, LCSC C22436147); 5 x pin header 1x3 right-angle 2.54 (J8/J9/J10/J11/J12, MPN HX PZ2.54-1x3P WZ, LCSC C32713262); 1 x Molex 22035025 SPOX 2P vertical (J14, MPN 22035025, LCSC C5364642); 2 x JST B2B-PH-K-S 2P vertical (J15/J17, MPN B2B-PH-K-S(LF)(SN), LCSC C131337); 1 x pin header 1x2 right-angle 2.54 (J16, MPN HX PZ2.54-1x2P WZ, LCSC C32713261); 1 x pin header 1x4 right-angle 2.54 (J18, MPN HX PZ2.54-1x4P WZ, LCSC C32713263) - LCSC or a domestic shop"
+    },
+    {
+     "path": "user_decisions[D3]",
+     "from": "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep.",
+     "to": "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep. AMENDED 2026-11-12: two of the three (J8-J12, J2 / J5) are now bought and soldered by the user; the codes remain the purchase references."
+    },
+    {
+     "path": "user_decisions[D7]",
+     "from": "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT.",
+     "to": "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT. AMENDED 2026-11-12: still THT, but bought and soldered by the user (not by JLC)."
+    },
+    {
+     "path": "user_decisions[D10]",
+     "from": "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9).",
+     "to": "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9). AMENDED 2026-11-12: Economic has no rails - the order page row is 'Tooling holes: Added by JLCPCB' (M order page 2026-11-12); where JLC puts them on this board is NOT_VERIFIED."
+    },
+    {
+     "path": "user_decisions[D12]",
+     "from": "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147.",
+     "to": "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147. AMENDED 2026-11-12: the user buys and solders the sockets; the codes are purchase references and the JLC order-day gate no longer covers them."
+    },
+    {
+     "path": "user_decisions[D14]",
+     "from": "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F).",
+     "to": "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F). AMENDED 2026-11-12 (order page, M): 'Bake Components' is not available for Economic PCB Assembly, so it cannot be ordered with this order type."
+    },
+    {
+     "path": "user_decisions[D16]",
+     "from": "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC.",
+     "to": "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC. AMENDED 2026-11-12 (order page, M): with LeadFree HASL on this 4-layer board the page disables 'Tented' and selects 'Plugged' via covering for free."
+    },
+    {
+     "path": "user_decision_details[D3, D7, D10, D12, D14, D16].amended_2026_11_12_tht_by_user",
+     "from": null,
+     "to": "(the same sentences)"
+    },
+    {
+     "path": "user_report_ko.decisions[D3]",
+     "from": "D3: 요청과 무관하게 바꾼 부품 번호 3건을 유지할지 (기본: 유지(재고가 더 많거나 도면이 확인된 부품))",
+     "to": "D3: 요청과 무관하게 바꾼 부품 번호 3건을 유지할지 (기본: 유지. 2026-11-12부터 그중 2건(J8~J12, J2/J5)은 사용자가 직접 사서 납땜하는 부품이며, 번호는 구매 참고용)"
+    },
+    {
+     "path": "user_report_ko.decisions[D7]",
+     "from": "D7: J15/J17 커넥터 (기본: 스루홀, 다리 4개 직접 절단)",
+     "to": "D7: J15/J17 커넥터 (기본: 스루홀. 2026-11-12부터 사용자가 직접 사서 납땜하고 다리도 직접 절단)"
+    },
+    {
+     "path": "user_report_ko.decisions[D10]",
+     "from": "D10: 툴링 홀 (기본: 설계에 넣지 않음. JLC 레일에 생김)",
+     "to": "D10: 툴링 홀 (기본: 설계에 넣지 않음. Economic 주문에는 레일이 없어 JLC가 기판 안에 뚫음 - 주문 화면 'Tooling holes: Added by JLCPCB', 위치는 NOT_VERIFIED)"
+    },
+    {
+     "path": "user_report_ko.decisions[D12]",
+     "from": "D12: 모듈 소켓 J2/J5 (기본: C22436147, 주문일 재고 부족 시 C55629861, 그다음 C54876735)",
+     "to": "D12: 모듈 소켓 J2/J5 (기본: C22436147. 2026-11-12부터 사용자가 직접 사서 납땜. 구하기 어려우면 C55629861, 그다음 C54876735 - 풋프린트 호환은 NOT_VERIFIED)"
+    },
+    {
+     "path": "user_report_ko.decisions[D14]",
+     "from": "D14: 흡습 부품 베이킹 요청 (기본: 요청 안 함 - 2026-11-12 변경, ESP-12F를 사용자가 직접 실장하게 되어서. 계획은 요청함)",
+     "to": "D14: 흡습 부품 베이킹 요청 (기본: 요청 안 함 - 2026-11-12 변경. 주문 화면에서 Economic PCBA는 베이킹을 고를 수 없음. 계획은 요청함)"
+    },
+    {
+     "path": "user_report_ko.decisions[D16]",
+     "from": "D16: 표면처리·색상 등 (기본: 무연 HASL - 2026-11-12 사용자 결정. 계획의 권장은 ENIG. 녹색, JLC 기본값)",
+     "to": "D16: 표면처리·색상 등 (기본: 무연 HASL - 2026-11-12 사용자 결정. 계획의 권장은 ENIG. 녹색, JLC 기본값. 비아 덮기는 주문 화면이 Plugged로 정함)"
+    }
+   ],
+   "not_rewritten": "as in the first amendment: every other text of this file is the plan as settled on 2026-11-10 and may still say 'the 6 THT lines are soldered by JLC', 40 lines or 157 parts. Where such a text disagrees with an amendment, the amendment holds.",
+   "counts_after": {
+    "jlc_bom_lines": 33,
+    "smt_lines": 33,
+    "tht_lines": 0,
+    "jlc_parts_per_board": 144,
+    "with_mcu_pair": {
+     "jlc_bom_lines": 34,
+     "jlc_parts_per_board": 148
+    },
+    "fit_user_parts": 14
+   }
+  }
+ ],
  "open_risks": [
+  "AMENDED 2026-11-12 (user decisions, plan key 'amendments'): U7 ESP-12F is fitted by the user (fit user), not by JLC: no BOM / CPL row, no paste aperture; footprint, nets, position and silkscreen unchanged; default order type: JLC Economic PCBA instead of Standard; PCB surface finish: lead-free HASL instead of ENIG; moisture bake: not ordered any more (reversible on the order page); all six THT lines (J2, J5; J8-J12; J14; J15, J17; J16; J18 = 12 parts) are bought and soldered by the user (fit user), not by JLC: no BOM / CPL row; footprints, nets, positions and silkscreen unchanged. The SMD connector J7 stays JLC-fitted. The JLC order is SMT only, without any hand-soldered part; moisture bake: not available for Economic PCBA on the order page, so it is not ordered; via covering: the order page selects 'Plugged' (free upgrade from Tented) with LeadFree HASL on this 4-layer board. The entries below are the plan's risk texts of 2026-11-10, copied unchanged: where they say Standard, rails, ENIG, baking, 'ESP-12F fitted by JLC' or 'JLC solders the 6 THT lines', the amendments hold. New with the amendments and NOT_VERIFIED: whether JLC finds room for its tooling holes on this board in an Economic order (or asks for edge rails), the reflow margin at 255 +-5 C for the parts rated 260 C, the hand soldering of the ESP-12F on lead-free HASL pads next to fitted parts, and the fit of the 12 user-bought through-hole connectors in their holes (the parts are the former BOM lines, bought loose).",
   "Nothing was built or measured: every power-block number is a datasheet calculation (E).",
   "JLC's acceptance of this board is NOT_VERIFIED: 27 part bodies are closer than 2.5 mm to the edge (U7 0.15 mm, J15 0.29 mm). Standard PCBA with rails is the plan's answer, but only JLC's DFM result and quote after the user's upload can confirm it. Nothing may be paid before that.",
   "'JLC solders the 6 THT lines' is NOT_VERIFIED until the quote shows it (review S2). The SMD fallback parts would need new footprints and the user's yes.",
@@ -8114,7 +8491,7 @@
   "Rev 2c documents contain inconsistencies that must not be copied: board.layers = 2 in the spec vs 4 delivered, '2 x 27 pF' vs 27 pF fitted, stale counts in SPEC_ko.md, 160 vs 152 populated, MANIFEST paths into the MAIN checkout, populate: true for the 8 unpopulated programming headers."
  ],
  "rev3_plan_extract": {
-  "label": "F: copied verbatim from spec/rev3_plan.json (sha256 415d1e20a0903103d6bb4b48253ffc7054cfd3d2371c008706b906fe5c1eda15); texts may name rev 2c parts",
+  "label": "F: copied verbatim from spec/rev3_plan.json (sha256 c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd); texts may name rev 2c parts",
   "interpretation": [
    "I1: U1..U4 ATmega128A-AU keep their footprints and are NOT in the main JLC BOM / CPL (user solders them); an optional second BOM / CPL pair that adds C6510 is produced.",
    "I2: sensors = GY-521 (J1), BMP280 TYE-BMP29 (J2), NEO-7M SZH-NT07 (lead to J7). The user fits them; the mating connectors on the carrier are JLC-assembled; the GY-521 is soldered into plated holes with its own pin strip.",
@@ -8430,7 +8807,8 @@
     "recommendation": "keep",
     "reason": "C11366 has 403792 in stock against 2264; the HX headers 27550..55654 against 1750..2000; C22436147 is the only 1x6 right-angle socket whose manufacturer drawing was read against the KiCad footprint (review E-10).",
     "default_used_by_the_plan": "keep",
-    "consequence_of_the_default": "none on the board function; the rev 2c numbers stay as named alternates in the order-day gate."
+    "consequence_of_the_default": "none on the board function; the rev 2c numbers stay as named alternates in the order-day gate.",
+    "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: two of the three (J8-J12, J2 / J5) are now bought and soldered by the user; the codes remain the purchase references."
    },
    {
     "id": "D4",
@@ -8479,7 +8857,8 @@
     "recommendation": "THT",
     "reason": "no footprint or position change.",
     "default_used_by_the_plan": "THT",
-    "consequence_of_the_default": "4 leads to cut per board."
+    "consequence_of_the_default": "4 leads to cut per board.",
+    "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: still THT, but bought and soldered by the user (not by JLC)."
    },
    {
     "id": "D8",
@@ -8503,7 +8882,8 @@
     "recommendation": "Standard",
     "reason": "M (C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/order_mech_work/measure_board.json, section A): 27 part bodies are closer than 2.5 mm to the board edge (T&C 2.3) and two are closer than the 0.3 mm that JLC suggests for Economic orders (U7 0.15 mm, J15 0.29 mm; depanel tolerance about 0.2 mm, F). The connector positions are fixed by the vehicle, so the parts cannot move. Edge rails are JLC's own answer for parts near the edge; Standard also solders at 240 C peak instead of 255 C.",
     "default_used_by_the_plan": "Standard",
-    "consequence_of_the_default": "about 42..74 USD more than Economic; boards arrive with the rails attached (snap off; depanelling fee NOT_VERIFIED). Gerber, BOM and CPL are the same files for both types. Acceptance by JLC is NOT_VERIFIED for both types until the user sees JLC's DFM result and quote; do not pay before that."
+    "consequence_of_the_default": "about 42..74 USD more than Economic; boards arrive with the rails attached (snap off; depanelling fee NOT_VERIFIED). Gerber, BOM and CPL are the same files for both types. Acceptance by JLC is NOT_VERIFIED for both types until the user sees JLC's DFM result and quote; do not pay before that.",
+    "amended_2026_11_12": "2026-11-12 user decision: Economic PCBA. The Standard option stays the fallback if JLC rejects the Economic order."
    },
    {
     "id": "D10",
@@ -8516,7 +8896,8 @@
     "recommendation": "on the rails (follows D9)",
     "reason": "M measure_board.json section D: the -x,-y corner has no free position at all and the +x,-y corner none free of tracks on the rev 2c board.",
     "default_used_by_the_plan": "none in the design; H1 / H2 of the first plan are dropped",
-    "consequence_of_the_default": "none with a Standard order."
+    "consequence_of_the_default": "none with a Standard order.",
+    "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: Economic has no rails - the order page row is 'Tooling holes: Added by JLCPCB' (M order page 2026-11-12); where JLC puts them on this board is NOT_VERIFIED."
    },
    {
     "id": "D11",
@@ -8541,7 +8922,8 @@
     "recommendation": "C22436147",
     "reason": "only part with a drawing that matches the KiCad footprint; 40 pieces are needed for 20 boards.",
     "default_used_by_the_plan": "C22436147 with a hard stock check on the order day; then C55629861, then C54876735",
-    "consequence_of_the_default": "if all three are short on the order day the order waits; the user may also pre-order the part into the JLC parts library (user action)."
+    "consequence_of_the_default": "if all three are short on the order day the order waits; the user may also pre-order the part into the JLC parts library (user action).",
+    "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: the user buys and solders the sockets; the codes are purchase references and the JLC order-day gate no longer covers them."
    },
    {
     "id": "D13",
@@ -8565,7 +8947,9 @@
     "recommendation": "yes",
     "reason": "T&C 5.10 offers it; the fee is NOT_VERIFIED.",
     "default_used_by_the_plan": "yes (order remark)",
-    "consequence_of_the_default": "small fee, unknown."
+    "consequence_of_the_default": "small fee, unknown.",
+    "amended_2026_11_12": "2026-11-12: baking is not ordered - the ESP-12F (the reason for the request) is fitted by the user; the LEDs alone were not judged worth the fee. The user can reverse this on the order page.",
+    "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12 (order page, M): 'Bake Components' is not available for Economic PCB Assembly, so it cannot be ordered with this order type."
    },
    {
     "id": "D15",
@@ -8590,7 +8974,9 @@
     "recommendation": "ENIG, green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC",
     "reason": "ENIG gives flat pads for the 0.8 mm pitch MCU pads and the bare holes that the user solders later; the rest are JLC defaults.",
     "default_used_by_the_plan": "as recommended",
-    "consequence_of_the_default": "ENIG surcharge and the exact option names are NOT_VERIFIED (nothing was uploaded)."
+    "consequence_of_the_default": "ENIG surcharge and the exact option names are NOT_VERIFIED (nothing was uploaded).",
+    "amended_2026_11_12": "2026-11-12 user decision: lead-free HASL instead of ENIG (order page name 'LeadFree HASL'); the board file and the gerber job file say 'HAL lead-free'.",
+    "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12 (order page, M): with LeadFree HASL on this 4-layer board the page disables 'Tented' and selects 'Plugged' via covering for free."
    },
    {
     "id": "D17",

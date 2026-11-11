@@ -4,9 +4,11 @@
  "tool": "kicad-cli netlist export + scripts/rev3_checks.py u8-u9",
  "netlist": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
-  "sha256": "cb5e2284e7de69e89f8819beea68e4e7c7ef8773acebc45fef4f5f4f0429d46f",
+  "sha256": "7692567b619ba7525eca7d35cb692b4bdcf54aa3d2747c469a386fc01e941acb",
+  "sha256_is": "of the file as it was when this check read it (it carries the export time; a later build step exports it again)",
+  "sha256_without_date_line": "c4475e142ba6d9947df43699bf7473368d18bb84d137abcfc04e98cca3943fe6",
   "tool": "Eeschema 10.0.6",
-  "export_date_in_file": "2026-11-12T00:21:36",
+  "export_date_in_file": "2026-11-12T05:11:19",
   "components": 174,
   "named_nets": 105,
   "unconnected_single_pin_nets": 183

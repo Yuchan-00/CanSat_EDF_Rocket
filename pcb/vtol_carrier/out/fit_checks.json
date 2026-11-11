@@ -1,8 +1,8 @@
 {
  "schema": "vtol_carrier.fit_checks/1",
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556",
- "placement_sha256": "79b47649c720189e53928cc1e8b71076ce40cf7ebf27497aeb53c344da2bb928",
+ "board_sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
+ "placement_sha256": "efaee986a565145d441a18483793922ff99b4660b2cfef70ffe76f12300bda4a",
  "module_dimensions_sha256": "40d59de412501d88cf2bad976145d006efe22f416afe23d556c44c15ac6a17dd",
  "tool": "pcbnew 10.0.6",
  "labels": "positions M (board file); part heights A (kicad/placement.json part_heights_mm); module dimensions F / A as tagged; no hardware measurement",
@@ -1549,12 +1549,13 @@
    {
     "ref": "J2",
     "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C22436147",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 6,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C22436147",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.25,
     "under_board_nominal_mm": 1.4,
@@ -1579,12 +1580,13 @@
    {
     "ref": "J5",
     "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C22436147",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 6,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C22436147",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.25,
     "under_board_nominal_mm": 1.4,
@@ -1596,12 +1598,13 @@
    {
     "ref": "J8",
     "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C32713262",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 3,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C32713262",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.2,
     "under_board_nominal_mm": 1.4,
@@ -1613,12 +1616,13 @@
    {
     "ref": "J9",
     "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C32713262",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 3,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C32713262",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.2,
     "under_board_nominal_mm": 1.4,
@@ -1630,12 +1634,13 @@
    {
     "ref": "J10",
     "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C32713262",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 3,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C32713262",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.2,
     "under_board_nominal_mm": 1.4,
@@ -1647,12 +1652,13 @@
    {
     "ref": "J11",
     "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C32713262",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 3,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C32713262",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.2,
     "under_board_nominal_mm": 1.4,
@@ -1664,12 +1670,13 @@
    {
     "ref": "J12",
     "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C32713262",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 3,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C32713262",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.2,
     "under_board_nominal_mm": 1.4,
@@ -1681,12 +1688,13 @@
    {
     "ref": "J14",
     "footprint": "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
-    "fit": "jlc",
-    "jlc_code": "C5364642",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 2,
     "drill_mm": [
      0.85
     ],
+    "reference_part_bought_by_the_user": "C5364642",
     "under_board_nominal_mm": null,
     "label": "NOT_VERIFIED",
     "source": "Molex 22035025 drawing not read (3 timeouts in the design step); the 3.0 mm in spec/module_dimensions.json is an assumption for the picture only",
@@ -1695,12 +1703,13 @@
    {
     "ref": "J15",
     "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-    "fit": "jlc",
-    "jlc_code": "C131337",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 2,
     "drill_mm": [
      0.75
     ],
+    "reference_part_bought_by_the_user": "C131337",
     "tail_mm": 3.4,
     "tail_plus_tol_mm": null,
     "under_board_nominal_mm": 1.8,
@@ -1712,12 +1721,13 @@
    {
     "ref": "J16",
     "footprint": "PinHeader_1x02_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C32713261",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 2,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C32713261",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.2,
     "under_board_nominal_mm": 1.4,
@@ -1729,12 +1739,13 @@
    {
     "ref": "J17",
     "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-    "fit": "jlc",
-    "jlc_code": "C131337",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 2,
     "drill_mm": [
      0.75
     ],
+    "reference_part_bought_by_the_user": "C131337",
     "tail_mm": 3.4,
     "tail_plus_tol_mm": null,
     "under_board_nominal_mm": 1.8,
@@ -1746,12 +1757,13 @@
    {
     "ref": "J18",
     "footprint": "PinHeader_1x04_P2.54mm_Horizontal",
-    "fit": "jlc",
-    "jlc_code": "C32713263",
+    "fit": "user",
+    "jlc_code": null,
     "plated_holes": 4,
     "drill_mm": [
      1.0
     ],
+    "reference_part_bought_by_the_user": "C32713263",
     "tail_mm": 3.0,
     "tail_plus_tol_mm": 0.2,
     "under_board_nominal_mm": 1.4,
@@ -2347,21 +2359,6 @@
     "why": "no rating read for this part in this step (not in the plan's list)"
    },
    {
-    "jlc_code": "C82891",
-    "designators": [
-     "U7"
-    ],
-    "comment": "ESP-12F",
-    "assembly": "SMT",
-    "assembly_mode_today": "smtWeld",
-    "in_plan_list": true,
-    "rated_peak_C": null,
-    "limits": "the ESP-12F datasheet gives its reflow profile only as a graphic (section 4); no number read",
-    "label": "NOT_VERIFIED",
-    "source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/datasheets/C82891_text/C82891.txt:271",
-    "result": "NOT_VERIFIED"
-   },
-   {
     "jlc_code": "C919459",
     "designators": [
      "U8"
@@ -2399,84 +2396,6 @@
     "in_plan_list": false,
     "result": "NOT_VERIFIED",
     "why": "no rating read for this part in this step (not in the plan's list)"
-   },
-   {
-    "jlc_code": "C22436147",
-    "designators": [
-     "J2",
-     "J5"
-    ],
-    "comment": "socket 1x6 right-angle 2.54",
-    "assembly": "THT",
-    "assembly_mode_today": "manualWeld",
-    "in_plan_list": true,
-    "result": "not reflowed",
-    "why": "THT line, assemblyMode manualWeld in the gate record: JLC hand-solders it (F scout/jlc_rules.md:27, :155)"
-   },
-   {
-    "jlc_code": "C32713262",
-    "designators": [
-     "J8",
-     "J9",
-     "J10",
-     "J11",
-     "J12"
-    ],
-    "comment": "pin header 1x3 right-angle 2.54",
-    "assembly": "THT",
-    "assembly_mode_today": "manualWeld",
-    "in_plan_list": true,
-    "result": "not reflowed",
-    "why": "THT line, assemblyMode manualWeld in the gate record: JLC hand-solders it (F scout/jlc_rules.md:27, :155)"
-   },
-   {
-    "jlc_code": "C5364642",
-    "designators": [
-     "J14"
-    ],
-    "comment": "Molex 22035025 SPOX 2P vertical",
-    "assembly": "THT",
-    "assembly_mode_today": "manualWeld",
-    "in_plan_list": true,
-    "result": "not reflowed",
-    "why": "THT line, assemblyMode manualWeld in the gate record: JLC hand-solders it (F scout/jlc_rules.md:27, :155)"
-   },
-   {
-    "jlc_code": "C131337",
-    "designators": [
-     "J15",
-     "J17"
-    ],
-    "comment": "JST B2B-PH-K-S 2P vertical",
-    "assembly": "THT",
-    "assembly_mode_today": "manualWeld",
-    "in_plan_list": true,
-    "result": "not reflowed",
-    "why": "THT line, assemblyMode manualWeld in the gate record: JLC hand-solders it (F scout/jlc_rules.md:27, :155)"
-   },
-   {
-    "jlc_code": "C32713261",
-    "designators": [
-     "J16"
-    ],
-    "comment": "pin header 1x2 right-angle 2.54",
-    "assembly": "THT",
-    "assembly_mode_today": "manualWeld",
-    "in_plan_list": true,
-    "result": "not reflowed",
-    "why": "THT line, assemblyMode manualWeld in the gate record: JLC hand-solders it (F scout/jlc_rules.md:27, :155)"
-   },
-   {
-    "jlc_code": "C32713263",
-    "designators": [
-     "J18"
-    ],
-    "comment": "pin header 1x4 right-angle 2.54",
-    "assembly": "THT",
-    "assembly_mode_today": "manualWeld",
-    "in_plan_list": true,
-    "result": "not reflowed",
-    "why": "THT line, assemblyMode manualWeld in the gate record: JLC hand-solders it (F scout/jlc_rules.md:27, :155)"
    },
    {
     "jlc_code": "C6510",
@@ -2522,7 +2441,6 @@
    "C26096",
    "C22935",
    "C6186",
-   "C82891",
    "C919459",
    "C20345924",
    "C70562",
@@ -2535,7 +2453,7 @@
   ],
   "gate_report": {
    "file": "out/jlc_gate_report.json",
-   "started_at": "2026-11-12T00:08:01+09:00"
+   "started_at": "2026-11-12T02:54:37+09:00"
   }
  },
  "connector_drawings": {
@@ -2896,5 +2814,1009 @@
   "errors": [],
   "source_of_datasheet_values": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/conn_work/fp_vs_ds.json",
   "label": "board geometry M; datasheet values F as cited per row; J14 hole / tail: Molex drawing not read"
+ },
+ "user_soldered_smd": {
+  "U7": {
+   "footprint": "ESP-12E",
+   "pads": 22,
+   "pads_with_a_net": [
+    "1",
+    "3",
+    "8",
+    "15",
+    "16",
+    "17",
+    "18",
+    "21",
+    "22"
+   ],
+   "pads_without_a_net": 13,
+   "pad_sizes_mm": [
+    [
+     1.0,
+     1.8
+    ],
+    [
+     2.5,
+     1.0
+    ]
+   ],
+   "pads_with_paste_on_the_design_board": 22,
+   "paste_note": "the design board keeps the library paste apertures; both gerber sets are exported from paste variants without them (out/reports/gerber_check.json paste_variant)",
+   "body_height_mm": 3.2,
+   "body_height_label": "A (kicad/placement.json part_heights_mm)",
+   "jlc_fitted_neighbours_within_1mm_of_the_pads": [
+    [
+     "Q5",
+     0.4,
+     1.1
+    ],
+    [
+     "C52",
+     0.45,
+     2.1
+    ],
+    [
+     "R58",
+     0.54,
+     0.55
+    ],
+    [
+     "C55",
+     0.55,
+     0.9
+    ],
+    [
+     "C53",
+     0.67,
+     1.35
+    ],
+    [
+     "C54",
+     0.85,
+     0.55
+    ]
+   ],
+   "closest_foreign_pad_per_pad_mm": [
+    [
+     "10",
+     0.525,
+     "R58.2"
+    ],
+    [
+     "3",
+     0.525,
+     "C55.1"
+    ],
+    [
+     "9",
+     0.525,
+     "R58.1"
+    ],
+    [
+     "2",
+     0.593,
+     "C55.2"
+    ],
+    [
+     "4",
+     0.593,
+     "C55.1"
+    ],
+    [
+     "6",
+     0.625,
+     "C53.1"
+    ]
+   ],
+   "min_pad_to_foreign_pad_mm": 0.525,
+   "neighbours_within_3mm_of_the_pads": [
+    {
+     "ref": "Q5",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 0.4,
+     "gap_to_body_mm": 1.25,
+     "height_mm": 1.1
+    },
+    {
+     "ref": "C52",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 0.45,
+     "gap_to_body_mm": 1.3,
+     "height_mm": 2.1
+    },
+    {
+     "ref": "R58",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 0.54,
+     "gap_to_body_mm": 1.39,
+     "height_mm": 0.55
+    },
+    {
+     "ref": "C55",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 0.55,
+     "gap_to_body_mm": 1.35,
+     "height_mm": 0.9
+    },
+    {
+     "ref": "C53",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 0.67,
+     "gap_to_body_mm": 1.48,
+     "height_mm": 1.35
+    },
+    {
+     "ref": "C54",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 0.85,
+     "gap_to_body_mm": 1.65,
+     "height_mm": 0.55
+    },
+    {
+     "ref": "R24",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 1.34,
+     "gap_to_body_mm": 2.19,
+     "height_mm": 0.55
+    },
+    {
+     "ref": "R17",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 1.35,
+     "gap_to_body_mm": 2.2,
+     "height_mm": 0.55
+    },
+    {
+     "ref": "Q11",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 1.5,
+     "gap_to_body_mm": 2.35,
+     "height_mm": 1.1
+    },
+    {
+     "ref": "J20",
+     "fit": "none",
+     "fitted_by_jlc": false,
+     "gap_to_pads_mm": 1.78,
+     "gap_to_body_mm": 2.58,
+     "height_mm": 0.0
+    },
+    {
+     "ref": "J3",
+     "fit": "none",
+     "fitted_by_jlc": false,
+     "gap_to_pads_mm": 1.78,
+     "gap_to_body_mm": 2.58,
+     "height_mm": 0.0
+    },
+    {
+     "ref": "R48",
+     "fit": "jlc",
+     "fitted_by_jlc": true,
+     "gap_to_pads_mm": 2.04,
+     "gap_to_body_mm": 2.84,
+     "height_mm": 0.55
+    }
+   ],
+   "unfitted_header_holes_within_3mm": [
+    [
+     "J20",
+     1.78,
+     2.58
+    ],
+    [
+     "J3",
+     1.78,
+     2.58
+    ]
+   ],
+   "mcu_pad_ring_to_body_mm": {
+    "U1": 26.92,
+    "U2": 9.6,
+    "U3": 5.8,
+    "U4": 28.45
+   },
+   "mcu_body_height_mm": {
+    "U1": 1.2,
+    "U2": 1.2,
+    "U3": 1.2,
+    "U4": 1.2
+   },
+   "label": "M (bounding boxes on the board file); heights A"
+  }
+ },
+ "user_soldered_tht": {
+  "summary": {
+   "parts": 12,
+   "joints_per_board": 39,
+   "lines": [
+    {
+     "lcsc": "C22436147",
+     "mpn": "HC-PM254-8.5H-1x6PW",
+     "comment": "socket 1x6 right-angle 2.54",
+     "refs": [
+      "J2",
+      "J5"
+     ],
+     "joints": 12
+    },
+    {
+     "lcsc": "C32713262",
+     "mpn": "HX PZ2.54-1x3P WZ",
+     "comment": "pin header 1x3 right-angle 2.54",
+     "refs": [
+      "J8",
+      "J9",
+      "J10",
+      "J11",
+      "J12"
+     ],
+     "joints": 15
+    },
+    {
+     "lcsc": "C5364642",
+     "mpn": "22035025",
+     "comment": "Molex 22035025 SPOX 2P vertical",
+     "refs": [
+      "J14"
+     ],
+     "joints": 2
+    },
+    {
+     "lcsc": "C131337",
+     "mpn": "B2B-PH-K-S(LF)(SN)",
+     "comment": "JST B2B-PH-K-S 2P vertical",
+     "refs": [
+      "J15",
+      "J17"
+     ],
+     "joints": 4
+    },
+    {
+     "lcsc": "C32713261",
+     "mpn": "HX PZ2.54-1x2P WZ",
+     "comment": "pin header 1x2 right-angle 2.54",
+     "refs": [
+      "J16"
+     ],
+     "joints": 2
+    },
+    {
+     "lcsc": "C32713263",
+     "mpn": "HX PZ2.54-1x4P WZ",
+     "comment": "pin header 1x4 right-angle 2.54",
+     "refs": [
+      "J18"
+     ],
+     "joints": 4
+    }
+   ],
+   "other_user_soldered_holes": {
+    "J1": 8
+   }
+  },
+  "per_ref": {
+   "J2": {
+    "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C22436147",
+     "mpn": "HC-PM254-8.5H-1x6PW",
+     "comment": "socket 1x6 right-angle 2.54",
+     "brand": "Hong Cheng"
+    },
+    "joints": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "+3V3",
+     "2": "GND",
+     "3": "I2C_SCL_3V3",
+     "4": "I2C_SDA_3V3",
+     "5": "+3V3",
+     "6": "+3V3"
+    },
+    "pad1": {
+     "net": "+3V3",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      104.83,
+      67.0
+     ],
+     "side_of_the_pin_row_on_the_top_view": "left"
+    },
+    "pin_row_runs": "left-right",
+    "body_outline_from_the_pin_row_mm": {
+     "up": 0.05,
+     "down": 10.08
+    },
+    "body_outline_larger_side_on_the_top_view": "down",
+    "body_outline_asymmetry_mm": 10.03,
+    "body_bbox_kicad_mm": [
+     103.51,
+     66.95,
+     118.85,
+     77.08
+    ],
+    "nearest_board_edge_on_the_top_view": "up",
+    "body_to_that_edge_mm": 1.98,
+    "silkscreen_outline_items": 44,
+    "height_mm": 5.9,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 35.52,
+     "U2": 12.27,
+     "U3": 20.22,
+     "U4": 41.66
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 7.91
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J5": {
+    "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C22436147",
+     "mpn": "HC-PM254-8.5H-1x6PW",
+     "comment": "socket 1x6 right-angle 2.54",
+     "brand": "Hong Cheng"
+    },
+    "joints": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "unconnected-(J5-Pin_1-Pad1)",
+     "2": "OPENLOG_RXI",
+     "3": "unconnected-(J5-Pin_3-Pad3)",
+     "4": "+5V",
+     "5": "GND",
+     "6": "GND"
+    },
+    "pad1": {
+     "net": "unconnected-(J5-Pin_1-Pad1)",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      123.25,
+      89.0
+     ],
+     "side_of_the_pin_row_on_the_top_view": "left"
+    },
+    "pin_row_runs": "left-right",
+    "body_outline_from_the_pin_row_mm": {
+     "up": 0.05,
+     "down": 10.08
+    },
+    "body_outline_larger_side_on_the_top_view": "down",
+    "body_outline_asymmetry_mm": 10.03,
+    "body_bbox_kicad_mm": [
+     121.93,
+     88.95,
+     137.27,
+     99.08
+    ],
+    "nearest_board_edge_on_the_top_view": "right",
+    "body_to_that_edge_mm": 0.76,
+    "silkscreen_outline_items": 44,
+    "height_mm": 5.9,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 13.52,
+     "U2": 0.73,
+     "U3": 27.68,
+     "U4": 33.36
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 26.33
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J8": {
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C32713262",
+     "mpn": "HX PZ2.54-1x3P WZ",
+     "comment": "pin header 1x3 right-angle 2.54",
+     "brand": "hanxia"
+    },
+    "joints": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "VANE1_SIG",
+     "2": "SERVO_5V",
+     "3": "GND_PWR"
+    },
+    "pad1": {
+     "net": "VANE1_SIG",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      72.8,
+      84.47
+     ],
+     "side_of_the_pin_row_on_the_top_view": "down"
+    },
+    "pin_row_runs": "up-down",
+    "body_outline_from_the_pin_row_mm": {
+     "left": 10.09,
+     "right": 0.37
+    },
+    "body_outline_larger_side_on_the_top_view": "left",
+    "body_outline_asymmetry_mm": 9.72,
+    "body_bbox_kicad_mm": [
+     62.71,
+     78.07,
+     73.17,
+     85.79
+    ],
+    "nearest_board_edge_on_the_top_view": "left",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 18,
+    "height_mm": 3.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 44.11,
+     "U2": 31.43,
+     "U3": 10.2,
+     "U4": 32.2
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 4.73
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J9": {
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C32713262",
+     "mpn": "HX PZ2.54-1x3P WZ",
+     "comment": "pin header 1x3 right-angle 2.54",
+     "brand": "hanxia"
+    },
+    "joints": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "VANE2_SIG",
+     "2": "SERVO_5V",
+     "3": "GND_PWR"
+    },
+    "pad1": {
+     "net": "VANE2_SIG",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      72.8,
+      93.09
+     ],
+     "side_of_the_pin_row_on_the_top_view": "down"
+    },
+    "pin_row_runs": "up-down",
+    "body_outline_from_the_pin_row_mm": {
+     "left": 10.09,
+     "right": 0.37
+    },
+    "body_outline_larger_side_on_the_top_view": "left",
+    "body_outline_asymmetry_mm": 9.72,
+    "body_bbox_kicad_mm": [
+     62.71,
+     86.69,
+     73.17,
+     94.41
+    ],
+    "nearest_board_edge_on_the_top_view": "left",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 18,
+    "height_mm": 3.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 39.47,
+     "U2": 31.23,
+     "U3": 4.33,
+     "U4": 23.68
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 4.73
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J10": {
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C32713262",
+     "mpn": "HX PZ2.54-1x3P WZ",
+     "comment": "pin header 1x3 right-angle 2.54",
+     "brand": "hanxia"
+    },
+    "joints": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "VANE3_SIG",
+     "2": "SERVO_5V",
+     "3": "GND_PWR"
+    },
+    "pad1": {
+     "net": "VANE3_SIG",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      72.8,
+      101.71
+     ],
+     "side_of_the_pin_row_on_the_top_view": "down"
+    },
+    "pin_row_runs": "up-down",
+    "body_outline_from_the_pin_row_mm": {
+     "left": 10.09,
+     "right": 0.37
+    },
+    "body_outline_larger_side_on_the_top_view": "left",
+    "body_outline_asymmetry_mm": 9.72,
+    "body_bbox_kicad_mm": [
+     62.71,
+     95.31,
+     73.17,
+     103.03
+    ],
+    "nearest_board_edge_on_the_top_view": "left",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 18,
+    "height_mm": 3.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 36.31,
+     "U2": 31.23,
+     "U3": 4.28,
+     "U4": 15.28
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 7.04
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J11": {
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C32713262",
+     "mpn": "HX PZ2.54-1x3P WZ",
+     "comment": "pin header 1x3 right-angle 2.54",
+     "brand": "hanxia"
+    },
+    "joints": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "VANE4_SIG",
+     "2": "SERVO_5V",
+     "3": "GND_PWR"
+    },
+    "pad1": {
+     "net": "VANE4_SIG",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      72.8,
+      110.33
+     ],
+     "side_of_the_pin_row_on_the_top_view": "down"
+    },
+    "pin_row_runs": "up-down",
+    "body_outline_from_the_pin_row_mm": {
+     "left": 10.09,
+     "right": 0.37
+    },
+    "body_outline_larger_side_on_the_top_view": "left",
+    "body_outline_asymmetry_mm": 9.72,
+    "body_bbox_kicad_mm": [
+     62.71,
+     103.93,
+     73.17,
+     111.65
+    ],
+    "nearest_board_edge_on_the_top_view": "left",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 18,
+    "height_mm": 3.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 35.04,
+     "U2": 31.23,
+     "U3": 4.28,
+     "U4": 7.41
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 14.62
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J12": {
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C32713262",
+     "mpn": "HX PZ2.54-1x3P WZ",
+     "comment": "pin header 1x3 right-angle 2.54",
+     "brand": "hanxia"
+    },
+    "joints": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "ESC_SIG",
+     "2": "SERVO_5V",
+     "3": "GND_PWR"
+    },
+    "pad1": {
+     "net": "ESC_SIG",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      127.21,
+      73.17
+     ],
+     "side_of_the_pin_row_on_the_top_view": "up"
+    },
+    "pin_row_runs": "up-down",
+    "body_outline_from_the_pin_row_mm": {
+     "left": 0.37,
+     "right": 10.09
+    },
+    "body_outline_larger_side_on_the_top_view": "right",
+    "body_outline_asymmetry_mm": 9.72,
+    "body_bbox_kicad_mm": [
+     126.84,
+     71.85,
+     137.3,
+     79.57
+    ],
+    "nearest_board_edge_on_the_top_view": "right",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 18,
+    "height_mm": 3.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 33.08,
+     "U2": 11.29,
+     "U3": 36.08,
+     "U4": 50.16
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 31.24
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J14": {
+    "footprint": "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+    "reference_part": {
+     "lcsc": "C5364642",
+     "mpn": "22035025",
+     "comment": "Molex 22035025 SPOX 2P vertical",
+     "brand": "MOLEX"
+    },
+    "joints": 2,
+    "drill_mm": [
+     0.85
+    ],
+    "pad_nets": {
+     "1": "VBAT_LOGIC_RAW",
+     "2": "GND"
+    },
+    "pad1": {
+     "net": "VBAT_LOGIC_RAW",
+     "shape": "rounded rectangle",
+     "other_pad_shapes": [
+      "oval"
+     ],
+     "xy_kicad_mm": [
+      65.2,
+      68.85
+     ],
+     "side_of_the_pin_row_on_the_top_view": "left"
+    },
+    "pin_row_runs": "left-right",
+    "body_outline_from_the_pin_row_mm": {
+     "up": 3.15,
+     "down": 1.85
+    },
+    "body_outline_larger_side_on_the_top_view": "up",
+    "body_outline_asymmetry_mm": 1.3,
+    "body_bbox_kicad_mm": [
+     62.7,
+     65.7,
+     70.2,
+     70.7
+    ],
+    "nearest_board_edge_on_the_top_view": "left",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 7,
+    "height_mm": 11.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 56.57,
+     "U2": 38.95,
+     "U3": 25.41,
+     "U4": 47.56
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 8.1
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J15": {
+    "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+    "reference_part": {
+     "lcsc": "C131337",
+     "mpn": "B2B-PH-K-S(LF)(SN)",
+     "comment": "JST B2B-PH-K-S 2P vertical",
+     "brand": "JST"
+    },
+    "joints": 2,
+    "drill_mm": [
+     0.75
+    ],
+    "pad_nets": {
+     "1": "VBAT_LOGIC",
+     "2": "VBAT_LOGIC_SW"
+    },
+    "pad1": {
+     "net": "VBAT_LOGIC",
+     "shape": "rounded rectangle",
+     "other_pad_shapes": [
+      "oval"
+     ],
+     "xy_kicad_mm": [
+      64.7,
+      73.45
+     ],
+     "side_of_the_pin_row_on_the_top_view": "left"
+    },
+    "pin_row_runs": "left-right",
+    "body_outline_from_the_pin_row_mm": {
+     "up": 2.16,
+     "down": 2.85
+    },
+    "body_outline_larger_side_on_the_top_view": "down",
+    "body_outline_asymmetry_mm": 0.69,
+    "body_bbox_kicad_mm": [
+     62.29,
+     71.29,
+     68.7,
+     76.3
+    ],
+    "nearest_board_edge_on_the_top_view": "left",
+    "body_to_that_edge_mm": 0.32,
+    "silkscreen_outline_items": 22,
+    "height_mm": 11.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 53.65,
+     "U2": 38.01,
+     "U3": 20.69,
+     "U4": 42.31
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 9.2
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J16": {
+    "footprint": "PinHeader_1x02_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C32713261",
+     "mpn": "HX PZ2.54-1x2P WZ",
+     "comment": "pin header 1x2 right-angle 2.54",
+     "brand": "hanxia"
+    },
+    "joints": 2,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "ARM_SW_EXT",
+     "2": "GND"
+    },
+    "pad1": {
+     "net": "ARM_SW_EXT",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      121.12,
+      75.79
+     ],
+     "side_of_the_pin_row_on_the_top_view": "left"
+    },
+    "pin_row_runs": "left-right",
+    "body_outline_from_the_pin_row_mm": {
+     "up": 10.09,
+     "down": 0.37
+    },
+    "body_outline_larger_side_on_the_top_view": "up",
+    "body_outline_asymmetry_mm": 9.72,
+    "body_bbox_kicad_mm": [
+     119.8,
+     65.7,
+     124.98,
+     76.16
+    ],
+    "nearest_board_edge_on_the_top_view": "up",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 12,
+    "height_mm": 3.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 36.44,
+     "U2": 13.19,
+     "U3": 31.77,
+     "U4": 48.77
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 24.2
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J17": {
+    "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+    "reference_part": {
+     "lcsc": "C131337",
+     "mpn": "B2B-PH-K-S(LF)(SN)",
+     "comment": "JST B2B-PH-K-S 2P vertical",
+     "brand": "JST"
+    },
+    "joints": 2,
+    "drill_mm": [
+     0.75
+    ],
+    "pad_nets": {
+     "1": "+5V",
+     "2": "BUZ_N"
+    },
+    "pad1": {
+     "net": "+5V",
+     "shape": "rounded rectangle",
+     "other_pad_shapes": [
+      "oval"
+     ],
+     "xy_kicad_mm": [
+      133.3,
+      82.35
+     ],
+     "side_of_the_pin_row_on_the_top_view": "left"
+    },
+    "pin_row_runs": "left-right",
+    "body_outline_from_the_pin_row_mm": {
+     "up": 2.16,
+     "down": 2.85
+    },
+    "body_outline_larger_side_on_the_top_view": "down",
+    "body_outline_asymmetry_mm": 0.69,
+    "body_bbox_kicad_mm": [
+     130.89,
+     80.19,
+     137.3,
+     85.2
+    ],
+    "nearest_board_edge_on_the_top_view": "right",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 22,
+    "height_mm": 11.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 28.03,
+     "U2": 10.54,
+     "U3": 37.94,
+     "U4": 48.98
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 35.29
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   },
+   "J18": {
+    "footprint": "PinHeader_1x04_P2.54mm_Horizontal",
+    "reference_part": {
+     "lcsc": "C32713263",
+     "mpn": "HX PZ2.54-1x4P WZ",
+     "comment": "pin header 1x4 right-angle 2.54",
+     "brand": "hanxia"
+    },
+    "joints": 4,
+    "drill_mm": [
+     1.0
+    ],
+    "pad_nets": {
+     "1": "VS_VIN",
+     "2": "VS_VTETHER",
+     "3": "VS_VBUFFER",
+     "4": "VS_BUF_ISIGN"
+    },
+    "pad1": {
+     "net": "VS_VIN",
+     "shape": "rectangle",
+     "other_pad_shapes": [
+      "circle"
+     ],
+     "xy_kicad_mm": [
+      72.8,
+      121.49
+     ],
+     "side_of_the_pin_row_on_the_top_view": "down"
+    },
+    "pin_row_runs": "up-down",
+    "body_outline_from_the_pin_row_mm": {
+     "left": 10.09,
+     "right": 0.37
+    },
+    "body_outline_larger_side_on_the_top_view": "left",
+    "body_outline_asymmetry_mm": 9.72,
+    "body_bbox_kicad_mm": [
+     62.71,
+     112.55,
+     73.17,
+     122.81
+    ],
+    "nearest_board_edge_on_the_top_view": "left",
+    "body_to_that_edge_mm": 0.73,
+    "silkscreen_outline_items": 24,
+    "height_mm": 3.0,
+    "height_label": "A (kicad/placement.json part_heights_mm)",
+    "gap_to_mcu_pad_rings_mm": {
+     "U1": 35.03,
+     "U2": 31.88,
+     "U3": 4.34,
+     "U4": 4.28
+    },
+    "gap_to_user_smd_pads_mm": {
+     "U7": 22.94
+    },
+    "jlc_fitted_neighbours_within_1mm_of_the_holes": [],
+    "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the right and y down (the orientation of out/render/a1_as_delivered_top.png)"
+   }
+  }
  }
 }

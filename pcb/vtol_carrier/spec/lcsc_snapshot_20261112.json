@@ -1,0 +1,727 @@
+{
+ "source": "https://wmsc.lcsc.com/ftps/wm/product/detail?productCode={code}",
+ "label": "M at the fetch time (LCSC public product record, read-only GET, no login)",
+ "records": {
+  "C82891": {
+   "fetched_at": "2026-11-12T02:50:37+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C82891.json",
+   "mpn": "ESP-12F(ESP8266MOD)",
+   "brand": "Ai-Thinker",
+   "title": "Ai-Thinker ESP-12F(ESP8266MOD)",
+   "stock": 29322,
+   "min_order_qty": 1,
+   "order_multiple": 1,
+   "price_tiers_usd": [
+    {
+     "from_qty": 1,
+     "usd": 2.9153
+    },
+    {
+     "from_qty": 10,
+     "usd": 2.5601
+    },
+    {
+     "from_qty": 30,
+     "usd": 2.3091
+    },
+    {
+     "from_qty": 100,
+     "usd": 1.8863
+    },
+    {
+     "from_qty": 500,
+     "usd": 1.7806
+    },
+    {
+     "from_qty": 800,
+     "usd": 1.7376
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "56c9a0016617e3418ed62b72b31e9038ffa5ac3eed17e63fd1ce4e2e3c7824d0"
+  },
+  "C22436147": {
+   "fetched_at": "2026-11-12T02:50:39+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C22436147.json",
+   "mpn": "HC-PM254-8.5H-1x6PW",
+   "brand": "Hong Cheng",
+   "title": "Hong Cheng HC-PM254-8.5H-1x6PW",
+   "stock": 530,
+   "min_order_qty": 5,
+   "order_multiple": 5,
+   "price_tiers_usd": [
+    {
+     "from_qty": 5,
+     "usd": 0.1295
+    },
+    {
+     "from_qty": 50,
+     "usd": 0.1024
+    },
+    {
+     "from_qty": 150,
+     "usd": 0.0888
+    },
+    {
+     "from_qty": 500,
+     "usd": 0.0787
+    },
+    {
+     "from_qty": 2500,
+     "usd": 0.0705
+    },
+    {
+     "from_qty": 5000,
+     "usd": 0.0665
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "ca3f4280656d7dfa62be1664622df4e83432946918bf41db5b4150416707a720"
+  },
+  "C32713262": {
+   "fetched_at": "2026-11-12T02:50:41+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C32713262.json",
+   "mpn": "HX PZ2.54-1x3P WZ",
+   "brand": "hanxia",
+   "title": "hanxia HX PZ2.54-1x3P WZ",
+   "stock": 30640,
+   "min_order_qty": 20,
+   "order_multiple": 20,
+   "price_tiers_usd": [
+    {
+     "from_qty": 20,
+     "usd": 0.0286
+    },
+    {
+     "from_qty": 200,
+     "usd": 0.0223
+    },
+    {
+     "from_qty": 600,
+     "usd": 0.0188
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.0167
+    },
+    {
+     "from_qty": 10000,
+     "usd": 0.0148
+    },
+    {
+     "from_qty": 20000,
+     "usd": 0.0139
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "1dc4658b74763d977047dd9a8f11d43b0edf12c3d52421e29395585418686c01"
+  },
+  "C5364642": {
+   "fetched_at": "2026-11-12T02:50:43+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C5364642.json",
+   "mpn": "22035025",
+   "brand": "MOLEX",
+   "title": "MOLEX 22035025",
+   "stock": 5070,
+   "min_order_qty": 10,
+   "order_multiple": 10,
+   "price_tiers_usd": [
+    {
+     "from_qty": 10,
+     "usd": 0.0937
+    },
+    {
+     "from_qty": 100,
+     "usd": 0.0781
+    },
+    {
+     "from_qty": 300,
+     "usd": 0.0703
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.0645
+    },
+    {
+     "from_qty": 4000,
+     "usd": 0.0598
+    },
+    {
+     "from_qty": 10000,
+     "usd": 0.0575
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "127845a0f105dbf3ea9c83761ee6747661d77668c809c9cd2fd63668e0850a1d"
+  },
+  "C131337": {
+   "fetched_at": "2026-11-12T02:50:44+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C131337.json",
+   "mpn": "B2B-PH-K-S(LF)(SN)",
+   "brand": "JST",
+   "title": "JST B2B-PH-K-S(LF)(SN)",
+   "stock": 76300,
+   "min_order_qty": 20,
+   "order_multiple": 20,
+   "price_tiers_usd": [
+    {
+     "from_qty": 20,
+     "usd": 0.0359
+    },
+    {
+     "from_qty": 200,
+     "usd": 0.0285
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.0249
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.0224
+    },
+    {
+     "from_qty": 10000,
+     "usd": 0.0215
+    },
+    {
+     "from_qty": 20000,
+     "usd": 0.0208
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "9adf0e32619be69e4979b45232f356b23a7d8f30998d9cbdc7e4d3cc5eb431cc"
+  },
+  "C32713261": {
+   "fetched_at": "2026-11-12T02:50:46+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C32713261.json",
+   "mpn": "HX PZ2.54-1x2P WZ",
+   "brand": "hanxia",
+   "title": "hanxia HX PZ2.54-1x2P WZ",
+   "stock": 53050,
+   "min_order_qty": 50,
+   "order_multiple": 50,
+   "price_tiers_usd": [
+    {
+     "from_qty": 50,
+     "usd": 0.0185
+    },
+    {
+     "from_qty": 500,
+     "usd": 0.0144
+    },
+    {
+     "from_qty": 1500,
+     "usd": 0.0122
+    },
+    {
+     "from_qty": 5000,
+     "usd": 0.0108
+    },
+    {
+     "from_qty": 25000,
+     "usd": 0.0096
+    },
+    {
+     "from_qty": 50000,
+     "usd": 0.009
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "15d19098148ea18dc8c5badd7f1361c8d1561ccc7cd57e4ea5c0eed6f902f82d"
+  },
+  "C32713263": {
+   "fetched_at": "2026-11-12T02:50:48+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C32713263.json",
+   "mpn": "HX PZ2.54-1x4P WZ",
+   "brand": "hanxia",
+   "title": "hanxia HX PZ2.54-1x4P WZ",
+   "stock": 27020,
+   "min_order_qty": 20,
+   "order_multiple": 20,
+   "price_tiers_usd": [
+    {
+     "from_qty": 20,
+     "usd": 0.0381
+    },
+    {
+     "from_qty": 200,
+     "usd": 0.0298
+    },
+    {
+     "from_qty": 600,
+     "usd": 0.0251
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.0227
+    },
+    {
+     "from_qty": 10000,
+     "usd": 0.0203
+    },
+    {
+     "from_qty": 20000,
+     "usd": 0.019
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "0d0030fd89295adbe43839dbce1d5ff9b9933fe0a5960f05d51fd758fb28b583"
+  },
+  "C6510": {
+   "fetched_at": "2026-11-12T02:50:50+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C6510.json",
+   "mpn": "ATMEGA128A-AU",
+   "brand": "MICROCHIP",
+   "title": "MICROCHIP ATMEGA128A-AU",
+   "stock": 3630,
+   "min_order_qty": 1,
+   "order_multiple": 1,
+   "price_tiers_usd": [
+    {
+     "from_qty": 1,
+     "usd": 6.0666
+    },
+    {
+     "from_qty": 10,
+     "usd": 5.2004
+    },
+    {
+     "from_qty": 30,
+     "usd": 4.6857
+    },
+    {
+     "from_qty": 90,
+     "usd": 4.1643
+    },
+    {
+     "from_qty": 540,
+     "usd": 3.9234
+    },
+    {
+     "from_qty": 900,
+     "usd": 3.8162
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "f6b44bd448aa09ab35e02185544a7bd86f5ea1e567782eefe0ebeb33735bba70"
+  },
+  "C160418": {
+   "fetched_at": "2026-11-12T02:50:52+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C160418.json",
+   "mpn": "GHR-04V-S",
+   "brand": "JST",
+   "title": "JST GHR-04V-S",
+   "stock": 37060,
+   "min_order_qty": 10,
+   "order_multiple": 10,
+   "price_tiers_usd": [
+    {
+     "from_qty": 10,
+     "usd": 0.0584
+    },
+    {
+     "from_qty": 100,
+     "usd": 0.0464
+    },
+    {
+     "from_qty": 300,
+     "usd": 0.0404
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.0359
+    },
+    {
+     "from_qty": 6000,
+     "usd": 0.0306
+    },
+    {
+     "from_qty": 12000,
+     "usd": 0.0288
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "528c53fcc1d4b3db16979393cba6d6589e10ce8f3944024107dfed388068abaa"
+  },
+  "C189897": {
+   "fetched_at": "2026-11-12T02:50:54+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C189897.json",
+   "mpn": "SSHL-002T-P0.2",
+   "brand": "JST",
+   "title": "JST SSHL-002T-P0.2",
+   "stock": 911700,
+   "min_order_qty": 100,
+   "order_multiple": 100,
+   "price_tiers_usd": [
+    {
+     "from_qty": 100,
+     "usd": 0.0104
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.0077
+    },
+    {
+     "from_qty": 3000,
+     "usd": 0.0065
+    },
+    {
+     "from_qty": 10000,
+     "usd": 0.0056
+    },
+    {
+     "from_qty": 35000,
+     "usd": 0.0053
+    },
+    {
+     "from_qty": 105000,
+     "usd": 0.005
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "c3c049b11563bbdbd1838f2877760a5b73c6b38ee8fb8383c54db1eb8a5e78e2"
+  },
+  "C55629820": {
+   "fetched_at": "2026-11-12T02:50:56+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C55629820.json",
+   "mpn": "SH-PZ254R-1x6P",
+   "brand": "SHOU HAN",
+   "title": "SHOU HAN SH-PZ254R-1x6P",
+   "stock": 990,
+   "min_order_qty": 10,
+   "order_multiple": 10,
+   "price_tiers_usd": [
+    {
+     "from_qty": 10,
+     "usd": 0.0508
+    },
+    {
+     "from_qty": 100,
+     "usd": 0.0404
+    },
+    {
+     "from_qty": 300,
+     "usd": 0.0353
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.0314
+    },
+    {
+     "from_qty": 5000,
+     "usd": 0.0282
+    },
+    {
+     "from_qty": 10000,
+     "usd": 0.0267
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "cffc1da17b8932b3d882718485234a79a1d10813e0a228dd68a990c275b77c9a"
+  },
+  "C157955": {
+   "fetched_at": "2026-11-12T02:50:58+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C157955.json",
+   "mpn": "PHR-2",
+   "brand": "JST",
+   "title": "JST PHR-2",
+   "stock": 179800,
+   "min_order_qty": 50,
+   "order_multiple": 50,
+   "price_tiers_usd": [
+    {
+     "from_qty": 50,
+     "usd": 0.0136
+    },
+    {
+     "from_qty": 500,
+     "usd": 0.0107
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.0091
+    },
+    {
+     "from_qty": 5000,
+     "usd": 0.0082
+    },
+    {
+     "from_qty": 25000,
+     "usd": 0.0073
+    },
+    {
+     "from_qty": 50000,
+     "usd": 0.0069
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "f492d06e233183ea2f82fe29150f50dccedbdce566544c992b8db160b18a49f4"
+  },
+  "C111515": {
+   "fetched_at": "2026-11-12T02:51:00+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C111515.json",
+   "mpn": "SPH-002T-P0.5S",
+   "brand": "JST",
+   "title": "JST SPH-002T-P0.5S",
+   "stock": 1601100,
+   "min_order_qty": 100,
+   "order_multiple": 100,
+   "price_tiers_usd": [
+    {
+     "from_qty": 100,
+     "usd": 0.0072
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.0054
+    },
+    {
+     "from_qty": 3000,
+     "usd": 0.0046
+    },
+    {
+     "from_qty": 8000,
+     "usd": 0.0038
+    },
+    {
+     "from_qty": 48000,
+     "usd": 0.0035
+    },
+    {
+     "from_qty": 96000,
+     "usd": 0.0034
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "fbfd05c8787e24ae0c701946b46a5bc34b873272c96dc8d56629a8a1065e6019"
+  },
+  "C65114": {
+   "fetched_at": "2026-11-12T02:51:02+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C65114.json",
+   "mpn": "2.54-2*3P",
+   "brand": "BOOMELE(Boom Precision Elec)",
+   "title": "BOOMELE(Boom Precision Elec) 2.54-2*3P",
+   "stock": 46530,
+   "min_order_qty": 10,
+   "order_multiple": 10,
+   "price_tiers_usd": [
+    {
+     "from_qty": 10,
+     "usd": 0.0457
+    },
+    {
+     "from_qty": 100,
+     "usd": 0.0362
+    },
+    {
+     "from_qty": 300,
+     "usd": 0.0314
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.0262
+    },
+    {
+     "from_qty": 5000,
+     "usd": 0.0234
+    },
+    {
+     "from_qty": 10000,
+     "usd": 0.022
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "76afda2f697b59f9fcef8d31d24ed8603f2200fbd13b9c6b8a9d0a978a5a117a"
+  },
+  "C55629809": {
+   "fetched_at": "2026-11-12T02:51:04+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C55629809.json",
+   "mpn": "SH-PZ254V-1x2P",
+   "brand": "SHOU HAN",
+   "title": "SHOU HAN SH-PZ254V-1x2P",
+   "stock": 850,
+   "min_order_qty": 50,
+   "order_multiple": 50,
+   "price_tiers_usd": [
+    {
+     "from_qty": 50,
+     "usd": 0.0164
+    },
+    {
+     "from_qty": 500,
+     "usd": 0.0128
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.0109
+    },
+    {
+     "from_qty": 4000,
+     "usd": 0.0097
+    },
+    {
+     "from_qty": 24000,
+     "usd": 0.0087
+    },
+    {
+     "from_qty": 50000,
+     "usd": 0.0081
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "f408293b4dce5d6da694d062aa92b3776bf40a10473e1cef189ad94126dfe51c"
+  },
+  "C100114": {
+   "fetched_at": "2026-11-12T02:51:05+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C100114.json",
+   "mpn": "2.54",
+   "brand": "BOOMELE(Boom Precision Elec)",
+   "title": "BOOMELE(Boom Precision Elec) 2.54",
+   "stock": 301400,
+   "min_order_qty": 50,
+   "order_multiple": 50,
+   "price_tiers_usd": [
+    {
+     "from_qty": 50,
+     "usd": 0.0094
+    },
+    {
+     "from_qty": 500,
+     "usd": 0.0075
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.006
+    },
+    {
+     "from_qty": 4000,
+     "usd": 0.0053
+    },
+    {
+     "from_qty": 24000,
+     "usd": 0.0047
+    },
+    {
+     "from_qty": 50000,
+     "usd": 0.0044
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "670cbaea0e6ef46016d01e2a41258092d6c9560cdad87976aac1e92d1cfeae1c"
+  },
+  "C55629861": {
+   "fetched_at": "2026-11-12T02:51:07+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C55629861.json",
+   "mpn": "SH-PM254R-1x6P-H85",
+   "brand": "SHOU HAN",
+   "title": "SHOU HAN SH-PM254R-1x6P-H85",
+   "stock": 985,
+   "min_order_qty": 5,
+   "order_multiple": 5,
+   "price_tiers_usd": [
+    {
+     "from_qty": 5,
+     "usd": 0.1661
+    },
+    {
+     "from_qty": 50,
+     "usd": 0.1314
+    },
+    {
+     "from_qty": 150,
+     "usd": 0.1165
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.098
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.0897
+    },
+    {
+     "from_qty": 5000,
+     "usd": 0.0848
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "fb0475aec2828b4376511f2df3f59177b8c5d47739f5df5940216470790d6f85"
+  },
+  "C54876735": {
+   "fetched_at": "2026-11-12T02:51:09+09:00",
+   "ok": true,
+   "raw_file": "spec/lcsc_raw_20261112/C54876735.json",
+   "mpn": "PM2.54-1x6PWZ-H8.5",
+   "brand": "SHOU HAN",
+   "title": "SHOU HAN PM2.54-1x6PWZ-H8.5",
+   "stock": 960,
+   "min_order_qty": 5,
+   "order_multiple": 5,
+   "price_tiers_usd": [
+    {
+     "from_qty": 5,
+     "usd": 0.1665
+    },
+    {
+     "from_qty": 50,
+     "usd": 0.1318
+    },
+    {
+     "from_qty": 150,
+     "usd": 0.1168
+    },
+    {
+     "from_qty": 1000,
+     "usd": 0.0982
+    },
+    {
+     "from_qty": 2000,
+     "usd": 0.09
+    },
+    {
+     "from_qty": 5000,
+     "usd": 0.085
+    }
+   ],
+   "is_discontinued": null,
+   "pre_sale": false,
+   "raw_file_sha256": "8dc9b9ca2fd04aa3cf43b1f7d08c07957072e436db1b9ac00d4aaa734d3873ce"
+  }
+ },
+ "raw_files": "raw_file is relative to the board folder (pcb/vtol_carrier): the unchanged LCSC response of that fetch, copied from the session cache on 2026-11-12 (esp_user_fix step) so that the record can be checked later"
+}

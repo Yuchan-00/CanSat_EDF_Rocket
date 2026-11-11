@@ -63,7 +63,7 @@ DETERMINISTIC = [
     "out/vtol_carrier_gerber.zip", "out/vtol_carrier_gerber_with_mcu.zip", "out/gerber/*", "out/gerber_with_mcu/*",
     "out/cpl_rotation_table.csv", "out/vtol_carrier_bom.csv", "out/off_board_purchase.csv",
     "out/jlc_fee_estimate.csv", "out/edge_distance.csv",
-    "README_ko.md", "out/ORDER_ko.md",
+    "README_ko.md", "out/ORDER_ko.md", "out/따로_살_부품_ko.md",
 ]
 #: compared after removing the named time stamp
 NORMALISED = {

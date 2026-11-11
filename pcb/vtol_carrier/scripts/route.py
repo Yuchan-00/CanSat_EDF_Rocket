@@ -87,6 +87,22 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
+_FINISH_RE = re.compile(rb'\(copper_finish "[^"\r\n]*"\)')
+
+
+def sha_finish_blanked(p: Path) -> str:
+    """sha256 of a board file with the VALUE of its one ``(copper_finish "...")`` stackup entry blanked.
+
+    The surface finish is a fabrication note (text in the stackup block and in the gerber job file): no pad, track,
+    zone, rule or net depends on it, and the Specctra DSN / SES exchange with Freerouting does not carry it. Two
+    unrouted boards with the same blanked hash are byte-identical except for that one value, so sessions recorded on
+    one are valid on the other. Exactly one entry must exist - anything else is refused."""
+    data, n = _FINISH_RE.subn(b'(copper_finish "")', p.read_bytes())
+    if n != 1:
+        raise SystemExit(f"{p.name}: {n} copper_finish entries, expected exactly 1")
+    return hashlib.sha256(data).hexdigest()
+
+
 def seed_ids(tag: str) -> None:
     """rev 3: deterministic KIIDs. pcbnew gives every new track / via / text a random KIID and saves some items in
     KIID order, so two replays of the same sessions used to differ in bytes (rev 2c compared them without uuids).
@@ -1088,11 +1104,23 @@ def main() -> int:
         if not replay_path.exists():
             raise SystemExit("--reuse-ses: no kicad/work/ses_replay.json")
         rp = json.loads(replay_path.read_text(encoding="utf-8"))
-        if rp.get("unrouted_board_sha256") and rp["unrouted_board_sha256"] != sha(src):
-            # rev 3: sessions recorded on another placement / pre-route set must never be laid over this board
-            raise SystemExit(f"--reuse-ses: the sessions were recorded on unrouted board {rp['unrouted_board_sha256']}, "
-                             f"this one is {sha(src)} - a fresh live route is needed")
-        res = {"mode": "replay of the recorded Freerouting sessions", "replay": rp, "ses_sha256": {}}
+        guard = {"recorded_sha256": rp.get("unrouted_board_sha256"), "this_sha256": sha(src)}
+        if rp.get("unrouted_board_sha256") and rp["unrouted_board_sha256"] != guard["this_sha256"]:
+            # rev 3: sessions recorded on another placement / pre-route set must never be laid over this board.
+            # 2026-11-12 (surface finish ENIG -> lead-free HASL without a new live route): the ONLY accepted difference
+            # is the value of the stackup's copper_finish text - everything else must be byte-identical, which the
+            # blanked hash proves on every run (sha_finish_blanked)
+            blanked = rp.get("unrouted_board_sha256_copper_finish_blanked")
+            guard.update(recorded_sha256_copper_finish_blanked=blanked, this_sha256_copper_finish_blanked=sha_finish_blanked(src))
+            if not blanked or blanked != guard["this_sha256_copper_finish_blanked"]:
+                raise SystemExit(f"--reuse-ses: the sessions were recorded on unrouted board {rp['unrouted_board_sha256']}, "
+                                 f"this one is {sha(src)} and differs in more than the copper_finish text - a fresh "
+                                 "live route is needed")
+            guard["accepted"] = "byte-identical to the recorded unrouted board except the copper_finish value"
+        else:
+            guard["accepted"] = "byte-identical to the recorded unrouted board"
+        res = {"mode": "replay of the recorded Freerouting sessions", "replay": rp, "unrouted_board_guard": guard,
+               "ses_sha256": {}}
         if rp.get("fanout"):
             import fanout
 
@@ -1173,7 +1201,8 @@ def main() -> int:
     shutil.copyfile(WORK / f"vtol_carrier_{last}.ses", final_ses)
     log["final_session"] = f"vtol_carrier_{last}.ses"
     replay = {"fanout": "fanout" in log, "stages": seed_stages + [[t, log["stages"][t]["ses"]] for t in log["stages"]],
-              "unrouted_board_sha256": log["unrouted_board_sha256"]}
+              "unrouted_board_sha256": log["unrouted_board_sha256"],
+              "unrouted_board_sha256_copper_finish_blanked": sha_finish_blanked(src)}
     replay_path.write_text(json.dumps(replay, indent=1) + "\n", encoding="utf-8", newline="\n")
     log["replay"] = replay
     log.update(finish(board))

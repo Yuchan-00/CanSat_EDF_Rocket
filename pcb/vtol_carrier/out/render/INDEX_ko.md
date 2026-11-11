@@ -4,11 +4,16 @@
 B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb
 으로 만들었습니다. scripts/make_all.py 가 그림을 다시 만들 때마다 그때의 기판을 쓰고, 쓴 기판의 sha256을
 render_report.json 의 source_board_sha256 에 적습니다 (2026-11-12 납품 시점: 131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556,
-승압부 재배치와 아랫면 실크 두 줄이 들어간 최종 기판, M).
+승압부 재배치와 아랫면 실크 두 줄이 들어간 최종 기판, M. 같은 날의 변경 뒤: 588fb390b516894c1f9e82f9e9767a2582520e57ff55cd6bf820e169490c6518 -
+표면처리 표기 한 줄만 'HAL lead-free' 로 바뀌었고 구리·배치·실크는 131c4d63과 같음, M. 04:26 이후의 지금 기판:
+cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2 - 아랫면 실크 이름표 3개(J14, J2, J7)의 핀 글자 순서만
+아랫면에서 본 패드 순서로 바뀌었고 구리·배치는 같음, M. 아랫면 그림 a3에 새 글자가 보입니다).
+2026-11-12 변경: ESP-12F(U7)와 스루홀 커넥터 12개(J2, J5, J8~J12, J14~J18)는 JLC가 아니라 사용자가 사서 납땜합니다 (JLC는 SMT 부품만 실장).
+그래서 '받는 상태' 그림(a1~a3)에는 ESP-12F와 스루홀 커넥터가 없고 (빈 패드와 빈 도금 구멍만 보임; SMD 커넥터 J7은 있음), '장착한 뒤' 그림에만 있습니다.
 기판 파일은 고치지 않고, 그림용 사본 세 개만 만들어 그렸습니다.
 
-- B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/render_as_delivered.kicad_pcb : JLC에서 받는 상태 (U1~U4, J1의 3D 모양을 숨김)
-- B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/render_completed.kicad_pcb : 직접 장착한 뒤 (GY-521, BMP280, OpenLog, GPS 플러그 모델을 붙임)
+- B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/render_as_delivered.kicad_pcb : JLC에서 받는 상태 (사용자가 붙이는 부품 U1~U4, U7, J1, J2, J5, J8~J12, J14~J18의 3D 모양을 숨김; 목록은 사양 파일의 fit 값에서 읽고 render_report.json 의 hidden 에 적음)
+- B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/render_completed.kicad_pcb : 직접 장착한 뒤 (MCU 4개, ESP-12F, 스루홀 커넥터가 보이고, GY-521, BMP280, OpenLog, GPS 플러그 모델을 붙임)
 - B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/render_completed_limit.kicad_pcb : 장착한 뒤 + 13.4 mm 높이 한계를 나타내는 빨간 테두리
 
 **중요:** 이 그림들은 설명용입니다. 모듈 치수 대부분은 판매 페이지 값이거나 가정 값(B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/module_dimensions.json 에서 A 표시)이라서,
@@ -19,17 +24,17 @@ OpenLog와 BMP280이 실제로 들어가는지는 모듈을 캘리퍼스로 잰 
 
 | 파일 | 보여 주는 것 | 가정한 것 |
 |---|---|---|
-| a1_as_delivered_top.png | JLC에서 받는 상태, 윗면. MCU 자리 U1~U4, J1 구멍 8개, 프로그래밍 헤더 자리 8곳(J3, J19~J22, J24~J26)이 비어 있음 | J14(Molex) 3D 모양: KiCad 라이브러리에 3D 파일이 없어 프로젝트에서 만든 모양(가정) |
+| a1_as_delivered_top.png | JLC에서 받는 상태, 윗면. SMT 부품만 붙어 있음. MCU 자리 U1~U4, ESP-12F 자리 U7, 스루홀 커넥터 자리 12곳(J2, J5, J8~J12, J14~J18), J1 구멍 8개, 프로그래밍 헤더 자리 8곳(J3, J19~J22, J24~J26)이 비어 있음. 주문 안내서 7장의 커넥터 방향 표는 이 그림의 위/아래/왼쪽/오른쪽을 기준으로 함 | 없음 (부품 모양은 KiCad 라이브러리 3D 모델) |
 | a2_as_delivered_front.png | 받는 상태, 앞쪽 비스듬히 | a1과 같음 |
-| a3_as_delivered_bottom.png | 받는 상태, 아랫면. 부품 없음(구멍 부품의 다리와 아랫면 인쇄 글자만) | 다리 길이는 라이브러리 3D 모양 값 |
-| b1_completed_top.png | 직접 장착한 뒤, 윗면: MCU 4개, GY-521(J1), BMP280(J2), OpenLog(J5), GPS 플러그(J7) | 모듈 외형, 높이, 방향(가정). GPS 리드선 모양과 방향(가정) |
+| a3_as_delivered_bottom.png | 받는 상태, 아랫면. 부품도 다리도 없음(빈 도금 구멍과 아랫면 인쇄 글자만) | 없음 |
+| b1_completed_top.png | 직접 장착한 뒤, 윗면: MCU 4개, ESP-12F(U7), 스루홀 커넥터 12개, GY-521(J1), BMP280(J2), OpenLog(J5), GPS 플러그(J7) | 모듈 외형, 높이, 방향(가정). GPS 리드선 모양과 방향(가정). J14(Molex) 3D 모양: KiCad 라이브러리에 3D 파일이 없어 프로젝트에서 만든 모양(가정). 스루홀 다리 길이는 라이브러리 3D 모양 값 |
 | b2_completed_front.png | 장착한 뒤, 앞쪽 비스듬히 | b1과 같음 |
 | b3_completed_back.png | 장착한 뒤, 뒤쪽 비스듬히 | b1과 같음 |
 | b4_completed_side_limit.png | 장착한 뒤 옆면(정투영). 빨간 선 = 기판 윗면에서 13.4 mm 높이 한계. 가장 높은 것은 GPS 리드선 굽힘 12.75 mm, 그다음 GY-521 핀 끝 8.54 mm | 두 높이 모두 가정 값으로 그린 것 |
 | c1_gy521_on_J1.png | GY-521을 J1에 납땜: 부품 면 위, 1번 핀 VCC, 모듈 밑면 2.54 mm(핀 스트립 플라스틱 높이) | 핀 순서(판매 페이지), 모듈 크기, 받침 높이(가정). 계획 문서의 '약 2 mm 받침'과 그림의 2.54 mm가 다름 |
 | c2_bmp280_in_J2.png | BMP280을 ㄱ자 헤더로 J2 소켓에 꽂아 눕힌 모습, 모듈 밑면 2.5 mm, 센서 면이 기판 쪽 | 헤더 종류(ㄱ자), 핀 인쇄 순서, 센서 면 방향(가정, 확인 안 됨) |
 | c3_openlog_in_J5.png | OpenLog를 microSD 면이 위로 오게 J5에 꽂은 모습 | 맞춤 전체가 가정. 실제로 들어가는지는 실측으로 결정. 모듈 아래 부품 높이, 카드 돌출 길이(가정) |
-| c4_esp12f_keepout.png | ESP-12F와 안테나 아래 구리 금지 영역(기판 파일의 keep-out: x 74.63~98.87 mm, y 65~72.4 mm, 4개 층 모두). 3D 그림에서는 구리가 없는 빈 녹색 영역으로 보이고, e4에는 빨간 점선으로 표시 | 없음 (영역은 기판 파일 값) |
+| c4_esp12f_keepout.png | ESP-12F(사용자가 납땜한 뒤의 모습)와 안테나 아래 구리 금지 영역(기판 파일의 keep-out: x 74.63~98.87 mm, y 65~72.4 mm, 4개 층 모두). 3D 그림에서는 구리가 없는 빈 녹색 영역으로 보이고, e4에는 빨간 점선으로 표시 | 없음 (영역은 기판 파일 값) |
 | c5_mcu_pin1.png | U3(COM) ATmega128A, 칩의 1번 핀 점과 기판 실크의 삼각형 표시 | 없음 (칩 모양은 KiCad 라이브러리 3D 모델) |
 | d1_gps_plug_J7.png | J7(JST-GH 4핀)에 꽂은 플러그와 리드선 시작 부분. 빨간 선이 J7 1번 핀(GPS_VCC) | 선 색, 굽힘, 리드선 방향(가정). 플러그 높이 7.3 mm는 JST 카탈로그 참고값 |
 | d2_neo7m_top_cap.png | 차체 윗뚜껑 위의 NEO-7M과 J7까지 내려오는 리드선(차체 형상은 cad/layout.py) | NEO-7M 외형은 NEO-6M 일반형 35 x 25 mm 보드로 그림(가정), 방향, 리드선 경로(그린 길이 177 mm, 차체 CAD 예산 253.9 mm). 간섭 검사는 하지 않음 |
@@ -38,7 +43,7 @@ OpenLog와 BMP280이 실제로 들어가는지는 모듈을 캘리퍼스로 잰 
 | e2b_bmp280_J2.png | 슬라이드: BMP280 → J2, 같은 구성 | 헤더 종류, 핀 인쇄 순서, 센서 면 방향(가정) |
 | e2c_openlog_J5.png | 슬라이드: OpenLog → J5, 같은 구성. 핀 이름 순서는 OpenLog.brd 인쇄 순서(문서 값) | 맞춤(가정, 실측으로 결정) |
 | e3_gps_lead_J7.png | 슬라이드: GPS 리드선. d2 그림, J7 핀 표(신호, 선 색, 모듈 핀), d1 확대 | 선 색, NEO-7M 쪽 핀 순서(확인 안 됨), 리드선 경로 |
-| e4_overview_callouts.png | 슬라이드: 윗면 전체에 설명 표시(JLC가 실장하는 것과 사용자가 하는 것), 안테나 구리 금지 영역 빨간 점선 | 모듈 치수(가정) |
+| e4_overview_callouts.png | 슬라이드: 윗면 전체에 설명 표시(JLC가 실장하는 것과 사용자가 하는 것 - 표시는 사양 파일의 fit 값에서 읽음: 커넥터 J14, J8~J11, J2, J5는 '사용자 납땜', J7과 승압 회로는 'JLC'), 안테나 구리 금지 영역 빨간 점선 | 모듈 치수(가정) |
 | render_report.json | 그림 a1~d1의 명령, 사본 기판의 해시, 붙인/숨긴 3D 모델 목록 | - |
 | slides_report.json | 슬라이드 e1~e4가 쓴 입력 그림과 결과의 해시 | - |
 | d2_neo7m_top_cap.json | d2 그림의 모든 숫자와 출처 표시 | - |

@@ -57,20 +57,20 @@ D3,LED 0603 (colour A),LED_0603_1608Metric,jlc,True,top,False,fab,16.05,-x,16.02
 D4,LED 0603 (colour A),LED_0603_1608Metric,jlc,True,top,False,fab,14.95,-x,14.575,-x,False,False,False,14.95,52.45,59.35,16.65
 D6,SS14 / B5819W class Schottky,D_SOD-123,jlc,True,top,False,fab,1.25,+x,0.6,+x,True,False,False,71.85,4.25,1.25,63.85
 J1,1x8 2.54 mm (GY-521 soldered flat on straight pins),PinHeader_1x08_P2.54mm_Vertical,user,True,top,True,fab,0.8,-y,1.27,-y,True,False,False,41.58,48.78,31.78,0.8
-J2,1x6 2.54 mm right-angle socket (module lies flat),PinSocket_1x06_P2.54mm_Horizontal,jlc,True,top,True,fab,1.95,+y,1.15,+y,True,False,False,41.51,1.95,19.15,57.92
+J2,1x6 2.54 mm right-angle socket (module lies flat),PinSocket_1x06_P2.54mm_Horizontal,user,True,top,True,fab,1.95,+y,1.15,+y,True,False,False,41.51,1.95,19.15,57.92
 J3,2x3 2.54 mm vertical: ESP-12F programming header (3.3 V logic ONLY),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,7.93,+y,8.4,+y,False,False,False,35.38,7.93,35.44,54.35
-J5,1x6 2.54 mm right-angle socket: OpenLog lies FLAT beside it (outline reserved),PinSocket_1x06_P2.54mm_Horizontal,jlc,True,top,True,fab,0.73,+x,1.2,+x,True,False,False,59.93,23.95,0.73,35.92
+J5,1x6 2.54 mm right-angle socket: OpenLog lies FLAT beside it (outline reserved),PinSocket_1x06_P2.54mm_Horizontal,user,True,top,True,fab,0.73,+x,1.2,+x,True,False,False,59.93,23.95,0.73,35.92
 J7,JST-GH 1.25 mm 4-pin vertical (top entry),JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical,jlc,True,top,False,fab,0.805,-x,0.75,-y,True,False,False,0.805,63.9,66.845,1.75
-J8,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,13.07,64.83,49.21
-J9,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,21.69,64.83,40.59
-J10,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,30.31,64.83,31.97
-J11,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,38.93,64.83,23.35
-J12,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.7,+x,7.32,+y,True,False,False,64.84,6.85,0.7,55.43
-J14,"Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical,jlc,True,top,True,fab,0.7,-x,2.35,-x,True,False,False,0.7,0.7,67.8,64.3
-J15,JST-PH 2.0 2-pin vertical: lead to an external logic power switch,JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,jlc,True,top,True,fab,0.29,-x,2.1,-x,True,True,False,0.29,6.29,69.3,58.7
-J16,1x2 right-angle header,PinHeader_1x02_P2.54mm_Horizontal,jlc,True,top,True,fab,0.7,+y,9.94,+y,True,False,False,57.8,0.7,13.02,58.84
-J17,JST-PH 2.0 2-pin vertical (top entry),JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,jlc,True,top,True,fab,0.7,+x,2.1,+x,True,False,False,68.89,15.19,0.7,49.8
-J18,1x4 right-angle header,PinHeader_1x04_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,47.55,64.83,12.19
+J8,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,13.07,64.83,49.21
+J9,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,21.69,64.83,40.59
+J10,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,30.31,64.83,31.97
+J11,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,38.93,64.83,23.35
+J12,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.7,+x,7.32,+y,True,False,False,64.84,6.85,0.7,55.43
+J14,"Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical,user,True,top,True,fab,0.7,-x,2.35,-x,True,False,False,0.7,0.7,67.8,64.3
+J15,JST-PH 2.0 2-pin vertical: lead to an external logic power switch,JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,user,True,top,True,fab,0.29,-x,2.1,-x,True,True,False,0.29,6.29,69.3,58.7
+J16,1x2 right-angle header,PinHeader_1x02_P2.54mm_Horizontal,user,True,top,True,fab,0.7,+y,9.94,+y,True,False,False,57.8,0.7,13.02,58.84
+J17,JST-PH 2.0 2-pin vertical (top entry),JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,user,True,top,True,fab,0.7,+x,2.1,+x,True,False,False,68.89,15.19,0.7,49.8
+J18,1x4 right-angle header,PinHeader_1x04_P2.54mm_Horizontal,user,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,47.55,64.83,12.19
 J19,AVR ISP 2x3 (USBasp),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,1.45,-y,1.92,-y,True,False,False,35.38,60.83,35.44,1.45
 J20,AVR ISP 2x3 (USBasp),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,22.68,+y,23.15,+y,False,False,False,35.38,22.68,35.44,39.6
 J21,AVR ISP 2x3 (USBasp),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,24.85,-y,25.32,-y,False,False,False,35.38,37.43,35.44,24.85
@@ -166,7 +166,7 @@ U2,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,f
 U3,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,fab,16.8,-x,15.45,-x,False,False,False,16.8,31.4,45.1,24.5
 U4,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,fab,1.85,-y,0.5,-y,True,False,False,16.8,54.05,45.1,1.85
 U6,AMS1117-3.3,SOT-223-3_TabPin2,jlc,True,top,False,fab,0.55,+x,0.9,+x,True,False,False,68.65,58.75,0.55,7.45
-U7,"ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)",ESP-12E,jlc,True,top,False,fab,0.15,+y,8.2,+y,True,True,False,16.7,0.15,43.2,45.75
+U7,"ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)",ESP-12E,user,True,top,False,fab,0.15,+y,8.2,+y,True,True,False,16.7,0.15,43.2,45.75
 U8,TPS61023DRLR,SOT-563,jlc,True,top,False,fab,2.65,-y,2.825,-y,False,False,False,63.05,65.65,11.65,2.65
 U9,TLV3012BIDBVR,SOT-23-6,jlc,True,top,False,fab,0.45,-y,0.7,-y,True,False,False,54.95,66.55,19.35,0.45
 Y1,"16 MHz, CL 18 pF, 3225 SMD (X322516MRB4SI)",Crystal_SMD_3225-4Pin_3.2x2.5mm,jlc,True,top,False,fab,8.08,+x,7.93,+x,False,False,False,64.62,55.1,8.08,12.3

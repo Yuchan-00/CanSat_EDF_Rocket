@@ -1,15 +1,17 @@
 """Paste-layer variants of the routed board for the two gerber sets (KiCad python: pcbnew).
 
 Invariant: a copy differs from kicad/vtol_carrier.kicad_pcb ONLY in the F.Paste layer of the pads of parts that JLC
-does not fit in that order:
-  default set (no switch):   parts whose spec fit is ``jlc_optional`` (U1..U4, fitted by the user) or ``none``
-                             (unpopulated footprints such as Q3 / R47) - the stencil prints no paste on them
-  --with-mcu:                parts whose spec fit is ``none`` only (U1..U4 are fitted by JLC in that order)
+does not fit in that order (``not fitsets.jlc_fitted(part, with_mcu)``):
+  default set (no switch):   parts whose spec fit is ``jlc_optional`` (U1..U4, fitted by the user), ``user`` (the
+                             ESP-12F U7 since 2026-11-12; J1 has no paste pad) or ``none`` (unpopulated footprints
+                             such as Q3 / R47) - the stencil prints no paste on them
+  --with-mcu:                parts whose spec fit is ``user`` or ``none`` (U1..U4 are fitted by JLC in that order)
 The design board is never written; the copy goes to the path given on the command line (checks_exports.py uses a
 temporary folder and exports ONLY F.Paste from it; every other layer comes from the design board).
 
 Run:  C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/python.exe -B paste_variant.py [--with-mcu] <out.kicad_pcb>
-Prints a JSON line {mode, refs, pads_changed, pads_with_paste_before, pads_with_paste_after}.
+Prints a JSON line {mode, refs, pads_changed, pads_changed_per_ref, pads_with_paste_before, pads_with_paste_after,
+paste_pads_left_on_parts_not_fitted_by_jlc (must be 0)}.
 """
 from __future__ import annotations
 
@@ -35,8 +37,10 @@ def main() -> int:
     if out == BOARD.resolve():
         raise SystemExit("refusing to overwrite the design board")
     spec = json.loads(SPEC.read_text(encoding="utf-8"))
-    fits = ("none",) if with_mcu else ("jlc_optional", "none")
-    refs = sorted((p["refdes"] for p in spec["parts"] if fitsets.fit_of(p) in fits), key=fitsets.natural)
+    fits = tuple(f for f in fitsets.FITS if f != "jlc" and not (with_mcu and f == "jlc_optional"))
+    refs = sorted((p["refdes"] for p in spec["parts"] if not fitsets.jlc_fitted(p, with_mcu)), key=fitsets.natural)
+    if any(fitsets.fit_of(p) not in fits for p in spec["parts"] if p["refdes"] in refs):
+        raise SystemExit("paste_variant: fit list and jlc_fitted disagree")
     board = pcbnew.LoadBoard(str(BOARD))
 
     def paste_pads() -> int:
@@ -56,12 +60,15 @@ def main() -> int:
                 changed += 1
                 per_ref[fp.GetReference()] = per_ref.get(fp.GetReference(), 0) + 1
     after = paste_pads()
+    left = sum(1 for fp in board.GetFootprints() if fp.GetReference() in refs
+               for pd in fp.Pads() if pd.IsOnLayer(pcbnew.F_Paste))
     out.parent.mkdir(parents=True, exist_ok=True)
     pcbnew.SaveBoard(str(out), board)
     print(json.dumps({"mode": "with_mcu" if with_mcu else "main", "fits_without_paste": list(fits), "refs": refs,
                       "pads_changed": changed, "pads_changed_per_ref": dict(sorted(per_ref.items())),
-                      "pads_with_paste_before": before, "pads_with_paste_after": after}))
-    return 0 if changed and before - after == changed else 1
+                      "pads_with_paste_before": before, "pads_with_paste_after": after,
+                      "paste_pads_left_on_parts_not_fitted_by_jlc": left}))
+    return 0 if changed and before - after == changed and left == 0 else 1
 
 
 if __name__ == "__main__":

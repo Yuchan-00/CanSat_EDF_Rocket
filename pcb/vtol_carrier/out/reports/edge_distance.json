@@ -1,6 +1,6 @@
 {
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556",
+ "board_sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
  "tool": "pcbnew 10.0.6",
  "label": "M (bounding boxes measured on the board file)",
  "outline_centre_lines": [
@@ -21,13 +21,13 @@
    "U7",
    0.15,
    "+y",
-   "jlc"
+   "user"
   ],
   [
    "J15",
    0.29,
    "-x",
-   "jlc"
+   "user"
   ],
   [
    "L5",
@@ -69,61 +69,61 @@
    "J12",
    0.7,
    "+x",
-   "jlc"
+   "user"
   ],
   [
    "J14",
    0.7,
    "-x",
-   "jlc"
+   "user"
   ],
   [
    "J16",
    0.7,
    "+y",
-   "jlc"
+   "user"
   ],
   [
    "J17",
    0.7,
    "+x",
-   "jlc"
+   "user"
   ],
   [
    "J8",
    0.71,
    "-x",
-   "jlc"
+   "user"
   ],
   [
    "J9",
    0.71,
    "-x",
-   "jlc"
+   "user"
   ],
   [
    "J10",
    0.71,
    "-x",
-   "jlc"
+   "user"
   ],
   [
    "J11",
    0.71,
    "-x",
-   "jlc"
+   "user"
   ],
   [
    "J18",
    0.71,
    "-x",
-   "jlc"
+   "user"
   ],
   [
    "J5",
    0.73,
    "+x",
-   "jlc"
+   "user"
   ],
   [
    "JP1",
@@ -207,7 +207,7 @@
    "J2",
    1.95,
    "+y",
-   "jlc"
+   "user"
   ],
   [
    "C44",
@@ -227,20 +227,20 @@
    "U7",
    0.15,
    "+y",
-   "jlc"
+   "user"
   ],
   [
    "J15",
    0.29,
    "-x",
-   "jlc"
+   "user"
   ]
  ],
  "pads_under_0p3": [],
  "bodies_under_2p5_by_fit": {
-  "jlc": 28,
-  "with_mcu_jlc_plus_jlc_optional": 29,
-  "not_fitted_by_jlc_in_default_order": 6,
+  "jlc": 15,
+  "with_mcu_jlc_plus_jlc_optional": 16,
+  "not_fitted_by_jlc_in_default_order": 19,
   "refs_by_fit": {
    "jlc": [
     "C41",
@@ -250,9 +250,22 @@
     "C58",
     "C60",
     "D6",
+    "J7",
+    "L5",
+    "R59",
+    "R60",
+    "R64",
+    "R65",
+    "U6",
+    "U9"
+   ],
+   "jlc_optional": [
+    "U4"
+   ],
+   "user": [
+    "J1",
     "J2",
     "J5",
-    "J7",
     "J8",
     "J9",
     "J10",
@@ -263,20 +276,7 @@
     "J16",
     "J17",
     "J18",
-    "L5",
-    "R59",
-    "R60",
-    "R64",
-    "R65",
-    "U6",
-    "U7",
-    "U9"
-   ],
-   "jlc_optional": [
-    "U4"
-   ],
-   "user": [
-    "J1"
+    "U7"
    ],
    "none": [
     "J19",
@@ -284,6 +284,72 @@
     "Q3",
     "R47"
    ]
+  }
+ },
+ "jlc_placed_bodies": {
+  "default_order": {
+   "closest": [
+    [
+     "L5",
+     0.45,
+     "-y"
+    ],
+    [
+     "U9",
+     0.45,
+     "-y"
+    ],
+    [
+     "R60",
+     0.537,
+     "-y"
+    ],
+    [
+     "C41",
+     0.55,
+     "-y"
+    ],
+    [
+     "U6",
+     0.55,
+     "+x"
+    ]
+   ],
+   "bodies_under_0p3": [],
+   "pads_under_0p3": [],
+   "bodies_under_2p5": 15
+  },
+  "with_mcu_order": {
+   "closest": [
+    [
+     "L5",
+     0.45,
+     "-y"
+    ],
+    [
+     "U9",
+     0.45,
+     "-y"
+    ],
+    [
+     "R60",
+     0.537,
+     "-y"
+    ],
+    [
+     "C41",
+     0.55,
+     "-y"
+    ],
+    [
+     "U6",
+     0.55,
+     "+x"
+    ]
+   ],
+   "bodies_under_0p3": [],
+   "pads_under_0p3": [],
+   "bodies_under_2p5": 16
   }
  },
  "copper_to_edge_mm": {
@@ -373,63 +439,18 @@
   "-x": {
    "jlc_fitted_bodies_under_2p5": [
     [
-     "J15",
-     0.29
-    ],
-    [
-     "J14",
-     0.7
-    ],
-    [
-     "J8",
-     0.71
-    ],
-    [
-     "J9",
-     0.71
-    ],
-    [
-     "J10",
-     0.71
-    ],
-    [
-     "J11",
-     0.71
-    ],
-    [
-     "J18",
-     0.71
-    ],
-    [
      "J7",
      0.805
     ]
    ],
-   "count": 8,
-   "min_mm": 0.29,
+   "count": 1,
+   "min_mm": 0.805,
    "overhanging": []
   },
   "+y": {
-   "jlc_fitted_bodies_under_2p5": [
-    [
-     "U7",
-     0.15
-    ],
-    [
-     "J14",
-     0.7
-    ],
-    [
-     "J16",
-     0.7
-    ],
-    [
-     "J2",
-     1.95
-    ]
-   ],
-   "count": 4,
-   "min_mm": 0.15,
+   "jlc_fitted_bodies_under_2p5": [],
+   "count": 0,
+   "min_mm": null,
    "overhanging": []
   },
   "+x": {
@@ -437,18 +458,6 @@
     [
      "U6",
      0.55
-    ],
-    [
-     "J12",
-     0.7
-    ],
-    [
-     "J17",
-     0.7
-    ],
-    [
-     "J5",
-     0.73
     ],
     [
      "L5",
@@ -459,7 +468,7 @@
      1.25
     ]
    ],
-   "count": 6,
+   "count": 3,
    "min_mm": 0.55,
    "overhanging": []
   },
@@ -536,9 +545,6 @@
     "C57",
     "C58",
     "C60",
-    "J14",
-    "J16",
-    "J2",
     "J7",
     "L5",
     "R59",
@@ -546,32 +552,21 @@
     "R64",
     "R65",
     "U4",
-    "U7",
     "U9"
    ],
-   "count_without_rail": 18,
-   "min_distance_at_rail_edges_mm": 0.29,
+   "count_without_rail": 14,
+   "min_distance_at_rail_edges_mm": 0.55,
    "overhang_at_rail_edges": []
   },
   "+y / -y": {
    "bodies_under_2p5_at_edges_without_rail": [
     "D6",
-    "J10",
-    "J11",
-    "J12",
-    "J14",
-    "J15",
-    "J17",
-    "J18",
-    "J5",
     "J7",
-    "J8",
-    "J9",
     "L5",
     "U6"
    ],
-   "count_without_rail": 14,
-   "min_distance_at_rail_edges_mm": 0.15,
+   "count_without_rail": 4,
+   "min_distance_at_rail_edges_mm": 0.45,
    "overhang_at_rail_edges": []
   }
  },
@@ -581,5 +576,5 @@
  },
  "jlc_acceptance": "NOT_VERIFIED (only JLC's DFM result and quote after the upload decide)",
  "csv": "out/edge_distance.csv",
- "csv_sha256": "4861c9b9cc6d08deed4a63f41cbc1e9b1bb1c5f0aecfe238d15541b2f583aa32"
+ "csv_sha256": "a50c28f5da169f0e0d8f028023bcdd363151971a260677f9077b23b3cfd1ddaf"
 }

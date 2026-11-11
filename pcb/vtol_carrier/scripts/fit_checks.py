@@ -15,6 +15,15 @@ is labelled "A / NOT_VERIFIED" and never PASS. No part is moved and no limit is 
  (c) tht_leads    lead protrusion under the board against the 1.5 mm foam-tape rule
  (d) reflow_rating      rated reflow peak per JLC-fitted part vs JLC's oven (scripts/order_checks.py)
  (e) connector_drawings J14 / J15 / J17 / J7 / U7 footprints vs drawings and JLC's library record
+ (f) user_soldered_smd  SMD parts the user solders after delivery (spec fit ``user`` with SMD pads; 2026-11-12: the
+                  ESP-12F U7): pad count, pads that carry a net, the JLC-fitted neighbours next to its pads, the
+                  distance to the MCU pad rings and to the unfitted programming-header holes - the numbers behind the
+                  soldering order in the order guide
+ (g) user_soldered_tht  through-hole connectors the user buys and solders (spec fit ``user`` with plated holes and a
+                  reference part in the plan's ``bom_lines_now_bought_by_the_user``; 2026-11-12: the 12 connectors):
+                  joints, pad 1 (shape, net, side), where the body outline lies against the pin row, the nearest board
+                  edge, the gap to the MCU pad rings and to the ESP-12F pads - the numbers behind the user soldering
+                  instructions (which way each connector faces, what to solder first)
 """
 from __future__ import annotations
 
@@ -81,6 +90,9 @@ def main() -> int:
     heights = placement.get("part_heights_mm", {})
     dims_path = ROOT / "spec" / "module_dimensions.json"
     dims = json.loads(dims_path.read_text(encoding="utf-8")) if dims_path.is_file() else None
+    plan = json.loads((ROOT / "spec" / "rev3_plan.json").read_text(encoding="utf-8"))
+    #: reference part of every former BOM line the user now buys: refdes -> the plan's line (code, MPN, comment)
+    bought = {r: ln for ln in plan.get("bom_lines_now_bought_by_the_user", []) for r in ln["designators"]}
     b = pcbnew.LoadBoard(str(board_path))
     fps = {}
     for fp in b.GetFootprints():
@@ -95,6 +107,7 @@ def main() -> int:
             "tht": [p for p in fp.Pads() if p.GetAttribute() == pcbnew.PAD_ATTRIB_PTH],
             "fit": part.get("fit", "?"), "populate": part.get("populate"), "h": heights.get(ref),
             "jlc": (part.get("bom") or {}).get("jlc_code"),
+            "ref_code": (bought.get(ref) or {}).get("jlc_code"),
         }
     errors: list[str] = []
     missing_h = sorted(r for r, f in fps.items() if f["h"] is None)
@@ -296,13 +309,17 @@ def main() -> int:
             continue
         drills = sorted({round(p.GetDrillSize().x * MM, 3) for p in f["tht"]})
         row = {"ref": ref, "footprint": f["name"], "fit": f["fit"], "jlc_code": f["jlc"], "plated_holes": len(f["tht"]), "drill_mm": drills}
+        if f["fit"] == "user" and f["ref_code"]:
+            row["reference_part_bought_by_the_user"] = f["ref_code"]
         if f["fit"] == "none" or f["populate"] is not True:
             row.update({"under_board_nominal_mm": 0.0, "result": "no part fitted: bare plated holes, nothing protrudes", "label": "M"})
-        elif f["fit"] == "user":
+        elif f["fit"] == "user" and not f["ref_code"]:
             row.update({"under_board_nominal_mm": None, "label": "NOT_VERIFIED",
                         "result": "soldered by the user (module strip): the user cuts the leads to <= 1.5 mm after soldering"})
         else:
-            tail = TAILS.get(f["jlc"])
+            # JLC-fitted part, or a connector the user buys (2026-11-12): the tail of the reference part's drawing -
+            # it holds only if that part number is bought; the user cuts every lead above the rule either way
+            tail = TAILS.get(f["jlc"] or f["ref_code"])
             if tail is None or tail[0] is None:
                 row.update({"under_board_nominal_mm": None, "label": "NOT_VERIFIED", "source": tail[3] if tail else "no tail length recorded for this part",
                             "result": "NOT_VERIFIED: the user measures the leads after delivery and cuts what exceeds 1.5 mm"})
@@ -322,6 +339,134 @@ def main() -> int:
         leads.append(row)
     over = [r["ref"] for r in leads if isinstance(r.get("under_board_nominal_mm"), float) and r["under_board_nominal_mm"] > LEAD_LIMIT]
     unknown = [r["ref"] for r in leads if r.get("under_board_nominal_mm") is None]
+
+    # ---------------------------------------------------------------- (f) SMD parts the user solders
+    user_smd = {}
+    for ref, f in sorted(fps.items()):
+        smd = [p for p in f["fp"].Pads() if p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD]
+        if f["fit"] != "user" or not smd:
+            continue
+        pad_box = bbox_of(smd)
+        with_net = sorted((p.GetNumber() for p in smd if p.GetNetname() and not p.GetNetname().startswith("unconnected-(")),
+                          key=lambda s: int(s) if s.isdigit() else 0)
+        near = []
+        for o, g in fps.items():
+            if o == ref or g["body"] is None:
+                continue
+            d = gap(pad_box, g["body"])
+            if d < 3.0:
+                near.append({"ref": o, "fit": g["fit"], "fitted_by_jlc": g["fit"] == "jlc", "gap_to_pads_mm": round(d, 2),
+                             "gap_to_body_mm": round(gap(f["body"], g["body"]), 2), "height_mm": g["h"]})
+        near.sort(key=lambda r: (r["gap_to_pads_mm"], r["ref"]))
+        pad_gap = []
+        for p in smd:
+            pb = bbox_of([p])
+            best = min(((gap(pb, bbox_of([q])), f"{o}.{q.GetNumber()}") for o, g in fps.items() if o != ref
+                        for q in g["fp"].Pads()), default=(None, ""))
+            pad_gap.append([p.GetNumber(), round(best[0], 3), best[1]])
+        pad_gap.sort(key=lambda r: (r[1], r[0]))
+        user_smd[ref] = {
+            "footprint": f["name"], "pads": len(smd), "pads_with_a_net": with_net, "pads_without_a_net": len(smd) - len(with_net),
+            "pad_sizes_mm": sorted({(round(p.GetSizeX() * MM, 2), round(p.GetSizeY() * MM, 2)) for p in smd}),
+            "pads_with_paste_on_the_design_board": sum(1 for p in smd if p.IsOnLayer(pcbnew.F_Paste)),
+            "paste_note": "the design board keeps the library paste apertures; both gerber sets are exported from "
+                          "paste variants without them (out/reports/gerber_check.json paste_variant)",
+            "body_height_mm": f["h"], "body_height_label": "A (kicad/placement.json part_heights_mm)",
+            "jlc_fitted_neighbours_within_1mm_of_the_pads": [[r["ref"], r["gap_to_pads_mm"], r["height_mm"]]
+                                                             for r in near if r["fitted_by_jlc"] and r["gap_to_pads_mm"] < 1.0],
+            "closest_foreign_pad_per_pad_mm": pad_gap[:6],
+            "min_pad_to_foreign_pad_mm": pad_gap[0][1] if pad_gap else None,
+            "neighbours_within_3mm_of_the_pads": near,
+            "unfitted_header_holes_within_3mm": [[r["ref"], r["gap_to_pads_mm"], r["gap_to_body_mm"]] for r in near
+                                                  if r["fit"] == "none" and fps[r["ref"]]["tht"]],
+            "mcu_pad_ring_to_body_mm": {u: round(gap(fps[u]["pads"], f["body"]), 2) for u in ("U1", "U2", "U3", "U4")},
+            "mcu_body_height_mm": {u: fps[u]["h"] for u in ("U1", "U2", "U3", "U4")},
+            "label": "M (bounding boxes on the board file); heights A",
+        }
+
+    # ---------------------------------------------------------------- (g) THT connectors the user buys and solders
+    def side_of(dx: float, dy: float) -> str:
+        """direction on the top view (KiCad screen: x to the right, y down) of the larger component"""
+        if abs(dx) < 1e-6 and abs(dy) < 1e-6:
+            return "centre"
+        return ("right" if dx > 0 else "left") if abs(dx) >= abs(dy) else ("down" if dy > 0 else "up")
+
+    edges_now = b.GetBoardEdgesBoundingBox()
+    ex0, ey0, ex1, ey1 = (edges_now.GetLeft() * MM, edges_now.GetTop() * MM, edges_now.GetRight() * MM, edges_now.GetBottom() * MM)
+    shape_name = {pcbnew.PAD_SHAPE_RECT: "rectangle", pcbnew.PAD_SHAPE_ROUNDRECT: "rounded rectangle",
+                  pcbnew.PAD_SHAPE_CIRCLE: "circle", pcbnew.PAD_SHAPE_OVAL: "oval"}
+    user_tht = {}
+    key_ref = lambda s_: (s_.rstrip("0123456789"), int("".join(c for c in s_ if c.isdigit()) or 0))  # noqa: E731
+    for ref in sorted(fps, key=key_ref):
+        f = fps[ref]
+        if f["fit"] != "user" or not f["tht"] or not f["ref_code"]:
+            continue
+        pads = sorted(f["tht"], key=lambda p: (0, int(p.GetNumber())) if p.GetNumber().isdigit() else (1, 0))
+        p1 = next((p for p in pads if p.GetNumber() == "1"), None)
+        if p1 is None:
+            errors.append(f"{ref}: no pad 1 on the user-soldered connector")
+            continue
+        cx = sum(p.GetPosition().x for p in pads) / len(pads) * MM
+        cy = sum(p.GetPosition().y for p in pads) / len(pads) * MM
+        x1_, y1_ = p1.GetPosition().x * MM, p1.GetPosition().y * MM
+        body = f["body"]
+        bx, by = (body[0] + body[2]) / 2, (body[1] + body[3]) / 2
+        # pin row axis: along x if the pads spread more in x than in y
+        xs = [p.GetPosition().x * MM for p in pads]
+        ys = [p.GetPosition().y * MM for p in pads]
+        row_along_x = (max(xs) - min(xs)) >= (max(ys) - min(ys))
+        # distance from the pin row line to the two long sides of the body outline (F.Fab)
+        if row_along_x:
+            side_mm = {"up": round(cy - body[1], 2), "down": round(body[3] - cy, 2)}
+        else:
+            side_mm = {"left": round(cx - body[0], 2), "right": round(body[2] - cx, 2)}
+        big = max(side_mm, key=lambda k: (side_mm[k], k))
+        small = min(side_mm, key=lambda k: (side_mm[k], k))
+        edge_gap = {"left": round(body[0] - ex0, 2), "right": round(ex1 - body[2], 2),
+                    "up": round(body[1] - ey0, 2), "down": round(ey1 - body[3], 2)}
+        near_edge = min(edge_gap, key=lambda k: (edge_gap[k], k))
+        shapes = sorted({shape_name.get(p.GetShape(), str(p.GetShape())) for p in pads if p is not p1})
+        silk = [g for g in f["fp"].GraphicalItems() if g.GetLayer() == pcbnew.F_SilkS and g.GetClass() != "PCB_TEXT"]
+        near_jlc = []
+        for o, g in fps.items():
+            if o == ref or g["body"] is None or g["fit"] != "jlc":
+                continue
+            d = gap(f["pads"], g["body"])
+            if d < 1.0:
+                near_jlc.append([o, round(d, 2), g["h"]])
+        near_jlc.sort(key=lambda r: (r[1], r[0]))
+        ln = bought[ref]
+        user_tht[ref] = {
+            "footprint": f["name"], "reference_part": {"lcsc": ln["jlc_code"], "mpn": ln["mpn"], "comment": ln["comment"],
+                                                        "brand": ln.get("brand")},
+            "joints": len(pads), "drill_mm": sorted({round(p.GetDrillSize().x * MM, 3) for p in pads}),
+            "pad_nets": {p.GetNumber(): p.GetNetname() for p in pads},
+            "pad1": {"net": p1.GetNetname(), "shape": shape_name.get(p1.GetShape(), str(p1.GetShape())),
+                     "other_pad_shapes": shapes, "xy_kicad_mm": [round(x1_, 3), round(y1_, 3)],
+                     "side_of_the_pin_row_on_the_top_view": side_of(x1_ - cx, y1_ - cy)},
+            "pin_row_runs": "left-right" if row_along_x else "up-down",
+            "body_outline_from_the_pin_row_mm": side_mm,
+            "body_outline_larger_side_on_the_top_view": big if side_mm[big] - side_mm[small] > 0.05 else "symmetric",
+            "body_outline_asymmetry_mm": round(side_mm[big] - side_mm[small], 2),
+            "body_bbox_kicad_mm": r3(body), "nearest_board_edge_on_the_top_view": near_edge,
+            "body_to_that_edge_mm": edge_gap[near_edge],
+            "silkscreen_outline_items": len(silk), "height_mm": f["h"],
+            "height_label": "A (kicad/placement.json part_heights_mm)",
+            "gap_to_mcu_pad_rings_mm": {u: round(gap(fps[u]["pads"], body), 2) for u in ("U1", "U2", "U3", "U4")},
+            "gap_to_user_smd_pads_mm": {u: round(gap(fps[u]["pads"], body), 2) for u in sorted(user_smd)},
+            "jlc_fitted_neighbours_within_1mm_of_the_holes": near_jlc,
+            "label": "M (board file: pad centres, F.Fab outline, board edge box); top view = KiCad screen, x to the "
+                     "right and y down (the orientation of out/render/a1_as_delivered_top.png)",
+        }
+    if sorted(user_tht) != sorted(r for r in bought if fps.get(r, {}).get("tht")):
+        errors.append(f"user-soldered THT connectors {sorted(user_tht)} != the plan's former THT BOM lines")
+    tht_summary = {
+        "parts": len(user_tht), "joints_per_board": sum(v["joints"] for v in user_tht.values()),
+        "lines": [{"lcsc": ln["jlc_code"], "mpn": ln["mpn"], "comment": ln["comment"], "refs": [r for r in ln["designators"] if r in user_tht],
+                   "joints": sum(user_tht[r]["joints"] for r in ln["designators"] if r in user_tht)}
+                  for ln in plan.get("bom_lines_now_bought_by_the_user", []) if any(r in user_tht for r in ln["designators"])],
+        "other_user_soldered_holes": {r: len(f["tht"]) for r, f in sorted(fps.items()) if f["fit"] == "user" and f["tht"] and r not in user_tht},
+    }
 
     # (d) reflow rating table and (e) connector drawing check (export step; scripts/order_checks.py)
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -354,6 +499,8 @@ def main() -> int:
                       "rows": leads},
         "reflow_rating": reflow,
         "connector_drawings": conn,
+        "user_soldered_smd": user_smd,
+        "user_soldered_tht": {"summary": tht_summary, "per_ref": user_tht},
     }
     rep = ROOT / "out" / "fit_checks.json"
     rep.write_bytes((json.dumps(out, indent=1, ensure_ascii=False) + "\n").encode("utf-8"))
@@ -365,6 +512,7 @@ def main() -> int:
             print(key, "|", z["zone"], r3(z["rect_kicad"]), "z", z["underside_z_mm"], "min", z["min_clearance_mm"], "below 0.5:", z["below_clearance_min"],
                   "| cons", z.get("conservative_underside_z_mm"), z.get("below_clearance_min_conservative"))
     print("THT over rule:", over, "not verified:", unknown)
+    print("user-soldered THT:", tht_summary["parts"], "parts,", tht_summary["joints_per_board"], "joints")
     print("errors:", errors)
     return 1 if errors else 0
 

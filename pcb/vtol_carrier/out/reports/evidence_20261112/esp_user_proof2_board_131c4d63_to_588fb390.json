@@ -1,0 +1,590 @@
+{
+ "tool": "impl/esp_user/proof2.py",
+ "pcbnew": "10.0.6",
+ "A_board": {
+  "old_sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556",
+  "new_sha256": "588fb390b516894c1f9e82f9e9767a2582520e57ff55cd6bf820e169490c6518",
+  "lines_old": 83474,
+  "lines_new": 83474,
+  "differing_lines": [
+   [
+    98,
+    "(copper_finish \"ENIG\")",
+    "(copper_finish \"HAL lead-free\")"
+   ]
+  ]
+ },
+ "A_pcbnew": {
+  "tracks": {
+   "old": 2557,
+   "new": 2557,
+   "equal": true
+  },
+  "vias": {
+   "old": 442,
+   "new": 442,
+   "equal": true
+  },
+  "zones": {
+   "old": 6,
+   "new": 6,
+   "equal": true
+  },
+  "footprints": {
+   "old": 174,
+   "new": 174,
+   "equal": true
+  },
+  "pads": {
+   "old": 691,
+   "new": 691,
+   "equal": true
+  },
+  "nets": {
+   "old": 289,
+   "new": 289,
+   "equal": true
+  },
+  "finish": {
+   "old": [
+    "ENIG"
+   ],
+   "new": [
+    "HAL lead-free"
+   ]
+  },
+  "segments_arcs": {
+   "old": [
+    2557,
+    0
+   ],
+   "new": [
+    2557,
+    0
+   ]
+  }
+ },
+ "A_unrouted": {
+  "old_sha256": "c94bd350abf67d8db66a7659c2dfef581b644426270c219970a8306f1c5f0322",
+  "new_sha256": "fcbd2115248d38f3f7064e298cb6d76315e16b79673ed89383660c5b2f0474c0",
+  "differing_lines": [
+   [
+    98,
+    "(copper_finish \"ENIG\")",
+    "(copper_finish \"HAL lead-free\")"
+   ]
+  ],
+  "same_line_count": true
+ },
+ "B_paste": {
+  "main": {
+   "old_zip_sha256": "5e7d74ecf66b8c5d0828853353f6598ca1c5b73078e4b4ff378998e1ccdd302e",
+   "new_zip_sha256": "fc4a439eba5718801fc9a0433c7fe9e9d3b5bbfe67207077bd4fe8d6b7eb5fe7",
+   "flashes_old": 342,
+   "flashes_new": 320,
+   "duplicates_old": 0,
+   "duplicates_new": 0,
+   "removed": 22,
+   "added": 0,
+   "removed_equal_u7_pad_centres": true,
+   "u7_pads": 22,
+   "u7_pad_numbers_removed": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22"
+   ],
+   "flash_left_on_a_u7_pad": [],
+   "format": "FSLAX46Y46 mm"
+  },
+  "with_mcu": {
+   "old_zip_sha256": "63eb3f0234e53e6bd9b26567d0d75e299f8383b693ea64ea381eed43b07b0cc5",
+   "new_zip_sha256": "39597ca679c84ca7651aba8793e23f714d3886208597bc5f1b1a7bfeb3fcc86c",
+   "flashes_old": 598,
+   "flashes_new": 576,
+   "duplicates_old": 0,
+   "duplicates_new": 0,
+   "removed": 22,
+   "added": 0,
+   "removed_equal_u7_pad_centres": true,
+   "u7_pads": 22,
+   "u7_pad_numbers_removed": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22"
+   ],
+   "flash_left_on_a_u7_pad": [],
+   "format": "FSLAX46Y46 mm"
+  }
+ },
+ "C_zip_members": {
+  "vtol_carrier_gerber.zip": {
+   "members_old": 13,
+   "members_new": 13,
+   "same_names": true,
+   "differing_members": [
+    "vtol_carrier-F_Paste.gtp",
+    "vtol_carrier-job.gbrjob"
+   ],
+   "identical_members": [
+    "vtol_carrier-B_Cu.gbl",
+    "vtol_carrier-B_Mask.gbs",
+    "vtol_carrier-B_Paste.gbp",
+    "vtol_carrier-B_Silkscreen.gbo",
+    "vtol_carrier-Edge_Cuts.gm1",
+    "vtol_carrier-F_Cu.gtl",
+    "vtol_carrier-F_Mask.gts",
+    "vtol_carrier-F_Silkscreen.gto",
+    "vtol_carrier-In1_Cu.g1",
+    "vtol_carrier-In2_Cu.g2",
+    "vtol_carrier.drl"
+   ],
+   "job_file_differing_lines": [
+    [
+     "\"Finish\": \"ENIG\"",
+     "\"Finish\": \"HAL lead-free\""
+    ]
+   ],
+   "job_same_line_count": true
+  },
+  "vtol_carrier_gerber_with_mcu.zip": {
+   "members_old": 13,
+   "members_new": 13,
+   "same_names": true,
+   "differing_members": [
+    "vtol_carrier-F_Paste.gtp",
+    "vtol_carrier-job.gbrjob"
+   ],
+   "identical_members": [
+    "vtol_carrier-B_Cu.gbl",
+    "vtol_carrier-B_Mask.gbs",
+    "vtol_carrier-B_Paste.gbp",
+    "vtol_carrier-B_Silkscreen.gbo",
+    "vtol_carrier-Edge_Cuts.gm1",
+    "vtol_carrier-F_Cu.gtl",
+    "vtol_carrier-F_Mask.gts",
+    "vtol_carrier-F_Silkscreen.gto",
+    "vtol_carrier-In1_Cu.g1",
+    "vtol_carrier-In2_Cu.g2",
+    "vtol_carrier.drl"
+   ],
+   "job_file_differing_lines": [
+    [
+     "\"Finish\": \"ENIG\"",
+     "\"Finish\": \"HAL lead-free\""
+    ]
+   ],
+   "job_same_line_count": true
+  }
+ },
+ "D_bom_cpl": {
+  "jlcpcb_bom.csv": {
+   "designators_only_in_old": [
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J2",
+    "J5",
+    "J8",
+    "J9",
+    "U7"
+   ],
+   "old_sha256": "fa4c8e2622885f4db79bf877ddcc97f247d6ce28d8b9bca6a206ae071479843b",
+   "new_sha256": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
+   "rows_old": 40,
+   "rows_new": 33,
+   "rows_only_in_old": [
+    [
+     "ESP-12F",
+     "U7",
+     "ESP-12E",
+     "C82891"
+    ],
+    [
+     "socket 1x6 right-angle 2.54",
+     "J2,J5",
+     "PinSocket_1x06_P2.54mm_Horizontal",
+     "C22436147"
+    ],
+    [
+     "pin header 1x3 right-angle 2.54",
+     "J8,J9,J10,J11,J12",
+     "PinHeader_1x03_P2.54mm_Horizontal",
+     "C32713262"
+    ],
+    [
+     "Molex 22035025 SPOX 2P vertical",
+     "J14",
+     "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+     "C5364642"
+    ],
+    [
+     "JST B2B-PH-K-S 2P vertical",
+     "J15,J17",
+     "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+     "C131337"
+    ],
+    [
+     "pin header 1x2 right-angle 2.54",
+     "J16",
+     "PinHeader_1x02_P2.54mm_Horizontal",
+     "C32713261"
+    ],
+    [
+     "pin header 1x4 right-angle 2.54",
+     "J18",
+     "PinHeader_1x04_P2.54mm_Horizontal",
+     "C32713263"
+    ]
+   ],
+   "rows_only_in_new": [],
+   "header_equal": true,
+   "order_of_the_remaining_rows_kept": true
+  },
+  "jlcpcb_cpl.csv": {
+   "designators_only_in_old": [
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J2",
+    "J5",
+    "J8",
+    "J9",
+    "U7"
+   ],
+   "old_sha256": "738c4ea451000e0e98fd2a04160b364796b99a4cdae92b76a24c21090a3b5c43",
+   "new_sha256": "8112abe695cb42e2632de75a84d5efee7b421db7c0e754a0daad0525550f9a07",
+   "rows_old": 157,
+   "rows_new": 144,
+   "rows_only_in_old": [
+    [
+     "J2",
+     "111.1800mm",
+     "-67.0000mm",
+     "T",
+     "0"
+    ],
+    [
+     "J5",
+     "129.6000mm",
+     "-89.0000mm",
+     "T",
+     "0"
+    ],
+    [
+     "J8",
+     "72.8000mm",
+     "-81.9300mm",
+     "T",
+     "270"
+    ],
+    [
+     "J9",
+     "72.8000mm",
+     "-90.5500mm",
+     "T",
+     "270"
+    ],
+    [
+     "J10",
+     "72.8000mm",
+     "-99.1700mm",
+     "T",
+     "270"
+    ],
+    [
+     "J11",
+     "72.8000mm",
+     "-107.7900mm",
+     "T",
+     "270"
+    ],
+    [
+     "J12",
+     "127.2100mm",
+     "-75.7100mm",
+     "T",
+     "90"
+    ],
+    [
+     "J14",
+     "66.4500mm",
+     "-68.8500mm",
+     "T",
+     "180"
+    ],
+    [
+     "J15",
+     "65.7000mm",
+     "-73.4500mm",
+     "T",
+     "180"
+    ],
+    [
+     "J16",
+     "122.3900mm",
+     "-75.7900mm",
+     "T",
+     "180"
+    ],
+    [
+     "J17",
+     "134.3000mm",
+     "-82.3500mm",
+     "T",
+     "180"
+    ],
+    [
+     "J18",
+     "72.8000mm",
+     "-117.6800mm",
+     "T",
+     "90"
+    ],
+    [
+     "U7",
+     "86.7500mm",
+     "-81.4500mm",
+     "T",
+     "270"
+    ]
+   ],
+   "rows_only_in_new": [],
+   "header_equal": true,
+   "order_of_the_remaining_rows_kept": true
+  },
+  "jlcpcb_bom_with_mcu.csv": {
+   "designators_only_in_old": [
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J2",
+    "J5",
+    "J8",
+    "J9",
+    "U7"
+   ],
+   "old_sha256": "465199b917ff914d8a626f6570e9596dd36c092455fec089fad11f4851d0ed1f",
+   "new_sha256": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
+   "rows_old": 41,
+   "rows_new": 34,
+   "rows_only_in_old": [
+    [
+     "ESP-12F",
+     "U7",
+     "ESP-12E",
+     "C82891"
+    ],
+    [
+     "socket 1x6 right-angle 2.54",
+     "J2,J5",
+     "PinSocket_1x06_P2.54mm_Horizontal",
+     "C22436147"
+    ],
+    [
+     "pin header 1x3 right-angle 2.54",
+     "J8,J9,J10,J11,J12",
+     "PinHeader_1x03_P2.54mm_Horizontal",
+     "C32713262"
+    ],
+    [
+     "Molex 22035025 SPOX 2P vertical",
+     "J14",
+     "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+     "C5364642"
+    ],
+    [
+     "JST B2B-PH-K-S 2P vertical",
+     "J15,J17",
+     "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+     "C131337"
+    ],
+    [
+     "pin header 1x2 right-angle 2.54",
+     "J16",
+     "PinHeader_1x02_P2.54mm_Horizontal",
+     "C32713261"
+    ],
+    [
+     "pin header 1x4 right-angle 2.54",
+     "J18",
+     "PinHeader_1x04_P2.54mm_Horizontal",
+     "C32713263"
+    ]
+   ],
+   "rows_only_in_new": [],
+   "header_equal": true,
+   "order_of_the_remaining_rows_kept": true
+  },
+  "jlcpcb_cpl_with_mcu.csv": {
+   "designators_only_in_old": [
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J2",
+    "J5",
+    "J8",
+    "J9",
+    "U7"
+   ],
+   "old_sha256": "b0ab3d4240db4473b5431c9d1c2b4cd0f8b33fdf9df4fde1206d4260454bc702",
+   "new_sha256": "1c2503e959057e7e2b6847ea0bb955654e5a00a5681fd60321dcb3965d8645e9",
+   "rows_old": 161,
+   "rows_new": 148,
+   "rows_only_in_old": [
+    [
+     "J2",
+     "111.1800mm",
+     "-67.0000mm",
+     "T",
+     "0"
+    ],
+    [
+     "J5",
+     "129.6000mm",
+     "-89.0000mm",
+     "T",
+     "0"
+    ],
+    [
+     "J8",
+     "72.8000mm",
+     "-81.9300mm",
+     "T",
+     "270"
+    ],
+    [
+     "J9",
+     "72.8000mm",
+     "-90.5500mm",
+     "T",
+     "270"
+    ],
+    [
+     "J10",
+     "72.8000mm",
+     "-99.1700mm",
+     "T",
+     "270"
+    ],
+    [
+     "J11",
+     "72.8000mm",
+     "-107.7900mm",
+     "T",
+     "270"
+    ],
+    [
+     "J12",
+     "127.2100mm",
+     "-75.7100mm",
+     "T",
+     "90"
+    ],
+    [
+     "J14",
+     "66.4500mm",
+     "-68.8500mm",
+     "T",
+     "180"
+    ],
+    [
+     "J15",
+     "65.7000mm",
+     "-73.4500mm",
+     "T",
+     "180"
+    ],
+    [
+     "J16",
+     "122.3900mm",
+     "-75.7900mm",
+     "T",
+     "180"
+    ],
+    [
+     "J17",
+     "134.3000mm",
+     "-82.3500mm",
+     "T",
+     "180"
+    ],
+    [
+     "J18",
+     "72.8000mm",
+     "-117.6800mm",
+     "T",
+     "90"
+    ],
+    [
+     "U7",
+     "86.7500mm",
+     "-81.4500mm",
+     "T",
+     "270"
+    ]
+   ],
+   "rows_only_in_new": [],
+   "header_equal": true,
+   "order_of_the_remaining_rows_kept": true
+  }
+ },
+ "result": "PASS"
+}

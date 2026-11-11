@@ -1,0 +1,422 @@
+{
+ "tool": "impl/esp_user_fix/proof3.py",
+ "pcbnew": "10.0.6",
+ "A_text": {
+  "before_this_step": {
+   "old_sha256": "588fb390b516894c1f9e82f9e9767a2582520e57ff55cd6bf820e169490c6518",
+   "new_sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
+   "lines_old": 83474,
+   "lines_new": 83474,
+   "differing_lines_inside_the_three_label_blocks": [
+    [
+     40627,
+     "(gr_text \"1S BAT +-\"",
+     "(gr_text \"1S BAT -+\""
+    ],
+    [
+     40630,
+     "(uuid \"216ac412-34ca-5690-8bed-5a8f3e6a5ebf\")",
+     "(uuid \"4676dba7-6be6-544b-94b4-edf7e16ffdda\")"
+    ],
+    [
+     40639,
+     "(gr_text \"GPS V TX RX G\"",
+     "(gr_text \"GPS G RX TX V\""
+    ],
+    [
+     40642,
+     "(uuid \"1de2b657-9505-5fa8-b291-bdb80f25fe57\")",
+     "(uuid \"06dc3f5b-a68d-56fa-9799-a3e27276a66d\")"
+    ],
+    [
+     40711,
+     "(gr_text \"BMP280 3V G SCL SDA 3V 3V\"",
+     "(gr_text \"BMP280 3V 3V SDA SCL G 3V\""
+    ],
+    [
+     40714,
+     "(uuid \"fed86fbc-6a14-504c-a1db-c2f9f96daa69\")",
+     "(uuid \"4156285a-0e5c-5794-936d-e0f885fd779e\")"
+    ]
+   ],
+   "differing_lines_elsewhere": []
+  },
+  "HEAD_6fc8ec3": {
+   "old_sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556",
+   "new_sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
+   "lines_old": 83474,
+   "lines_new": 83474,
+   "differing_lines_inside_the_three_label_blocks": [
+    [
+     40627,
+     "(gr_text \"1S BAT +-\"",
+     "(gr_text \"1S BAT -+\""
+    ],
+    [
+     40630,
+     "(uuid \"216ac412-34ca-5690-8bed-5a8f3e6a5ebf\")",
+     "(uuid \"4676dba7-6be6-544b-94b4-edf7e16ffdda\")"
+    ],
+    [
+     40639,
+     "(gr_text \"GPS V TX RX G\"",
+     "(gr_text \"GPS G RX TX V\""
+    ],
+    [
+     40642,
+     "(uuid \"1de2b657-9505-5fa8-b291-bdb80f25fe57\")",
+     "(uuid \"06dc3f5b-a68d-56fa-9799-a3e27276a66d\")"
+    ],
+    [
+     40711,
+     "(gr_text \"BMP280 3V G SCL SDA 3V 3V\"",
+     "(gr_text \"BMP280 3V 3V SDA SCL G 3V\""
+    ],
+    [
+     40714,
+     "(uuid \"fed86fbc-6a14-504c-a1db-c2f9f96daa69\")",
+     "(uuid \"4156285a-0e5c-5794-936d-e0f885fd779e\")"
+    ]
+   ],
+   "differing_lines_elsewhere": [
+    [
+     98,
+     "(copper_finish \"ENIG\")",
+     "(copper_finish \"HAL lead-free\")"
+    ]
+   ]
+  }
+ },
+ "A_pcbnew": {
+  "before_this_step": {
+   "tracks": {
+    "old": 2557,
+    "new": 2557,
+    "equal": true
+   },
+   "vias": {
+    "old": 442,
+    "new": 442,
+    "equal": true
+   },
+   "zones": {
+    "old": 6,
+    "new": 6,
+    "equal": true
+   },
+   "footprints": {
+    "old": 174,
+    "new": 174,
+    "equal": true
+   },
+   "pads": {
+    "old": 691,
+    "new": 691,
+    "equal": true
+   },
+   "nets": {
+    "old": 289,
+    "new": 289,
+    "equal": true
+   },
+   "footprint_graphics_and_fields": {
+    "old": 2790,
+    "new": 2790,
+    "equal": true
+   },
+   "board_shapes": {
+    "old": 27,
+    "new": 27,
+    "equal": true
+   },
+   "texts": {
+    "old": 43,
+    "new": 43,
+    "only_in_old": 3,
+    "only_in_new": 3,
+    "changed": [
+     {
+      "old_text": "1S BAT +-",
+      "new_text": "1S BAT -+",
+      "layer": "B.Silkscreen",
+      "at_mm": [
+       75.082,
+       68.205
+      ],
+      "angle": 0.0,
+      "mirrored": true,
+      "same_position_angle_size_layer_and_bounding_box": true
+     },
+     {
+      "old_text": "BMP280 3V G SCL SDA 3V 3V",
+      "new_text": "BMP280 3V 3V SDA SCL G 3V",
+      "layer": "B.Silkscreen",
+      "at_mm": [
+       91.624,
+       71.291
+      ],
+      "angle": 0.0,
+      "mirrored": true,
+      "same_position_angle_size_layer_and_bounding_box": true
+     },
+     {
+      "old_text": "GPS V TX RX G",
+      "new_text": "GPS G RX TX V",
+      "layer": "B.Silkscreen",
+      "at_mm": [
+       77.642,
+       131.449999
+      ],
+      "angle": 0.0,
+      "mirrored": true,
+      "same_position_angle_size_layer_and_bounding_box": true
+     }
+    ]
+   }
+  },
+  "HEAD_6fc8ec3": {
+   "tracks": {
+    "old": 2557,
+    "new": 2557,
+    "equal": true
+   },
+   "vias": {
+    "old": 442,
+    "new": 442,
+    "equal": true
+   },
+   "zones": {
+    "old": 6,
+    "new": 6,
+    "equal": true
+   },
+   "footprints": {
+    "old": 174,
+    "new": 174,
+    "equal": true
+   },
+   "pads": {
+    "old": 691,
+    "new": 691,
+    "equal": true
+   },
+   "nets": {
+    "old": 289,
+    "new": 289,
+    "equal": true
+   },
+   "footprint_graphics_and_fields": {
+    "old": 2790,
+    "new": 2790,
+    "equal": true
+   },
+   "board_shapes": {
+    "old": 27,
+    "new": 27,
+    "equal": true
+   },
+   "texts": {
+    "old": 43,
+    "new": 43,
+    "only_in_old": 3,
+    "only_in_new": 3,
+    "changed": [
+     {
+      "old_text": "1S BAT +-",
+      "new_text": "1S BAT -+",
+      "layer": "B.Silkscreen",
+      "at_mm": [
+       75.082,
+       68.205
+      ],
+      "angle": 0.0,
+      "mirrored": true,
+      "same_position_angle_size_layer_and_bounding_box": true
+     },
+     {
+      "old_text": "BMP280 3V G SCL SDA 3V 3V",
+      "new_text": "BMP280 3V 3V SDA SCL G 3V",
+      "layer": "B.Silkscreen",
+      "at_mm": [
+       91.624,
+       71.291
+      ],
+      "angle": 0.0,
+      "mirrored": true,
+      "same_position_angle_size_layer_and_bounding_box": true
+     },
+     {
+      "old_text": "GPS V TX RX G",
+      "new_text": "GPS G RX TX V",
+      "layer": "B.Silkscreen",
+      "at_mm": [
+       77.642,
+       131.449999
+      ],
+      "angle": 0.0,
+      "mirrored": true,
+      "same_position_angle_size_layer_and_bounding_box": true
+     }
+    ]
+   }
+  }
+ },
+ "D_files": {
+  "before": 321,
+  "after": 339,
+  "changed": [
+   "./kicad/render_as_delivered.kicad_pcb",
+   "./kicad/render_completed.kicad_pcb",
+   "./kicad/render_completed_limit.kicad_pcb",
+   "./kicad/vtol_carrier.kicad_pcb",
+   "./kicad/work/drc_clearance_fix.json",
+   "./kicad/work/drc_dangling.json",
+   "./kicad/work/drc_leftovers.json",
+   "./kicad/work/drc_ripup.json",
+   "./kicad/work/make_all_log.json",
+   "./kicad/work/route_reuse_log.json",
+   "./kicad/work/vtol_carrier.net",
+   "./out/ORDER_ko.md",
+   "./out/fit_checks.json",
+   "./out/gerber/vtol_carrier-B_Silkscreen.gbo",
+   "./out/gerber_with_mcu/vtol_carrier-B_Silkscreen.gbo",
+   "./out/jlc_fee_estimate.csv",
+   "./out/manifest.json",
+   "./out/presentation/pcb_bottom_2400.png",
+   "./out/presentation/pcb_iso_back_2400.png",
+   "./out/presentation/pcb_iso_front_2400.png",
+   "./out/presentation/pcb_top_2400.png",
+   "./out/render/a1_as_delivered_top.png",
+   "./out/render/a2_as_delivered_front.png",
+   "./out/render/a3_as_delivered_bottom.png",
+   "./out/render/b1_completed_top.png",
+   "./out/render/b2_completed_front.png",
+   "./out/render/b3_completed_back.png",
+   "./out/render/b4_completed_side_limit.png",
+   "./out/render/c1_gy521_on_J1.png",
+   "./out/render/c2_bmp280_in_J2.png",
+   "./out/render/c3_openlog_in_J5.png",
+   "./out/render/c4_esp12f_keepout.png",
+   "./out/render/c5_mcu_pin1.png",
+   "./out/render/d1_gps_plug_J7.png",
+   "./out/render/d2_neo7m_top_cap.json",
+   "./out/render/d2_neo7m_top_cap.png",
+   "./out/render/e1_delivered_vs_completed.png",
+   "./out/render/e2a_gy521_J1.png",
+   "./out/render/e2b_bmp280_J2.png",
+   "./out/render/e2c_openlog_J5.png",
+   "./out/render/e3_gps_lead_J7.png",
+   "./out/render/e4_overview_callouts.png",
+   "./out/render/render_report.json",
+   "./out/render/slides_report.json",
+   "./out/reports/cpl_rotation.json",
+   "./out/reports/drc.json",
+   "./out/reports/edge_distance.json",
+   "./out/reports/erc.json",
+   "./out/reports/gerber_check.json",
+   "./out/reports/jlc_fee_estimate.json",
+   "./out/reports/rev3_checks.json",
+   "./out/reports/rev3_erc.json",
+   "./out/reports/rev3_export_determinism.json",
+   "./out/reports/rev3_export_files.json",
+   "./out/reports/rev3_fit_sets.json",
+   "./out/reports/rev3_mcu_pinmap.json",
+   "./out/reports/rev3_netlist_vs_spec.json",
+   "./out/reports/rev3_nets.json",
+   "./out/reports/rev3_u8_u9_pads.json",
+   "./out/reports/routing_rules.json",
+   "./out/schematic/vtol_carrier_schematic.pdf",
+   "./out/vtol_carrier.net",
+   "./out/vtol_carrier.step",
+   "./out/vtol_carrier_gerber.zip",
+   "./out/vtol_carrier_gerber_with_mcu.zip",
+   "./scripts/checks_exports.py",
+   "./scripts/docs_ko.py",
+   "./scripts/rev3_checks.py",
+   "./scripts/routing_checks.py",
+   "./spec/lcsc_snapshot_20261112.json"
+  ],
+  "only_before": [],
+  "only_after": [
+   "./spec/lcsc_raw_20261112/C100114.json",
+   "./spec/lcsc_raw_20261112/C111515.json",
+   "./spec/lcsc_raw_20261112/C131337.json",
+   "./spec/lcsc_raw_20261112/C157955.json",
+   "./spec/lcsc_raw_20261112/C160418.json",
+   "./spec/lcsc_raw_20261112/C189897.json",
+   "./spec/lcsc_raw_20261112/C22436147.json",
+   "./spec/lcsc_raw_20261112/C32713261.json",
+   "./spec/lcsc_raw_20261112/C32713262.json",
+   "./spec/lcsc_raw_20261112/C32713263.json",
+   "./spec/lcsc_raw_20261112/C5364642.json",
+   "./spec/lcsc_raw_20261112/C54876735.json",
+   "./spec/lcsc_raw_20261112/C55629809.json",
+   "./spec/lcsc_raw_20261112/C55629820.json",
+   "./spec/lcsc_raw_20261112/C55629861.json",
+   "./spec/lcsc_raw_20261112/C6510.json",
+   "./spec/lcsc_raw_20261112/C65114.json",
+   "./spec/lcsc_raw_20261112/C82891.json"
+  ]
+ },
+ "B_unchanged": {
+  "checked": 76,
+  "changed": [],
+  "sessions": [
+   "./kicad/work/rev2b_sessions/vtol_carrier.ses",
+   "./kicad/work/rev2b_sessions/vtol_carrier_complete.ses",
+   "./kicad/work/rev2b_sessions/vtol_carrier_gnd.ses",
+   "./kicad/work/rev2b_sessions/vtol_carrier_power.ses",
+   "./kicad/work/rev2b_sessions/vtol_carrier_power_high.ses",
+   "./kicad/work/rev2b_sessions/vtol_carrier_servo.ses",
+   "./kicad/work/rev2b_sessions/vtol_carrier_signals.ses",
+   "./kicad/work/seed_a7/vtol_carrier_complete.ses",
+   "./kicad/work/seed_a7/vtol_carrier_gnd.ses",
+   "./kicad/work/seed_a7/vtol_carrier_power.ses",
+   "./kicad/work/seed_a7/vtol_carrier_servo.ses",
+   "./kicad/work/seed_a7/vtol_carrier_signals.ses",
+   "./kicad/work/seed_complete.ses",
+   "./kicad/work/seed_gnd.ses",
+   "./kicad/work/seed_power.ses",
+   "./kicad/work/seed_servo.ses",
+   "./kicad/work/seed_signals.ses",
+   "./kicad/work/two_layer_attempt/vtol_carrier_2layer.ses",
+   "./kicad/work/vtol_carrier.ses",
+   "./kicad/work/vtol_carrier_complete.ses",
+   "./kicad/work/vtol_carrier_gnd.ses",
+   "./kicad/work/vtol_carrier_power.ses",
+   "./kicad/work/vtol_carrier_power_high.ses",
+   "./kicad/work/vtol_carrier_servo.ses",
+   "./kicad/work/vtol_carrier_signals.ses"
+  ],
+  "order_files": {
+   "./out/jlcpcb_bom.csv": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
+   "./out/jlcpcb_bom_with_mcu.csv": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
+   "./out/jlcpcb_cpl.csv": "8112abe695cb42e2632de75a84d5efee7b421db7c0e754a0daad0525550f9a07",
+   "./out/jlcpcb_cpl_with_mcu.csv": "1c2503e959057e7e2b6847ea0bb955654e5a00a5681fd60321dcb3965d8645e9"
+  },
+  "unrouted_board": "fcbd2115248d38f3f7064e298cb6d76315e16b79673ed89383660c5b2f0474c0"
+ },
+ "C_zip_members": {
+  "vtol_carrier_gerber.zip": {
+   "old_sha256": "fc4a439eba5718801fc9a0433c7fe9e9d3b5bbfe67207077bd4fe8d6b7eb5fe7",
+   "new_sha256": "f4c0e0bbd1ed460fade90ed8715fdebd7e7ce007fc36246d5741d8b5d28ef0bc",
+   "members": 13,
+   "same_names_and_order": true,
+   "differing_members": [
+    "vtol_carrier-B_Silkscreen.gbo"
+   ],
+   "members_equal_folder_files": true
+  },
+  "vtol_carrier_gerber_with_mcu.zip": {
+   "old_sha256": "39597ca679c84ca7651aba8793e23f714d3886208597bc5f1b1a7bfeb3fcc86c",
+   "new_sha256": "03c4bb5ec750a9a64c2e51b1d45e208f864d14563cdfdcdbdf92e768c6ababcf",
+   "members": 13,
+   "same_names_and_order": true,
+   "differing_members": [
+    "vtol_carrier-B_Silkscreen.gbo"
+   ],
+   "members_equal_folder_files": true
+  }
+ },
+ "result": "PASS"
+}

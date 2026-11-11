@@ -11,6 +11,9 @@ Invariants
   hide them. Courtyard margins between parts (visible board) may carry text.
 * A name that finds no front spot within 3 mm goes to B.SilkS (mirrored) under its connector and is listed; a pin
   label set that does not fit is left out (listed) - the name and the square pin-1 pad remain.
+* A name that carries the pin glyphs and is printed along its pin row lists them as the pads lie on the side it is
+  printed on (pin_name; a mirrored bottom text otherwise reads against the row - '1S BAT +-' put '+' on the GND
+  side); a name printed across the row lists them from pin 1. routing_checks.py measures this on the board.
 * Sizes: names 1.0 mm high / 0.15 mm stroke (JLC recommendation, A), 0.8 mm (board minimum) when 1.0 does not fit;
   pin labels 0.8 mm. Deterministic: fixed tables, fixed candidate order, no randomness.
 * silk-id step (user request): the two identification lines ID_LINES (repository address, contact e-mail) are placed
@@ -283,13 +286,55 @@ def _name_candidates(cbox, w: float, h: float, max_d: float = MAX_D):
     return [(x, y, d) for d, _s, x, y in out]
 
 
-def place_name(ctx: Ctx, board, fp, s: str) -> dict | None:
+def pin_row(fp) -> tuple[int, int] | None:
+    """Board axis pin 1 -> last pin of a single straight pin row along a board axis; None for anything else (two
+    rows, a diagonal, one pin)."""
+    pads = sorted((p for p in fp.Pads() if p.GetNumber().isdigit()), key=lambda p: int(p.GetNumber()))
+    if len(pads) < 2:
+        return None
+    xs = [p.GetPosition().x for p in pads]
+    ys = [p.GetPosition().y for p in pads]
+    for along, across in ((xs, ys), (ys, xs)):
+        steps = [b - a for a, b in zip(along, along[1:])]
+        if len(set(across)) == 1 and (all(d > 0 for d in steps) or all(d < 0 for d in steps)):
+            return _axis(xs[-1] - xs[0], ys[-1] - ys[0])
+    return None
+
+
+def pin_name(board, fp, label: str, glyphs: list[str], layer, h: float, ang: float) -> tuple[str, str]:
+    """(text, order) of a name that carries the pin glyphs (esp-user-fix step, verification finding V1).
+
+    A name printed ALONG its pin row lists the glyphs in the direction the pads lie on the side the text is printed
+    on, so that a reader who maps the letters onto the pads by position is right: on the bottom a mirrored text runs
+    against a row whose pin 1 is on the left in the top view, and '1S BAT +-' then showed '+' on the side of the GND
+    pad. A name printed ACROSS the row (or beside a two-row header) has no such reading and keeps the order from
+    pin 1 (the square pad). The reading direction is measured on pcbnew's stroke geometry (id_directions), and the
+    same cosine holds seen from either side of the board (both vectors flip together)."""
+    sep = "" if all(len(g) == 1 for g in glyphs) else " "
+    row = pin_row(fp)
+    run, _down = id_directions(board, layer, h, T, ang)
+    cos = 0 if row is None else run[0] * row[0] + run[1] * row[1]
+    if cos < 0:
+        return f"{label} {sep.join(reversed(glyphs))}", "along the row, as the pads lie (last pin first)"
+    if cos > 0:
+        return f"{label} {sep.join(glyphs)}", "along the row, as the pads lie (pin 1 first)"
+    return f"{label} {sep.join(glyphs)}", "from pin 1 (text not along a single pin row)"
+
+
+def place_name(ctx: Ctx, board, fp, s: str, glyphs: list[str] | None = None) -> dict | None:
+    """``glyphs`` (pin 1 first) makes ``s`` the bare label of a pin-ordered name: the text is then built per
+    candidate layer / size / angle by pin_name, BEFORE its box is measured and searched."""
     ref = fp.GetReference()
     cbox = ctx.cy[ref]
+    order = None
+    label = s
     for side, layer in (("F", pcbnew.F_SilkS), ("B", pcbnew.B_SilkS)):
         for h in NAME_H:
             t = _text(board, s, layer, h)
             for ang in (0, 90):
+                if glyphs is not None:
+                    s, order = pin_name(board, fp, label, glyphs, layer, h, ang)
+                    t.SetText(s)
                 w, hh, ox, oy = _size(t, ang)
                 for x, y, d in _name_candidates(cbox, w, hh):
                     box = (x - w / 2 - 0.15, y - hh / 2 - 0.15, x + w / 2 + 0.15, y + hh / 2 + 0.15)
@@ -299,8 +344,11 @@ def place_name(ctx: Ctx, board, fp, s: str) -> dict | None:
                     if ctx.free(side, box, own):
                         _put(ctx, side, t, x, y, w, hh, ox, oy)
                         board.Add(t)
-                        return {"ref": ref, "text": s, "layer": "F.SilkS" if side == "F" else "B.SilkS", "height_mm": h,
-                                "distance_to_courtyard_mm": d}
+                        out = {"ref": ref, "text": s, "layer": "F.SilkS" if side == "F" else "B.SilkS", "height_mm": h,
+                               "distance_to_courtyard_mm": d}
+                        if order:
+                            out["pin_glyph_order"] = order
+                        return out
     return None
 
 
@@ -687,19 +735,18 @@ def add_silk(board) -> dict:
         m = place_mark(ctx, board, fps[ref], MARKS[ref])
         (marks if m.get("at") else marks_missed).append(m)
     names = dict(LABELS)
-    for ref in PIN_LABELLED:  # the name carries the pin order from pin 1 (square pad), e.g. 'V1 S+-'
+    glyphs: dict[str, list[str]] = {}
+    for ref in PIN_LABELLED:  # the name carries the pin glyphs, e.g. 'V1 S+-'; their order: see pin_name
         if ref in fps:
             pads = sorted((p for p in fps[ref].Pads() if p.GetNumber().isdigit()), key=lambda p: int(p.GetNumber()))
-            gl = [pin_glyph(p.GetNetname(), ref) or "nc" for p in pads]
-            sep = "" if all(len(g) == 1 for g in gl) else " "
-            names[ref] = f"{LABELS[ref]} {sep.join(gl)}"
+            glyphs[ref] = [pin_glyph(p.GetNetname(), ref) or "nc" for p in pads]
     names_f, names_b, names_missed = [], [], []
     # off-board leads first (what is plugged in blind), then modules, then programming-only footprints
     order = [r for r in PRIORITY if r in names] + sorted((r for r in names if r not in PRIORITY), key=key)
     for ref in order:
         if ref not in fps:
             continue
-        r = place_name(ctx, board, fps[ref], names[ref])
+        r = place_name(ctx, board, fps[ref], names[ref], glyphs.get(ref))
         if r is None:
             names_missed.append(ref)
         elif r["layer"] == "F.SilkS":

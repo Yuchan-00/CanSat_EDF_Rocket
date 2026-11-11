@@ -186,7 +186,13 @@ STACKUP_NOTE = "1.6 mm FR4, 2 layers, 1 oz (35 um) outer copper, HASL lead-free 
 #: 4-layer: JLCPCB standard 1.6 mm 4-layer (their JLC04161H-7628 class: 7628 prepreg ~0.21 mm, core ~1.065 mm,
 #: 1 oz outer / 0.5 oz inner) - A, from the JLC default stackup as remembered, NOT fetched: name the stackup in the order
 STACKUP_NOTE_4 = ("1.6 mm FR4, 4 layers F.Cu signal / In1.Cu GND / In2.Cu power / B.Cu signal, 1 oz outer / 0.5 oz inner, "
-                  "JLCPCB standard 4-layer stackup (JLC04161H-7628 class, A - check in the order), ENIG (order guide D16)")
+                  "JLCPCB standard 4-layer stackup (JLC04161H-7628 class, A - check in the order), lead-free HASL "
+                  "(order guide D16, user decision 2026-11-12; ENIG before)")
+#: KiCad stackup ``copper_finish`` text of the board (and of the gerber job file's GeneralSpecs.Finish). User decision
+#: 2026-11-12: lead-free HASL (JLC order page 'LeadFree HASL'); the name is KiCad's own list entry, as rev 2c had it.
+#: The finish is text only - no geometry depends on it. route.py --reuse-ses accepts an unrouted board that differs
+#: from the recorded one ONLY in this value (kicad/work/ses_replay.json unrouted_board_sha256_copper_finish_blanked).
+COPPER_FINISH = "HAL lead-free"
 
 
 def stackup() -> list:
@@ -209,7 +215,7 @@ def stackup() -> list:
             S("layer", Q("B.Mask"), S("type", Q("Bottom Solder Mask")), S("thickness", 0.01)),
             S("layer", Q("B.Paste"), S("type", Q("Bottom Solder Paste"))),
             S("layer", Q("B.SilkS"), S("type", Q("Bottom Silk Screen"))),
-            S("copper_finish", Q("ENIG")),
+            S("copper_finish", Q(COPPER_FINISH)),
             S("dielectric_constraints", "no"),
         )
     return S(

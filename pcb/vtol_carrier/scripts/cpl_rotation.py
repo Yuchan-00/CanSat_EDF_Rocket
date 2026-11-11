@@ -571,8 +571,11 @@ def draw_png(rows: list[dict]) -> None:
     d.text((m, y0 + 40), "red dot = EasyEDA pad 1 as the CPL places it; red '+' = EasyEDA '+' mark of the polarised "
                          "capacitors; green ring = KiCad pad 1 on the board. Red inside green = same pin 1.",
            fill=(160, 0, 0), font=font)
-    d.text((m, y0 + 60), ", ".join(mir) + ": red dot at the far end on purpose - the EasyEDA pin numbering is "
-                         "mirrored, the body side was matched instead (identical pins).", fill=(160, 0, 0), font=font)
+    # since 2026-11-12 the single-row THT connectors (the parts with mirrored numbering) are not placed by JLC
+    d.text((m, y0 + 60), (", ".join(mir) + ": red dot at the far end on purpose - the EasyEDA pin numbering is "
+                          "mirrored, the body side was matched instead (identical pins).") if mir else
+           "no placed part has mirrored pin numbering (the single-row THT connectors are soldered by the user).",
+           fill=(160, 0, 0), font=font)
     d.text((m, y0 + 80), "line from the part centre = direction of the CPL rotation (0 deg points to +x, counter-"
                          "clockwise positive); grey = non-polar 2-pad parts", fill=(80, 80, 80), font=font)
     d.text((m, y0 + 100), "U1..U4 appear only in the *_with_mcu pair. Nothing here is VERIFIED: JLC's preview / "

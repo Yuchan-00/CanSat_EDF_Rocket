@@ -2027,11 +2027,11 @@
    "rev3": {
     "value": "1x6 2.54 mm right-angle socket (module lies flat)",
     "mpn": "HC-PM254-8.5H-1x6PW",
-    "jlc_code": "C22436147",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x06",
     "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "+3V3",
      "2": "GND",
@@ -2041,13 +2041,14 @@
      "6": "+3V3"
     }
    },
-   "reason": "1x6 right-angle socket whose manufacturer drawing was read against the KiCad footprint (review E-10); thin stock -> hard order-day gate with alternates C55629861 (rev 2c part, no datasheet, 3.2 mm tails) then C54876735 (user decisions D3 / D12).",
+   "reason": "1x6 right-angle socket whose manufacturer drawing was read against the KiCad footprint (review E-10); thin stock -> hard order-day gate with alternates C55629861 (rev 2c part, no datasheet, 3.2 mm tails) then C54876735 (user decisions D3 / D12). AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C22436147 (MPN HC-PM254-8.5H-1x6PW) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J2], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/C22436147.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C22436147"
   },
   {
    "refdes": "J3",
@@ -2116,11 +2117,11 @@
    "rev3": {
     "value": "1x6 2.54 mm right-angle socket: OpenLog lies FLAT beside it (outline reserved)",
     "mpn": "HC-PM254-8.5H-1x6PW",
-    "jlc_code": "C22436147",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x06",
     "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "NC",
      "2": "OPENLOG_RXI",
@@ -2130,13 +2131,14 @@
      "6": "GND"
     }
    },
-   "reason": "1x6 right-angle socket whose manufacturer drawing was read against the KiCad footprint (review E-10); thin stock -> hard order-day gate with alternates C55629861 (rev 2c part, no datasheet, 3.2 mm tails) then C54876735 (user decisions D3 / D12).",
+   "reason": "1x6 right-angle socket whose manufacturer drawing was read against the KiCad footprint (review E-10); thin stock -> hard order-day gate with alternates C55629861 (rev 2c part, no datasheet, 3.2 mm tails) then C54876735 (user decisions D3 / D12). AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C22436147 (MPN HC-PM254-8.5H-1x6PW) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J5], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/C22436147.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C22436147"
   },
   {
    "refdes": "J6",
@@ -2227,24 +2229,25 @@
    "rev3": {
     "value": "1x3 2.54 mm right-angle header (S, +, -)",
     "mpn": "HX PZ2.54-1x3P WZ",
-    "jlc_code": "C32713262",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x03",
     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "VANE1_SIG",
      "2": "SERVO_5V",
      "3": "GND_PWR"
     }
    },
-   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged.",
+   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged. AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C32713262 (MPN HX PZ2.54-1x3P WZ) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J8], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713262.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C32713262"
   },
   {
    "refdes": "J9",
@@ -2266,24 +2269,25 @@
    "rev3": {
     "value": "1x3 2.54 mm right-angle header (S, +, -)",
     "mpn": "HX PZ2.54-1x3P WZ",
-    "jlc_code": "C32713262",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x03",
     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "VANE2_SIG",
      "2": "SERVO_5V",
      "3": "GND_PWR"
     }
    },
-   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged.",
+   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged. AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C32713262 (MPN HX PZ2.54-1x3P WZ) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J9], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713262.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C32713262"
   },
   {
    "refdes": "J10",
@@ -2305,24 +2309,25 @@
    "rev3": {
     "value": "1x3 2.54 mm right-angle header (S, +, -)",
     "mpn": "HX PZ2.54-1x3P WZ",
-    "jlc_code": "C32713262",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x03",
     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "VANE3_SIG",
      "2": "SERVO_5V",
      "3": "GND_PWR"
     }
    },
-   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged.",
+   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged. AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C32713262 (MPN HX PZ2.54-1x3P WZ) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J10], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713262.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C32713262"
   },
   {
    "refdes": "J11",
@@ -2344,24 +2349,25 @@
    "rev3": {
     "value": "1x3 2.54 mm right-angle header (S, +, -)",
     "mpn": "HX PZ2.54-1x3P WZ",
-    "jlc_code": "C32713262",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x03",
     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "VANE4_SIG",
      "2": "SERVO_5V",
      "3": "GND_PWR"
     }
    },
-   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged.",
+   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged. AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C32713262 (MPN HX PZ2.54-1x3P WZ) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J11], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713262.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C32713262"
   },
   {
    "refdes": "J12",
@@ -2383,24 +2389,25 @@
    "rev3": {
     "value": "1x3 2.54 mm right-angle header (S, +, -)",
     "mpn": "HX PZ2.54-1x3P WZ",
-    "jlc_code": "C32713262",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x03",
     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "ESC_SIG",
      "2": "SERVO_5V",
      "3": "GND_PWR"
     }
    },
-   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged.",
+   "reason": "rev 2c listed this THT header for hand soldering (C55629817); rev 3 uses a JLC-stocked right-angle 1x3 header that JLC solders (THT, manualWeld). Footprint, position and orientation unchanged. AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C32713262 (MPN HX PZ2.54-1x3P WZ) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J12], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713262.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C32713262"
   },
   {
    "refdes": "J14",
@@ -2421,23 +2428,24 @@
    "rev3": {
     "value": "Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",
     "mpn": "22035025",
-    "jlc_code": "C5364642",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x02",
     "footprint": "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "VBAT_LOGIC_RAW",
      "2": "GND"
     }
    },
-   "reason": "same part and footprint as rev 2c; I3: it moves from the hand-solder list into the JLC BOM / CPL",
+   "reason": "same part and footprint as rev 2c; I3: it moves from the hand-solder list into the JLC BOM / CPL AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C5364642 (MPN 22035025) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J14], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C5364642.json"
    ],
-   "assembly_change": "rev 2c: THT hand-solder list -> rev 3: soldered by JLC (THT, manualWeld)"
+   "assembly_change": "rev 2c: THT hand-solder list -> rev 3: soldered by JLC (THT, manualWeld); amended 2026-11-12: soldered by the user again (not by JLC)",
+   "user_fitted_reference_code": "C5364642"
   },
   {
    "refdes": "J15",
@@ -2458,23 +2466,24 @@
    "rev3": {
     "value": "JST-PH 2.0 2-pin vertical: lead to an external logic power switch",
     "mpn": "B2B-PH-K-S(LF)(SN)",
-    "jlc_code": "C131337",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x02",
     "footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "VBAT_LOGIC",
      "2": "VBAT_LOGIC_SW"
     }
    },
-   "reason": "same part and footprint as rev 2c; I3: it moves from the hand-solder list into the JLC BOM / CPL",
+   "reason": "same part and footprint as rev 2c; I3: it moves from the hand-solder list into the JLC BOM / CPL AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C131337 (MPN B2B-PH-K-S(LF)(SN)) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J15], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C131337.json"
    ],
-   "assembly_change": "rev 2c: THT hand-solder list -> rev 3: soldered by JLC (THT, manualWeld)"
+   "assembly_change": "rev 2c: THT hand-solder list -> rev 3: soldered by JLC (THT, manualWeld); amended 2026-11-12: soldered by the user again (not by JLC)",
+   "user_fitted_reference_code": "C131337"
   },
   {
    "refdes": "J16",
@@ -2495,23 +2504,24 @@
    "rev3": {
     "value": "1x2 right-angle header",
     "mpn": "HX PZ2.54-1x2P WZ",
-    "jlc_code": "C32713261",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x02",
     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "ARM_SW_EXT",
      "2": "GND"
     }
    },
-   "reason": "as J8: JLC-assembled right-angle 1x2 header instead of the hand-solder part C55629816",
+   "reason": "as J8: JLC-assembled right-angle 1x2 header instead of the hand-solder part C55629816 AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C32713261 (MPN HX PZ2.54-1x2P WZ) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J16], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713261.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C32713261"
   },
   {
    "refdes": "J17",
@@ -2532,23 +2542,24 @@
    "rev3": {
     "value": "JST-PH 2.0 2-pin vertical (top entry)",
     "mpn": "B2B-PH-K-S(LF)(SN)",
-    "jlc_code": "C131337",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x02",
     "footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "+5V",
      "2": "BUZ_N"
     }
    },
-   "reason": "same part and footprint as rev 2c; I3: it moves from the hand-solder list into the JLC BOM / CPL",
+   "reason": "same part and footprint as rev 2c; I3: it moves from the hand-solder list into the JLC BOM / CPL AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C131337 (MPN B2B-PH-K-S(LF)(SN)) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J17], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C131337.json"
    ],
-   "assembly_change": "rev 2c: THT hand-solder list -> rev 3: soldered by JLC (THT, manualWeld)"
+   "assembly_change": "rev 2c: THT hand-solder list -> rev 3: soldered by JLC (THT, manualWeld); amended 2026-11-12: soldered by the user again (not by JLC)",
+   "user_fitted_reference_code": "C131337"
   },
   {
    "refdes": "J18",
@@ -2571,11 +2582,11 @@
    "rev3": {
     "value": "1x4 right-angle header",
     "mpn": "HX PZ2.54-1x4P WZ",
-    "jlc_code": "C32713263",
+    "jlc_code": null,
     "symbol": "Connector_Generic:Conn_01x04",
     "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "VS_VIN",
      "2": "VS_VTETHER",
@@ -2583,13 +2594,14 @@
      "4": "VS_BUF_ISIGN"
     }
    },
-   "reason": "as J8: JLC-assembled right-angle 1x4 header instead of the hand-solder part C55629818",
+   "reason": "as J8: JLC-assembled right-angle 1x4 header instead of the hand-solder part C55629818 AMENDED 2026-11-12 (user decision, amendment 'tht_by_user'): the user buys and solders this through-hole part after delivery; it is in neither JLC BOM / CPL pair. Footprint, symbol, nets, position and silkscreen are unchanged; LCSC C32713263 (MPN HX PZ2.54-1x4P WZ) stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[J18], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713263.json"
    ],
-   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)"
+   "tag": "optional sourcing (the rev 2c part passes I7 today with less stock; revertible in D3 / D12)",
+   "user_fitted_reference_code": "C32713263"
   },
   {
    "refdes": "J19",
@@ -6344,11 +6356,11 @@
    "rev3": {
     "value": "ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)",
     "mpn": "ESP-12F(ESP8266MOD)",
-    "jlc_code": "C82891",
+    "jlc_code": null,
     "symbol": "RF_Module:ESP-12F",
     "footprint": "RF_Module:ESP-12E",
-    "populate_by": "JLC",
-    "fit": "jlc",
+    "populate_by": "user",
+    "fit": "user",
     "pins": {
      "1": "ESP_RST",
      "2": "NC",
@@ -6374,14 +6386,15 @@
      "22": "ESP_TXD0"
     }
    },
-   "reason": "C89297 ESP-12E is 'Standard PCBA only' (componentProductType 2) and thin (1575); the pin-compatible Ai-Thinker ESP-12F C82891 is Economic+Standard with 13x the stock. Same footprint RF_Module:ESP-12E, same 22 pin numbers (library symbol ESP-12F extends ESP-12E). I3 allows the 12F.",
+   "reason": "C89297 ESP-12E is 'Standard PCBA only' (componentProductType 2) and thin (1575); the pin-compatible Ai-Thinker ESP-12F C82891 is Economic+Standard with 13x the stock. Same footprint RF_Module:ESP-12E, same 22 pin numbers (library symbol ESP-12F extends ESP-12E). I3 allows the 12F. AMENDED 2026-11-12 (user decision): the user solders the ESP-12F after delivery; it is in neither JLC BOM / CPL pair and gets no paste aperture. Footprint, symbol, nets and position are unchanged; LCSC C82891 stays the reference part for the purchase list.",
    "evidence": [
     "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json parts[U7], nets, no_connect",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/bom_recheck.md:108",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/design/connectors_mounting.md",
     "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C82891.json"
    ],
-   "tag": "sourcing (I7: ESP-12E C89297 is Standard-only and thin; I3 allows the pin-compatible ESP-12F)"
+   "tag": "sourcing (I7: ESP-12E C89297 is Standard-only and thin; I3 allows the pin-compatible ESP-12F)",
+   "user_fitted_reference_code": "C82891"
   },
   {
    "refdes": "Y1",
@@ -8370,42 +8383,6 @@
    "line": 30
   },
   {
-   "comment": "ESP-12F",
-   "designators": [
-    "U7"
-   ],
-   "footprint": "ESP-12E",
-   "jlc_code": "C82891",
-   "mpn": "ESP-12F(ESP8266MOD)",
-   "library_type": "Extended",
-   "assembly_process": "SMT",
-   "stock": 31195,
-   "need": 20,
-   "fetched_at": "2026-11-10T20:57:14+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C82891.json",
-   "qty_per_board": 1,
-   "brand": "Ai-Thinker",
-   "package": "SMD,24x16mm",
-   "assembly_mode": "smtWeld",
-   "can_presale": 30239,
-   "available_conservative": 30239,
-   "need_20_boards": 20,
-   "loss_number": 0,
-   "least_number": 1,
-   "component_product_type": 0,
-   "is_buy_component": "1",
-   "no_buy_reason": null,
-   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_C82891.json",
-   "unit_price_usd_tier1": 2.888,
-   "i7": "ORDERABLE",
-   "thin_stock": false,
-   "kicad_symbol": "RF_Module:ESP-12F",
-   "kicad_footprint": "RF_Module:ESP-12E",
-   "role": "Wi-Fi module (ESP-12F in place of ESP-12E)",
-   "describe": "-40℃~+85℃ -90dBm 120mA 16dBm 170mA 2.4GHz 3.3V ESP8266 Chip On-board PCB Antenna Over-the-air (OTA) update UART、SPI、I2C SMD,24x16mm WiFi Modules ROHS",
-   "line": 31
-  },
-  {
    "comment": "TPS61023DRLR",
    "designators": [
     "U8"
@@ -8515,228 +8492,6 @@
    "role": "16 MHz crystals",
    "describe": "-40℃~+85℃ 16MHz 18pF 50Ω Crystal Oscillator ±10ppm ±20ppm SMD3225-4P Crystals ROHS",
    "line": 34
-  },
-  {
-   "comment": "socket 1x6 right-angle 2.54",
-   "designators": [
-    "J2",
-    "J5"
-   ],
-   "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
-   "jlc_code": "C22436147",
-   "mpn": "HC-PM254-8.5H-1x6PW",
-   "library_type": "Extended",
-   "assembly_process": "THT",
-   "stock": 553,
-   "need": 40,
-   "fetched_at": "2026-11-10T21:41:22+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/C22436147.json",
-   "qty_per_board": 2,
-   "brand": "Hong Cheng",
-   "package": "Push-Pull,P=2.54mm",
-   "assembly_mode": "manualWeld",
-   "can_presale": 543,
-   "available_conservative": 543,
-   "need_20_boards": 40,
-   "loss_number": 0,
-   "least_number": 2,
-   "component_product_type": 0,
-   "is_buy_component": "1",
-   "no_buy_reason": null,
-   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_female_header_right_angle_1x6P_2.54mm.json",
-   "unit_price_usd_tier1": 0.1298,
-   "i7": "ORDERABLE",
-   "thin_stock": true,
-   "kicad_symbol": "Connector_Generic:Conn_01x06",
-   "kicad_footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
-   "role": "BMP280 socket J2 and OpenLog socket J5 (THT)",
-   "describe": "-40℃~+105℃ 1 1x6P 2.54mm 2.5mm 3A 3mm 6P Brass Gold Right Angle Side Square Hole Push-Pull,P=2.54mm Female Headers ROHS",
-   "line": 35
-  },
-  {
-   "comment": "pin header 1x3 right-angle 2.54",
-   "designators": [
-    "J8",
-    "J9",
-    "J10",
-    "J11",
-    "J12"
-   ],
-   "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
-   "jlc_code": "C32713262",
-   "mpn": "HX PZ2.54-1x3P WZ",
-   "library_type": "Extended",
-   "assembly_process": "THT",
-   "stock": 30851,
-   "need": 100,
-   "fetched_at": "2026-11-10T20:57:26+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713262.json",
-   "qty_per_board": 5,
-   "brand": "hanxia",
-   "package": "Push-Pull,P=2.54mm",
-   "assembly_mode": "manualWeld",
-   "can_presale": 30685,
-   "available_conservative": 30685,
-   "need_20_boards": 100,
-   "loss_number": 0,
-   "least_number": 2,
-   "component_product_type": 0,
-   "is_buy_component": "1",
-   "no_buy_reason": null,
-   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_pin_header_right_angle_1x3P_2.54mm.json",
-   "unit_price_usd_tier1": 0.0285,
-   "i7": "ORDERABLE",
-   "thin_stock": false,
-   "kicad_symbol": "Connector_Generic:Conn_01x03",
-   "kicad_footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-   "role": "vane servo and ESC lead headers J8-J12 (THT)",
-   "describe": "-40℃~+105℃ 1 1kV 1x3P 2.54mm 2.5mm 3A 3P 3mm 6mm Black Brass Gold Right Angle Square pin Push-Pull,P=2.54mm Pin Headers ROHS",
-   "line": 36
-  },
-  {
-   "comment": "Molex 22035025 SPOX 2P vertical",
-   "designators": [
-    "J14"
-   ],
-   "footprint": "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
-   "jlc_code": "C5364642",
-   "mpn": "22035025",
-   "library_type": "Extended",
-   "assembly_process": "THT",
-   "stock": 5877,
-   "need": 21,
-   "fetched_at": "2026-11-10T20:57:29+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C5364642.json",
-   "qty_per_board": 1,
-   "brand": "MOLEX",
-   "package": "Plugin,P=2.5mm",
-   "assembly_mode": "manualWeld",
-   "can_presale": 5456,
-   "available_conservative": 5456,
-   "need_20_boards": 20,
-   "loss_number": 1,
-   "least_number": 2,
-   "component_product_type": 0,
-   "is_buy_component": "1",
-   "no_buy_reason": null,
-   "preferred_flag_source": "NOT_VERIFIED (code not in any cached search list; counted as plain Extended)",
-   "unit_price_usd_tier1": 0.0928,
-   "i7": "ORDERABLE",
-   "thin_stock": false,
-   "kicad_symbol": "Connector_Generic:Conn_01x02",
-   "kicad_footprint": "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
-   "role": "logic battery connector J14 (THT)",
-   "describe": "-55℃~+105℃ 1 1x2P 2 2.5mm 250V 2P 3A 4.9mm 5.9mm 7.4mm Brass Mini-SPOX(5264) PA Through Hole Tin UL94V-0 White 插件,P=2.5mm Wire To Board Connector ROHS",
-   "line": 37
-  },
-  {
-   "comment": "JST B2B-PH-K-S 2P vertical",
-   "designators": [
-    "J15",
-    "J17"
-   ],
-   "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-   "jlc_code": "C131337",
-   "mpn": "B2B-PH-K-S(LF)(SN)",
-   "library_type": "Extended",
-   "assembly_process": "THT",
-   "stock": 304854,
-   "need": 41,
-   "fetched_at": "2026-11-10T20:57:31+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C131337.json",
-   "qty_per_board": 2,
-   "brand": "JST",
-   "package": "Plugin,P=2mm",
-   "assembly_mode": "manualWeld",
-   "can_presale": 189946,
-   "available_conservative": 189946,
-   "need_20_boards": 40,
-   "loss_number": 1,
-   "least_number": 2,
-   "component_product_type": 0,
-   "is_buy_component": "1",
-   "no_buy_reason": null,
-   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_C131337.json",
-   "unit_price_usd_tier1": 0.0356,
-   "i7": "ORDERABLE",
-   "thin_stock": false,
-   "kicad_symbol": "Connector_Generic:Conn_01x02",
-   "kicad_footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
-   "role": "switch J15 / buzzer J17 connectors (THT)",
-   "describe": "-25℃~+85℃ 1 100V 1x2P 2 2A 2P 2mm 4.5mm 5.9mm 6mm Brass K Pin PA66 PH Through Hole Tin UL94V-0 White 插件,P=2mm Wire To Board Connector ROHS",
-   "line": 38
-  },
-  {
-   "comment": "pin header 1x2 right-angle 2.54",
-   "designators": [
-    "J16"
-   ],
-   "footprint": "PinHeader_1x02_P2.54mm_Horizontal",
-   "jlc_code": "C32713261",
-   "mpn": "HX PZ2.54-1x2P WZ",
-   "library_type": "Extended",
-   "assembly_process": "THT",
-   "stock": 55654,
-   "need": 20,
-   "fetched_at": "2026-11-10T20:57:34+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713261.json",
-   "qty_per_board": 1,
-   "brand": "hanxia",
-   "package": "Push-Pull,P=2.54mm",
-   "assembly_mode": "manualWeld",
-   "can_presale": 55427,
-   "available_conservative": 55427,
-   "need_20_boards": 20,
-   "loss_number": 0,
-   "least_number": 2,
-   "component_product_type": 0,
-   "is_buy_component": "1",
-   "no_buy_reason": null,
-   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_pin_header_straight_1x2P_2.54mm.json",
-   "unit_price_usd_tier1": 0.0184,
-   "i7": "ORDERABLE",
-   "thin_stock": false,
-   "kicad_symbol": "Connector_Generic:Conn_01x02",
-   "kicad_footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
-   "role": "arming switch lead header J16 (THT)",
-   "describe": "-40℃~+105℃ 1 1kV 1x2P 2.54mm 2.5mm 2P 3A 3mm 6mm Black Brass Gold Right Angle Square pin Push-Pull,P=2.54mm Pin Headers ROHS",
-   "line": 39
-  },
-  {
-   "comment": "pin header 1x4 right-angle 2.54",
-   "designators": [
-    "J18"
-   ],
-   "footprint": "PinHeader_1x04_P2.54mm_Horizontal",
-   "jlc_code": "C32713263",
-   "mpn": "HX PZ2.54-1x4P WZ",
-   "library_type": "Extended",
-   "assembly_process": "THT",
-   "stock": 27550,
-   "need": 20,
-   "fetched_at": "2026-11-10T20:57:36+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713263.json",
-   "qty_per_board": 1,
-   "brand": "hanxia",
-   "package": "Push-Pull,P=2.54mm",
-   "assembly_mode": "manualWeld",
-   "can_presale": 27335,
-   "available_conservative": 27335,
-   "need_20_boards": 20,
-   "loss_number": 0,
-   "least_number": 2,
-   "component_product_type": 0,
-   "is_buy_component": "1",
-   "no_buy_reason": null,
-   "preferred_flag_source": "NOT_VERIFIED (code not in any cached search list; counted as plain Extended)",
-   "unit_price_usd_tier1": 0.038,
-   "i7": "ORDERABLE",
-   "thin_stock": false,
-   "kicad_symbol": "Connector_Generic:Conn_01x04",
-   "kicad_footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
-   "role": "power-sense lead header J18 (THT)",
-   "describe": "-40℃~+105℃ 1 1kV 1x4P 2.54mm 2.5mm 3A 3mm 4P 6mm Black Brass Gold Right Angle Square pin Push-Pull,P=2.54mm Pin Headers ROHS",
-   "line": 40
   }
  ],
  "alternates": [
@@ -9047,6 +8802,33 @@
   },
   {
    "refdes": [
+    "U7"
+   ],
+   "part": "ESP-12F Wi-Fi module (Ai-Thinker ESP8266MOD, castellated; reference part LCSC C82891)",
+   "how": "user solders the module on its footprint (user decision 2026-11-12); no solder paste on these pads in either gerber set; pad count and soldering order are in the order guide (measured on the board)",
+   "on_board": "footprint only"
+  },
+  {
+   "refdes": [
+    "J2",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J17",
+    "J16",
+    "J18"
+   ],
+   "part": "the 12 through-hole connectors that were JLC BOM lines 35-40: 2 x socket 1x6 right-angle 2.54 (J2/J5, MPN HC-PM254-8.5H-1x6PW, LCSC C22436147); 5 x pin header 1x3 right-angle 2.54 (J8/J9/J10/J11/J12, MPN HX PZ2.54-1x3P WZ, LCSC C32713262); 1 x Molex 22035025 SPOX 2P vertical (J14, MPN 22035025, LCSC C5364642); 2 x JST B2B-PH-K-S 2P vertical (J15/J17, MPN B2B-PH-K-S(LF)(SN), LCSC C131337); 1 x pin header 1x2 right-angle 2.54 (J16, MPN HX PZ2.54-1x2P WZ, LCSC C32713261); 1 x pin header 1x4 right-angle 2.54 (J18, MPN HX PZ2.54-1x4P WZ, LCSC C32713263)",
+   "how": "user buys and solders them (user decision 2026-11-12); the number of joints, the soldering order and the direction of each connector are in the order guide (measured on the board file)",
+   "on_board": "plated holes, silkscreen outline and pin-1 mark only"
+  },
+  {
+   "refdes": [
     "J1"
    ],
    "part": "GY-521 MPU-6050 module (SZH-EK007, devicemart 1247052)",
@@ -9059,7 +8841,7 @@
    ],
    "part": "BMP280 module TYE-BMP29 (devicemart 15442588)",
    "how": "plug its right-angle 6-pin header into socket J2 (if the delivered module has a straight header, solder a right-angle strip first - header type NOT_VERIFIED)",
-   "on_board": "socket J2 (JLC)"
+   "on_board": "socket J2 (bought and soldered by the user since 2026-11-12)"
   },
   {
    "refdes": [
@@ -9075,7 +8857,7 @@
    ],
    "part": "SparkFun OpenLog DEV-13712 (logger, treated like a sensor module: D5)",
    "how": "user solders a right-angle 1x6 pin header onto the OpenLog (6 joints on the module) and plugs it into socket J5; fit NOT_VERIFIED (D5, D15)",
-   "on_board": "socket J5 (JLC)"
+   "on_board": "socket J5 (bought and soldered by the user since 2026-11-12)"
   },
   {
    "refdes": [
@@ -9095,6 +8877,8 @@
  ],
  "off_board_purchase": [
   "4 x ATmega128A-AU (unless JLC fits them, D4) - domestic distributor or LCSC C6510",
+  "1 x ESP-12F Wi-Fi module (Ai-Thinker ESP8266MOD, 4 MB flash, PCB antenna; LCSC C82891 as the reference part) - LCSC or a domestic shop; the user solders it (user decision 2026-11-12)",
+  "the 12 through-hole connectors per board that JLC no longer fits (user decision 2026-11-12): 2 x socket 1x6 right-angle 2.54 (J2/J5, MPN HC-PM254-8.5H-1x6PW, LCSC C22436147); 5 x pin header 1x3 right-angle 2.54 (J8/J9/J10/J11/J12, MPN HX PZ2.54-1x3P WZ, LCSC C32713262); 1 x Molex 22035025 SPOX 2P vertical (J14, MPN 22035025, LCSC C5364642); 2 x JST B2B-PH-K-S 2P vertical (J15/J17, MPN B2B-PH-K-S(LF)(SN), LCSC C131337); 1 x pin header 1x2 right-angle 2.54 (J16, MPN HX PZ2.54-1x2P WZ, LCSC C32713261); 1 x pin header 1x4 right-angle 2.54 (J18, MPN HX PZ2.54-1x4P WZ, LCSC C32713263) - LCSC or a domestic shop",
   "GY-521 MPU-6050 module; BMP280 TYE-BMP29 module (+ a right-angle 1x6 pin strip if its header is straight) - devicemart (as in rev 2c)",
   "NEO-7M SZH-NT07 (devicemart) + GPS lead: a ready-made 4-wire JST-GH 1.25 mm lead (domestic shop), or 2 x GHR-04V-S housings + 8 x SSHL-002T-P0.2 contacts from LCSC (C160418, C189897; crimp tool needed)",
   "SparkFun OpenLog DEV-13712 + microSD card + one right-angle 1x6 2.54 mm pin header (any 2.54 mm right-angle strip cut to 6 pins from a domestic shop; LCSC C55629820)",
@@ -9351,20 +9135,20 @@
  "user_decisions": [
   "D1 Which 5 V converter replaces the Pololu module? Default: A. Recommended: A.",
   "D2 Battery cut-off thresholds of the logic pack (1S Li-ion). Default: keep. Recommended: keep.",
-  "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep.",
+  "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep. AMENDED 2026-11-12: two of the three (J8-J12, J2 / J5) are now bought and soldered by the user; the codes remain the purchase references.",
   "D4 Who fits the four ATmega128A-AU? Default: user solders them (the request excludes the MCUs from the JLC BOM). Recommended: JLC fits them.",
   "D5 How is the OpenLog fitted? It is a logger, not a sensor, and it is sold without a header. Default: plug-in; the OpenLog counts as a user-fitted module like the sensors. Recommended: plug-in.",
   "D6 Programming access: 5 x 2x3 ISP / ESP headers (J3, J19..J22) and 3 x 1x2 reset-hold jumpers (J24..J26) sit in the cable-tie band, where nothing may be fitted. Default: A. Recommended: B if the implementation finds legal positions, otherwise A.",
-  "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT.",
+  "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT. AMENDED 2026-11-12: still THT, but bought and soldered by the user (not by JLC).",
   "D8 Level-shifter FET (8 per board). Default: C40912. Recommended: C40912.",
-  "D9 JLC order type. Default: Standard. Recommended: Standard.",
-  "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9).",
+  "D9 JLC order type. Default: Economic (user decision 2026-11-12; the plan of 2026-11-10 used and recommended Standard).",
+  "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9). AMENDED 2026-11-12: Economic has no rails - the order page row is 'Tooling holes: Added by JLCPCB' (M order page 2026-11-12); where JLC puts them on this board is NOT_VERIFIED.",
   "D11 Quantities. Default: 5 PCBs / 2 assembled. Recommended: 2 assembled first.",
-  "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147.",
+  "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147. AMENDED 2026-11-12: the user buys and solders the sockets; the codes are purchase references and the JLC order-day gate no longer covers them.",
   "D13 Battery-voltage divider R15 / R16 (47k / 47k) stays as in rev 2c. Default: keep. Recommended: keep.",
-  "D14 Ask JLC to bake moisture-sensitive parts (ESP-12F, LEDs)? Default: yes (order remark). Recommended: yes.",
+  "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F). AMENDED 2026-11-12 (order page, M): 'Bake Components' is not available for Economic PCB Assembly, so it cannot be ordered with this order type.",
   "D15 Module dimensions for the renders and the fit checks. Default: assumed outlines, every picture and check labelled A until measured. Recommended: measure.",
-  "D16 PCB options on the order page that the plan did not name before. Default: as recommended. Recommended: ENIG, green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC.",
+  "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC. AMENDED 2026-11-12 (order page, M): with LeadFree HASL on this 4-layer board the page disables 'Tented' and selects 'Plugged' via covering for free.",
   "D17 Bare spare boards (PCB quantity above the assembled quantity). Default: accept. Recommended: accept."
  ],
  "user_decision_details": [
@@ -9403,7 +9187,8 @@
    "recommendation": "keep",
    "reason": "C11366 has 403792 in stock against 2264; the HX headers 27550..55654 against 1750..2000; C22436147 is the only 1x6 right-angle socket whose manufacturer drawing was read against the KiCad footprint (review E-10).",
    "default_used_by_the_plan": "keep",
-   "consequence_of_the_default": "none on the board function; the rev 2c numbers stay as named alternates in the order-day gate."
+   "consequence_of_the_default": "none on the board function; the rev 2c numbers stay as named alternates in the order-day gate.",
+   "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: two of the three (J8-J12, J2 / J5) are now bought and soldered by the user; the codes remain the purchase references."
   },
   {
    "id": "D4",
@@ -9452,7 +9237,8 @@
    "recommendation": "THT",
    "reason": "no footprint or position change.",
    "default_used_by_the_plan": "THT",
-   "consequence_of_the_default": "4 leads to cut per board."
+   "consequence_of_the_default": "4 leads to cut per board.",
+   "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: still THT, but bought and soldered by the user (not by JLC)."
   },
   {
    "id": "D8",
@@ -9476,7 +9262,8 @@
    "recommendation": "Standard",
    "reason": "M (C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/order_mech_work/measure_board.json, section A): 27 part bodies are closer than 2.5 mm to the board edge (T&C 2.3) and two are closer than the 0.3 mm that JLC suggests for Economic orders (U7 0.15 mm, J15 0.29 mm; depanel tolerance about 0.2 mm, F). The connector positions are fixed by the vehicle, so the parts cannot move. Edge rails are JLC's own answer for parts near the edge; Standard also solders at 240 C peak instead of 255 C.",
    "default_used_by_the_plan": "Standard",
-   "consequence_of_the_default": "about 42..74 USD more than Economic; boards arrive with the rails attached (snap off; depanelling fee NOT_VERIFIED). Gerber, BOM and CPL are the same files for both types. Acceptance by JLC is NOT_VERIFIED for both types until the user sees JLC's DFM result and quote; do not pay before that."
+   "consequence_of_the_default": "about 42..74 USD more than Economic; boards arrive with the rails attached (snap off; depanelling fee NOT_VERIFIED). Gerber, BOM and CPL are the same files for both types. Acceptance by JLC is NOT_VERIFIED for both types until the user sees JLC's DFM result and quote; do not pay before that.",
+   "amended_2026_11_12": "2026-11-12 user decision: Economic PCBA. The Standard option stays the fallback if JLC rejects the Economic order."
   },
   {
    "id": "D10",
@@ -9489,7 +9276,8 @@
    "recommendation": "on the rails (follows D9)",
    "reason": "M measure_board.json section D: the -x,-y corner has no free position at all and the +x,-y corner none free of tracks on the rev 2c board.",
    "default_used_by_the_plan": "none in the design; H1 / H2 of the first plan are dropped",
-   "consequence_of_the_default": "none with a Standard order."
+   "consequence_of_the_default": "none with a Standard order.",
+   "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: Economic has no rails - the order page row is 'Tooling holes: Added by JLCPCB' (M order page 2026-11-12); where JLC puts them on this board is NOT_VERIFIED."
   },
   {
    "id": "D11",
@@ -9514,7 +9302,8 @@
    "recommendation": "C22436147",
    "reason": "only part with a drawing that matches the KiCad footprint; 40 pieces are needed for 20 boards.",
    "default_used_by_the_plan": "C22436147 with a hard stock check on the order day; then C55629861, then C54876735",
-   "consequence_of_the_default": "if all three are short on the order day the order waits; the user may also pre-order the part into the JLC parts library (user action)."
+   "consequence_of_the_default": "if all three are short on the order day the order waits; the user may also pre-order the part into the JLC parts library (user action).",
+   "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12: the user buys and solders the sockets; the codes are purchase references and the JLC order-day gate no longer covers them."
   },
   {
    "id": "D13",
@@ -9538,7 +9327,9 @@
    "recommendation": "yes",
    "reason": "T&C 5.10 offers it; the fee is NOT_VERIFIED.",
    "default_used_by_the_plan": "yes (order remark)",
-   "consequence_of_the_default": "small fee, unknown."
+   "consequence_of_the_default": "small fee, unknown.",
+   "amended_2026_11_12": "2026-11-12: baking is not ordered - the ESP-12F (the reason for the request) is fitted by the user; the LEDs alone were not judged worth the fee. The user can reverse this on the order page.",
+   "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12 (order page, M): 'Bake Components' is not available for Economic PCB Assembly, so it cannot be ordered with this order type."
   },
   {
    "id": "D15",
@@ -9563,7 +9354,9 @@
    "recommendation": "ENIG, green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC",
    "reason": "ENIG gives flat pads for the 0.8 mm pitch MCU pads and the bare holes that the user solders later; the rest are JLC defaults.",
    "default_used_by_the_plan": "as recommended",
-   "consequence_of_the_default": "ENIG surcharge and the exact option names are NOT_VERIFIED (nothing was uploaded)."
+   "consequence_of_the_default": "ENIG surcharge and the exact option names are NOT_VERIFIED (nothing was uploaded).",
+   "amended_2026_11_12": "2026-11-12 user decision: lead-free HASL instead of ENIG (order page name 'LeadFree HASL'); the board file and the gerber job file say 'HAL lead-free'.",
+   "amended_2026_11_12_tht_by_user": "AMENDED 2026-11-12 (order page, M): with LeadFree HASL on this 4-layer board the page disables 'Tented' and selects 'Plugged' via covering for free."
   },
   {
    "id": "D17",
@@ -9841,20 +9634,20 @@
   "decisions": [
    "D1: 5 V 변환 회로 방식 (기본: A안 TPS61023 승압 + TLV3012B 차단)",
    "D2: 배터리 차단 전압 (기본: 켜짐 3.59 V / 꺼짐 3.13 V(공칭) 유지)",
-   "D3: 요청과 무관하게 바꾼 부품 번호 3건을 유지할지 (기본: 유지(재고가 더 많거나 도면이 확인된 부품))",
+   "D3: 요청과 무관하게 바꾼 부품 번호 3건을 유지할지 (기본: 유지. 2026-11-12부터 그중 2건(J8~J12, J2/J5)은 사용자가 직접 사서 납땜하는 부품이며, 번호는 구매 참고용)",
    "D4: MCU를 누가 붙일지 (기본: 직접 납땜(요청대로). 권장은 JLC 실장)",
    "D5: OpenLog 장착 방법 (기본: 헤더를 납땜해 J5에 꽂기. 안 맞으면 6선 케이블)",
    "D6: 프로그래밍 단자 (기본: A안 빈 구멍(직접 납땜 36핀 또는 포고핀). B안은 가능 여부 보고 후 결정)",
-   "D7: J15/J17 커넥터 (기본: 스루홀, 다리 4개 직접 절단)",
+   "D7: J15/J17 커넥터 (기본: 스루홀. 2026-11-12부터 사용자가 직접 사서 납땜하고 다리도 직접 절단)",
    "D8: 레벨시프터 FET (기본: C40912 유지)",
-   "D9: 주문 방식 (기본: Standard(권장과 같음))",
-   "D10: 툴링 홀 (기본: 설계에 넣지 않음. JLC 레일에 생김)",
+   "D9: 주문 방식 (기본: Economic - 2026-11-12 사용자 결정. 2026-11-10 계획의 기본·권장은 Standard)",
+   "D10: 툴링 홀 (기본: 설계에 넣지 않음. Economic 주문에는 레일이 없어 JLC가 기판 안에 뚫음 - 주문 화면 'Tooling holes: Added by JLCPCB', 위치는 NOT_VERIFIED)",
    "D11: 수량 (기본: PCB 5장, 실장 2장)",
-   "D12: 모듈 소켓 J2/J5 (기본: C22436147, 주문일 재고 부족 시 C55629861, 그다음 C54876735)",
+   "D12: 모듈 소켓 J2/J5 (기본: C22436147. 2026-11-12부터 사용자가 직접 사서 납땜. 구하기 어려우면 C55629861, 그다음 C54876735 - 풋프린트 호환은 NOT_VERIFIED)",
    "D13: 배터리 전압 분압 저항 (기본: 그대로. 차단 후에도 약 40 uA가 흐르므로 스위치를 꺼야 함)",
-   "D14: 흡습 부품 베이킹 요청 (기본: 요청함(수수료 미확인))",
+   "D14: 흡습 부품 베이킹 요청 (기본: 요청 안 함 - 2026-11-12 변경. 주문 화면에서 Economic PCBA는 베이킹을 고를 수 없음. 계획은 요청함)",
    "D15: 모듈 치수 (기본: 가정값 사용, 그림에 '가정' 표시. 실측을 권장)",
-   "D16: 표면처리·색상 등 (기본: ENIG, 녹색, JLC 기본값(추가 요금 미확인))",
+   "D16: 표면처리·색상 등 (기본: 무연 HASL - 2026-11-12 사용자 결정. 계획의 권장은 ENIG. 녹색, JLC 기본값. 비아 덮기는 주문 화면이 Plugged로 정함)",
    "D17: 실장하지 않은 여분 보드 (기본: 기구 확인용으로만 사용)"
   ]
  },
@@ -10226,5 +10019,777 @@
     ]
    }
   }
- }
+ },
+ "amendments": [
+  {
+   "date": "2026-11-12",
+   "by": "user decision, applied by <scratch>/impl/esp_user/amend_plan.py",
+   "request_verbatim": "아, esp도 내가 직접 실장할거야. 그럼 이코노믹으로 진행하고 pcb의 코팅도 무연으로 해줘",
+   "meaning": [
+    "U7 ESP-12F is fitted by the user (fit user), not by JLC: no BOM / CPL row, no paste aperture; footprint, nets, position and silkscreen unchanged",
+    "default order type: JLC Economic PCBA instead of Standard",
+    "PCB surface finish: lead-free HASL instead of ENIG",
+    "moisture bake: not ordered any more (reversible on the order page)"
+   ],
+   "plan_sha256_before": "415d1e20a0903103d6bb4b48253ffc7054cfd3d2371c008706b906fe5c1eda15",
+   "changed": [
+    {
+     "path": "changes[U7].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[U7].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[U7].rev3.jlc_code",
+     "from": "C82891",
+     "to": null
+    },
+    {
+     "path": "changes[U7].user_fitted_reference_code",
+     "from": null,
+     "to": "C82891"
+    },
+    {
+     "path": "changes[U7].reason",
+     "from": "(text)",
+     "to": "(text) + AMENDED 2026-11-12 (user decision): the user solders the ESP-12F after delivery; it is in neither JLC BOM / CPL pair and gets no paste aperture. Footprint, symbol, nets and position are unchanged; LCSC C82891 stays the reference part for the purchase list."
+    },
+    {
+     "path": "bom_lines[line 31, C82891, ESP-12F, U7]",
+     "from": "present",
+     "to": "removed (the other lines keep their numbers; 31 is unused)"
+    },
+    {
+     "path": "user_fitted[1]",
+     "from": null,
+     "to": "U7 ESP-12F entry"
+    },
+    {
+     "path": "off_board_purchase[1]",
+     "from": null,
+     "to": "1 x ESP-12F Wi-Fi module (Ai-Thinker ESP8266MOD, 4 MB flash, PCB antenna; LCSC C82891 as the reference part) - LCSC or a domestic shop; the user solders it (user decision 2026-11-12)"
+    },
+    {
+     "path": "user_decisions[D9]",
+     "from": "D9 JLC order type. Default: Standard. Recommended: Standard.",
+     "to": "D9 JLC order type. Default: Economic (user decision 2026-11-12; the plan of 2026-11-10 used and recommended Standard)."
+    },
+    {
+     "path": "user_decisions[D14]",
+     "from": "D14 Ask JLC to bake moisture-sensitive parts (ESP-12F, LEDs)? Default: yes (order remark). Recommended: yes.",
+     "to": "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F)."
+    },
+    {
+     "path": "user_decisions[D16]",
+     "from": "D16 PCB options on the order page that the plan did not name before. Default: as recommended. Recommended: ENIG, green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC.",
+     "to": "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC."
+    },
+    {
+     "path": "user_decision_details[D9].amended_2026_11_12",
+     "from": null,
+     "to": "2026-11-12 user decision: Economic PCBA. The Standard option stays the fallback if JLC rejects the Economic order."
+    },
+    {
+     "path": "user_decision_details[D14].amended_2026_11_12",
+     "from": null,
+     "to": "2026-11-12: baking is not ordered - the ESP-12F (the reason for the request) is fitted by the user; the LEDs alone were not judged worth the fee. The user can reverse this on the order page."
+    },
+    {
+     "path": "user_decision_details[D16].amended_2026_11_12",
+     "from": null,
+     "to": "2026-11-12 user decision: lead-free HASL instead of ENIG (order page name 'LeadFree HASL'); the board file and the gerber job file say 'HAL lead-free'."
+    },
+    {
+     "path": "user_report_ko.decisions[D9]",
+     "from": "D9: 주문 방식 (기본: Standard(권장과 같음))",
+     "to": "D9: 주문 방식 (기본: Economic - 2026-11-12 사용자 결정. 2026-11-10 계획의 기본·권장은 Standard)"
+    },
+    {
+     "path": "user_report_ko.decisions[D14]",
+     "from": "D14: 흡습 부품 베이킹 요청 (기본: 요청함(수수료 미확인))",
+     "to": "D14: 흡습 부품 베이킹 요청 (기본: 요청 안 함 - 2026-11-12 변경, ESP-12F를 사용자가 직접 실장하게 되어서. 계획은 요청함)"
+    },
+    {
+     "path": "user_report_ko.decisions[D16]",
+     "from": "D16: 표면처리·색상 등 (기본: ENIG, 녹색, JLC 기본값(추가 요금 미확인))",
+     "to": "D16: 표면처리·색상 등 (기본: 무연 HASL - 2026-11-12 사용자 결정. 계획의 권장은 ENIG. 녹색, JLC 기본값)"
+    }
+   ],
+   "not_rewritten": "every other text of this file (order_options, after_delivery, user_report_ko.order_type, open_risks, review_findings, interpretation I3, render_set ...) is the plan as settled on 2026-11-10 and may still say Standard, ENIG, 40 lines, 157 parts or 'ESP-12F fitted by JLC'. Where such a text disagrees with this amendment, the amendment holds. spec/REV3_PLAN.md was generated from the unamended file and carries a note on top.",
+   "counts_after": {
+    "jlc_bom_lines": 39,
+    "smt_lines": 33,
+    "tht_lines": 6,
+    "jlc_parts_per_board": 156,
+    "with_mcu_pair": {
+     "jlc_bom_lines": 40,
+     "jlc_parts_per_board": 160
+    }
+   },
+   "id": "esp_by_user_economic_hasl",
+   "later_amendment_same_day": "'tht_by_user': the six THT lines left the JLC assembly as well; the counts_after of this entry (39 lines / 156 parts) were valid only between the two"
+  },
+  {
+   "id": "tht_by_user",
+   "date": "2026-11-12",
+   "by": "user decision (meaning decided by the main session), applied by <scratch>/impl/esp_user/amend_plan2.py",
+   "request_verbatim": "이코노믹으로 스루홀 제외하고 어떤 부품을 따로 구매해야하는건지 리스트를 정리해줘",
+   "meaning": [
+    "all six THT lines (J2, J5; J8-J12; J14; J15, J17; J16; J18 = 12 parts) are bought and soldered by the user (fit user), not by JLC: no BOM / CPL row; footprints, nets, positions and silkscreen unchanged. The SMD connector J7 stays JLC-fitted. The JLC order is SMT only, without any hand-soldered part",
+    "moisture bake: not available for Economic PCBA on the order page, so it is not ordered",
+    "via covering: the order page selects 'Plugged' (free upgrade from Tented) with LeadFree HASL on this 4-layer board"
+   ],
+   "plan_sha256_before": "0e1dc9b1876e23278a745ae3cd8dc655e59b6b3e749c7ce7f8f7fca796f59ff2",
+   "changed": [
+    {
+     "path": "changes[J2].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J2].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J2].rev3.jlc_code",
+     "from": "C22436147",
+     "to": null
+    },
+    {
+     "path": "changes[J2].user_fitted_reference_code",
+     "from": null,
+     "to": "C22436147"
+    },
+    {
+     "path": "changes[J5].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J5].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J5].rev3.jlc_code",
+     "from": "C22436147",
+     "to": null
+    },
+    {
+     "path": "changes[J5].user_fitted_reference_code",
+     "from": null,
+     "to": "C22436147"
+    },
+    {
+     "path": "changes[J8].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J8].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J8].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J8].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J9].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J9].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J9].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J9].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J10].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J10].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J10].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J10].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J11].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J11].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J11].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J11].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J12].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J12].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J12].rev3.jlc_code",
+     "from": "C32713262",
+     "to": null
+    },
+    {
+     "path": "changes[J12].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713262"
+    },
+    {
+     "path": "changes[J14].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J14].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J14].rev3.jlc_code",
+     "from": "C5364642",
+     "to": null
+    },
+    {
+     "path": "changes[J14].user_fitted_reference_code",
+     "from": null,
+     "to": "C5364642"
+    },
+    {
+     "path": "changes[J15].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J15].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J15].rev3.jlc_code",
+     "from": "C131337",
+     "to": null
+    },
+    {
+     "path": "changes[J15].user_fitted_reference_code",
+     "from": null,
+     "to": "C131337"
+    },
+    {
+     "path": "changes[J17].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J17].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J17].rev3.jlc_code",
+     "from": "C131337",
+     "to": null
+    },
+    {
+     "path": "changes[J17].user_fitted_reference_code",
+     "from": null,
+     "to": "C131337"
+    },
+    {
+     "path": "changes[J16].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J16].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J16].rev3.jlc_code",
+     "from": "C32713261",
+     "to": null
+    },
+    {
+     "path": "changes[J16].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713261"
+    },
+    {
+     "path": "changes[J18].rev3.fit",
+     "from": "jlc",
+     "to": "user"
+    },
+    {
+     "path": "changes[J18].rev3.populate_by",
+     "from": "JLC",
+     "to": "user"
+    },
+    {
+     "path": "changes[J18].rev3.jlc_code",
+     "from": "C32713263",
+     "to": null
+    },
+    {
+     "path": "changes[J18].user_fitted_reference_code",
+     "from": null,
+     "to": "C32713263"
+    },
+    {
+     "path": "changes[J2, J5, J8-J12, J14-J18].reason / assembly_change",
+     "from": "(text)",
+     "to": "(text) + the amendment sentence"
+    },
+    {
+     "path": "bom_lines[line 35, C22436147, socket 1x6 right-angle 2.54, J2/J5]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 36, C32713262, pin header 1x3 right-angle 2.54, J8/J9/J10/J11/J12]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 37, C5364642, Molex 22035025 SPOX 2P vertical, J14]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 38, C131337, JST B2B-PH-K-S 2P vertical, J15/J17]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 39, C32713261, pin header 1x2 right-angle 2.54, J16]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines[line 40, C32713263, pin header 1x4 right-angle 2.54, J18]",
+     "from": "present",
+     "to": "moved to bom_lines_now_bought_by_the_user (line number unused)"
+    },
+    {
+     "path": "bom_lines_now_bought_by_the_user",
+     "from": null,
+     "to": "7 former BOM lines, verbatim with their JLC records of 2026-11-10 (stock / price fields are that day's, not re-checked): line 31 ESP-12F restored from the unamended plan, lines 35-40 the six THT lines"
+    },
+    {
+     "path": "user_fitted[J2].on_board",
+     "from": "socket J2 (JLC)",
+     "to": "socket J2 (bought and soldered by the user since 2026-11-12)"
+    },
+    {
+     "path": "user_fitted[J5].on_board",
+     "from": "socket J5 (JLC)",
+     "to": "socket J5 (bought and soldered by the user since 2026-11-12)"
+    },
+    {
+     "path": "user_fitted[2]",
+     "from": null,
+     "to": "entry for the 12 THT connectors"
+    },
+    {
+     "path": "off_board_purchase[2]",
+     "from": null,
+     "to": "the 12 through-hole connectors per board that JLC no longer fits (user decision 2026-11-12): 2 x socket 1x6 right-angle 2.54 (J2/J5, MPN HC-PM254-8.5H-1x6PW, LCSC C22436147); 5 x pin header 1x3 right-angle 2.54 (J8/J9/J10/J11/J12, MPN HX PZ2.54-1x3P WZ, LCSC C32713262); 1 x Molex 22035025 SPOX 2P vertical (J14, MPN 22035025, LCSC C5364642); 2 x JST B2B-PH-K-S 2P vertical (J15/J17, MPN B2B-PH-K-S(LF)(SN), LCSC C131337); 1 x pin header 1x2 right-angle 2.54 (J16, MPN HX PZ2.54-1x2P WZ, LCSC C32713261); 1 x pin header 1x4 right-angle 2.54 (J18, MPN HX PZ2.54-1x4P WZ, LCSC C32713263) - LCSC or a domestic shop"
+    },
+    {
+     "path": "user_decisions[D3]",
+     "from": "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep.",
+     "to": "D3 Three part-number changes are not forced by the request (larger stock or a verified drawing). Default: keep. Recommended: keep. AMENDED 2026-11-12: two of the three (J8-J12, J2 / J5) are now bought and soldered by the user; the codes remain the purchase references."
+    },
+    {
+     "path": "user_decisions[D7]",
+     "from": "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT.",
+     "to": "D7 Switch and buzzer connectors J15 / J17 (JST-PH). Default: THT. Recommended: THT. AMENDED 2026-11-12: still THT, but bought and soldered by the user (not by JLC)."
+    },
+    {
+     "path": "user_decisions[D10]",
+     "from": "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9).",
+     "to": "D10 Tooling holes. Default: none in the design; H1 / H2 of the first plan are dropped. Recommended: on the rails (follows D9). AMENDED 2026-11-12: Economic has no rails - the order page row is 'Tooling holes: Added by JLCPCB' (M order page 2026-11-12); where JLC puts them on this board is NOT_VERIFIED."
+    },
+    {
+     "path": "user_decisions[D12]",
+     "from": "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147.",
+     "to": "D12 Module socket J2 / J5 (1x6 right-angle). Default: C22436147 with a hard stock check on the order day; then C55629861, then C54876735. Recommended: C22436147. AMENDED 2026-11-12: the user buys and solders the sockets; the codes are purchase references and the JLC order-day gate no longer covers them."
+    },
+    {
+     "path": "user_decisions[D14]",
+     "from": "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F).",
+     "to": "D14 Ask JLC to bake moisture-sensitive parts (LEDs; the ESP-12F is fitted by the user since 2026-11-12)? Default: no (2026-11-12; the plan of 2026-11-10 said yes because of the ESP-12F). AMENDED 2026-11-12 (order page, M): 'Bake Components' is not available for Economic PCB Assembly, so it cannot be ordered with this order type."
+    },
+    {
+     "path": "user_decisions[D16]",
+     "from": "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC.",
+     "to": "D16 PCB options on the order page that the plan did not name before. Default: lead-free HASL (user decision 2026-11-12; the plan of 2026-11-10 recommended ENIG), green mask, white legend, JLC default 4-layer stack-up and copper, tented vias, order number placed by JLC. AMENDED 2026-11-12 (order page, M): with LeadFree HASL on this 4-layer board the page disables 'Tented' and selects 'Plugged' via covering for free."
+    },
+    {
+     "path": "user_decision_details[D3, D7, D10, D12, D14, D16].amended_2026_11_12_tht_by_user",
+     "from": null,
+     "to": "(the same sentences)"
+    },
+    {
+     "path": "user_report_ko.decisions[D3]",
+     "from": "D3: 요청과 무관하게 바꾼 부품 번호 3건을 유지할지 (기본: 유지(재고가 더 많거나 도면이 확인된 부품))",
+     "to": "D3: 요청과 무관하게 바꾼 부품 번호 3건을 유지할지 (기본: 유지. 2026-11-12부터 그중 2건(J8~J12, J2/J5)은 사용자가 직접 사서 납땜하는 부품이며, 번호는 구매 참고용)"
+    },
+    {
+     "path": "user_report_ko.decisions[D7]",
+     "from": "D7: J15/J17 커넥터 (기본: 스루홀, 다리 4개 직접 절단)",
+     "to": "D7: J15/J17 커넥터 (기본: 스루홀. 2026-11-12부터 사용자가 직접 사서 납땜하고 다리도 직접 절단)"
+    },
+    {
+     "path": "user_report_ko.decisions[D10]",
+     "from": "D10: 툴링 홀 (기본: 설계에 넣지 않음. JLC 레일에 생김)",
+     "to": "D10: 툴링 홀 (기본: 설계에 넣지 않음. Economic 주문에는 레일이 없어 JLC가 기판 안에 뚫음 - 주문 화면 'Tooling holes: Added by JLCPCB', 위치는 NOT_VERIFIED)"
+    },
+    {
+     "path": "user_report_ko.decisions[D12]",
+     "from": "D12: 모듈 소켓 J2/J5 (기본: C22436147, 주문일 재고 부족 시 C55629861, 그다음 C54876735)",
+     "to": "D12: 모듈 소켓 J2/J5 (기본: C22436147. 2026-11-12부터 사용자가 직접 사서 납땜. 구하기 어려우면 C55629861, 그다음 C54876735 - 풋프린트 호환은 NOT_VERIFIED)"
+    },
+    {
+     "path": "user_report_ko.decisions[D14]",
+     "from": "D14: 흡습 부품 베이킹 요청 (기본: 요청 안 함 - 2026-11-12 변경, ESP-12F를 사용자가 직접 실장하게 되어서. 계획은 요청함)",
+     "to": "D14: 흡습 부품 베이킹 요청 (기본: 요청 안 함 - 2026-11-12 변경. 주문 화면에서 Economic PCBA는 베이킹을 고를 수 없음. 계획은 요청함)"
+    },
+    {
+     "path": "user_report_ko.decisions[D16]",
+     "from": "D16: 표면처리·색상 등 (기본: 무연 HASL - 2026-11-12 사용자 결정. 계획의 권장은 ENIG. 녹색, JLC 기본값)",
+     "to": "D16: 표면처리·색상 등 (기본: 무연 HASL - 2026-11-12 사용자 결정. 계획의 권장은 ENIG. 녹색, JLC 기본값. 비아 덮기는 주문 화면이 Plugged로 정함)"
+    }
+   ],
+   "not_rewritten": "as in the first amendment: every other text of this file is the plan as settled on 2026-11-10 and may still say 'the 6 THT lines are soldered by JLC', 40 lines or 157 parts. Where such a text disagrees with an amendment, the amendment holds.",
+   "counts_after": {
+    "jlc_bom_lines": 33,
+    "smt_lines": 33,
+    "tht_lines": 0,
+    "jlc_parts_per_board": 144,
+    "with_mcu_pair": {
+     "jlc_bom_lines": 34,
+     "jlc_parts_per_board": 148
+    },
+    "fit_user_parts": 14
+   }
+  }
+ ],
+ "bom_lines_now_bought_by_the_user": [
+  {
+   "comment": "ESP-12F",
+   "designators": [
+    "U7"
+   ],
+   "footprint": "ESP-12E",
+   "jlc_code": "C82891",
+   "mpn": "ESP-12F(ESP8266MOD)",
+   "library_type": "Extended",
+   "assembly_process": "SMT",
+   "stock": 31195,
+   "need": 20,
+   "fetched_at": "2026-11-10T20:57:14+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C82891.json",
+   "qty_per_board": 1,
+   "brand": "Ai-Thinker",
+   "package": "SMD,24x16mm",
+   "assembly_mode": "smtWeld",
+   "can_presale": 30239,
+   "available_conservative": 30239,
+   "need_20_boards": 20,
+   "loss_number": 0,
+   "least_number": 1,
+   "component_product_type": 0,
+   "is_buy_component": "1",
+   "no_buy_reason": null,
+   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_C82891.json",
+   "unit_price_usd_tier1": 2.888,
+   "i7": "ORDERABLE",
+   "thin_stock": false,
+   "kicad_symbol": "RF_Module:ESP-12F",
+   "kicad_footprint": "RF_Module:ESP-12E",
+   "role": "Wi-Fi module (ESP-12F in place of ESP-12E)",
+   "describe": "-40℃~+85℃ -90dBm 120mA 16dBm 170mA 2.4GHz 3.3V ESP8266 Chip On-board PCB Antenna Over-the-air (OTA) update UART、SPI、I2C SMD,24x16mm WiFi Modules ROHS",
+   "line": 31,
+   "removed_by_amendment": "esp_by_user_economic_hasl"
+  },
+  {
+   "comment": "socket 1x6 right-angle 2.54",
+   "designators": [
+    "J2",
+    "J5"
+   ],
+   "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
+   "jlc_code": "C22436147",
+   "mpn": "HC-PM254-8.5H-1x6PW",
+   "library_type": "Extended",
+   "assembly_process": "THT",
+   "stock": 553,
+   "need": 40,
+   "fetched_at": "2026-11-10T21:41:22+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/C22436147.json",
+   "qty_per_board": 2,
+   "brand": "Hong Cheng",
+   "package": "Push-Pull,P=2.54mm",
+   "assembly_mode": "manualWeld",
+   "can_presale": 543,
+   "available_conservative": 543,
+   "need_20_boards": 40,
+   "loss_number": 0,
+   "least_number": 2,
+   "component_product_type": 0,
+   "is_buy_component": "1",
+   "no_buy_reason": null,
+   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_female_header_right_angle_1x6P_2.54mm.json",
+   "unit_price_usd_tier1": 0.1298,
+   "i7": "ORDERABLE",
+   "thin_stock": true,
+   "kicad_symbol": "Connector_Generic:Conn_01x06",
+   "kicad_footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
+   "role": "BMP280 socket J2 and OpenLog socket J5 (THT)",
+   "describe": "-40℃~+105℃ 1 1x6P 2.54mm 2.5mm 3A 3mm 6P Brass Gold Right Angle Side Square Hole Push-Pull,P=2.54mm Female Headers ROHS",
+   "line": 35,
+   "removed_by_amendment": "tht_by_user"
+  },
+  {
+   "comment": "pin header 1x3 right-angle 2.54",
+   "designators": [
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12"
+   ],
+   "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+   "jlc_code": "C32713262",
+   "mpn": "HX PZ2.54-1x3P WZ",
+   "library_type": "Extended",
+   "assembly_process": "THT",
+   "stock": 30851,
+   "need": 100,
+   "fetched_at": "2026-11-10T20:57:26+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713262.json",
+   "qty_per_board": 5,
+   "brand": "hanxia",
+   "package": "Push-Pull,P=2.54mm",
+   "assembly_mode": "manualWeld",
+   "can_presale": 30685,
+   "available_conservative": 30685,
+   "need_20_boards": 100,
+   "loss_number": 0,
+   "least_number": 2,
+   "component_product_type": 0,
+   "is_buy_component": "1",
+   "no_buy_reason": null,
+   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_pin_header_right_angle_1x3P_2.54mm.json",
+   "unit_price_usd_tier1": 0.0285,
+   "i7": "ORDERABLE",
+   "thin_stock": false,
+   "kicad_symbol": "Connector_Generic:Conn_01x03",
+   "kicad_footprint": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+   "role": "vane servo and ESC lead headers J8-J12 (THT)",
+   "describe": "-40℃~+105℃ 1 1kV 1x3P 2.54mm 2.5mm 3A 3P 3mm 6mm Black Brass Gold Right Angle Square pin Push-Pull,P=2.54mm Pin Headers ROHS",
+   "line": 36,
+   "removed_by_amendment": "tht_by_user"
+  },
+  {
+   "comment": "Molex 22035025 SPOX 2P vertical",
+   "designators": [
+    "J14"
+   ],
+   "footprint": "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+   "jlc_code": "C5364642",
+   "mpn": "22035025",
+   "library_type": "Extended",
+   "assembly_process": "THT",
+   "stock": 5877,
+   "need": 21,
+   "fetched_at": "2026-11-10T20:57:29+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C5364642.json",
+   "qty_per_board": 1,
+   "brand": "MOLEX",
+   "package": "Plugin,P=2.5mm",
+   "assembly_mode": "manualWeld",
+   "can_presale": 5456,
+   "available_conservative": 5456,
+   "need_20_boards": 20,
+   "loss_number": 1,
+   "least_number": 2,
+   "component_product_type": 0,
+   "is_buy_component": "1",
+   "no_buy_reason": null,
+   "preferred_flag_source": "NOT_VERIFIED (code not in any cached search list; counted as plain Extended)",
+   "unit_price_usd_tier1": 0.0928,
+   "i7": "ORDERABLE",
+   "thin_stock": false,
+   "kicad_symbol": "Connector_Generic:Conn_01x02",
+   "kicad_footprint": "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+   "role": "logic battery connector J14 (THT)",
+   "describe": "-55℃~+105℃ 1 1x2P 2 2.5mm 250V 2P 3A 4.9mm 5.9mm 7.4mm Brass Mini-SPOX(5264) PA Through Hole Tin UL94V-0 White 插件,P=2.5mm Wire To Board Connector ROHS",
+   "line": 37,
+   "removed_by_amendment": "tht_by_user"
+  },
+  {
+   "comment": "JST B2B-PH-K-S 2P vertical",
+   "designators": [
+    "J15",
+    "J17"
+   ],
+   "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+   "jlc_code": "C131337",
+   "mpn": "B2B-PH-K-S(LF)(SN)",
+   "library_type": "Extended",
+   "assembly_process": "THT",
+   "stock": 304854,
+   "need": 41,
+   "fetched_at": "2026-11-10T20:57:31+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C131337.json",
+   "qty_per_board": 2,
+   "brand": "JST",
+   "package": "Plugin,P=2mm",
+   "assembly_mode": "manualWeld",
+   "can_presale": 189946,
+   "available_conservative": 189946,
+   "need_20_boards": 40,
+   "loss_number": 1,
+   "least_number": 2,
+   "component_product_type": 0,
+   "is_buy_component": "1",
+   "no_buy_reason": null,
+   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_C131337.json",
+   "unit_price_usd_tier1": 0.0356,
+   "i7": "ORDERABLE",
+   "thin_stock": false,
+   "kicad_symbol": "Connector_Generic:Conn_01x02",
+   "kicad_footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+   "role": "switch J15 / buzzer J17 connectors (THT)",
+   "describe": "-25℃~+85℃ 1 100V 1x2P 2 2A 2P 2mm 4.5mm 5.9mm 6mm Brass K Pin PA66 PH Through Hole Tin UL94V-0 White 插件,P=2mm Wire To Board Connector ROHS",
+   "line": 38,
+   "removed_by_amendment": "tht_by_user"
+  },
+  {
+   "comment": "pin header 1x2 right-angle 2.54",
+   "designators": [
+    "J16"
+   ],
+   "footprint": "PinHeader_1x02_P2.54mm_Horizontal",
+   "jlc_code": "C32713261",
+   "mpn": "HX PZ2.54-1x2P WZ",
+   "library_type": "Extended",
+   "assembly_process": "THT",
+   "stock": 55654,
+   "need": 20,
+   "fetched_at": "2026-11-10T20:57:34+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713261.json",
+   "qty_per_board": 1,
+   "brand": "hanxia",
+   "package": "Push-Pull,P=2.54mm",
+   "assembly_mode": "manualWeld",
+   "can_presale": 55427,
+   "available_conservative": 55427,
+   "need_20_boards": 20,
+   "loss_number": 0,
+   "least_number": 2,
+   "component_product_type": 0,
+   "is_buy_component": "1",
+   "no_buy_reason": null,
+   "preferred_flag_source": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/search_pin_header_straight_1x2P_2.54mm.json",
+   "unit_price_usd_tier1": 0.0184,
+   "i7": "ORDERABLE",
+   "thin_stock": false,
+   "kicad_symbol": "Connector_Generic:Conn_01x02",
+   "kicad_footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
+   "role": "arming switch lead header J16 (THT)",
+   "describe": "-40℃~+105℃ 1 1kV 1x2P 2.54mm 2.5mm 2P 3A 3mm 6mm Black Brass Gold Right Angle Square pin Push-Pull,P=2.54mm Pin Headers ROHS",
+   "line": 39,
+   "removed_by_amendment": "tht_by_user"
+  },
+  {
+   "comment": "pin header 1x4 right-angle 2.54",
+   "designators": [
+    "J18"
+   ],
+   "footprint": "PinHeader_1x04_P2.54mm_Horizontal",
+   "jlc_code": "C32713263",
+   "mpn": "HX PZ2.54-1x4P WZ",
+   "library_type": "Extended",
+   "assembly_process": "THT",
+   "stock": 27550,
+   "need": 20,
+   "fetched_at": "2026-11-10T20:57:36+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/jlc_refetch/C32713263.json",
+   "qty_per_board": 1,
+   "brand": "hanxia",
+   "package": "Push-Pull,P=2.54mm",
+   "assembly_mode": "manualWeld",
+   "can_presale": 27335,
+   "available_conservative": 27335,
+   "need_20_boards": 20,
+   "loss_number": 0,
+   "least_number": 2,
+   "component_product_type": 0,
+   "is_buy_component": "1",
+   "no_buy_reason": null,
+   "preferred_flag_source": "NOT_VERIFIED (code not in any cached search list; counted as plain Extended)",
+   "unit_price_usd_tier1": 0.038,
+   "i7": "ORDERABLE",
+   "thin_stock": false,
+   "kicad_symbol": "Connector_Generic:Conn_01x04",
+   "kicad_footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
+   "role": "power-sense lead header J18 (THT)",
+   "describe": "-40℃~+105℃ 1 1kV 1x4P 2.54mm 2.5mm 3A 3mm 4P 6mm Black Brass Gold Right Angle Square pin Push-Pull,P=2.54mm Pin Headers ROHS",
+   "line": 40,
+   "removed_by_amendment": "tht_by_user"
+  }
+ ]
 }

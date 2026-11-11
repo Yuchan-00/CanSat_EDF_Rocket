@@ -6,6 +6,15 @@ Generated from `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev
 
 Labels: F = file / vendor page / datasheet (path:line or URL), M = measured here (command given), E = estimate, A = assumption. No evidence = NOT_VERIFIED.
 
+> **Amendment 2026-11-12 (user decision, added by hand above the generated text).** The user wrote: "아, esp도 내가 직접 실장할거야. 그럼 이코노믹으로 진행하고 pcb의 코팅도 무연으로 해줘". Since then:
+> (1) U7 ESP-12F is fitted by the user (fit `user`), not by JLC - no BOM / CPL row and no paste aperture; footprint, nets, position and silkscreen are unchanged. (2) The default order type is JLC Economic PCBA instead of Standard. (3) The PCB surface finish is lead-free HASL instead of ENIG. (4) Moisture baking is not ordered any more.
+> Counts after this first amendment (valid only until the second one of the same day): JLC BOM 39 lines (33 SMT + 6 THT), 156 parts per board; the with_mcu pair 40 lines / 160 parts.
+>
+> **Second amendment 2026-11-12 (user decision, meaning decided by the main session).** The user wrote: "이코노믹으로 스루홀 제외하고 어떤 부품을 따로 구매해야하는건지 리스트를 정리해줘". Since then:
+> (5) All six THT lines leave the JLC assembly: J2, J5 (C22436147), J8-J12 (C32713262), J14 (C5364642), J15, J17 (C131337), J16 (C32713261), J18 (C32713263) = 12 parts are bought and soldered by the user (fit `user`); footprints, nets, positions and silkscreen are unchanged. The SMD connector J7 stays JLC-fitted. The JLC order is SMT only, without any hand soldering. (6) Moisture baking cannot be ordered with Economic PCBA (order page). (7) Via covering: the order page selects Plugged.
+> **Counts now: JLC BOM 33 lines (33 SMT + 0 THT), 144 parts per board; the with_mcu pair 34 lines / 148 parts; 14 parts with fit `user` (J1, U7 and the 12 connectors).**
+> The machine-readable plan `spec/rev3_plan.json` carries both amendments under its key `amendments` (old and new value of every changed entry; the seven former BOM lines the user now buys are kept verbatim under `bom_lines_now_bought_by_the_user`), so its sha256 is no longer the one named above. **Everything below this note is the plan text as settled on 2026-11-10 and was not regenerated**: where it says Standard, ENIG, baking, 40 lines / 157 parts, "ESP-12F fitted by JLC" or "the 6 THT lines are soldered by JLC", the amendments hold. The current state is in `README_ko.md`, `out/ORDER_ko.md` and `out/따로_살_부품_ko.md`.
+
 ## 1. Status
 
 - Ready to implement: **yes** - reviewers raised 0 blockers; 32 findings (11 major, 21 minor) are settled, 0 refuted; consistency check `PASS` (8 checks, section 20).

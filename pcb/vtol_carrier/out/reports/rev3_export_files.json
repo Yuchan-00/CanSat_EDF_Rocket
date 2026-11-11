@@ -2,16 +2,16 @@
  "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_export_files.json",
  "result": "PASS",
  "tool": "scripts/rev3_checks.py export-files",
- "spec_sha256": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
+ "spec_sha256": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
  "problems": [],
  "pairs": {
   "main": {
    "bom": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv",
    "cpl": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv",
-   "bom_sha256": "fa4c8e2622885f4db79bf877ddcc97f247d6ce28d8b9bca6a206ae071479843b",
-   "cpl_sha256": "738c4ea451000e0e98fd2a04160b364796b99a4cdae92b76a24c21090a3b5c43",
-   "bom_lines": 40,
-   "cpl_rows": 157,
+   "bom_sha256": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
+   "cpl_sha256": "8112abe695cb42e2632de75a84d5efee7b421db7c0e754a0daad0525550f9a07",
+   "bom_lines": 33,
+   "cpl_rows": 144,
    "bom_header_exact": true,
    "cpl_header_exact": true,
    "utf8_bom_prefix": true,
@@ -19,12 +19,12 @@
    "codes_not_C_number": [],
    "fit_set_check": {
     "with_mcu": false,
-    "expected": 157,
-    "bom_count": 157,
+    "expected": 144,
+    "bom_count": 144,
     "bom_missing": [],
     "bom_extra": [],
     "bom_duplicates": [],
-    "cpl_count": 157,
+    "cpl_count": 144,
     "cpl_missing": [],
     "cpl_extra": [],
     "cpl_duplicates": [],
@@ -42,10 +42,10 @@
   "with_mcu": {
    "bom": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv",
    "cpl": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv",
-   "bom_sha256": "465199b917ff914d8a626f6570e9596dd36c092455fec089fad11f4851d0ed1f",
-   "cpl_sha256": "b0ab3d4240db4473b5431c9d1c2b4cd0f8b33fdf9df4fde1206d4260454bc702",
-   "bom_lines": 41,
-   "cpl_rows": 161,
+   "bom_sha256": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
+   "cpl_sha256": "1c2503e959057e7e2b6847ea0bb955654e5a00a5681fd60321dcb3965d8645e9",
+   "bom_lines": 34,
+   "cpl_rows": 148,
    "bom_header_exact": true,
    "cpl_header_exact": true,
    "utf8_bom_prefix": true,
@@ -53,12 +53,12 @@
    "codes_not_C_number": [],
    "fit_set_check": {
     "with_mcu": true,
-    "expected": 161,
-    "bom_count": 161,
+    "expected": 148,
+    "bom_count": 148,
     "bom_missing": [],
     "bom_extra": [],
     "bom_duplicates": [],
-    "cpl_count": 161,
+    "cpl_count": 148,
     "cpl_missing": [],
     "cpl_extra": [],
     "cpl_duplicates": [],
@@ -70,6 +70,7 @@
     "U3",
     "U4"
    ],
+   "forbidden_refs_present": [],
    "cpl_rows_bad_format_or_not_equal_to_table": [],
    "orientation_critical_not_verified": [
     "C45",
@@ -80,8 +81,8 @@
   }
  },
  "silk_marks": {
-  "board_sha256_of_report": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556",
-  "board_sha256_now": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556",
+  "board_sha256_of_report": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
+  "board_sha256_now": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
   "required": [
    "C45",
    "C47",
@@ -111,8 +112,12 @@
    "U8",
    "U9"
   ],
+  "required_user_fitted": [
+   "U7"
+  ],
   "missing_or_not_ok": [],
   "other_orientation_critical_library_silk_items": {
+   "J1": 6,
    "J2": 44,
    "J5": 44,
    "J8": 18,
@@ -131,6 +136,150 @@
    "Y4": 2
   },
   "other_without_library_silk": []
+ },
+ "paste_apertures": {
+  "main": {
+   "refs_without_paste_in_the_report": [
+    "J1",
+    "J2",
+    "J3",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U1",
+    "U2",
+    "U3",
+    "U4",
+    "U7"
+   ],
+   "refs_not_fitted_by_jlc": [
+    "J1",
+    "J2",
+    "J3",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U1",
+    "U2",
+    "U3",
+    "U4",
+    "U7"
+   ],
+   "refs_that_lost_paste_pads": {
+    "Q3": 3,
+    "R47": 2,
+    "U1": 64,
+    "U2": 64,
+    "U3": 64,
+    "U4": 64,
+    "U7": 22
+   },
+   "pads_with_paste_left": 320,
+   "gerber_flashes": 320
+  },
+  "with_mcu": {
+   "refs_without_paste_in_the_report": [
+    "J1",
+    "J2",
+    "J3",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U7"
+   ],
+   "refs_not_fitted_by_jlc": [
+    "J1",
+    "J2",
+    "J3",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U7"
+   ],
+   "refs_that_lost_paste_pads": {
+    "Q3": 3,
+    "R47": 2,
+    "U7": 22
+   },
+   "pads_with_paste_left": 576,
+   "gerber_flashes": 576
+  }
  },
  "gerber_zips": {
   "members_equal": true,
@@ -153,8 +302,8 @@
    "vtol_carrier-F_Paste.gtp"
   ],
   "f_paste_flashes": [
-   342,
-   598
+   320,
+   576
   ],
   "copper_files": [
    "vtol_carrier-B_Cu.gbl",
@@ -165,7 +314,7 @@
   "expected_difference": 256
  },
  "not_verified": [
-  "JLC's upload parser: header strings, UTF-8 BOM, unit suffix, sign of Y and the THT rows are in the format of JLC's sample files, but only JLC's upload preview shows every line matched",
+  "JLC's upload parser: header strings, UTF-8 BOM, unit suffix and sign of Y are in the format of JLC's sample files (the order page accepted the files of the build before the amendments of 2026-11-12, spec/jlc_order_page_20261112.json), but only JLC's upload preview of THESE files shows every line matched",
   "rotation rows listed under orientation_critical_not_verified (and the assumption that JLC's 0 deg is the EasyEDA footprint) - JLC's 'Confirm Parts Placement'"
  ]
 }

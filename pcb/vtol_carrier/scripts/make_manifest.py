@@ -37,7 +37,7 @@ JAR = Path(os.environ.get("FREEROUTING_JAR") or
 #: written after checks_exports.py made its sha list (so not in manifest['sha256'])
 LATE = ["out/reports/rev3_export_files.json", "out/reports/rev3_export_determinism.json",
         "out/reports/determinism.json", "README_ko.md", "out/ORDER_ko.md", "spec/SPEC_ko.md",
-        "out/REV3_REPORT_ko.md"]
+        "out/REV3_REPORT_ko.md", "out/따로_살_부품_ko.md"]
 
 
 def sha256(p: Path) -> str:
@@ -136,6 +136,10 @@ def main() -> int:
         "routing": {"mode": "replay of the recorded sessions (route.py --reuse-ses)",
                     "ses_replay_sha256": sha256(ROOT / "kicad" / "work" / "ses_replay.json"),
                     "unrouted_board_sha256_of_the_sessions": replay.get("unrouted_board_sha256"),
+                    # 2026-11-12: the unrouted board differs from the recorded one in the copper_finish text only;
+                    # route.py proves it on every replay with the finish-blanked hash and writes what it accepted
+                    "unrouted_board_guard_of_this_replay":
+                        (load(ROOT / "kicad" / "work" / "route_reuse_log.json") or {}).get("unrouted_board_guard"),
                     "live_run_source": replay.get("source")},
         "rule_file": {"result": rf.get("result", "NOT_VERIFIED"),
                       "sections": {k: {"equal": v.get("equal"), "sha256": v.get("sha256_rev3")}

@@ -110,6 +110,16 @@ def main() -> int:
               for f in ("jlc", "jlc_optional", "user", "none")}
     under_by_fit = {"jlc": len(by_fit["jlc"]), "with_mcu_jlc_plus_jlc_optional": len(by_fit["jlc"]) + len(by_fit["jlc_optional"]),
                     "not_fitted_by_jlc_in_default_order": len(under) - len(by_fit["jlc"]), "refs_by_fit": by_fit}
+    # bodies that JLC itself places, nearest first (2026-11-12: the ESP-12F U7 is soldered by the user, so the closest
+    # JLC-placed body is no longer U7). default order = fit jlc; with_mcu order = fit jlc + jlc_optional
+    jlc_closest = {}
+    for name, fits in (("default_order", ("jlc",)), ("with_mcu_order", ("jlc", "jlc_optional"))):
+        mine = sorted((r for r in rows if r["fit"] in fits), key=lambda r: (r["body_to_edge_mm"], r["ref"]))
+        jlc_closest[name] = {
+            "closest": [[r["ref"], r["body_to_edge_mm"], r["body_nearest_edge"]] for r in mine[:5]],
+            "bodies_under_0p3": [[r["ref"], r["body_to_edge_mm"], r["body_nearest_edge"]] for r in mine if r["body_under_0p3"]],
+            "pads_under_0p3": [[r["ref"], r["pad_to_edge_mm"], r["pad_nearest_edge"]] for r in mine if r["pad_under_0p3"]],
+            "bodies_under_2p5": sum(1 for r in mine if r["body_under_2p5"])}
     # copper (tracks, vias, pads, filled zones of every copper layer) to the straight outline lines (rev 3 review J2:
     # rail attachment by V-cut needs more copper pull-back than a routed / mouse-bite edge)
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
@@ -168,6 +178,7 @@ def main() -> int:
         "bodies_under_0p3": sorted([[r["ref"], r["body_to_edge_mm"], r["body_nearest_edge"], r["fit"]] for r in rows if r["body_under_0p3"]], key=lambda v: v[1]),
         "pads_under_0p3": sorted([[r["ref"], r["pad_to_edge_mm"], r["pad_nearest_edge"], r["fit"]] for r in rows if r["pad_under_0p3"]], key=lambda v: v[1]),
         "bodies_under_2p5_by_fit": under_by_fit,
+        "jlc_placed_bodies": jlc_closest,
         "copper_to_edge_mm": {"label": "M (zone fills refilled in memory, tracks, vias, pads; distance to the straight "
                                        "outline lines, corner arcs not modelled)", "min_per_side": cu_min, "per_layer": cu},
         "per_side": per_side, "rail_pairs": score,

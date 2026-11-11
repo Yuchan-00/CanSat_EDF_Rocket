@@ -9,8 +9,9 @@
 ## 1. rev 2c에서 달라진 것
 
 - 5 V 전원: 꽂는 Pololu 모듈(J6)을 없애고 기판 위 승압 회로로 바꿨습니다. U8 TPS61023DRLR + L5 1.0 uH + 분압 R63 / R64 + C57 / C58, 그리고 저전압 차단용 비교기 U9 TLV3012BIDBVR + R65~R68 + C59 / C60 (새 부품 13개, 새 네트 5개: BOOST_SW, BOOST_FB, BOOST_EN, UVLO_SENSE, UVLO_REF).
-- 무선 모듈: ESP-12E 대신 핀이 같은 ESP-12F (JLC 라이브러리 부품 C82891). 풋프린트는 KiCad의 RF_Module:ESP-12E 를 그대로 씁니다 (라이브러리에 ESP-12F 풋프린트가 따로 없음).
-- MCU와 센서 모듈을 뺀 모든 실장 부품을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 (재고 근거: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/parts_sources.json`).
+- 무선 모듈: ESP-12E 대신 핀이 같은 ESP-12F (참고 부품 LCSC C82891). 풋프린트는 KiCad의 RF_Module:ESP-12E 를 그대로 씁니다 (라이브러리에 ESP-12F 풋프린트가 따로 없음). **2026-11-12 사용자 결정으로 이 모듈은 JLC가 아니라 사용자가 직접 납땜합니다** (fit user: JLC BOM / CPL에 없음. 풋프린트·네트·위치는 그대로).
+- **스루홀 커넥터 12개도 2026-11-12 사용자 결정으로 JLC가 아니라 사용자가 사서 납땜합니다** (J2/J5, J8/J9/J10/J11/J12, J14, J15/J17, J16, J18; fit user). JLC 주문은 SMT 부품만 실장하고 손납땜은 없습니다. 풋프린트·네트·위치와 풋프린트의 실크 윤곽은 그대로입니다. (같은 날 검증 지적으로 아랫면 실크 이름표 가운데 핀 줄과 나란히 적힌 것의 핀 글자 순서만 아랫면에서 본 패드 순서로 고쳤습니다: 주문 안내서 7장.)
+- MCU, 센서 모듈, ESP-12F 모듈, 스루홀 커넥터를 뺀 모든 실장 부품(모두 SMT)을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 (재고 근거: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/parts_sources.json`).
 - 부품마다 `fit` (누가 붙이는가) 값을 가집니다. JLC BOM / CPL은 이 값에서만 만들어집니다.
 - MCU 4개의 핀 256개가 가는 네트, 기판 외곽 76 x 70 mm, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. rev 2c 자료는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/` 에 보관했습니다.
 
@@ -20,12 +21,12 @@
 
 | fit | 뜻 | 개수 | 부품 |
 |---|---|---|---|
-| jlc | JLC가 실장 (BOM / CPL에 들어감) | 157 | C1, C2, C3, C4, C5, C6 ... (목록은 carrier_spec.json 의 parts[].fit) |
+| jlc | JLC가 실장 (BOM / CPL에 들어감) | 144 | C1, C2, C3, C4, C5, C6 ... (목록은 carrier_spec.json 의 parts[].fit) |
 | jlc_optional | 기본은 사용자 납땜, with_mcu 파일 쌍에서만 JLC 실장 | 4 | U1, U2, U3, U4 |
-| user | 사용자가 납땜 | 1 | J1 |
+| user | 사용자가 납땜 | 14 | J1, J2, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, U7 |
 | none | 부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만) | 12 | J3, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47 |
 
-JLC 실장 부품 157개, BOM 40줄 (SMT 34줄 + THT 6줄). MCU까지 JLC에 맡기는 with_mcu 쌍은 161개 / 41줄입니다.
+JLC 실장 부품 144개, BOM 33줄 (SMT 33줄 + THT 0줄). MCU까지 JLC에 맡기는 with_mcu 쌍은 148개 / 34줄입니다.
 
 ## 3. 5 V 전원부 (모두 E: 데이터시트 계산, 측정 아님)
 
@@ -69,16 +70,9 @@ JLC 실장 부품 157개, BOM 40줄 (SMT 34줄 + THT 6줄). MCU까지 JLC에 맡
 | 28 | 3.3M 1% | R67 | R_0603_1608Metric | C26096 | SMT | 1 |
 | 29 | 1M 1% | R68 | R_0603_1608Metric | C22935 | SMT | 1 |
 | 30 | AMS1117-3.3 | U6 | SOT-223-3_TabPin2 | C6186 | SMT | 1 |
-| 31 | ESP-12F | U7 | ESP-12E | C82891 | SMT | 1 |
 | 32 | TPS61023DRLR | U8 | SOT-563 | C919459 | SMT | 1 |
 | 33 | TLV3012BIDBVR | U9 | SOT-23-6 | C20345924 | SMT | 1 |
 | 34 | 16MHz 18pF 3225 | Y1, Y2, Y3, Y4 | Crystal_SMD_3225-4Pin_3.2x2.5mm | C70562 | SMT | 4 |
-| 35 | socket 1x6 right-angle 2.54 | J2, J5 | PinSocket_1x06_P2.54mm_Horizontal | C22436147 | THT | 2 |
-| 36 | pin header 1x3 right-angle 2.54 | J8, J9, J10, J11, J12 | PinHeader_1x03_P2.54mm_Horizontal | C32713262 | THT | 5 |
-| 37 | Molex 22035025 SPOX 2P vertical | J14 | Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical | C5364642 | THT | 1 |
-| 38 | JST B2B-PH-K-S 2P vertical | J15, J17 | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical | C131337 | THT | 2 |
-| 39 | pin header 1x2 right-angle 2.54 | J16 | PinHeader_1x02_P2.54mm_Horizontal | C32713261 | THT | 1 |
-| 40 | pin header 1x4 right-angle 2.54 | J18 | PinHeader_1x04_P2.54mm_Horizontal | C32713263 | THT | 1 |
 
 with_mcu 쌍에만 추가되는 줄: ATmega128A-AU TQFP-64 | U1, U2, U3, U4 | TQFP-64_14x14mm_P0.8mm | C6510 | SMT | 4
 
@@ -88,17 +82,24 @@ Footprint 칸은 KiCad 풋프린트 이름입니다 (주문용 BOM 파일의 Foo
 
 현재 설정: **A** (환경변수 `VTOL_PROG_HEADERS`, 기본 A).
 - A: J3, J19~J22 (2x3), J24~J26 (1x2) 은 rev 2c와 같은 자리의 빈 도금 구멍입니다. 프로그래밍하려면 사용자가 헤더를 납땜하거나 포고핀 어댑터를 씁니다 (포고핀 접촉은 NOT_VERIFIED).
-- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; BOM 42줄, JLC 실장 165개). 사용자의 승인이 있어야 적용합니다. 띠 밖에 자리가 있는지 배치 단계에서 찾은 결과는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/programming_access.json` 에 있습니다 (사양 문서는 배치 결과를 읽지 않습니다; 요약은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/README_ko.md`).
+- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; BOM 35줄, JLC 실장 152개). 사용자의 승인이 있어야 적용합니다. 띠 밖에 자리가 있는지 배치 단계에서 찾은 결과는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/programming_access.json` 에 있습니다 (사양 문서는 배치 결과를 읽지 않습니다; 요약은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/README_ko.md`).
 
 ## 6. 사용자가 붙이거나 꽂는 것
 
 | 자리 | 부품 | 방법 |
 |---|---|---|
 | U1~U4 | ATmega128A-AU (TQFP-64) 4개 | 기본: 사용자가 납땜 (칩당 64핀, 모두 256곳). JLC에 맡기려면 with_mcu BOM / CPL 쌍으로 주문 (LCSC C6510) |
+| U7 | ESP-12F Wi-Fi 모듈 (참고 부품 LCSC C82891) | 사용자가 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC 실장). JLC BOM / CPL에 없고, 두 거버 묶음 모두 이 패드에 솔더 페이스트 구멍이 없음. 패드 수와 납땜 순서는 주문 안내서 7장 |
 | J1 | GY-521 MPU-6050 모듈 | 모듈에 딸린 1x8 핀을 기판의 도금 구멍 8개에 납땜 (모듈은 약 2.5 mm 받침 위에 눕힘 - 핀 스트립 플라스틱 높이, 가정 A). 기판에는 구멍만 있음 |
-| J2 | BMP280 모듈 TYE-BMP29 | 직각 6핀 헤더를 JLC가 실장한 소켓 J2에 꽂음 (받은 모듈의 헤더가 일자형이면 직각 핀을 먼저 납땜 - 헤더 종류 NOT_VERIFIED) |
+| J2 | BMP280 모듈 TYE-BMP29 | 직각 6핀 헤더를 소켓 J2에 꽂음 (소켓은 사용자가 납땜; 받은 모듈의 헤더가 일자형이면 직각 핀을 먼저 납땜 - 헤더 종류 NOT_VERIFIED) |
 | J7 | NEO-7M GPS 모듈 SZH-NT07 | 기체 상단 캡에 두고 4선 JST-GH 리드를 J7에 꽂음 |
-| J5 | SparkFun OpenLog DEV-13712 | OpenLog에 직각 1x6 핀을 납땜한 뒤 소켓 J5에 꽂음 (맞는지 NOT_VERIFIED) |
+| J5 | SparkFun OpenLog DEV-13712 | OpenLog에 직각 1x6 핀을 납땜한 뒤 소켓 J5에 꽂음 (소켓은 사용자가 납땜; 맞는지 NOT_VERIFIED) |
+| J2, J5 | 스루홀 커넥터: socket 1x6 right-angle 2.54 (MPN HC-PM254-8.5H-1x6PW, 참고 부품 LCSC C22436147) 2개 | 사용자가 사서 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC가 손납땜). 납땜점 수·순서·방향은 주문 안내서 7장 |
+| J8, J9, J10, J11, J12 | 스루홀 커넥터: pin header 1x3 right-angle 2.54 (MPN HX PZ2.54-1x3P WZ, 참고 부품 LCSC C32713262) 5개 | 사용자가 사서 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC가 손납땜). 납땜점 수·순서·방향은 주문 안내서 7장 |
+| J14 | 스루홀 커넥터: Molex 22035025 SPOX 2P vertical (MPN 22035025, 참고 부품 LCSC C5364642) 1개 | 사용자가 사서 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC가 손납땜). 납땜점 수·순서·방향은 주문 안내서 7장 |
+| J15, J17 | 스루홀 커넥터: JST B2B-PH-K-S 2P vertical (MPN B2B-PH-K-S(LF)(SN), 참고 부품 LCSC C131337) 2개 | 사용자가 사서 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC가 손납땜). 납땜점 수·순서·방향은 주문 안내서 7장 |
+| J16 | 스루홀 커넥터: pin header 1x2 right-angle 2.54 (MPN HX PZ2.54-1x2P WZ, 참고 부품 LCSC C32713261) 1개 | 사용자가 사서 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC가 손납땜). 납땜점 수·순서·방향은 주문 안내서 7장 |
+| J18 | 스루홀 커넥터: pin header 1x4 right-angle 2.54 (MPN HX PZ2.54-1x4P WZ, 참고 부품 LCSC C32713263) 1개 | 사용자가 사서 납땜 (2026-11-12 사용자 결정; 그 전 계획은 JLC가 손납땜). 납땜점 수·순서·방향은 주문 안내서 7장 |
 
 기판 밖에서 따로 사는 것(배터리, 스위치와 리드, GPS 리드, 부저, 모듈, MCU 등)의 목록은 계획서의 off_board_purchase 항목(`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json`)에 있고, 구매 목록 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/off_board_purchase.csv` 와 주문 안내서 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 6장에 표로 있습니다. 이 품목들의 재고·가격은 NOT_VERIFIED입니다.
 
@@ -106,33 +107,33 @@ Footprint 칸은 KiCad 풋프린트 이름입니다 (주문용 BOM 파일의 Foo
 
 - D1 Pololu 모듈을 대신할 5 V 변환기: 기본 A (TPS61023 승압 + TLV3012B 저전압 차단), 권장 A
 - D2 로직 배터리(1S) 차단 전압: 기본 유지 (꺼짐 약 3.13 V, 켜짐 약 3.59 V), 권장 유지
-- D3 요청 때문이 아니라 재고·도면 근거로 바꾼 부품번호 3건: 기본 유지, 권장 유지
+- D3 요청 때문이 아니라 재고·도면 근거로 바꾼 부품번호 3건: 기본 유지 (2026-11-12부터 그중 2건 J8~J12, J2 / J5는 사용자가 사서 납땜하는 부품, 번호는 구매 참고용)
 - D4 ATmega128A-AU 4개를 누가 붙이는가: 기본 사용자 납땜, 권장 JLC 실장 (with_mcu 파일 쌍)
 - D5 OpenLog 장착 방식: 기본 소켓 J5에 꽂기 (센서 모듈처럼 사용자가 장착), 권장 동일
 - D6 프로그래밍 헤더 (J3, J19~J22, J24~J26): 기본 A (케이블타이 띠 안의 빈 도금 구멍), 자리가 확인되면 권장 B (띠 밖에 JLC 실장)
-- D7 스위치·부저 커넥터 J15 / J17 (JST-PH): 기본 THT, 권장 THT
+- D7 스위치·부저 커넥터 J15 / J17 (JST-PH): 기본 THT (2026-11-12부터 사용자가 사서 납땜)
 - D8 레벨시프터 FET (보드당 8개): 기본 C40912, 권장 C40912
-- D9 JLC 주문 종류: 기본 Standard, 권장 Standard
-- D10 툴링 홀: 기본 설계에 넣지 않음 (JLC가 붙이는 공정 레일에 생김)
+- D9 JLC 주문 종류: 기본 Economic (2026-11-12 사용자 결정; 2026-11-10 계획의 기본·권장은 Standard)
+- D10 툴링 홀: 기본 설계에 넣지 않음 (Economic 주문에는 레일이 없어 JLC가 기판 안에 뚫음; 위치는 NOT_VERIFIED)
 - D11 수량: 기본 PCB 5장 / 실장 2장, 권장 먼저 2장 실장
-- D12 모듈 소켓 J2 / J5 (1x6 직각): 기본 C22436147 + 주문일 재고 확인, 안 되면 C55629861, 그다음 C54876735
+- D12 모듈 소켓 J2 / J5 (1x6 직각): 기본 C22436147 (2026-11-12부터 사용자가 사서 납땜; 구하기 어려우면 C55629861, 그다음 C54876735 - 풋프린트 호환 NOT_VERIFIED)
 - D13 배터리 전압 분압 R15 / R16 (47k / 47k): 기본 유지
-- D14 습기에 민감한 부품(ESP-12F, LED) 베이킹 요청: 기본 예 (주문 메모)
+- D14 습기에 민감한 부품(LED; ESP-12F는 2026-11-12부터 사용자가 실장) 베이킹 요청: 기본 아니오 (2026-11-12 변경; 주문 화면에서 Economic PCBA는 베이킹을 고를 수 없음; 계획은 예)
 - D15 렌더와 맞춤 검사에 쓰는 모듈 치수: 기본 가정값 (실측 전까지 모든 그림·검사에 A 표시), 권장 실측
-- D16 주문 화면의 PCB 옵션: 기본 권장값 (ENIG, 녹색 마스크, 흰색 실크, JLC 기본 4층 적층, 비아 덮기)
+- D16 주문 화면의 PCB 옵션: 기본 무연 HASL (2026-11-12 사용자 결정; 계획의 권장은 ENIG), 녹색 마스크, 흰색 실크, JLC 기본 4층 적층, 비아 덮기 (주문 화면이 Plugged로 정함)
 - D17 실장하지 않는 여분 기판: 기본 수락
 
 ## 8. 확인되지 않은 것
 
 - 만들거나 측정한 것은 없습니다. 전원부 수치는 모두 데이터시트 계산값(E)입니다.
 - JLC가 이 기판을 받아 주는지는 사용자가 파일을 올리고 DFM 결과와 견적을 본 뒤에야 알 수 있습니다 (결제 전 확인).
-- THT 6줄을 JLC가 납땜해 주는지는 견적에 표시될 때까지 NOT_VERIFIED입니다.
+- 스루홀 커넥터 12개와 ESP-12F는 JLC가 실장하지 않습니다 (2026-11-12 사용자 결정). 사용자가 따로 사서 납땜하며, 낱개로 산 부품이 구멍에 맞는지와 그 재고·가격은 NOT_VERIFIED입니다 (주문 안내서 6장, 7장).
 - 이 문서는 사양 단계의 내용만 담습니다. 배치·배선 뒤의 결과(전원부 자리, 배터리 경로 폭 검사, 가장자리 거리, 모듈 간섭)는 README_ko.md 와 out/reports/ 의 보고서에 있습니다.
 - U8은 라이브러리에 전용 심볼이 없어 일반 6핀 심볼을 씁니다. ERC는 U8 핀에 대해 아무 근거도 주지 않으며, 핀-네트 표 검사(rev3_checks.py u8-u9)가 그 역할을 합니다.
 - 차단 히스테리시스 여유는 최대 부하에서 28 mV(E)입니다. 전원 경로 저항이 0.29 Ohm을 넘으면 방전 끝에서 켜짐/꺼짐을 반복할 수 있습니다 (첫 기판에서 측정).
 - 켜짐 문턱이 최대 3.73 V입니다. 쉬는 전압이 그보다 낮은 팩은 보드를 켜지 못할 수 있습니다.
 - 극성 부품과 IC의 CPL 회전은 NOT_VERIFIED입니다. 주문 때 'Confirm Parts Placement'를 켜고, 전원을 넣기 전에 탄탈 방향을 눈으로 확인하십시오.
-- 재고는 움직입니다. spec/parts_sources.json 기록(2026-11-10) 기준으로 재고가 얇은 줄: C22436147 (소켓 J2 / J5). 주문일에는 scripts/jlc_gate.py 를 다시 돌려 모든 줄을 새로 확인합니다.
+- 재고는 움직입니다. spec/parts_sources.json 기록(2026-11-10) 기준으로 재고가 얇은 줄: 없음. 주문일에는 scripts/jlc_gate.py 를 다시 돌려 모든 줄을 새로 확인합니다.
 - 센서 모듈·OpenLog의 치수와 핀 순서는 가정(A)입니다. 받은 모듈의 실크를 확인하십시오.
 
 ## 9. 파일과 다시 만드는 방법

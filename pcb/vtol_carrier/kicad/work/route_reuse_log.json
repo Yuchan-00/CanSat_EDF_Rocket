@@ -45,7 +45,17 @@
    ]
   ],
   "unrouted_board_sha256": "c94bd350abf67d8db66a7659c2dfef581b644426270c219970a8306f1c5f0322",
+  "unrouted_board_sha256_copper_finish_blanked": "86f3c006550c7fa47ff7609452eedc6631d76420ce22430b3b63df10cbb747f7",
+  "unrouted_board_copper_finish_when_recorded": "ENIG",
+  "copper_finish_note": "added 2026-11-12 (surface finish ENIG -> lead-free HASL by user decision, no new live route): sha256 of the recorded unrouted board c94bd350 with the value of its single (copper_finish \"...\") entry blanked. route.py --reuse-ses accepts an unrouted board whose full sha256 differs only if this blanked hash is equal, i.e. if the board is byte-identical to the recorded one except for that text",
   "source": "rev 3 relayout live run, 2026-11-11 (scratch tree, then installed): route.py 40 5 with CARRIER_SEED_DIR = the a7 sessions (kicad/work/seed_a7, ECO seed: 97 of 105 nets start with their a7 routes), CARRIER_HALO=0.4 (default), rip-up on, Freerouting 2.5.0, on unrouted board c94bd350. route_log.json is the log of that live run; its own board (ae82789f) had 1 kicad-cli clearance error made by route.widen_power (stale bounding box, fixed in route.py afterwards). The board itself is the replay of these sessions with the fixed clean-up (route_reuse_log.json)."
+ },
+ "unrouted_board_guard": {
+  "recorded_sha256": "c94bd350abf67d8db66a7659c2dfef581b644426270c219970a8306f1c5f0322",
+  "this_sha256": "fcbd2115248d38f3f7064e298cb6d76315e16b79673ed89383660c5b2f0474c0",
+  "recorded_sha256_copper_finish_blanked": "86f3c006550c7fa47ff7609452eedc6631d76420ce22430b3b63df10cbb747f7",
+  "this_sha256_copper_finish_blanked": "86f3c006550c7fa47ff7609452eedc6631d76420ce22430b3b63df10cbb747f7",
+  "accepted": "byte-identical to the recorded unrouted board except the copper_finish value"
  },
  "ses_sha256": {
   "seed_servo.ses": "79a7533bfd76cb26a68758c1410f349539fd9501fe106e1c1c75cd6f2ddb6ad6",
@@ -1879,21 +1889,24 @@
     "text": "V1 S+-",
     "layer": "F.SilkS",
     "height_mm": 0.8,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "along the row, as the pads lie (pin 1 first)"
    },
    {
     "ref": "J16",
     "text": "ARM SW AG",
     "layer": "F.SilkS",
     "height_mm": 0.8,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "along the row, as the pads lie (pin 1 first)"
    },
    {
     "ref": "J17",
     "text": "BUZ +-",
     "layer": "F.SilkS",
     "height_mm": 0.8,
-    "distance_to_courtyard_mm": 0.1
+    "distance_to_courtyard_mm": 0.1,
+    "pin_glyph_order": "along the row, as the pads lie (pin 1 first)"
    },
    {
     "ref": "U7",
@@ -1906,10 +1919,11 @@
   "names_back_mirrored": [
    {
     "ref": "J14",
-    "text": "1S BAT +-",
+    "text": "1S BAT -+",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "along the row, as the pads lie (last pin first)"
    },
    {
     "ref": "J15",
@@ -1923,42 +1937,48 @@
     "text": "6S NO GND VI VT VB IS",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J12",
     "text": "ESC S+-",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J9",
     "text": "V2 S+-",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J10",
     "text": "V3 S+-",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J11",
     "text": "V4 S+-",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J7",
-    "text": "GPS V TX RX G",
+    "text": "GPS G RX TX V",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "along the row, as the pads lie (last pin first)"
    },
    {
     "ref": "JP1",
@@ -1972,28 +1992,32 @@
     "text": "ESP 3V3 IO0 G TX RX RST G",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J1",
     "text": "GY-521 5V G SCL SDA nc nc G INT",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J2",
-    "text": "BMP280 3V G SCL SDA 3V 3V",
+    "text": "BMP280 3V 3V SDA SCL G 3V",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "along the row, as the pads lie (last pin first)"
    },
    {
     "ref": "J5",
     "text": "OPENLOG nc RXI nc 5V G G",
     "layer": "B.SilkS",
     "height_mm": 1.0,
-    "distance_to_courtyard_mm": 0.0
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
     "ref": "J19",
@@ -2683,5 +2707,5 @@
    "Y4"
   ]
  },
- "routed_board_sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556"
+ "routed_board_sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2"
 }

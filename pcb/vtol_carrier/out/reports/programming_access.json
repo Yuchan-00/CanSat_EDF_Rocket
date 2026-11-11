@@ -1,7 +1,7 @@
 {
  "schema": "vtol_carrier.programming_access/1",
  "decision": "D6",
- "spec_sha256": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
+ "spec_sha256": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
  "spec_option": "A",
  "need": {
   "2x3": 5,

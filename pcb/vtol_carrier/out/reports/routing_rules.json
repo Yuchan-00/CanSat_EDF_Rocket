@@ -2,7 +2,7 @@
  "tool": "scripts/routing_checks.py (pcbnew 10.0.6)",
  "board": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
-  "sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556"
+  "sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2"
  },
  "result": "FAIL",
  "results": {
@@ -1233,6 +1233,431 @@
     "limits": "F: https://jlcpcb.com/capabilities/pcb-capabilities (Legend, read 2026-11-11): line width >= 0.15 mm, text height >= 1.0 mm, pad to silkscreen 0.15 mm; edge 0.3 mm = board rule; no via under a stroke (the vias are tented; an ink break over the hole is avoided anyway)",
     "under_cable_tie_band_is": "reported, not a criterion (avoided if possible)"
    },
+   "pin_order_labels": {
+    "ok": true,
+    "problems": [],
+    "labels": [
+     {
+      "ref": "J8",
+      "text": "V1 S+-",
+      "layer": "F.Silkscreen",
+      "mirrored": false,
+      "glyphs_from_pin_1": "S+-",
+      "pad_1": {
+       "net": "VANE1_SIG",
+       "at": [
+        72.8,
+        84.47
+       ]
+      },
+      "pad_last": {
+       "number": "3",
+       "net": "GND_PWR",
+       "at": [
+        72.8,
+        79.39
+       ]
+      },
+      "reading_direction_top_view": [
+       0.02,
+       -1.0
+      ],
+      "relation": "along the pin row",
+      "glyph_order": "as the pads lie (pin 1 first)",
+      "first_glyph_is_pad": "1",
+      "last_glyph_is_pad": "3",
+      "ok": true
+     },
+     {
+      "ref": "J9",
+      "text": "V2 S+-",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "S+-",
+      "pad_1": {
+       "net": "VANE2_SIG",
+       "at": [
+        72.8,
+        93.09
+       ]
+      },
+      "pad_last": {
+       "number": "3",
+       "net": "GND_PWR",
+       "at": [
+        72.8,
+        88.01
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.02
+      ],
+      "relation": "across the pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
+      "ref": "J10",
+      "text": "V3 S+-",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "S+-",
+      "pad_1": {
+       "net": "VANE3_SIG",
+       "at": [
+        72.8,
+        101.71
+       ]
+      },
+      "pad_last": {
+       "number": "3",
+       "net": "GND_PWR",
+       "at": [
+        72.8,
+        96.63
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.02
+      ],
+      "relation": "across the pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
+      "ref": "J11",
+      "text": "V4 S+-",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "S+-",
+      "pad_1": {
+       "net": "VANE4_SIG",
+       "at": [
+        72.8,
+        110.33
+       ]
+      },
+      "pad_last": {
+       "number": "3",
+       "net": "GND_PWR",
+       "at": [
+        72.8,
+        105.25
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.02
+      ],
+      "relation": "across the pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
+      "ref": "J12",
+      "text": "ESC S+-",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "S+-",
+      "pad_1": {
+       "net": "ESC_SIG",
+       "at": [
+        127.21,
+        73.17
+       ]
+      },
+      "pad_last": {
+       "number": "3",
+       "net": "GND_PWR",
+       "at": [
+        127.21,
+        78.25
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.02
+      ],
+      "relation": "across the pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
+      "ref": "J17",
+      "text": "BUZ +-",
+      "layer": "F.Silkscreen",
+      "mirrored": false,
+      "glyphs_from_pin_1": "+-",
+      "pad_1": {
+       "net": "+5V",
+       "at": [
+        133.3,
+        82.35
+       ]
+      },
+      "pad_last": {
+       "number": "2",
+       "net": "BUZ_N",
+       "at": [
+        135.3,
+        82.35
+       ]
+      },
+      "reading_direction_top_view": [
+       1.0,
+       0.02
+      ],
+      "relation": "along the pin row",
+      "glyph_order": "as the pads lie (pin 1 first)",
+      "first_glyph_is_pad": "1",
+      "last_glyph_is_pad": "2",
+      "ok": true
+     },
+     {
+      "ref": "J14",
+      "text": "1S BAT -+",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "+-",
+      "pad_1": {
+       "net": "VBAT_LOGIC_RAW",
+       "at": [
+        65.2,
+        68.85
+       ]
+      },
+      "pad_last": {
+       "number": "2",
+       "net": "GND",
+       "at": [
+        67.7,
+        68.85
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       -0.05
+      ],
+      "relation": "along the pin row",
+      "glyph_order": "as the pads lie (last pin first)",
+      "first_glyph_is_pad": "2",
+      "last_glyph_is_pad": "1",
+      "ok": true
+     },
+     {
+      "ref": "J18",
+      "text": "6S NO GND VI VT VB IS",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "VI VT VB IS",
+      "pad_1": {
+       "net": "VS_VIN",
+       "at": [
+        72.8,
+        121.49
+       ]
+      },
+      "pad_last": {
+       "number": "4",
+       "net": "VS_BUF_ISIGN",
+       "at": [
+        72.8,
+        113.87
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.0
+      ],
+      "relation": "across the pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
+      "ref": "J7",
+      "text": "GPS G RX TX V",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "V TX RX G",
+      "pad_1": {
+       "net": "GPS_VCC",
+       "at": [
+        65.105,
+        133.4
+       ]
+      },
+      "pad_last": {
+       "number": "4",
+       "net": "GND",
+       "at": [
+        68.855,
+        133.4
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.05
+      ],
+      "relation": "along the pin row",
+      "glyph_order": "as the pads lie (last pin first)",
+      "first_glyph_is_pad": "4",
+      "last_glyph_is_pad": "1",
+      "ok": true
+     },
+     {
+      "ref": "J16",
+      "text": "ARM SW AG",
+      "layer": "F.Silkscreen",
+      "mirrored": false,
+      "glyphs_from_pin_1": "AG",
+      "pad_1": {
+       "net": "ARM_SW_EXT",
+       "at": [
+        121.12,
+        75.79
+       ]
+      },
+      "pad_last": {
+       "number": "2",
+       "net": "GND",
+       "at": [
+        123.66,
+        75.79
+       ]
+      },
+      "reading_direction_top_view": [
+       1.0,
+       -0.02
+      ],
+      "relation": "along the pin row",
+      "glyph_order": "as the pads lie (pin 1 first)",
+      "first_glyph_is_pad": "1",
+      "last_glyph_is_pad": "2",
+      "ok": true
+     },
+     {
+      "ref": "J3",
+      "text": "ESP 3V3 IO0 G TX RX RST G",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "IO0 G TX RX RST G",
+      "pad_1": {
+       "net": "ESP_GPIO0",
+       "at": [
+        98.7,
+        74.25
+       ]
+      },
+      "pad_last": {
+       "number": "6",
+       "net": "GND",
+       "at": [
+        101.24,
+        79.33
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.0
+      ],
+      "relation": "not a single pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
+      "ref": "J1",
+      "text": "GY-521 5V G SCL SDA nc nc G INT",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "5V G SCL SDA nc nc G INT",
+      "pad_1": {
+       "net": "+5V",
+       "at": [
+        104.9,
+        115.1
+       ]
+      },
+      "pad_last": {
+       "number": "8",
+       "net": "IMU_INT_3V3",
+       "at": [
+        104.9,
+        132.88
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.02
+      ],
+      "relation": "across the pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
+      "ref": "J2",
+      "text": "BMP280 3V 3V SDA SCL G 3V",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "3V G SCL SDA 3V 3V",
+      "pad_1": {
+       "net": "+3V3",
+       "at": [
+        104.83,
+        67.0
+       ]
+      },
+      "pad_last": {
+       "number": "6",
+       "net": "+3V3",
+       "at": [
+        117.53,
+        67.0
+       ]
+      },
+      "reading_direction_top_view": [
+       -1.0,
+       0.0
+      ],
+      "relation": "along the pin row",
+      "glyph_order": "as the pads lie (last pin first)",
+      "first_glyph_is_pad": "6",
+      "last_glyph_is_pad": "1",
+      "ok": true
+     },
+     {
+      "ref": "J5",
+      "text": "OPENLOG nc RXI nc 5V G G",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "nc RXI nc 5V G G",
+      "pad_1": {
+       "net": "unconnected-(J5-Pin_1-Pad1)",
+       "at": [
+        123.25,
+        89.0
+       ]
+      },
+      "pad_last": {
+       "number": "6",
+       "net": "GND",
+       "at": [
+        135.95,
+        89.0
+       ]
+      },
+      "reading_direction_top_view": [
+       0.03,
+       1.0
+      ],
+      "relation": "across the pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     }
+    ],
+    "method": "reading direction = first stroke -> last stroke of the label's effective text shape (pcbnew); pad order = pad positions projected on it; glyphs from the pad nets (silk.pin_glyph)"
+   },
    "marks": [
     {
      "ref": "C45",
@@ -1706,7 +2131,7 @@
     ],
     "J2": [
      [
-      "BMP280 3V G SCL SDA 3V 3V",
+      "BMP280 3V 3V SDA SCL G 3V",
       "B.Silkscreen"
      ]
     ],
@@ -1722,7 +2147,7 @@
       "B.Silkscreen"
      ],
      [
-      "GPS V TX RX G",
+      "GPS G RX TX V",
       "B.Silkscreen"
      ]
     ]
@@ -1732,7 +2157,7 @@
     "U8": "B.Silkscreen (board text beneath the part)",
     "U9": "B.Silkscreen (board text beneath the part)"
    },
-   "criterion": "every listed footprint keeps its library F.SilkS polarity / pin-1 graphics with none of them under another part's body (F.Fab box) or on a pad (extra '+', 'K' or dot marks are counted separately); the text 'rev 3' exists; J1 / J2 / J5 / J7 carry a name with the pin order; U8 / U9 / L5 designators exist on a silkscreen layer; the two identification lines (repository address, contact e-mail) exist once each, >= 1.0 mm high with >= 0.15 mm stroke, mirrored on the bottom, >= 0.15 mm from every pad and silkscreen item, on no via, >= 0.3 mm inside the outline, line 2 below line 1 with the same start edge"
+   "criterion": "every listed footprint keeps its library F.SilkS polarity / pin-1 graphics with none of them under another part's body (F.Fab box) or on a pad (extra '+', 'K' or dot marks are counted separately); the text 'rev 3' exists; J1 / J2 / J5 / J7 carry a name with the pin order; every name with pin glyphs lists them as the pads lie when it is printed along its pin row (e.g. the battery connector: '+' on the side of the '+' pad), else from pin 1; U8 / U9 / L5 designators exist on a silkscreen layer; the two identification lines (repository address, contact e-mail) exist once each, >= 1.0 mm high with >= 0.15 mm stroke, mirrored on the bottom, >= 0.15 mm from every pad and silkscreen item, on no via, >= 0.3 mm inside the outline, line 2 below line 1 with the same start edge"
   }
  },
  "information": {

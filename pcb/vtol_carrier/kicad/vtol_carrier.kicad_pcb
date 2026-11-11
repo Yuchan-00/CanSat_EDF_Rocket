@@ -95,7 +95,7 @@
 			(layer "B.SilkS"
 				(type "Bottom Silk Screen")
 			)
-			(copper_finish "ENIG")
+			(copper_finish "HAL lead-free")
 			(dielectric_constraints no)
 		)
 		(pad_to_mask_clearance 0)
@@ -40624,10 +40624,10 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "1S BAT +-"
+	(gr_text "1S BAT -+"
 		(at 75.082 68.205 0)
 		(layer "B.SilkS")
-		(uuid "216ac412-34ca-5690-8bed-5a8f3e6a5ebf")
+		(uuid "4676dba7-6be6-544b-94b4-edf7e16ffdda")
 		(effects
 			(font
 				(size 1 1)
@@ -40636,10 +40636,10 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "GPS V TX RX G"
+	(gr_text "GPS G RX TX V"
 		(at 77.642 131.449999 0)
 		(layer "B.SilkS")
-		(uuid "1de2b657-9505-5fa8-b291-bdb80f25fe57")
+		(uuid "06dc3f5b-a68d-56fa-9799-a3e27276a66d")
 		(effects
 			(font
 				(size 1 1)
@@ -40708,10 +40708,10 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "BMP280 3V G SCL SDA 3V 3V"
+	(gr_text "BMP280 3V 3V SDA SCL G 3V"
 		(at 91.624 71.291 0)
 		(layer "B.SilkS")
-		(uuid "fed86fbc-6a14-504c-a1db-c2f9f96daa69")
+		(uuid "4156285a-0e5c-5794-936d-e0f885fd779e")
 		(effects
 			(font
 				(size 1 1)

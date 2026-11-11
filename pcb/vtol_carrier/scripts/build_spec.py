@@ -1,7 +1,9 @@
 """Build spec/carrier_spec.json - the electrical specification of the VTOL avionics carrier PCB (rev 3) - and check it.
 
 rev 3 (2026-11-10, spec/REV3_PLAN.md + spec/rev3_plan.json): every part except the MCUs and the sensor modules is a
-JLCPCB assembly-library part fitted by JLC. The Pololu 5 V module on J6 is replaced by an on-board boost converter
+JLCPCB assembly-library part fitted by JLC - since the plan amendments of 2026-11-12 (user decisions) except the
+ESP-12F U7 and the 12 through-hole connectors as well, which the user buys and solders (fit user): JLC fits SMT parts
+only. The Pololu 5 V module on J6 is replaced by an on-board boost converter
 (U8 TPS61023 + L5 + R63..R68 + C57..C60 + the U9 TLV3012B under-voltage lock-out), U7 is the ESP-12F (same pads), and
 every part carries ``fit`` (jlc | jlc_optional | user | none, see scripts/fitsets.py). The 256 MCU pin nets, the
 outline and every connector position are those of rev 2c (archive/rev2c_pololu_1s/). scripts/rev3_spec.py compares the
@@ -32,7 +34,8 @@ Invariants this script enforces (it exits non-zero and writes nothing when one f
 * every JLC-fitted part maps to one line of spec/parts_sources.json (written by scripts/jlc_sources.py, status PASS,
   rule I7) with the same footprint; a JLC-fitted part without such a line fails the build (scripts/rev3_spec.py);
 * value, symbol, footprint, fit, JLC code and the pin -> net table of every part equal spec/rev3_plan.json, the five
-  new nets have exactly the plan's members and the counts are the plan's (175 items, 157 JLC parts, 40 BOM lines);
+  new nets have exactly the plan's members and the counts are the plan's (175 items; 144 JLC parts and 33 BOM lines,
+  all SMT, since the amendments of 2026-11-12 - before them 157 / 40);
 * the candidate logic-battery spots are computed from the CAD report (read-only) - fit inside the bay bore, overlap with
   the CAD parts' boxes, lateral CG shift.
 Deterministic: same inputs -> byte-identical JSON (sorted, no timestamps).
@@ -185,10 +188,13 @@ def _next(prefix: str) -> str:
 def part(ref: str | None, prefix: str, lib: tuple[str, str], value: str, role: str, source: str,
          populate: bool | str = True, label: str = "F", note: str | None = None, block: str = "",
          fit: str | None = None) -> str:
-    """Register a part. ``fit`` (who fits it, scripts/fitsets.py) defaults to 'jlc' for a populated part and to 'none'
-    for an unpopulated one; the MCUs ('jlc_optional'), J1 ('user') and copper-only features ('none') pass it."""
+    """Register a part. ``fit`` (who fits it, scripts/fitsets.py) defaults to 'none' for an unpopulated part, to
+    'user' for a populated part whose library footprint is through-hole (plan amendment 2026-11-12 'tht_by_user': JLC
+    fits SMT parts only - the user buys and solders every THT connector) and to 'jlc' for every other populated part;
+    the MCUs ('jlc_optional'), the ESP-12F U7 ('user') and copper-only features ('none') pass it."""
     ref = ref or _next(prefix)
-    fit = fit or ("jlc" if populate is True else "none")
+    tht = "through_hole" in PROBE["footprints"].get(lib[1], {}).get("attributes", [])
+    fit = fit or ("none" if populate is not True else "user" if tht else "jlc")
     if fit not in fitsets.FITS:
         ERRORS.append(f"{ref}: fit {fit!r} is not one of {fitsets.FITS}")
     if ref in PARTS:
@@ -703,11 +709,12 @@ def build() -> None:
     esp_src = f"{USER5} ('ESP-12E 직접 납땜', 'PLM100 완전히 빼기'); {ESPLIB}"
     part("U7", "U", ESP, "ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)",
          "Wi-Fi radio: transparent UART <-> Wi-Fi bridge for the COM (no flight computing on it)", esp_src, True, "F",
-         block="COM",
+         block="COM", fit="user",   # plan amendment 2026-11-12 (user decision): the user solders the module
          note="antenna end (footprint local -y, keep-out y -12.12..-4.80) flush with the +y board edge; the footprint's "
               "keep-out (all copper layers) + a board rule area 4 mm wider on both sides (no copper on any layer, no "
               "parts, A: Espressif / Ai-Thinker guidance - check). Runs ONLY a UART <-> Wi-Fi bridge (project rule: "
-              "all flight computing on the ATmega128s); its firmware is a follow-up")
+              "all flight computing on the ATmega128s); its firmware is a follow-up. Fitted by the user since the "
+              "plan amendment of 2026-11-12 (not in the JLC BOM / CPL, no paste aperture; reference part LCSC C82891)")
     net("+3V3", "U7.VCC", source=f"{ESPLIB} pin 8 VCC; 3.0-3.6 V supply ({ESPA})")
     net("GND", "U7.GND")
     c("100u 10V tantalum", "+3V3", "GND", "ESP-12F bulk (TX bursts), at the VCC pin",
@@ -1665,7 +1672,8 @@ def main() -> int:
     }
     spec = {
         "schema": "vtol_carrier_spec/4",
-        "revision": "rev 3 (2026-11-10): rev 2c with every part except the MCUs and the sensor modules taken from the "
+        "revision": "rev 3 (2026-11-10, amended 2026-11-12): rev 2c with every part except the MCUs, the sensor modules "
+                    "and (since the user decision of 2026-11-12) the ESP-12F module taken from the "
                     "JLCPCB assembly library and fitted by JLC - on-board 5 V boost converter (U8 TPS61023 + U9 "
                     "TLV3012B under-voltage lock-out) instead of the Pololu module on J6, ESP-12F instead of ESP-12E, "
                     "per-part 'fit' (jlc / jlc_optional / user / none), parts sources re-checked against rule I7 "

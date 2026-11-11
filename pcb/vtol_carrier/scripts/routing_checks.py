@@ -35,7 +35,8 @@ Checks -> ``out/reports/routing_rules.json``:
   u8_u9_pads        pad -> net of U8 / U9 on the board against rev3_checks.expected_pad_nets (datasheet table)
   mcu_pinmap        the 256 pads of U1..U4 against the rev 2c pin map
   rule_file         design-rule sections of kicad/vtol_carrier.kicad_pro against the archived rev 2c project file
-  silkscreen        polarity / pin-1 marks, 'rev 3' text, pin-order names of J1 / J2 / J5 / J7; silk-id step: the two
+  silkscreen        polarity / pin-1 marks, 'rev 3' text, pin-order names of J1 / J2 / J5 / J7; esp-user-fix step: the
+                    glyph order of every pin-ordered name against the pad positions (pin_order_labels); silk-id step: the two
                     identification lines (repository address, contact e-mail) - size, mirroring, gaps to pads / vias /
                     other silkscreen / the outline (the strings are never written to the report)
 
@@ -1142,6 +1143,68 @@ def id_lines(board) -> dict:
             "under_cable_tie_band_is": "reported, not a criterion (avoided if possible)"}
 
 
+def pin_order_labels(board, fps) -> dict:
+    """esp-user-fix step (verification finding V1: the bottom label '1S BAT +-' showed '+' on the side of the GND
+    pad): every connector name that carries pin glyphs, measured on the board without silk.pin_name. The reading
+    direction is taken from the label's own strokes (first stroke -> last stroke of its effective text shape), the
+    pad order from the pad positions and nets. A label printed along a single pin row must list the glyphs in the
+    order the pads lie along the reading direction (seen from either side: both vectors flip together); any other
+    label must list them from pin 1."""
+    other = set(SILK.LABELS.values())
+    rows, problems = [], []
+    for ref in SILK.PIN_LABELLED:
+        if ref not in fps:
+            continue
+        label = SILK.LABELS[ref]
+        hits = [d for d in board.GetDrawings() if d.GetClass() == "PCB_TEXT"
+                and d.GetLayer() in (pcbnew.F_SilkS, pcbnew.B_SilkS)
+                and d.GetText().startswith(label + " ") and d.GetText() not in other]
+        if len(hits) != 1:
+            problems.append(f"{ref}: {len(hits)} pin-ordered name texts on the silkscreen (expected 1)")
+            continue
+        d = hits[0]
+        pads = sorted((p for p in fps[ref].Pads() if p.GetNumber().isdigit()), key=lambda p: int(p.GetNumber()))
+        gl = [SILK.pin_glyph(p.GetNetname(), ref) or "nc" for p in pads]
+        sep = "" if all(len(g) == 1 for g in gl) else " "
+        shape = d.GetEffectiveTextShape()  # kept in a name: the sub-shapes are only valid while it lives
+        subs = shape.GetSubshapes()
+        a, b = subs[0].BBox().GetCenter(), subs[len(subs) - 1].BBox().GetCenter()
+        rx, ry = mm(b.x - a.x), mm(b.y - a.y)
+        n = math.hypot(rx, ry)
+        xs = [mm(p.GetPosition().x) for p in pads]
+        ys = [mm(p.GetPosition().y) for p in pads]
+        single_row = len(pads) > 1 and (len({round(v, 4) for v in xs}) == 1 or len({round(v, 4) for v in ys}) == 1)
+        dx, dy = xs[-1] - xs[0], ys[-1] - ys[0]
+        m = math.hypot(dx, dy)
+        cos = (rx * dx + ry * dy) / (n * m) if single_row and n > 0 and m > 0 else 0.0
+        row = {"ref": ref, "text": d.GetText(), "layer": d.GetLayerName(), "mirrored": bool(d.IsMirrored()),
+               "glyphs_from_pin_1": sep.join(gl),
+               "pad_1": {"net": pads[0].GetNetname(), "at": [round(xs[0], 3), round(ys[0], 3)]},
+               "pad_last": {"number": pads[-1].GetNumber(), "net": pads[-1].GetNetname(),
+                            "at": [round(xs[-1], 3), round(ys[-1], 3)]},
+               "reading_direction_top_view": [round(rx / n, 2), round(ry / n, 2)] if n else None}
+        if single_row and abs(cos) > 0.9:
+            along = sorted(range(len(pads)), key=lambda i: xs[i] * rx + ys[i] * ry)
+            want = sep.join(gl[i] for i in along)
+            row.update(relation="along the pin row",
+                       glyph_order="as the pads lie (pin 1 first)" if cos > 0 else "as the pads lie (last pin first)",
+                       first_glyph_is_pad=pads[along[0]].GetNumber(), last_glyph_is_pad=pads[along[-1]].GetNumber())
+        elif abs(cos) < 0.1:
+            want = sep.join(gl)
+            row.update(relation="across the pin row" if single_row else "not a single pin row", glyph_order="from pin 1")
+        else:
+            problems.append(f"{ref}: label neither along nor across the pin row (cos {cos:.2f})")
+            continue
+        got = d.GetText()[len(label) + 1:]
+        row["ok"] = got == want
+        rows.append(row)
+        if got != want:
+            problems.append(f"{ref}: label '{d.GetText()}' lists '{got}', the pads lie '{want}' ({row['relation']})")
+    return {"ok": not problems, "problems": problems, "labels": rows,
+            "method": "reading direction = first stroke -> last stroke of the label's effective text shape (pcbnew); "
+                      "pad order = pad positions projected on it; glyphs from the pad nets (silk.pin_glyph)"}
+
+
 def check_silk(board, fps) -> dict:
     ctx = SILK.Ctx(board)
     texts = [(d.GetText(), d.GetLayerName(), pt(d.GetPosition())) for d in board.GetDrawings() if d.GetClass() == "PCB_TEXT"
@@ -1174,14 +1237,18 @@ def check_silk(board, fps) -> dict:
             hit = [lay for s, lay, _p in texts if s == r]
             refs[r] = f"{hit[0]} (board text beneath the part)" if hit else None
     ids = id_lines(board)
-    ok = not bad and bool(rev) and all(names.values()) and all(refs.values()) and ids["ok"]
-    return {"result": PASS if ok else FAIL, "label": "M", "identification_lines": ids, "marks": rows, "marks_not_ok": bad,
+    pol = pin_order_labels(board, fps)
+    ok = not bad and bool(rev) and all(names.values()) and all(refs.values()) and ids["ok"] and pol["ok"]
+    return {"result": PASS if ok else FAIL, "label": "M", "identification_lines": ids, "pin_order_labels": pol,
+            "marks": rows, "marks_not_ok": bad,
             "extra_marks_placed": sum(1 for r in rows if r["extra_mark"]),
             "library_mark_only": [r["ref"] for r in rows if not r["extra_mark"]],
             "revision_text": rev, "pin_order_names": names, "boost_block_designators": refs,
             "criterion": "every listed footprint keeps its library F.SilkS polarity / pin-1 graphics with none of them "
                          "under another part's body (F.Fab box) or on a pad (extra '+', 'K' or dot marks are counted "
                          "separately); the text 'rev 3' exists; J1 / J2 / J5 / J7 carry a name with the pin order; "
+                         "every name with pin glyphs lists them as the pads lie when it is printed along its pin "
+                         "row (e.g. the battery connector: '+' on the side of the '+' pad), else from pin 1; "
                          "U8 / U9 / L5 designators exist on a silkscreen layer; the two identification lines "
                          "(repository address, contact e-mail) exist once each, >= 1.0 mm high with >= 0.15 mm stroke, "
                          "mirrored on the bottom, >= 0.15 mm from every pad and silkscreen item, on no via, >= 0.3 mm "

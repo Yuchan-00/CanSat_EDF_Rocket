@@ -2,7 +2,7 @@
  "tool": "scripts/make_all.py",
  "argv": [
   "--only",
-  "docs,manifest"
+  "manifest"
  ],
  "reroute": false,
  "interpreters": {
@@ -10,21 +10,8 @@
   "KPY": "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/python.exe",
   "MPY": "B:/0)AI_Cad/CanSat_EDF_Rocket/.venv/Scripts/python.exe"
  },
- "started": "2026-11-12T00:42:01+0900",
+ "started": "2026-11-12T05:25:20+0900",
  "steps": [
-  {
-   "step": "docs",
-   "kind": "build",
-   "command": [
-    "python.exe",
-    "-B",
-    "-X",
-    "utf8",
-    "docs_ko.py"
-   ],
-   "exit": 0,
-   "seconds": 1.2
-  },
   {
    "step": "manifest",
    "kind": "build",
@@ -36,10 +23,10 @@
     "make_manifest.py"
    ],
    "exit": 0,
-   "seconds": 2.8
+   "seconds": 0.8
   }
  ],
  "failed_checks": [],
- "finished": "2026-11-12T00:42:05+0900",
+ "finished": "2026-11-12T05:25:21+0900",
  "exit": 0
 }

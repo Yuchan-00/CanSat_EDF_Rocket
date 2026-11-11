@@ -88,9 +88,12 @@ FUNCTION_NET = {
 #: substitute symbol of U9: (symbol pin name, electrical type) -> datasheet pin name of the TLV3012
 MCP65R41_AS_TLV3012 = {("", "output"): "OUT", ("V-", "power_in"): "V-", ("+", "input"): "IN+",
                        ("-", "input"): "IN-", ("Vref", "power_out"): "REF", ("V+", "power_in"): "V+"}
-#: refs the plan lists as "in neither the BOM nor the CPL" for option A (rev3_plan.json checks_to_add, fit-set line)
-NOT_JLC_OPTION_A = ("U1", "U2", "U3", "U4", "J1", "J3", "J19", "J20", "J21", "J22", "J24", "J25", "J26", "Q3", "R47",
-                    "JP1", "NT1")
+#: refs the plan lists as "in neither the BOM nor the CPL" for option A (rev3_plan.json checks_to_add, fit-set line);
+#: U7 (ESP-12F) and the 12 through-hole connectors joined the list with the plan amendments of 2026-11-12: the user
+#: buys and solders them (JLC fits SMT parts only)
+THT_BY_USER = ("J2", "J5", "J8", "J9", "J10", "J11", "J12", "J14", "J15", "J16", "J17", "J18")
+NOT_JLC_OPTION_A = ("U1", "U2", "U3", "U4", "U7", "J1", "J3", "J19", "J20", "J21", "J22", "J24", "J25", "J26", "Q3",
+                    "R47", "JP1", "NT1") + THT_BY_USER
 
 
 # ------------------------------------------------------------------------------------------------- small helpers
@@ -185,6 +188,7 @@ class Netlist:
         self.path = Path(path)
         raw = self.path.read_bytes()
         self.sha256 = sha256_bytes(raw)
+        self.sha256_without_date_line = normalised_netlist(self.path)
         tree = parse_sexpr(raw.decode("utf-8"))
         if tree[0] != "export":
             raise ValueError(f"{path}: not a KiCad netlist")
@@ -239,7 +243,13 @@ class Netlist:
         return out
 
     def evidence(self) -> dict:
-        return {"file": posix(self.path), "sha256": self.sha256, "tool": self.design["tool"],
+        # esp-user-fix step (finding V4): a later build step exports the netlist again, so the file on disk carries
+        # a later '(date ...)' line and another raw sha256 than the one read here; the hash without that line is the
+        # one that identifies the content
+        return {"file": posix(self.path), "sha256": self.sha256,
+                "sha256_is": "of the file as it was when this check read it (it carries the export time; a later "
+                             "build step exports it again)",
+                "sha256_without_date_line": self.sha256_without_date_line, "tool": self.design["tool"],
                 "export_date_in_file": self.design["date"], "components": len(self.components),
                 "named_nets": len(self.named()), "unconnected_single_pin_nets": len(self.nets) - len(self.named())}
 
@@ -884,6 +894,11 @@ def check_export_files() -> dict:
             p["added_against_main"] = sorted(set(bom_refs) - main_refs, key=natural)
             if p["added_against_main"] != list(MCUS):
                 problems.append(f"with_mcu adds {p['added_against_main']}, expected {list(MCUS)}")
+            # user-fitted and unfitted refs are in neither pair (2026-11-12: U7 must not come back with the MCUs)
+            p["forbidden_refs_present"] = sorted(set(bom_refs + [r[0] for r in crows])
+                                                 & (set(NOT_JLC_OPTION_A) - set(MCUS)), key=natural)
+            if p["forbidden_refs_present"]:
+                problems.append(f"with_mcu pair contains {p['forbidden_refs_present']}")
         want_lines = len(plan["bom_lines"]) + (1 if with_mcu else 0)
         if len(brows) != want_lines:
             problems.append(f"{suffix or 'main'}: {len(brows)} BOM lines, plan gives {want_lines}")
@@ -915,10 +930,15 @@ def check_export_files() -> dict:
     marks = {m["ref"]: m for m in rr["checks"]["silkscreen"]["marks"]}
     parts = {q["refdes"]: q for q in spec["parts"]}
     mcu_refs = fit_report(spec, True)["jlc_designators"]
-    need = sorted((r for r in mcu_refs if POLAR_SYMBOL.match(parts[r]["symbol"])), key=natural)
+    # parts the user solders need their pin-1 / polarity mark just as much (2026-11-12: U7 ESP-12F)
+    user_refs = sorted((q["refdes"] for q in spec["parts"] if q["fit"] == "user"), key=natural)
+    need = sorted((r for r in [*mcu_refs, *user_refs] if POLAR_SYMBOL.match(parts[r]["symbol"])), key=natural)
     silk = {"board_sha256_of_report": rr["board"]["sha256"], "board_sha256_now": sha256_file(KICAD / "vtol_carrier.kicad_pcb"),
-            "required": need, "missing_or_not_ok": [r for r in need if not marks.get(r, {}).get("ok")]}
-    other = sorted(set(mcu_refs) - set(need), key=natural)
+            "required": need, "required_user_fitted": [r for r in need if r in user_refs],
+            "missing_or_not_ok": [r for r in need if not marks.get(r, {}).get("ok")]}
+    # user-soldered parts (2026-11-12: the 12 THT connectors) need the library silkscreen outline as much as the
+    # JLC-fitted ones: it is the only orientation reference the user has
+    other = sorted((set(mcu_refs) | set(user_refs)) - set(need), key=natural)
     lib_marks = {}
     for r in other:
         if table.get(r, {}).get("kind") == "non-polar 2-pad":
@@ -930,6 +950,28 @@ def check_export_files() -> dict:
         problems.append(f"silk marks missing / not ok: {silk['missing_or_not_ok']} (or report of another board)")
     if silk["other_without_library_silk"]:
         problems.append(f"no library silkscreen at all: {silk['other_without_library_silk']}")
+    # paste apertures: every footprint JLC does not fit in that order has none (report of the export step);
+    # 2026-11-12: that includes the user-soldered ESP-12F U7 in BOTH sets
+    gc = load_json(REP / "gerber_check.json")
+    paste = {}
+    for name, with_mcu in (("main", False), ("with_mcu", True)):
+        want = sorted((q["refdes"] for q in spec["parts"] if not fitsets.jlc_fitted(q, with_mcu)), key=natural)
+        v = (gc.get("paste_variant") or {}).get(name) or {}
+        smd_no_paste = sorted(v.get("pads_changed_per_ref", {}), key=natural)
+        left = v.get("pads_with_paste_after")
+        paste[name] = {"refs_without_paste_in_the_report": v.get("refs"), "refs_not_fitted_by_jlc": want,
+                       "refs_that_lost_paste_pads": v.get("pads_changed_per_ref"), "pads_with_paste_left": left,
+                       "gerber_flashes": (gc.get("sets") or {}).get(name, {}).get("f_paste_flashes")}
+        if v.get("refs") != want:
+            problems.append(f"{name}: paste variant refs {v.get('refs')} != parts not fitted by JLC {want}")
+        if left is None or left != paste[name]["gerber_flashes"]:
+            problems.append(f"{name}: {left} pads keep paste on the variant board, the gerber has "
+                            f"{paste[name]['gerber_flashes']} flashes")
+        if v.get("paste_pads_left_on_parts_not_fitted_by_jlc") != 0:
+            problems.append(f"{name}: paste pads left on parts JLC does not fit: "
+                            f"{v.get('paste_pads_left_on_parts_not_fitted_by_jlc')}")
+        if not set(smd_no_paste) <= set(want):
+            problems.append(f"{name}: paste removed on JLC-fitted parts {sorted(set(smd_no_paste) - set(want))}")
     # the two gerber zips: same members, only F.Paste differs, by exactly the U1..U4 pads
     import zipfile as _zip
     zips = {}
@@ -952,9 +994,11 @@ def check_export_files() -> dict:
     result = FAIL if problems else PASS
     return write_report("export_files", {
         "result": result, "tool": "scripts/rev3_checks.py export-files", "spec_sha256": sha256_file(SPEC),
-        "problems": problems, "pairs": pairs, "silk_marks": silk, "gerber_zips": zips,
-        "not_verified": ["JLC's upload parser: header strings, UTF-8 BOM, unit suffix, sign of Y and the THT rows are "
-                         "in the format of JLC's sample files, but only JLC's upload preview shows every line matched",
+        "problems": problems, "pairs": pairs, "silk_marks": silk, "paste_apertures": paste, "gerber_zips": zips,
+        "not_verified": ["JLC's upload parser: header strings, UTF-8 BOM, unit suffix and sign of Y are in the "
+                         "format of JLC's sample files (the order page accepted the files of the build before the "
+                         "amendments of 2026-11-12, spec/jlc_order_page_20261112.json), but only JLC's upload preview "
+                         "of THESE files shows every line matched",
                          "rotation rows listed under orientation_critical_not_verified (and the assumption that JLC's "
                          "0 deg is the EasyEDA footprint) - JLC's 'Confirm Parts Placement'"]})
 
