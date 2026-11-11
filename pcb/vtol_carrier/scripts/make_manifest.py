@@ -36,7 +36,8 @@ JAR = Path(os.environ.get("FREEROUTING_JAR") or
            r"C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/tools_dl/freerouting/freerouting-2.5.0.jar")
 #: written after checks_exports.py made its sha list (so not in manifest['sha256'])
 LATE = ["out/reports/rev3_export_files.json", "out/reports/rev3_export_determinism.json",
-        "out/reports/determinism.json", "README_ko.md", "out/ORDER_ko.md", "spec/SPEC_ko.md"]
+        "out/reports/determinism.json", "README_ko.md", "out/ORDER_ko.md", "spec/SPEC_ko.md",
+        "out/REV3_REPORT_ko.md"]
 
 
 def sha256(p: Path) -> str:

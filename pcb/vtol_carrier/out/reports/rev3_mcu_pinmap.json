@@ -4,9 +4,9 @@
  "tool": "kicad-cli netlist export + scripts/rev3_checks.py mcu-pinmap",
  "netlist": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
-  "sha256": "885e029418d7df46717759e874bee1d9520f4334ed23e7828f030aa6181aaec8",
+  "sha256": "cb5e2284e7de69e89f8819beea68e4e7c7ef8773acebc45fef4f5f4f0429d46f",
   "tool": "Eeschema 10.0.6",
-  "export_date_in_file": "2026-11-11T23:48:01",
+  "export_date_in_file": "2026-11-12T00:21:36",
   "components": 174,
   "named_nets": 105,
   "unconnected_single_pin_nets": 183

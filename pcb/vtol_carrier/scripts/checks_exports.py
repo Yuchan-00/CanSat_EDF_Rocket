@@ -608,8 +608,9 @@ def main() -> int:
     # relayout-fix step (review RR-8): files that a LATER step rewrites would be listed here with the hash of the
     # previous run (M: reports/determinism.json). They are hashed by make_manifest.py instead
     # (build.written_after_checks_exports = make_manifest.LATE), after they were written.
+    # REV3_REPORT_ko.md is the deliver step's hand-written report (not generated): hashed there as well.
     written_later = ("reports/determinism.json", "reports/rev3_export_files.json", "reports/rev3_export_determinism.json",
-                     "ORDER_ko.md")
+                     "ORDER_ko.md", "REV3_REPORT_ko.md")
     for p in sorted(OUT.rglob("*")):
         rel = p.relative_to(OUT).as_posix()
         if p.is_file() and p.name != "manifest.json" and not rel.startswith(("render/", "presentation/")) \

@@ -35,7 +35,7 @@
 | 크리스털 XTAL1 길이 (rev 2c보다 나빠지면 안 됨) | 5.96 mm (한계 5.96 mm) | M |
 | 설계 규칙 파일 = rev 2c | PASS | M |
 | 구리 섬 / 패드에 닿는 비아 | 없음 (모든 네트 한 덩어리) / 0 | M |
-| JLC 부품 재고·주문 가능 확인 | PASS (40/40줄), with_mcu PASS, 2026-11-11T16:19:27+09:00 | M (그 시각 기준) |
+| JLC 부품 재고·주문 가능 확인 | PASS (40/40줄), with_mcu PASS, 2026-11-12T00:08:01+09:00 | M (그 시각 기준) |
 | 주문 파일 형식·fit 집합 검사 | PASS | M |
 | 주문 파일을 두 번 써서 같은지 | PASS | M |
 | 전체 다시 만들기 두 번 = 같은 파일 | FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | M |
@@ -103,7 +103,7 @@
 - 뒷면 다리 길이: J15, J17 은 규칙 1.5 mm 보다 길어 잘라야 합니다. J1, J14 은 확인 못 함.
 - 모듈 치수와 끼움: GY-521, BMP280, OpenLog, NEO-7M 치수는 가정값입니다 (GY-521 받침 2.54 mm, BMP280 헤더 직각 - 모두 A). 그림과 간섭 검사도 이 가정 위에 있습니다. 실물을 버니어로 재야 확정됩니다 (D15).
 - J14 Molex 커넥터: 라이브러리 3D 모델이 없고 구멍 지름을 도면과 대조하지 못했습니다.
-- 재고: 2026-11-11T16:19:27+09:00 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.
+- 재고: 2026-11-12T00:08:01+09:00 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.
 - 비용: 수수료 표로 계산한 추정(E)입니다. 실제 금액은 JLC 견적뿐입니다.
 - GPS 케이블이 기체 안에서 지나갈 길은 설계되지 않았습니다 (그림은 예시).
 
@@ -133,7 +133,7 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py        # 전체를 
 B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당일 JLC 재고 확인 (인터넷, 읽기만)
 ```
 
-- 한 번 만드는 데 걸린 시간: 10.4분, 10.1분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-12T00:02:54+0900.
+- 한 번 만드는 데 걸린 시간: 10.0분, 10.0분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-12T00:36:18+0900.
 - make_all.py는 인터넷을 쓰지 않습니다. JLC 부품 근거는 저장된 기록으로 다시 평가하고, 재고 확인(jlc_gate.py)은 따로 실행합니다.
 - 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다.
 - 결정성 검사 결과: FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음). 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. STEP 파일(기구 확인용)은 주문 파일이 아닙니다.
@@ -145,6 +145,7 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 무엇 | 경로 |
 |---|---|
 | 주문 안내서 (먼저 읽기) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` |
+| 최종 보고서 (납품 단계가 손으로 쓴 시점 기록, 다시 만들어지지 않음) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/REV3_REPORT_ko.md` |
 | 주문 파일: 거버 zip / BOM / CPL (기본 쌍) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` |
 |  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv` |
 |  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv` |
@@ -219,7 +220,7 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 구리 섬 | 없음 (모든 네트 한 덩어리) | out/manifest.json board_metrics | M |
 | 패드에 닿는 비아 | 0 | out/manifest.json board_metrics | M |
 | JLC 확인 결과 | PASS (40/40줄), with_mcu PASS | out/jlc_gate_report.json | M |
-| JLC 확인 시각 | 2026-11-11T16:19:27+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
+| JLC 확인 시각 | 2026-11-12T00:08:01+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
 | 주문 파일 검사 | PASS | out/reports/rev3_export_files.json | M |
 | 주문 파일 재현 | PASS | out/reports/rev3_export_determinism.json | M |
 | 결정성 | FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | out/reports/determinism.json | M |
@@ -303,5 +304,5 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 계획17 ESP-12F RF behaviour | ESP-12F의 무선 성능은 같은 금지 영역에서 ESP-12E와 같다고 가정했습니다 (A). 펌웨어 이미지도 같은 ESP8266 / 4 MB 구성으로 가정합니다 (A). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
 | 계획17 Programming access | 프로그래밍: 빈 구멍에 포고핀 어댑터를 댈 때의 접촉은 확인하지 않았습니다 (NOT_VERIFIED). B안(JLC가 띠 밖에 헤더 실장)은 배치 검색에서 자리가 없었습니다. | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
 | 계획17 AVCC choke C1046 | AVCC 초크 C1046은 정격 15 mA (1.15 Ohm) 입니다. ATmega128A의 AVCC 전류와 대조하지 않았습니다 (NOT_VERIFIED). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
-| 빌드 시간 | 10.4분, 10.1분 | out/reports/determinism.json builds | M |
-| 결정성 시각 | 2026-11-12T00:02:54+0900 | out/reports/determinism.json | M |
+| 빌드 시간 | 10.0분, 10.0분 | out/reports/determinism.json builds | M |
+| 결정성 시각 | 2026-11-12T00:36:18+0900 | out/reports/determinism.json | M |

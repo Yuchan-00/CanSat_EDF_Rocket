@@ -804,6 +804,7 @@ def readme(F: Facts, ctx: dict) -> str:
     A("|---|---|")
     for what, rel in [
         ("주문 안내서 (먼저 읽기)", "out/ORDER_ko.md"),
+        ("최종 보고서 (납품 단계가 손으로 쓴 시점 기록, 다시 만들어지지 않음)", "out/REV3_REPORT_ko.md"),
         ("주문 파일: 거버 zip / BOM / CPL (기본 쌍)", "out/vtol_carrier_gerber.zip"),
         ("", "out/jlcpcb_bom.csv"),
         ("", "out/jlcpcb_cpl.csv"),

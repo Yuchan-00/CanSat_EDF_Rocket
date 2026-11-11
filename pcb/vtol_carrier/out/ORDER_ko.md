@@ -112,7 +112,7 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 
 ## 3. 결제하기 전에 확인할 것 (하나라도 다르면 멈추고 결제하지 마십시오)
 
-1. 주문 당일, 업로드 직전에 재고를 다시 확인합니다: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts` 에서 `B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py` (인터넷, 읽기만, 약 2~3분). 결과 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_gate_report.json` 의 status가 PASS여야 합니다. 마지막 확인: 2026-11-11T16:19:27+09:00 PASS (40/40줄), with_mcu PASS.
+1. 주문 당일, 업로드 직전에 재고를 다시 확인합니다: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts` 에서 `B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py` (인터넷, 읽기만, 약 2~3분). 결과 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_gate_report.json` 의 status가 PASS여야 합니다. 마지막 확인: 2026-11-12T00:08:01+09:00 PASS (40/40줄), with_mcu PASS.
 2. BOM 매칭 화면: 기본 묶음이면 40줄 모두, with_mcu면 41줄 모두 부품이 매칭되어야 합니다. '부품 없음', '다른 부품 추천', '재고 부족'이 하나라도 있으면 멈춥니다 (대체는 5장 표 1의 정해진 대체 부품만, 그것도 다시 확인 후; 표 2의 SMD 부품은 이 파일로 쓸 수 없음).
 3. THT 6줄(J2/J5, J8~J12, J14, J15/J17, J16, J18; 납땜점 39개)이 견적에 'JLC가 납땜'으로 들어가 있어야 합니다. 빠져 있거나 거절되면 멈춥니다.
 4. 부품 위치 미리보기(Confirm Parts Placement)를 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/cpl_rotation_check.png` 그림과 하나씩 비교합니다. 특히 극성: 탄탈 C45 / C52, 전해 C47 (거꾸로면 화재 위험), 그리고 회전이 확인 안 된 C45, C47, C52, U9. U7 / U8 / U9 / J7의 1번 핀 방향. 회전 근거는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/cpl_rotation_table.csv` 의 status 칸에 있습니다. 이것은 결제 전 브라우저 미리보기에서 사용자가 하는 확인입니다.
@@ -125,10 +125,10 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 
 | 묶음 | 방식 | 실장 장수 | 합계 (E) | Standard 전용 수수료까지 붙으면 |
 |---|---|---|---|---|
-| 기본 | Economic | 2 | 80.24 USD | - |
-| 기본 | Standard | 2 | 122.55 USD | 154.40 USD |
-| 기본 | Standard | 5 | 152.56 USD | 184.41 USD |
-| with_mcu | Standard | 2 | 172.98 USD | 204.83 USD |
+| 기본 | Economic | 2 | 80.25 USD | - |
+| 기본 | Standard | 2 | 122.56 USD | 154.41 USD |
+| 기본 | Standard | 5 | 152.58 USD | 184.43 USD |
+| with_mcu | Standard | 2 | 172.99 USD | 204.84 USD |
 
 - 포함: 셋업, 스텐실, 부품 종류 수수료, 부품 장착, THT 손납땜, 위치 확인 수수료, 부품값(손실분·최소 수량 포함). Standard 전용 수수료 31.85 USD (취급·고정구·포장)는 적용 여부가 NOT_VERIFIED입니다.
 - **빠진 것:** PCB 제작비, ENIG 추가 요금, 베이킹 요금, 레일 분리 요금, 배송비, 세금. 실제 금액은 JLC 견적뿐입니다.
@@ -136,26 +136,26 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 
 ## 5. 재고가 적은 줄과 대체 부품
 
-- 얇은 재고(기준 1000개 미만): C22436147 (J2,J5) available 503.
-- 지켜볼 줄 (2000개 미만): C53426685 (L5) 1065개, 필요 22, C919459 (U8) 6299개, 필요 21, 재고가 계획 때 31489개에서 7163개로 절반 넘게 줄어듦, C20345924 (U9) 1088개, 필요 20, C22436147 (J2,J5) 503개, 필요 40.
+- 얇은 재고(기준 1000개 미만): C22436147 (J2,J5) available 523.
+- 지켜볼 줄 (2000개 미만): C53426685 (L5) 1065개, 필요 22, C919459 (U8) 5850개, 필요 21, 재고가 계획 때 31489개에서 6703개로 절반 넘게 줄어듦, C20345924 (U9) 1086개, 필요 20, C22436147 (J2,J5) 523개, 필요 40.
 - 대체는 계획에 적힌 순서대로만 씁니다. 다른 부품으로 바꾸는 것은 설계 변경이라 다시 검사하고 사용자가 정해야 합니다.
 
 **표 1. 같은 풋프린트에 쓸 수 있는 대체 부품** (이 파일 그대로, BOM 줄의 부품 번호만 바꿈). 'PASS'는 주문 가능 여부(재고)만 뜻합니다.
 
 | 원래 부품 | 대체 부품 (주문 가능 수량, 판정) | 풋프린트 호환 | 계획 메모 (spec/rev3_plan.json) |
 |---|---|---|---|
-| L5 (C53426685) | C167203 FXL0420-1R0-M (106884개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same series and land pattern, Isat 5.6 A (first plan's part), stock 107845 |
-| U8 (C919459) | C1852149 TPS61023DRLT (526개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same MPN, other reel; stock 550 (thin) |
+| L5 (C53426685) | C167203 FXL0420-1R0-M (106515개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same series and land pattern, Isat 5.6 A (first plan's part), stock 107845 |
+| U8 (C919459) | C1852149 TPS61023DRLT (481개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same MPN, other reel; stock 550 (thin) |
 | J2, J5 (C22436147) | C55629861 SH-PM254R-1x6P-H85 (985개, PASS); C54876735 PM2.54-1x6PWZ-H8.5 (595개, PASS) | **NOT_VERIFIED** - 쓰기 전에 제조사 도면과 KiCad 풋프린트를 대조해야 함 | same KiCad footprint assumed for both (no datasheet for C55629861: NOT_VERIFIED); C55629861 tails 3.2 mm -> protrusion about 1.6 mm, flush-cut |
-| J7 (C161692) | C52037397 GH1.25-4PLT (1843개, PASS); C2829262 GH1.25-4PLTPZ (55720개, PASS) | **NOT_VERIFIED** - 쓰기 전에 제조사 도면과 KiCad 풋프린트를 대조해야 함 | other makers' GH 1.25 mm 4P vertical; footprint check required before use |
+| J7 (C161692) | C52037397 GH1.25-4PLT (1843개, PASS); C2829262 GH1.25-4PLTPZ (55686개, PASS) | **NOT_VERIFIED** - 쓰기 전에 제조사 도면과 KiCad 풋프린트를 대조해야 함 | other makers' GH 1.25 mm 4P vertical; footprint check required before use |
 | U9 (C20345924) | 없음 - 같은 사양의 두 번째 부품이 없습니다. 재고가 없으면 주문을 미룹니다 (계획 7장, F) | - | - |
 
 **표 2. 이 파일로는 쓸 수 없는 대체 부품** (SMD 부품이라 새 풋프린트와 새 보드 판이 필요; JLC가 THT 손납땜을 거절할 때를 위한 계획의 예비안, 사용자 승인 필요). BOM 매칭 화면에서 이 부품으로 바꾸면 안 됩니다.
 
 | 원래 부품 | 대체 부품 (주문 가능 수량, 판정) | 계획 메모 |
 |---|---|---|
-| J8..J12, J16, J18 (THT right-angle headers) if JLC refuses hand soldering | C46061676 HX PZ2.54-1x3P WT (20111개, PASS); C46061675 HX PZ2.54-1x2P WT (18761개, PASS); C46061677 HX PZ2.54-1x4P WT (13006개, PASS) | SMD right-angle headers, reflow; footprint not chosen (needs an on-disk KiCad footprint and the user's yes) |
-| J15, J17 (C131337) | C160352 B2B-PH-SM4-TB(LF)(SN) (46998개, PASS) | SMD JST-PH; new footprint (D7) |
+| J8..J12, J16, J18 (THT right-angle headers) if JLC refuses hand soldering | C46061676 HX PZ2.54-1x3P WT (20065개, PASS); C46061675 HX PZ2.54-1x2P WT (18299개, PASS); C46061677 HX PZ2.54-1x4P WT (13010개, PASS) | SMD right-angle headers, reflow; footprint not chosen (needs an on-disk KiCad footprint and the user's yes) |
+| J15, J17 (C131337) | C160352 B2B-PH-SM4-TB(LF)(SN) (46938개, PASS) | SMD JST-PH; new footprint (D7) |
 
 ## 6. 따로 사야 하는 것 (JLC는 낱개 부품을 보내주지 않습니다)
 
@@ -363,27 +363,27 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | 툴링 홀(H) 부품 | 0 | spec/carrier_spec.json summary.by_prefix | M |
 | 1번 핀 번호 반대 | J8, J9, J10, J11, J12, J14, J16 | out/cpl_rotation_table.csv notes ('mirrored') | M |
 | 빈 자리 | J3, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47 | spec/carrier_spec.json parts[].fit == none | M |
-| JLC 확인 시각 | 2026-11-11T16:19:27+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
+| JLC 확인 시각 | 2026-11-12T00:08:01+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
 | JLC 확인 결과 | PASS (40/40줄), with_mcu PASS | out/jlc_gate_report.json | M |
 | THT 납땜점 main | 39 | out/jlc_fee_estimate.csv | M |
 | 회전 미확인 | C45, C47, C52, U9 | out/reports/cpl_rotation.json | NOT_VERIFIED |
-| 비용 main Economic 2장 | 80.24 USD | out/jlc_fee_estimate.csv sum_E | E |
-| 비용 main Standard 2장 (Standard 전용 수수료 포함) | 154.40 USD | out/jlc_fee_estimate.csv | E (적용 여부 NOT_VERIFIED) |
-| 비용 main Standard 2장 | 122.55 USD | out/jlc_fee_estimate.csv sum_E | E |
-| 비용 main Standard 5장 (Standard 전용 수수료 포함) | 184.41 USD | out/jlc_fee_estimate.csv | E (적용 여부 NOT_VERIFIED) |
-| 비용 main Standard 5장 | 152.56 USD | out/jlc_fee_estimate.csv sum_E | E |
-| 비용 with_mcu Standard 2장 (Standard 전용 수수료 포함) | 204.83 USD | out/jlc_fee_estimate.csv | E (적용 여부 NOT_VERIFIED) |
-| 비용 with_mcu Standard 2장 | 172.98 USD | out/jlc_fee_estimate.csv sum_E | E |
+| 비용 main Economic 2장 | 80.25 USD | out/jlc_fee_estimate.csv sum_E | E |
+| 비용 main Standard 2장 (Standard 전용 수수료 포함) | 154.41 USD | out/jlc_fee_estimate.csv | E (적용 여부 NOT_VERIFIED) |
+| 비용 main Standard 2장 | 122.56 USD | out/jlc_fee_estimate.csv sum_E | E |
+| 비용 main Standard 5장 (Standard 전용 수수료 포함) | 184.43 USD | out/jlc_fee_estimate.csv | E (적용 여부 NOT_VERIFIED) |
+| 비용 main Standard 5장 | 152.58 USD | out/jlc_fee_estimate.csv sum_E | E |
+| 비용 with_mcu Standard 2장 (Standard 전용 수수료 포함) | 204.84 USD | out/jlc_fee_estimate.csv | E (적용 여부 NOT_VERIFIED) |
+| 비용 with_mcu Standard 2장 | 172.99 USD | out/jlc_fee_estimate.csv sum_E | E |
 | Standard 전용 수수료 | 31.85 USD | out/jlc_fee_estimate.csv | E |
 | 얇은 재고 기준 | 1000개 | out/jlc_gate_report.json | F (계획 I7) |
-| 얇은 재고 줄 | C22436147 (J2,J5) available 503 | out/jlc_gate_report.json | M |
-| 재고 주의 줄 | C53426685 (L5) 1065개, 필요 22, C919459 (U8) 6299개, 필요 21, 재고가 계획 때 31489개에서 7163개로 절반 넘게 줄어듦, C20345924 (U9) 1088개, 필요 20, C22436147 (J2,J5) 503개, 필요 40 | out/jlc_gate_report.json lines (available < 2000, 또는 stock < 계획 spec/rev3_plan.json bom_lines.stock 의 절반) | M |
-| 대체 L5 (C53426685) | C167203 FXL0420-1R0-M (106884개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 대체 U8 (C919459) | C1852149 TPS61023DRLT (526개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 얇은 재고 줄 | C22436147 (J2,J5) available 523 | out/jlc_gate_report.json | M |
+| 재고 주의 줄 | C53426685 (L5) 1065개, 필요 22, C919459 (U8) 5850개, 필요 21, 재고가 계획 때 31489개에서 6703개로 절반 넘게 줄어듦, C20345924 (U9) 1086개, 필요 20, C22436147 (J2,J5) 523개, 필요 40 | out/jlc_gate_report.json lines (available < 2000, 또는 stock < 계획 spec/rev3_plan.json bom_lines.stock 의 절반) | M |
+| 대체 L5 (C53426685) | C167203 FXL0420-1R0-M (106515개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 대체 U8 (C919459) | C1852149 TPS61023DRLT (481개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
 | 대체 J2, J5 (C22436147) | C55629861 SH-PM254R-1x6P-H85 (985개, PASS); C54876735 PM2.54-1x6PWZ-H8.5 (595개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 대체 J7 (C161692) | C52037397 GH1.25-4PLT (1843개, PASS); C2829262 GH1.25-4PLTPZ (55720개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 대체 J8..J12, J16, J18 (THT right-angle headers) if JLC refuses hand soldering | C46061676 HX PZ2.54-1x3P WT (20111개, PASS); C46061675 HX PZ2.54-1x2P WT (18761개, PASS); C46061677 HX PZ2.54-1x4P WT (13006개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 대체 J15, J17 (C131337) | C160352 B2B-PH-SM4-TB(LF)(SN) (46998개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 대체 J7 (C161692) | C52037397 GH1.25-4PLT (1843개, PASS); C2829262 GH1.25-4PLTPZ (55686개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 대체 J8..J12, J16, J18 (THT right-angle headers) if JLC refuses hand soldering | C46061676 HX PZ2.54-1x3P WT (20065개, PASS); C46061675 HX PZ2.54-1x2P WT (18299개, PASS); C46061677 HX PZ2.54-1x4P WT (13010개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 대체 J15, J17 (C131337) | C160352 B2B-PH-SM4-TB(LF)(SN) (46938개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
 | 따로 살 품목 수 | 19 | out/off_board_purchase.csv | M |
 | 뒷면 다리 규칙 | 1.5 mm | out/fit_checks.json tht_leads | F (계획) |
 | 다리 규칙 초과 | J15, J17 | out/fit_checks.json tht_leads | F (도면값) |

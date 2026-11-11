@@ -2,8 +2,9 @@
 
 이 폴더(B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render)의 그림은 모두 최종 배선 기판
 B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb
-(sha256 b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274, scripts/make_all.py 로 다시 만든 판)으로 만들었습니다.
-처음 그림을 그린 기판(sha256 32bf9856...)과 구리 모양은 같고(선·비아 3054개가 집합으로 일치, M) 파일 안의 순서만 다릅니다.
+으로 만들었습니다. scripts/make_all.py 가 그림을 다시 만들 때마다 그때의 기판을 쓰고, 쓴 기판의 sha256을
+render_report.json 의 source_board_sha256 에 적습니다 (2026-11-12 납품 시점: 131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556,
+승압부 재배치와 아랫면 실크 두 줄이 들어간 최종 기판, M).
 기판 파일은 고치지 않고, 그림용 사본 세 개만 만들어 그렸습니다.
 
 - B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/render_as_delivered.kicad_pcb : JLC에서 받는 상태 (U1~U4, J1의 3D 모양을 숨김)
@@ -41,7 +42,7 @@ OpenLog와 BMP280이 실제로 들어가는지는 모듈을 캘리퍼스로 잰 
 | render_report.json | 그림 a1~d1의 명령, 사본 기판의 해시, 붙인/숨긴 3D 모델 목록 | - |
 | slides_report.json | 슬라이드 e1~e4가 쓴 입력 그림과 결과의 해시 | - |
 | d2_neo7m_top_cap.json | d2 그림의 모든 숫자와 출처 표시 | - |
-| _spike_rev2c/ | rev 2c 시험용 사본으로 만든 예전 d2 시험 그림. **최종 그림이 아님** (보관용) | - |
+| _spike_rev2c/ | rev 2c 시험용 사본으로 만든 예전 d2 시험 그림. **최종 그림이 아님** (보관용, 결과물 폴더에는 복사하지 않음) | - |
 
 그림 a1~d1의 실제 크기는 1904 x 1064 픽셀입니다(이 PC의 kicad-cli가 -w 1920 -h 1080 요청에 이 크기로 씀, 측정값).
 d2와 슬라이드 e1~e4는 1920 x 1080 픽셀입니다.

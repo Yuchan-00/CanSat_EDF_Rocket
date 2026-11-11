@@ -15,8 +15,8 @@
    "tht_hand_soldering": 4.86,
    "confirm_parts_placement": 0.45,
    "components_tier1": 20.95,
-   "components_with_loss_and_minimum": 30.36,
-   "sum_E": 80.24
+   "components_with_loss_and_minimum": 30.37,
+   "sum_E": 80.25
   },
   {
    "pair": "main",
@@ -32,10 +32,10 @@
    "tht_hand_soldering": 4.86,
    "confirm_parts_placement": 0.45,
    "components_tier1": 20.95,
-   "components_with_loss_and_minimum": 30.36,
-   "sum_E": 122.55,
+   "components_with_loss_and_minimum": 30.37,
+   "sum_E": 122.56,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 154.4
+   "sum_E_with_standard_only_fees": 154.41
   },
   {
    "pair": "main",
@@ -50,11 +50,11 @@
    "tht_joints_per_board": 39,
    "tht_hand_soldering": 6.78,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 52.37,
-   "components_with_loss_and_minimum": 56.8,
-   "sum_E": 152.56,
+   "components_tier1": 52.39,
+   "components_with_loss_and_minimum": 56.82,
+   "sum_E": 152.58,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 184.41
+   "sum_E_with_standard_only_fees": 184.43
   }
  ],
  "all": [
@@ -72,8 +72,8 @@
    "tht_hand_soldering": 4.86,
    "confirm_parts_placement": 0.45,
    "components_tier1": 20.95,
-   "components_with_loss_and_minimum": 30.36,
-   "sum_E": 80.24
+   "components_with_loss_and_minimum": 30.37,
+   "sum_E": 80.25
   },
   {
    "pair": "main",
@@ -89,10 +89,10 @@
    "tht_hand_soldering": 4.86,
    "confirm_parts_placement": 0.45,
    "components_tier1": 20.95,
-   "components_with_loss_and_minimum": 30.36,
-   "sum_E": 122.55,
+   "components_with_loss_and_minimum": 30.37,
+   "sum_E": 122.56,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 154.4
+   "sum_E_with_standard_only_fees": 154.41
   },
   {
    "pair": "main",
@@ -107,9 +107,9 @@
    "tht_joints_per_board": 39,
    "tht_hand_soldering": 6.78,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 52.37,
-   "components_with_loss_and_minimum": 56.8,
-   "sum_E": 110.25
+   "components_tier1": 52.39,
+   "components_with_loss_and_minimum": 56.82,
+   "sum_E": 110.27
   },
   {
    "pair": "main",
@@ -124,11 +124,11 @@
    "tht_joints_per_board": 39,
    "tht_hand_soldering": 6.78,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 52.37,
-   "components_with_loss_and_minimum": 56.8,
-   "sum_E": 152.56,
+   "components_tier1": 52.39,
+   "components_with_loss_and_minimum": 56.82,
+   "sum_E": 152.58,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 184.41
+   "sum_E_with_standard_only_fees": 184.43
   },
   {
    "pair": "with_mcu",
@@ -143,9 +143,9 @@
    "tht_joints_per_board": 39,
    "tht_hand_soldering": 4.86,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 69.03,
-   "components_with_loss_and_minimum": 78.44,
-   "sum_E": 132.21
+   "components_tier1": 69.04,
+   "components_with_loss_and_minimum": 78.45,
+   "sum_E": 132.22
   },
   {
    "pair": "with_mcu",
@@ -160,11 +160,11 @@
    "tht_joints_per_board": 39,
    "tht_hand_soldering": 4.86,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 69.03,
-   "components_with_loss_and_minimum": 78.44,
-   "sum_E": 172.98,
+   "components_tier1": 69.04,
+   "components_with_loss_and_minimum": 78.45,
+   "sum_E": 172.99,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 204.83
+   "sum_E_with_standard_only_fees": 204.84
   },
   {
    "pair": "with_mcu",
@@ -179,9 +179,9 @@
    "tht_joints_per_board": 39,
    "tht_hand_soldering": 6.78,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 172.58,
-   "components_with_loss_and_minimum": 159.84,
-   "sum_E": 218.4
+   "components_tier1": 172.6,
+   "components_with_loss_and_minimum": 159.87,
+   "sum_E": 218.43
   },
   {
    "pair": "with_mcu",
@@ -196,11 +196,11 @@
    "tht_joints_per_board": 39,
    "tht_hand_soldering": 6.78,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 172.58,
-   "components_with_loss_and_minimum": 159.84,
-   "sum_E": 259.17,
+   "components_tier1": 172.6,
+   "components_with_loss_and_minimum": 159.87,
+   "sum_E": 259.2,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 291.02
+   "sum_E_with_standard_only_fees": 291.05
   }
  ],
  "standard_only_fees": {
