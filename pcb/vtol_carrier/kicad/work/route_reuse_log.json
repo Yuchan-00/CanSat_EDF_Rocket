@@ -1783,10 +1783,96 @@
  },
  "ids_restamped": {
   "tracks_and_vias": 2999,
-  "drawings_made_by_route": 47,
+  "drawings_made_by_route": 49,
   "drawings_of_the_unrouted_board_kept": 21
  },
  "silk": {
+  "identification_lines": {
+   "placed": true,
+   "layer": "B.SilkS",
+   "mirrored": true,
+   "height_mm": 1.2,
+   "stroke_mm": 0.2,
+   "angle_deg": 90,
+   "reads_towards": [
+    0,
+    1
+   ],
+   "line_2_towards": [
+    1,
+    0
+   ],
+   "clearance_tier_mm": 1.0,
+   "spots_in_tier": 144,
+   "tie_band_avoided": true,
+   "via_pads_avoided": true,
+   "lines": [
+    {
+     "line": 1,
+     "what": "repository address",
+     "characters": 38,
+     "ink_box_mm": [
+      66.672,
+      82.072,
+      68.529,
+      121.929
+     ]
+    },
+    {
+     "line": 2,
+     "what": "contact e-mail",
+     "characters": 20,
+     "ink_box_mm": [
+      68.929,
+      82.071,
+      70.729,
+      102.328
+     ]
+    }
+   ],
+   "not_possible_before": [
+    {
+     "layer": "F.SilkS",
+     "tie_band_avoided": true,
+     "height_mm": 1.2,
+     "angle_deg": 0,
+     "smallest_clearance_tried_mm": 0.5,
+     "spots": 0
+    },
+    {
+     "layer": "F.SilkS",
+     "tie_band_avoided": true,
+     "height_mm": 1.2,
+     "angle_deg": 90,
+     "smallest_clearance_tried_mm": 0.5,
+     "spots": 0
+    },
+    {
+     "layer": "F.SilkS",
+     "tie_band_avoided": true,
+     "height_mm": 1.0,
+     "angle_deg": 0,
+     "smallest_clearance_tried_mm": 0.5,
+     "spots": 0
+    },
+    {
+     "layer": "F.SilkS",
+     "tie_band_avoided": true,
+     "height_mm": 1.0,
+     "angle_deg": 90,
+     "smallest_clearance_tried_mm": 0.5,
+     "spots": 0
+    },
+    {
+     "layer": "B.SilkS",
+     "tie_band_avoided": true,
+     "height_mm": 1.2,
+     "angle_deg": 0,
+     "smallest_clearance_tried_mm": 0.15,
+     "spots": 0
+    }
+   ]
+  },
   "names_front": [
    {
     "ref": "J8",
@@ -2597,5 +2683,5 @@
    "Y4"
   ]
  },
- "routed_board_sha256": "b8648809d12090d5bdfc8cb9d6c71ae6eb0c80db95c8ae288a5727fa634db65d"
+ "routed_board_sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556"
 }

@@ -41,7 +41,7 @@
 
 | 순서 | 파일 | 어디에 올리나 | sha256 앞부분 |
 |---|---|---|---|
-| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` | PCB 주문 첫 화면 'Add gerber file' | 9436c800dcc27996... |
+| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` | PCB 주문 첫 화면 'Add gerber file' | 5e7d74ecf66b8c5d... |
 | 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv` | PCB Assembly 단계 'BOM file' | fa4c8e2622885f4d... |
 | 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv` | PCB Assembly 단계 'CPL file' (Pick and Place) | 738c4ea451000e0e... |
 
@@ -49,7 +49,7 @@
 
 | 순서 | 파일 | sha256 앞부분 |
 |---|---|---|
-| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip` | fe71f45be66bcbdb... |
+| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip` | 63eb3f0234e53e6b... |
 | 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv` | 465199b917ff914d... |
 | 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv` | b0ab3d4240db4473... |
 
@@ -57,6 +57,7 @@
 - 기본 BOM: 40줄 (SMT 34 + THT 6), 부품 157개, CPL 157행. with_mcu: 41줄, 부품 161개, CPL 161행.
 - 기본 BOM에 MCU(U1~U4)가 들어 있는지: 없음. 센서 자리 J1과 프로그래밍 단자도 들어 있지 않습니다 (사용자 몫).
 - 파일 형식은 JLC 견본 파일(Sample-BOM_JLCSMT, Sample-CPL_JLCSMT)과 같은 머리줄로 만들었지만, JLC가 받아들이는지는 업로드 미리보기에서 모든 줄이 매칭될 때까지 NOT_VERIFIED입니다.
+- 두 거버 zip 모두 기판 아랫면 실크(B.SilkS, 아랫면에서 볼 때 바로 읽히도록 좌우 반전)에 깃 저장소 주소와 연락용 이메일 주소 두 줄이 들어 있습니다 (글자 높이 1.2 mm, 선 굵기 0.2 mm, 검사 PASS); 거버 미리보기의 그 면에서 두 줄이 끊기지 않고 보이는지 확인하십시오 (JLC 인쇄 품질은 NOT_VERIFIED).
 
 ## 2. 주문 화면 입력표 (결정 D9, D10, D11, D14, D16)
 
@@ -322,10 +323,10 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | 재배치 전 크리스털보다 가까운 부품 | C57, L5 | out/reports/routing_rules_before_relayout.json crystal_distance (재배치 전 보드) | M |
 | C59 GND 비아 | 패드 1.5 mm 안에 GND 비아 없음; 같은 윗면 GND 구리 조각에서 가장 가까운 GND 비아까지 3.287 mm | out/reports/routing_rules.json information.C59.2_gnd | M |
 | 재배치 전 C59 GND 비아 | 패드 1.5 mm 안에 자기 GND 비아 있음 | out/reports/routing_rules_before_relayout.json information.C59.2_gnd (재배치 전 보드) | M |
-| zip main sha256 | 9436c800dcc27996... | out/manifest.json fab.sets | M |
+| zip main sha256 | 5e7d74ecf66b8c5d... | out/manifest.json fab.sets | M |
 | jlcpcb_bom.csv sha256 | fa4c8e2622885f4d... | out/manifest.json sha256 | M |
 | jlcpcb_cpl.csv sha256 | 738c4ea451000e0e... | out/manifest.json sha256 | M |
-| zip with_mcu sha256 | fe71f45be66bcbdb... | out/manifest.json fab.sets | M |
+| zip with_mcu sha256 | 63eb3f0234e53e6b... | out/manifest.json fab.sets | M |
 | jlcpcb_bom_with_mcu.csv sha256 | 465199b917ff914d... | out/manifest.json sha256 | M |
 | jlcpcb_cpl_with_mcu.csv sha256 | b0ab3d4240db4473... | out/manifest.json sha256 | M |
 | F.Paste 패드 main | 342 | out/manifest.json fab.sets | M |
@@ -341,6 +342,9 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | with_mcu parts | 161 | out/manifest.json bom_cpl.pairs.with_mcu | M |
 | with_mcu cpl_rows | 161 | out/manifest.json bom_cpl.pairs.with_mcu | M |
 | U1-U4 기본 BOM | 없음 | out/jlcpcb_bom.csv | M |
+| 식별 문구 위치 | 아랫면 실크(B.SilkS, 아랫면에서 볼 때 바로 읽히도록 좌우 반전) | out/reports/routing_rules.json silkscreen.identification_lines | M |
+| 식별 문구 크기 | 글자 높이 1.2 mm, 선 굵기 0.2 mm | out/reports/routing_rules.json silkscreen.identification_lines | M |
+| 식별 문구 검사 | PASS | out/reports/routing_rules.json silkscreen.identification_lines | M |
 | 층 수 | 4 | spec/carrier_spec.json | F (계획 불변조건 d) |
 | 외곽 | 76 x 70 mm | spec/carrier_spec.json | F (size) / A (corner radius) |
 | 두께 | 1.6 mm | spec/carrier_spec.json | F |

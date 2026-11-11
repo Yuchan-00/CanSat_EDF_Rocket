@@ -2,7 +2,7 @@
  "tool": "scripts/routing_checks.py (pcbnew 10.0.6)",
  "board": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
-  "sha256": "b8648809d12090d5bdfc8cb9d6c71ae6eb0c80db95c8ae288a5727fa634db65d"
+  "sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556"
  },
  "result": "FAIL",
  "results": {
@@ -1158,6 +1158,81 @@
   "silkscreen": {
    "result": "PASS",
    "label": "M",
+   "identification_lines": {
+    "lines": [
+     {
+      "line": 1,
+      "what": "repository address",
+      "characters": 38,
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "height_mm": 1.2,
+      "stroke_mm": 0.2,
+      "angle_deg": 90.0,
+      "ink_box_mm": [
+       66.672,
+       82.072,
+       68.529,
+       121.929
+      ],
+      "gap_to_nearest_pad_mm": 3.441,
+      "nearest_pad": "J8.2",
+      "gap_to_nearest_via_pad_mm": 1.458,
+      "nearest_via": [
+       69.315,
+       80.629
+      ],
+      "vias_under_the_text": 0,
+      "gap_to_other_silkscreen_mm": 0.4,
+      "gap_to_board_edge_mm": 4.697,
+      "under_cable_tie_band": false
+     },
+     {
+      "line": 2,
+      "what": "contact e-mail",
+      "characters": 20,
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "height_mm": 1.2,
+      "stroke_mm": 0.2,
+      "angle_deg": 90.0,
+      "ink_box_mm": [
+       68.929,
+       82.071,
+       70.729,
+       102.328
+      ],
+      "gap_to_nearest_pad_mm": 1.221,
+      "nearest_pad": "J9.1",
+      "gap_to_nearest_via_pad_mm": 1.147,
+      "nearest_via": [
+       69.315,
+       80.629
+      ],
+      "vias_under_the_text": 0,
+      "gap_to_other_silkscreen_mm": 0.4,
+      "gap_to_board_edge_mm": 6.954,
+      "under_cable_tie_band": false
+     }
+    ],
+    "block": {
+     "reads_towards": [
+      0,
+      1
+     ],
+     "line_2_towards": [
+      1,
+      0
+     ],
+     "line_2_below_line_1": true,
+     "start_edges_differ_mm": 0.001,
+     "gap_between_the_lines_mm": 0.4
+    },
+    "problems": [],
+    "ok": true,
+    "limits": "F: https://jlcpcb.com/capabilities/pcb-capabilities (Legend, read 2026-11-11): line width >= 0.15 mm, text height >= 1.0 mm, pad to silkscreen 0.15 mm; edge 0.3 mm = board rule; no via under a stroke (the vias are tented; an ink break over the hole is avoided anyway)",
+    "under_cable_tie_band_is": "reported, not a criterion (avoided if possible)"
+   },
    "marks": [
     {
      "ref": "C45",
@@ -1657,7 +1732,7 @@
     "U8": "B.Silkscreen (board text beneath the part)",
     "U9": "B.Silkscreen (board text beneath the part)"
    },
-   "criterion": "every listed footprint keeps its library F.SilkS polarity / pin-1 graphics with none of them under another part's body (F.Fab box) or on a pad (extra '+', 'K' or dot marks are counted separately); the text 'rev 3' exists; J1 / J2 / J5 / J7 carry a name with the pin order; U8 / U9 / L5 designators exist on a silkscreen layer"
+   "criterion": "every listed footprint keeps its library F.SilkS polarity / pin-1 graphics with none of them under another part's body (F.Fab box) or on a pad (extra '+', 'K' or dot marks are counted separately); the text 'rev 3' exists; J1 / J2 / J5 / J7 carry a name with the pin order; U8 / U9 / L5 designators exist on a silkscreen layer; the two identification lines (repository address, contact e-mail) exist once each, >= 1.0 mm high with >= 0.15 mm stroke, mirrored on the bottom, >= 0.15 mm from every pad and silkscreen item, on no via, >= 0.3 mm inside the outline, line 2 below line 1 with the same start edge"
   }
  },
  "information": {

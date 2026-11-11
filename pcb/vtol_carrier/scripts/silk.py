@@ -13,12 +13,18 @@ Invariants
   label set that does not fit is left out (listed) - the name and the square pin-1 pad remain.
 * Sizes: names 1.0 mm high / 0.15 mm stroke (JLC recommendation, A), 0.8 mm (board minimum) when 1.0 does not fit;
   pin labels 0.8 mm. Deterministic: fixed tables, fixed candidate order, no randomness.
+* silk-id step (user request): the two identification lines ID_LINES (repository address, contact e-mail) are placed
+  LAST, so no earlier text moves. They never lie on a pad, a hole, a via (tented or not), another silkscreen item,
+  the 0.5 mm edge strip or - if avoidable - the cable-tie band; the front is used only for a clearly free spot
+  outside every part body and module body, else the bottom (mirrored). The strings exist only here and on the
+  board: the log and the reports name the lines by kind and character count, never by content.
 """
 
 from __future__ import annotations
 
 import math
 
+import numpy as np
 import pcbnew
 
 BX0, BY0, BX1, BY1 = 62.0, 65.0, 138.0, 135.0
@@ -58,6 +64,22 @@ MARKS: dict[str, str] = {
 MARK_MAX_D = 1.6
 REF_FIRST_MAX_D = 2.5
 DOT_R = 0.2
+#: silk-id step (user request): the two identification lines, exactly these strings, line 1 above line 2
+ID_LINES: tuple[tuple[str, str], ...] = (
+    ("repository address", "github.com/Yuchan-00/CanSat_EDF_Rocket"),
+    ("contact e-mail", "yuchan.fbu@gmail.com"),
+)
+#: (height, stroke) mm, first that fits. F: https://jlcpcb.com/capabilities/pcb-capabilities, section Legend, read
+#: 2026-11-11: line width >= 0.15 mm, text height >= 1.0 mm, preferred stroke : height 1 : 6, pad to silkscreen
+#: 0.15 mm. 1.2 / 0.2 is the 1 : 6 ratio with margin over both minima; 1.0 / 0.15 is the minimum itself
+ID_SIZES = ((1.2, 0.2), (1.0, 0.15))
+ID_GAP = 0.4  # mm between the ink boxes of the two lines
+#: clearance tried around the ink boxes on top of the obstacle growth (pads + 0.2, silkscreen + 0.15, vias + 0.1),
+#: largest first: the block lands where it has the most room
+ID_MARGINS = tuple(round(1.0 - 0.05 * i, 2) for i in range(18))  # 1.0 .. 0.15
+ID_FRONT_MARGIN = 0.5  # the front is used only for a clearly free spot
+#: cable-tie band (plan: x -3 .. +3 mm about the board centre line x 100), both sides of the board
+TIE_BAND = (97.0, 103.0)
 
 
 def pin_glyph(net: str, ref: str = "") -> str | None:
@@ -478,6 +500,175 @@ def _ref_beneath(ctx: Ctx, board, fp) -> dict:
     return {"ref": ref, "layer": None, "why": "no free spot on F.SilkS or beneath the part on B.SilkS"}
 
 
+# ------------------------------------------------------------------------------------------ identification lines
+def _id_text(board, s: str, layer, h: float, th: float):
+    t = pcbnew.PCB_TEXT(board)
+    t.SetText(s)
+    t.SetLayer(layer)
+    t.SetTextSize(pcbnew.VECTOR2I(pcbnew.FromMM(h), pcbnew.FromMM(h)))
+    t.SetTextThickness(pcbnew.FromMM(th))
+    if layer == pcbnew.B_SilkS:
+        t.SetMirrored(True)
+    return t
+
+
+def _axis(dx: float, dy: float) -> tuple[int, int]:
+    """Board axis (unit vector) a measured offset points along."""
+    if abs(dx) > abs(dy):
+        return (1 if dx > 0 else -1, 0)
+    return (0, 1 if dy > 0 else -1)
+
+
+def id_directions(board, layer, h: float, th: float, ang: float) -> tuple[tuple[int, int], tuple[int, int]]:
+    """(run, down) of a text of this layer / angle in board axes, MEASURED on pcbnew's own stroke geometry, not
+    assumed: ``run`` = where a left-justified text extends from its anchor (reading direction), ``down`` = where
+    descenders shift the ink (the side the second line goes)."""
+    p = _id_text(board, "MMMMMM", layer, h, th)
+    p.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_LEFT)
+    _w, _h, rx, ry = _ink(p, ang)
+    _w, _h, gx, gy = _ink(_id_text(board, "gjpqy", layer, h, th), ang)
+    _w, _h, tx, ty = _ink(_id_text(board, "TTTTT", layer, h, th), ang)
+    run, down = _axis(rx, ry), _axis(gx - tx, gy - ty)
+    if run[0] * down[0] + run[1] * down[1] != 0:
+        raise ValueError(f"text directions not perpendicular: run {run}, down {down}")
+    return run, down
+
+
+def _id_layout(texts, ang: float, run, down) -> list[dict]:
+    """Ink rectangles of the lines relative to the ink centre of line 1: line n + 1 lies ``ID_GAP`` further 'down'
+    and starts at the same edge (left-aligned block)."""
+    rows = []
+    cx = cy = 0.0
+    prev = None
+    for t in texts:
+        w, h, ox, oy = _ink(t, ang)
+        length = w * abs(run[0]) + h * abs(run[1])
+        ext = w * abs(down[0]) + h * abs(down[1])
+        if prev is not None:
+            step = (prev["ext"] + ext) / 2 + ID_GAP
+            shift = -(rows[0]["length"] - length) / 2  # same start edge as line 1
+            first = rows[0]
+            along = (first["cx"] * run[0] + first["cy"] * run[1]) + shift
+            across = (prev["cx"] * down[0] + prev["cy"] * down[1]) + step
+            cx = along * run[0] + across * down[0]
+            cy = along * run[1] + across * down[1]
+        row = {"t": t, "w": w, "h": h, "ox": ox, "oy": oy, "cx": cx, "cy": cy, "length": length, "ext": ext}
+        rows.append(row)
+        prev = row
+    return rows
+
+
+def _occupancy(bm: Bitmap) -> np.ndarray:
+    """Summed-area table of a bitmap ([ny + 1, nx + 1]): the number of occupied cells of any cell rectangle in O(1)."""
+    nb = (bm.nx + 7) // 8
+    raw = b"".join(r.to_bytes(nb, "little") for r in bm.rows)
+    cells = np.unpackbits(np.frombuffer(raw, dtype=np.uint8).reshape(bm.ny, nb), axis=1, bitorder="little")[:, :bm.nx]
+    s = np.zeros((bm.ny + 1, bm.nx + 1), dtype=np.int64)
+    s[1:, 1:] = cells.astype(np.int64).cumsum(0).cumsum(1)
+    return s
+
+
+def id_obstacles(ctx: Ctx, side: str, avoid_band: bool) -> Bitmap:
+    """Everything an identification line must not touch on one side: the pads / footprint silkscreen / texts already
+    in the side's bitmap, every pad with a hole or a mask opening on that side (+0.2), every via pad (+0.1; the vias
+    are tented, but ink over a via hole breaks the stroke), the 0.5 mm edge strip, on the front every part body
+    (F.Fab box) and reserved module body, and - ``avoid_band`` - the cable-tie band."""
+    board = ctx.board
+    cu, mask = (pcbnew.F_Cu, pcbnew.F_Mask) if side == "F" else (pcbnew.B_Cu, pcbnew.B_Mask)
+    bm = Bitmap()
+    bm.rows = list(ctx.bm[side].rows)
+    for fp in board.GetFootprints():
+        for pad in fp.Pads():
+            if pad.GetDrillSize().x > 0 or pad.IsOnLayer(mask) or pad.IsOnLayer(cu):
+                bm.mark(_mm_box(pad.GetBoundingBox(), 0.2))
+    for v in board.GetTracks():
+        if v.GetClass() == "PCB_VIA" and v.IsOnLayer(cu):
+            x, y = pcbnew.ToMM(v.GetPosition().x), pcbnew.ToMM(v.GetPosition().y)
+            r = pcbnew.ToMM(v.GetWidth(cu)) / 2 + 0.1
+            bm.mark((x - r, y - r, x + r, y + r))
+    if side == "F":
+        for c in ctx.fab.values():
+            bm.mark(c)
+        for b in ctx.bodies:
+            bm.mark(b)
+    if avoid_band:
+        bm.mark((TIE_BAND[0], BY0, TIE_BAND[1], BY1))
+    for strip in ((BX0, BY0, BX0 + 0.5, BY1), (BX1 - 0.5, BY0, BX1, BY1), (BX0, BY0, BX1, BY0 + 0.5),
+                  (BX0, BY1 - 0.5, BX1, BY1)):
+        bm.mark(strip)
+    return bm
+
+
+def _id_spots(s: np.ndarray, rows: list[dict], m: float) -> np.ndarray:
+    """[l, k] -> True where the block fits with line 1's ink centre at (BX0 + 0.1 k, BY0 + 0.1 l): every ink
+    rectangle grown by ``m`` covers no occupied cell and stays on the board."""
+    ny, nx = s.shape[0] - 1, s.shape[1] - 1
+    step = int(round(0.1 / CELL))
+    k = np.arange(0, nx // step + 1) * step
+    l = np.arange(0, ny // step + 1) * step
+    ok = np.ones((len(l), len(k)), dtype=bool)
+    for r in rows:
+        ia = math.floor(round((r["cx"] - r["w"] / 2 - m) / CELL, 6))
+        ib = math.ceil(round((r["cx"] + r["w"] / 2 + m) / CELL, 6))
+        ja = math.floor(round((r["cy"] - r["h"] / 2 - m) / CELL, 6))
+        jb = math.ceil(round((r["cy"] + r["h"] / 2 + m) / CELL, 6))
+        c0, c1, r0, r1 = k + ia, k + ib, l + ja, l + jb
+        vk, vl = (c0 >= 0) & (c1 <= nx), (r0 >= 0) & (r1 <= ny)
+        c0, c1, r0, r1 = (np.clip(a, 0, n) for a, n in ((c0, nx), (c1, nx), (r0, ny), (r1, ny)))
+        n = s[np.ix_(r1, c1)] - s[np.ix_(r0, c1)] - s[np.ix_(r1, c0)] + s[np.ix_(r0, c0)]
+        ok &= (n == 0) & vl[:, None] & vk[None, :]
+    return ok
+
+
+def place_id_lines(ctx: Ctx, board) -> dict:
+    """silk-id step: the ID_LINES block. Front only for a clearly free spot (>= ID_FRONT_MARGIN around the ink,
+    outside every part and module body and the tie band); else the bottom, mirrored, off the tie band; last resort the
+    bottom under the tie band. Per side: the larger size first, the reading direction along x before along y, and of
+    all spots the one with the largest clearance tier, nearest to the board centre. Nothing is logged by content."""
+    tried = []
+    front = tuple(m for m in ID_MARGINS if m >= ID_FRONT_MARGIN)
+    for side, layer, avoid_band, margins in (("F", pcbnew.F_SilkS, True, front), ("B", pcbnew.B_SilkS, True, ID_MARGINS),
+                                             ("B", pcbnew.B_SilkS, False, ID_MARGINS)):
+        obst = id_obstacles(ctx, side, avoid_band)
+        s = _occupancy(obst)
+        for h, th in ID_SIZES:
+            for ang in (0, 90):
+                run, down = id_directions(board, layer, h, th, ang)
+                texts = [_id_text(board, line, layer, h, th) for _kind, line in ID_LINES]
+                rows = _id_layout(texts, ang, run, down)
+                ux = (min(r["cx"] - r["w"] / 2 for r in rows) + max(r["cx"] + r["w"] / 2 for r in rows)) / 2
+                uy = (min(r["cy"] - r["h"] / 2 for r in rows) + max(r["cy"] + r["h"] / 2 for r in rows)) / 2
+                for m in margins:
+                    ok = _id_spots(s, rows, m)
+                    n = int(ok.sum())
+                    if not n:
+                        continue
+                    ls, ks = np.nonzero(ok)
+                    xs, ys = BX0 + 0.1 * ks, BY0 + 0.1 * ls
+                    d2 = (xs + ux - (BX0 + BX1) / 2) ** 2 + (ys + uy - (BY0 + BY1) / 2) ** 2
+                    i = int(np.argmin(np.round(d2, 6)))
+                    x0, y0 = round(float(xs[i]), 3), round(float(ys[i]), 3)
+                    lines = []
+                    for n_line, (r, (kind, line)) in enumerate(zip(rows, ID_LINES), start=1):
+                        x, y = round(x0 + r["cx"], 3), round(y0 + r["cy"], 3)
+                        box = (x - r["w"] / 2 - m, y - r["h"] / 2 - m, x + r["w"] / 2 + m, y + r["h"] / 2 + m)
+                        if not obst.free(box):
+                            raise ValueError(f"identification line {n_line}: the chosen spot is not free")
+                        _put(ctx, side, r["t"], x, y, r["w"], r["h"], r["ox"], r["oy"])
+                        board.Add(r["t"])
+                        ink = _mm_box(r["t"].GetEffectiveTextShape().BBox(), 0.0)
+                        lines.append({"line": n_line, "what": kind, "characters": len(line),
+                                      "ink_box_mm": [round(v, 3) for v in ink]})
+                    return {"placed": True, "layer": "F.SilkS" if side == "F" else "B.SilkS", "mirrored": side == "B",
+                            "height_mm": h, "stroke_mm": th, "angle_deg": ang, "reads_towards": list(run),
+                            "line_2_towards": list(down), "clearance_tier_mm": m, "spots_in_tier": n,
+                            "tie_band_avoided": avoid_band, "via_pads_avoided": True, "lines": lines,
+                            "not_possible_before": tried}
+                tried.append({"layer": "F.SilkS" if side == "F" else "B.SilkS", "tie_band_avoided": avoid_band,
+                              "height_mm": h, "angle_deg": ang, "smallest_clearance_tried_mm": margins[-1], "spots": 0})
+    return {"placed": False, "not_possible_before": tried}
+
+
 def add_silk(board) -> dict:
     ctx = Ctx(board)
     fps = {fp.GetReference(): fp for fp in board.GetFootprints()}
@@ -560,7 +751,9 @@ def add_silk(board) -> dict:
             refs_on_fab.append(ref)
             if ref in REFS_FIRST:
                 refs_first.append(_ref_beneath(ctx, board, fp))
-    return {"names_front": names_f, "names_back_mirrored": names_b, "names_missed": names_missed,
+    # silk-id step: last of all, so that no other text or mark changes its place
+    ids = place_id_lines(ctx, board)
+    return {"identification_lines": ids, "names_front": names_f, "names_back_mirrored": names_b, "names_missed": names_missed,
             "polarity_marks": marks, "polarity_marks_missed": marks_missed, "revision_text": rev,
             "refs_first_on_silk": refs_first,
             "pin_label_sets": pin_sets, "pin_label_sets_missed": pin_missed,

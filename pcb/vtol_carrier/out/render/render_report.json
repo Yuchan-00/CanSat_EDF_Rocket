@@ -20,9 +20,9 @@
   ]
  },
  "derived_boards": {
-  "render_as_delivered.kicad_pcb": "4ec737fb994e45853e584e1195cfa1aaf80c9bf34dba00213b1004edf0d0af3d",
-  "render_completed.kicad_pcb": "4b70a396522da0122291f8c3640d7883e3fd53d52d625db56f23abbe672506eb",
-  "render_completed_limit.kicad_pcb": "be39f79875069ee1d903ba541de6097a956e3d0142643325bc1784665f7da699"
+  "render_as_delivered.kicad_pcb": "79c3e726c1337881670fd48c99ea97bcad87749ec6c158539655c52403d1a57c",
+  "render_completed.kicad_pcb": "e6a98b419fabf8a5897add1857b4b8f38a410451e4e2401e522e58792975fa55",
+  "render_completed_limit.kicad_pcb": "77959bd4f5f5d3b4f2cb8bbf1833fd551b4cdd2acb921b823058cf5cb16e9937"
  },
  "focus_mm": {
   "c1": [
@@ -90,7 +90,7 @@
   1080
  ],
  "source_board": "vtol_carrier.kicad_pcb",
- "source_board_sha256": "b8648809d12090d5bdfc8cb9d6c71ae6eb0c80db95c8ae288a5727fa634db65d",
+ "source_board_sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556",
  "views": {
   "a1": {
    "args": [
@@ -114,7 +114,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "2de3db83037abdd51e53a37edd83036d279a00a50e2315b26f97f11e24992f1a",
+   "sha256": "24759f586954c6a0a458c456cf492a686154035c21741eb653e89394c75a827c",
    "what": "as delivered by JLCPCB, top"
   },
   "a2": {
@@ -143,7 +143,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "0787cc328d5d4cb97ae2028728a087af7784c23efacd62b4fd414d73d106f9f7",
+   "sha256": "b8d25a619280ebb8fe063c0f87558bb6ffa16b6ec7e69c8b37740c96d341d205",
    "what": "as delivered by JLCPCB, 3/4 front"
   },
   "a3": {
@@ -168,7 +168,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "c696f9d3ce64f63418fac72d8f8b2f3bfee3c77d5e8907cc75eaa48e2075eed6",
+   "sha256": "1c4843cfd7c8a66be2a1427b36a69dad65af4db65439f73051dab4af8f7b550d",
    "what": "as delivered by JLCPCB, bottom"
   },
   "b1": {
@@ -193,7 +193,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "7d39499c4a5106bb794c21b4eca5e4bfcafc4659fee4636a3722feba3b27f150",
+   "sha256": "8182cd2cc7aba87b97bcdba7de22122f14c716b994a0b5946325d43e4fe6c8e7",
    "what": "completed, top"
   },
   "b2": {
@@ -222,7 +222,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "bee04a9d3349686a50cf0de8d163fc5b3c1361b493f2261e6301503d9919bff6",
+   "sha256": "03e51b6b6df3c5cf4e2d2b68d1df09878470c3b6f9ce63eadddaf4b5f51bc313",
    "what": "completed, 3/4 front"
   },
   "b3": {
@@ -251,7 +251,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "63126ddc529cb6236ad402fb14f7fcb17e1c52a1fe3c57566b2707cba60460f4",
+   "sha256": "a87f3adb45fd2ea7feadbdfdc8702150e94074f6a11194b515b7bb44f38ac474",
    "what": "completed, 3/4 back"
   },
   "b4": {
@@ -276,7 +276,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "baf3abd99b35d0c747cf51a78ec9ebeffaed519d665761135ef2bd5e3b86279b",
+   "sha256": "c87543ccc549d4cfcb4ceffb8591f8a145da8d634e5971d09ca3ba58a9c35f4c",
    "what": "completed, side elevation with the 13.4 mm limit frame"
   },
   "c1": {
@@ -307,7 +307,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "0654849b967fe9d2961245bb8bb08934a032a5716bb265a9c3055f6dbc2f72d7",
+   "sha256": "61ef295a62b6dd8a4308116affafd08a3ee0289ab303a53a2a08f540f66af89b",
    "what": "GY-521 soldered on J1"
   },
   "c2": {
@@ -338,7 +338,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "f5c84808c9bc2a191450032332ac9af05f486f77cee7b449ccfb96922de60c9f",
+   "sha256": "d4ba9bb2bf11d8d7551fb4ac64622d040cdba4b84827ce605e3ea2c8699ac3f6",
    "what": "BMP280 plugged into J2"
   },
   "c3": {
@@ -369,7 +369,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "c3c7b5cdc152aca1db7d0473dc16255063cbd3d79415fd719db6d83d22998e02",
+   "sha256": "635995ed2f4dfbebd625761545075e5491c4cfbebf4a1fd5ca75984872c06eab",
    "what": "OpenLog plugged into J5, microSD side"
   },
   "c4": {
@@ -400,7 +400,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "3ef251c0476747784a7d4bf41407218b0b3805c71306568b97befa85f9a3bc43",
+   "sha256": "35a0cb601116f87cf690be70a871160a6b3dad9916c788f48f8157b845ffb170",
    "what": "ESP-12F with its antenna keep-out"
   },
   "c5": {
@@ -431,7 +431,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "1d507ec90db44b2eacf8eb628959235415635cb713bbabe2a71930a399cc1c91",
+   "sha256": "8e7d30a60a2440de043b4b77fc2579cc58a476e04c22f644398d5ee4abb9bf5c",
    "what": "one ATmega128A with the pin-1 mark"
   },
   "d1": {
@@ -462,7 +462,7 @@
     1064
    ],
    "rendered": true,
-   "sha256": "a794124a480857cd87c151583deb6cbe838e4292f0bee40fe6dce611e4041bdb",
+   "sha256": "e5c211f7e729c03d781d5016c620cde818bdcc076f0669bc85da31f1205c3c73",
    "what": "JST-GH plug and the GPS lead at J7"
   }
  }

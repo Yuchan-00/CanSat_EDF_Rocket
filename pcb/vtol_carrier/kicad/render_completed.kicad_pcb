@@ -40897,6 +40897,30 @@
 			(justify mirror)
 		)
 	)
+	(gr_text "github.com/Yuchan-00/CanSat_EDF_Rocket"
+		(at 67.484 101.943 90)
+		(layer "B.SilkS")
+		(uuid "2f6e6972-8f4f-54c7-9aba-5ac4f95843a3")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "yuchan.fbu@gmail.com"
+		(at 69.684 92.257 90)
+		(layer "B.SilkS")
+		(uuid "79f71750-2ade-5497-b2d3-34fc53bbbaed")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+			)
+			(justify mirror)
+		)
+	)
 	(gr_text "BMP280 module ~15.2 x 11.5 mm - placement rule: parts <= 1.1 mm high under the module (module height above the board: spec/module_dimensions.json, A)"
 		(at 104.08 78.75 0)
 		(layer "Dwgs.User")

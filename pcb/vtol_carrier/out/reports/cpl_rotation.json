@@ -2,7 +2,7 @@
  "tool": "scripts/cpl_rotation.py (pcbnew 10.0.6)",
  "board": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
-  "sha256": "b8648809d12090d5bdfc8cb9d6c71ae6eb0c80db95c8ae288a5727fa634db65d"
+  "sha256": "131c4d63d10c5158ca873b255b21a47d089b56b5a63e1a9d775ce273fb8ec556"
  },
  "spec_sha256": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
  "assumption_A": "JLC's 0 deg of a part = its EasyEDA footprint at 0 deg and JLC places the EasyEDA footprint origin at Mid X / Mid Y; rotation positive = counter-clockwise seen from the top (F jlc_rules.md:66). Confirmed only by JLC's placement preview / production file.",

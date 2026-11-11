@@ -35,7 +35,9 @@ Checks -> ``out/reports/routing_rules.json``:
   u8_u9_pads        pad -> net of U8 / U9 on the board against rev3_checks.expected_pad_nets (datasheet table)
   mcu_pinmap        the 256 pads of U1..U4 against the rev 2c pin map
   rule_file         design-rule sections of kicad/vtol_carrier.kicad_pro against the archived rev 2c project file
-  silkscreen        polarity / pin-1 marks, 'rev 3' text, pin-order names of J1 / J2 / J5 / J7
+  silkscreen        polarity / pin-1 marks, 'rev 3' text, pin-order names of J1 / J2 / J5 / J7; silk-id step: the two
+                    identification lines (repository address, contact e-mail) - size, mirroring, gaps to pads / vias /
+                    other silkscreen / the outline (the strings are never written to the report)
 
 Usage (KiCad's python): python routing_checks.py   [CARRIER_BOARD=<scratch board> CARRIER_ROUTING_OUT=<json>]
 """
@@ -1031,6 +1033,115 @@ def check_rules() -> dict:
 
 
 # ------------------------------------------------------------------------------------------------ silkscreen
+def _box_gap(a, b) -> float:
+    """Distance of two axis-aligned boxes (0 when they touch or overlap)."""
+    return math.hypot(max(b[0] - a[2], 0.0, a[0] - b[2]), max(b[1] - a[3], 0.0, a[1] - b[3]))
+
+
+def _ink_box(item):
+    """Extent of what is printed: the strokes of a text (its bounding box carries about 0.25 mm of empty line
+    spacing), the bounding box of a graphic shape."""
+    if hasattr(item, "GetEffectiveTextShape"):
+        return box(item.GetEffectiveTextShape().BBox())
+    return box(item.GetBoundingBox())
+
+
+def id_lines(board) -> dict:
+    """silk-id step: the two identification lines (silk.ID_LINES) measured on the board, independently of the bitmap
+    silk.py placed them with: stroke shape against every pad / via shape (SHAPE.Collide), ink box against the other
+    silkscreen items, the outline and the cable-tie band. The strings themselves are not written to the report."""
+    texts = [d for d in board.GetDrawings() if d.GetClass() == "PCB_TEXT"]
+    eb = box(board.GetBoardEdgesBoundingBox())
+    rows, problems, found = [], [], []
+    for n, (kind, s) in enumerate(SILK.ID_LINES, start=1):
+        hit = [d for d in texts if d.GetText() == s]
+        if len(hit) != 1:
+            problems.append(f"line {n} ({kind}): on the board {len(hit)} times, expected once")
+            continue
+        found.append((n, kind, s, hit[0]))
+    for n, kind, s, d in found:
+        lay = d.GetLayer()
+        back = lay == pcbnew.B_SilkS
+        cu, mask = (pcbnew.B_Cu, pcbnew.B_Mask) if back else (pcbnew.F_Cu, pcbnew.F_Mask)
+        shape = d.GetEffectiveTextShape()
+        ink = box(shape.BBox())
+        pad_gap, pad_name = None, None
+        for fp in board.GetFootprints():
+            for p in fp.Pads():
+                if not (p.IsOnLayer(cu) or p.IsOnLayer(mask) or p.GetDrillSize().x > 0):
+                    continue
+                g = _box_gap(ink, box(p.GetBoundingBox()))
+                if g < 5.0 and p.IsOnLayer(cu):
+                    g = shape_gap(shape, p.GetEffectiveShape(cu))
+                if pad_gap is None or g < pad_gap:
+                    pad_gap, pad_name = g, f"{fp.GetReference()}.{p.GetNumber()}"
+        via_gap, via_at, under = None, None, 0
+        for v in board.GetTracks():
+            if v.GetClass() != "PCB_VIA" or not v.IsOnLayer(cu):
+                continue
+            c = pt(v.GetPosition())
+            g = rect_dist(c[0], c[1], ink) - mm(v.GetWidth(cu)) / 2
+            if g < 5.0:
+                g = shape_gap(shape, v.GetEffectiveShape(cu))
+            under += g <= 0
+            if via_gap is None or g < via_gap:
+                via_gap, via_at = g, [round(c[0], 3), round(c[1], 3)]
+        me = d.m_Uuid.AsString()
+        others = [_ink_box(o) for o in board.GetDrawings() if o.GetLayer() == lay and o.m_Uuid.AsString() != me]
+        for fp in board.GetFootprints():
+            others += [_ink_box(g) for g in fp.GraphicalItems() if g.GetLayer() == lay]
+            others += [_ink_box(f) for f in fp.GetFields() if f.GetLayer() == lay and f.IsVisible()]
+        silk_gap = min((_box_gap(ink, o) for o in others), default=None)
+        edge_gap = min(ink[0] - eb[0], ink[1] - eb[1], eb[2] - ink[2], eb[3] - ink[3])
+        h, th = mm(d.GetTextHeight()), mm(d.GetTextThickness())
+        row = {"line": n, "what": kind, "characters": len(s), "layer": d.GetLayerName(), "mirrored": bool(d.IsMirrored()),
+               "height_mm": round(h, 3), "stroke_mm": round(th, 3), "angle_deg": round(d.GetTextAngle().AsDegrees(), 1),
+               "ink_box_mm": [round(v, 3) for v in ink], "gap_to_nearest_pad_mm": round(pad_gap, 3), "nearest_pad": pad_name,
+               "gap_to_nearest_via_pad_mm": round(via_gap, 3), "nearest_via": via_at, "vias_under_the_text": int(under),
+               "gap_to_other_silkscreen_mm": None if silk_gap is None else round(silk_gap, 3),
+               "gap_to_board_edge_mm": round(edge_gap, 3),
+               "under_cable_tie_band": bool(ink[0] < SILK.TIE_BAND[1] and ink[2] > SILK.TIE_BAND[0])}
+        rows.append(row)
+        if lay not in (pcbnew.F_SilkS, pcbnew.B_SilkS):
+            problems.append(f"line {n}: on {d.GetLayerName()}, not on a silkscreen layer")
+        if bool(d.IsMirrored()) != back:
+            problems.append(f"line {n}: mirrored = {bool(d.IsMirrored())} on {d.GetLayerName()}")
+        if h < 1.0 - 1e-6 or th < 0.15 - 1e-6:
+            problems.append(f"line {n}: {h} mm high / {th} mm stroke, below 1.0 / 0.15 mm")
+        if pad_gap < 0.15:
+            problems.append(f"line {n}: {pad_gap} mm to pad {pad_name}, below 0.15 mm")
+        if under:
+            problems.append(f"line {n}: {under} via(s) under the strokes")
+        if silk_gap is not None and silk_gap < 0.15:
+            problems.append(f"line {n}: {silk_gap} mm to another silkscreen item, below 0.15 mm")
+        if edge_gap < 0.3:
+            problems.append(f"line {n}: {edge_gap} mm to the board edge, below 0.3 mm")
+    block = None
+    if len(rows) == 2:
+        (d1, d2), (r1, r2) = (found[0][3], found[1][3]), rows
+        if d1.GetLayer() != d2.GetLayer() or r1["angle_deg"] != r2["angle_deg"]:
+            problems.append("the two lines differ in layer or angle")
+        else:
+            run, down = SILK.id_directions(board, d1.GetLayer(), r1["height_mm"], r1["stroke_mm"], r1["angle_deg"])
+            a, b = r1["ink_box_mm"], r2["ink_box_mm"]
+
+            def start(k):  # coordinate of the edge the text starts at, along the reading direction
+                lo, hi = (k[0], k[2]) if run[0] else (k[1], k[3])
+                return lo if run[0] + run[1] > 0 else hi
+
+            across = ((b[0] + b[2]) / 2 - (a[0] + a[2]) / 2) * down[0] + ((b[1] + b[3]) / 2 - (a[1] + a[3]) / 2) * down[1]
+            block = {"reads_towards": list(run), "line_2_towards": list(down),
+                     "line_2_below_line_1": bool(across > 0), "start_edges_differ_mm": round(abs(start(a) - start(b)), 3),
+                     "gap_between_the_lines_mm": round(_box_gap(a, b), 3)}
+            if not block["line_2_below_line_1"] or block["start_edges_differ_mm"] > 0.05:
+                problems.append("line 2 is not below line 1 with the same start edge")
+    return {"lines": rows, "block": block, "problems": problems, "ok": not problems and len(rows) == len(SILK.ID_LINES),
+            "limits": "F: https://jlcpcb.com/capabilities/pcb-capabilities (Legend, read 2026-11-11): line width >= "
+                      "0.15 mm, text height >= 1.0 mm, pad to silkscreen 0.15 mm; edge 0.3 mm = board rule; no via "
+                      "under a stroke (the vias are tented; an ink break over the hole is avoided anyway)",
+            "under_cable_tie_band_is": "reported, not a criterion (avoided if possible)"}
+
+
 def check_silk(board, fps) -> dict:
     ctx = SILK.Ctx(board)
     texts = [(d.GetText(), d.GetLayerName(), pt(d.GetPosition())) for d in board.GetDrawings() if d.GetClass() == "PCB_TEXT"
@@ -1062,15 +1173,19 @@ def check_silk(board, fps) -> dict:
         else:
             hit = [lay for s, lay, _p in texts if s == r]
             refs[r] = f"{hit[0]} (board text beneath the part)" if hit else None
-    ok = not bad and bool(rev) and all(names.values()) and all(refs.values())
-    return {"result": PASS if ok else FAIL, "label": "M", "marks": rows, "marks_not_ok": bad,
+    ids = id_lines(board)
+    ok = not bad and bool(rev) and all(names.values()) and all(refs.values()) and ids["ok"]
+    return {"result": PASS if ok else FAIL, "label": "M", "identification_lines": ids, "marks": rows, "marks_not_ok": bad,
             "extra_marks_placed": sum(1 for r in rows if r["extra_mark"]),
             "library_mark_only": [r["ref"] for r in rows if not r["extra_mark"]],
             "revision_text": rev, "pin_order_names": names, "boost_block_designators": refs,
             "criterion": "every listed footprint keeps its library F.SilkS polarity / pin-1 graphics with none of them "
                          "under another part's body (F.Fab box) or on a pad (extra '+', 'K' or dot marks are counted "
                          "separately); the text 'rev 3' exists; J1 / J2 / J5 / J7 carry a name with the pin order; "
-                         "U8 / U9 / L5 designators exist on a silkscreen layer"}
+                         "U8 / U9 / L5 designators exist on a silkscreen layer; the two identification lines "
+                         "(repository address, contact e-mail) exist once each, >= 1.0 mm high with >= 0.15 mm stroke, "
+                         "mirrored on the bottom, >= 0.15 mm from every pad and silkscreen item, on no via, >= 0.3 mm "
+                         "inside the outline, line 2 below line 1 with the same start edge"}
 
 
 def main() -> int:

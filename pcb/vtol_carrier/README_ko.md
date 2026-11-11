@@ -51,6 +51,7 @@
 - 비행 컴퓨터 칩 4개: U1 NAV, U2 FCU, U3 COM, U4 GNS (ATmega128A-AU, 16 MHz, 5 V). 무선은 U7 ESP-12F (Wi-Fi 중계).
 - 센서: GY-521 (IMU, J1에 납땜), BMP280 (기압, 소켓 J2), NEO-7M GPS (기체 윗뚜껑, 케이블로 J7). 기록기 OpenLog는 소켓 J5.
 - 전원 흐름: 1S 로직 배터리 J14 → Q10 역극성 보호 → 스위치 리드 J15 → U8 승압 5 V (+ U9 저전압 차단) → +5V 면 → U6 → +3V3.
+- 기판 아랫면 실크(B.SilkS, 아랫면에서 볼 때 바로 읽히도록 좌우 반전)에 이 프로젝트의 깃 저장소 주소와 연락용 이메일 주소가 두 줄로 인쇄됩니다 (글자 높이 1.2 mm, 선 굵기 0.2 mm; 패드까지 1.221 mm 이상, 비아까지 1.147 mm 이상, 기판 변까지 4.697 mm 이상, 글자 밑 비아 0개, 케이블타이 띠와 겹침: 없음; 검사 PASS, M). 주소 글자 자체는 문서에 다시 적지 않습니다. 윗면에는 두 줄이 들어갈 빈자리가 없어 아랫면에 넣었고, 폼테이프를 붙이면 그 밑은 가려집니다.
 
 블록 (회로도 시트 기준, 부품 수는 사양에서 셈):
 
@@ -132,7 +133,7 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py        # 전체를 
 B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당일 JLC 재고 확인 (인터넷, 읽기만)
 ```
 
-- 한 번 만드는 데 걸린 시간: 12.3분, 12.3분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-11T23:08:33+0900.
+- 한 번 만드는 데 걸린 시간: 10.4분, 10.1분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-12T00:02:54+0900.
 - make_all.py는 인터넷을 쓰지 않습니다. JLC 부품 근거는 저장된 기록으로 다시 평가하고, 재고 확인(jlc_gate.py)은 따로 실행합니다.
 - 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다.
 - 결정성 검사 결과: FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음). 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. STEP 파일(기구 확인용)은 주문 파일이 아닙니다.
@@ -237,6 +238,10 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 두께 | 1.6 mm | spec/carrier_spec.json | F |
 | 층 수 | 4 | spec/carrier_spec.json | F (계획 불변조건 d) |
 | 높이 한계 | 13.4 mm | spec/module_dimensions.json | F (계획) |
+| 식별 문구 위치 | 아랫면 실크(B.SilkS, 아랫면에서 볼 때 바로 읽히도록 좌우 반전) | out/reports/routing_rules.json silkscreen.identification_lines | M |
+| 식별 문구 크기 | 글자 높이 1.2 mm, 선 굵기 0.2 mm | out/reports/routing_rules.json silkscreen.identification_lines | M |
+| 식별 문구 간격 | 패드까지 1.221 mm 이상, 비아까지 1.147 mm 이상, 기판 변까지 4.697 mm 이상, 글자 밑 비아 0개, 케이블타이 띠와 겹침: 없음 | out/reports/routing_rules.json silkscreen.identification_lines | M |
+| 식별 문구 검사 | PASS | out/reports/routing_rules.json silkscreen.identification_lines | M |
 | 블록 PWR | 27 / 26 | spec/carrier_spec.json parts[].block, parts[].fit | M |
 | 블록 NAV | 17 / 14 | spec/carrier_spec.json parts[].block, parts[].fit | M |
 | 블록 FCU | 15 / 13 | spec/carrier_spec.json parts[].block, parts[].fit | M |
@@ -298,5 +303,5 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 계획17 ESP-12F RF behaviour | ESP-12F의 무선 성능은 같은 금지 영역에서 ESP-12E와 같다고 가정했습니다 (A). 펌웨어 이미지도 같은 ESP8266 / 4 MB 구성으로 가정합니다 (A). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
 | 계획17 Programming access | 프로그래밍: 빈 구멍에 포고핀 어댑터를 댈 때의 접촉은 확인하지 않았습니다 (NOT_VERIFIED). B안(JLC가 띠 밖에 헤더 실장)은 배치 검색에서 자리가 없었습니다. | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
 | 계획17 AVCC choke C1046 | AVCC 초크 C1046은 정격 15 mA (1.15 Ohm) 입니다. ATmega128A의 AVCC 전류와 대조하지 않았습니다 (NOT_VERIFIED). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
-| 빌드 시간 | 12.3분, 12.3분 | out/reports/determinism.json builds | M |
-| 결정성 시각 | 2026-11-11T23:08:33+0900 | out/reports/determinism.json | M |
+| 빌드 시간 | 10.4분, 10.1분 | out/reports/determinism.json builds | M |
+| 결정성 시각 | 2026-11-12T00:02:54+0900 | out/reports/determinism.json | M |

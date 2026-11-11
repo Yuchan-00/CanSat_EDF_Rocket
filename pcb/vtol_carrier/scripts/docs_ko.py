@@ -202,6 +202,25 @@ def gather() -> tuple[Facts, dict]:
     cr = rr["checks"]["crystals"]
     F.put("XTAL1 최악", f"{cr['XTAL1_worst_mm']:g} mm (한계 {cr['XTAL1_limit_mm']:g} mm)", "out/reports/routing_rules.json crystals", "M")
     F.put("규칙 파일", rr["checks"]["rule_file"]["result"], "out/reports/routing_rules.json rule_file", "M")
+    # silk-id step: the two identification lines; the strings themselves are never repeated in a document
+    idl = rr["checks"]["silkscreen"].get("identification_lines")
+    if not idl or len(idl["lines"]) != 2:
+        raise SystemExit("docs_ko: routing_rules.json has no identification_lines block with two lines - run routing_checks.py")
+    side_ko = {"B.Silkscreen": "아랫면 실크(B.SilkS, 아랫면에서 볼 때 바로 읽히도록 좌우 반전)",
+               "F.Silkscreen": "윗면 실크(F.SilkS)"}
+    if len({(r_["layer"], r_["height_mm"], r_["stroke_mm"]) for r_ in idl["lines"]}) != 1 or idl["lines"][0]["layer"] not in side_ko:
+        raise SystemExit("docs_ko: the identification lines differ in layer / size")
+    F.put("식별 문구 위치", side_ko[idl["lines"][0]["layer"]], "out/reports/routing_rules.json silkscreen.identification_lines", "M")
+    F.put("식별 문구 크기", f"글자 높이 {idl['lines'][0]['height_mm']:g} mm, 선 굵기 {idl['lines'][0]['stroke_mm']:g} mm",
+          "out/reports/routing_rules.json silkscreen.identification_lines", "M")
+    F.put("식별 문구 검사", "PASS" if idl["ok"] else "FAIL: " + "; ".join(idl["problems"]),
+          "out/reports/routing_rules.json silkscreen.identification_lines", "M")
+    F.put("식별 문구 간격", f"패드까지 {min(r_['gap_to_nearest_pad_mm'] for r_ in idl['lines']):g} mm 이상, 비아까지 "
+          f"{min(r_['gap_to_nearest_via_pad_mm'] for r_ in idl['lines']):g} mm 이상, 기판 변까지 "
+          f"{min(r_['gap_to_board_edge_mm'] for r_ in idl['lines']):g} mm 이상, 글자 밑 비아 "
+          f"{sum(r_['vias_under_the_text'] for r_ in idl['lines'])}개, 케이블타이 띠와 겹침: "
+          + ("있음" if any(r_["under_cable_tie_band"] for r_ in idl["lines"]) else "없음"),
+          "out/reports/routing_rules.json silkscreen.identification_lines", "M")
 
     F.put("가장자리 2.5 mm 안 몸체", len(edge["bodies_under_2p5"]), "out/reports/edge_distance.json", "M")
     F.put("가장자리 0.3 mm 안 몸체", [f"{r_[0]} {r_[1]:g} mm" for r_ in edge["bodies_under_0p3"]],
@@ -670,6 +689,9 @@ def readme(F: Facts, ctx: dict) -> str:
     A("- 비행 컴퓨터 칩 4개: U1 NAV, U2 FCU, U3 COM, U4 GNS (ATmega128A-AU, 16 MHz, 5 V). 무선은 U7 ESP-12F (Wi-Fi 중계).")
     A("- 센서: GY-521 (IMU, J1에 납땜), BMP280 (기압, 소켓 J2), NEO-7M GPS (기체 윗뚜껑, 케이블로 J7). 기록기 OpenLog는 소켓 J5.")
     A("- 전원 흐름: 1S 로직 배터리 J14 → Q10 역극성 보호 → 스위치 리드 J15 → U8 승압 5 V (+ U9 저전압 차단) → +5V 면 → U6 → +3V3.")
+    A(f"- 기판 {F.v('식별 문구 위치')}에 이 프로젝트의 깃 저장소 주소와 연락용 이메일 주소가 두 줄로 인쇄됩니다 "
+      f"({F.v('식별 문구 크기')}; {F.v('식별 문구 간격')}; 검사 {F.v('식별 문구 검사')}, M). 주소 글자 자체는 문서에 다시 적지 않습니다. "
+      "윗면에는 두 줄이 들어갈 빈자리가 없어 아랫면에 넣었고, 폼테이프를 붙이면 그 밑은 가려집니다.")
     A("")
     A("블록 (회로도 시트 기준, 부품 수는 사양에서 셈):")
     A("")
@@ -911,6 +933,9 @@ def order(F: Facts, ctx: dict) -> str:
     A(f"- 기본 BOM에 MCU(U1~U4)가 들어 있는지: {F.v('U1-U4 기본 BOM')}. 센서 자리 J1과 프로그래밍 단자도 들어 있지 않습니다 (사용자 몫).")
     A("- 파일 형식은 JLC 견본 파일(Sample-BOM_JLCSMT, Sample-CPL_JLCSMT)과 같은 머리줄로 만들었지만, JLC가 받아들이는지는 업로드 미리보기에서 "
       "모든 줄이 매칭될 때까지 NOT_VERIFIED입니다.")
+    A(f"- 두 거버 zip 모두 기판 {F.v('식별 문구 위치')}에 깃 저장소 주소와 연락용 이메일 주소 두 줄이 들어 있습니다 "
+      f"({F.v('식별 문구 크기')}, 검사 {F.v('식별 문구 검사')}); 거버 미리보기의 그 면에서 두 줄이 끊기지 않고 보이는지 확인하십시오 "
+      "(JLC 인쇄 품질은 NOT_VERIFIED).")
     A("")
     A("## 2. 주문 화면 입력표 (결정 D9, D10, D11, D14, D16)")
     A("")
