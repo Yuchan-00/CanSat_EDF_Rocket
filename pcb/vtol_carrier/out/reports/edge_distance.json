@@ -225,6 +225,136 @@
   ]
  ],
  "pads_under_0p3": [],
+ "bodies_under_2p5_by_fit": {
+  "jlc": 26,
+  "with_mcu_jlc_plus_jlc_optional": 27,
+  "not_fitted_by_jlc_in_default_order": 6,
+  "refs_by_fit": {
+   "jlc": [
+    "C41",
+    "C43",
+    "C44",
+    "C60",
+    "D6",
+    "J2",
+    "J5",
+    "J7",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "L5",
+    "R59",
+    "R60",
+    "R65",
+    "U6",
+    "U7",
+    "U8",
+    "U9"
+   ],
+   "jlc_optional": [
+    "U4"
+   ],
+   "user": [
+    "J1"
+   ],
+   "none": [
+    "J19",
+    "JP1",
+    "Q3",
+    "R47"
+   ]
+  }
+ },
+ "copper_to_edge_mm": {
+  "label": "M (zone fills refilled in memory, tracks, vias, pads; distance to the straight outline lines, corner arcs not modelled)",
+  "min_per_side": {
+   "-x": 0.3,
+   "+y": 0.3,
+   "+x": 0.3,
+   "-y": 0.3
+  },
+  "per_layer": {
+   "F.Cu": {
+    "-x": [
+     0.3,
+     "zone GND"
+    ],
+    "+y": [
+     0.3,
+     "zone GND"
+    ],
+    "+x": [
+     0.3,
+     "zone GND"
+    ],
+    "-y": [
+     0.3,
+     "track VBAT_LOGIC_SW"
+    ]
+   },
+   "In1.Cu": {
+    "-x": [
+     0.3,
+     "zone GND"
+    ],
+    "+y": [
+     0.3,
+     "zone GND"
+    ],
+    "+x": [
+     0.3,
+     "zone GND"
+    ],
+    "-y": [
+     0.3,
+     "zone GND"
+    ]
+   },
+   "In2.Cu": {
+    "-x": [
+     0.3,
+     "zone +5V"
+    ],
+    "+y": [
+     0.3,
+     "zone +5V"
+    ],
+    "+x": [
+     0.3,
+     "zone +5V"
+    ],
+    "-y": [
+     0.3,
+     "zone +5V"
+    ]
+   },
+   "B.Cu": {
+    "-x": [
+     0.3,
+     "zone GND"
+    ],
+    "+y": [
+     0.3,
+     "zone GND"
+    ],
+    "+x": [
+     0.3,
+     "zone GND"
+    ],
+    "-y": [
+     0.3,
+     "zone GND"
+    ]
+   }
+  }
+ },
  "per_side": {
   "-x": {
    "jlc_fitted_bodies_under_2p5": [

@@ -13,6 +13,8 @@
   "boost_fb": "PASS",
   "l5_keepout": "PASS",
   "battery_path": "FAIL",
+  "hot_loop": "FAIL",
+  "input_cap": "FAIL",
   "crystals": "PASS",
   "u8_u9_pads": "PASS",
   "mcu_pinmap": "PASS",
@@ -373,6 +375,8 @@
      "from": "J14.1",
      "to": "Q10.3",
      "ohm": 0.00225,
+     "shortest_copper_path_mm": 8.1,
+     "vias_on_shortest_path": 0,
      "segments_carrying_ge_20pct": 3,
      "vias_carrying_ge_20pct": 0,
      "min_width_carrying_mm": 1.0,
@@ -405,6 +409,8 @@
      "from": "Q10.2",
      "to": "J15.1",
      "ohm": 0.00478,
+     "shortest_copper_path_mm": 15.54,
+     "vias_on_shortest_path": 0,
      "segments_carrying_ge_20pct": 4,
      "vias_carrying_ge_20pct": 0,
      "min_width_carrying_mm": 1.0,
@@ -451,6 +457,8 @@
      "from": "J15.2",
      "to": "L5.1",
      "ohm": 0.02528,
+     "shortest_copper_path_mm": 135.49,
+     "vias_on_shortest_path": 1,
      "segments_carrying_ge_20pct": 23,
      "vias_carrying_ge_20pct": 3,
      "min_width_carrying_mm": 1.5,
@@ -538,6 +546,125 @@
    ],
    "model": "sheet resistance 0.491 mOhm/square (35 um, rho 1.72e-8 Ohm m, 20 C); via barrel 1.53 mOhm at 0.3 mm drill / 1.16 mOhm at 0.4 mm (18 um plating A, 1.6 mm); pads and zone copper not charged; NOT included: Q10 channel, the switch and its lead, connector contacts, the battery lead, the GND return in the In1 plane",
    "criterion": "copper resistance J14.1 -> Q10.3 + Q10.2 -> J15.1 + J15.2 -> L5.1 <= 0.035 Ohm AND no current-carrying (>= 20 %) segment narrower than 2.0 mm"
+  },
+  "hot_loop": {
+   "result": "FAIL",
+   "label": "M",
+   "caps": [
+    {
+     "cap": "C57",
+     "gap_pad1_to_U8.6_mm": 0.925,
+     "gap_pad2_to_U8.4_mm": 3.195
+    },
+    {
+     "cap": "C43",
+     "gap_pad1_to_U8.6_mm": 2.426,
+     "gap_pad2_to_U8.4_mm": 5.375
+    }
+   ],
+   "fcu_gnd_piece": {
+    "U8.4": 239,
+    "C57.2": 307,
+    "C43.2": 305
+   },
+   "output_cap_gnd_joined_to_U8.4_on_F.Cu": [],
+   "information_boost_fb_under_output_cap": [
+    {
+     "cap": "C57",
+     "track": [
+      129.19,
+      132.35,
+      130.14,
+      133.3
+     ],
+     "w": 0.2
+    },
+    {
+     "cap": "C57",
+     "track": [
+      129.19,
+      130.71,
+      129.19,
+      132.35
+     ],
+     "w": 0.2
+    },
+    {
+     "cap": "C57",
+     "track": [
+      129.08,
+      130.61,
+      129.19,
+      130.71
+     ],
+     "w": 0.15
+    },
+    {
+     "cap": "C57",
+     "track": [
+      129.08,
+      129.89,
+      129.08,
+      130.35
+     ],
+     "w": 0.2
+    },
+    {
+     "cap": "C57",
+     "track": [
+      129.08,
+      130.35,
+      129.08,
+      130.61
+     ],
+     "w": 0.15
+    }
+   ],
+   "criterion": "plan line 448: each output capacitor (C57, C43) has pad 1 within 2.0 mm (copper edge gap) of U8.6 and pad 2 within 2.0 mm of U8.4, AND at least one of C57.2 / C43.2 is on the same F.Cu GND copper piece as U8.4 (zone islands + tracks + pads, vias not counted)"
+  },
+  "input_cap": {
+   "result": "FAIL",
+   "label": "M (path lengths and ohm from the track model, E)",
+   "rows": [
+    {
+     "cap": "C41",
+     "to": "U8.3",
+     "pad_edge_gap_mm": 5.601,
+     "copper_path_mm": 23.36,
+     "vias_on_path": 2,
+     "copper_ohm_E": 0.01549,
+     "error": null
+    },
+    {
+     "cap": "C41",
+     "to": "L5.1",
+     "pad_edge_gap_mm": 11.801,
+     "copper_path_mm": 26.48,
+     "vias_on_path": 2,
+     "copper_ohm_E": 0.00856,
+     "error": null
+    },
+    {
+     "cap": "C42",
+     "to": "U8.3",
+     "pad_edge_gap_mm": 40.0,
+     "copper_path_mm": 140.46,
+     "vias_on_path": 2,
+     "copper_ohm_E": 0.03735,
+     "error": null
+    },
+    {
+     "cap": "C42",
+     "to": "L5.1",
+     "pad_edge_gap_mm": 40.0,
+     "copper_path_mm": 143.58,
+     "vias_on_path": 2,
+     "copper_ohm_E": 0.03042,
+     "error": null
+    }
+   ],
+   "shortest_copper_path_mm": 23.36,
+   "criterion": "plan line 449: at least one input capacitor (C41 / C42) with pad 1 within 2.0 mm (copper edge gap) of U8.3 (VIN) or L5.1 (the 2.0 mm figure is the plan's hot-loop distance of line 448); copper paths over tracks and vias only (zone copper not modelled); a gap of 40.0 is the search limit of shape_gap and means >= 40 mm"
   },
   "crystals": {
    "result": "PASS",

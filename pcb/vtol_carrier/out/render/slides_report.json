@@ -7,19 +7,19 @@
  ],
  "generated_by": "scripts/render_rev3.py --slides-only",
  "inputs": {
-  "a1_as_delivered_top.png": "a0f9ec38403e6430fc1e1a87bdcfb130ec29f183684ade728313f70df672aaee",
-  "a2_as_delivered_front.png": "4050ee76103116ed8c38f457be9af1920a921840ba7c97d431c54a2935ec39fd",
-  "a3_as_delivered_bottom.png": "6507a068841881f60caea8984eb48dc35c2a5b283c5e9e99a725b2caffaf60fe",
-  "b1_completed_top.png": "a8cd2100df17220fc8e0f081c632abd7b8644e9bd3c238e516ceb7ecadd4a356",
-  "b2_completed_front.png": "546071966f7c9e812faf0f38c100ca4556f979efb024bf1fffd07d82ce8dfa72",
-  "b3_completed_back.png": "4c0ac7f3e5f6d6bfacb6c23d64fc263167960c101373732249b5688b2fef583a",
-  "b4_completed_side_limit.png": "752b2b8b5fb5aea627dcdb6676dd9eed1c22d9c18a87f934e515d71582a3a2f7",
-  "c1_gy521_on_J1.png": "81c5402b5fb5f997f5e3e5439457d0702bee9657321e73ddfbabac47f741fdfd",
-  "c2_bmp280_in_J2.png": "5e0617cd1f292c4ae4aac0c1b4b9a8a64390143536ae11428fe33db149be502d",
-  "c3_openlog_in_J5.png": "b9b248cf5779dddd070203516ba11df91e888ca45652cd34768b6f4ce59c5875",
-  "c4_esp12f_keepout.png": "eab8ab1f8ef29bfab7b8dbb7c1a89c5e07fdc712ac6b31ab1d29a8885ee47462",
-  "c5_mcu_pin1.png": "8618054635922adcdbc137a2064f8c7c5af4f911e3d9ae63e6e446e35baa5a4a",
-  "d1_gps_plug_J7.png": "448b211e110cd15d8aefbd310e391e34fe068d9560f5ce45d6dc641cae661be0",
+  "a1_as_delivered_top.png": "bbde204bd43abd685f69955ee4c8df2e2c9f3b7a545bc3eb4df07b8316ab5f1e",
+  "a2_as_delivered_front.png": "583e5450e0a36d907a52efc70bb3b4355329d933d37d1892cb5e03dcdebf6d00",
+  "a3_as_delivered_bottom.png": "63b5ced8694f00b2cc8bbdb2d304b00407b1f73fdd60885598b3244e2183342a",
+  "b1_completed_top.png": "00b603a12be56e8c915fbfacaecd8dd5e02fb15bca64c9b6adb2323d3b3a9bad",
+  "b2_completed_front.png": "0f321022c7fb467401ea71ae74c546a9c83cbcea560e43c36e5e7f44079e78c9",
+  "b3_completed_back.png": "7d458035a7bc66ec4f76871c139d309baccf23a7f99ce1047636c6c3be186191",
+  "b4_completed_side_limit.png": "f2a34b6ced2f2efe7bb36c26c918b8b8c9aa5d14010d87cde22c7cdd05f2a167",
+  "c1_gy521_on_J1.png": "1545d0b25a80b5a01f081425aec85496c5438711229fb38782bb2eda48e25fc2",
+  "c2_bmp280_in_J2.png": "2976e8134b3e01a42b808f2bd33f6135083199988133e3842b895b2b73e6c88c",
+  "c3_openlog_in_J5.png": "ee411d501295f34c0dea57b62a0e3efc77ea199685d121e3edce68a713012571",
+  "c4_esp12f_keepout.png": "4f8adcfb8ae3e9d68bc014f800d5f8d24fbc47c33427e2fc1aa0d51e2cd62177",
+  "c5_mcu_pin1.png": "0ce44e64bee90c2133b97e80adcd9aaa5e5018ca9012a2c8e536ba296cfcef2a",
+  "d1_gps_plug_J7.png": "a6e9bd1c9df652426537115440f537ac7b4689323719351e8d3707c4e0c98e95",
   "d2_neo7m_top_cap.png": "5aca690d27ce680c586d8be1f4c9176cdf6b96076ef32da61828e9d39da20bee"
  },
  "label": "composed illustrations; '가정' marks assumed dimensions / routes; not fit evidence",
@@ -27,27 +27,27 @@
  "slides": {
   "e1": {
    "file": "e1_delivered_vs_completed.png",
-   "sha256": "717685563285d39ba3841cf8122bd9f00ae3cd452ce7e60b0119be61417a5b99"
+   "sha256": "4ee6adf89f0f91eaec6ff2c3ab4eaf70be8adcc37423c7543c3f94bc0e1f0c0a"
   },
   "e2a": {
    "file": "e2a_gy521_J1.png",
-   "sha256": "da878e99e78304fc071e9286125609601677ad8689851c4cbe731c622bc1ab18"
+   "sha256": "f051e2f9ba5f27c435e69e73b7d8a6ba2c1739c20a115c0de1dec3ab8a224ad7"
   },
   "e2b": {
    "file": "e2b_bmp280_J2.png",
-   "sha256": "4232ac4a0c7a3d8539fe2d63a4fefcd870289dfded78dca3e33eab4c52979293"
+   "sha256": "c5cd5a7085842f527b394ae6c70929791f1d26b5f09b5db3fe7d5db712b74ecc"
   },
   "e2c": {
    "file": "e2c_openlog_J5.png",
-   "sha256": "5ce3a99f07a723cea93d8e4b5238704524c5fdd5927482b85b345ed8ed863c4f"
+   "sha256": "00147d3e94d242388db9044b71b13018a7c9a7ceef7326121a68c18a624505c0"
   },
   "e3": {
    "file": "e3_gps_lead_J7.png",
-   "sha256": "b9082792bd68db72e0fb597939c92967e49a216c16b62ef3ad521d09d24c1cbc"
+   "sha256": "e11e9ed2f13e25007f97a88eeff6b9d18b5038441e95915af4779ae072430060"
   },
   "e4": {
    "file": "e4_overview_callouts.png",
-   "sha256": "a3cc5b06630281aafde23f4d838b306c9daee287820867f2455d7e3e6acd583c"
+   "sha256": "6638e20f45f23cf135593acb73a41f84bf918ff70a52435f6fc14f8fc32babad"
   }
  },
  "source_board": "vtol_carrier.kicad_pcb",

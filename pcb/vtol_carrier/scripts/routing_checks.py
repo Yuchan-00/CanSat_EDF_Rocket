@@ -14,6 +14,9 @@ Checks -> ``out/reports/routing_rules.json``:
   l5_keepout        no F.Cu track or via of another net under L5 (rule area and body box)
   battery_path      J14.1 -> Q10.3, Q10.2 -> J15.1, J15.2 -> L5.1: resistance of the copper (resistor network of the
                     track segments and vias, E), current-carrying segments narrower than 2.0 mm, target 0.035 Ohm
+  hot_loop          plan line 448: C57 / C43 pads within 2.0 mm of U8.6 / U8.4, and an output-capacitor GND pad on the
+                    same F.Cu GND copper piece as U8.4 (added after the rev 3 electrical review, finding E-R1)
+  input_cap         plan line 449: C41 or C42 pad 1 within 2.0 mm of U8.3 / L5.1; copper path lengths (review E-R2)
   crystals          XTAL cluster paths and XTAL net lengths against the archived rev 2c board_metrics.json
   u8_u9_pads        pad -> net of U8 / U9 on the board against rev3_checks.expected_pad_nets (datasheet table)
   mcu_pinmap        the 256 pads of U1..U4 against the rev 2c pin map
@@ -26,6 +29,7 @@ Usage (KiCad's python): python routing_checks.py   [CARRIER_BOARD=<scratch board
 from __future__ import annotations
 
 import hashlib
+import heapq
 import json
 import math
 import os
@@ -333,7 +337,8 @@ def network(board, fps, net: str, src: tuple[str, str], dst: tuple[str, str]) ->
     Zone copper is not part of the model."""
     segs = [{"layer": t.GetLayer(), "a": pt(t.GetStart()), "b": pt(t.GetEnd()), "w": mm(t.GetWidth())} for t in tracks_of(board, net)]
     segs = [s for s in segs if math.hypot(s["a"][0] - s["b"][0], s["a"][1] - s["b"][1]) > 1e-6]
-    vias = [{"p": pt(v.GetPosition()), "drill": mm(v.GetDrillValue())} for v in vias_of(board, net)]
+    vias = [{"p": pt(v.GetPosition()), "drill": mm(v.GetDrillValue()), "r": mm(v.GetWidth(pcbnew.F_Cu)) / 2}
+            for v in vias_of(board, net)]
     layers = sorted({s["layer"] for s in segs})
     idx: dict = {}
     edges: list[tuple[int, int, float, dict | None]] = []
@@ -359,8 +364,9 @@ def network(board, fps, net: str, src: tuple[str, str], dst: tuple[str, str]) ->
             d = math.hypot(px - qx, py - qy)
             if d <= s["w"] / 2 and min(u, 1 - u) * L > 1e-3:
                 cuts.add(round(u, 6))
-                if d > 1e-3:
-                    ties.append(((px, py), (qx, qy)))
+                # always tie: the cut point is rebuilt from the rounded u, so it can land on the other side of a
+                # 1 um key rounding than the end that caused it (measured: B.Cu end x 129.3005 on a 14.3 mm track)
+                ties.append(((px, py), (ax + round(u, 6) * (bx - ax), ay + round(u, 6) * (by - ay))))
         us = sorted(cuts)
         for u0, u1 in zip(us, us[1:]):
             p0 = (ax + u0 * (bx - ax), ay + u0 * (by - ay))
@@ -372,6 +378,12 @@ def network(board, fps, net: str, src: tuple[str, str], dst: tuple[str, str]) ->
         for p, q in ties:
             edges.append((node(pkey(s["layer"], p)), node(pkey(s["layer"], q)), 1e-7, None))
     for v in vias:
+        # a track end that lies on the via's copper annulus is tied to the via centre on that layer (track ends are
+        # not always on the exact via centre: e.g. 0.5 um off after a rounding of the router)
+        for key in [k for k in idx if k[0] != "pad"]:
+            d = math.hypot(key[1] - v["p"][0], key[2] - v["p"][1])
+            if 1e-6 < d <= v["r"]:
+                edges.append((idx[key], node(pkey(key[0], v["p"])), 1e-7, None))
         ks = [node(pkey(lay, v["p"])) for lay in layers if pkey(lay, v["p"]) in idx]
         for a, b in zip(ks, ks[1:]):
             edges.append((a, b, via_ohm(v["drill"]), {"via": [round(c, 2) for c in v["p"]], "drill": v["drill"]}))
@@ -413,6 +425,25 @@ def network(board, fps, net: str, src: tuple[str, str], dst: tuple[str, str]) ->
                 stack.append(o)
     if d_i not in comp:
         return {"net": net, "from": ".".join(src), "to": ".".join(dst), "ohm": None, "error": "no track path between the pads"}
+    # shortest copper path (track centre-line length; ties and vias count 0 mm, vias are counted)
+    wadj: dict[int, list[tuple[int, float, int]]] = {}
+    for a, b, _r, m in edges:
+        ln = m["len"] if m and "len" in m else 0.0
+        nv = 1 if m and "via" in m else 0
+        wadj.setdefault(a, []).append((b, ln, nv))
+        wadj.setdefault(b, []).append((a, ln, nv))
+    best = {s_i: (0.0, 0)}
+    heap = [(0.0, 0, s_i)]
+    while heap:
+        dl, dv, u_ = heapq.heappop(heap)
+        if best.get(u_, (1e18, 0)) < (dl, dv):
+            continue
+        for o, ln, nv in wadj.get(u_, []):
+            cand_ = (dl + ln, dv + nv)
+            if cand_ < best.get(o, (1e18, 0)):
+                best[o] = cand_
+                heapq.heappush(heap, (cand_[0], cand_[1], o))
+    path_mm, path_vias = best[d_i]
     keep = sorted(comp - {d_i})
     pos = {k: i for i, k in enumerate(keep)}
     A = G[np.ix_(keep, keep)]
@@ -433,6 +464,7 @@ def network(board, fps, net: str, src: tuple[str, str], dst: tuple[str, str]) ->
                 carrying.append(dict(m, share=round(i, 2)))
     narrow = [m for m in carrying if m["w"] < WIDE_MM - 1e-6]
     return {"net": net, "from": ".".join(src), "to": ".".join(dst), "ohm": round(float(volt[s_i]), 5),
+            "shortest_copper_path_mm": round(path_mm, 2), "vias_on_shortest_path": path_vias,
             "segments_carrying_ge_20pct": len(carrying), "vias_carrying_ge_20pct": n_vias,
             "min_width_carrying_mm": min((m["w"] for m in carrying), default=None),
             "length_carrying_mm": round(sum(m["len"] * m["share"] for m in carrying), 2),
@@ -459,6 +491,90 @@ def check_battery(board, fps) -> dict:
                      "lead, connector contacts, the battery lead, the GND return in the In1 plane",
             "criterion": "copper resistance J14.1 -> Q10.3 + Q10.2 -> J15.1 + J15.2 -> L5.1 <= 0.035 Ohm AND no "
                          "current-carrying (>= 20 %) segment narrower than 2.0 mm"}
+
+
+# ------------------------------------------------------------------------------- boost hot loop / input capacitor
+def fcu_gnd_islands(board, fps, items: list[tuple[str, str]]) -> dict:
+    """F.Cu GND copper pieces (filled F.Cu GND zone islands joined by F.Cu GND tracks and F.Cu GND pads) that each
+    listed pad touches; returns {pad: piece id}. Vias are NOT joins here (the question is the top-copper loop)."""
+    polys = []
+    for z in zone_of(board, "GND", pcbnew.F_Cu):
+        ps = z.GetFilledPolysList(pcbnew.F_Cu)
+        polys += [ps.UnitSet(i) for i in range(ps.OutlineCount())]
+    shapes = [("poly", p) for p in polys]
+    shapes += [("track", t.GetEffectiveShape(pcbnew.F_Cu)) for t in tracks_of(board, "GND") if t.GetLayer() == pcbnew.F_Cu]
+    shapes += [("pad", p.GetEffectiveShape(pcbnew.F_Cu)) for fp in fps.values() for p in fp.Pads()
+               if p.GetNetname() == "GND" and p.IsOnLayer(pcbnew.F_Cu)]
+    parent = list(range(len(shapes)))
+
+    def find(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+    for i in range(len(shapes)):
+        for j in range(i + 1, len(shapes)):
+            if shapes[i][0] == "poly" and shapes[j][0] == "poly":
+                continue  # islands of one fill never touch each other
+            if find(i) != find(j) and shapes[i][1].Collide(shapes[j][1], 0):
+                parent[find(i)] = find(j)
+    out = {}
+    for ref, num in items:
+        sh = pad(fps, ref, num).GetEffectiveShape(pcbnew.F_Cu)
+        hit = [find(i) for i, (_k, s) in enumerate(shapes) if s.Collide(sh, 0)]
+        out[f"{ref}.{num}"] = min(hit) if hit else None
+    return out
+
+
+def check_hot_loop(board, fps) -> dict:
+    """plan line 448: U8 pin 6 (VOUT) -> C57 / C43 -> U8 pin 4 (GND) as small as the courtyards allow, both capacitors
+    within 2 mm of the IC; datasheet tps61023.txt:1008-1011: the output capacitor close to VOUT AND to the GND pin."""
+    rows, ok = [], True
+    for c in ("C57", "C43"):
+        g_out = shape_gap(pad(fps, c, "1").GetEffectiveShape(pcbnew.F_Cu), pad(fps, "U8", "6").GetEffectiveShape(pcbnew.F_Cu))
+        g_gnd = shape_gap(pad(fps, c, "2").GetEffectiveShape(pcbnew.F_Cu), pad(fps, "U8", "4").GetEffectiveShape(pcbnew.F_Cu))
+        rows.append({"cap": c, "gap_pad1_to_U8.6_mm": g_out, "gap_pad2_to_U8.4_mm": g_gnd})
+        ok &= g_out <= 2.0 and g_gnd <= 2.0
+    isl = fcu_gnd_islands(board, fps, [("U8", "4"), ("C57", "2"), ("C43", "2")])
+    joined = [k for k in ("C57.2", "C43.2") if isl[k] is not None and isl[k] == isl["U8.4"]]
+    ok &= len(joined) >= 1
+    # information (E-R3 of the rev 3 review): BOOST_FB copper inside the body box of an output capacitor
+    fb_under = []
+    for c in ("C57", "C43"):
+        bb = SILK._courtyard_box(fps[c])
+        for t in tracks_of(board, "BOOST_FB"):
+            if t.GetLayer() != pcbnew.F_Cu:
+                continue
+            (ax, ay), (bx, by) = pt(t.GetStart()), pt(t.GetEnd())
+            if any(bb[0] <= x <= bb[2] and bb[1] <= y <= bb[3] for x, y in ((ax, ay), (bx, by), ((ax + bx) / 2, (ay + by) / 2))):
+                fb_under.append({"cap": c, "track": [round(ax, 2), round(ay, 2), round(bx, 2), round(by, 2)],
+                                 "w": round(mm(t.GetWidth()), 3)})
+    return {"result": PASS if ok else FAIL, "label": "M", "caps": rows,
+            "fcu_gnd_piece": isl, "output_cap_gnd_joined_to_U8.4_on_F.Cu": joined,
+            "information_boost_fb_under_output_cap": fb_under,
+            "criterion": "plan line 448: each output capacitor (C57, C43) has pad 1 within 2.0 mm (copper edge gap) of "
+                         "U8.6 and pad 2 within 2.0 mm of U8.4, AND at least one of C57.2 / C43.2 is on the same F.Cu GND "
+                         "copper piece as U8.4 (zone islands + tracks + pads, vias not counted)"}
+
+
+def check_input_cap(board, fps) -> dict:
+    """plan line 449: C41 / C42 (input capacitors) at the L5 / VIN end; datasheet tps61023.txt:881-882 / 1006-1007."""
+    rows, best = [], None
+    for c in ("C41", "C42"):
+        for tgt in (("U8", "3"), ("L5", "1")):
+            g = shape_gap(pad(fps, c, "1").GetEffectiveShape(pcbnew.F_Cu), pad(fps, *tgt).GetEffectiveShape(pcbnew.F_Cu))
+            n = network(board, fps, "VBAT_LOGIC_SW", (c, "1"), tgt)
+            rows.append({"cap": c, "to": ".".join(tgt), "pad_edge_gap_mm": g, "copper_path_mm": n.get("shortest_copper_path_mm"),
+                         "vias_on_path": n.get("vias_on_shortest_path"), "copper_ohm_E": n.get("ohm"), "error": n.get("error")})
+            if n.get("shortest_copper_path_mm") is not None:
+                best = min(best, n["shortest_copper_path_mm"]) if best is not None else n["shortest_copper_path_mm"]
+    gap_ok = any(r["pad_edge_gap_mm"] <= 2.0 for r in rows)
+    return {"result": PASS if gap_ok else FAIL, "label": "M (path lengths and ohm from the track model, E)",
+            "rows": rows, "shortest_copper_path_mm": best,
+            "criterion": "plan line 449: at least one input capacitor (C41 / C42) with pad 1 within 2.0 mm (copper edge "
+                         "gap) of U8.3 (VIN) or L5.1 (the 2.0 mm figure is the plan's hot-loop distance of line 448); "
+                         "copper paths over tracks and vias only (zone copper not modelled); a gap of 40.0 is the search "
+                         "limit of shape_gap and means >= 40 mm"}
 
 
 # ---------------------------------------------------------------------------------------------------- crystals
@@ -631,6 +747,8 @@ def main() -> int:
         "boost_fb": check_boost_fb(board, fps),
         "l5_keepout": check_l5(board, fps),
         "battery_path": check_battery(board, fps),
+        "hot_loop": check_hot_loop(board, fps),
+        "input_cap": check_input_cap(board, fps),
         "crystals": check_crystals(board, fps),
         "u8_u9_pads": check_u8_u9(fps),
         "mcu_pinmap": check_mcu(fps),

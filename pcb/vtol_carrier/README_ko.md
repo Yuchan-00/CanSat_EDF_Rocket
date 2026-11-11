@@ -6,9 +6,11 @@
 
 ## 1. 지금 상태
 
-**출고 판정(도구 검사 기준): NOT ORDERABLE** - 이유: routing_rules FAIL (battery_path).
+**출고 판정(도구 검사 기준): NOT ORDERABLE** - 이유: routing_rules FAIL (battery_path, hot_loop, input_cap).
 
 배선이 끝난 보드에서 배터리 전원 경로(J14 → Q10 → J15 → L5)의 구리 저항은 0.03231 Ohm (20 C, E)로 계획 목표 0.035 Ohm 를 만족하지만, 계획이 요구한 '2.0 mm 이상 폭'을 16.1 mm 구간에서 지키지 못했습니다 (VBAT_LOGIC_RAW 1.07 mm (폭 1 mm); VBAT_LOGIC 3.93 mm (폭 1 mm); VBAT_LOGIC_SW 11.1 mm (폭 1.5/1.56 mm)). 60 C에서는 0.03739 Ohm (E)로 목표를 넘습니다. 도구는 이 규칙을 느슨하게 하지 않았습니다. 그대로 주문할지, 배선을 고칠지는 사용자가 정할 일입니다 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 0장).
+
+독립 검토 뒤 추가한 승압부 배치 검사(계획 12장의 '두 출력 커패시터를 IC에서 2 mm 안', '입력 커패시터를 L5 / VIN 끝에')도 FAIL입니다 (hot_loop, input_cap): C57 +5V 패드-U8.6 0.925 mm, GND 패드-U8.4 3.195 mm; C43 +5V 패드-U8.6 2.426 mm, GND 패드-U8.4 5.375 mm; 출력 커패시터 GND와 U8 GND의 윗면 구리 연결: 없음 (내층 GND와 비아로만 돌아감); C41 → U8 VIN: 패드 간격 5.601 mm, 구리 길이 23.36 mm (비아 2개); C41 → L5 입력: 구리 길이 26.48 mm. 고치려면 모서리 배치를 다시 하고 새로 배선해야 하며, 이것도 사용자 결정입니다 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 0장 B). 실제 영향(스위칭 과전압, 입력 리플)은 보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다.
 
 | 항목 | 결과 | 표시 |
 |---|---|---|
@@ -18,7 +20,7 @@
 | 보드 패드 넷 = IR | PASS (핀 506 / 506) | M |
 | MCU 4개 핀 = rev 2c | PASS (핀 256, 차이 0) | M |
 | U8 / U9 핀-네트 표 | PASS | M (표는 F) |
-| 배선 규칙 (계획 13장) | 11 / 12 PASS, FAIL: battery_path | M / E |
+| 배선 규칙 (계획 13장) | 11 / 14 PASS, FAIL: battery_path, hot_loop, input_cap | M / E |
 | 크리스털 XTAL1 길이 (rev 2c보다 나빠지면 안 됨) | 5.96 mm (한계 5.96 mm) | M |
 | 설계 규칙 파일 = rev 2c | PASS | M |
 | 구리 섬 / 패드에 닿는 비아 | 없음 (모든 네트 한 덩어리) / 0 | M |
@@ -26,8 +28,9 @@
 | 주문 파일 형식·fit 집합 검사 | PASS | M |
 | 주문 파일을 두 번 써서 같은지 | PASS | M |
 | 전체 다시 만들기 두 번 = 같은 파일 | FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | M |
-| 가장자리 2.5 mm 안 부품 몸체 | 32개 (0.3 mm 안: U7 0.15 mm, J15 0.29 mm) | M |
-| 모듈(OpenLog / BMP280 / GY-521) 간섭 | A / NOT_VERIFIED, 가정 치수로 충돌 0건 | A / NOT_VERIFIED |
+| 가장자리 2.5 mm 안 부품 몸체 | 모든 자리 32개 = JLC 실장 26개 (with_mcu 27개) + JLC가 붙이지 않는 자리 6개 (U4, J1, J19, JP1, Q3, R47) (0.3 mm 안: U7 0.15 mm, J15 0.29 mm) | M |
+| 모듈(OpenLog / BMP280 / GY-521) 간섭, 보통 경우 | A / NOT_VERIFIED, 가정 치수(보통 경우)로 충돌 0건; 최소 간격 0.5 mm 미만: U1 | A / NOT_VERIFIED |
+| 모듈 간섭, 보수적 경우 (OpenLog 아랫면 부품 1.2 mm 가정) | 충돌: C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'); 0.5 mm 미만: C48, Q2, Q8, U1, U2, Y1 | A / NOT_VERIFIED |
 
 ## 2. 이 기판은 무엇인가
 
@@ -58,7 +61,7 @@
 - **Wi-Fi 모듈 ESP-12E → ESP-12F** (C82891). 핀과 풋프린트가 같고, ESP-12E는 JLC에서 재고가 적고 Standard 주문에만 쓸 수 있었습니다.
 - **스루홀 커넥터도 JLC가 납땜합니다.** 소켓 J2 / J5 (C22436147), 서보 헤더 J8~J12 (C32713262), J16, J18, 배터리 J14 (C5364642), 스위치·부저 J15 / J17 (C131337). 탄탈 C45 (C11366)와 헤더·소켓 번호 일부는 재고나 도면 근거로 바꿨고 D3 / D12에서 rev 2c 번호로 되돌릴 수 있습니다.
 - **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 (PASS (핀 256, 차이 0)), 외곽, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치와 방향, 설계 규칙 (PASS), 크리스털 배선 (5.96 mm (한계 5.96 mm)).
-- **배치·배선을 다시 했습니다.** 새 부품 13개를 넣느라 주변 수동 부품 일부가 옮겨졌고, 배선은 새로 했습니다 (세그먼트 2308개, 비아 327개 중 GND 스티칭 102개). 배선은 Freerouting 실행 기록(세션 파일)을 다시 넣는 방식으로 재현됩니다.
+- **배치·배선을 다시 했습니다.** 새 부품 13개를 넣느라 주변 수동 부품 일부가 옮겨졌고, 배선은 새로 했습니다 (최종 보드 파일 기준 세그먼트 2610개, 원호 0개, 비아 444개: 0.6/0.3 mm 438개, 0.8/0.4 mm 6개). 배선은 Freerouting 실행 기록(세션 파일)을 다시 넣는 방식으로 재현됩니다.
 - 부품마다 바뀐 내용과 이유 분류(태그)의 전체 표: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 10장 (교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140).
 
 ## 4. 누가 무엇을 붙이나
@@ -77,7 +80,8 @@
 
 ## 5. 확인되지 않은 것 (NOT_VERIFIED)
 
-- 배터리 경로 폭 규칙 FAIL (16.1 mm): 사용자 결정 전까지 도구 판정은 NOT ORDERABLE 입니다.
+- 배터리 경로 폭 규칙 FAIL (16.1 mm)과 승압부 배치 FAIL (hot_loop, input_cap): 사용자 결정 전까지 도구 판정은 NOT ORDERABLE 입니다.
+- 모듈 끼움, 보수적 경우: OpenLog 아랫면 부품을 1.2 mm로 잡으면 꽂는 길에서 C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end') 이 겹치고, C48, Q2, Q8, U1, U2, Y1 은 0.5 mm 보다 가깝습니다 (A). OpenLog 아랫면 높이를 재고, 막을 수 있는 부품을 납땜하기 전에 실제로 꽂아 보십시오.
 - 보드 동작 전체: 만들거나 전원을 넣은 적이 없습니다. 전원부 수치(5 V 출력, 차단 전압, 전류 여유)는 데이터시트 계산(E)입니다.
 - JLC의 수락: 가장자리 가까운 부품, THT 6줄 손납땜, BOM / CPL 형식, Standard 주문의 레일은 업로드 후 DFM 결과와 견적으로만 확인됩니다.
 - CPL 회전: 방향이 중요한 43개 중 C45, C47, C52, U9 은 자료끼리 어긋나 NOT_VERIFIED입니다. 나머지도 JLC 미리보기로만 확정됩니다. 탄탈 C45 / C52, 전해 C47을 거꾸로 붙이면 화재 위험이 있습니다.
@@ -88,6 +92,21 @@
 - 재고: 2026-11-11T16:19:27+09:00 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.
 - 비용: 수수료 표로 계산한 추정(E)입니다. 실제 금액은 JLC 견적뿐입니다.
 - GPS 케이블이 기체 안에서 지나갈 길은 설계되지 않았습니다 (그림은 예시).
+
+계획서 17장의 나머지 위험 항목 (계획에서 그대로 옮김; 17장의 모든 항목이 이 문서나 주문 안내서의 어느 줄에 대응하는지 `scripts/docs_ko.py` 가 확인함):
+
+- 승압 IC TPS61023의 전류 한계(valley)는 데이터시트에 입력 3.6 V 기준으로만 나옵니다. 입력 3.0 V에서는 1.50 A가 필요하고, 이는 최소 2.7 A의 56 % 입니다 (E, 계획 17장).
+- 저전압 차단의 히스테리시스 여유는 28 mV뿐입니다 (E). 전원 경로 저항이 0.29 Ohm을 넘으면 방전 끝 최대 부하에서 전원이 켜졌다 꺼졌다 할 수 있어, 첫 보드에서 저항을 재야 합니다 (ORDER 7장 5번).
+- 차단은 부하가 걸린 전압으로 판단합니다 (필터 16.3 ms). 최대 부하가 이어지면 쉬는 전압이 3.62 V 아래인 팩에서 차단이 걸릴 수 있습니다 (E).
+- 켜짐 전압이 최대 3.73 V라서, 그보다 낮게 쉬고 있는 팩으로는 보드가 켜지지 않을 수 있습니다 (E).
+- +5V 쪽 226.9 uF로 시동할 때 1.9 ms 리셋, 감지 필터와의 순서는 확인하지 않았습니다 (첫 보드에서 오실로스코프로, NOT_VERIFIED).
+- +3V3 여유: +5V 최저 4.844 V에서 AMS1117 강하 최대 1.3 V를 빼면 3.3 V보다 0.244 V 위입니다 (E). Wi-Fi 송신 중 최저값은 확인 안 됨 (ORDER 7장 9번).
+- 차단 뒤에도 새 회로 6.7 uA (최대 8.0 uA)와 R15 / R16 분압 34..62 uA가 흐릅니다. 차단은 보관용 스위치가 아니므로 스위치를 꺼야 합니다 (E).
+- 22 uF 1206 커패시터의 5 V 직류 바이어스 감소량은 제조사 곡선으로 확인하지 않았습니다 (NOT_VERIFIED). 출력 실효 용량은 4 uF 이상이어야 하며 레일 전체 용량으로 보면 여유가 있습니다 (E).
+- U8은 일반 커넥터 심볼을 써서 ERC가 U8 핀에 대한 근거를 주지 않습니다. 대신 패드-네트 표 검사(U8/U9 패드표)가 근거입니다.
+- ESP-12F의 무선 성능은 같은 금지 영역에서 ESP-12E와 같다고 가정했습니다 (A). 펌웨어 이미지도 같은 ESP8266 / 4 MB 구성으로 가정합니다 (A).
+- 프로그래밍: 빈 구멍에 포고핀 어댑터를 댈 때의 접촉은 확인하지 않았습니다 (NOT_VERIFIED). B안(JLC가 띠 밖에 헤더 실장)은 배치 검색에서 자리가 없었습니다.
+- AVCC 초크 C1046은 정격 15 mA (1.15 Ohm) 입니다. ATmega128A의 AVCC 전류와 대조하지 않았습니다 (NOT_VERIFIED).
 
 ## 6. 다시 만드는 방법
 
@@ -100,7 +119,7 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py        # 전체를 
 B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당일 JLC 재고 확인 (인터넷, 읽기만)
 ```
 
-- 한 번 만드는 데 걸린 시간: 10.7분, 11.2분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-11T17:53:25+0900.
+- 한 번 만드는 데 걸린 시간: 13.3분, 13.0분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-11T18:59:54+0900.
 - make_all.py는 인터넷을 쓰지 않습니다. JLC 부품 근거는 저장된 기록으로 다시 평가하고, 재고 확인(jlc_gate.py)은 따로 실행합니다.
 - 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다.
 - 결정성 검사 결과: FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음). 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. STEP 파일(기구 확인용)은 주문 파일이 아닙니다.
@@ -145,12 +164,16 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 값 이름 | 값 | 출처 파일 | 표시 |
 |---|---|---|---|
 | 출고 판정 | NOT ORDERABLE | out/manifest.json release_gate | M (도구 검사) |
-| 출고 판정 이유 | routing_rules FAIL (battery_path) | out/manifest.json release_gate.reasons | M |
+| 출고 판정 이유 | routing_rules FAIL (battery_path, hot_loop, input_cap) | out/manifest.json release_gate.reasons | M |
 | 배터리 경로 저항 20C | 0.03231 Ohm | out/reports/routing_rules.json battery_path | E |
 | 배터리 경로 목표 | 0.035 Ohm | out/reports/routing_rules.json battery_path | F (계획 13절) |
 | 2 mm보다 좁은 길이 | 16.1 mm | out/reports/routing_rules.json battery_path | M |
 | 좁은 구간 | VBAT_LOGIC_RAW 1.07 mm (폭 1 mm); VBAT_LOGIC 3.93 mm (폭 1 mm); VBAT_LOGIC_SW 11.1 mm (폭 1.5/1.56 mm) | out/reports/routing_rules.json battery_path.legs | M |
 | 배터리 경로 저항 60C | 0.03739 Ohm | out/reports/routing_rules.json battery_path | E |
+| 승압부 배치 FAIL | hot_loop, input_cap | out/reports/routing_rules.json | M |
+| 출력 커패시터 간격 | C57 +5V 패드-U8.6 0.925 mm, GND 패드-U8.4 3.195 mm; C43 +5V 패드-U8.6 2.426 mm, GND 패드-U8.4 5.375 mm | out/reports/routing_rules.json hot_loop | M |
+| 출력 커패시터 GND 윗면 연결 | 없음 (내층 GND와 비아로만 돌아감) | out/reports/routing_rules.json hot_loop | M |
+| 입력 커패시터 경로 | C41 → U8 VIN: 패드 간격 5.601 mm, 구리 길이 23.36 mm (비아 2개); C41 → L5 입력: 구리 길이 26.48 mm | out/reports/routing_rules.json input_cap | M (길이는 배선 모델, E) |
 | ERC | 오류 0, 경고 0 (시트 8장) | out/reports/erc.json (kicad-cli 10.0.6) | M |
 | DRC | 위반 0, 경고 0, 미연결 0, 회로도 불일치 0 | out/reports/drc.json (kicad-cli 10.0.6) | M |
 | 넷리스트=사양 | PASS (부품 174, 네트 105) | out/manifest.json netlist_vs_spec | M |
@@ -158,8 +181,8 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | MCU 핀맵 | PASS (핀 256, 차이 0) | out/reports/rev3_mcu_pinmap.json | M |
 | U8/U9 패드표 | PASS | out/reports/rev3_u8_u9_pads.json | M (표는 데이터시트에서 옮김, F) |
 | 배선 규칙 PASS 수 | 11 | out/reports/routing_rules.json | M |
-| 배선 규칙 수 | 12 | out/reports/routing_rules.json | M |
-| 배선 규칙 FAIL | battery_path | out/reports/routing_rules.json | M |
+| 배선 규칙 수 | 14 | out/reports/routing_rules.json | M |
+| 배선 규칙 FAIL | battery_path, hot_loop, input_cap | out/reports/routing_rules.json | M |
 | XTAL1 최악 | 5.96 mm (한계 5.96 mm) | out/reports/routing_rules.json crystals | M |
 | 규칙 파일 | PASS | out/reports/routing_rules.json rule_file | M |
 | 구리 섬 | 없음 (모든 네트 한 덩어리) | out/manifest.json board_metrics | M |
@@ -170,8 +193,15 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 주문 파일 재현 | PASS | out/reports/rev3_export_determinism.json | M |
 | 결정성 | FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | out/reports/determinism.json | M |
 | 가장자리 2.5 mm 안 몸체 | 32 | out/reports/edge_distance.json | M |
+| 가장자리 2.5 mm 안 JLC 실장 | 26 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
+| 가장자리 2.5 mm 안 with_mcu | 27 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
+| 가장자리 2.5 mm 안 JLC 미실장 | 6개 (U4, J1, J19, JP1, Q3, R47) | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
 | 가장자리 0.3 mm 안 몸체 | U7 0.15 mm, J15 0.29 mm | out/reports/edge_distance.json | M |
-| 모듈 간섭 | A / NOT_VERIFIED, 가정 치수로 충돌 0건 | out/fit_checks.json module_keepouts | A |
+| 모듈 간섭 | A / NOT_VERIFIED, 가정 치수(보통 경우)로 충돌 0건 | out/fit_checks.json module_keepouts | A |
+| 모듈 최소 간격 | 0.5 mm | out/fit_checks.json module_keepouts.clearance_min_mm | F (계획) |
+| 모듈 간섭 보통 0.5 mm 미만 | U1 | out/fit_checks.json module_keepouts.modules[].zones[].below_clearance_min | A |
+| 모듈 간섭 보수적 충돌 | C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end') | out/fit_checks.json module_keepouts.modules[].zones[].below_clearance_min_conservative (<= 0) | A |
+| 모듈 간섭 보수적 0.5 mm 미만 | C48, Q2, Q8, U1, U2, Y1 | out/fit_checks.json module_keepouts.modules[].zones[].below_clearance_min_conservative | A |
 | 외곽 | 76 x 70 mm | spec/carrier_spec.json | F (size) / A (corner radius) |
 | 두께 | 1.6 mm | spec/carrier_spec.json | F |
 | 층 수 | 4 | spec/carrier_spec.json | F (계획 불변조건 d) |
@@ -197,9 +227,10 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 코드 J14 | C5364642 | out/jlcpcb_bom.csv | M |
 | 코드 J15 | C131337 | out/jlcpcb_bom.csv | M |
 | 코드 C45 | C11366 | out/jlcpcb_bom.csv | M |
-| 배선 세그먼트 | 2308 | kicad/work/route_reuse_log.json | M |
-| 배선 비아 | 327 | kicad/work/route_reuse_log.json | M |
-| GND 스티칭 비아 | 102 | kicad/work/route_reuse_log.json | M |
+| 배선 세그먼트 | 2610 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
+| 배선 원호 | 0 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
+| 배선 비아 | 444 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
+| 비아 크기별 | 0.6/0.3 mm 438개, 0.8/0.4 mm 6개 | kicad/vtol_carrier.kicad_pcb (지름/드릴) | M |
 | 변경 행 | 교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140 | spec/rev3_plan.json changes | F (계획) |
 | fit jlc | 157 | spec/carrier_spec.json | M |
 | fit jlc_optional | 4 | spec/carrier_spec.json | M |
@@ -224,5 +255,17 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 다리 길이 미확인 | J1, J14 | out/fit_checks.json tht_leads | NOT_VERIFIED |
 | GY-521 받침 높이 | 2.54 mm | spec/module_dimensions.json gy521.support_h | A |
 | BMP280 헤더 종류 | 직각 | spec/module_dimensions.json bmp280.header_type | A |
-| 빌드 시간 | 10.7분, 11.2분 | out/reports/determinism.json builds | M |
-| 결정성 시각 | 2026-11-11T17:53:25+0900 | out/reports/determinism.json | M |
+| 계획17 TPS61023 valley current limit | 승압 IC TPS61023의 전류 한계(valley)는 데이터시트에 입력 3.6 V 기준으로만 나옵니다. 입력 3.0 V에서는 1.50 A가 필요하고, 이는 최소 2.7 A의 56 % 입니다 (E, 계획 17장). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 Cut-off hysteresis against the voltage rebound | 저전압 차단의 히스테리시스 여유는 28 mV뿐입니다 (E). 전원 경로 저항이 0.29 Ohm을 넘으면 방전 끝 최대 부하에서 전원이 켜졌다 꺼졌다 할 수 있어, 첫 보드에서 저항을 재야 합니다 (ORDER 7장 5번). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 The cut-off acts on the loaded voltage | 차단은 부하가 걸린 전압으로 판단합니다 (필터 16.3 ms). 최대 부하가 이어지면 쉬는 전압이 3.62 V 아래인 팩에서 차단이 걸릴 수 있습니다 (E). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 Switch-on threshold up to 3.73 V | 켜짐 전압이 최대 3.73 V라서, 그보다 낮게 쉬고 있는 팩으로는 보드가 켜지지 않을 수 있습니다 (E). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 Start-up into 226.9 uF | +5V 쪽 226.9 uF로 시동할 때 1.9 ms 리셋, 감지 필터와의 순서는 확인하지 않았습니다 (첫 보드에서 오실로스코프로, NOT_VERIFIED). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 +3V3 headroom | +3V3 여유: +5V 최저 4.844 V에서 AMS1117 강하 최대 1.3 V를 빼면 3.3 V보다 0.244 V 위입니다 (E). Wi-Fi 송신 중 최저값은 확인 안 됨 (ORDER 7장 9번). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 Drain after cut-off | 차단 뒤에도 새 회로 6.7 uA (최대 8.0 uA)와 R15 / R16 분압 34..62 uA가 흐릅니다. 차단은 보관용 스위치가 아니므로 스위치를 꺼야 합니다 (E). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 22 uF 1206 capacitors | 22 uF 1206 커패시터의 5 V 직류 바이어스 감소량은 제조사 곡선으로 확인하지 않았습니다 (NOT_VERIFIED). 출력 실효 용량은 4 uF 이상이어야 하며 레일 전체 용량으로 보면 여유가 있습니다 (E). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 U8 uses a generic connector symbol | U8은 일반 커넥터 심볼을 써서 ERC가 U8 핀에 대한 근거를 주지 않습니다. 대신 패드-네트 표 검사(U8/U9 패드표)가 근거입니다. | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 ESP-12F RF behaviour | ESP-12F의 무선 성능은 같은 금지 영역에서 ESP-12E와 같다고 가정했습니다 (A). 펌웨어 이미지도 같은 ESP8266 / 4 MB 구성으로 가정합니다 (A). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 Programming access | 프로그래밍: 빈 구멍에 포고핀 어댑터를 댈 때의 접촉은 확인하지 않았습니다 (NOT_VERIFIED). B안(JLC가 띠 밖에 헤더 실장)은 배치 검색에서 자리가 없었습니다. | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 계획17 AVCC choke C1046 | AVCC 초크 C1046은 정격 15 mA (1.15 Ohm) 입니다. ATmega128A의 AVCC 전류와 대조하지 않았습니다 (NOT_VERIFIED). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
+| 빌드 시간 | 13.3분, 13.0분 | out/reports/determinism.json builds | M |
+| 결정성 시각 | 2026-11-11T18:59:54+0900 | out/reports/determinism.json | M |

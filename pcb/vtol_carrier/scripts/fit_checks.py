@@ -155,10 +155,16 @@ def main() -> int:
         for ref, f in sorted(fps.items()):
             if ref == own or f["body"] is None:
                 continue
-            ov = overlap(zone, f["body"])
+            # body (F.Fab box) AND pad extents: leads / pads that reach past the body box count too (rev 3 review
+            # MR-6: U1 pads 31 / 32 inside the OpenLog TQFP-32 zone while the U1 body box is outside); the part's
+            # full height is charged for a pad-only overlap (conservative, no lead height data)
+            ov_body = overlap(zone, f["body"])
+            ov_pads = overlap(zone, f["pads"]) if f["pads"] is not None else 0.0
+            ov = max(ov_body, ov_pads)
             if ov > 0.0:
                 rows.append({"ref": ref, "footprint": f["name"], "fit": f["fit"], "fitted": fitted(ref), "height_mm": f["h"],
-                             "overlap_mm2": round(ov, 2), "how": placement["placements"].get(ref, {}).get("how")})
+                             "overlap_mm2": round(ov, 2), "by": "body" if ov_body > 0.0 else "pads only (full part height charged)",
+                             "how": placement["placements"].get(ref, {}).get("how")})
         return rows
 
     def zone_report(name: str, own: str, rect: list[float], z_under: float, z_note: str, tags: str, z_cons: float | None = None,

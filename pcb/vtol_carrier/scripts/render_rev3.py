@@ -501,7 +501,7 @@ def make_slides(board_in: Path, out: Path) -> dict:
         "JLC에서 받은 상태 vs 직접 장착한 뒤", [
             sk.Panel(out / "a2_as_delivered_front.png", "JLC에서 받는 상태. MCU 자리 U1~U4, J1 구멍, 프로그래밍 구멍은 비어 있음",
                      badge="delivered", crop=(0.17, 0.17, 0.87, 1.0)),
-            sk.Panel(out / "b2_completed_front.png", "MCU 4개 납땜, 모듈 3개와 GPS 플러그를 꽂은 뒤. 모듈 모양은 가정 치수",
+            sk.Panel(out / "b2_completed_front.png", "MCU 4개와 GY-521 납땜, BMP280·OpenLog와 GPS 플러그를 꽂은 뒤. 모듈 모양은 가정 치수",
                      assumed=True, badge="completed", crop=(0.17, 0.17, 0.87, 1.0)),
             sk.Panel(out / "a1_as_delivered_top.png", "윗면, 받은 상태", badge="delivered", crop=(0.2, 0.0, 0.8, 1.0)),
             sk.Panel(out / "b1_completed_top.png", "윗면, 장착한 뒤 (모듈 가정 치수)", assumed=True, badge="completed",

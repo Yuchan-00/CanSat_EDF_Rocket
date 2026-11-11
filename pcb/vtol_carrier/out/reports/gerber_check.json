@@ -4,7 +4,7 @@
  "sets": {
   "main": {
    "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip",
-   "zip_sha256": "9cea8391a5c3da906a295be614c4861ebce2310eec6a74b2ad365bfa39c3a3c7",
+   "zip_sha256": "5e7a4e4e7e6471fca5e578d16a2ae241b1fa1a110788beeafca6e3959799f577",
    "files": [
     "vtol_carrier-B_Cu.gbl",
     "vtol_carrier-B_Mask.gbs",
@@ -28,11 +28,11 @@
     "status": "PASS",
     "message": "1 drill file(s)"
    },
-   "f_paste_flashes": 347
+   "f_paste_flashes": 342
   },
   "with_mcu": {
    "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip",
-   "zip_sha256": "3c8df77ed79e4aafd0917eb50e813ab471a089483b1f63fc4e2ee4fb319005b2",
+   "zip_sha256": "bf549cdea835db05123a94cb38eccaa6e82ae5b8f409d72b60b98d0383596459",
    "files": [
     "vtol_carrier-B_Cu.gbl",
     "vtol_carrier-B_Mask.gbs",
@@ -56,25 +56,79 @@
     "status": "PASS",
     "message": "1 drill file(s)"
    },
-   "f_paste_flashes": 603
+   "f_paste_flashes": 598
   }
  },
  "paste_variant": {
-  "refs": [
-   "U1",
-   "U2",
-   "U3",
-   "U4"
-  ],
-  "pads_changed": 256,
-  "pads_with_paste_before": 603,
-  "pads_with_paste_after": 347
+  "main": {
+   "mode": "main",
+   "fits_without_paste": [
+    "jlc_optional",
+    "none"
+   ],
+   "refs": [
+    "J3",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U1",
+    "U2",
+    "U3",
+    "U4"
+   ],
+   "pads_changed": 261,
+   "pads_changed_per_ref": {
+    "Q3": 3,
+    "R47": 2,
+    "U1": 64,
+    "U2": 64,
+    "U3": 64,
+    "U4": 64
+   },
+   "pads_with_paste_before": 603,
+   "pads_with_paste_after": 342
+  },
+  "with_mcu": {
+   "mode": "with_mcu",
+   "fits_without_paste": [
+    "none"
+   ],
+   "refs": [
+    "J3",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47"
+   ],
+   "pads_changed": 5,
+   "pads_changed_per_ref": {
+    "Q3": 3,
+    "R47": 2
+   },
+   "pads_with_paste_before": 603,
+   "pads_with_paste_after": 598
+  }
  },
  "date_fields_normalised": {
-  "lines": 73,
+  "lines": 121,
   "value": "2026-11-11T00:00:00+09:00"
  },
  "variant_layers_other_than_f_paste_differing": [],
- "paste_decision": "default zip: no paste apertures on U1..U4 (the user hand-solders the MCUs on clean pads); with_mcu zip: paste on U1..U4, upload it ONLY together with the *_with_mcu BOM / CPL. Whether JLC would itself leave unplaced parts without paste is NOT_VERIFIED, so the two zips are kept.",
+ "paste_decision": "default zip: no paste apertures on U1..U4 (the user hand-solders the MCUs on clean pads); both zips: no paste on unpopulated footprints (fit none); with_mcu zip: paste on U1..U4, upload it ONLY together with the *_with_mcu BOM / CPL. Whether JLC would itself leave unplaced parts without paste is NOT_VERIFIED, so the two zips are kept.",
  "paste_flash_difference": 256
 }

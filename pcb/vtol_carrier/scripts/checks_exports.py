@@ -15,6 +15,7 @@ Every correctness statement about the order files comes from here (or from the s
   * gerbers + drill for the 4-layer board, two zips that differ ONLY in F.Paste:
         out/vtol_carrier_gerber.zip           no paste apertures on the U1..U4 pads (scripts/paste_variant.py)
         out/vtol_carrier_gerber_with_mcu.zip  paste on U1..U4 (order it together with the *_with_mcu pair)
+    Neither set has paste on unpopulated footprints (spec fit 'none', e.g. Q3 / R47; rev 3 review finding J4).
     The creation-date fields KiCad writes into every gerber / drill / job file are set to RELEASE_STAMP so the same
     board gives byte-identical files (recorded in the manifest).
   * STEP (--subst-models --no-dnp), schematic PDF, KiCad full BOM (all parts incl. user-fitted, DNP column)
@@ -279,24 +280,30 @@ def fab_outputs() -> dict:
     n_cu = board_copper_layers()
     work = Path(tempfile.mkdtemp(prefix="vtol_fab_"))
     try:
-        # with_mcu set: the design board as it is (paste on every SMD pad)
-        g_mcu = work / "gerber_with_mcu"
-        export_gerbers(PCB, g_mcu, FAB_LAYERS)
-        run([K, "pcb", "export", "drill", "--format", "excellon", "--excellon-units", "mm", "-o", str(g_mcu) + "/", str(PCB)])
-        # default set: same files, F.Paste from the paste variant (U1..U4 pads without paste)
-        var_dir = work / "variant"
-        r = run([KPY, "-B", str(HERE / "paste_variant.py"), str(var_dir / PCB.name)])
-        variant = json.loads(r.stdout.strip().splitlines()[-1])
-        g_var = work / "gerber_variant"
-        export_gerbers(var_dir / PCB.name, g_var, FAB_LAYERS)
-        g_def = work / "gerber"
-        shutil.copytree(g_mcu, g_def)
+        # every layer except F.Paste: the design board as it is
+        g_base = work / "gerber_base"
+        export_gerbers(PCB, g_base, FAB_LAYERS)
+        run([K, "pcb", "export", "drill", "--format", "excellon", "--excellon-units", "mm", "-o", str(g_base) + "/", str(PCB)])
         paste = f"{common.PROJECT_ID}-F_Paste.gtp"
-        shutil.copyfile(g_var / paste, g_def / paste)
-        changed = normalise_dates(g_mcu) + normalise_dates(g_def) + normalise_dates(g_var)
-        # every layer of the variant except F.Paste must equal the design board's (proves the copy changed nothing else)
-        other_diff = sorted(p.name for p in g_var.iterdir() if p.name != paste and p.suffix != ".gbrjob"
-                            and p.read_bytes() != (g_mcu / p.name).read_bytes())
+        # F.Paste from the paste variants (scripts/paste_variant.py): default set without paste on U1..U4 and on the
+        # unpopulated footprints (fit none, e.g. Q3 / R47); with_mcu set without paste on the unpopulated ones only
+        variants, g_vars = {}, {}
+        for name, flag in (("main", []), ("with_mcu", ["--with-mcu"])):
+            var_dir = work / f"variant_{name}"
+            r = run([KPY, "-B", str(HERE / "paste_variant.py"), *flag, str(var_dir / PCB.name)])
+            variants[name] = json.loads(r.stdout.strip().splitlines()[-1])
+            g_vars[name] = work / f"gerber_variant_{name}"
+            export_gerbers(var_dir / PCB.name, g_vars[name], FAB_LAYERS)
+        g_def, g_mcu = work / "gerber", work / "gerber_with_mcu"
+        for name, dest_dir in (("main", g_def), ("with_mcu", g_mcu)):
+            shutil.copytree(g_base, dest_dir)
+            shutil.copyfile(g_vars[name] / paste, dest_dir / paste)
+        changed = (normalise_dates(g_mcu) + normalise_dates(g_def) + normalise_dates(g_base)
+                   + sum(normalise_dates(g) for g in g_vars.values()))
+        # every layer of a variant except F.Paste must equal the design board's (proves the copy changed nothing else)
+        other_diff = sorted({p.name for g in g_vars.values() for p in g.iterdir() if p.name != paste and p.suffix != ".gbrjob"
+                             and p.read_bytes() != (g_base / p.name).read_bytes()})
+        variant = variants
         out = {}
         for name, folder, zname in (("main", g_def, f"{common.PROJECT_ID}_gerber.zip"),
                                     ("with_mcu", g_mcu, f"{common.PROJECT_ID}_gerber_with_mcu.zip")):
@@ -318,7 +325,8 @@ def fab_outputs() -> dict:
                "date_fields_normalised": {"lines": changed, "value": RELEASE_STAMP},
                "variant_layers_other_than_f_paste_differing": other_diff,
                "paste_decision": "default zip: no paste apertures on U1..U4 (the user hand-solders the MCUs on clean "
-                                 "pads); with_mcu zip: paste on U1..U4, upload it ONLY together with the *_with_mcu "
+                                 "pads); both zips: no paste on unpopulated footprints (fit none); "
+                                 "with_mcu zip: paste on U1..U4, upload it ONLY together with the *_with_mcu "
                                  "BOM / CPL. Whether JLC would itself leave unplaced parts without paste is "
                                  "NOT_VERIFIED, so the two zips are kept.",
                "paste_flash_difference": out["with_mcu"]["f_paste_flashes"] - out["main"]["f_paste_flashes"]}

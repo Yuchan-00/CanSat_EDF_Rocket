@@ -104,6 +104,47 @@ def main() -> int:
                        "overhang_at_rail_edges": sorted({r for s in (a, c) for r in per_side[s]["overhanging"]})}
     best = sorted(score, key=lambda n: (score[n]["count_without_rail"],
                                         score[n]["min_distance_at_rail_edges_mm"] if score[n]["min_distance_at_rail_edges_mm"] is not None else 99.0, n))[0]
+    # bodies under 2.5 mm by who fits them (rev 3 review J7: unfitted footprints are not JLC's concern)
+    under = [r for r in rows if r["body_under_2p5"]]
+    by_fit = {f: sorted((r["ref"] for r in under if r["fit"] == f), key=lambda s: (s.rstrip("0123456789"), int("".join(c for c in s if c.isdigit()) or 0)))
+              for f in ("jlc", "jlc_optional", "user", "none")}
+    under_by_fit = {"jlc": len(by_fit["jlc"]), "with_mcu_jlc_plus_jlc_optional": len(by_fit["jlc"]) + len(by_fit["jlc_optional"]),
+                    "not_fitted_by_jlc_in_default_order": len(under) - len(by_fit["jlc"]), "refs_by_fit": by_fit}
+    # copper (tracks, vias, pads, filled zones of every copper layer) to the straight outline lines (rev 3 review J2:
+    # rail attachment by V-cut needs more copper pull-back than a routed / mouse-bite edge)
+    pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+    cu = {}
+    for lay in b.GetEnabledLayers().CuStack():
+        name = b.GetLayerName(lay)
+        cbest = {s: (1e9, "") for s in SIDES}
+
+        def take(x0: float, y0: float, x1: float, y1: float, what: str) -> None:
+            for s, d in side_dist([x0, y0, x1, y1]).items():
+                if d < cbest[s][0]:
+                    cbest[s] = (d, what)
+        for z in b.Zones():
+            if z.GetIsRuleArea() or not z.IsOnLayer(lay):
+                continue
+            ps = z.GetFilledPolysList(lay)
+            for i in range(ps.OutlineCount()):
+                ch = ps.Outline(i)
+                for k in range(ch.PointCount()):
+                    v = ch.CPoint(k)
+                    take(v.x * MM, v.y * MM, v.x * MM, v.y * MM, f"zone {z.GetNetname()}")
+        for t in b.GetTracks():
+            if not t.IsOnLayer(lay):
+                continue
+            bb = t.GetBoundingBox()
+            take(bb.GetLeft() * MM, bb.GetTop() * MM, bb.GetRight() * MM, bb.GetBottom() * MM,
+                 ("via " if t.GetClass() == "PCB_VIA" else "track ") + t.GetNetname())
+        for fp in b.GetFootprints():
+            for p in fp.Pads():
+                if p.IsOnLayer(lay):
+                    bb = p.GetBoundingBox()
+                    take(bb.GetLeft() * MM, bb.GetTop() * MM, bb.GetRight() * MM, bb.GetBottom() * MM,
+                         f"pad {fp.GetReference()}.{p.GetNumber()}")
+        cu[name] = {s: [round(cbest[s][0], 3), cbest[s][1]] for s in SIDES}
+    cu_min = {s: min(cu[n][s][0] for n in cu) for s in SIDES}
     out_csv = ROOT / "out" / "edge_distance.csv"
     buf = io.StringIO()
     w = csv.writer(buf, lineterminator="\n")
@@ -126,6 +167,9 @@ def main() -> int:
         "bodies_under_2p5": sorted([[r["ref"], r["body_to_edge_mm"], r["body_nearest_edge"], r["fit"]] for r in rows if r["body_under_2p5"]], key=lambda v: v[1]),
         "bodies_under_0p3": sorted([[r["ref"], r["body_to_edge_mm"], r["body_nearest_edge"], r["fit"]] for r in rows if r["body_under_0p3"]], key=lambda v: v[1]),
         "pads_under_0p3": sorted([[r["ref"], r["pad_to_edge_mm"], r["pad_nearest_edge"], r["fit"]] for r in rows if r["pad_under_0p3"]], key=lambda v: v[1]),
+        "bodies_under_2p5_by_fit": under_by_fit,
+        "copper_to_edge_mm": {"label": "M (zone fills refilled in memory, tracks, vias, pads; distance to the straight "
+                                       "outline lines, corner arcs not modelled)", "min_per_side": cu_min, "per_layer": cu},
         "per_side": per_side, "rail_pairs": score,
         "rail_sides_for_standard_order": {"pair": best, "label": "E (chosen from this table: fewest JLC-fitted bodies under 2.5 mm at an edge without a rail)"},
         "jlc_acceptance": "NOT_VERIFIED (only JLC's DFM result and quote after the upload decide)",
