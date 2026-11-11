@@ -1,0 +1,12 @@
+{
+ "fanout": true,
+ "stages": [
+  ["servo", "vtol_carrier_servo.ses"],
+  ["power_high", "vtol_carrier_power_high.ses"],
+  ["power", "vtol_carrier_power.ses"],
+  ["signals", "vtol_carrier_signals.ses"],
+  ["gnd", "vtol_carrier_gnd.ses"],
+  ["complete", "vtol_carrier_complete.ses"]
+ ],
+ "source": "4-layer Freerouting live run 'try11' (route.py 40 6, CARRIER_ROUTE_ORDER=power_first, CARRIER_IN2=plane, fanout clearance 0.15 mm), 2026-11-05 08:04-08:59 KST; logs in kicad/work/freerouting_4layer/"
+}

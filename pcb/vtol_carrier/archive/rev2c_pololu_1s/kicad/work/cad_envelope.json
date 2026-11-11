@@ -1,0 +1,38 @@
+{
+ "source": "cad/layout.py Layout(load_params(config='vtol')) - read-only",
+ "spigot_bore_r": 56.99999999999999,
+ "carrier_z": [
+  327.09999999999997,
+  342.09999999999997
+ ],
+ "board_top_z": 328.7,
+ "tray_bottom_z": 344.09999999999997,
+ "joint_thetas_deg": [
+  45.0,
+  135.0,
+  225.0,
+  315.0
+ ],
+ "joint_screw_z": 331.59999999999997,
+ "motor_joint_zone": {
+  "u": [
+   42.0,
+   54.5
+  ],
+  "half_width": 12.5,
+  "z": [
+   326.09999999999997,
+   370.09999999999997
+  ],
+  "theta_deg": 0.0,
+  "min_clear": 2.0
+ },
+ "servo_lead_hole": {
+  "theta_deg": 180.0,
+  "r": [
+   50.0,
+   56.0
+  ],
+  "w": 9.0
+ }
+}

@@ -1,0 +1,431 @@
+{
+ "board": "kicad/work/vtol_carrier_unrouted.kicad_pcb",
+ "board_sha256": "c9b0cf755488c718f6de943489d0c353452751bc2fec453fb1fbd79b6c4cceb3",
+ "tool": "pcbnew 10.0.6",
+ "label": "M (bounding boxes measured on the board file)",
+ "outline_centre_lines": [
+  62.0,
+  65.0,
+  138.0,
+  135.0
+ ],
+ "edge_cuts_bbox_incl_line_width": [
+  61.975,
+  64.975,
+  138.025,
+  135.025
+ ],
+ "footprints": 174,
+ "bodies_under_2p5": [
+  [
+   "U7",
+   0.15,
+   "+y",
+   "jlc"
+  ],
+  [
+   "J15",
+   0.29,
+   "-x",
+   "jlc"
+  ],
+  [
+   "U8",
+   0.35,
+   "-y",
+   "jlc"
+  ],
+  [
+   "L5",
+   0.45,
+   "-y",
+   "jlc"
+  ],
+  [
+   "U9",
+   0.45,
+   "-y",
+   "jlc"
+  ],
+  [
+   "R60",
+   0.537,
+   "-y",
+   "jlc"
+  ],
+  [
+   "C41",
+   0.55,
+   "-y",
+   "jlc"
+  ],
+  [
+   "C43",
+   0.55,
+   "-y",
+   "jlc"
+  ],
+  [
+   "U6",
+   0.55,
+   "+x",
+   "jlc"
+  ],
+  [
+   "Q3",
+   0.6,
+   "-y",
+   "none"
+  ],
+  [
+   "J12",
+   0.7,
+   "+x",
+   "jlc"
+  ],
+  [
+   "J14",
+   0.7,
+   "-x",
+   "jlc"
+  ],
+  [
+   "J16",
+   0.7,
+   "+y",
+   "jlc"
+  ],
+  [
+   "J17",
+   0.7,
+   "+x",
+   "jlc"
+  ],
+  [
+   "J8",
+   0.71,
+   "-x",
+   "jlc"
+  ],
+  [
+   "J9",
+   0.71,
+   "-x",
+   "jlc"
+  ],
+  [
+   "J10",
+   0.71,
+   "-x",
+   "jlc"
+  ],
+  [
+   "J11",
+   0.71,
+   "-x",
+   "jlc"
+  ],
+  [
+   "J18",
+   0.71,
+   "-x",
+   "jlc"
+  ],
+  [
+   "J5",
+   0.73,
+   "+x",
+   "jlc"
+  ],
+  [
+   "JP1",
+   0.775,
+   "-x",
+   "none"
+  ],
+  [
+   "J1",
+   0.8,
+   "-y",
+   "user"
+  ],
+  [
+   "J7",
+   0.805,
+   "-x",
+   "jlc"
+  ],
+  [
+   "C60",
+   0.95,
+   "-y",
+   "jlc"
+  ],
+  [
+   "R47",
+   0.95,
+   "-y",
+   "none"
+  ],
+  [
+   "R65",
+   0.95,
+   "-y",
+   "jlc"
+  ],
+  [
+   "D6",
+   1.25,
+   "+x",
+   "jlc"
+  ],
+  [
+   "J19",
+   1.45,
+   "-y",
+   "none"
+  ],
+  [
+   "U4",
+   1.85,
+   "-y",
+   "jlc_optional"
+  ],
+  [
+   "J2",
+   1.95,
+   "+y",
+   "jlc"
+  ],
+  [
+   "C44",
+   2.05,
+   "-y",
+   "jlc"
+  ],
+  [
+   "R59",
+   2.15,
+   "-y",
+   "jlc"
+  ]
+ ],
+ "bodies_under_0p3": [
+  [
+   "U7",
+   0.15,
+   "+y",
+   "jlc"
+  ],
+  [
+   "J15",
+   0.29,
+   "-x",
+   "jlc"
+  ]
+ ],
+ "pads_under_0p3": [],
+ "per_side": {
+  "-x": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "J15",
+     0.29
+    ],
+    [
+     "J14",
+     0.7
+    ],
+    [
+     "J8",
+     0.71
+    ],
+    [
+     "J9",
+     0.71
+    ],
+    [
+     "J10",
+     0.71
+    ],
+    [
+     "J11",
+     0.71
+    ],
+    [
+     "J18",
+     0.71
+    ],
+    [
+     "J7",
+     0.805
+    ]
+   ],
+   "count": 8,
+   "min_mm": 0.29,
+   "overhanging": []
+  },
+  "+y": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "U7",
+     0.15
+    ],
+    [
+     "J14",
+     0.7
+    ],
+    [
+     "J16",
+     0.7
+    ],
+    [
+     "J2",
+     1.95
+    ]
+   ],
+   "count": 4,
+   "min_mm": 0.15,
+   "overhanging": []
+  },
+  "+x": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "U6",
+     0.55
+    ],
+    [
+     "J12",
+     0.7
+    ],
+    [
+     "J17",
+     0.7
+    ],
+    [
+     "J5",
+     0.73
+    ],
+    [
+     "L5",
+     1.125
+    ],
+    [
+     "D6",
+     1.25
+    ]
+   ],
+   "count": 6,
+   "min_mm": 0.55,
+   "overhanging": []
+  },
+  "-y": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "U8",
+     0.35
+    ],
+    [
+     "L5",
+     0.45
+    ],
+    [
+     "U9",
+     0.45
+    ],
+    [
+     "R60",
+     0.537
+    ],
+    [
+     "C41",
+     0.55
+    ],
+    [
+     "C43",
+     0.55
+    ],
+    [
+     "C60",
+     0.95
+    ],
+    [
+     "R65",
+     0.95
+    ],
+    [
+     "J7",
+     1.75
+    ],
+    [
+     "U4",
+     1.85
+    ],
+    [
+     "C44",
+     2.05
+    ],
+    [
+     "R59",
+     2.15
+    ]
+   ],
+   "count": 12,
+   "min_mm": 0.35,
+   "overhanging": []
+  }
+ },
+ "rail_pairs": {
+  "-x / +x": {
+   "bodies_under_2p5_at_edges_without_rail": [
+    "C41",
+    "C43",
+    "C44",
+    "C60",
+    "J14",
+    "J16",
+    "J2",
+    "J7",
+    "L5",
+    "R59",
+    "R60",
+    "R65",
+    "U4",
+    "U7",
+    "U8",
+    "U9"
+   ],
+   "count_without_rail": 16,
+   "min_distance_at_rail_edges_mm": 0.29,
+   "overhang_at_rail_edges": []
+  },
+  "+y / -y": {
+   "bodies_under_2p5_at_edges_without_rail": [
+    "D6",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J17",
+    "J18",
+    "J5",
+    "J7",
+    "J8",
+    "J9",
+    "L5",
+    "U6"
+   ],
+   "count_without_rail": 14,
+   "min_distance_at_rail_edges_mm": 0.15,
+   "overhang_at_rail_edges": []
+  }
+ },
+ "rail_sides_for_standard_order": {
+  "pair": "+y / -y",
+  "label": "E (chosen from this table: fewest JLC-fitted bodies under 2.5 mm at an edge without a rail)"
+ },
+ "jlc_acceptance": "NOT_VERIFIED (only JLC's DFM result and quote after the upload decide)",
+ "csv": "out/edge_distance.csv",
+ "csv_sha256": "41c3f01749c6707c883e3ec89b207a86c8537bf8b84f2d958c013c33e06855a4"
+}

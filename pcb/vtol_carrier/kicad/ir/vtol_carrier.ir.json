@@ -2195,7 +2195,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part C41: A (boost input ripple at 1.3 A peak) (label A); block PWR",
+    "note": "spec carrier_spec.json part C41: A (boost input ripple; 1.75 A average input current at the 3.0 V peak, E plan power_block) (label A); block PWR",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -2478,7 +2478,7 @@
     "name": "C_Polarized",
     "verified": true
    },
-   "value": "22u 10V tantalum"
+   "value": "22u 10V tantalum (TAJA226K010RNJ, +-10 %)"
   },
   {
    "datasheet": null,
@@ -2884,7 +2884,7 @@
   },
   {
    "datasheet": null,
-   "description": "ESP-12E bulk (TX bursts), at the VCC pin",
+   "description": "ESP-12F bulk (TX bursts), at the VCC pin",
    "electrical": {},
    "footprint": {
     "library": "Capacitor_Tantalum_SMD",
@@ -2932,7 +2932,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part C52: user decision 2026-11-05 '>= 100 uF + 100 nF close to the module'; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them; 10 V rating = 33 % of rating on 3.3 V (6.3 V part = 52 %, above the usual <= 50 % tantalum derating, A - rev-2b independent review 2026-11-05 E-m4) (label A); block COM",
+    "note": "spec carrier_spec.json part C52: user decision 2026-11-05 '>= 100 uF + 100 nF close to the module'; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them; 10 V rating = 33 % of rating on 3.3 V (6.3 V part = 52 %, above the usual <= 50 % tantalum derating, A - rev-2b independent review 2026-11-05 E-m4) (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -2951,7 +2951,7 @@
   },
   {
    "datasheet": null,
-   "description": "ESP-12E VCC ceramic",
+   "description": "ESP-12F VCC ceramic",
    "electrical": {},
    "footprint": {
     "library": "Capacitor_SMD",
@@ -2999,7 +2999,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part C53: A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them (label A); block COM",
+    "note": "spec carrier_spec.json part C53: A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -3018,7 +3018,7 @@
   },
   {
    "datasheet": null,
-   "description": "ESP-12E VCC decoupling (at pin 8, own GND via)",
+   "description": "ESP-12F VCC decoupling (at pin 8, own GND via)",
    "electrical": {},
    "footprint": {
     "library": "Capacitor_SMD",
@@ -3066,7 +3066,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part C54: A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them (label A); block COM",
+    "note": "spec carrier_spec.json part C54: A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -3133,7 +3133,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part C55: A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them (RC on CHIP_EN recommended) (label A); block COM",
+    "note": "spec carrier_spec.json part C55: A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them (RC on CHIP_EN recommended) (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -3216,6 +3216,274 @@
     "verified": true
    },
    "value": "10u"
+  },
+  {
+   "datasheet": null,
+   "description": "boost output capacitor 2 (next to U8 pin 6 / pin 4, with C43)",
+   "electrical": {},
+   "footprint": {
+    "library": "Capacitor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_1206_3216Metric.kicad_mod",
+    "name": "C_1206_3216Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part C57: spec/rev3_plan.json changes[C57]; tps61023.txt:199 (effective output capacitance 4 / 10 / 1000 uF); JLC C12891 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "C57",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "C",
+    "verified": true
+   },
+   "value": "22u"
+  },
+  {
+   "datasheet": null,
+   "description": "feed-forward capacitor across R63",
+   "electrical": {},
+   "footprint": {
+    "library": "Capacitor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_0603_1608Metric.kicad_mod",
+    "name": "C_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part C58: spec/rev3_plan.json changes[C58]; tps61023.txt:838-860 (zero at about 1 kHz with the upper divider resistor: 1061 Hz with 150k); JLC C1588 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "C58",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "C",
+    "verified": true
+   },
+   "value": "1n 50V X7R"
+  },
+  {
+   "datasheet": null,
+   "description": "U9 supply bypass",
+   "electrical": {},
+   "footprint": {
+    "library": "Capacitor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_0603_1608Metric.kicad_mod",
+    "name": "C_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part C59: spec/rev3_plan.json changes[C59]; tlv3011.txt:1706 (0.1 uF ceramic supply decoupling); JLC C14663 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "C59",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "C",
+    "verified": true
+   },
+   "value": "100n"
+  },
+  {
+   "datasheet": null,
+   "description": "UVLO sense filter (16.3 ms with the 163 kOhm divider node)",
+   "electrical": {},
+   "footprint": {
+    "library": "Capacitor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Capacitor_SMD.pretty\\C_0603_1608Metric.kicad_mod",
+    "name": "C_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:C (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part C60: spec/rev3_plan.json changes[C60], power_block.uvlo.sense_filter_tau_ms_100nF; JLC C14663 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "C60",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "C",
+    "verified": true
+   },
+   "value": "100n"
   },
   {
    "datasheet": null,
@@ -3838,7 +4106,7 @@
   },
   {
    "datasheet": null,
-   "description": "ESP-12E flash header: 1 IO0, 2 GND, 3 TXD0, 4 RXD0, 5 RST, 6 GND [DNP]",
+   "description": "ESP-12F flash header: 1 IO0, 2 GND, 3 TXD0, 4 RXD0, 5 RST, 6 GND [DNP]",
    "electrical": {},
    "footprint": {
     "library": "Connector_PinHeader_2.54mm",
@@ -3961,7 +4229,7 @@
     "name": "Conn_02x03_Odd_Even",
     "verified": true
    },
-   "value": "2x3 2.54 mm vertical: ESP-12E programming header (3.3 V logic ONLY)"
+   "value": "2x3 2.54 mm vertical: ESP-12F programming header (3.3 V logic ONLY)"
   },
   {
    "datasheet": null,
@@ -4089,118 +4357,6 @@
     "verified": true
    },
    "value": "1x6 2.54 mm right-angle socket: OpenLog lies FLAT beside it (outline reserved)"
-  },
-  {
-   "datasheet": null,
-   "description": "5 V regulator module (boost from the 1S pack, adjustable low-voltage cut-off)",
-   "electrical": {},
-   "footprint": {
-    "library": "Connector_PinHeader_2.54mm",
-    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Connector_PinHeader_2.54mm.pretty\\PinHeader_1x05_P2.54mm_Vertical.kicad_mod",
-    "name": "PinHeader_1x05_P2.54mm_Vertical",
-    "verified": true
-   },
-   "manufacturer": null,
-   "mpn": null,
-   "package": null,
-   "pins": [
-    {
-     "electrical_type": "passive",
-     "name": "Pin_1",
-     "number": "1",
-     "provenance": {
-      "created_at": "2026-11-05T00:00:00Z",
-      "derived_from": [],
-      "inputs": {},
-      "kind": "authoritative",
-      "note": "KiCad library symbol Connector_Generic:Conn_01x05 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
-      "source": null,
-      "tool": null,
-      "tool_version": null
-     }
-    },
-    {
-     "electrical_type": "passive",
-     "name": "Pin_2",
-     "number": "2",
-     "provenance": {
-      "created_at": "2026-11-05T00:00:00Z",
-      "derived_from": [],
-      "inputs": {},
-      "kind": "authoritative",
-      "note": "KiCad library symbol Connector_Generic:Conn_01x05 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
-      "source": null,
-      "tool": null,
-      "tool_version": null
-     }
-    },
-    {
-     "electrical_type": "passive",
-     "name": "Pin_3",
-     "number": "3",
-     "provenance": {
-      "created_at": "2026-11-05T00:00:00Z",
-      "derived_from": [],
-      "inputs": {},
-      "kind": "authoritative",
-      "note": "KiCad library symbol Connector_Generic:Conn_01x05 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
-      "source": null,
-      "tool": null,
-      "tool_version": null
-     }
-    },
-    {
-     "electrical_type": "no_connect",
-     "name": "Pin_4",
-     "number": "4",
-     "provenance": {
-      "created_at": "2026-11-05T00:00:00Z",
-      "derived_from": [],
-      "inputs": {},
-      "kind": "authoritative",
-      "note": "KiCad library symbol Connector_Generic:Conn_01x05 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
-      "source": null,
-      "tool": null,
-      "tool_version": null
-     }
-    },
-    {
-     "electrical_type": "no_connect",
-     "name": "Pin_5",
-     "number": "5",
-     "provenance": {
-      "created_at": "2026-11-05T00:00:00Z",
-      "derived_from": [],
-      "inputs": {},
-      "kind": "authoritative",
-      "note": "KiCad library symbol Connector_Generic:Conn_01x05 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
-      "source": null,
-      "tool": null,
-      "tool_version": null
-     }
-    }
-   ],
-   "provenance": {
-    "created_at": "2026-11-05T00:00:00Z",
-    "derived_from": [],
-    "inputs": {},
-    "kind": "assumption",
-    "note": "spec carrier_spec.json part J6: user decision 2026-11-05 (1S cannot feed a buck / LDO to 5 V; 'prefer a boost MODULE on a pin header'; 'add an under-voltage cutoff or at least make the logic-battery monitor mandatory'); devicemart no=15855364 = Pololu #2870 (pololu.com/product/2870: 5 V, 1.7 A typ. max, VIN 2-16 V after a 3 V start, EN pin with an 11-turn pot to VIN = adjustable low-VIN cut-off, off below EN 0.7 V / on above 0.8 V = ~114 % hysteresis, PG open-drain, 12.7 x 15.3 x 6.4 mm, no reverse-voltage protection - read 2026-11-05); params.json configs.vtol.electronics.carrier.model '5 V buck for the logic' (line 1755) is superseded (label A); block PWR",
-    "source": null,
-    "tool": null,
-    "tool_version": null
-   },
-   "ref": "J6",
-   "serves_requirements": [],
-   "sourcing": [],
-   "spice": null,
-   "symbol": {
-    "library": "Connector_Generic",
-    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
-    "name": "Conn_01x05",
-    "verified": true
-   },
-   "value": "1x5 2.54 mm: Pololu S9V11F5S6CMA 5 V step-up/step-down module (VOUT, GND, VIN, EN, PG)"
   },
   {
    "datasheet": null,
@@ -5781,7 +5937,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part J26: NEW (rev 2): while the ESP-12E is flashed through J3 the COM must not toggle the ESP's RST (COM PC6) or drive its RXD0 (COM PD3); firmware/README.md:647-651 hold-in-reset approach (label A); block COM",
+    "note": "spec carrier_spec.json part J26: NEW (rev 2): while the ESP-12F is flashed through J3 the COM must not toggle the ESP's RST (COM PC6) or drive its RXD0 (COM PD3); firmware/README.md:647-651 hold-in-reset approach (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -6150,6 +6306,73 @@
   },
   {
    "datasheet": null,
+   "description": "boost inductor (molded, 2.0 mm high, Isat 6.5 A typ)",
+   "electrical": {},
+   "footprint": {
+    "library": "Inductor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Inductor_SMD.pretty\\L_Changjiang_FXL0420.kicad_mod",
+    "name": "L_Changjiang_FXL0420",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "1",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:L (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "2",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:L (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part L5: spec/rev3_plan.json changes[L5]; tps61023.txt:197 and :746 (effective inductance 0.37 / 1.0 / 2.9 uH); JLC C53426685 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "L5",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "L",
+    "verified": true
+   },
+   "value": "1.0 uH FXL0420-1R0-MA1"
+  },
+  {
+   "datasheet": null,
    "description": "single tie point logic GND <-> propulsion GND (GND_PWR), at J12 pin 3",
    "electrical": {},
    "footprint": {
@@ -6463,7 +6686,7 @@
   },
   {
    "datasheet": null,
-   "description": "level shifter channel: COM PD3 TXD1 -> ESP-12E RXD0 (GPIO3, pin 21)",
+   "description": "level shifter channel: COM PD3 TXD1 -> ESP-12F RXD0 (GPIO3, pin 21)",
    "electrical": {},
    "footprint": {
     "library": "Package_TO_SOT_SMD",
@@ -6545,7 +6768,7 @@
   },
   {
    "datasheet": null,
-   "description": "level shifter channel: COM PC6 -> ESP-12E RST (pin 1, active low)",
+   "description": "level shifter channel: COM PC6 -> ESP-12F RST (pin 1, active low)",
    "electrical": {},
    "footprint": {
     "library": "Package_TO_SOT_SMD",
@@ -7037,7 +7260,7 @@
   },
   {
    "datasheet": null,
-   "description": "level shifter channel: ESP-12E TXD0 (GPIO1) -> COM PD2 RXD1",
+   "description": "level shifter channel: ESP-12F TXD0 (GPIO1) -> COM PD2 RXD1",
    "electrical": {},
    "footprint": {
     "library": "Package_TO_SOT_SMD",
@@ -10115,7 +10338,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part R48: user decision 2026-11-05 'EN pull-up 10k'; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them (label A); block COM",
+    "note": "spec carrier_spec.json part R48: user decision 2026-11-05 'EN pull-up 10k'; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -10182,7 +10405,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part R49: user decision 2026-11-05; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them (label A); block COM",
+    "note": "spec carrier_spec.json part R49: user decision 2026-11-05; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -10249,7 +10472,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part R50: user decision 2026-11-05; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them (label A); block COM",
+    "note": "spec carrier_spec.json part R50: user decision 2026-11-05; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -10316,7 +10539,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part R51: user decision 2026-11-05; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them (label A); block COM",
+    "note": "spec carrier_spec.json part R51: user decision 2026-11-05; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -10785,7 +11008,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "assumption",
-    "note": "spec carrier_spec.json part R58: standard BSS138 bidirectional shifter (A values); this LV pull-up IS the ESP RST 10k pull-up (user decision 2026-11-05 'RST pull-up 10k'; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them) (label A); block COM",
+    "note": "spec carrier_spec.json part R58: standard BSS138 bidirectional shifter (A values); this LV pull-up IS the ESP RST 10k pull-up (user decision 2026-11-05 'RST pull-up 10k'; A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them) (label A); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -11069,6 +11292,408 @@
     "verified": true
    },
    "value": "10k"
+  },
+  {
+   "datasheet": null,
+   "description": "boost feedback divider, upper",
+   "electrical": {},
+   "footprint": {
+    "library": "Resistor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+    "name": "R_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part R63: spec/rev3_plan.json changes[R63]; tps61023.txt:241-242, :728 (Vout = 0.595 V x (1 + 150k / 20k) = 5.06 V nominal); JLC C22807 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "R63",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "R",
+    "verified": true
+   },
+   "value": "150k 1%"
+  },
+  {
+   "datasheet": null,
+   "description": "boost feedback divider, lower",
+   "electrical": {},
+   "footprint": {
+    "library": "Resistor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+    "name": "R_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part R64: spec/rev3_plan.json changes[R64]; see R63; JLC C4184 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "R64",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "R",
+    "verified": true
+   },
+   "value": "20k 1%"
+  },
+  {
+   "datasheet": null,
+   "description": "UVLO divider, upper",
+   "electrical": {},
+   "footprint": {
+    "library": "Resistor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+    "name": "R_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part R65: spec/rev3_plan.json changes[R65], power_block.uvlo (worst-case search with the TLV3012B limits); JLC C23178 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "R65",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "R",
+    "verified": true
+   },
+   "value": "470k 1%"
+  },
+  {
+   "datasheet": null,
+   "description": "UVLO divider, lower",
+   "electrical": {},
+   "footprint": {
+    "library": "Resistor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+    "name": "R_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part R66: spec/rev3_plan.json changes[R66], power_block.uvlo; JLC C22965 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "R66",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "R",
+    "verified": true
+   },
+   "value": "270k 1%"
+  },
+  {
+   "datasheet": null,
+   "description": "UVLO hysteresis resistor",
+   "electrical": {},
+   "footprint": {
+    "library": "Resistor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+    "name": "R_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part R67: spec/rev3_plan.json changes[R67], power_block.uvlo; tlv3011.txt:1511-1539, :1549-1550; JLC C26096 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "R67",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "R",
+    "verified": true
+   },
+   "value": "3.3M 1%"
+  },
+  {
+   "datasheet": null,
+   "description": "pull-down on the boost EN pin: EN stays low while U9 is unpowered or in its power-on reset",
+   "electrical": {},
+   "footprint": {
+    "library": "Resistor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+    "name": "R_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part R68: spec/rev3_plan.json changes[R68], power_block.en_drive; JLC C22935 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "R68",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "R",
+    "verified": true
+   },
+   "value": "1M 1%"
   },
   {
    "datasheet": null,
@@ -15060,7 +15685,7 @@
   },
   {
    "datasheet": null,
-   "description": "3.3 V LDO (ESP-12E, BMP280, GPS, shifter LV side)",
+   "description": "3.3 V LDO (ESP-12F, BMP280, GPS, shifter LV side)",
    "electrical": {},
    "footprint": {
     "library": "Package_TO_SOT_SMD",
@@ -15163,7 +15788,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15178,7 +15803,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15193,7 +15818,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15208,7 +15833,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15223,7 +15848,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15238,7 +15863,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15253,7 +15878,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15268,7 +15893,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15283,7 +15908,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15298,7 +15923,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15313,7 +15938,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15328,7 +15953,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15343,7 +15968,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15358,7 +15983,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15373,7 +15998,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15388,7 +16013,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15403,7 +16028,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15418,7 +16043,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15433,7 +16058,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15448,7 +16073,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15463,7 +16088,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15478,7 +16103,7 @@
       "derived_from": [],
       "inputs": {},
       "kind": "authoritative",
-      "note": "KiCad library symbol RF_Module:ESP-12E (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
+      "note": "KiCad library symbol RF_Module:ESP-12F (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym)",
       "source": null,
       "tool": null,
       "tool_version": null
@@ -15490,7 +16115,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "user_requirement",
-    "note": "spec carrier_spec.json part U7: user decision 2026-11-05 ('ESP-12E 직접 납땜', 'PLM100 완전히 빼기'); KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) (label F); block COM",
+    "note": "spec carrier_spec.json part U7: user decision 2026-11-05 ('ESP-12E 직접 납땜', 'PLM100 완전히 빼기'); KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) (label F); block COM",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -15502,10 +16127,264 @@
    "symbol": {
     "library": "RF_Module",
     "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\RF_Module.kicad_sym",
-    "name": "ESP-12E",
+    "name": "ESP-12F",
     "verified": true
    },
-   "value": "ESP-12E (ESP8266EX + 4 MB SPI flash, PCB antenna)"
+   "value": "ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)"
+  },
+  {
+   "datasheet": null,
+   "description": "5 V synchronous boost converter (replaces the Pololu S9V11F5S6CMA module on J6)",
+   "electrical": {},
+   "footprint": {
+    "library": "Package_TO_SOT_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Package_TO_SOT_SMD.pretty\\SOT-563.kicad_mod",
+    "name": "SOT-563",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "Pin_1",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Connector_Generic:Conn_02x03_Counter_Clockwise (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "Pin_2",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Connector_Generic:Conn_02x03_Counter_Clockwise (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "Pin_3",
+     "number": "3",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Connector_Generic:Conn_02x03_Counter_Clockwise (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "Pin_4",
+     "number": "4",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Connector_Generic:Conn_02x03_Counter_Clockwise (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "Pin_5",
+     "number": "5",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Connector_Generic:Conn_02x03_Counter_Clockwise (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "Pin_6",
+     "number": "6",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Connector_Generic:Conn_02x03_Counter_Clockwise (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part U8: spec/rev3_plan.json changes[U8], power_block; tps61023.txt:148-160 (Figure 5-1 DRL package, pin functions: 1 FB, 2 EN, 3 VIN, 4 GND, 5 SW, 6 VOUT), :19 and :559 (true disconnection between input and output in shutdown); JLC C919459 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "U8",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Connector_Generic",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+    "name": "Conn_02x03_Counter_Clockwise",
+    "verified": true
+   },
+   "value": "TPS61023DRLR"
+  },
+  {
+   "datasheet": null,
+   "description": "battery under-voltage lock-out comparator with 1.242 V reference, push-pull output drives the boost EN pin",
+   "electrical": {},
+   "footprint": {
+    "library": "Package_TO_SOT_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Package_TO_SOT_SMD.pretty\\SOT-23-6.kicad_mod",
+    "name": "SOT-23-6",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "output",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Comparator:MCP65R41 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Comparator.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "power_in",
+     "name": "V-",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Comparator:MCP65R41 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Comparator.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "input",
+     "name": "+",
+     "number": "3",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Comparator:MCP65R41 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Comparator.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "input",
+     "name": "-",
+     "number": "4",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Comparator:MCP65R41 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Comparator.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "power_out",
+     "name": "Vref",
+     "number": "5",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Comparator:MCP65R41 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Comparator.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "power_in",
+     "name": "V+",
+     "number": "6",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Comparator:MCP65R41 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Comparator.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part U9: spec/rev3_plan.json changes[U9], power_block.uvlo; tlv3011.txt:154-163 (Table 5-1 pin functions, DBV: 1 OUT, 2 V-, 3 IN+, 4 IN-, 5 REF, 6 V+), :479 (power-on reset), :1511-1539 (external hysteresis); JLC C20345924 (label F); block PWR",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "U9",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Comparator",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Comparator.kicad_sym",
+    "name": "MCP65R41",
+    "verified": true
+   },
+   "value": "TLV3012BIDBVR"
   },
   {
    "datasheet": null,
@@ -16033,7 +16912,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "firmware/README.md:245-246; params.json electronics.gps.power '3.3 V rail' (line 1012); KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 8 VCC; 3.0-3.6 V supply (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them)",
+    "note": "firmware/README.md:245-246; params.json electronics.gps.power '3.3 V rail' (line 1012); KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 8 VCC; 3.0-3.6 V supply (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -16102,6 +16981,14 @@
      "pin_number": "1"
     },
     {
+     "component_ref": "C57",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "C58",
+     "pin_number": "1"
+    },
+    {
      "component_ref": "D6",
      "pin_number": "1"
     },
@@ -16112,10 +16999,6 @@
     {
      "component_ref": "J5",
      "pin_number": "4"
-    },
-    {
-     "component_ref": "J6",
-     "pin_number": "1"
     },
     {
      "component_ref": "J17",
@@ -16218,6 +17101,10 @@
      "pin_number": "2"
     },
     {
+     "component_ref": "R63",
+     "pin_number": "1"
+    },
+    {
      "component_ref": "U1",
      "pin_number": "21"
     },
@@ -16268,6 +17155,10 @@
     {
      "component_ref": "U6",
      "pin_number": "3"
+    },
+    {
+     "component_ref": "U8",
+     "pin_number": "6"
     }
    ],
    "provenance": {
@@ -16302,6 +17193,100 @@
     "inputs": {},
     "kind": "derived",
     "note": "derived: support / pull-up / series-resistor node (see the part entries)",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "serves_requirements": []
+  },
+  {
+   "kind": "signal",
+   "name": "BOOST_EN",
+   "net_class": "Default",
+   "pins": [
+    {
+     "component_ref": "R67",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "R68",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "U8",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "U9",
+     "pin_number": "1"
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "derived",
+    "note": "spec/rev3_plan.json new_nets BOOST_EN, power_block.en_drive",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "serves_requirements": []
+  },
+  {
+   "kind": "signal",
+   "name": "BOOST_FB",
+   "net_class": "Default",
+   "pins": [
+    {
+     "component_ref": "C58",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "R63",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "R64",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "U8",
+     "pin_number": "1"
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "derived",
+    "note": "spec/rev3_plan.json new_nets BOOST_FB; tps61023.txt:241-242 (VREF 580 / 595 / 610 mV), :728",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "serves_requirements": []
+  },
+  {
+   "kind": "signal",
+   "name": "BOOST_SW",
+   "net_class": "Default",
+   "pins": [
+    {
+     "component_ref": "L5",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "U8",
+     "pin_number": "5"
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "derived",
+    "note": "spec/rev3_plan.json new_nets BOOST_SW; tps61023.txt:158 (pin 5 SW)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -16799,7 +17784,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 3 EN (CH_PD): high = chip enabled (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them)",
+    "note": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 3 EN (CH_PD): high = chip enabled (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -16829,7 +17814,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 18; GPIO0 high = run from flash, low at reset = UART download (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them)",
+    "note": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 18; GPIO0 high = run from flash, low at reset = UART download (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -16855,7 +17840,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 17; GPIO2 high at boot (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them)",
+    "note": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 17; GPIO2 high at boot (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -16881,7 +17866,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 16; GPIO15 low at boot = boot from flash / UART (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them)",
+    "note": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 16; GPIO15 low at boot = boot from flash / UART (A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -16915,7 +17900,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 1 ~RST (active low)",
+    "note": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 1 ~RST (active low)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -16945,7 +17930,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 21 GPIO3/RXD (UART0 RX, also the flash download RX)",
+    "note": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 21 GPIO3/RXD (UART0 RX, also the flash download RX)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -17009,7 +17994,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod) pin 22 GPIO1/TXD (UART0 TX; prints a boot log at 74880 baud after every reset, A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT on disk - check them)",
+    "note": "KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint) pin 22 GPIO1/TXD (UART0 TX; prints a boot log at 74880 baud after every reset, A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12F/F datasheet are NOT on disk - check them)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -17241,7 +18226,7 @@
     "derived_from": [],
     "inputs": {},
     "kind": "derived",
-    "note": "NEW (not in params / firmware): logic-battery sense on FCU PF3/ADC3 - mandatory monitor of the 1S pack (boost modules keep running down to ~2 V, A)",
+    "note": "NEW (not in params / firmware): logic-battery sense on FCU PF3/ADC3 - mandatory monitor of the 1S pack (rev 3: the U9 under-voltage lock-out stops the converter near 3.13 V, the ADC is the early warning)",
     "source": null,
     "tool": null,
     "tool_version": null
@@ -17758,6 +18743,18 @@
      "pin_number": "2"
     },
     {
+     "component_ref": "C57",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "C59",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "C60",
+     "pin_number": "2"
+    },
+    {
      "component_ref": "D1",
      "pin_number": "1"
     },
@@ -17800,10 +18797,6 @@
     {
      "component_ref": "J5",
      "pin_number": "6"
-    },
-    {
-     "component_ref": "J6",
-     "pin_number": "2"
     },
     {
      "component_ref": "J7",
@@ -17910,6 +18903,18 @@
      "pin_number": "2"
     },
     {
+     "component_ref": "R64",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "R66",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "R68",
+     "pin_number": "2"
+    },
+    {
      "component_ref": "U1",
      "pin_number": "22"
     },
@@ -17964,6 +18969,14 @@
     {
      "component_ref": "U7",
      "pin_number": "15"
+    },
+    {
+     "component_ref": "U8",
+     "pin_number": "4"
+    },
+    {
+     "component_ref": "U9",
+     "pin_number": "2"
     },
     {
      "component_ref": "Y1",
@@ -19182,6 +20195,70 @@
   },
   {
    "kind": "signal",
+   "name": "UVLO_REF",
+   "net_class": "Default",
+   "pins": [
+    {
+     "component_ref": "U9",
+     "pin_number": "4"
+    },
+    {
+     "component_ref": "U9",
+     "pin_number": "5"
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "derived",
+    "note": "spec/rev3_plan.json new_nets UVLO_REF; tlv3011.txt:154-163 (pin 5 REF, pin 4 IN-)",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "serves_requirements": []
+  },
+  {
+   "kind": "signal",
+   "name": "UVLO_SENSE",
+   "net_class": "Default",
+   "pins": [
+    {
+     "component_ref": "C60",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "R65",
+     "pin_number": "2"
+    },
+    {
+     "component_ref": "R66",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "R67",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "U9",
+     "pin_number": "3"
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "derived",
+    "note": "spec/rev3_plan.json new_nets UVLO_SENSE, power_block.uvlo",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "serves_requirements": []
+  },
+  {
+   "kind": "signal",
    "name": "VANE1_PWM",
    "net_class": "Default",
    "pins": [
@@ -19470,16 +20547,32 @@
      "pin_number": "1"
     },
     {
-     "component_ref": "J6",
-     "pin_number": "3"
+     "component_ref": "C59",
+     "pin_number": "1"
     },
     {
      "component_ref": "J15",
      "pin_number": "2"
     },
     {
+     "component_ref": "L5",
+     "pin_number": "1"
+    },
+    {
      "component_ref": "R15",
      "pin_number": "1"
+    },
+    {
+     "component_ref": "R65",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "U8",
+     "pin_number": "3"
+    },
+    {
+     "component_ref": "U9",
+     "pin_number": "6"
     }
    ],
    "provenance": {
@@ -19603,7 +20696,7 @@
  "pcb": null,
  "project": {
   "created_at": "2026-11-05T00:00:00Z",
-  "description": "76 x 70 mm carrier rev 2c: 4x ATmega128A, GY-521, BMP280, ESP-12E, OpenLog, NEO-7M lead, 1S logic battery + Pololu 5 V buck-boost module",
+  "description": "76 x 70 mm carrier rev 3: 4x ATmega128A, GY-521, BMP280, ESP-12F, OpenLog, NEO-7M lead, 1S logic battery + on-board 5 V boost converter (TPS61023) with under-voltage lock-out",
   "id": "vtol_carrier",
   "name": "VTOL avionics carrier",
   "workdir": null

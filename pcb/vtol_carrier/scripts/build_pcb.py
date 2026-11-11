@@ -114,7 +114,7 @@ def drawings(pdata: dict) -> list[list]:
     out.append(S("gr_text", Q("cable-tie band x -3..+3 mm: no components (J3 ESP flash, ISP J19-J22, reset-hold J24-J26 footprints unpopulated)"),
                  S("at", 97.3, 66.5, 90), S("layer", Q("Dwgs.User")), S("uuid", Q(ids.net_item_uuid(common.PROJECT_ID, "tie_text"))),
                  S("effects", S("font", S("size", 0.6, 0.6), S("thickness", 0.08)), S("justify", "right"))))
-    notes = ["J6: Pololu S9V11F5S6CMA 5 V buck-boost module soldered flat on a 1x5 header (VOUT GND VIN EN PG), trimmer on top",
+    notes = ["rev 3: on-board 5 V boost (U8 / L5 / C57 / C43) + 3.3 V LDO U6 in the +x/-y corner (the Pololu module J6 is removed)",
              "No parts on the bottom side (3 mm foam tape); the 5th ATmega128A is removed (user decision 2026-11-05)",
              "J3 ESP flash 2x3 footprint: unpopulated, top of the tie band beside the ESP-12E (press a header in to flash)",
              "J14 (1S) + J15 (power switch) in the -x/+y corner next to battery spot A; J13 release header removed (VTOL)"]
@@ -122,7 +122,7 @@ def drawings(pdata: dict) -> list[list]:
         out.append(S("gr_text", Q(t), S("at", 62.0, round(137.4 + 1.1 * i, 2), 0), S("layer", Q("Dwgs.User")),
                      S("uuid", Q(ids.net_item_uuid(common.PROJECT_ID, "note_text", i))),
                      S("effects", S("font", S("size", 0.7, 0.7), S("thickness", 0.09)), S("justify", "left"))))
-    out.append(S("gr_text", Q("VTOL carrier rev 2c - NOT_VERIFIED: never built or powered"), S("at", 100.0, 136.2, 0), S("layer", Q("Dwgs.User")),
+    out.append(S("gr_text", Q("VTOL carrier rev 3 - NOT_VERIFIED: never built or powered"), S("at", 100.0, 136.2, 0), S("layer", Q("Dwgs.User")),
                  S("uuid", Q(ids.net_item_uuid(common.PROJECT_ID, "title_text"))),
                  S("effects", S("font", S("size", 0.8, 0.8), S("thickness", 0.1)))))
     return out
@@ -174,8 +174,9 @@ def place_footprint_zones(fp_node: list) -> int:
 
 
 #: supply pads that feed a plane: solid zone connection on every layer (rev-2b review PF-M1, 1.34 A boost peak, E)
-#: J6.1 Pololu VOUT -> In2.Cu +5V; J6.2 Pololu GND and J14.2 1S pack minus -> In1.Cu / outer GND
-SOLID_PADS = {("J6", "1"), ("J6", "2"), ("J14", "2")}
+#: rev 3: the Pololu header J6 is gone (the boost output reaches In2.Cu through vias at C57 / C43, SMD pads connect
+#: solid anyway); J14.2 1S pack minus -> In1.Cu / outer GND
+SOLID_PADS = {("J14", "2")}
 
 STACKUP_NOTE = "1.6 mm FR4, 2 layers, 1 oz (35 um) outer copper, HASL lead-free (A: JLCPCB 2-layer default; state it in the order)"
 #: 4-layer: JLCPCB standard 1.6 mm 4-layer (their JLC04161H-7628 class: 7628 prepreg ~0.21 mm, core ~1.065 mm,
@@ -250,16 +251,202 @@ def esp_preroutes(pdata: dict, library: KicadLibrary, spec: dict) -> tuple[list[
     return segs, vias
 
 
+#: rev 3 battery trunk on B.Cu, board mm (KiCad frame), (x, y, width of the segment that ENDS here). Plan section 13:
+#: J15 -> L5 "pour or >= 2.0 mm, target <= 0.035 Ohm". Shape = the rev 2c path (left edge, between U3 and U4, tie
+#: band between J21 and J26, diagonal under U1) because that topology routed on rev 2c; it then runs east under the
+#: U1 +x pad column and down the +x edge so that the boost block keeps B.Cu free for its plane vias.
+#: The tie-band crossing is a 1.56 mm neck: every gap between the THT pads of J3 / J19-J26 is 1.86-1.87 mm (M, pad
+#: table of the board), so no single-layer >= 2.0 mm crossing exists - reported by routing_checks.py, not hidden.
+VBAT_TRUNK = [
+    (66.7, 76.0, 2.4), (66.7, 120.5, 4.0), (70.0, 123.8, 2.4), (77.3, 123.8, 2.4), (90.485, 110.615, 2.4),
+    (96.6, 110.615, 2.4), (103.4, 110.615, 1.56), (106.035, 110.615, 2.4), (120.9, 125.48, 2.4), (135.2, 125.48, 2.4),
+    (136.5, 126.78, 2.0), (136.5, 133.4, 2.0),
+]
+#: F.Cu rule area between the pads of L5 (plan section 13: no signal trace under L5 on F.Cu), offsets from the L5 pads
+L5_KEEPOUT_INSET = 0.15
+
+
+def power_preroutes(pdata: dict, library: KicadLibrary, spec: dict) -> tuple[list[dict], list[dict]]:
+    """rev 3 locked copper of the battery path and the boost block (plan section 13). Pad centres come from the
+    library footprints + placement; the offsets below were checked by kicad-cli DRC on the unrouted board.
+
+    * VBAT_LOGIC_RAW J14.1 -> Q10.3 and VBAT_LOGIC Q10.2 -> J15.1 on F.Cu, 2.0 mm with necks at the SOT-23 pads.
+    * VBAT_LOGIC_SW J15.2 -> L5.1: B.Cu trunk (VBAT_TRUNK) + 4 vias beside / 1 below L5.1 + a 1.5 mm F.Cu strip.
+    * BOOST_SW U8.5 -> L5.2: F.Cu only, no via, 1.1 mm long.
+    * +5V U8.6 -> C57.1, 2 vias above C57.1 and 2 under the C43 body into In2.Cu; C43.1 -> R63.1 (the feedback
+      divider senses the output capacitor, not the plane).
+    * GND vias at U8.4, C57.2, C43.2 and C41.2 into In1.Cu.
+    """
+    from ai_eda.ir import LibraryRef
+    from ai_eda.tools.kicad.geometry import pad_center
+
+    parts = {p["refdes"]: p for p in spec["parts"]}
+
+    def pad(ref: str, num: str) -> tuple[float, float]:
+        v = pdata["placements"][ref]
+        lib, name = common.split_lib_id(common.footprint_of(parts[ref]))
+        fp = library.load_footprint(LibraryRef(library=lib, name=name))
+        pl = Placement(component_ref=ref, x_mm=v["x"], y_mm=v["y"], rotation_deg=float(v["rot"]), side=BoardSide.TOP)
+        x, y = pad_center(pl, fp.pad(num))
+        return round(x, 4), round(y, 4)
+
+    segs: list[dict] = []
+    vias: list[dict] = []
+
+    def seg(net: str, a, b, w: float, layer: str = "F.Cu") -> None:
+        segs.append({"net": net, "width": w, "start": [round(a[0], 4), round(a[1], 4)],
+                     "end": [round(b[0], 4), round(b[1], 4)], "block": "PWR", "layer": layer})
+
+    def via(net: str, at, size: float = 0.6, drill: float = 0.3) -> None:
+        vias.append({"net": net, "at": [round(at[0], 4), round(at[1], 4)], "size": size, "drill": drill, "block": "PWR"})
+
+    def off(p, dx: float, dy: float) -> tuple[float, float]:
+        return (round(p[0] + dx, 4), round(p[1] + dy, 4))
+
+    # --- battery input, F.Cu ---------------------------------------------------------------------------------
+    j14, q3, q2, j151, j152 = pad("J14", "1"), pad("Q10", "3"), pad("Q10", "2"), pad("J15", "1"), pad("J15", "2")
+    raw_y = round((pad("J14", "2")[1] + j152[1]) / 2 + 0.03, 3)    # middle of the gap J14.2 / J15 pads
+    seg("VBAT_LOGIC_RAW", j14, (j14[0], raw_y), 2.0)
+    seg("VBAT_LOGIC_RAW", (j14[0], raw_y), (q3[0] - 1.0, raw_y), 2.0)
+    seg("VBAT_LOGIC_RAW", (q3[0] - 1.0, raw_y), q3, 0.6)
+    lg_y = round(j152[1] + 3.55, 3)
+    seg("VBAT_LOGIC", q2, off(q2, 0.9, 0.9), 0.6)
+    seg("VBAT_LOGIC", off(q2, 0.9, 0.9), (q2[0] + 0.9, lg_y), 1.0)
+    seg("VBAT_LOGIC", (q2[0] + 0.9, lg_y), (j151[0], lg_y), 2.0)
+    seg("VBAT_LOGIC", (j151[0], lg_y), j151, 2.0)
+    # --- battery trunk, B.Cu ---------------------------------------------------------------------------------
+    prev = j152
+    for x, y, w in VBAT_TRUNK:
+        seg("VBAT_LOGIC_SW", prev, (x, y), w, "B.Cu")
+        prev = (x, y)
+    l51, l52 = pad("L5", "1"), pad("L5", "2")
+    vx = round(l51[0] + 0.1, 4)
+    for k in range(4):
+        via("VBAT_LOGIC_SW", (vx, round(l51[1] - 4.8 + 1.0 * k, 4)), 0.8, 0.4)
+    seg("VBAT_LOGIC_SW", (vx, l51[1] - 4.8), (vx, l51[1] - 0.5), 1.5)
+    via("VBAT_LOGIC_SW", off(l51, 0.0, 1.85), 0.8, 0.4)
+    seg("VBAT_LOGIC_SW", l51, off(l51, 0.0, 1.85), 0.8)
+    # --- boost block -----------------------------------------------------------------------------------------
+    u84, u85, u86 = pad("U8", "4"), pad("U8", "5"), pad("U8", "6")
+    c571, c572, c431, c432, c412 = pad("C57", "1"), pad("C57", "2"), pad("C43", "1"), pad("C43", "2"), pad("C41", "2")
+    seg("BOOST_SW", u85, off(u85, 0.538, 0.0), 0.35)
+    seg("BOOST_SW", off(u85, 0.538, 0.0), off(u85, 0.988, -0.45), 0.35)
+    if not (off(u85, 0.988, -0.45)[0] > l52[0] - 0.7 and abs(off(u85, 0.988, -0.45)[1] - l52[1]) < 1.2):
+        raise ValueError("BOOST_SW pre-route does not end inside L5 pad 2 - the power block moved")
+    seg("+5V", u86, (u86[0], round(c571[1] + 0.6, 4)), 0.35)
+    for dx in (-0.425, 0.475):
+        seg("+5V", off(c571, dx, -0.4), off(c571, dx, -1.55), 0.5)
+        via("+5V", off(c571, dx, -1.55))
+    for dy in (-0.45, 0.45):
+        seg("+5V", off(c431, -0.425, dy), off(c431, -1.125, dy), 0.4)
+        via("+5V", off(c431, -1.125, dy))
+    r631 = pad("R63", "1")
+    seg("+5V", off(c431, -0.325, -0.7), off(c431, -0.625, -1.15), 0.2)
+    seg("+5V", off(c431, -0.625, -1.15), (r631[0] + 0.3, round(c431[1] - 1.15, 4)), 0.2)
+    seg("+5V", (r631[0] + 0.3, round(c431[1] - 1.15, 4)), off(r631, 0.0, 0.355), 0.2)
+    # U8.3 (VIN, IC supply only - the switch current flows L5 -> U8.5): a 1.0 mm PowerHigh track cannot enter the
+    # 0.35 mm pad, so the pad gets its own via in the slot between C43.1 and U8 and a B.Cu spur to the trunk
+    u83 = pad("U8", "3")
+    vin_via = off(u83, -0.837, 0.08)
+    seg("VBAT_LOGIC_SW", u83, vin_via, 0.3)
+    via("VBAT_LOGIC_SW", vin_via)
+    seg("VBAT_LOGIC_SW", vin_via, (vin_via[0], VBAT_TRUNK[-3][1]), 0.4, "B.Cu")
+    # --- small taps of the battery net (attempt a1, M: Freerouting could not enter these pads with the 1.0 mm /
+    # 0.8 mm-via PowerHigh class and left 5 connections open) - every pad of the net is wired here, so the net never
+    # goes to the autorouter. None of them carries the boost input current (bulk / bypass capacitors, dividers).
+    diag = lambda x: round(x + (VBAT_TRUNK[8][1] - VBAT_TRUNK[8][0]), 4)   # y of the 45 deg trunk piece under U1
+    if abs((VBAT_TRUNK[8][1] - VBAT_TRUNK[7][1]) - (VBAT_TRUNK[8][0] - VBAT_TRUNK[7][0])) > 1e-6:
+        raise ValueError("VBAT_TRUNK piece 7 -> 8 is no longer a 45 degree diagonal - re-derive the tap ends")
+    trunk_y = VBAT_TRUNK[9][1]                                             # the east run under the U1 pad row
+    r151 = pad("R15", "1")                       # FCU battery divider top: via on the trunk beside the pad
+    seg("VBAT_LOGIC_SW", r151, (round(r151[0] - 1.125, 4), VBAT_TRUNK[6][1]), 0.3)
+    via("VBAT_LOGIC_SW", (round(r151[0] - 1.125, 4), VBAT_TRUNK[6][1]))
+    c411 = pad("C41", "1")                       # input bulk capacitor: 2 vias above the pad, 1.0 mm B.Cu spur
+    for dx in (-0.425, 0.425):
+        seg("VBAT_LOGIC_SW", off(c411, dx, -0.6), off(c411, dx, -1.55), 0.5)
+        via("VBAT_LOGIC_SW", off(c411, dx, -1.55))
+    seg("VBAT_LOGIC_SW", off(c411, -0.425, -1.55), off(c411, 0.425, -1.55), 1.0, "B.Cu")
+    seg("VBAT_LOGIC_SW", off(c411, 0.0, -1.55), (c411[0], trunk_y), 1.0, "B.Cu")
+    c591, u96 = pad("C59", "1"), pad("U9", "6")  # supervisor supply + its bypass: one via between the two pads
+    ux = c591[0]
+    uvia = (ux, round((c591[1] + 0.475 + u96[1] - 0.3) / 2, 4))
+    seg("VBAT_LOGIC_SW", c591, uvia, 0.4)
+    seg("VBAT_LOGIC_SW", uvia, (ux, u96[1]), 0.4)
+    via("VBAT_LOGIC_SW", uvia)
+    seg("VBAT_LOGIC_SW", uvia, (ux, diag(ux)), 0.5, "B.Cu")
+    r651 = pad("R65", "1")                       # UVLO divider top: via left of the pad, B.Cu under C60 / U9
+    rvia = off(r651, -1.1, 0.005)
+    seg("VBAT_LOGIC_SW", r651, rvia, 0.3)
+    via("VBAT_LOGIC_SW", rvia)
+    seg("VBAT_LOGIC_SW", rvia, (round(ux - 0.6, 4), rvia[1]), 0.3, "B.Cu")
+    seg("VBAT_LOGIC_SW", (round(ux - 0.6, 4), rvia[1]), (ux, round(rvia[1] - 0.6, 4)), 0.3, "B.Cu")
+    seg("VBAT_LOGIC_SW", (ux, round(rvia[1] - 0.6, 4)), uvia, 0.3, "B.Cu")
+    c421 = pad("C42", "1")                       # bulk capacitor at the switch: via below the pad, B.Cu to J15.2
+    cvia = off(c421, 0.4, 1.325)
+    seg("VBAT_LOGIC_SW", off(c421, 0.4, 0.1), cvia, 0.6)
+    via("VBAT_LOGIC_SW", cvia, 0.8, 0.4)
+    seg("VBAT_LOGIC_SW", cvia, (round(j152[0] + (j152[1] - cvia[1]), 4), cvia[1]), 1.0, "B.Cu")
+    seg("VBAT_LOGIC_SW", (round(j152[0] + (j152[1] - cvia[1]), 4), cvia[1]), j152, 1.0, "B.Cu")
+    seg("GND", u84, off(u84, 1.188, 0.05), 0.3)
+    via("GND", off(u84, 1.188, 0.05))
+    seg("GND", c572, off(c572, 0.0, -1.25), 0.4)
+    via("GND", off(c572, 0.0, -1.25))
+    seg("GND", off(c432, 0.225, 0.0), off(c432, 0.875, 0.0), 0.4)
+    via("GND", off(c432, 0.875, 0.0))
+    seg("GND", off(c412, 0.325, 0.0), off(c412, 1.125, 0.0), 0.4)
+    via("GND", off(c412, 1.125, 0.0))
+    return segs, vias
+
+
+def l5_keepout(pdata: dict, library: KicadLibrary, spec: dict) -> list:
+    """F.Cu rule area between the two pads of L5: no tracks and no vias under the inductor (plan section 13).
+    Pours stay allowed (the F.Cu GND pour is no signal). Rectangle = the copper-free strip between the pad edges."""
+    from ai_eda.ir import LibraryRef
+    from ai_eda.tools.kicad.geometry import pad_center
+
+    parts = {p["refdes"]: p for p in spec["parts"]}
+    v = pdata["placements"]["L5"]
+    lib, name = common.split_lib_id(common.footprint_of(parts["L5"]))
+    fp = library.load_footprint(LibraryRef(library=lib, name=name))
+    pl = Placement(component_ref="L5", x_mm=v["x"], y_mm=v["y"], rotation_deg=float(v["rot"]), side=BoardSide.TOP)
+    if abs(float(v["rot"])) % 180 > 0.01:
+        raise ValueError("L5 keep-out assumes L5 at 0 / 180 degrees")
+    xs, ys, half_w, half_h = [], [], 0.0, 0.0
+    for num in ("1", "2"):
+        p = fp.pad(num)
+        x, y = pad_center(pl, p)
+        xs.append(x)
+        ys.append(y)
+        half_w, half_h = p.size_w / 2, p.size_h / 2
+    x0 = round(min(xs) + half_w + L5_KEEPOUT_INSET, 3)
+    x1 = round(max(xs) - half_w - L5_KEEPOUT_INSET, 3)
+    y0 = round(min(ys) - half_h - L5_KEEPOUT_INSET, 3)
+    y1 = round(max(ys) + half_h + L5_KEEPOUT_INSET, 3)
+    pts = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    return S(
+        "zone", S("net", Q("")), S("layers", Q("F.Cu")), S("uuid", Q(ids.net_item_uuid(common.PROJECT_ID, "l5_keepout"))),
+        S("name", Q("L5_no_track_under_inductor")), S("hatch", "edge", 0.5), S("connect_pads", S("clearance", 0)),
+        S("min_thickness", 0.25), S("filled_areas_thickness", False),
+        S("keepout", S("tracks", "not_allowed"), S("vias", "not_allowed"), S("pads", "allowed"), S("copperpour", "allowed"),
+          S("footprints", "allowed")),
+        S("placement", S("enabled", False), S("sheetname", Q(""))),
+        S("fill", S("thermal_gap", 0.5), S("thermal_bridge_width", 0.5)),
+        S("polygon", S("pts", *[S("xy", x, y) for x, y in pts])),
+    )
+
+
 def preroutes(pdata: dict, library: KicadLibrary, spec: dict) -> list:
-    """Locked copper: MCU support clusters (place.CLUSTER_ROUTES) + ESP VCC decoupling - Freerouting keeps them."""
+    """Locked copper: MCU support clusters (place.CLUSTER_ROUTES) + ESP VCC decoupling + the rev 3 battery path and
+    boost block (power_preroutes) - Freerouting keeps them."""
     from place import cluster_routes_board, cluster_vias_board
 
     out = []
     esp_segs, esp_vias = esp_preroutes(pdata, library, spec)
-    esp_vias = cluster_vias_board(pdata["placements"]) + esp_vias
-    for i, sg in enumerate(cluster_routes_board(pdata["placements"]) + esp_segs):
+    pwr_segs, pwr_vias = power_preroutes(pdata, library, spec)
+    esp_vias = cluster_vias_board(pdata["placements"]) + esp_vias + pwr_vias
+    for i, sg in enumerate(cluster_routes_board(pdata["placements"]) + esp_segs + pwr_segs):
         out.append(S("segment", S("start", *sg["start"]), S("end", *sg["end"]), S("width", sg["width"]), S("locked", "yes"),
-                     S("layer", Q("F.Cu")), S("net", Q(sg["net"])),
+                     S("layer", Q(sg.get("layer", "F.Cu"))), S("net", Q(sg["net"])),
                      S("uuid", Q(ids.net_item_uuid(common.PROJECT_ID, "preroute", sg["block"], i)))))
     for i, v in enumerate(esp_vias):
         out.append(S("via", S("at", *v["at"]), S("size", v["size"]), S("drill", v["drill"]), S("layers", Q("F.Cu"), Q("B.Cu")),
@@ -305,7 +492,7 @@ def patch_board(node: list, spec: dict, pdata: dict, library: KicadLibrary) -> N
             item.insert(1, stackup())
         if h == "title_block":
             # revision in the title block (gerber job file 'Revision'; rev-2b review PF-m7)
-            item[:] = [S("title_block", S("title", Q("VTOL avionics carrier")), S("rev", Q("2c")),
+            item[:] = [S("title_block", S("title", Q("VTOL avionics carrier")), S("rev", Q("3")),
                          S("comment", 1, Q("NOT_VERIFIED: never built or powered")))][0]
         if h == "zone":
             cp = sexpr.find(item, "connect_pads")
@@ -353,6 +540,7 @@ def patch_board(node: list, spec: dict, pdata: dict, library: KicadLibrary) -> N
     tail = new.pop() if sexpr.head(new[-1]) == "embedded_fonts" else None
     new.extend(drawings(pdata))
     new.append(antenna_keepout(pdata))
+    new.append(l5_keepout(pdata, library, spec))
     new.extend(preroutes(pdata, library, spec))
     if tail is not None:
         new.append(tail)

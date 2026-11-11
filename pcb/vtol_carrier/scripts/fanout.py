@@ -26,6 +26,8 @@ MIN_HOLE_GAP = 0.55  # drill edge to drill edge (board rule 0.5 mm)
 EDGE = 0.3 + VIA_D / 2 + 0.05
 BX0, BY0, BX1, BY1 = 62.0, 65.0, 138.0, 135.0
 MCU_REFS = ("U1", "U2", "U3", "U4")
+#: rev 3: pads whose plane vias / tracks build_pcb.power_preroutes already placed (boost block) are skipped as well
+PREROUTED_REFS = MCU_REFS + ("U8", "C57", "C43", "C41")
 
 
 def mm(v: float) -> int:
@@ -79,7 +81,7 @@ def run(board, nets: tuple[str, ...] = ("GND", "+5V")) -> dict:
         if pad.GetNetname() not in nets or pad.HasHole():
             continue
         ref = pad.GetParentFootprint().GetReference()
-        if ref in MCU_REFS and any(pad.HitTest(p) for p in track_ends.get(pad.GetNetCode(), [])):
+        if ref in PREROUTED_REFS and any(pad.HitTest(p) for p in track_ends.get(pad.GetNetCode(), [])):
             continue  # MCU pin pre-routed to its decoupling cap: the cap pad gets the via
         todo.append((_ref_key(ref), pad.GetNumber(), pad))
     todo.sort(key=lambda t: (t[0], t[1]))

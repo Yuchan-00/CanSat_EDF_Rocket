@@ -1,0 +1,155 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_checks.json",
+ "result": "PASS",
+ "erc_and_netlist_made_from_the_files_of_the_determinism_run": true,
+ "interpreter": "B:/Claude/.venv/Scripts/python.exe",
+ "python": "3.12.10",
+ "spec_sha256": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
+ "plan_sha256": "415d1e20a0903103d6bb4b48253ffc7054cfd3d2371c008706b906fe5c1eda15",
+ "netlist_sha256": "299785ca80a14c92cc51f29e3e38322ef22f7c8aaf66af9e69eae44dede13896",
+ "checks": {
+  "determinism": {
+   "result": "PASS",
+   "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_determinism.json",
+   "files": 13,
+   "byte_identical": true
+  },
+  "export": {
+   "result": "PASS",
+   "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_erc.json",
+   "tool_version": "10.0.6",
+   "errors": 0,
+   "warnings": 0,
+   "sheets_checked": [
+    "/",
+    "/Power/",
+    "/NAV/",
+    "/FCU/",
+    "/COM/",
+    "/GNS/",
+    "/Level_shift/",
+    "/IO_connectors/"
+   ],
+   "ignored_checks": [
+    "footprint_filter",
+    "four_way_junction",
+    "simulation_model_issue",
+    "single_global_label"
+   ]
+  },
+  "netlist-vs-spec": {
+   "result": "PASS",
+   "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_netlist_vs_spec.json",
+   "parts": 174,
+   "pins_compared": 689,
+   "pins_connected": 506,
+   "pins_no_connect": 183,
+   "spec_nets": 105,
+   "netlist_named_nets": 105,
+   "differences": 0
+  },
+  "mcu-pinmap": {
+   "result": "PASS",
+   "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_mcu_pinmap.json",
+   "pins_compared": 256,
+   "differences": 0
+  },
+  "u8-u9": {
+   "result": "PASS",
+   "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_u8_u9_pads.json",
+   "parts": {
+    "U8": "PASS",
+    "U9": "PASS"
+   }
+  },
+  "fit": {
+   "result": "PASS",
+   "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_fit_sets.json",
+   "prog_headers": "A",
+   "not_fitted_by_jlc": [
+    "J1",
+    "J3",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U1",
+    "U2",
+    "U3",
+    "U4"
+   ],
+   "main_pair": {
+    "parts": 174,
+    "fit_counts": {
+     "jlc": 157,
+     "jlc_optional": 4,
+     "user": 1,
+     "none": 12
+    },
+    "jlc_fitted_parts": 157,
+    "bom_lines": 40,
+    "bom_lines_smt": 34,
+    "bom_lines_tht": 6,
+    "with_mcu": false
+   },
+   "with_mcu_pair": {
+    "parts": 174,
+    "fit_counts": {
+     "jlc": 157,
+     "jlc_optional": 4,
+     "user": 1,
+     "none": 12
+    },
+    "jlc_fitted_parts": 161,
+    "bom_lines": 41,
+    "bom_lines_smt": 35,
+    "bom_lines_tht": 6,
+    "with_mcu": true
+   }
+  },
+  "nets": {
+   "result": "PASS",
+   "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_nets.json",
+   "named_nets_rev2c": 100,
+   "named_nets_rev3": 105,
+   "nets_lost": [],
+   "nets_added": [
+    "BOOST_EN",
+    "BOOST_FB",
+    "BOOST_SW",
+    "UVLO_REF",
+    "UVLO_SENSE"
+   ],
+   "components_removed": [
+    "J6"
+   ],
+   "components_added": [
+    "C57",
+    "C58",
+    "C59",
+    "C60",
+    "L5",
+    "R63",
+    "R64",
+    "R65",
+    "R66",
+    "R67",
+    "R68",
+    "U8",
+    "U9"
+   ],
+   "no_connects_removed": [
+    "J6.4",
+    "J6.5"
+   ],
+   "no_connects_added": []
+  }
+ }
+}

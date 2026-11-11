@@ -1,7 +1,8 @@
 {
  "frame": "KiCad coordinates (mm, y down); board outline x 62..138, y 65..135; spec (x, y) = (X - 100, 100 - Y)",
- "generator": "scripts/place.py (deterministic: anchored floorplan + MCU clusters + greedy fill, polygon courtyards)",
- "spec_sha256": "01ed6effda3b93b20fc726e9f703b0ce02b0bda4dd1b3661d5ce5e85142f35dc",
+ "generator": "scripts/place.py rev 3 (deterministic: anchored floorplan + MCU clusters + power block + rev 2c keep pass + greedy fill, polygon courtyards)",
+ "prog_headers_option": "A",
+ "spec_sha256": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
  "placements": {
   "C1": {
    "x": 125.71,
@@ -24,8 +25,8 @@
    "y": 126.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (124.26, 123.8)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C4": {
    "x": 107.49,
@@ -40,8 +41,8 @@
    "y": 130.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (108.94, 125.4)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C6": {
    "x": 129.37,
@@ -64,8 +65,8 @@
    "y": 112.9,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (107.65, 113.24)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C9": {
    "x": 110.48,
@@ -88,8 +89,8 @@
    "y": 108.1,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (110.0, 105.41)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C12": {
    "x": 107.28,
@@ -128,8 +129,8 @@
    "y": 105.8,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (102.63, 99.05)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C17": {
    "x": 83.53,
@@ -152,8 +153,8 @@
    "y": 113.8,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (83.05, 111.11)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C20": {
    "x": 80.33,
@@ -168,8 +169,8 @@
    "y": 94.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (81.45, 95.79)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C22": {
    "x": 88.11,
@@ -192,8 +193,8 @@
    "y": 111.5,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (93.65, 110.78)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C25": {
    "x": 76.74,
@@ -216,8 +217,8 @@
    "y": 120.4,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (78.19, 123.3)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C28": {
    "x": 94.96,
@@ -232,8 +233,8 @@
    "y": 123.0,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (93.51, 121.7)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C30": {
    "x": 73.08,
@@ -256,56 +257,56 @@
    "y": 116.7,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (88.44, 123.04)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C41": {
-   "x": 121.7,
-   "y": 132.9,
-   "rot": 0.0,
+   "x": 122.15,
+   "y": 133.6,
+   "rot": 180.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (130.87, 132.9)"
+   "how": "power",
+   "why": "boost input capacitor 1 left of C43, pad 1 (VBAT) toward U8 pin 3"
   },
   "C42": {
-   "x": 118.2,
-   "y": 132.4,
+   "x": 72.6,
+   "y": 69.3,
    "rot": 90.0,
    "side": "top",
    "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (130.87, 132.9)"
+   "why": "greedy: nearest free spot to its connected pads at (66.7, 73.45)"
   },
   "C43": {
-   "x": 135.9,
-   "y": 121.6,
+   "x": 126.75,
+   "y": 133.6,
+   "rot": 180.0,
+   "side": "top",
+   "how": "power",
+   "why": "boost output capacitor 2 left of U8 (0.6 mm courtyard gap), pad 1 (+5V) toward U8"
+  },
+  "C44": {
+   "x": 95.9,
+   "y": 131.9,
    "rot": 90.0,
    "side": "top",
    "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (135.95, 132.9)"
-  },
-  "C44": {
-   "x": 132.1,
-   "y": 122.9,
-   "rot": 0.0,
-   "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (130.15, 129.8)"
+   "why": "greedy: nearest free spot to its connected pads at (131.75, 122.5)"
   },
   "C45": {
-   "x": 126.5,
-   "y": 128.6,
-   "rot": 0.0,
+   "x": 127.65,
+   "y": 128.1,
+   "rot": 180.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (130.15, 127.5)"
+   "how": "power",
+   "why": "LDO output tantalum between the NAV bulk capacitor and C57, pad 1 (+3V3) toward the U6 tab"
   },
   "C46": {
    "x": 111.6,
    "y": 88.3,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (111.6, 90.09)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C47": {
    "x": 125.3,
@@ -320,40 +321,40 @@
    "y": 103.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (120.46, 100.55)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C49": {
    "x": 114.3,
    "y": 85.3,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (109.2, 90.09)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C50": {
    "x": 113.2,
    "y": 83.8,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (110.0, 90.09)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C51": {
    "x": 116.6,
    "y": 86.6,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (110.8, 90.09)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C52": {
    "x": 86.8,
    "y": 92.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (79.15, 87.7)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C53": {
    "x": 76.55,
@@ -376,56 +377,88 @@
    "y": 77.7,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (79.15, 77.7)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "C56": {
    "x": 66.0,
    "y": 127.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (65.11, 133.4)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
-  "D1": {
-   "x": 122.5,
+  "C57": {
+   "x": 129.75,
+   "y": 131.3,
+   "rot": 180.0,
+   "side": "top",
+   "how": "power",
+   "why": "boost output capacitor 1 directly above U8: pad 1 (+5V) at pin 6 (hot loop)"
+  },
+  "C58": {
+   "x": 122.95,
+   "y": 130.85,
+   "rot": 0.0,
+   "side": "top",
+   "how": "power",
+   "why": "feed-forward capacitor left of R63 (below the former D1 spot, 1.0 mm clear of the NAV pad ring): pad 2 (BOOST_FB) 1.6 mm from R63 pad 2"
+  },
+  "C59": {
+   "x": 119.9,
    "y": 130.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (124.26, 123.8)"
+   "how": "power",
+   "why": "comparator bypass above U9: pad 1 (VBAT) 1.7 mm from U9 pin 6"
+  },
+  "C60": {
+   "x": 115.0,
+   "y": 133.2,
+   "rot": 90.0,
+   "side": "top",
+   "how": "power",
+   "why": "UVLO_SENSE filter capacitor beside U9 pin 3 (pad 1 down, level with pin 3)"
+  },
+  "D1": {
+   "x": 129.7,
+   "y": 125.5,
+   "rot": 90.0,
+   "side": "top",
+   "how": "moved",
+   "why": "NAV status LED moved 7 mm from its rev 2c spot (now C58) into the slot between C3 and U6: reachable, not under a module"
   },
   "D2": {
    "x": 115.0,
    "y": 107.9,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (110.0, 105.41)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "D3": {
    "x": 78.5,
    "y": 112.2,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (83.05, 111.11)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "D4": {
    "x": 77.8,
    "y": 117.9,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (78.19, 123.3)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "D6": {
    "x": 135.3,
    "y": 70.2,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (135.3, 82.35)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "J1": {
    "x": 104.9,
@@ -433,7 +466,7 @@
    "rot": 0.0,
    "side": "top",
    "how": "anchor",
-   "why": "GY-521 header vertical right of the tie band, module flat toward +x over the NAV (the 12.7 mm Pololu strip stays free at the +x edge)"
+   "why": "GY-521 header vertical right of the tie band, module flat toward +x over the NAV"
   },
   "J2": {
    "x": 104.83,
@@ -458,14 +491,6 @@
    "side": "top",
    "how": "anchor",
    "why": "OpenLog socket under the servo bulk cap, the logger lies flat toward -y over parts <= 1.1 mm (rev-1 review MF-1)"
-  },
-  "J6": {
-   "x": 135.95,
-   "y": 132.9,
-   "rot": 270.0,
-   "side": "top",
-   "how": "anchor",
-   "why": "Pololu 5 V module header in the +x/-y corner, module flat toward +y (trimmer on top)"
   },
   "J7": {
    "x": 66.98,
@@ -616,16 +641,16 @@
    "y": 125.1,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (65.08, 130.4)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "L1": {
    "x": 108.5,
    "y": 129.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (108.94, 127.0)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "L2": {
    "x": 106.8,
@@ -640,16 +665,24 @@
    "y": 94.4,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (79.85, 95.79)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "L4": {
    "x": 94.9,
    "y": 118.7,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (93.51, 120.1)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
+  },
+  "L5": {
+   "x": 134.9,
+   "y": 132.4,
+   "rot": 180.0,
+   "side": "top",
+   "how": "power",
+   "why": "boost inductor in the +x/-y corner, pad 2 (BOOST_SW) next to U8 pin 5"
   },
   "NT1": {
    "x": 124.25,
@@ -664,293 +697,293 @@
    "y": 109.9,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (113.02, 102.59)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q2": {
    "x": 121.1,
    "y": 106.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (113.87, 103.17)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q3": {
    "x": 110.6,
    "y": 132.9,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (110.55, 130.77)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q4": {
    "x": 89.2,
    "y": 113.8,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (88.65, 111.11)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q5": {
    "x": 91.3,
    "y": 92.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (90.45, 85.36)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q6": {
    "x": 73.5,
    "y": 131.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (72.9, 131.15)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q7": {
    "x": 70.1,
    "y": 126.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (72.27, 130.75)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q8": {
    "x": 111.1,
    "y": 85.6,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (109.88, 90.45)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q9": {
    "x": 131.0,
    "y": 69.7,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (136.12, 76.28)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q10": {
    "x": 70.9,
    "y": 72.5,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (64.95, 71.15)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "Q11": {
    "x": 95.0,
    "y": 92.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (93.63, 87.2)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R1": {
    "x": 109.2,
    "y": 112.2,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (107.67, 113.35)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R2": {
    "x": 126.0,
    "y": 118.1,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (121.74, 121.87)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R3": {
    "x": 105.3,
    "y": 106.5,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (102.92, 100.93)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R4": {
    "x": 117.7,
    "y": 107.2,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (117.73, 104.63)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R5": {
    "x": 93.5,
    "y": 113.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (93.52, 110.96)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R6": {
    "x": 82.2,
    "y": 116.3,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (86.01, 109.63)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R7": {
    "x": 93.9,
    "y": 117.1,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (88.9, 120.93)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R8": {
    "x": 76.4,
    "y": 129.0,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (80.02, 125.83)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R11": {
    "x": 105.4,
    "y": 112.5,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (111.47, 113.81)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R12": {
    "x": 103.8,
    "y": 108.8,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (98.34, 103.32)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R13": {
    "x": 96.2,
    "y": 115.2,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (105.52, 119.23)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R14": {
    "x": 70.7,
    "y": 75.2,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (69.95, 73.44)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R15": {
    "x": 106.9,
    "y": 110.6,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (109.74, 108.59)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R16": {
    "x": 113.9,
    "y": 87.6,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (110.05, 96.33)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R17": {
    "x": 80.5,
    "y": 92.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (88.97, 93.71)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R18": {
    "x": 76.8,
    "y": 95.4,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (88.97, 98.42)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R19": {
    "x": 96.2,
    "y": 112.1,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (89.8, 103.56)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R20": {
    "x": 76.4,
    "y": 102.6,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (88.97, 102.64)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R21": {
    "x": 116.2,
    "y": 83.8,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (116.17, 84.46)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R23": {
    "x": 110.2,
    "y": 82.9,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (110.26, 89.78)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R24": {
    "x": 78.2,
    "y": 91.9,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (92.82, 98.04)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R25": {
    "x": 76.4,
    "y": 99.6,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (90.97, 99.99)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R26": {
    "x": 96.1,
    "y": 126.0,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (101.5, 109.17)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R27": {
    "x": 76.4,
    "y": 105.6,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (90.77, 99.19)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R28": {
    "x": 120.2,
    "y": 86.3,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (121.27, 93.25)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R29": {
-   "x": 125.2,
-   "y": 101.1,
-   "rot": 90.0,
+   "x": 126.0,
+   "y": 102.3,
+   "rot": 0.0,
    "side": "top",
    "how": "auto",
    "why": "greedy: nearest free spot to its connected pads at (121.24, 96.75)"
@@ -960,108 +993,108 @@
    "y": 86.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (125.26, 85.05)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R31": {
    "x": 127.5,
    "y": 70.6,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (130.64, 77.58)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R32": {
    "x": 76.1,
    "y": 114.9,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (72.8, 121.49)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R33": {
    "x": 106.1,
    "y": 82.2,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (99.88, 96.76)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R34": {
    "x": 76.1,
    "y": 113.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (72.8, 118.95)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R35": {
    "x": 106.1,
    "y": 80.7,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (99.78, 95.76)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R36": {
    "x": 76.1,
    "y": 111.9,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (72.8, 116.41)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R37": {
    "x": 109.1,
    "y": 81.4,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (101.44, 96.45)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R38": {
    "x": 76.4,
    "y": 108.6,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (96.63, 106.81)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R39": {
    "x": 120.9,
    "y": 109.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (98.43, 103.76)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R40": {
    "x": 106.1,
    "y": 83.7,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (104.98, 89.0)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R41": {
    "x": 118.9,
    "y": 87.8,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (118.92, 87.77)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R42": {
    "x": 121.0,
    "y": 111.6,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (120.98, 114.78)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R43": {
-   "x": 122.2,
-   "y": 101.1,
+   "x": 123.6,
+   "y": 105.7,
    "rot": 90.0,
    "side": "top",
    "how": "auto",
@@ -1072,21 +1105,21 @@
    "y": 112.2,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (122.68, 112.58)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R45": {
-   "x": 123.7,
-   "y": 101.1,
+   "x": 125.1,
+   "y": 105.7,
    "rot": 90.0,
    "side": "top",
    "how": "auto",
    "why": "greedy: nearest free spot to its connected pads at (113.13, 98.99)"
   },
   "R46": {
-   "x": 113.9,
-   "y": 130.8,
-   "rot": 0.0,
+   "x": 127.5,
+   "y": 118.1,
+   "rot": 90.0,
    "side": "top",
    "how": "auto",
    "why": "greedy: nearest free spot to its connected pads at (113.87, 130.78)"
@@ -1096,128 +1129,176 @@
    "y": 133.2,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (107.28, 133.37)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R48": {
    "x": 75.4,
    "y": 78.1,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (78.03, 78.09)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R49": {
    "x": 94.3,
    "y": 95.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (94.35, 85.7)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R50": {
    "x": 103.8,
    "y": 87.7,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (94.35, 87.7)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R51": {
    "x": 95.3,
    "y": 97.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (94.35, 87.7)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R52": {
    "x": 91.6,
    "y": 115.1,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (89.39, 112.46)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R53": {
    "x": 96.0,
    "y": 100.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (96.03, 100.14)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R54": {
    "x": 103.8,
    "y": 84.7,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (94.62, 89.08)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R55": {
    "x": 95.3,
    "y": 103.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (91.42, 101.24)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R56": {
    "x": 103.8,
    "y": 81.7,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (94.35, 87.7)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R57": {
    "x": 95.3,
    "y": 106.3,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (92.88, 97.53)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R58": {
    "x": 82.8,
    "y": 91.1,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (89.4, 81.99)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R59": {
    "x": 76.0,
    "y": 132.0,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (75.84, 129.63)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R60": {
    "x": 73.2,
    "y": 134.0,
    "rot": 0.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (71.03, 132.82)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R61": {
    "x": 75.4,
    "y": 117.2,
    "rot": 90.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (74.61, 127.25)"
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
   },
   "R62": {
    "x": 77.7,
    "y": 116.4,
    "rot": 0.0,
    "side": "top",
+   "how": "keep",
+   "why": "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)"
+  },
+  "R63": {
+   "x": 125.2,
+   "y": 130.97,
+   "rot": 90.0,
+   "side": "top",
+   "how": "power",
+   "why": "FB divider top resistor beside R64: pad 2 (BOOST_FB) level with R64 pad 1"
+  },
+  "R64": {
+   "x": 126.7,
+   "y": 130.97,
+   "rot": 270.0,
+   "side": "top",
+   "how": "power",
+   "why": "FB divider bottom resistor left of C57: pad 1 (BOOST_FB) up, pad 2 (GND) beside the C57 GND pad"
+  },
+  "R65": {
+   "x": 113.5,
+   "y": 133.2,
+   "rot": 90.0,
+   "side": "top",
+   "how": "power",
+   "why": "UVLO divider top resistor beside C60: pad 2 (UVLO_SENSE) up toward R67"
+  },
+  "R66": {
+   "x": 116.9,
+   "y": 130.4,
+   "rot": 0.0,
+   "side": "top",
+   "how": "power",
+   "why": "UVLO divider bottom resistor above U9: pad 1 (UVLO_SENSE) toward R67 / pin 3 side"
+  },
+  "R67": {
+   "x": 113.9,
+   "y": 130.9,
+   "rot": 0.0,
+   "side": "top",
+   "how": "power",
+   "why": "hysteresis resistor above R65 / C60 (0.1 mm below the former R46 spot, 1.0 mm clear of the NAV pad ring): pad 2 (BOOST_EN) toward U9 pin 1"
+  },
+  "R68": {
+   "x": 131.9,
+   "y": 120.5,
+   "rot": 0.0,
+   "side": "top",
    "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (67.76, 130.38)"
+   "why": "greedy: nearest free spot to its connected pads at (130.14, 133.8)"
   },
   "U1": {
    "x": 116.6,
@@ -1252,12 +1333,12 @@
    "why": "GNS in the -x/-y quadrant next to the GPS lead; crystal group in the corner gap between J18 and J7"
   },
   "U6": {
-   "x": 133.3,
-   "y": 127.5,
-   "rot": 0.0,
+   "x": 134.05,
+   "y": 125.65,
+   "rot": 270.0,
    "side": "top",
-   "how": "auto",
-   "why": "greedy: nearest free spot to its connected pads at (135.95, 132.9)"
+   "how": "power",
+   "why": "3.3 V LDO above L5, tab (+3V3) toward C45, body clear of the OpenLog outline"
   },
   "U7": {
    "x": 86.75,
@@ -1266,6 +1347,22 @@
    "side": "top",
    "how": "anchor",
    "why": "ESP-12E, antenna end at the +y edge (y +35), rule area 4 mm each side (spec esp12e.antenna)"
+  },
+  "U8": {
+   "x": 130.85,
+   "y": 133.8,
+   "rot": 0.0,
+   "side": "top",
+   "how": "power",
+   "why": "boost converter: pins 4-6 (GND / SW / VOUT) toward L5, pins 1-3 away from it"
+  },
+  "U9": {
+   "x": 117.8,
+   "y": 133.05,
+   "rot": 0.0,
+   "side": "top",
+   "how": "power",
+   "why": "cut-off comparator in the edge strip under the NAV, 11 mm from U8 pin 2 (BOOST_EN is low impedance)"
   },
   "Y1": {
    "x": 128.27,
@@ -1494,34 +1591,34 @@
    117.43
   ],
   "C41": [
-   119.4,
-   131.75,
-   124.0,
-   134.05
+   119.85,
+   132.45,
+   124.45,
+   134.75
   ],
   "C42": [
-   117.05,
-   130.1,
-   119.35,
-   134.7
+   71.45,
+   67.0,
+   73.75,
+   71.6
   ],
   "C43": [
-   134.75,
-   119.3,
-   137.05,
-   123.9
+   124.45,
+   132.45,
+   129.05,
+   134.75
   ],
   "C44": [
-   130.4,
-   121.92,
-   133.8,
-   123.88
+   94.92,
+   130.2,
+   96.88,
+   133.6
   ],
   "C45": [
-   124.19,
-   127.55,
-   128.81,
-   129.65
+   125.34,
+   127.05,
+   129.96,
+   129.15
   ],
   "C46": [
    110.12,
@@ -1589,11 +1686,35 @@
    67.7,
    128.38
   ],
-  "D1": [
-   121.02,
+  "C57": [
+   127.45,
+   130.15,
+   132.05,
+   132.45
+  ],
+  "C58": [
+   121.47,
+   130.12,
+   124.43,
+   131.58
+  ],
+  "C59": [
+   118.42,
    129.67,
-   123.98,
+   121.38,
    131.13
+  ],
+  "C60": [
+   114.27,
+   131.72,
+   115.73,
+   134.68
+  ],
+  "D1": [
+   128.97,
+   124.02,
+   130.43,
+   126.98
   ],
   "D2": [
    114.27,
@@ -1642,12 +1763,6 @@
    87.25,
    137.75,
    99.55
-  ],
-  "J6": [
-   124.02,
-   131.13,
-   137.72,
-   134.67
   ],
   "J7": [
    62.25,
@@ -1786,6 +1901,12 @@
    117.85,
    96.65,
    119.55
+  ],
+  "L5": [
+   132.05,
+   130.05,
+   137.75,
+   134.75
   ],
   "NT1": [
    123.35,
@@ -2010,10 +2131,10 @@
    87.03
   ],
   "R29": [
-   124.47,
-   99.62,
-   125.93,
-   102.58
+   124.52,
+   101.57,
+   127.48,
+   103.03
   ],
   "R30": [
    128.92,
@@ -2094,10 +2215,10 @@
    112.33
   ],
   "R43": [
-   121.47,
-   99.62,
-   122.93,
-   102.58
+   122.87,
+   104.22,
+   124.33,
+   107.18
   ],
   "R44": [
    123.17,
@@ -2106,16 +2227,16 @@
    113.68
   ],
   "R45": [
-   122.97,
-   99.62,
-   124.43,
-   102.58
+   124.37,
+   104.22,
+   125.83,
+   107.18
   ],
   "R46": [
-   112.42,
-   130.07,
-   115.38,
-   131.53
+   126.77,
+   116.62,
+   128.23,
+   119.58
   ],
   "R47": [
    106.77,
@@ -2213,6 +2334,42 @@
    79.18,
    117.13
   ],
+  "R63": [
+   124.47,
+   129.49,
+   125.93,
+   132.45
+  ],
+  "R64": [
+   125.97,
+   129.49,
+   127.43,
+   132.45
+  ],
+  "R65": [
+   112.77,
+   131.72,
+   114.23,
+   134.68
+  ],
+  "R66": [
+   115.42,
+   129.67,
+   118.38,
+   131.13
+  ],
+  "R67": [
+   112.42,
+   130.17,
+   115.38,
+   131.63
+  ],
+  "R68": [
+   130.42,
+   119.77,
+   133.38,
+   121.23
+  ],
   "U1": [
    107.95,
    112.35,
@@ -2238,16 +2395,28 @@
    134.75
   ],
   "U6": [
-   128.9,
-   123.9,
-   137.7,
-   131.1
+   130.45,
+   121.25,
+   137.65,
+   130.05
   ],
   "U7": [
    77.7,
    65.0,
    95.8,
    90.3
+  ],
+  "U8": [
+   129.65,
+   132.85,
+   132.05,
+   134.75
+  ],
+  "U9": [
+   115.75,
+   131.35,
+   119.85,
+   134.75
   ],
   "Y1": [
    126.17,
@@ -3169,6 +3338,182 @@
   98.87,
   72.4
  ],
+ "part_heights_mm": {
+  "C1": 0.55,
+  "C2": 0.55,
+  "C3": 1.35,
+  "C4": 0.55,
+  "C5": 0.9,
+  "C6": 0.55,
+  "C7": 0.55,
+  "C8": 0.9,
+  "C9": 0.55,
+  "C10": 0.55,
+  "C11": 1.35,
+  "C12": 0.55,
+  "C13": 0.9,
+  "C14": 0.55,
+  "C15": 0.55,
+  "C16": 0.9,
+  "C17": 0.55,
+  "C18": 0.55,
+  "C19": 1.35,
+  "C20": 0.55,
+  "C21": 0.9,
+  "C22": 0.55,
+  "C23": 0.55,
+  "C24": 0.9,
+  "C25": 0.55,
+  "C26": 0.55,
+  "C27": 1.35,
+  "C28": 0.55,
+  "C29": 0.9,
+  "C30": 0.55,
+  "C31": 0.55,
+  "C32": 0.9,
+  "C41": 1.8,
+  "C42": 1.8,
+  "C43": 1.8,
+  "C44": 1.35,
+  "C45": 1.8,
+  "C46": 0.9,
+  "C47": 5.4,
+  "C48": 0.9,
+  "C49": 0.9,
+  "C50": 0.9,
+  "C51": 0.9,
+  "C52": 2.1,
+  "C53": 1.35,
+  "C54": 0.55,
+  "C55": 0.9,
+  "C56": 1.35,
+  "C57": 1.8,
+  "C58": 0.9,
+  "C59": 0.9,
+  "C60": 0.9,
+  "D1": 0.8,
+  "D2": 0.8,
+  "D3": 0.8,
+  "D4": 0.8,
+  "D6": 1.35,
+  "J1": 8.6,
+  "J2": 5.9,
+  "J3": 0.0,
+  "J5": 5.9,
+  "J7": 9.0,
+  "J8": 3.0,
+  "J9": 3.0,
+  "J10": 3.0,
+  "J11": 3.0,
+  "J12": 3.0,
+  "J14": 11.0,
+  "J15": 11.0,
+  "J16": 3.0,
+  "J17": 11.0,
+  "J18": 3.0,
+  "J19": 0.0,
+  "J20": 0.0,
+  "J21": 0.0,
+  "J22": 0.0,
+  "J24": 0.0,
+  "J25": 0.0,
+  "J26": 0.0,
+  "JP1": 0.05,
+  "L1": 1.0,
+  "L2": 1.0,
+  "L3": 1.0,
+  "L4": 1.0,
+  "L5": 2.0,
+  "NT1": 0.05,
+  "Q1": 1.1,
+  "Q2": 1.1,
+  "Q3": 0.0,
+  "Q4": 1.1,
+  "Q5": 1.1,
+  "Q6": 1.1,
+  "Q7": 1.1,
+  "Q8": 1.1,
+  "Q9": 1.1,
+  "Q10": 1.1,
+  "Q11": 1.1,
+  "R1": 0.55,
+  "R2": 0.55,
+  "R3": 0.55,
+  "R4": 0.55,
+  "R5": 0.55,
+  "R6": 0.55,
+  "R7": 0.55,
+  "R8": 0.55,
+  "R11": 0.55,
+  "R12": 0.55,
+  "R13": 0.55,
+  "R14": 0.55,
+  "R15": 0.55,
+  "R16": 0.55,
+  "R17": 0.55,
+  "R18": 0.55,
+  "R19": 0.55,
+  "R20": 0.55,
+  "R21": 0.55,
+  "R23": 0.55,
+  "R24": 0.55,
+  "R25": 0.55,
+  "R26": 0.55,
+  "R27": 0.55,
+  "R28": 0.55,
+  "R29": 0.55,
+  "R30": 0.55,
+  "R31": 0.55,
+  "R32": 0.55,
+  "R33": 0.55,
+  "R34": 0.55,
+  "R35": 0.55,
+  "R36": 0.55,
+  "R37": 0.55,
+  "R38": 0.55,
+  "R39": 0.55,
+  "R40": 0.55,
+  "R41": 0.55,
+  "R42": 0.55,
+  "R43": 0.55,
+  "R44": 0.55,
+  "R45": 0.55,
+  "R46": 0.55,
+  "R47": 0.0,
+  "R48": 0.55,
+  "R49": 0.55,
+  "R50": 0.55,
+  "R51": 0.55,
+  "R52": 0.55,
+  "R53": 0.55,
+  "R54": 0.55,
+  "R55": 0.55,
+  "R56": 0.55,
+  "R57": 0.55,
+  "R58": 0.55,
+  "R59": 0.55,
+  "R60": 0.55,
+  "R61": 0.55,
+  "R62": 0.55,
+  "R63": 0.55,
+  "R64": 0.55,
+  "R65": 0.55,
+  "R66": 0.55,
+  "R67": 0.55,
+  "R68": 0.55,
+  "U1": 1.2,
+  "U2": 1.2,
+  "U3": 1.2,
+  "U4": 1.2,
+  "U6": 1.8,
+  "U7": 3.2,
+  "U8": 0.6,
+  "U9": 1.45,
+  "Y1": 0.9,
+  "Y2": 0.9,
+  "Y3": 0.9,
+  "Y4": 0.9
+ },
  "placement_checks": {
   "problems": [],
   "courtyard_overlaps": [],
@@ -3242,14 +3587,18 @@
      "C5",
      "C8",
      "C41",
-     "C42",
+     "C59",
+     "C60",
      "J1",
      "L1",
      "Q3",
      "R1",
-     "R46",
      "R47",
-     "U1"
+     "R65",
+     "R66",
+     "R67",
+     "U1",
+     "U9"
     ],
     "too_tall_or_access_under": [
      "J1"
@@ -3317,50 +3666,506 @@
      "R43",
      "R44",
      "R45",
+     "R46",
      "U1"
     ],
     "too_tall_or_access_under": [
      "U1"
-    ],
-    "inside_outline": true,
-    "over_tie_band": false
-   },
-   {
-    "name": "Pololu S9V11F5S6CMA 12.7 x 15.3 mm (vendor size, pin-row offset A)",
-    "ref": "J6",
-    "rect": [
-     124.52,
-     118.87,
-     137.22,
-     134.17
-    ],
-    "rule": "parts <= 2.0 mm high only (module on the 2.54 mm header spacer, A); trimmer on top, reachable",
-    "max_h": 2.0,
-    "parts_under": [
-     "C1",
-     "C3",
-     "C6",
-     "C7",
-     "C43",
-     "C44",
-     "C45",
-     "J6",
-     "R2",
-     "U1",
-     "U6",
-     "Y1"
-    ],
-    "too_tall_or_access_under": [
-     "J6"
     ],
     "inside_outline": true,
     "over_tie_band": false
    }
   ],
   "courtyard_bbox_area_mm2": {
-   "top": 4291.3,
+   "top": 4337.6,
    "bottom": 0.0
   },
-  "board_area_minus_tie_band_mm2": 4900.0
+  "board_area_minus_tie_band_mm2": 4900.0,
+  "courtyard_occupancy_percent": 88.5,
+  "rev3": {
+   "heights": {
+    "limit_mm": 13.4,
+    "source": "FP_HEIGHT in scripts/place.py (A: body heights assumed per footprint, not measured parts)",
+    "tallest": [
+     [
+      "J14",
+      11.0
+     ],
+     [
+      "J15",
+      11.0
+     ],
+     [
+      "J17",
+      11.0
+     ],
+     [
+      "J7",
+      9.0
+     ],
+     [
+      "J1",
+      8.6
+     ],
+     [
+      "J2",
+      5.9
+     ]
+    ],
+    "no_height_entry": [],
+    "over_limit": []
+   },
+   "low_zones": [
+    {
+     "rect": [
+      121.6,
+      118.55,
+      137.6,
+      121.25
+     ],
+     "max_h": 1.1,
+     "why": "OpenLog outline by spec/module_dimensions.json + 0.44 mm (A)",
+     "parts_inside": [
+      "C6",
+      "R2",
+      "R46",
+      "R68",
+      "U1",
+      "Y1"
+     ],
+     "too_tall_or_access_inside": [],
+     "anchored_parts_above_limit": [
+      "U1"
+     ]
+    },
+    {
+     "rect": [
+      121.95,
+      99.55,
+      137.25,
+      101.55
+     ],
+     "max_h": -1.0,
+     "why": "OpenLog header plastic bar rests on the carrier (A)",
+     "parts_inside": [],
+     "too_tall_or_access_inside": [],
+     "anchored_parts_above_limit": []
+    },
+    {
+     "rect": [
+      103.65,
+      77.55,
+      118.7,
+      79.55
+     ],
+     "max_h": -1.0,
+     "why": "BMP280 header plastic bar rests on the carrier (A)",
+     "parts_inside": [],
+     "too_tall_or_access_inside": [],
+     "anchored_parts_above_limit": []
+    },
+    {
+     "rect": [
+      103.65,
+      89.05,
+      118.7,
+      91.25
+     ],
+     "max_h": 1.1,
+     "why": "BMP280 outline by spec/module_dimensions.json (A)",
+     "parts_inside": [
+      "C10",
+      "C12",
+      "R50",
+      "U2"
+     ],
+     "too_tall_or_access_inside": [],
+     "anchored_parts_above_limit": [
+      "U2"
+     ]
+    }
+   ],
+   "rev2c": {
+    "file": "archive/rev2c_pololu_1s/kicad/placement.json",
+    "sha256": "c32a8cc86cdaf30a7e98c31ff3859e8658ea78b9c9044bdb2d2c5cc49eb11cc2",
+    "removed_refs": [
+     "J6"
+    ],
+    "new_refs": [
+     "C57",
+     "C58",
+     "C59",
+     "C60",
+     "L5",
+     "R63",
+     "R64",
+     "R65",
+     "R66",
+     "R67",
+     "R68",
+     "U8",
+     "U9"
+    ],
+    "fixed_parts_compared": 58,
+    "fixed_parts_moved": [],
+    "crystals_unchanged": {
+     "Y1": true,
+     "Y2": true,
+     "Y3": true,
+     "Y4": true
+    },
+    "how_counts": {
+     "anchor": 29,
+     "auto": 7,
+     "cluster": 26,
+     "esp": 2,
+     "keep": 93,
+     "moved": 1,
+     "power": 16
+    },
+    "greedy_parts_not_at_rev2c_spot": [
+     "C41",
+     "C42",
+     "C43",
+     "C44",
+     "C45",
+     "D1",
+     "R29",
+     "R43",
+     "R45",
+     "R46",
+     "U6"
+    ],
+    "courtyard_bbox_area_mm2": {
+     "top": 4291.3,
+     "bottom": 0.0
+    }
+   },
+   "decoupling": {
+    "U1": {
+     "capacitors": [
+      {
+       "ref": "C1",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C2",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C3",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 3.512,
+       "rev3_mm": 3.512
+      },
+      {
+       "ref": "C4",
+       "net": [
+        "NAV_AVCC"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C6",
+       "net": [
+        "NAV_XTAL1"
+       ],
+       "rev2c_mm": 5.759,
+       "rev3_mm": 5.759
+      },
+      {
+       "ref": "C7",
+       "net": [
+        "NAV_XTAL2"
+       ],
+       "rev2c_mm": 3.452,
+       "rev3_mm": 3.452
+      }
+     ],
+     "worst_rev2c_mm": 5.759,
+     "worst_rev3_mm": 5.759,
+     "worse_than_rev2c_worst": []
+    },
+    "U2": {
+     "capacitors": [
+      {
+       "ref": "C9",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C10",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C11",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 3.473,
+       "rev3_mm": 3.473
+      },
+      {
+       "ref": "C12",
+       "net": [
+        "FCU_AVCC"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C13",
+       "net": [
+        "FCU_AREF"
+       ],
+       "rev2c_mm": 3.403,
+       "rev3_mm": 3.403
+      },
+      {
+       "ref": "C14",
+       "net": [
+        "FCU_XTAL1"
+       ],
+       "rev2c_mm": 5.759,
+       "rev3_mm": 5.759
+      },
+      {
+       "ref": "C15",
+       "net": [
+        "FCU_XTAL2"
+       ],
+       "rev2c_mm": 3.452,
+       "rev3_mm": 3.452
+      }
+     ],
+     "worst_rev2c_mm": 5.759,
+     "worst_rev3_mm": 5.759,
+     "worse_than_rev2c_worst": []
+    },
+    "U3": {
+     "capacitors": [
+      {
+       "ref": "C17",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C18",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C19",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 3.505,
+       "rev3_mm": 3.505
+      },
+      {
+       "ref": "C20",
+       "net": [
+        "COM_AVCC"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C22",
+       "net": [
+        "COM_XTAL1"
+       ],
+       "rev2c_mm": 5.759,
+       "rev3_mm": 5.759
+      },
+      {
+       "ref": "C23",
+       "net": [
+        "COM_XTAL2"
+       ],
+       "rev2c_mm": 3.452,
+       "rev3_mm": 3.452
+      }
+     ],
+     "worst_rev2c_mm": 5.759,
+     "worst_rev3_mm": 5.759,
+     "worse_than_rev2c_worst": []
+    },
+    "U4": {
+     "capacitors": [
+      {
+       "ref": "C25",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C26",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C27",
+       "net": [
+        "+5V"
+       ],
+       "rev2c_mm": 3.516,
+       "rev3_mm": 3.516
+      },
+      {
+       "ref": "C28",
+       "net": [
+        "GNS_AVCC"
+       ],
+       "rev2c_mm": 1.525,
+       "rev3_mm": 1.525
+      },
+      {
+       "ref": "C30",
+       "net": [
+        "GNS_XTAL1"
+       ],
+       "rev2c_mm": 5.759,
+       "rev3_mm": 5.759
+      },
+      {
+       "ref": "C31",
+       "net": [
+        "GNS_XTAL2"
+       ],
+       "rev2c_mm": 3.452,
+       "rev3_mm": 3.452
+      }
+     ],
+     "worst_rev2c_mm": 5.759,
+     "worst_rev3_mm": 5.759,
+     "worse_than_rev2c_worst": []
+    }
+   },
+   "crystal_distance": {
+    "reference_points": {
+     "U1.23": [
+      124.263,
+      122.2
+     ],
+     "U1.24": [
+      124.263,
+      121.4
+     ],
+     "Y1.1": [
+      129.37,
+      120.55
+     ],
+     "Y1.2": [
+      127.17,
+      120.55
+     ],
+     "Y1.3": [
+      127.17,
+      122.25
+     ],
+     "Y1.4": [
+      129.37,
+      122.25
+     ]
+    },
+    "rev2c_J6_pins": {
+     "1": [
+      135.95,
+      132.9
+     ],
+     "2": [
+      133.41,
+      132.9
+     ],
+     "3": [
+      130.87,
+      132.9
+     ],
+     "4": [
+      128.33,
+      132.9
+     ],
+     "5": [
+      125.79,
+      132.9
+     ]
+    },
+    "rev2c_J6_min_mm": {
+     "to_Y1_pads": 10.701,
+     "to_U1_xtal_pins": 10.808
+    },
+    "rev3_parts": {
+     "U8": {
+      "to_Y1_pads_mm": 11.077,
+      "nearest_Y1": "U8.1 -> Y1.4",
+      "to_U1_xtal_pins_mm": 12.559,
+      "nearest_U1": "U8.1 -> U1.23"
+     },
+     "L5": {
+      "to_Y1_pads_mm": 10.797,
+      "nearest_Y1": "L5.2 -> Y1.4",
+      "to_U1_xtal_pins_mm": 13.463,
+      "nearest_U1": "L5.2 -> U1.23"
+     },
+     "C57": {
+      "to_Y1_pads_mm": 9.116,
+      "nearest_Y1": "C57.2 -> Y1.4",
+      "to_U1_xtal_pins_mm": 9.945,
+      "nearest_U1": "C57.2 -> U1.23"
+     },
+     "C43": {
+      "to_Y1_pads_mm": 11.399,
+      "nearest_Y1": "C43.1 -> Y1.3",
+      "to_U1_xtal_pins_mm": 11.445,
+      "nearest_U1": "C43.2 -> U1.23"
+     },
+     "C41": {
+      "to_Y1_pads_mm": 11.891,
+      "nearest_Y1": "C41.1 -> Y1.3",
+      "to_U1_xtal_pins_mm": 11.418,
+      "nearest_U1": "C41.1 -> U1.23"
+     }
+    },
+    "rev3_BOOST_SW_pads_min_mm": {
+     "to_Y1_pads": 10.797,
+     "to_U1_xtal_pins": 13.463
+    },
+    "closer_than_rev2c_pins": [
+     "C57"
+    ],
+    "placement_note_met": false
+   },
+   "hard_failures": []
+  }
  }
 }

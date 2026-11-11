@@ -1,128 +1,152 @@
-# VTOL 캐리어 PCB 전기 사양 (rev 2c, 2026-11-05)
+# VTOL 캐리어 PCB rev 3 - 전기 사양 요약
 
-## 0. rev 2c 변경 (rev 2b 독립 검토 반영, 2026-11-05)
+이 문서는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts/build_spec.py` 가 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json` 과 함께 자동으로 만든 것입니다. 손으로 고치지 말고 스크립트를 다시 돌리십시오.
+설계의 기준은 계획서 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/REV3_PLAN.md` (기계가 읽는 사본 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json`, 계획 날짜 2026-11-10) 이며, 사양이 계획과 부품 하나하나 같은지 스크립트가 비교합니다 (비교 175항목, 핀 689개, 차이 0건).
 
-아래 1장 이후는 rev 2b 때 쓴 요약입니다. rev 2c에서 바뀐 것은 이 절과 `carrier_spec.json`의 `rev_2c_changes`가 우선합니다.
+표시: F = 파일·데이터시트에서 읽음, M = 여기서 도구로 측정, E = 추정(계산), A = 가정. 근거가 없으면 NOT_VERIFIED.
+이 문서의 수치는 사양을 만드는 스크립트의 계산·대조 결과입니다. ERC / DRC 결과는 kicad-cli 보고서(`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/`)에만 있습니다.
 
-- **J14(1S 배터리)와 J15(전원 스위치 리드)를 −x/+y 모서리로 옮겼습니다.** 사용자가 고른 배터리 A 자리(6S 팩 −x 면) 바로 옆입니다. J15는 2.54 mm 수 헤더 대신 **JST-PH 2핀 세로형**(J17과 같은 부품, LCSC C131337)입니다. 꽂은 플러그가 높이 13.4 mm 안에 들어갑니다 (A). 스위치 리드 끝은 JST-PH 하우징으로 다시 끼웁니다.
-- **J13(사출 서보, 미실장)과 그 직렬 저항을 뺐습니다.** VTOL에는 사출 서보가 없습니다 (params `configs.vtol`). U2 PE5는 무연결로 둡니다. 펌웨어는 고치지 않았습니다. 부품 번호 자리는 비워 두어 다른 번호는 그대로입니다.
-- **J3(ESP 굽기 헤더)를 1×6에서 2×3으로 바꾸고 케이블타이 띠 맨 위, ESP-12E 바로 옆에 두었습니다.** 핀 번호와 뜻은 같습니다 (1 IO0, 2 GND, 3 TXD0, 4 RXD0, 5 RST, 6 GND). 부품은 ISP와 같은 2×3 헤더(LCSC C65114)입니다.
-- **크리스털 부하 콘덴서 22 pF → 27 pF** (CL 18 pF 크리스털에 맞춤, LCSC C1557, 2026-11-05 온라인 확인).
-- **ESP 벌크 콘덴서 100 µF 6.3 V → 10 V** (LCSC C7196 TAJB107M010RNJ, 2026-11-05 온라인 확인). 3.3 V에서 정격의 33 %입니다.
-- 부품 수: 162개 (실장 160, 미실장 2), 넷 100개 (M, build_spec.py).
-- 배터리 A 자리 가정 상자와 무선 결정(Wi-Fi 유지, ESP-NOW 1 Mbps, 지상 고이득 안테나, 1 km 이상 지상 거리 시험, 실패하면 LoRa)은 `battery_spot_A_assumed`, `radio_decision_2026_11_05`에 있습니다.
+## 1. rev 2c에서 달라진 것
 
+- 5 V 전원: 꽂는 Pololu 모듈(J6)을 없애고 기판 위 승압 회로로 바꿨습니다. U8 TPS61023DRLR + L5 1.0 uH + 분압 R63 / R64 + C57 / C58, 그리고 저전압 차단용 비교기 U9 TLV3012BIDBVR + R65~R68 + C59 / C60 (새 부품 13개, 새 네트 5개: BOOST_SW, BOOST_FB, BOOST_EN, UVLO_SENSE, UVLO_REF).
+- 무선 모듈: ESP-12E 대신 핀이 같은 ESP-12F (JLC 라이브러리 부품 C82891). 풋프린트는 KiCad의 RF_Module:ESP-12E 를 그대로 씁니다 (라이브러리에 ESP-12F 풋프린트가 따로 없음).
+- MCU와 센서 모듈을 뺀 모든 실장 부품을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 (재고 근거: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/parts_sources.json`).
+- 부품마다 `fit` (누가 붙이는가) 값을 가집니다. JLC BOM / CPL은 이 값에서만 만들어집니다.
+- MCU 4개의 핀 256개가 가는 네트, 기판 외곽 76 x 70 mm, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. rev 2c 자료는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/` 에 보관했습니다.
 
-아직 그리지 않았습니다. 이 문서는 사양만 요약합니다. 보드를 만들거나 측정한 적이 없으므로 모든 동작은 **NOT_VERIFIED**입니다.
+## 2. 누가 무엇을 붙이는가
 
-- 기계 판독용 사양: `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/spec/carrier_spec.json`
-- 생성 스크립트: `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/scripts/build_spec.py` (네트워크 없이 실행)
-- 부품 출처 확인(온라인, 읽기만): `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/scripts/fetch_parts_sources.py` → `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/spec/parts_sources.json`, 원본 응답 `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/out/reports/sourcing/`
-- 라이브러리 확인: `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/spec/library_probe.json` (KiCad 10 라이브러리 파일에서 읽음)
-- 1차 빌드(PLM100 + 2S): `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/archive/rev1_plm100_2s/` (건드리지 않음)
+부품 자리 174개 (네트 105개).
 
-표시: F = 파일·업체 페이지 근거, M = 도구로 측정, E = 추정, A = 가정(이유 있음).
+| fit | 뜻 | 개수 | 부품 |
+|---|---|---|---|
+| jlc | JLC가 실장 (BOM / CPL에 들어감) | 157 | C1, C2, C3, C4, C5, C6 ... (목록은 carrier_spec.json 의 parts[].fit) |
+| jlc_optional | 기본은 사용자 납땜, with_mcu 파일 쌍에서만 JLC 실장 | 4 | U1, U2, U3, U4 |
+| user | 사용자가 납땜 | 1 | J1 |
+| none | 부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만) | 12 | J3, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47 |
 
-## 1. 이번에 바뀐 것 (rev 2 → rev 2b)
+JLC 실장 부품 157개, BOM 40줄 (SMT 34줄 + THT 6줄). MCU까지 JLC에 맡기는 with_mcu 쌍은 161개 / 41줄입니다.
 
-- **5번째 ATmega128A를 뺐습니다** (사용자 결정). U5와 그 칩만 쓰던 크리스털, 콘덴서, 인덕터, 저항, LED, ISP 헤더 J23을 모두 지웠습니다. 다른 부품 번호는 그대로 두려고 번호 자리(U5, Y5, C33-C40, L5, R9-R10, D5, J23)는 비워 두었습니다.
-- **5 V 모듈을 Pololu S9V11F5S6CMA로 정했습니다** (디바이스마트 15855364, F). 승강압형이고 저전압 차단 기능이 있습니다. 셀 과방전을 하드웨어로 막습니다. J6 1×5 헤더 하나로 꽂습니다 (J4는 이제 없음).
-- **크리스털을 바꿨습니다.** JLC 기본 부품 C13738은 부하용량이 9 pF라 22 pF 콘덴서와 맞지 않습니다 (F, LCSC 페이지). 18 pF 제품 C70562 X322516MRB4SI를 씁니다.
-- 서보 전원 220 µF 전해 콘덴서 풋프린트를 실제 부품 크기(6.3 × 5.4)에 맞췄습니다.
-- **4층 대비 계획**을 넣었습니다 (8장).
-- **모든 부품의 구매처를 온라인으로 확인했습니다** (7장).
+## 3. 5 V 전원부 (모두 E: 데이터시트 계산, 측정 아님)
 
-## 2. 규모 (스크립트 결과, M)
+- 출력 전압: 정격 5.06 V (공차 범위 4.84 ~ 5.28 V).
+- 부하 가정: +5V 평소 273 mA / 최대 783 mA. IC 입력 3.0 V에서 낼 수 있는 출력 전류 1.815 A (최대 부하의 2.32배).
+- 저전압 차단: 꺼짐 3.13 V (3.005 ~ 3.253 V), 켜짐 3.59 V (3.444 ~ 3.733 V). 저항값으로 고정되어 조정할 것이 없습니다.
+- 차단 뒤에도 약 6.67 uA(새 회로) + 34~62 uA(R15 / R16 분압)가 흐릅니다. 보관할 때는 반드시 스위치를 끄십시오.
+- U8, U9 핀 번호는 데이터시트 표에서 옮겼습니다: U8 TPS61023DRLR (SOT-563, DRL): 1 FB, 2 EN, 3 VIN, 4 GND, 5 SW, 6 VOUT; U9 TLV3012BIDBVR (SOT-23-6, DBV): 1 OUT, 2 V-, 3 IN+, 4 IN-, 5 REF, 6 V+.
 
-- 부품 164개 (실장 160, 미실장/선택 4: J13, R22, Q3, R47), 넷 102개.
-- 핀 665개 = 연결 481 + 무연결 184 (무연결마다 이유 기록).
-- 신호 경로 52개 모두 통과, TX끼리 충돌 0, ESP 부팅 스트랩 5/5, ESP 플래시 핀 6개 미연결 확인. 스크립트 검사이며 ERC/DRC가 아닙니다.
-- 일부러 틀린 6가지(ESP TX/RX 뒤바꿈, GPIO15 풀업, GPS TX끼리 연결, 0402 자리에 0603 부품, 출처 없는 저항값, Pololu EN 핀 누락)를 넣으면 스크립트가 모두 막았습니다. 원본은 통과했습니다 (M, `C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb/rev2b_mutation.py`).
-- 두 번 만든 JSON의 해시가 같습니다 (M, sha256 f12d65d2…).
+## 4. JLC BOM 줄
 
-## 3. 칩과 링크 (펌웨어 핀 그대로)
+| 줄 | Comment | Designator | Footprint | LCSC Part # | 공정 | 수량 |
+|---|---|---|---|---|---|---|
+| 1 | 100n 16V X7R 0402 | C1, C2, C4, C9, C10, C12, C17, C18, C20, C25, C26, C28, C54 | C_0402_1005Metric | C1525 | SMT | 13 |
+| 2 | 10u 25V X5R 0805 | C3, C11, C19, C27, C44, C53, C56 | C_0805_2012Metric | C15850 | SMT | 7 |
+| 3 | 100n 50V X7R 0603 | C5, C8, C13, C16, C21, C24, C29, C32, C46, C48, C49, C50, C51, C55, C59, C60 | C_0603_1608Metric | C14663 | SMT | 16 |
+| 4 | 27p 50V C0G 0402 | C6, C7, C14, C15, C22, C23, C30, C31 | C_0402_1005Metric | C1557 | SMT | 8 |
+| 5 | 22u 25V X5R 1206 | C41, C42, C43, C57 | C_1206_3216Metric | C12891 | SMT | 4 |
+| 6 | 22u 10V tantalum A | C45 | CP_EIA-3216-18_Kemet-A | C11366 | SMT | 1 |
+| 7 | 220u 10V electrolytic D6.3xL5.4 | C47 | CP_Elec_6.3x5.4 | C2833309 | SMT | 1 |
+| 8 | 100u 10V tantalum B | C52 | CP_EIA-3528-21_Kemet-B | C7196 | SMT | 1 |
+| 9 | 1n 50V X7R 0603 | C58 | C_0603_1608Metric | C1588 | SMT | 1 |
+| 10 | LED red 0603 | D1, D2, D3, D4 | LED_0603_1608Metric | C2286 | SMT | 4 |
+| 11 | B5819W 1A 40V Schottky SOD-123 | D6 | D_SOD-123 | C8598 | SMT | 1 |
+| 12 | JST-GH BM04B-GHS-TBT 4P vertical | J7 | JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical | C161692 | SMT | 1 |
+| 13 | 10uH 0805 multilayer inductor | L1, L2, L3, L4 | L_0805_2012Metric | C1046 | SMT | 4 |
+| 14 | 1.0uH FXL0420-1R0-MA1 | L5 | L_Changjiang_FXL0420 | C53426685 | SMT | 1 |
+| 15 | BSS138 | Q1, Q2, Q4, Q5, Q6, Q7, Q8, Q11 | SOT-23 | C40912 | SMT | 8 |
+| 16 | MMBT3904 | Q9 | SOT-23 | C20526 | SMT | 1 |
+| 17 | AO3401A | Q10 | SOT-23 | C15127 | SMT | 1 |
+| 18 | 10k 1% | R1, R3, R5, R7, R11, R14, R23, R24, R25, R26, R27, R29, R31, R38, R40, R41, R43, R45, R46, R48, R49, R50, R51, R52, R53, R55, R56, R57, R58, R59, R60, R61, R62 | R_0603_1608Metric | C25804 | SMT | 33 |
+| 19 | 1k 1% | R2, R4, R6, R8, R12, R13, R28, R30, R54 | R_0603_1608Metric | C21190 | SMT | 9 |
+| 20 | 47k 1% | R15, R16, R32, R34, R36 | R_0603_1608Metric | C25819 | SMT | 5 |
+| 21 | 220R 1% | R17, R18, R19, R20, R21 | R_0603_1608Metric | C22962 | SMT | 5 |
+| 22 | 4.7k 1% | R33, R35, R37, R42, R44 | R_0603_1608Metric | C23162 | SMT | 5 |
+| 23 | 100k 1% | R39 | R_0603_1608Metric | C25803 | SMT | 1 |
+| 24 | 150k 1% | R63 | R_0603_1608Metric | C22807 | SMT | 1 |
+| 25 | 20k 1% | R64 | R_0603_1608Metric | C4184 | SMT | 1 |
+| 26 | 470k 1% | R65 | R_0603_1608Metric | C23178 | SMT | 1 |
+| 27 | 270k 1% | R66 | R_0603_1608Metric | C22965 | SMT | 1 |
+| 28 | 3.3M 1% | R67 | R_0603_1608Metric | C26096 | SMT | 1 |
+| 29 | 1M 1% | R68 | R_0603_1608Metric | C22935 | SMT | 1 |
+| 30 | AMS1117-3.3 | U6 | SOT-223-3_TabPin2 | C6186 | SMT | 1 |
+| 31 | ESP-12F | U7 | ESP-12F | C82891 | SMT | 1 |
+| 32 | TPS61023DRLR | U8 | SOT-563 | C919459 | SMT | 1 |
+| 33 | TLV3012BIDBVR | U9 | SOT-23-6 | C20345924 | SMT | 1 |
+| 34 | 16MHz 18pF 3225 | Y1, Y2, Y3, Y4 | Crystal_SMD_3225-4Pin_3.2x2.5mm | C70562 | SMT | 4 |
+| 35 | socket 1x6 right-angle 2.54 | J2, J5 | PinSocket_1x06_P2.54mm_Horizontal | C22436147 | THT | 2 |
+| 36 | pin header 1x3 right-angle 2.54 | J8, J9, J10, J11, J12 | PinHeader_1x03_P2.54mm_Horizontal | C32713262 | THT | 5 |
+| 37 | Molex 22035025 SPOX 2P vertical | J14 | Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical | C5364642 | THT | 1 |
+| 38 | JST B2B-PH-K-S 2P vertical | J15, J17 | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical | C131337 | THT | 2 |
+| 39 | pin header 1x2 right-angle 2.54 | J16 | PinHeader_1x02_P2.54mm_Horizontal | C32713261 | THT | 1 |
+| 40 | pin header 1x4 right-angle 2.54 | J18 | PinHeader_1x04_P2.54mm_Horizontal | C32713263 | THT | 1 |
 
-- U1 NAV, U2 FCU, U3 COM, U4 GNS: ATmega128A-AU, 16 MHz, 5 V.
-- 칩마다: 16 MHz 크리스털 + 22 pF 2개, 리셋 10 kΩ + 100 nF, VCC 핀마다 100 nF, AVCC 10 µH + 100 nF, AREF 100 nF(내부 2.56 V 기준), ISP 2×3, LED + 1 kΩ (F: `firmware/README.md:310-311`, `board.h`).
-- nlink SPI(NAV→FCU), ilink UART(FCU↔COM, 1 kΩ), glink UART(NAV↔GNS, 1 kΩ 추가 - A)는 5 V 직결입니다.
-- 프로그래밍용 리셋 고정 점퍼: J24(NAV), J25(FCU), J26(COM, ESP 굽기용).
+with_mcu 쌍에만 추가되는 줄: ATmega128A-AU TQFP-64 | U1, U2, U3, U4 | TQFP-64_14x14mm_P0.8mm | C6510 | SMT | 4
 
-## 4. 전원
+실제 주문용 BOM / CPL 파일은 배치·배선이 끝난 뒤 내보내기 단계에서 만들어집니다. 위 표는 그 파일의 근거입니다.
 
-- 경로: J14 배터리(Molex Mini-SPOX 2핀) → Q10 AO3401A 역극성 보호 → J15 스위치 리드 → 22 µF ×2 → J6 3번 VIN → Pololu 모듈 → J6 1번 VOUT → **+5V** → U6 AMS1117-3.3 → **+3V3**.
-- 서보는 ESC BEC(5 V/7 A)에서 받습니다. 로직 배터리에서 받지 않습니다 (F: `firmware/README.md:322-324`).
-- 6S는 J18로 전압만 잽니다 (PF0/PF1/PF2). 6S → 로직 변환기는 없습니다.
-- 접지: 로직 GND와 추진 GND_PWR는 **NT1 한 곳(J12 ESC 커넥터 3번 핀)** 에서만 만납니다.
-- 부하 (E): 5 V 평균 273 mA, 최대 683 mA. 3.3 V 평균 128 mA, 최대 448 mA (ESP 송신 순간 약 400 mA, A).
-- 모듈 입력 전류 (E, 효율 85 % A): 3.7 V에서 평균 0.43 A, 3.0 V에서 최대 1.34 A.
-- 모듈 능력: 업체 값 1.7 A는 입력이 5 V 근처일 때입니다. 3.0-3.7 V 입력에서는 약 1 A로 봅니다 (A, 그래프 미확인). 최대 부하 0.68 A에 약 1.5배 여유 (E). ESP 송신 때 5 V 처짐을 재야 합니다.
-- AMS1117 발열 (E): 평균 0.22 W, 순간 0.76 W.
-- 사용 시간 (E): 약 7.7 시간. 비행은 40 s이므로 충전만 해 두면 됩니다.
-- Q10: 셀 3.0 V에서도 완전히 켜집니다 (LCSC: 2.5 V에서 85 mΩ, F). 전압 강하 0.11 V 이하 (E).
-- 과방전 보호 (3겹):
-  1. Pololu 모듈 저전압 차단. 차단 3.2 V를 제안합니다 (A). 재시동은 약 3.65 V부터입니다 (업체 값 114 %).
-  2. 배터리 내장 보호회로 ('P' 접미사로 추정 - A, 실측 필요).
-  3. FCU PF3 감시 분압기 47k/47k (실장). 펌웨어는 아직 읽지 않습니다. 그때까지 비행 전에 3.8 V 이상인지 재십시오.
-- 차단이 비행 중에 걸리면 칩 4개가 모두 꺼집니다. 비행 전 전압 확인이 먼저입니다.
-- 로직이 꺼진 채 6S를 꽂으면 PF0 분압기로 약 0.42 mA가 샙니다 (E). 로직을 먼저 켜고 6S를 꽂으십시오.
+## 5. 프로그래밍 헤더 (결정 D6)
 
-## 5. ESP-12E (U7)
+현재 설정: **A** (환경변수 `VTOL_PROG_HEADERS`, 기본 A).
+- A: J3, J19~J22 (2x3), J24~J26 (1x2) 은 rev 2c와 같은 자리의 빈 도금 구멍입니다. 프로그래밍하려면 사용자가 헤더를 납땜하거나 포고핀 어댑터를 씁니다 (포고핀 접촉은 NOT_VERIFIED).
+- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; BOM 42줄, JLC 실장 165개). 띠 밖에 자리가 있는지는 배치 단계에서 찾아 보고합니다. 사용자의 승인이 있어야 적용합니다.
 
-- 3.3 V + 100 µF 탄탈 + 10 µF + 100 nF를 VCC 핀 옆에 둡니다 (A).
-- EN 10 kΩ 풀업 + 100 nF, RST 10 kΩ 풀업(Q5), GPIO15 10 kΩ 풀다운, GPIO0·GPIO2 10 kΩ 풀업 (A, Espressif 자료 확인 필요).
-- COM PD3 → Q4 → 1 kΩ → ESP RXD0. ESP TXD0 → Q11 → COM PD2. COM PC6 → Q5 → ESP RST.
-- 굽기 헤더 J3 (3.3 V 전용, 전원 핀 없음): 1 IO0, 2 GND, 3 TXD0, 4 RXD0, 5 RST, 6 GND. J26을 끼워 COM을 리셋에 묶고 굽습니다.
-- 안테나: 보드 +y 모서리. 안테나 아래와 양옆 4 mm는 모든 층에 구리·부품 금지입니다 (4층이면 안쪽 층도).
-- 거리: 가시거리 약 100-300 m (A). VTOL 지오펜스 35 m에는 충분합니다 (E). 로켓(정점 140-150 m + 표류)에는 빠듯합니다 → 사용자 결정. 로켓 구성은 아직 LoRa입니다.
+## 6. 사용자가 붙이거나 꽂는 것
 
-## 6. 센서·주변 장치
+| 자리 | 부품 | 방법 |
+|---|---|---|
+| U1~U4 | ATmega128A-AU (TQFP-64) 4개 | 기본: 사용자가 납땜 (칩당 64핀, 모두 256곳). JLC에 맡기려면 with_mcu BOM / CPL 쌍으로 주문 (LCSC C6510) |
+| J1 | GY-521 MPU-6050 모듈 | 모듈에 딸린 1x8 핀을 기판의 도금 구멍 8개에 납땜 (모듈은 2 mm 받침 위에 눕힘). 기판에는 구멍만 있음 |
+| J2 | BMP280 모듈 TYE-BMP29 | 직각 6핀 헤더를 JLC가 실장한 소켓 J2에 꽂음 (받은 모듈의 헤더가 일자형이면 직각 핀을 먼저 납땜 - 헤더 종류 NOT_VERIFIED) |
+| J7 | NEO-7M GPS 모듈 SZH-NT07 | 기체 상단 캡에 두고 4선 JST-GH 리드를 J7에 꽂음 |
+| J5 | SparkFun OpenLog DEV-13712 | OpenLog에 직각 1x6 핀을 납땜한 뒤 소켓 J5에 꽂음 (맞는지 NOT_VERIFIED) |
 
-- J1 GY-521(I2C 0x68, 5 V), J2 BMP280(직각 소켓으로 눕힘, I2C 0x77, 3.3 V), I2C는 Q1/Q2 BSS138.
-- J7 GPS 리드(JST-GH 4핀, NEO-7M은 상단 캡), Q6/Q7, JP1로 3.3 V/5 V 선택 (기본 3.3 V).
-- J5 OpenLog: 직각 소켓, 보드에 눕힘 (OpenLog에 직각 수 헤더를 납땜).
-- J8-J11 베인 서보, J12 ESC, J13 사출 서보(미실장), J16 아밍 스위치, J17 부저(Q9), J18 6S 감지.
-- BSS138 채널 9개 자리, 8개 실장 (Q3는 선택).
+기판 밖에서 따로 사는 것(배터리, 스위치와 리드, GPS 리드, 부저, 모듈, MCU 등)의 목록은 계획서의 off_board_purchase 항목(`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json`)에 있고, 주문 안내서에 한국어로 옮겨집니다. 이 품목들의 오늘 재고·가격은 NOT_VERIFIED입니다.
 
-## 7. 부품 구매처 (사용자 규칙: JLCPCB 또는 디바이스마트만)
+## 7. 사용자 결정 (기본값으로 진행 중)
 
-- 보드 부품 36줄 모두 출처가 있습니다 (M, 스크립트 확인). JLCPCB/LCSC 34줄: Basic 18, Extended 16. 디바이스마트 2줄(GY-521, Pololu 모듈).
-- 줄마다 C번호 또는 디바이스마트 no=, 제조사 품번, 패키지, 확인 URL, 날짜(2026-11-05), 재고, Basic/Extended를 `carrier_spec.json`의 `bom_sources`에 적었습니다. JLC BOM 열 이름은 `LCSC Part #`입니다.
-- 패키지가 풋프린트와 맞는지 스크립트가 검사합니다 (칩 크기는 풋프린트 이름에서 읽음).
-- 보드 밖 물품: 점퍼캡 5개(C100114), BMP280·OpenLog·NEO-7M·배터리·토글 스위치(디바이스마트), OpenLog용 직각 헤더(C55629820), GPS 리드 하우징·핀(C160418, C189897), 부저 리드 하우징·핀(C157955, C111515).
-- 주의 1: 디바이스마트가 이 PC의 접속을 05:32쯤부터 막았습니다. OpenLog(1313116), MTS-102 토글(13029107), ESP-12E 대안(1378118)은 그 전에 디바이스마트 검색 결과로만 확인했습니다. 상품 페이지는 못 읽었습니다. 근거는 `spec/parts_sources_manual.json`에 적었습니다. 주문 전에 다시 확인하십시오.
-- 주의 2: MTS-102 토글의 접점 정격은 확인하지 못했습니다 (A: 2 A 이상 가정). Adafruit 미니 토글은 1 A라서 쓰지 않았습니다 (F).
-- 주의 3: LCSC에도 OpenLog(C17253836)가 있지만 재고가 0이었습니다.
-- 주의 4: 재고는 날마다 바뀝니다. 주문 직전에 `fetch_parts_sources.py`를 다시 돌리십시오.
-- 구매나 장바구니 담기는 하지 않았습니다.
+- D1 Pololu 모듈을 대신할 5 V 변환기: 기본 A (TPS61023 승압 + TLV3012B 저전압 차단), 권장 A
+- D2 로직 배터리(1S) 차단 전압: 기본 유지 (꺼짐 약 3.13 V, 켜짐 약 3.59 V), 권장 유지
+- D3 요청 때문이 아니라 재고·도면 근거로 바꾼 부품번호 3건: 기본 유지, 권장 유지
+- D4 ATmega128A-AU 4개를 누가 붙이는가: 기본 사용자 납땜, 권장 JLC 실장 (with_mcu 파일 쌍)
+- D5 OpenLog 장착 방식: 기본 소켓 J5에 꽂기 (센서 모듈처럼 사용자가 장착), 권장 동일
+- D6 프로그래밍 헤더 (J3, J19~J22, J24~J26): 기본 A (케이블타이 띠 안의 빈 도금 구멍), 자리가 확인되면 권장 B (띠 밖에 JLC 실장)
+- D7 스위치·부저 커넥터 J15 / J17 (JST-PH): 기본 THT, 권장 THT
+- D8 레벨시프터 FET (보드당 8개): 기본 C40912, 권장 C40912
+- D9 JLC 주문 종류: 기본 Standard, 권장 Standard
+- D10 툴링 홀: 기본 설계에 넣지 않음 (JLC가 붙이는 공정 레일에 생김)
+- D11 수량: 기본 PCB 5장 / 실장 2장, 권장 먼저 2장 실장
+- D12 모듈 소켓 J2 / J5 (1x6 직각): 기본 C22436147 + 주문일 재고 확인, 안 되면 C55629861, 그다음 C54876735
+- D13 배터리 전압 분압 R15 / R16 (47k / 47k): 기본 유지
+- D14 습기에 민감한 부품(ESP-12F, LED) 베이킹 요청: 기본 예 (주문 메모)
+- D15 렌더와 맞춤 검사에 쓰는 모듈 치수: 기본 가정값 (실측 전까지 모든 그림·검사에 A 표시), 권장 실측
+- D16 주문 화면의 PCB 옵션: 기본 권장값 (ENIG, 녹색 마스크, 흰색 실크, JLC 기본 4층 적층, 비아 덮기)
+- D17 실장하지 않는 여분 기판: 기본 수락
 
-## 8. 2층 / 4층 계획
+## 8. 확인되지 않은 것
 
-- 먼저 2층(5번째 칩 없이)으로 배선합니다. 약 90분 안에 미연결 0이 안 되면 4층으로 바꿉니다 (사용자 결정).
-- 4층 구성: F.Cu 신호 / In1.Cu GND 전면 / In2.Cu 전원(+5V, +3V3, SERVO_5V) / B.Cu 신호. JLCPCB 표준 4층 1.6 mm. 비아 0.3/0.6 mm 관통만. 2층 규칙을 그대로 지킵니다.
-- 4층은 2층보다 기판값이 꽤 비쌉니다 (E, 가격은 조회 안 함). 배선 단계가 어느 쪽을 냈는지 보고합니다.
+- 만들거나 측정한 것은 없습니다. 전원부 수치는 모두 데이터시트 계산값(E)입니다.
+- JLC가 이 기판을 받아 주는지는 사용자가 파일을 올리고 DFM 결과와 견적을 본 뒤에야 알 수 있습니다 (결제 전 확인).
+- THT 6줄을 JLC가 납땜해 주는지는 견적에 표시될 때까지 NOT_VERIFIED입니다.
+- 전원부 13개 부품이 예전 5 V 모듈 자리에 들어가는지는 배치 단계 전까지 NOT_VERIFIED입니다 (필요 약 95 mm2, 비는 자리 45.6 mm2).
+- U8은 라이브러리에 전용 심볼이 없어 일반 6핀 심볼을 씁니다. ERC는 U8 핀에 대해 아무 근거도 주지 않으며, 핀-네트 표 검사(rev3_checks.py u8-u9)가 그 역할을 합니다.
+- 차단 히스테리시스 여유는 최대 부하에서 28 mV(E)입니다. 전원 경로 저항이 0.29 Ohm을 넘으면 방전 끝에서 켜짐/꺼짐을 반복할 수 있습니다 (첫 기판에서 측정).
+- 켜짐 문턱이 최대 3.73 V입니다. 쉬는 전압이 그보다 낮은 팩은 보드를 켜지 못할 수 있습니다.
+- 극성 부품과 IC의 CPL 회전은 NOT_VERIFIED입니다. 주문 때 'Confirm Parts Placement'를 켜고, 전원을 넣기 전에 탄탈 방향을 눈으로 확인하십시오.
+- 재고는 움직입니다. 오늘 재고가 얇은 줄: C22436147 (소켓 J2 / J5). 주문일에 scripts/jlc_sources.py --online 을 다시 돌립니다.
+- 센서 모듈·OpenLog의 치수와 핀 순서는 가정(A)입니다. 받은 모듈의 실크를 확인하십시오.
 
-## 9. 사용자가 정할 것
+## 9. 파일과 다시 만드는 방법
 
-1. 로직 배터리 자리 (CAD 상자에서 계산, E): A 6S 팩 −x 면이 가장 좋음 (무게중심이 축에서 0.84 mm, 지금 1.34 mm). D −y 옆 1.41 mm(GPS 선과 겹침), C +y 옆 1.09 mm(ESP 안테나 위), B ESC +x 면 2.73 mm(냉각창 막음).
-2. 무게: 84 g 추가로 VTOL 배터리 구성 약 1,737.6 g, 목표보다 약 87.6 g 무거움 (E). params.json은 고치지 않았습니다.
-3. 전원 스위치 위치: 기체를 닫으면 캐리어에 손이 닿지 않습니다. (a) 옆 창 스위치, (b) 상단 캡에 구멍 추가, (c) 배터리 플러그로 끄기 중 선택.
-4. Pololu 차단 전압 (3.2 V 제안).
-5. ESP 안테나: 모서리 + 금지 영역(기본) 또는 보드 밖으로 내밀기.
-6. JLC Extended 부품 조립비, ESP-12E를 JLC 조립(C89297)할지 손납땜할지.
-7. ESP 중계 펌웨어, 지상 쪽, COM 드라이버 - 별도 단계.
-8. BMP280 드라이버와 시뮬레이션 기압 모델 - 제어 관련 변경이므로 전/후 비교 영상 규칙 적용.
+- 사양: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json`
+- 계획: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/REV3_PLAN.md`, `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json`
+- JLC 부품 근거: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/parts_sources.json`
+- 라이브러리 확인: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/library_probe.json`
+- rev 2c 보관본: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/`
 
-## 10. 펌웨어 후속 (이번에는 고치지 않음)
+작업 폴더를 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts` 로 두고 다음 순서로 실행합니다 (파이썬은 `B:/Claude/.venv/Scripts/python.exe -X utf8 -B`).
 
-- ESP 중계 펌웨어(새로), 지상 쪽(노트북/휴대폰 또는 ESP8266 한 개 더), `tools/ground_station.py` UDP/TCP.
-- COM lora_uart 드라이버는 9600 8N1 투명 중계면 그대로 될 수도 있습니다 (E, 시험 필요). `sim/link_model.py`의 Ebyte 시간 모델은 Wi-Fi에 맞지 않습니다.
-- FCU PF3 로직 배터리 읽기 + 아밍 금지/착륙 문턱 (A 값).
-- NEO-7M MON-VER 처리, 상단 캡 맞춤. `sim/tether.py:171` bec_min_v 재검토.
-
-## 11. 파일 사이 어긋남 (요약, 전체는 `conflicts` 19개)
-
-- params `carrier.model`(1755줄)에는 GY-63, LoRa, 5 V buck, 미실장 5번째 칩이 아직 적혀 있습니다. 사용자 결정을 따랐습니다. params와 문서는 고치지 않았습니다.
-- P3 문서의 22 pF와 JLC 기본 크리스털(9 pF)이 맞지 않아 18 pF 크리스털을 골랐습니다.
-- params `com.pins.link_uart_rx`는 "direct"인데 Q11을 넣었습니다 (펌웨어 영향 없음).
-- 펌웨어 README의 6S → 5 V UBEC 전원 설명은 별도 로직 배터리로 대체됩니다.
-- 질량 초과는 과제 문장의 3.7 g이 아니라 문서·CAD 값 3.6 g을 썼습니다.
+1. `probe_library.py` - KiCad 라이브러리에서 심볼·풋프린트·핀을 읽어 기록
+2. `jlc_sources.py --online` - JLC 부품 재고를 읽기 전용으로 다시 확인 (주문일에 반드시)
+3. `build_spec.py` - 이 사양과 이 문서를 생성
+4. `build_schematic.py` - 회로도 생성, 이어서 kicad-cli 로 ERC와 네트리스트 내보내기
+5. `rev3_checks.py all` - 네트리스트 기준 검사

@@ -1,0 +1,48 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_mcu_pinmap.json",
+ "result": "PASS",
+ "tool": "kicad-cli netlist export + scripts/rev3_checks.py mcu-pinmap",
+ "netlist": {
+  "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
+  "sha256": "299785ca80a14c92cc51f29e3e38322ef22f7c8aaf66af9e69eae44dede13896",
+  "tool": "Eeschema 10.0.6",
+  "export_date_in_file": "2026-11-11T01:30:07",
+  "components": 174,
+  "named_nets": 105,
+  "unconnected_single_pin_nets": 183
+ },
+ "reference": {
+  "file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/scout/rev2c_mcu_pinmap.json",
+  "sha256": "707c6ae0d43a4f3a6de085a6ec7c239d5eb2ec0c38ed35edaf8951bf0f7ceedc"
+ },
+ "reference_cross_check": {
+  "archived_rev2c_netlist": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/out/vtol_carrier.net",
+  "sha256": "ae997abf2c6995e7366f764b158584716fbf5422b9e32bc325310f64e7c86221",
+  "differences_reference_vs_archived_netlist": []
+ },
+ "pins_compared": 256,
+ "differences": [],
+ "per_chip": {
+  "U1": {
+   "pins": 64,
+   "connected": 23,
+   "no_connect": 41
+  },
+  "U2": {
+   "pins": 64,
+   "connected": 32,
+   "no_connect": 32
+  },
+  "U3": {
+   "pins": 64,
+   "connected": 18,
+   "no_connect": 46
+  },
+  "U4": {
+   "pins": 64,
+   "connected": 17,
+   "no_connect": 47
+  }
+ },
+ "problems": []
+}

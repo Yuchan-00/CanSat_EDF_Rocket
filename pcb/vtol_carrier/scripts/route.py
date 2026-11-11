@@ -55,15 +55,42 @@ import os  # noqa: E402
 
 KICAD = Path(os.environ["CARRIER_KICAD_DIR"]) if os.environ.get("CARRIER_KICAD_DIR") else ROOT / "kicad"
 WORK = KICAD / "work"
-JAR = Path(r"C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/tools_dl/freerouting/freerouting-2.5.0.jar")
+#: Freerouting 2.5.0 jar: environment override FREEROUTING_JAR, else the copy already on this PC
+#: (sha256 f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7, 64,599,107 bytes, measured 2026-11-10;
+#: the hash of the jar actually used is written to kicad/work/route_log.json). Never downloaded by this script.
+JAR = Path(os.environ.get("FREEROUTING_JAR") or
+           r"C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/tools_dl/freerouting/freerouting-2.5.0.jar")
 BOARD = KICAD / "vtol_carrier.kicad_pcb"
+#: kicad-cli used for the DRC-driven clean-up steps: environment KICAD_CLI, else the KiCad 10 install of this PC
+KICAD_CLI = Path(os.environ.get("KICAD_CLI") or r"C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe")
 MIN_W = pcbnew.FromMM(0.127)
 VIA_INFLATE_MM = 0.1
+#: rev 3: nets that build_pcb.power_preroutes wires completely (battery path J14 -> Q10 -> J15 -> L5 with every tap,
+#: and the switch node). They are checked for completeness on the unrouted board and then never handed to
+#: Freerouting as nets: in every DSN they are split into single-pin nets and their copper becomes keep-outs
+#: (keep_nets), and no session wire of theirs is imported. M: as routable nets the 1.0 mm / 0.8 mm-via PowerHigh
+#: class left 5 tap connections open (attempt a1); as fixed wiring of a complete net Freerouting still counted
+#: "VBAT_LOGIC_SW (8 unrouted connections)" (wide tracks / T-junctions) and kept trying in every pass (attempt a2).
+PREROUTED_NETS = ("VBAT_LOGIC_RAW", "VBAT_LOGIC", "VBAT_LOGIC_SW", "BOOST_SW")
+#: rev 3 ECO seed: the recorded rev 2c stage sessions (archive). Nets whose pads are identical on the rev 2c and the
+#: rev 3 unrouted board start with their rev 2c routing wherever kicad-cli DRC finds no conflict with rev 3 copper.
+SEED_DIR = Path(os.environ["CARRIER_SEED_DIR"]) if os.environ.get("CARRIER_SEED_DIR") else \
+    ROOT / "archive" / "rev2c_pololu_1s" / "kicad" / "work"
+#: geometry keys of the copper that was locked before any routing (pre-routes + fan-out): never deleted by a clean-up
+FIXED_KEYS: set = set()
 STITCH_PITCH_MM = 2.5
 
 
 def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
+
+
+def seed_ids(tag: str) -> None:
+    """rev 3: deterministic KIIDs. pcbnew gives every new track / via / text a random KIID and saves some items in
+    KIID order, so two replays of the same sessions used to differ in bytes (rev 2c compared them without uuids).
+    The KIID generator is re-seeded from ``tag`` before every step that creates items (fan-out, each session import,
+    the clean-up / silkscreen), in the live run and in the replay alike."""
+    pcbnew.KIID.SeedGenerator(int(hashlib.sha256(tag.encode("utf-8")).hexdigest()[:8], 16))
 
 
 def export_dsn(board, dsn: Path, keep_bplane: bool = False, allow_in2: bool = False) -> int:
@@ -181,7 +208,9 @@ def _block_end(text: str, start: int) -> int:
 
 
 def _children(block: str, head: str):
-    out, i = [], block.index("(", 1)
+    out, i = [], block.find("(", 1)
+    if i < 0:
+        return out  # rev 3: an empty block, e.g. the (network_out) of a stage whose nets were all seeded
     while True:
         j = block.find("(", i)
         if j < 0:
@@ -262,7 +291,12 @@ def keep_nets(text: str, keep: set[str]) -> str:
             pm = re.search(r"\(path (\S+) ([\d.]+)\s+([^()]*)\)", body)
             if body.startswith("(wire") and pm:
                 wdt = float(pm.group(2)) + 2 * CLEAR_UM
-                keepouts.append(f'(keepout "" (path {pm.group(1)} {wdt:g} {" ".join(pm.group(3).split())}))')
+                pts = pm.group(3).split()
+                keepouts.append(f'(keepout "" (path {pm.group(1)} {wdt:g} {" ".join(pts)}))')
+                # Freerouting ends a path keep-out flat at its end points, the KiCad track has round ends: a GLINK_G2N
+                # via sat 0.0069 mm from a 2.4 mm trunk end (attempt a4, kicad-cli DRC, M) -> a circle at every vertex
+                for k in range(0, len(pts) - 1, 2):
+                    keepouts.append(f'(keepout "" (circle {pm.group(1)} {wdt:g} {pts[k]} {pts[k + 1]}))')
             elif body.startswith("(via"):
                 vm = re.match(r'\(via "Via\[0-\d\]_(\d+):\d+_um"\s+(\S+)\s+(\S+)', body)
                 dia = float(vm.group(1)) + 2 * CLEAR_UM
@@ -343,6 +377,8 @@ def remove_dangling_vias(board) -> list[dict]:
     for v in [t for t in board.GetTracks() if t.GetClass() == "PCB_VIA"]:
         if v.GetNetCode() in zone_nets:
             continue  # a GND via may be fed by the pour on the other layer (stitch), not a stub
+        if _geo_key(v) in FIXED_KEYS:
+            continue  # rev 3: a pre-routed via (wide tracks pass through it, they do not end at its centre)
         p = v.GetPosition()
         layers = {t.GetLayer() for t in tracks if t.GetNetCode() == v.GetNetCode() and (t.GetStart() == p or t.GetEnd() == p)}
         on_pad = any(pad.HitTest(p) for fp in board.GetFootprints() for pad in fp.Pads() if pad.GetNetCode() == v.GetNetCode())
@@ -446,6 +482,7 @@ def add_stitching_vias(board) -> list[list[float]]:
 
 
 def finish(board) -> dict:
+    seed_ids("finish")
     shrunk = shrink_vias(board)
     fixed = fix_neckdowns(board)
     widened = widen_power(board)
@@ -572,7 +609,7 @@ def close_leftovers_step(board) -> list[dict]:
     router (close_leftovers.py: signal nets only, new locked copper only, clearance-checked)."""
     import close_leftovers
 
-    cli = Path(r"C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe")
+    cli = KICAD_CLI
     rep = WORK / "drc_leftovers.json"
     board.Save(str(BOARD))
     subprocess.run([str(cli), "pcb", "drc", "--refill-zones", "--format", "json", "--units", "mm", "-o", str(rep), str(BOARD)],
@@ -588,7 +625,7 @@ def remove_dangling_tracks(board) -> list[dict]:
     """rev 2c (rev-2b review PF-m5): delete the track stubs kicad-cli DRC reports as 'track_dangling' (Freerouting
     leftovers that end nowhere), up to 3 rounds (a removed stub can expose the next one). Only tracks flagged by DRC
     are deleted, never a via."""
-    cli = Path(r"C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe")
+    cli = KICAD_CLI
     rep = WORK / "drc_dangling.json"
     removed = []
     for _round in range(3):
@@ -603,8 +640,8 @@ def remove_dangling_tracks(board) -> list[dict]:
                 continue
             for it in v.get("items", []):
                 t = by_uuid.get(it.get("uuid"))
-                if t is not None and t not in hit:
-                    hit.append(t)
+                if t is not None and t not in hit and _geo_key(t) not in FIXED_KEYS:
+                    hit.append(t)  # rev 3: never a pre-route / fan-out stub
         if not hit:
             break
         for t in hit:
@@ -618,7 +655,7 @@ def fix_small_clearance(board) -> list[dict]:
     """Freerouting leaves a few angled track pieces some um closer to a pad than the class clearance (M: 2 x 0.1213 mm
     against 0.13 mm in the 4-layer run). kicad-cli DRC finds them; a track short by < 0.03 mm is narrowed by twice the
     shortfall + 0.01 mm (never below the board minimum track). Nothing else is moved."""
-    cli = Path(r"C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe")
+    cli = KICAD_CLI
     rep = WORK / "drc_clearance_fix.json"
     subprocess.run([str(cli), "pcb", "drc", "--format", "json", "--units", "mm", "-o", str(rep), str(BOARD)],
                    capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -666,7 +703,9 @@ def run_stage(board, tag: str, nets: set[str], done: set[str], via: str | None, 
     dsn.write_text(text, encoding="utf-8", newline="\n")
     st = freerouting(dsn, ses, passes, threads, tag)
     st.update({"nets_routed_here": len(nets), "via": via or "all", "b_cu_gnd_plane_in_dsn": keep_bplane})
-    ses.write_text(keep_ses_nets(ses.read_text(encoding="utf-8"), nets | done), encoding="utf-8", newline="\n")
+    ses.write_text(keep_ses_nets(ses.read_text(encoding="utf-8"), (nets | done) - set(PREROUTED_NETS)),
+                   encoding="utf-8", newline="\n")
+    seed_ids(f"import:{tag}")
     if not pcbnew.ImportSpecctraSES(board, str(ses)):
         raise SystemExit(f"ImportSpecctraSES ({tag}) failed")
     # imported vias carry the inflated DSN size; back to nominal now, or the next stage exports them inflated and
@@ -700,9 +739,135 @@ def polish(board, fixed: set, passes: int, threads: str) -> dict:
             n_unlocked += 1
     before = unconnected(board)
     done = {str(n) for n in board.GetNetsByName().keys() if str(n) and not str(n).startswith("unconnected-")}
+    done -= set(PREROUTED_NETS)
     st = run_stage(board, "polish", set(), done, None, passes, threads, True)
     st.update({"unconnected_before": before, "items_unlocked": n_unlocked})
     return st
+
+
+def check_prerouted(src: Path) -> dict:
+    """rev 3: the PREROUTED_NETS must be complete on the unrouted board (kicad-cli DRC: no unconnected item of
+    theirs). Anything else means build_pcb.power_preroutes and the placement no longer match -> stop, no guess."""
+    rep = WORK / "drc_unrouted.json"
+    subprocess.run([str(KICAD_CLI), "pcb", "drc", "--format", "json", "--units", "mm", "-o", str(rep), str(src)],
+                   capture_output=True, text=True, encoding="utf-8", errors="replace")
+    d = json.loads(rep.read_text(encoding="utf-8"))
+    bad = []
+    for u in d.get("unconnected_items", []):
+        text = " ; ".join(i.get("description", "") for i in u.get("items", []))
+        if any(n in PREROUTED_NETS for n in re.findall(r"\[([^\]]+)\]", text)):
+            bad.append(text)
+    if bad:
+        raise SystemExit("pre-routed nets are not complete on the unrouted board:\n  " + "\n  ".join(bad))
+    return {"nets": list(PREROUTED_NETS), "open_connections": 0, "tool": "kicad-cli pcb drc (unconnected items)"}
+
+
+def _pad_sets(board) -> dict[str, frozenset]:
+    out: dict[str, set] = {}
+    for fp in board.GetFootprints():
+        for p in fp.Pads():
+            n = p.GetNetname()
+            if n and not n.startswith("unconnected-"):
+                sz = p.GetBoundingBox()
+                out.setdefault(n, set()).add((fp.GetReference(), p.GetNumber(), p.GetPosition().x // 1000,
+                                              p.GetPosition().y // 1000, sz.GetWidth() // 1000, sz.GetHeight() // 1000))
+    return {k: frozenset(v) for k, v in out.items()}
+
+
+def _seed_session(text: str, keep: set[str]) -> str:
+    """A recorded session reduced to the routes of ``keep`` and WITHOUT component placement (ImportSpecctraSES would
+    move every footprint to the position recorded in the session - the rev 2c one)."""
+    a = text.index("(placement")
+    b = _block_end(text, a)
+    text = text[:a] + "(placement\n    (resolution um 10)\n  )" + text[b:]
+    return keep_ses_nets(text, keep)
+
+
+#: DRC findings that are no conflict of a seeded route with the rev 3 board
+SEED_IGNORE = {"track_dangling", "via_dangling", "unconnected_items"}
+
+
+def eco_seed(board, src: Path) -> tuple[dict, list[list[str]]]:
+    """rev 3 ECO seed. 274 of the 288 rev 3 nets have exactly the pads they had on rev 2c (M, same references, pad
+    numbers, positions and pad boxes on the two unrouted boards), and the rev 2c board routed completely. Those nets
+    are imported from the recorded rev 2c stage sessions; kicad-cli DRC (project rules, zones refilled) on a scratch
+    copy then removes every seeded net that conflicts with anything on the rev 3 board (new parts, pre-routes,
+    fan-out) - whole nets, repeated until no conflict is left - and only the survivors are imported on the real
+    board. Removed and changed nets are routed by the normal stages. Clearance shortfalls < 0.03 mm are left to
+    fix_small_clearance as on rev 2c. No rule is touched: the seed is ordinary locked copper for all later steps and
+    the final board is judged by kicad-cli DRC like any other. The seed sessions written here (kicad/work/
+    seed_<stage>.ses) are replay stages, so ``--reuse-ses`` reproduces them."""
+    rp = json.loads((SEED_DIR / "ses_replay.json").read_text(encoding="utf-8"))
+    old = pcbnew.LoadBoard(str(SEED_DIR / "vtol_carrier_unrouted.kicad_pcb"))
+    a, b = _pad_sets(old), _pad_sets(board)
+    seed = {n for n in b if a.get(n) == b[n]} - set(PREROUTED_NETS)
+    log: dict = {"source": str(SEED_DIR.relative_to(ROOT)).replace("\\", "/") if ROOT in SEED_DIR.parents else str(SEED_DIR),
+                 "source_stages": rp["stages"], "nets_on_board": len(b), "nets_with_identical_pads": len(seed),
+                 "changed_or_new_nets": sorted(set(b) - seed - set(PREROUTED_NETS)), "rounds": [], "removed": {}}
+    texts = {tag: (SEED_DIR / name).read_text(encoding="utf-8") for tag, name in rp["stages"]}
+    base = WORK / "seed_base.kicad_pcb"
+    board.Save(str(base))
+    trial_path = WORK / "seed_try.kicad_pcb"
+    shutil.copyfile(KICAD / "vtol_carrier.kicad_pro", WORK / "seed_try.kicad_pro")
+    trial = pcbnew.LoadBoard(str(base))
+    fixed = fixed_copper(trial)
+    for tag, _name in rp["stages"]:
+        p = WORK / f"seed_{tag}.ses"
+        p.write_text(_seed_session(texts[tag], seed), encoding="utf-8", newline="\n")
+        if not pcbnew.ImportSpecctraSES(trial, str(p)):
+            raise SystemExit(f"ImportSpecctraSES seed_{tag} failed")
+        shrink_vias(trial)
+        lock_all(trial)
+    rep = WORK / "drc_seed.json"
+    for rnd in range(12):
+        trial.Save(str(trial_path))
+        subprocess.run([str(KICAD_CLI), "pcb", "drc", "--severity-all", "--refill-zones", "--format", "json", "--units",
+                        "mm", "-o", str(rep), str(trial_path)], capture_output=True, text=True, encoding="utf-8",
+                       errors="replace")
+        d = json.loads(rep.read_text(encoding="utf-8"))
+        seeded = {t.m_Uuid.AsString(): t for t in trial.GetTracks() if _geo_key(t) not in fixed}
+        drop: dict[str, str] = {}
+        small = 0
+        for v in d.get("violations", []):
+            if v.get("type") in SEED_IGNORE:
+                continue
+            hit = [seeded[i.get("uuid")] for i in v.get("items", []) if i.get("uuid") in seeded]
+            if not hit:
+                continue
+            if v.get("type") == "clearance":
+                nums = re.findall(r"([\d.]+) mm", v.get("description", ""))
+                if len(nums) >= 2 and 0 < float(nums[0]) - float(nums[1]) < 0.03:
+                    small += 1
+                    continue
+            for t in hit:
+                drop.setdefault(t.GetNetname(), v.get("type"))
+        log["rounds"].append({"round": rnd, "violations": len(d.get("violations", [])), "small_clearance_left_to_fix": small,
+                              "nets_removed": sorted(drop)})
+        if not drop:
+            break
+        for t in [t for t in trial.GetTracks() if t.GetNetname() in drop and _geo_key(t) not in fixed]:
+            trial.Delete(t)
+        seed -= set(drop)
+        log["removed"].update(drop)
+    else:
+        raise SystemExit("eco_seed: conflicts did not converge in 12 rounds")
+    del trial, old
+    for f in list(WORK.glob("seed_base.*")) + list(WORK.glob("seed_try.*")) + list(WORK.glob("~seed_*.lck")):
+        f.unlink()  # scratch boards of the conflict search (the report drc_seed.json stays as evidence)
+    stages = []
+    for tag, _name in rp["stages"]:
+        p = WORK / f"seed_{tag}.ses"
+        p.write_text(_seed_session(texts[tag], seed), encoding="utf-8", newline="\n")
+        seed_ids(f"import:seed_{tag}")
+        if not pcbnew.ImportSpecctraSES(board, str(p)):
+            raise SystemExit(f"ImportSpecctraSES seed_{tag} failed")
+        shrink_vias(board)
+        lock_all(board)
+        stages.append([f"seed_{tag}", p.name])
+    log.update({"nets_seeded": len(seed), "nets_removed_for_conflicts": len(log["removed"]),
+                "unconnected_after_seed_and_fill": unconnected(board),
+                "ses_sha256": {name: sha(WORK / name) for _t, name in stages}})
+    return log, stages
 
 
 def main() -> int:
@@ -713,6 +878,7 @@ def main() -> int:
     src = WORK / "vtol_carrier_unrouted.kicad_pcb"
     shutil.copyfile(src, BOARD)
     board = pcbnew.LoadBoard(str(BOARD))
+    seed_ids("start")
     final_ses = WORK / "vtol_carrier.ses"
     replay_path = WORK / "ses_replay.json"
     if reuse:
@@ -722,15 +888,25 @@ def main() -> int:
         if not replay_path.exists():
             raise SystemExit("--reuse-ses: no kicad/work/ses_replay.json")
         rp = json.loads(replay_path.read_text(encoding="utf-8"))
+        if rp.get("unrouted_board_sha256") and rp["unrouted_board_sha256"] != sha(src):
+            # rev 3: sessions recorded on another placement / pre-route set must never be laid over this board
+            raise SystemExit(f"--reuse-ses: the sessions were recorded on unrouted board {rp['unrouted_board_sha256']}, "
+                             f"this one is {sha(src)} - a fresh live route is needed")
         res = {"mode": "replay of the recorded Freerouting sessions", "replay": rp, "ses_sha256": {}}
         if rp.get("fanout"):
             import fanout
 
             res["fanout"] = fanout.run(board)
         fixed = fixed_copper(board)  # pre-routes + fan-out (locked before any Freerouting stage)
+        FIXED_KEYS.update(fixed)
         for tag, name in rp["stages"]:
             p = WORK / name
             res["ses_sha256"][name] = sha(p)
+            if tag.startswith("polish"):  # a polish session replaces every route that is not fixed copper
+                for t in board.GetTracks():
+                    if _geo_key(t) not in fixed and t.IsLocked():
+                        t.SetLocked(False)
+            seed_ids(f"import:{tag}")
             if not pcbnew.ImportSpecctraSES(board, str(p)):
                 raise SystemExit(f"ImportSpecctraSES {name} failed")
             shrink_vias(board)
@@ -756,6 +932,12 @@ def main() -> int:
         import fanout
 
         log["fanout"] = fanout.run(board)  # GND / +5V pads -> vias to In1 / In2 first, locked (fanout.py)
+    FIXED_KEYS.update(fixed_copper(board))
+    log["prerouted"] = check_prerouted(src)
+    all_nets -= set(PREROUTED_NETS)
+    seed_stages: list[list[str]] = []
+    if os.environ.get("CARRIER_SEED", "1") != "0":
+        log["eco_seed"], seed_stages = eco_seed(board, src)
     # ORDER: "power_first" (rev-1 / 2-layer practice: servo, power_high, power, signals, GND) or "rest_together"
     # (4-layer: servo + power_high first, then every other net incl. the GND fan-out to the In1.Cu plane in ONE
     # Freerouting run - M: power_first on 4 layers left 31 power + 148 signal connections open, the 0.5 mm +5V / +3V3
@@ -765,7 +947,9 @@ def main() -> int:
     plane_via = None if layers == 2 else "Via[0-3]_600:300_um"
     stages = power_stages(layers) if order == "power_first" else power_stages(layers)[:2]
     for tag, pat, via in stages:
-        nets = stage_nets(board, pat)
+        nets = stage_nets(board, pat) - set(PREROUTED_NETS)
+        if not nets:
+            continue  # rev 3: power_high holds only pre-routed nets
         log["stages"][tag] = run_stage(board, tag, nets, done, via, 20, threads, False)
         done |= nets
         last = tag
@@ -788,7 +972,8 @@ def main() -> int:
         last = "complete"
     shutil.copyfile(WORK / f"vtol_carrier_{last}.ses", final_ses)
     log["final_session"] = f"vtol_carrier_{last}.ses"
-    replay = {"fanout": "fanout" in log, "stages": [[t, log["stages"][t]["ses"]] for t in log["stages"]]}
+    replay = {"fanout": "fanout" in log, "stages": seed_stages + [[t, log["stages"][t]["ses"]] for t in log["stages"]],
+              "unrouted_board_sha256": log["unrouted_board_sha256"]}
     replay_path.write_text(json.dumps(replay, indent=1) + "\n", encoding="utf-8", newline="\n")
     log["replay"] = replay
     log.update(finish(board))

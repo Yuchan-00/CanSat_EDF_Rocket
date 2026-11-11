@@ -1,0 +1,1739 @@
+{
+ "schema": "vtol_carrier.fit_checks/1",
+ "board": "kicad/work/vtol_carrier_unrouted.kicad_pcb",
+ "board_sha256": "c9b0cf755488c718f6de943489d0c353452751bc2fec453fb1fbd79b6c4cceb3",
+ "placement_sha256": "8cb73c2e7aff7c7f2369aa10c3b507f8a2cbc9a5a9fbe9c95cf48f640256dd02",
+ "module_dimensions_sha256": "40d59de412501d88cf2bad976145d006efe22f416afe23d556c44c15ac6a17dd",
+ "tool": "pcbnew 10.0.6",
+ "labels": "positions M (board file); part heights A (kicad/placement.json part_heights_mm); module dimensions F / A as tagged; no hardware measurement",
+ "errors": [],
+ "mcu_access": {
+  "method": "gap between the MCU pad bounding box and the neighbour's F.Fab bounding box (same as the rev 2c review)",
+  "label": "M",
+  "per_mcu": {
+   "U1": {
+    "pad_ring_bbox": [
+     108.2,
+     112.6,
+     125.0,
+     129.4
+    ],
+    "rev2c_all_footprints_within_1mm": 14,
+    "all_footprints_within_1mm": 14,
+    "fitted_parts_within_1mm": 14,
+    "fitted_within_1mm": [
+     [
+      "L1",
+      0.0,
+      1.0
+     ],
+     [
+      "R1",
+      0.0,
+      0.55
+     ],
+     [
+      "R44",
+      0.0,
+      0.55
+     ],
+     [
+      "C8",
+      0.05,
+      0.9
+     ],
+     [
+      "C1",
+      0.41,
+      0.55
+     ],
+     [
+      "C2",
+      0.41,
+      0.55
+     ],
+     [
+      "C4",
+      0.41,
+      0.55
+     ],
+     [
+      "R2",
+      0.54,
+      0.55
+     ],
+     [
+      "R42",
+      0.54,
+      0.55
+     ],
+     [
+      "R66",
+      0.54,
+      0.55
+     ],
+     [
+      "C5",
+      0.55,
+      0.9
+     ],
+     [
+      "C59",
+      0.55,
+      0.9
+     ],
+     [
+      "R63",
+      0.72,
+      0.55
+     ],
+     [
+      "C3",
+      0.95,
+      1.35
+     ]
+    ],
+    "unfitted_within_1mm": [],
+    "fitted_parts_higher_than_2mm_within_5mm": [
+     [
+      "J1",
+      1.98,
+      8.6,
+      "PinHeader_1x08_P2.54mm_Vertical"
+     ]
+    ],
+    "worse_than_rev2c": false
+   },
+   "U2": {
+    "pad_ring_bbox": [
+     104.4,
+     89.35,
+     121.2,
+     106.15
+    ],
+    "rev2c_all_footprints_within_1mm": 15,
+    "all_footprints_within_1mm": 14,
+    "fitted_parts_within_1mm": 14,
+    "fitted_within_1mm": [
+     [
+      "Q2",
+      0.0,
+      1.1
+     ],
+     [
+      "R3",
+      0.0,
+      0.55
+     ],
+     [
+      "C16",
+      0.15,
+      0.9
+     ],
+     [
+      "C10",
+      0.41,
+      0.55
+     ],
+     [
+      "C12",
+      0.41,
+      0.55
+     ],
+     [
+      "C9",
+      0.41,
+      0.55
+     ],
+     [
+      "R4",
+      0.59,
+      0.55
+     ],
+     [
+      "C46",
+      0.6,
+      0.9
+     ],
+     [
+      "J5",
+      0.73,
+      5.9
+     ],
+     [
+      "R50",
+      0.81,
+      0.55
+     ],
+     [
+      "C11",
+      0.9,
+      1.35
+     ],
+     [
+      "D2",
+      0.9,
+      0.8
+     ],
+     [
+      "R16",
+      0.9,
+      0.55
+     ],
+     [
+      "C48",
+      0.95,
+      0.9
+     ]
+    ],
+    "unfitted_within_1mm": [],
+    "fitted_parts_higher_than_2mm_within_5mm": [
+     [
+      "J5",
+      0.73,
+      5.9,
+      "PinSocket_1x06_P2.54mm_Horizontal"
+     ],
+     [
+      "C47",
+      2.5,
+      5.4,
+      "CP_Elec_6.3x5.4"
+     ]
+    ],
+    "worse_than_rev2c": false
+   },
+   "U3": {
+    "pad_ring_bbox": [
+     77.45,
+     95.05,
+     94.25,
+     111.85
+    ],
+    "rev2c_all_footprints_within_1mm": 20,
+    "all_footprints_within_1mm": 20,
+    "fitted_parts_within_1mm": 20,
+    "fitted_within_1mm": [
+     [
+      "C24",
+      0.0,
+      0.9
+     ],
+     [
+      "D3",
+      0.0,
+      0.8
+     ],
+     [
+      "L3",
+      0.0,
+      1.0
+     ],
+     [
+      "R49",
+      0.0,
+      0.55
+     ],
+     [
+      "R18",
+      0.19,
+      0.55
+     ],
+     [
+      "C17",
+      0.41,
+      0.55
+     ],
+     [
+      "C18",
+      0.41,
+      0.55
+     ],
+     [
+      "C20",
+      0.41,
+      0.55
+     ],
+     [
+      "Q4",
+      0.45,
+      1.1
+     ],
+     [
+      "R36",
+      0.5,
+      0.55
+     ],
+     [
+      "R20",
+      0.59,
+      0.55
+     ],
+     [
+      "R25",
+      0.59,
+      0.55
+     ],
+     [
+      "R27",
+      0.59,
+      0.55
+     ],
+     [
+      "R38",
+      0.59,
+      0.55
+     ],
+     [
+      "R51",
+      0.59,
+      0.55
+     ],
+     [
+      "R55",
+      0.59,
+      0.55
+     ],
+     [
+      "R57",
+      0.59,
+      0.55
+     ],
+     [
+      "C21",
+      0.6,
+      0.9
+     ],
+     [
+      "R5",
+      0.69,
+      0.55
+     ],
+     [
+      "C19",
+      0.9,
+      1.35
+     ]
+    ],
+    "unfitted_within_1mm": [],
+    "fitted_parts_higher_than_2mm_within_5mm": [
+     [
+      "C52",
+      1.6,
+      2.1,
+      "CP_EIA-3528-21_Kemet-B"
+     ],
+     [
+      "J10",
+      4.28,
+      3.0,
+      "PinHeader_1x03_P2.54mm_Horizontal"
+     ],
+     [
+      "J11",
+      4.28,
+      3.0,
+      "PinHeader_1x03_P2.54mm_Horizontal"
+     ],
+     [
+      "J9",
+      4.33,
+      3.0,
+      "PinHeader_1x03_P2.54mm_Horizontal"
+     ],
+     [
+      "J18",
+      4.34,
+      3.0,
+      "PinHeader_1x04_P2.54mm_Horizontal"
+     ]
+    ],
+    "worse_than_rev2c": false
+   },
+   "U4": {
+    "pad_ring_bbox": [
+     77.45,
+     117.7,
+     94.25,
+     134.5
+    ],
+    "rev2c_all_footprints_within_1mm": 14,
+    "all_footprints_within_1mm": 15,
+    "fitted_parts_within_1mm": 15,
+    "fitted_within_1mm": [
+     [
+      "D4",
+      0.0,
+      0.8
+     ],
+     [
+      "L4",
+      0.0,
+      1.0
+     ],
+     [
+      "R7",
+      0.14,
+      0.55
+     ],
+     [
+      "C25",
+      0.41,
+      0.55
+     ],
+     [
+      "C26",
+      0.41,
+      0.55
+     ],
+     [
+      "C28",
+      0.41,
+      0.55
+     ],
+     [
+      "C32",
+      0.55,
+      0.9
+     ],
+     [
+      "C27",
+      0.58,
+      1.35
+     ],
+     [
+      "R8",
+      0.59,
+      0.55
+     ],
+     [
+      "C29",
+      0.6,
+      0.9
+     ],
+     [
+      "R62",
+      0.84,
+      0.55
+     ],
+     [
+      "Y3",
+      0.93,
+      0.9
+     ],
+     [
+      "R6",
+      0.94,
+      0.55
+     ],
+     [
+      "C44",
+      0.97,
+      1.35
+     ],
+     [
+      "R59",
+      0.99,
+      0.55
+     ]
+    ],
+    "unfitted_within_1mm": [],
+    "fitted_parts_higher_than_2mm_within_5mm": [
+     [
+      "J18",
+      4.28,
+      3.0,
+      "PinHeader_1x04_P2.54mm_Horizontal"
+     ]
+    ],
+    "worse_than_rev2c": true
+   }
+  }
+ },
+ "module_keepouts": {
+  "clearance_min_mm": 0.5,
+  "status": "A / NOT_VERIFIED",
+  "collisions_under_stated_assumptions": [],
+  "modules": {
+   "J5_openlog": {
+    "module": "SparkFun OpenLog DEV-13712; coordinates are Eagle board coordinates (x 0..15.24 along the header edge, y 0..19.05, top = ATmega328 side)",
+    "socket": "J5",
+    "label": "A / NOT_VERIFIED (module not measured; assumed dimensions in the chain)",
+    "rev2c_reserved_rect_kicad": [
+     121.6,
+     99.55,
+     137.6,
+     118.55
+    ],
+    "zones": [
+     {
+      "zone": "OpenLog PCB, plugged",
+      "rect_kicad": [
+       121.98,
+       101.76,
+       137.22,
+       120.81
+      ],
+      "underside_z_mm": 2.5,
+      "underside_note": "underside of the bare module PCB (ATmega side faces the carrier)",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A), openlog.pcb_w=19.05(F), openlog.pcb_l=15.24(F), openlog.header_row_y=1.27(F), openlog.pcb_t=0.8(F), openlog.tqfp32_h_max=1.2(A), openlog.face_up=microsd(F)",
+      "parts_under": [
+       {
+        "ref": "C48",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "keep",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.4
+       },
+       {
+        "ref": "C6",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "Q2",
+        "footprint": "SOT-23",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.1,
+        "overlap_mm2": 0.87,
+        "how": "keep",
+        "clearance_mm": 1.4,
+        "clearance_conservative_mm": 0.2
+       },
+       {
+        "ref": "R2",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "R29",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "auto",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "R43",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "auto",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "R44",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "R45",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "auto",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "R46",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "auto",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "R68",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.31,
+        "how": "auto",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "U1",
+        "footprint": "TQFP-64_14x14mm_P0.8mm",
+        "fit": "jlc_optional",
+        "fitted": true,
+        "height_mm": 1.2,
+        "overlap_mm2": 11.46,
+        "how": "anchor",
+        "clearance_mm": 1.3,
+        "clearance_conservative_mm": 0.1
+       },
+       {
+        "ref": "Y1",
+        "footprint": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 2.34,
+        "how": "cluster",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.4
+       }
+      ],
+      "min_clearance_mm": 1.3,
+      "below_clearance_min": [],
+      "collisions": [],
+      "conservative_underside_z_mm": 1.3,
+      "conservative_note": "whole underside lowered by openlog.tqfp32_h_max (the module's own parts hang below its PCB)",
+      "min_clearance_conservative_mm": 0.1,
+      "below_clearance_min_conservative": [
+       [
+        "C48",
+        0.9,
+        0.4
+       ],
+       [
+        "Q2",
+        1.1,
+        0.2
+       ],
+       [
+        "U1",
+        1.2,
+        0.1
+       ],
+       [
+        "Y1",
+        0.9,
+        0.4
+       ]
+      ]
+     },
+     {
+      "zone": "OpenLog ATmega328 TQFP-32 (both mirror cases)",
+      "rect_kicad": [
+       124.592,
+       107.42,
+       134.608,
+       116.42
+      ],
+      "underside_z_mm": 1.3,
+      "underside_note": "underside of the module's TQFP-32 incl. leads, 9 x 9 mm (A)",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A), openlog.pcb_w=19.05(F), openlog.pcb_l=15.24(F), openlog.header_row_y=1.27(F), openlog.pcb_t=0.8(F), openlog.tqfp32_h_max=1.2(A), openlog.face_up=microsd(F), openlog.top_parts={'U1_atmega328_tqfp32': [7.112, 10.16], 'U2_ldo_sot23_5': [12.73, 5.08], 'Q1_resonator': [13.81, 11.89], 'D3_led_green': [1.86, 15.81], 'D1_led_blue': [13.36, 15.8], 'C4': [14.05, 8.51], 'R2': [1.27, 8.255], 'C3': [1.27, 11.43], 'C2': [1.27, 5.08], 'C1': [12.83, 8.51], 'R6': [1.84, 14.45], 'R1': [13.38, 14.51]}(F)",
+      "parts_under": [],
+      "min_clearance_mm": null,
+      "below_clearance_min": [],
+      "collisions": []
+     },
+     {
+      "zone": "right-angle header plastic of the module (rests on the carrier)",
+      "rect_kicad": [
+       121.98,
+       99.03,
+       137.22,
+       101.53
+      ],
+      "underside_z_mm": 0.0,
+      "underside_note": "plastic bar z 0..2.5 mm: no part may stand here",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A)",
+      "parts_under": [],
+      "min_clearance_mm": null,
+      "below_clearance_min": [],
+      "collisions": []
+     },
+     {
+      "zone": "insertion stroke beyond the plugged PCB end",
+      "rect_kicad": [
+       121.98,
+       120.81,
+       137.22,
+       126.81
+      ],
+      "underside_z_mm": 2.5,
+      "underside_note": "the far PCB end passes here while plugging (horizontal insertion, stroke = mating pin length)",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A), openlog.pcb_w=19.05(F), openlog.pcb_l=15.24(F), openlog.header_row_y=1.27(F), openlog.pcb_t=0.8(F), openlog.tqfp32_h_max=1.2(A), openlog.face_up=microsd(F)",
+      "parts_under": [
+       {
+        "ref": "C1",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "C3",
+        "footprint": "C_0805_2012Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.35,
+        "overlap_mm2": 2.84,
+        "how": "keep",
+        "clearance_mm": 1.15,
+        "clearance_conservative_mm": -0.05
+       },
+       {
+        "ref": "C7",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "D1",
+        "footprint": "LED_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.8,
+        "overlap_mm2": 1.53,
+        "how": "moved",
+        "clearance_mm": 1.7,
+        "clearance_conservative_mm": 0.5
+       },
+       {
+        "ref": "R68",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.26,
+        "how": "auto",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.75
+       },
+       {
+        "ref": "U1",
+        "footprint": "TQFP-64_14x14mm_P0.8mm",
+        "fit": "jlc_optional",
+        "fitted": true,
+        "height_mm": 1.2,
+        "overlap_mm2": 10.02,
+        "how": "anchor",
+        "clearance_mm": 1.3,
+        "clearance_conservative_mm": 0.1
+       },
+       {
+        "ref": "U6",
+        "footprint": "SOT-223-3_TabPin2",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.8,
+        "overlap_mm2": 20.1,
+        "how": "power",
+        "clearance_mm": 0.7,
+        "clearance_conservative_mm": -0.5
+       },
+       {
+        "ref": "Y1",
+        "footprint": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 6.24,
+        "how": "cluster",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.4
+       }
+      ],
+      "min_clearance_mm": 0.7,
+      "below_clearance_min": [],
+      "collisions": [],
+      "conservative_underside_z_mm": 1.3,
+      "conservative_note": "whole underside lowered by openlog.tqfp32_h_max",
+      "min_clearance_conservative_mm": -0.5,
+      "below_clearance_min_conservative": [
+       [
+        "C3",
+        1.35,
+        -0.05
+       ],
+       [
+        "U1",
+        1.2,
+        0.1
+       ],
+       [
+        "U6",
+        1.8,
+        -0.5
+       ],
+       [
+        "Y1",
+        0.9,
+        0.4
+       ]
+      ]
+     },
+     {
+      "zone": "microSD card overhang beyond the PCB end",
+      "rect_kicad": [
+       121.98,
+       120.81,
+       137.22,
+       125.89
+      ],
+      "underside_z_mm": 3.3,
+      "underside_note": "card lies on the top side of the module: underside = module PCB top; full PCB width taken (card side offset not used)",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A), openlog.pcb_w=19.05(F), openlog.pcb_l=15.24(F), openlog.header_row_y=1.27(F), openlog.pcb_t=0.8(F), openlog.tqfp32_h_max=1.2(A), openlog.face_up=microsd(F), openlog.microsd_drawing_end_y=24.13(F)",
+      "parts_under": [
+       {
+        "ref": "C1",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 2.75
+       },
+       {
+        "ref": "C3",
+        "footprint": "C_0805_2012Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.35,
+        "overlap_mm2": 1.19,
+        "how": "keep",
+        "clearance_mm": 1.95
+       },
+       {
+        "ref": "C7",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 2.75
+       },
+       {
+        "ref": "D1",
+        "footprint": "LED_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.8,
+        "overlap_mm2": 1.12,
+        "how": "moved",
+        "clearance_mm": 2.5
+       },
+       {
+        "ref": "R68",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.26,
+        "how": "auto",
+        "clearance_mm": 2.75
+       },
+       {
+        "ref": "U1",
+        "footprint": "TQFP-64_14x14mm_P0.8mm",
+        "fit": "jlc_optional",
+        "fitted": true,
+        "height_mm": 1.2,
+        "overlap_mm2": 8.48,
+        "how": "anchor",
+        "clearance_mm": 2.1
+       },
+       {
+        "ref": "U6",
+        "footprint": "SOT-223-3_TabPin2",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.8,
+        "overlap_mm2": 14.06,
+        "how": "power",
+        "clearance_mm": 1.5
+       },
+       {
+        "ref": "Y1",
+        "footprint": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 6.24,
+        "how": "cluster",
+        "clearance_mm": 2.4
+       }
+      ],
+      "min_clearance_mm": 1.5,
+      "below_clearance_min": [],
+      "collisions": []
+     }
+    ]
+   },
+   "J2_bmp280": {
+    "module": "BMP280 module TYE-BMP29 (devicemart 15442588), taken as a GY-BMP280-3.3 board",
+    "socket": "J2",
+    "label": "A / NOT_VERIFIED (module not measured; assumed dimensions in the chain)",
+    "rev2c_reserved_rect_kicad": [
+     103.58,
+     77.55,
+     118.78,
+     89.05
+    ],
+    "zones": [
+     {
+      "zone": "BMP280 PCB, plugged",
+      "rect_kicad": [
+       103.68,
+       79.73,
+       118.68,
+       91.23
+      ],
+      "underside_z_mm": 2.5,
+      "underside_note": "underside of the bare module PCB",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A), bmp280.pcb_w=11.5(F), bmp280.pcb_l=15.0(F), bmp280.header_row_inset=1.3(A), bmp280.part_h_max=1.0(A), bmp280.face_up=back(A)",
+      "parts_under": [
+       {
+        "ref": "C10",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "C12",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "C13",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "cluster",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.6
+       },
+       {
+        "ref": "C46",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "keep",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.6
+       },
+       {
+        "ref": "C49",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "keep",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.6
+       },
+       {
+        "ref": "C50",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "keep",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.6
+       },
+       {
+        "ref": "C51",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "keep",
+        "clearance_mm": 1.6,
+        "clearance_conservative_mm": 0.6
+       },
+       {
+        "ref": "L2",
+        "footprint": "L_0805_2012Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.0,
+        "overlap_mm2": 2.1,
+        "how": "cluster",
+        "clearance_mm": 1.5,
+        "clearance_conservative_mm": 0.5
+       },
+       {
+        "ref": "Q8",
+        "footprint": "SOT-23",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.1,
+        "overlap_mm2": 4.2,
+        "how": "keep",
+        "clearance_mm": 1.4,
+        "clearance_conservative_mm": 0.4
+       },
+       {
+        "ref": "R16",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R21",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R23",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R33",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R35",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R37",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R40",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R41",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.58,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R50",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.99,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R54",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.99,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "R56",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.99,
+        "how": "keep",
+        "clearance_mm": 1.95,
+        "clearance_conservative_mm": 0.95
+       },
+       {
+        "ref": "U2",
+        "footprint": "TQFP-64_14x14mm_P0.8mm",
+        "fit": "jlc_optional",
+        "fitted": true,
+        "height_mm": 1.2,
+        "overlap_mm2": 6.85,
+        "how": "anchor",
+        "clearance_mm": 1.3,
+        "clearance_conservative_mm": 0.3
+       }
+      ],
+      "min_clearance_mm": 1.3,
+      "below_clearance_min": [],
+      "collisions": [],
+      "conservative_underside_z_mm": 1.5,
+      "conservative_note": "whole underside lowered by bmp280.part_h_max (component side toward the carrier, A)",
+      "min_clearance_conservative_mm": 0.3,
+      "below_clearance_min_conservative": [
+       [
+        "Q8",
+        1.1,
+        0.4
+       ],
+       [
+        "U2",
+        1.2,
+        0.3
+       ]
+      ]
+     },
+     {
+      "zone": "right-angle header plastic of the module (rests on the carrier)",
+      "rect_kicad": [
+       103.68,
+       77.03,
+       118.68,
+       79.53
+      ],
+      "underside_z_mm": 0.0,
+      "underside_note": "plastic bar z 0..2.5 mm: no part may stand here",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A)",
+      "parts_under": [],
+      "min_clearance_mm": null,
+      "below_clearance_min": [],
+      "collisions": []
+     },
+     {
+      "zone": "insertion stroke beyond the plugged PCB end",
+      "rect_kicad": [
+       103.68,
+       91.23,
+       118.68,
+       97.23
+      ],
+      "underside_z_mm": 2.5,
+      "underside_note": "the far PCB end passes here while plugging",
+      "tags": "socket_j2_j5.opening_x=-10.03(F), pin_strip_2p54.ra_plastic=2.5(A), pin_strip_2p54.ra_hole_to_plastic=1.5(A), socket_j2_j5.contact_axis_z=1.25(A), pin_strip_2p54.ra_mating_pin_len=6.0(A), bmp280.pcb_w=11.5(F), bmp280.pcb_l=15.0(F), bmp280.header_row_inset=1.3(A), bmp280.part_h_max=1.0(A), bmp280.face_up=back(A)",
+      "parts_under": [
+       {
+        "ref": "U2",
+        "footprint": "TQFP-64_14x14mm_P0.8mm",
+        "fit": "jlc_optional",
+        "fitted": true,
+        "height_mm": 1.2,
+        "overlap_mm2": 77.58,
+        "how": "anchor",
+        "clearance_mm": 1.3,
+        "clearance_conservative_mm": 0.3
+       }
+      ],
+      "min_clearance_mm": 1.3,
+      "below_clearance_min": [],
+      "collisions": [],
+      "conservative_underside_z_mm": 1.5,
+      "conservative_note": "whole underside lowered by bmp280.part_h_max",
+      "min_clearance_conservative_mm": 0.3,
+      "below_clearance_min_conservative": [
+       [
+        "U2",
+        1.2,
+        0.3
+       ]
+      ]
+     }
+    ]
+   },
+   "J1_gy521": {
+    "module": "GY-521 MPU-6050 module (SZH-EK007, devicemart 1247052)",
+    "socket": "J1",
+    "label": "A / NOT_VERIFIED (module not measured; every dimension assumed)",
+    "rev2c_reserved_rect_kicad": [
+     103.6,
+     113.39,
+     120.0,
+     134.59
+    ],
+    "zones": [
+     {
+      "zone": "GY-521 PCB on its straight strip",
+      "rect_kicad": [
+       103.6,
+       113.39,
+       120.0,
+       134.59
+      ],
+      "underside_z_mm": 2.54,
+      "underside_note": "underside of the module PCB (component side up; strip solder joints not modelled)",
+      "tags": "gy521.pcb_w=16.4(A), gy521.pcb_l=21.2(A), gy521.header_row_inset=1.3(A), pin_strip_2p54.straight_plastic_h=2.54(A), mounting.J1.body_side=+x(A)",
+      "parts_under": [
+       {
+        "ref": "C2",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 1.99
+       },
+       {
+        "ref": "C4",
+        "footprint": "C_0402_1005Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 0.66,
+        "how": "cluster",
+        "clearance_mm": 1.99
+       },
+       {
+        "ref": "C5",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "keep",
+        "clearance_mm": 1.64
+       },
+       {
+        "ref": "C59",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 0.85,
+        "how": "power",
+        "clearance_mm": 1.64
+       },
+       {
+        "ref": "C60",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 1.53,
+        "how": "power",
+        "clearance_mm": 1.64
+       },
+       {
+        "ref": "C8",
+        "footprint": "C_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.9,
+        "overlap_mm2": 0.32,
+        "how": "keep",
+        "clearance_mm": 1.64
+       },
+       {
+        "ref": "L1",
+        "footprint": "L_0805_2012Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.0,
+        "overlap_mm2": 2.1,
+        "how": "keep",
+        "clearance_mm": 1.54
+       },
+       {
+        "ref": "Q3",
+        "footprint": "SOT-23",
+        "fit": "none",
+        "fitted": false,
+        "height_mm": 0.0,
+        "overlap_mm2": 4.2,
+        "how": "keep",
+        "clearance_mm": 2.54
+       },
+       {
+        "ref": "R47",
+        "footprint": "R_0603_1608Metric",
+        "fit": "none",
+        "fitted": false,
+        "height_mm": 0.0,
+        "overlap_mm2": 1.57,
+        "how": "keep",
+        "clearance_mm": 2.54
+       },
+       {
+        "ref": "R65",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "power",
+        "clearance_mm": 1.99
+       },
+       {
+        "ref": "R66",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "power",
+        "clearance_mm": 1.99
+       },
+       {
+        "ref": "R67",
+        "footprint": "R_0603_1608Metric",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 0.55,
+        "overlap_mm2": 1.57,
+        "how": "power",
+        "clearance_mm": 1.99
+       },
+       {
+        "ref": "U1",
+        "footprint": "TQFP-64_14x14mm_P0.8mm",
+        "fit": "jlc_optional",
+        "fitted": true,
+        "height_mm": 1.2,
+        "overlap_mm2": 147.34,
+        "how": "anchor",
+        "clearance_mm": 1.34
+       },
+       {
+        "ref": "U9",
+        "footprint": "SOT-23-6",
+        "fit": "jlc",
+        "fitted": true,
+        "height_mm": 1.45,
+        "overlap_mm2": 5.1,
+        "how": "power",
+        "clearance_mm": 1.09
+       }
+      ],
+      "min_clearance_mm": 1.09,
+      "below_clearance_min": [],
+      "collisions": []
+     }
+    ]
+   }
+  }
+ },
+ "tht_leads": {
+  "rule_mm": 1.5,
+  "board_thickness_mm": 1.6,
+  "over_rule_nominal": [
+   "J15",
+   "J17"
+  ],
+  "not_verified": [
+   "J1",
+   "J14"
+  ],
+  "note": "solder fillet height is not included (NOT_VERIFIED); alternate socket C55629861 has 3.2 mm tails -> 1.6 mm under the board",
+  "rows": [
+   {
+    "ref": "J1",
+    "footprint": "PinHeader_1x08_P2.54mm_Vertical",
+    "fit": "user",
+    "jlc_code": null,
+    "plated_holes": 8,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": null,
+    "label": "NOT_VERIFIED",
+    "result": "soldered by the user (module strip): the user cuts the leads to <= 1.5 mm after soldering"
+   },
+   {
+    "ref": "J2",
+    "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C22436147",
+    "plated_holes": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.25,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.65,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "Hong Cheng HC-PM254-8.5H-1xNPW drawing (D6)",
+    "result": "nominal inside, 0.15 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J3",
+    "footprint": "PinHeader_2x03_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
+    "ref": "J5",
+    "footprint": "PinSocket_1x06_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C22436147",
+    "plated_holes": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.25,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.65,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "Hong Cheng HC-PM254-8.5H-1xNPW drawing (D6)",
+    "result": "nominal inside, 0.15 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J8",
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C32713262",
+    "plated_holes": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.2,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.6,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "HANXIA PZ2.54-1xNP WZ drawing (design note connectors_mounting section 5, D5)",
+    "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J9",
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C32713262",
+    "plated_holes": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.2,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.6,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "HANXIA PZ2.54-1xNP WZ drawing (design note connectors_mounting section 5, D5)",
+    "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J10",
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C32713262",
+    "plated_holes": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.2,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.6,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "HANXIA PZ2.54-1xNP WZ drawing (design note connectors_mounting section 5, D5)",
+    "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J11",
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C32713262",
+    "plated_holes": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.2,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.6,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "HANXIA PZ2.54-1xNP WZ drawing (design note connectors_mounting section 5, D5)",
+    "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J12",
+    "footprint": "PinHeader_1x03_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C32713262",
+    "plated_holes": 3,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.2,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.6,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "HANXIA PZ2.54-1xNP WZ drawing (design note connectors_mounting section 5, D5)",
+    "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J14",
+    "footprint": "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+    "fit": "jlc",
+    "jlc_code": "C5364642",
+    "plated_holes": 2,
+    "drill_mm": [
+     0.85
+    ],
+    "under_board_nominal_mm": null,
+    "label": "NOT_VERIFIED",
+    "source": "Molex 22035025 drawing not read (3 timeouts in the design step); the 3.0 mm in spec/module_dimensions.json is an assumption for the picture only",
+    "result": "NOT_VERIFIED: the user measures the leads after delivery and cuts what exceeds 1.5 mm"
+   },
+   {
+    "ref": "J15",
+    "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+    "fit": "jlc",
+    "jlc_code": "C131337",
+    "plated_holes": 2,
+    "drill_mm": [
+     0.75
+    ],
+    "tail_mm": 3.4,
+    "tail_plus_tol_mm": null,
+    "under_board_nominal_mm": 1.8,
+    "under_board_max_mm": null,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "JST ePH.pdf page 2, reference dimension (3.4)",
+    "result": "OVER the 1.5 mm rule: the user flush-cuts 2 leads"
+   },
+   {
+    "ref": "J16",
+    "footprint": "PinHeader_1x02_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C32713261",
+    "plated_holes": 2,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.2,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.6,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "HANXIA PZ2.54-1xNP WZ drawing (design note connectors_mounting section 5, D5)",
+    "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J17",
+    "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+    "fit": "jlc",
+    "jlc_code": "C131337",
+    "plated_holes": 2,
+    "drill_mm": [
+     0.75
+    ],
+    "tail_mm": 3.4,
+    "tail_plus_tol_mm": null,
+    "under_board_nominal_mm": 1.8,
+    "under_board_max_mm": null,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "JST ePH.pdf page 2, reference dimension (3.4)",
+    "result": "OVER the 1.5 mm rule: the user flush-cuts 2 leads"
+   },
+   {
+    "ref": "J18",
+    "footprint": "PinHeader_1x04_P2.54mm_Horizontal",
+    "fit": "jlc",
+    "jlc_code": "C32713263",
+    "plated_holes": 4,
+    "drill_mm": [
+     1.0
+    ],
+    "tail_mm": 3.0,
+    "tail_plus_tol_mm": 0.2,
+    "under_board_nominal_mm": 1.4,
+    "under_board_max_mm": 1.6,
+    "label": "F (document value; not measured on a delivered part)",
+    "source": "HANXIA PZ2.54-1xNP WZ drawing (design note connectors_mounting section 5, D5)",
+    "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
+   },
+   {
+    "ref": "J19",
+    "footprint": "PinHeader_2x03_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
+    "ref": "J20",
+    "footprint": "PinHeader_2x03_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
+    "ref": "J21",
+    "footprint": "PinHeader_2x03_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
+    "ref": "J22",
+    "footprint": "PinHeader_2x03_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 6,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
+    "ref": "J24",
+    "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 2,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
+    "ref": "J25",
+    "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 2,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
+    "ref": "J26",
+    "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 2,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   }
+  ]
+ }
+}

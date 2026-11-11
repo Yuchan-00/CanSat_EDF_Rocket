@@ -1,0 +1,68 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_erc.json",
+ "result": "PASS",
+ "problems": [],
+ "tool": "kicad-cli sch erc --format json --severity-all --units mm",
+ "kicad_cli": "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.EXE",
+ "tool_version": "10.0.6",
+ "kicad_version_in_report": "10.0.6",
+ "erc_report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/erc.json",
+ "erc_report_date": "2026-11-11T01:30:07",
+ "included_severities": [
+  "error",
+  "warning",
+  "exclusion"
+ ],
+ "sheets_checked": [
+  "/",
+  "/Power/",
+  "/NAV/",
+  "/FCU/",
+  "/COM/",
+  "/GNS/",
+  "/Level_shift/",
+  "/IO_connectors/"
+ ],
+ "errors": 0,
+ "warnings": 0,
+ "counts": {},
+ "violations": [],
+ "ignored_checks": [
+  "footprint_filter",
+  "four_way_junction",
+  "simulation_model_issue",
+  "single_global_label"
+ ],
+ "ignored_checks_rev2c": [
+  "footprint_filter",
+  "four_way_junction",
+  "simulation_model_issue",
+  "single_global_label"
+ ],
+ "ignored_checks_note": "the generated .kicad_pro has no 'erc' section (no severity is set by the project), so these are the checks kicad-cli itself reports as ignored; the list is compared with the archived rev 2c ERC report - nothing was switched off for rev 3",
+ "kicad_pro_sets_erc_severities": false,
+ "u8_note": "ERC gives NO evidence for U8: its symbol Connector_Generic:Conn_02x03_Counter_Clockwise has six passive pins, so a wrong connection on U8 cannot raise an ERC violation. Sub-command u8-u9 (pad -> net table against the datasheet) replaces it.",
+ "schematic_sha256": {
+  "com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
+  "fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",
+  "gns.kicad_sch": "b82c957e69f98ead5408eb6eab73c54999fdfb08b6e579a50424e496ecea8236",
+  "io.kicad_sch": "7a4d5cd3b7c1cb5c71ddcca46196d8339a7968c7f039a00caf8c6ce6b78d9f0b",
+  "level_shift.kicad_sch": "80917e3cf8e8f68bde7ce11550ec714492f2b798c002bb9423c942cf292b5dd0",
+  "nav.kicad_sch": "f53cdba94d5f3b9ba0809433bedc9e370a21e0c22ff8876b7a811ec8e2663915",
+  "power.kicad_sch": "e36be8f042bf1ffa8c0c02937bb3e261f7a4df9e893a9c33a98195c921455326",
+  "vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1"
+ },
+ "netlist": {
+  "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
+  "sha256": "299785ca80a14c92cc51f29e3e38322ef22f7c8aaf66af9e69eae44dede13896",
+  "tool": "Eeschema 10.0.6",
+  "export_date_in_file": "2026-11-11T01:30:07",
+  "components": 174,
+  "named_nets": 105,
+  "unconnected_single_pin_nets": 183
+ },
+ "commands": [
+  "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.EXE sch erc --format json --severity-all --units mm -o B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/erc.json B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_sch",
+  "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.EXE sch export netlist --format kicadsexpr -o B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_sch"
+ ]
+}

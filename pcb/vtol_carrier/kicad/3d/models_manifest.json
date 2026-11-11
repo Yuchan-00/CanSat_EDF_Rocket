@@ -1,0 +1,221 @@
+{
+ "cadquery": "2.8.0",
+ "dimensions_file": "spec/module_dimensions.json",
+ "dimensions_sha256": "40d59de412501d88cf2bad976145d006efe22f416afe23d556c44c15ac6a17dd",
+ "frame": "connector footprint 3D frame: x = footprint x, y = -footprint y, z = up from the board top, origin = footprint origin; models are written in this frame and attached with offset 0 / rotation 0",
+ "generated_by": "scripts/make_module_models.py",
+ "label": "pictures only; all module dimensions are A or F as tagged in the dimensions file",
+ "models": {
+  "bmp280_in_J2": {
+   "attach_ref": "J2",
+   "bbox": {
+    "max": [
+     -4.03,
+     1.27,
+     5.5
+    ],
+    "min": [
+     -24.23,
+     -13.97,
+     0.0
+    ]
+   },
+   "file": "bmp280_in_J2.step",
+   "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
+   "info": {
+    "body_rect_fp_frame": [
+     -24.23,
+     -12.73,
+     -1.15,
+     13.85
+    ],
+    "contact_axis_z": 1.25,
+    "face_up": "back (A)",
+    "hole_row_x": -14.03,
+    "pcb_top_z": 4.1,
+    "pin1": "VCC at J2 pad 1 (A: printed order not checked)",
+    "pin_tip_z": 5.5,
+    "top_z": 5.5,
+    "under_parts_bottom_z": 1.55,
+    "underside_z": 2.5
+   },
+   "sha256": "d7f468086e013ea356b82ab054a91e3c1a490c5b78cb9b2ca0146c992a4519dd",
+   "top_z": 5.5
+  },
+  "gh_plug_in_J7": {
+   "attach_ref": "J7",
+   "bbox": {
+    "max": [
+     3.125,
+     15.375,
+     12.75
+    ],
+    "min": [
+     -3.125,
+     -1.7,
+     1.6
+    ]
+   },
+   "file": "gh_plug_in_J7.step",
+   "footprint": "Connector_JST:JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical",
+   "info": {
+    "header_h": 4.05,
+    "housing_bottom_z": 1.6,
+    "housing_top_z": 7.3,
+    "lead_top_z": 12.75,
+    "wire_order": "pad 1 GPS_VCC red, 2 GPS_TXD yellow, 3 GPS_RXD green, 4 GND black (colours A)"
+   },
+   "sha256": "90a660dda8810b214ac5d8da6aadd01498760cc73392b9d17103ebb8f3241cae",
+   "top_z": 12.75
+  },
+  "gy521_on_J1": {
+   "attach_ref": "J1",
+   "bbox": {
+    "max": [
+     15.3,
+     1.71,
+     8.54
+    ],
+    "min": [
+     -1.3,
+     -19.49,
+     -3.0
+    ]
+   },
+   "file": "gy521_on_J1.step",
+   "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical",
+   "info": {
+    "body_rect_fp_frame": [
+     -1.3,
+     15.1,
+     -1.71,
+     19.49
+    ],
+    "face_up": "component side (A)",
+    "parts_top_z": 5.14,
+    "pcb_top_z": 4.14,
+    "pin1": "VCC at J1 pad 1 (A)",
+    "underside_z": 2.54
+   },
+   "sha256": "fa168788d457128e7902c6eafd444c843e9edb3d880a7e4720f265328585195a",
+   "top_z": 8.54
+  },
+  "height_limit_frame": {
+   "attach_ref": null,
+   "bbox": {
+    "max": [
+     38.15,
+     35.15,
+     13.7
+    ],
+    "min": [
+     -38.15,
+     -35.15,
+     13.4
+    ]
+   },
+   "file": "height_limit_frame.step",
+   "footprint": null,
+   "info": {
+    "board_x": 76.0,
+    "board_y": 70.0,
+    "frame": "board centre, z up from the board top; the underside of the bars is the limit",
+    "limit_above_board": 13.4
+   },
+   "sha256": "08f09a25275b1d4364ad681465e71b7e650ece44c3f878cdc12c4e5951bbdeff",
+   "top_z": 13.7
+  },
+  "molex_22035025_J14": {
+   "attach_ref": "J14",
+   "bbox": {
+    "max": [
+     4.95,
+     3.1,
+     5.9
+    ],
+    "min": [
+     -2.45,
+     -1.8,
+     -3.0
+    ]
+   },
+   "file": "molex_22035025_J14.step",
+   "footprint": "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+   "info": {
+    "note": "outer size F (JLC record), inner shape illustrative (A)",
+    "top_z": 5.9
+   },
+   "sha256": "a3149c9feacc2e2b45848f38cc35b8218a220f9cf148acfdb5e9187093bf18c6",
+   "top_z": 5.9
+  },
+  "neo7m_module": {
+   "attach_ref": null,
+   "bbox": {
+    "max": [
+     17.5,
+     12.5,
+     9.05
+    ],
+    "min": [
+     -50.5,
+     -12.5,
+     0.0
+    ]
+   },
+   "file": "neo7m_module.step",
+   "footprint": null,
+   "info": {
+    "antenna_h": 8.8,
+    "frame": "own frame (board centre), not attached to the carrier; used by render_d2_scene.py",
+    "stack_h": 4.0
+   },
+   "sha256": "92ae719495a52c5036acedcfdcdb9a085e4c7a5c96ae23d1c8bea4c483c067b5",
+   "top_z": 9.05
+  },
+  "openlog_in_J5": {
+   "attach_ref": "J5",
+   "bbox": {
+    "max": [
+     -4.03,
+     1.27,
+     5.5
+    ],
+    "min": [
+     -36.89,
+     -13.97,
+     0.0
+    ]
+   },
+   "file": "openlog_in_J5.step",
+   "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",
+   "info": {
+    "body_rect_fp_frame": [
+     -31.81,
+     -12.76,
+     -1.27,
+     13.97
+    ],
+    "card_overhang_past_pcb": 5.08,
+    "card_rect_fp_frame": [
+     -36.89,
+     -21.89,
+     0.99,
+     11.99
+    ],
+    "contact_axis_z": 1.25,
+    "face_up": "microSD side (F-derived)",
+    "hole_row_x": -14.03,
+    "microsd_top_z": 5.2,
+    "pcb_top_z": 3.3,
+    "pin1": "GRN at J5 pad 1 (F: OpenLog.brd silk order + plan pin list)",
+    "pin_tip_z": 5.5,
+    "top_z": 5.5,
+    "under_parts_bottom_z": 1.3,
+    "underside_z": 2.5
+   },
+   "sha256": "84417ea621e2bb83e2f73e36e674d43b59209a5fd026c646a38af4a06d19d889",
+   "top_z": 5.5
+  }
+ },
+ "schema": "vtol_carrier.module_models/1"
+}

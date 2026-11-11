@@ -1,0 +1,8 @@
+﻿devicemart no=,product name,qty,for,board value
+no=1247052,MPU-6050 6축 자이로 가속도 센서 모듈 GY-521 [SZH-EK007],1,on board: J1,1x8 2.54 mm (GY-521 soldered flat on straight pins)
+no=15855364,5V Step-Up/Step-Down Voltage Regulator w/ Adjustable Low-Voltage Cutoff S9V11F5S6CMA #2870,1,on board: J6,"1x5 2.54 mm: Pololu S9V11F5S6CMA 5 V step-up/step-down module (VOUT, GND, VIN, EN, PG)"
+no=15442588,아두이노 대기압/고도 센서 모듈 BMP280 납땜 [TYE-BMP29],1,plugs into J2 with its own right-angle header,
+no=1313116,SparkFun OpenLog [DEV-13712],1,"plugs into J5, lies flat",
+no=10895400,NEO-7M 아두이노 GPS 수신모듈 [SZH-NT07],1,GPS module in the top cap (not on the carrier),
+no=13029107,2단3P MTS-102 하네스 토글스위치 듀폰타입,1,logic power switch; its Dupont lead end is cut and re-terminated with a JST-PH housing (phr2 + 2 phcrimp) to plug onto J15 (switch reachability = user decision),
+no=16021596,DTP105565P(3.7V 4200mAh)C5264RR,1,"1S logic pack, its own 5264-type plug mates J14",

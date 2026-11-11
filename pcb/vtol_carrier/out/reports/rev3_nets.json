@@ -1,0 +1,189 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_nets.json",
+ "result": "PASS",
+ "tool": "kicad-cli netlist export + scripts/rev3_checks.py nets",
+ "netlist": {
+  "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
+  "sha256": "299785ca80a14c92cc51f29e3e38322ef22f7c8aaf66af9e69eae44dede13896",
+  "tool": "Eeschema 10.0.6",
+  "export_date_in_file": "2026-11-11T01:30:07",
+  "components": 174,
+  "named_nets": 105,
+  "unconnected_single_pin_nets": 183
+ },
+ "rev2c_netlist": {
+  "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/out/vtol_carrier.net",
+  "sha256": "ae997abf2c6995e7366f764b158584716fbf5422b9e32bc325310f64e7c86221",
+  "tool": "Eeschema 10.0.6",
+  "export_date_in_file": "2026-11-05T12:27:21",
+  "components": 162,
+  "named_nets": 100,
+  "unconnected_single_pin_nets": 185
+ },
+ "problems": [],
+ "new_nets": [
+  {
+   "name": "BOOST_SW",
+   "plan": [
+    "L5.2",
+    "U8.5"
+   ],
+   "netlist": [
+    "L5.2",
+    "U8.5"
+   ],
+   "equal": true,
+   "class": "Default"
+  },
+  {
+   "name": "BOOST_FB",
+   "plan": [
+    "C58.2",
+    "R63.2",
+    "R64.1",
+    "U8.1"
+   ],
+   "netlist": [
+    "C58.2",
+    "R63.2",
+    "R64.1",
+    "U8.1"
+   ],
+   "equal": true,
+   "class": "Default"
+  },
+  {
+   "name": "BOOST_EN",
+   "plan": [
+    "R67.2",
+    "R68.1",
+    "U8.2",
+    "U9.1"
+   ],
+   "netlist": [
+    "R67.2",
+    "R68.1",
+    "U8.2",
+    "U9.1"
+   ],
+   "equal": true,
+   "class": "Default"
+  },
+  {
+   "name": "UVLO_SENSE",
+   "plan": [
+    "C60.1",
+    "R65.2",
+    "R66.1",
+    "R67.1",
+    "U9.3"
+   ],
+   "netlist": [
+    "C60.1",
+    "R65.2",
+    "R66.1",
+    "R67.1",
+    "U9.3"
+   ],
+   "equal": true,
+   "class": "Default"
+  },
+  {
+   "name": "UVLO_REF",
+   "plan": [
+    "U9.4",
+    "U9.5"
+   ],
+   "netlist": [
+    "U9.4",
+    "U9.5"
+   ],
+   "equal": true,
+   "class": "Default"
+  }
+ ],
+ "named_nets_rev2c": 100,
+ "named_nets_rev3": 105,
+ "nets_lost": [],
+ "nets_added": [
+  "BOOST_EN",
+  "BOOST_FB",
+  "BOOST_SW",
+  "UVLO_REF",
+  "UVLO_SENSE"
+ ],
+ "components_removed": [
+  "J6"
+ ],
+ "components_added": [
+  "C57",
+  "C58",
+  "C59",
+  "C60",
+  "L5",
+  "R63",
+  "R64",
+  "R65",
+  "R66",
+  "R67",
+  "R68",
+  "U8",
+  "U9"
+ ],
+ "nets_with_changed_members": [
+  {
+   "net": "+5V",
+   "removed_members": [
+    "J6.1"
+   ],
+   "added_members": [
+    "C57.1",
+    "C58.1",
+    "R63.1",
+    "U8.6"
+   ],
+   "unexpected": []
+  },
+  {
+   "net": "GND",
+   "removed_members": [
+    "J6.2"
+   ],
+   "added_members": [
+    "C57.2",
+    "C59.2",
+    "C60.2",
+    "R64.2",
+    "R66.2",
+    "R68.2",
+    "U8.4",
+    "U9.2"
+   ],
+   "unexpected": []
+  },
+  {
+   "net": "VBAT_LOGIC_SW",
+   "removed_members": [
+    "J6.3"
+   ],
+   "added_members": [
+    "C59.1",
+    "L5.1",
+    "R65.1",
+    "U8.3",
+    "U9.6"
+   ],
+   "unexpected": []
+  }
+ ],
+ "no_connects_rev2c": 185,
+ "no_connects_rev3": 183,
+ "no_connects_removed": [
+  "J6.4",
+  "J6.5"
+ ],
+ "no_connects_added": [],
+ "net_class_changes_on_rev2c_nets": [],
+ "pins_of_kept_parts_with_another_net": [],
+ "note": "pins_of_kept_parts_with_another_net lists every pin of a part present in both revisions whose net differs (replaced parts with another pin count would appear here); it is information, the member check above is the pass / fail criterion"
+}

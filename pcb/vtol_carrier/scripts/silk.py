@@ -35,26 +35,42 @@ LABELS: dict[str, str] = {
     "J7": "GPS", "J15": "PWR SW", "J16": "ARM SW", "J24": "NAV RST", "J25": "FCU RST", "J26": "COM RST",
     "J19": "ISP NAV", "J20": "ISP FCU", "J21": "ISP COM", "J22": "ISP GNS",
     "J1": "GY-521", "J2": "BMP280", "J3": "ESP 3V3", "J5": "OPENLOG",
-    "J6": "5V MOD", "JP1": "GPS 3V3|5V", "U7": "ESP-12E",
+    "JP1": "GPS 3V3|5V", "U7": "ESP-12F",
 }
 #: placement priority of the names (front space is scarce: the off-board leads that are plugged in blind first)
-PRIORITY = ("J14", "J15", "J18", "J12", "J8", "J9", "J10", "J11", "J7", "J16", "J17", "J6", "JP1", "J3")
+PRIORITY = ("J14", "J15", "J18", "J12", "J8", "J9", "J10", "J11", "J7", "J16", "J17", "JP1", "J3")
 #: connectors whose name carries the pin order (off-board leads + the ESP flash header)
-PIN_LABELLED = ("J8", "J9", "J10", "J11", "J12", "J17", "J14", "J18", "J7", "J16", "J3", "J6")
+#: rev 3: + the three sensor module sockets (the user checks the module's printed pin order against the board)
+PIN_LABELLED = ("J8", "J9", "J10", "J11", "J12", "J17", "J14", "J18", "J7", "J16", "J3", "J1", "J2", "J5")
+#: rev 3 (plan section 12): board revision text, F.SilkS
+REV_TEXT = "rev 3"
+#: rev 3: reference designators that must be readable on F.SilkS (the boost block) - placed before all others
+REFS_FIRST = ("L5", "U8", "U9")
+#: rev 3: polarity / pin-1 marks added on F.SilkS beside pad 1, outside every part body (the library marks stay):
+#: "+" = positive pad of a polarised capacitor (pad 1 of the CP_* footprints), "K" = cathode (pad 1 of the LED_* /
+#: D_* footprints), "dot" = filled dot at pin 1
+MARKS: dict[str, str] = {
+    "C45": "+", "C52": "+", "C47": "+",
+    "D1": "K", "D2": "K", "D3": "K", "D4": "K", "D6": "K",
+    **{f"Q{i}": "dot" for i in range(1, 12)},
+    "U6": "dot", "U7": "dot", "U8": "dot", "U9": "dot", "J7": "dot", "U1": "dot", "U2": "dot", "U3": "dot", "U4": "dot",
+}
+MARK_MAX_D = 1.6
+REF_FIRST_MAX_D = 2.5
+DOT_R = 0.2
 
 
 def pin_glyph(net: str, ref: str = "") -> str | None:
     """Short pin label from the pad's net name (routed board = spec nets)."""
     if ref in ("J14", "J17") and net in ("GND", "+5V"):
         return "-" if net == "GND" else "+"
-    if ref == "J6" and net == "+5V":
-        return "VO"
     if net.endswith("_SIG"):
         return "S"
     table = {"SERVO_5V": "+", "GND_PWR": "-", "GND": "G", "+5V": "5V", "VBAT_LOGIC_RAW": "+", "BUZ_N": "-",
              "VS_VIN": "VI", "VS_VTETHER": "VT", "VS_VBUFFER": "VB", "VS_BUF_ISIGN": "IS", "ARM_SW_EXT": "A",
              "GPS_VCC": "V", "ESP_GPIO0": "IO0", "ESP_TXD0": "TX", "ESP_RXD0": "RX", "ESP_RST": "RST",
-             "VBAT_LOGIC_SW": "VI", "PG_5V": "PG", "EN_5V": "EN"}
+             "VBAT_LOGIC_SW": "VI", "+3V3": "3V", "I2C_SCL_3V3": "SCL", "I2C_SDA_3V3": "SDA", "IMU_INT_3V3": "INT",
+             "OPENLOG_RXI": "RXI"}
     if net in table:
         return table[net]
     if net.startswith("GPS_TXD"):
@@ -174,16 +190,19 @@ class Ctx:
                 bb = _mm_box(d.GetBoundingBox(), 0.0)
                 self.bodies.append(bb)  # module bodies + the cable-tie band (the strap covers it)
 
-    def free(self, side: str, box, own: str) -> bool:
+    def free(self, side: str, box, own: str, bodies: bool = True) -> bool:
+        """``bodies=False`` (rev 3): the reserved module bodies / the tie band are ignored - used for marks that are
+        read at SMT assembly and inspection, before the user fits the modules."""
         if not self.bm[side].free(box):
             return False
         if side == "F":
             for r, c in self.fab.items():
                 if r != own and _overlaps(box, c):
                     return False
-            for b in self.bodies:
-                if _overlaps(box, b):
-                    return False
+            if bodies:
+                for b in self.bodies:
+                    if _overlaps(box, b):
+                        return False
         return True
 
 
@@ -205,18 +224,27 @@ def _size(t, ang: float):
     return pcbnew.ToMM(bb.GetWidth()), pcbnew.ToMM(bb.GetHeight()), pcbnew.ToMM(bb.GetCenter().x), pcbnew.ToMM(bb.GetCenter().y)
 
 
+def _ink(t, ang: float):
+    """rev 3: the true extent of a text's strokes (pen width included) - ``GetBoundingBox`` adds about 0.25 mm of
+    empty line spacing on every side, which is too coarse for the marks and designators of the dense boost block."""
+    t.SetTextAngle(pcbnew.EDA_ANGLE(ang, pcbnew.DEGREES_T))
+    t.SetPosition(pcbnew.VECTOR2I(0, 0))
+    bb = t.GetEffectiveTextShape().BBox()
+    return pcbnew.ToMM(bb.GetWidth()), pcbnew.ToMM(bb.GetHeight()), pcbnew.ToMM(bb.GetCenter().x), pcbnew.ToMM(bb.GetCenter().y)
+
+
 def _put(ctx: Ctx, side: str, t, x: float, y: float, w: float, h: float, ox: float, oy: float) -> None:
     t.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(round(x - ox, 3)), pcbnew.FromMM(round(y - oy, 3))))
     ctx.bm[side].mark((x - w / 2 - 0.15, y - h / 2 - 0.15, x + w / 2 + 0.15, y + h / 2 + 0.15))
 
 
-def _name_candidates(cbox, w: float, h: float):
+def _name_candidates(cbox, w: float, h: float, max_d: float = MAX_D):
     """Centres around a courtyard box up to MAX_D mm from it, nearest first (below / above / left / right, sliding
     along each side in 0.25 mm steps)."""
     x0, y0, x1, y1 = cbox
     out = []
     k = 0
-    while 0.1 * k <= MAX_D + 1e-9:
+    while 0.1 * k <= max_d + 1e-9:
         d = round(0.1 * k, 3)
         nx = max(1, int((x1 - x0) / 0.25))
         ny = max(1, int((y1 - y0) / 0.25))
@@ -300,6 +328,156 @@ def place_pin_labels(ctx: Ctx, board, fp) -> dict | None:
     return None
 
 
+def _rect_dist(x: float, y: float, box) -> float:
+    """Distance from a point to an axis-aligned box (0 inside)."""
+    dx = max(box[0] - x, 0.0, x - box[2])
+    dy = max(box[1] - y, 0.0, y - box[3])
+    return math.hypot(dx, dy)
+
+
+def library_mark(ctx: Ctx, fp) -> dict:
+    """What the library footprint itself prints on F.SilkS for orientation, measured on the board: the number of
+    silkscreen graphics, whether one of them is the pin-1 triangle (polygon), and whether any of them lies under
+    ANOTHER part's body (F.Fab box) or on a pad (then the mark may be hidden / clipped). Evidence, not a verdict."""
+    ref = fp.GetReference()
+    items = [g for g in fp.GraphicalItems() if g.GetLayer() == pcbnew.F_SilkS and g.GetClass() != "PCB_TEXT"]
+    polys = [g for g in items if g.GetClass() == "PCB_SHAPE" and g.GetShape() == pcbnew.SHAPE_T_POLY]
+    covered = []
+    pad_boxes = [(o.GetReference() + "." + p.GetNumber(), _mm_box(p.GetBoundingBox(), 0.0))
+                 for o in ctx.board.GetFootprints() for p in o.Pads() if p.IsOnLayer(pcbnew.F_Cu)]
+    for g in items:
+        bb = _mm_box(g.GetBoundingBox(), 0.0)
+        covered += [r for r, c in ctx.fab.items() if r != ref and _overlaps(bb, c)]
+        covered += [n for n, c in pad_boxes if _overlaps(bb, c)]
+    p1 = [p for p in fp.Pads() if p.GetNumber() == "1"][0]
+    pb = _mm_box(p1.GetBoundingBox(), 0.0)
+    tri = None
+    if polys:
+        c = polys[0].GetBoundingBox().GetCenter()
+        tri = round(_rect_dist(pcbnew.ToMM(c.x), pcbnew.ToMM(c.y), pb), 3)
+    return {"silk_graphics": len(items), "pin1_triangle": bool(polys), "triangle_to_pad1_mm": tri,
+            "covered_by": sorted(set(covered))}
+
+
+def place_mark(ctx: Ctx, board, fp, kind: str) -> dict:
+    """rev 3: one extra polarity / pin-1 mark on F.SilkS beside pad 1 of ``fp``, in addition to the library
+    footprint's own mark (``library_mark``). The spot is the free one nearest to the pad-1 rectangle (0.1 mm grid, up
+    to MARK_MAX_D from the pad edge) that is outside EVERY part body (F.Fab boxes, the own one included -> never
+    hidden by a part), off all pads / silkscreen, and at least 0.3 mm nearer to pad 1 than to any other pad of the
+    same footprint (unambiguous). The reserved module bodies are not obstacles: the marks are read at SMT assembly
+    and inspection, before the modules are fitted. A polarised capacitor whose pad 1 is on GND is an error (the mark
+    would label the wrong pad)."""
+    ref = fp.GetReference()
+    pads = list(fp.Pads())
+    p1 = [p for p in pads if p.GetNumber() == "1"][0]
+    if kind == "+" and p1.GetNetname() in ("GND", "GND_PWR"):
+        raise ValueError(f"{ref}: pad 1 of a polarised capacitor is on {p1.GetNetname()}")
+    if kind == "K" and "LED" in fp.GetFPID().GetLibItemName().wx_str() and p1.GetNetname() != "GND":
+        raise ValueError(f"{ref}: LED pad 1 (cathode) is expected on GND, found {p1.GetNetname()}")
+    pb = _mm_box(p1.GetBoundingBox(), 0.0)
+    others = [_mm_box(p.GetBoundingBox(), 0.0) for p in pads if p.GetNumber() != "1"]
+    if kind == "dot":
+        t, w, h, ox, oy = None, 2 * DOT_R + T, 2 * DOT_R + T, 0.0, 0.0
+    else:
+        t = _text(board, kind, pcbnew.F_SilkS, PIN_H)
+        w, h, ox, oy = _ink(t, 0)
+    gx0, gy0 = round(pb[0] - MARK_MAX_D - w / 2, 1), round(pb[1] - MARK_MAX_D - h / 2, 1)
+    cand = []
+    for i in range(int((pb[2] - pb[0] + 2 * MARK_MAX_D + w) / 0.1) + 2):
+        for j in range(int((pb[3] - pb[1] + 2 * MARK_MAX_D + h) / 0.1) + 2):
+            x, y = round(gx0 + 0.1 * i, 3), round(gy0 + 0.1 * j, 3)
+            box = (x - w / 2, y - h / 2, x + w / 2, y + h / 2)
+            # gap between the mark's own rectangle and the pad-1 rectangle
+            d = math.hypot(max(pb[0] - box[2], 0.0, box[0] - pb[2]), max(pb[1] - box[3], 0.0, box[1] - pb[3]))
+            if d <= MARK_MAX_D:
+                cand.append((round(d, 4), x, y))
+    cand.sort()
+    lib = library_mark(ctx, fp)
+    for d, x, y in cand:
+        d1 = _rect_dist(x, y, pb)
+        if any(_rect_dist(x, y, q) < d1 + 0.3 for q in others):
+            continue
+        box = (x - w / 2 - 0.15, y - h / 2 - 0.15, x + w / 2 + 0.15, y + h / 2 + 0.15)
+        if not ctx.free("F", box, None, bodies=False):
+            continue
+        if t is None:
+            s = pcbnew.PCB_SHAPE(board)
+            s.SetShape(pcbnew.SHAPE_T_CIRCLE)
+            s.SetLayer(pcbnew.F_SilkS)
+            s.SetCenter(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(y)))
+            s.SetEnd(pcbnew.VECTOR2I(pcbnew.FromMM(round(x + DOT_R, 3)), pcbnew.FromMM(y)))
+            s.SetWidth(pcbnew.FromMM(T))
+            s.SetFilled(True)
+            board.Add(s)
+            ctx.bm["F"].mark(box)
+        else:
+            _put(ctx, "F", t, x, y, w, h, ox, oy)
+            board.Add(t)
+        return {"ref": ref, "mark": kind, "pad1_net": p1.GetNetname(), "at": [x, y], "gap_to_pad1_mm": d,
+                "library_mark": lib}
+    return {"ref": ref, "mark": kind, "pad1_net": p1.GetNetname(), "library_mark": lib,
+            "why": f"no free spot for an extra mark within {MARK_MAX_D} mm of pad 1"}
+
+
+def _grid_candidates(cbox, w: float, h: float, max_d: float):
+    """Every 0.1 mm grid centre whose text box lies within ``max_d`` of a courtyard box, nearest first."""
+    x0, y0, x1, y1 = cbox
+    out = []
+    gx0, gy0 = round(x0 - max_d - w / 2, 1), round(y0 - max_d - h / 2, 1)
+    for i in range(int((x1 - x0 + 2 * max_d + w) / 0.1) + 2):
+        for j in range(int((y1 - y0 + 2 * max_d + h) / 0.1) + 2):
+            x, y = round(gx0 + 0.1 * i, 3), round(gy0 + 0.1 * j, 3)
+            d = math.hypot(max(x0 - (x + w / 2), 0.0, (x - w / 2) - x1), max(y0 - (y + h / 2), 0.0, (y - h / 2) - y1))
+            if d <= max_d:
+                out.append((round(d, 3), x, y))
+    out.sort()
+    return [(x, y, d) for d, x, y in out]
+
+
+def place_rev_text(ctx: Ctx, board) -> dict | None:
+    """rev 3: the board revision on F.SilkS (1.0 mm), at the free spot nearest to the bottom-left corner."""
+    t = _text(board, REV_TEXT, pcbnew.F_SilkS, 1.0)
+    w, h, ox, oy = _ink(t, 0)
+    cand = []
+    for i in range(0, int((BX1 - BX0) / 0.5)):
+        for j in range(0, int((BY1 - BY0) / 0.5)):
+            x, y = BX0 + 0.5 * i, BY0 + 0.5 * j
+            cand.append((round(math.hypot(x - BX0, y - BY1), 3), x, y))
+    cand.sort()
+    for bodies in (True, False):  # visible on the finished vehicle first; else under a module body / the tie band
+        for _d, x, y in cand:
+            box = (x - w / 2 - 0.15, y - h / 2 - 0.15, x + w / 2 + 0.15, y + h / 2 + 0.15)
+            if ctx.free("F", box, None, bodies=bodies):
+                _put(ctx, "F", t, x, y, w, h, ox, oy)
+                board.Add(t)
+                return {"text": REV_TEXT, "layer": "F.SilkS", "height_mm": 1.0, "at": [x, y],
+                        "outside_module_bodies_and_tie_band": bodies}
+    return None
+
+
+def _ref_beneath(ctx: Ctx, board, fp) -> dict:
+    """rev 3: the designator as a mirrored B.SilkS text straight beneath a top-side part (nearest free spot to the
+    part centre, 0.1 mm grid, at most 3 mm away)."""
+    ref = fp.GetReference()
+    c = ctx.cy[ref]
+    cx, cy = round((c[0] + c[2]) / 2, 1), round((c[1] + c[3]) / 2, 1)
+    t = _text(board, ref, pcbnew.B_SilkS, 0.8)
+    for ang in (0, 90):
+        w, h, ox, oy = _ink(t, ang)
+        cand = sorted((round(math.hypot(i * 0.1, j * 0.1), 4), i, j) for i in range(-30, 31) for j in range(-30, 31)
+                      if math.hypot(i * 0.1, j * 0.1) <= 3.0)
+        for d, i, j in cand:
+            x, y = round(cx + i * 0.1, 3), round(cy + j * 0.1, 3)
+            box = (x - w / 2 - 0.15, y - h / 2 - 0.15, x + w / 2 + 0.15, y + h / 2 + 0.15)
+            if ctx.free("B", box, None):
+                _put(ctx, "B", t, x, y, w, h, ox, oy)
+                board.Add(t)
+                return {"ref": ref, "layer": "B.SilkS", "mirrored": True, "at": [x, y], "angle_deg": ang,
+                        "distance_to_part_centre_mm": d,
+                        "why": f"no free F.SilkS spot within {REF_FIRST_MAX_D} mm of the courtyard"}
+    return {"ref": ref, "layer": None, "why": "no free spot on F.SilkS or beneath the part on B.SilkS"}
+
+
 def add_silk(board) -> dict:
     ctx = Ctx(board)
     fps = {fp.GetReference(): fp for fp in board.GetFootprints()}
@@ -309,6 +487,14 @@ def add_silk(board) -> dict:
         return (p, int(r[len(p):]) if r[len(p):].isdigit() else 0)
 
     pin_sets, pin_missed = [], []
+    # rev 3: polarity / pin-1 marks first (they need the spot next to pad 1), then the names
+    marks, marks_missed = [], []
+    for ref in sorted(MARKS, key=key):
+        if ref not in fps:
+            marks_missed.append({"ref": ref, "why": "no such footprint"})
+            continue
+        m = place_mark(ctx, board, fps[ref], MARKS[ref])
+        (marks if m.get("at") else marks_missed).append(m)
     names = dict(LABELS)
     for ref in PIN_LABELLED:  # the name carries the pin order from pin 1 (square pad), e.g. 'V1 S+-'
         if ref in fps:
@@ -329,8 +515,9 @@ def add_silk(board) -> dict:
             names_f.append(r)
         else:
             names_b.append(r)
-    refs_on_silk, refs_on_fab = [], []
-    for ref in sorted(fps, key=key):
+    rev = place_rev_text(ctx, board)
+    refs_on_silk, refs_on_fab, refs_first = [], [], []
+    for ref in [r for r in REFS_FIRST if r in fps] + [r for r in sorted(fps, key=key) if r not in REFS_FIRST]:
         fp = fps[ref]
         if fp.IsDNP():
             refs_on_fab.append(ref)
@@ -342,13 +529,25 @@ def add_silk(board) -> dict:
         f.SetTextThickness(pcbnew.FromMM(T))
         f.SetVisible(True)
         done = False
-        for ang in (0, 90):
-            w, h, ox, oy = _size(f, ang)
-            for x, y, _d in _name_candidates(ctx.cy[ref], w, h)[:400]:
-                box = (x - w / 2 - 0.15, y - h / 2 - 0.15, x + w / 2 + 0.15, y + h / 2 + 0.15)
-                if ctx.free("F", box, None):
-                    _put(ctx, "F", f, x, y, w, h, ox, oy)
-                    done = True
+        # rev 3: the boost-block designators are searched on the full 0.1 mm grid up to REF_FIRST_MAX_D from the
+        # courtyard (further away a designator would point at a neighbour); if F.SilkS has no such spot the
+        # designator goes on B.SilkS straight beneath the part (the bottom side carries no parts) and is listed
+        tiers = [(MAX_D, True, 400)] if ref not in REFS_FIRST else [(REF_FIRST_MAX_D, True, None)]
+        for max_d, bodies, limit in tiers:
+            for ang in (0, 90):
+                w, h, ox, oy = _ink(f, ang) if ref in REFS_FIRST else _size(f, ang)
+                cands = _grid_candidates(ctx.cy[ref], w, h, max_d) if ref in REFS_FIRST else \
+                    _name_candidates(ctx.cy[ref], w, h, max_d)[:limit]
+                for x, y, d in cands:
+                    box = (x - w / 2 - 0.15, y - h / 2 - 0.15, x + w / 2 + 0.15, y + h / 2 + 0.15)
+                    if ctx.free("F", box, None, bodies=bodies):
+                        _put(ctx, "F", f, x, y, w, h, ox, oy)
+                        done = True
+                        if ref in REFS_FIRST:
+                            refs_first.append({"ref": ref, "layer": "F.SilkS", "at": [round(x, 3), round(y, 3)],
+                                               "angle_deg": ang, "distance_to_courtyard_mm": d})
+                        break
+                if done:
                     break
             if done:
                 break
@@ -359,6 +558,10 @@ def add_silk(board) -> dict:
             f.SetPosition(old_pos)
             f.SetTextAngle(old_ang)
             refs_on_fab.append(ref)
+            if ref in REFS_FIRST:
+                refs_first.append(_ref_beneath(ctx, board, fp))
     return {"names_front": names_f, "names_back_mirrored": names_b, "names_missed": names_missed,
+            "polarity_marks": marks, "polarity_marks_missed": marks_missed, "revision_text": rev,
+            "refs_first_on_silk": refs_first,
             "pin_label_sets": pin_sets, "pin_label_sets_missed": pin_missed,
             "refs_on_silk": len(refs_on_silk), "refs_on_fab_only": refs_on_fab}

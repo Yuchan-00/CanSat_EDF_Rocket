@@ -500,7 +500,10 @@ def silk_over_bodies(board) -> dict:
 
 def supply_pads(board, fps) -> dict:
     out = {}
-    for ref, num in (("J6", "1"), ("J6", "2"), ("J14", "1"), ("J14", "2"), ("U6", "2"), ("U6", "3"), ("J12", "2"), ("J12", "3")):
+    # rev 3: the Pololu module socket J6 is gone; the battery path J14 -> Q10 -> J15 -> L5 and the boost block feed +5V
+    for ref, num in (("J14", "1"), ("J14", "2"), ("Q10", "3"), ("Q10", "2"), ("J15", "1"), ("J15", "2"), ("L5", "1"), ("L5", "2"),
+                     ("U8", "3"), ("U8", "4"), ("U8", "5"), ("U8", "6"), ("C57", "1"), ("C43", "1"), ("C41", "1"),
+                     ("U6", "2"), ("U6", "3"), ("J12", "2"), ("J12", "3")):
         if ref not in fps:
             continue
         pad = pad_of(fps, ref, num)
@@ -549,7 +552,7 @@ def power_narrow(board) -> dict:
 
 
 #: module top above the board top (A: header spacer + module + parts; rev-2b review MF2-12 estimates, measure)
-MODULE_TOP_A = {"J1": 5.3, "J2": 5.9, "J5": 5.9, "J6": 8.9}
+MODULE_TOP_A = {"J1": 5.3, "J2": 5.9, "J5": 5.9}  # rev 3: no J6
 
 
 def cad_round_envelopes(pdata: dict, plugs: list[dict], cad: dict) -> dict:
@@ -593,12 +596,12 @@ def main() -> int:
         "cluster_paths_all_le_3mm": all(r["ok_le_3mm"] for r in cp),
         "xtal_nets": xtal_nets(board),
         "gnd": gnd_metrics(board),
-        "power_and_servo_nets": widths(board, ["SERVO_5V", "GND_PWR", "+5V", "+3V3", "VBAT_LOGIC", "VBAT_LOGIC_SW", "VBAT_LOGIC_RAW"]),
+        "power_and_servo_nets": widths(board, ["SERVO_5V", "GND_PWR", "+5V", "+3V3", "VBAT_LOGIC", "VBAT_LOGIC_SW", "VBAT_LOGIC_RAW", "BOOST_SW"]),
         "hole_to_hole": hole_to_hole(board),
         "silk": silk(board),
         "u6_cap_distance_mm": u6_caps(fps),
         "esp12e": esp_metrics(board, fps, pdata["antenna_rule_area"]),
-        "min_track_width_mm": min_widths(board, ["VBAT_LOGIC_RAW", "VBAT_LOGIC", "VBAT_LOGIC_SW", "SERVO_5V", "GND_PWR", "+5V", "+3V3", "GPS_VCC"]),
+        "min_track_width_mm": min_widths(board, ["VBAT_LOGIC_RAW", "VBAT_LOGIC", "VBAT_LOGIC_SW", "BOOST_SW", "SERVO_5V", "GND_PWR", "+5V", "+3V3", "GPS_VCC"]),
         "plug_fit": plug_fit(board, fps, cad),
         "net_clusters": net_clusters(board),
         "vias_touching_pads": vias_touching_pads(board),

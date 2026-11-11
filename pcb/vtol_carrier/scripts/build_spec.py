@@ -1,4 +1,14 @@
-"""Build spec/carrier_spec.json - the electrical specification of the VTOL avionics carrier PCB (rev 2) - and check it.
+"""Build spec/carrier_spec.json - the electrical specification of the VTOL avionics carrier PCB (rev 3) - and check it.
+
+rev 3 (2026-11-10, spec/REV3_PLAN.md + spec/rev3_plan.json): every part except the MCUs and the sensor modules is a
+JLCPCB assembly-library part fitted by JLC. The Pololu 5 V module on J6 is replaced by an on-board boost converter
+(U8 TPS61023 + L5 + R63..R68 + C57..C60 + the U9 TLV3012B under-voltage lock-out), U7 is the ESP-12F (same pads), and
+every part carries ``fit`` (jlc | jlc_optional | user | none, see scripts/fitsets.py). The 256 MCU pin nets, the
+outline and every connector position are those of rev 2c (archive/rev2c_pololu_1s/). scripts/rev3_spec.py compares the
+result part by part with the plan and writes the rev 3 texts; a difference from the plan stops the build.
+Switch: environment VTOL_PROG_HEADERS = A (default: programming headers J3, J19..J22, J24..J26 are bare plated holes,
+fit none) | B (the same refs as JLC-fitted SMD headers, fit jlc; positions come from the place step). Environment
+VTOL_SPEC_DIR redirects the output files (used to build option B into a scratch directory).
 
 rev 2 (2026-11-05): ESP-12E (ESP8266) Wi-Fi module soldered on the carrier instead of the PLM100 LoRa module, a 1S Li-Po
 logic battery (DTP105565P 3.7 V 4200 mAh) through a 5 V BOOST module instead of 2S + buck, and the first build's review
@@ -16,29 +26,42 @@ Invariants this script enforces (it exits non-zero and writes nothing when one f
 * signal paths (UART TX -> RX, SPI, I2C, PWM, ADC, ISP, ESP strapping / reset) are traced through the netlist (series
   resistors and BSS138 channels only, never through a supply rail): a swapped TX / RX or a broken path fails the build;
 * no net that a path reaches holds two UART / SPI drivers (TX on TX);
-* a 3.3 V-only pin (ESP-12E, BMP280, GPS RX, OpenLog RXI, I2C module side) never reaches an ATmega128A pin except
+* a 3.3 V-only pin (ESP-12F, BMP280, GPS RX, OpenLog RXI, I2C module side) never reaches an ATmega128A pin except
   through a BSS138 channel;
-* the ESP-12E flash pins (CS0, MISO, MOSI, SCLK, GPIO9, GPIO10) are connected to nothing;
-* every part with a BOM line maps to an online-verified source whose package matches the footprint (chip size read
-  from the footprint name); a part without a source fails the build;
+* the ESP-12F flash pins (CS0, MISO, MOSI, SCLK, GPIO9, GPIO10) are connected to nothing;
+* every JLC-fitted part maps to one line of spec/parts_sources.json (written by scripts/jlc_sources.py, status PASS,
+  rule I7) with the same footprint; a JLC-fitted part without such a line fails the build (scripts/rev3_spec.py);
+* value, symbol, footprint, fit, JLC code and the pin -> net table of every part equal spec/rev3_plan.json, the five
+  new nets have exactly the plan's members and the counts are the plan's (175 items, 157 JLC parts, 40 BOM lines);
 * the candidate logic-battery spots are computed from the CAD report (read-only) - fit inside the bay bore, overlap with
   the CAD parts' boxes, lateral CG shift.
 Deterministic: same inputs -> byte-identical JSON (sorted, no timestamps).
 
-Run: B:/Claude/.venv/Scripts/python.exe -X utf8 scripts/build_spec.py
+Run (cwd = scripts/): B:/Claude/.venv/Scripts/python.exe -X utf8 -B build_spec.py
 """
 from __future__ import annotations
 
 import json
 import math
+import os
 import re
 from collections import defaultdict
 from pathlib import Path
 
+import fitsets
+import rev3_spec as R3
+
 HERE = Path(__file__).resolve().parent.parent
-PROJ = HERE.parent.parent                      # B:/0)AI_Cad/CanSat_EDF_Rocket
+PROJ = HERE.parent.parent                      # the repository this script lives in (never another checkout)
 PROBE = json.loads((HERE / "spec" / "library_probe.json").read_text(encoding="utf-8"))
-OUT = HERE / "spec" / "carrier_spec.json"
+SPEC_DIR = Path(os.environ["VTOL_SPEC_DIR"]) if os.environ.get("VTOL_SPEC_DIR") else HERE / "spec"
+OUT = SPEC_DIR / "carrier_spec.json"
+PROG_HEADERS = os.environ.get("VTOL_PROG_HEADERS", "A")       # D6: 'A' bare plated holes | 'B' JLC-fitted SMD headers
+if PROG_HEADERS not in ("A", "B"):
+    raise SystemExit(f"VTOL_PROG_HEADERS must be A or B, not {PROG_HEADERS!r}")
+PROG_POP = PROG_HEADERS == "B"                               # populate flag of J3, J19..J22, J24..J26
+PROG_NOTE = ("rev 3 option B (D6): SMD pin header fitted by JLC outside the tie band" if PROG_POP else
+             "rev 3 option A (D6 default): bare plated holes, no part - the user solders a header or uses a pogo adapter")
 CAD = json.loads((PROJ / "cad" / "exports" / "cadquery_report_vtol.json").read_text(encoding="utf-8"))
 PARAMS = json.loads((PROJ / "params.json").read_text(encoding="utf-8"))
 
@@ -56,25 +79,36 @@ USER4 = "user decision 2026-11-04"
 USER5 = "user decision 2026-11-05"
 REV = "rev-1 independent review 2026-11-05"
 REV2 = "rev-2b independent review 2026-11-05"
-ESPLIB = "KiCad RF_Module:ESP-12E (symbol RF_Module.kicad_sym, footprint RF_Module.pretty/ESP-12E.kicad_mod)"
+ESPLIB = ("KiCad symbol RF_Module:ESP-12F (RF_Module.kicad_sym, same 22 pins as ESP-12E) on footprint "
+          "RF_Module:ESP-12E (RF_Module.pretty/ESP-12E.kicad_mod; the library has no separate ESP-12F footprint)")
+REPO = "<repository>/"                 # the checkout this script runs in; resolved in SOURCES["repository"]
 ESPA = ("A: Espressif ESP8266EX datasheet / hardware design guidelines and the Ai-Thinker ESP-12E/F datasheet are NOT "
         "on disk - check them")
 BAT = "devicemart no=16021596 product page (read by the main session 2026-11-05)"
+PLAN3 = "spec/rev3_plan.json"
+DS_TPS = "tps61023.txt"                # TI TPS61023 datasheet SLVSF14B, text extract (SOURCES)
+DS_TLV = "tlv3011.txt"                 # TI TLV3011 / TLV3012 datasheet SBOS300C, text extract (SOURCES)
 
 SOURCES = {
-    "params.json": "B:/0)AI_Cad/CanSat_EDF_Rocket/params.json (read-only; line numbers as of 2026-11-04 15:15)",
-    BH: "B:/0)AI_Cad/CanSat_EDF_Rocket/" + BH,
-    PG: "B:/0)AI_Cad/CanSat_EDF_Rocket/" + PG + " (generated from params.json)",
-    RM: "B:/0)AI_Cad/CanSat_EDF_Rocket/" + RM,
-    PIO: "B:/0)AI_Cad/CanSat_EDF_Rocket/" + PIO,
-    "firmware/atmega128_fc/src/hal/*.c": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/atmega128_fc/src/hal/",
-    "firmware/atmega128_fc/fc_config.json": "B:/0)AI_Cad/CanSat_EDF_Rocket/firmware/atmega128_fc/fc_config.json",
-    CADR: "B:/0)AI_Cad/CanSat_EDF_Rocket/" + CADR + " (parts.*.bbox_mm, totals.mass_g / com_mm)",
-    CADC: "B:/0)AI_Cad/CanSat_EDF_Rocket/" + CADC,
-    HW: "B:/0)AI_Cad/CanSat_EDF_Rocket/" + HW,
-    "cad/layout.py": "B:/0)AI_Cad/CanSat_EDF_Rocket/cad/layout.py",
-    "sim/*.py": "B:/0)AI_Cad/CanSat_EDF_Rocket/sim/ (tether.py, link_model.py, sim6dof.py)",
+    "repository": "<repository> = " + PROJ.as_posix() + " (the checkout this script ran in; every '<repository>/' "
+                  "path below is inside it)",
+    "params.json": "<repository>/params.json (read-only; line numbers as of 2026-11-04 15:15)",
+    BH: REPO + BH,
+    PG: REPO + PG + " (generated from params.json)",
+    RM: REPO + RM,
+    PIO: REPO + PIO,
+    "firmware/atmega128_fc/src/hal/*.c": "<repository>/firmware/atmega128_fc/src/hal/",
+    "firmware/atmega128_fc/fc_config.json": "<repository>/firmware/atmega128_fc/fc_config.json",
+    CADR: REPO + CADR + " (parts.*.bbox_mm, totals.mass_g / com_mm)",
+    CADC: REPO + CADC,
+    HW: REPO + HW,
+    "cad/layout.py": "<repository>/cad/layout.py",
+    "sim/*.py": "<repository>/sim/ (tether.py, link_model.py, sim6dof.py)",
     P3: "C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/fw09/p3/README.md",
+    PLAN3: REPO + "pcb/vtol_carrier/spec/rev3_plan.json (+ REV3_PLAN.md): the settled rev 3 design; this script is "
+           "compared with it part by part (checks.plan_rev3)",
+    DS_TPS: R3.DATASHEETS["tps61023"],
+    DS_TLV: R3.DATASHEETS["tlv3012"],
     "KiCad libraries": "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/share/kicad/{symbols,footprints} "
                        "(probed: spec/library_probe.json)",
     ESPLIB: "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints/RF_Module.pretty/ESP-12E.kicad_mod "
@@ -90,7 +124,7 @@ SOURCES = {
 # ----------------------------------------------------------------------------------------------- library ids
 MCU = ("MCU_Microchip_ATmega:ATmega128A-A", "Package_QFP:TQFP-64_14x14mm_P0.8mm")
 LDO = ("Regulator_Linear:AMS1117-3.3", "Package_TO_SOT_SMD:SOT-223-3_TabPin2")
-ESP = ("RF_Module:ESP-12E", "RF_Module:ESP-12E")
+ESP = ("RF_Module:ESP-12F", "RF_Module:ESP-12E")   # ESP-12F symbol (22 pins = ESP-12E) on the ESP-12E footprint
 NFET = ("Transistor_FET:BSS138", "Package_TO_SOT_SMD:SOT-23")
 PFET = ("Transistor_FET:AO3401A", "Package_TO_SOT_SMD:SOT-23")
 NPN = ("Transistor_BJT:MMBT3904", "Package_TO_SOT_SMD:SOT-23")
@@ -101,7 +135,11 @@ C0603 = ("Device:C", "Capacitor_SMD:C_0603_1608Metric")
 C0805 = ("Device:C", "Capacitor_SMD:C_0805_2012Metric")
 C1206 = ("Device:C", "Capacitor_SMD:C_1206_3216Metric")
 CPOL = ("Device:C_Polarized", "Capacitor_SMD:CP_Elec_6.3x5.4")   # 6.3 x 5.4 can: the sourced part (C2833309)
-H5V = ("Connector_Generic:Conn_01x05", "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical")
+# rev 3 power block. U8: the KiCad 10 libraries hold no TPS61023 symbol (plan: 1695 symbols scanned) - the generic
+# 6-pin symbol keeps the pin numbers but gives ERC no pin types; rev3_checks.py u8-u9 compares pad -> net instead.
+BOOST = ("Connector_Generic:Conn_02x03_Counter_Clockwise", "Package_TO_SOT_SMD:SOT-563")
+CMP = ("Comparator:MCP65R41", "Package_TO_SOT_SMD:SOT-23-6")     # substitute symbol with the TLV3012B DBV pin functions
+LPWR = ("Device:L", "Inductor_SMD:L_Changjiang_FXL0420")
 TANT_A = ("Device:C_Polarized", "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A")
 TANT_B = ("Device:C_Polarized", "Capacitor_Tantalum_SMD:CP_EIA-3528-21_Kemet-B")
 IND = ("Device:L", "Inductor_SMD:L_0805_2012Metric")
@@ -109,9 +147,12 @@ LED = ("Device:LED", "LED_SMD:LED_0603_1608Metric")
 SCHOTTKY = ("Device:D_Schottky", "Diode_SMD:D_SOD-123")
 NETTIE = ("Device:NetTie_2", "NetTie:NetTie-2_SMD_Pad0.5mm")
 SJ3 = ("Jumper:SolderJumper_3_Bridged12", "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm")
-ISP = ("Connector:AVR-ISP-6", "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical")
-H2X3V = ("Connector_Generic:Conn_02x03_Odd_Even", "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical")
-H2V = ("Connector_Generic:Conn_01x02", "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+ISP = ("Connector:AVR-ISP-6",
+       "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical_SMD" if PROG_POP else "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical")
+H2X3V = ("Connector_Generic:Conn_02x03_Odd_Even",
+         "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical_SMD" if PROG_POP else "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical")
+H2V = ("Connector_Generic:Conn_01x02",
+       "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical_SMD_Pin1Right" if PROG_POP else "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
 H2H = ("Connector_Generic:Conn_01x02", "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal")
 H3H = ("Connector_Generic:Conn_01x03", "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal")
 H4H = ("Connector_Generic:Conn_01x04", "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal")
@@ -142,8 +183,14 @@ def _next(prefix: str) -> str:
 
 
 def part(ref: str | None, prefix: str, lib: tuple[str, str], value: str, role: str, source: str,
-         populate: bool | str = True, label: str = "F", note: str | None = None, block: str = "") -> str:
+         populate: bool | str = True, label: str = "F", note: str | None = None, block: str = "",
+         fit: str | None = None) -> str:
+    """Register a part. ``fit`` (who fits it, scripts/fitsets.py) defaults to 'jlc' for a populated part and to 'none'
+    for an unpopulated one; the MCUs ('jlc_optional'), J1 ('user') and copper-only features ('none') pass it."""
     ref = ref or _next(prefix)
+    fit = fit or ("jlc" if populate is True else "none")
+    if fit not in fitsets.FITS:
+        ERRORS.append(f"{ref}: fit {fit!r} is not one of {fitsets.FITS}")
     if ref in PARTS:
         ERRORS.append(f"duplicate refdes {ref}")
     sym, fp = lib
@@ -152,7 +199,7 @@ def part(ref: str | None, prefix: str, lib: tuple[str, str], value: str, role: s
     if fp not in PROBE["footprints"]:
         ERRORS.append(f"{ref}: footprint {fp} not probed / not on disk")
     PARTS[ref] = {"refdes": ref, "role": role, "value": value, "symbol": sym, "footprint": fp,
-                  "populate": populate, "label": label, "source": source, "block": block}
+                  "populate": populate, "fit": fit, "label": label, "source": source, "block": block}
     if note:
         PARTS[ref]["note"] = note
     return ref
@@ -228,7 +275,9 @@ def mcu_block(role: str, populate: bool | str, led_pin: str, led_src: str, mosi:
           "FCU": f"{P} flight_computer.pins (line 2147-2167); {BH}:8-10, 20-44",
           "COM": f"{P} flight_computer.com.pins (line 2208-2223); {BH}:11-12, 58-76",
           "GNS": f"{P} flight_computer.gns.pins (line 2266-2271); {BH}:95-102"}[role],
-         populate, "F", block=blk)
+         populate, "F", block=blk, fit="jlc_optional" if populate is True else None,
+         note="rev 3 (D4): fitted by the user by default (64 joints per chip); JLC fits it only when the *_with_mcu "
+              "BOM / CPL pair is ordered (LCSC C6510)")
     src_sup = f"{RM}:310 (VCC, AVCC(LC), 100 nF per VCC/GND pair); {PIO}:51-56 (16 MHz crystal, CKOPT on)"
     net("+5V", f"{u}.VCC", f"{u}.~{{PEN}}", f"{j}.VCC", source=f"{P} flight_computer.vcc_V 5.0 (line 2137)")
     net("GND", f"{u}.GND", f"{j}.GND")
@@ -268,8 +317,8 @@ def mcu_block(role: str, populate: bool | str, led_pin: str, led_src: str, mosi:
     c("100n", f"{role}_RESET", "GND", f"{role} reset capacitor", f"{P3} section 6 (reset 10 kOhm + 100 nF)", populate,
       block=blk)
     part(j, "J", ISP, "AVR ISP 2x3 (USBasp)", f"{role} ISP header (MOSI = PE0/PDI, MISO = PE1/PDO, SCK = PB1)",
-         f"{RM}:311 (MOSI->PE0, MISO<-PE1, SCK->PB1); {BH}:43", populate, "F", block=blk,
-         note="silkscreen: chip name + pin-1 mark next to the header (rev-1 had none)")
+         f"{RM}:311 (MOSI->PE0, MISO<-PE1, SCK->PB1); {BH}:43", PROG_POP if populate is True else populate, "F",
+         block=blk, note="silkscreen: chip name + pin-1 mark next to the header (rev-1 had none). " + PROG_NOTE)
     net(mosi, f"{u}.PE0", f"{j}.MOSI")
     net(miso, f"{u}.PE1", f"{j}.MISO")
     net(sck, f"{u}.PB1", f"{j}.SCK")
@@ -332,22 +381,23 @@ def build() -> None:
     # programming hold jumpers (one board has no unpluggable link harness)
     part("J24", "J", H2V, "2-pin header + shunt", "NAV reset hold (shunt on = NAV held in reset)",
          f"{RM}:647-651 (program the FCU / GNS: hold the NAV in reset or unplug the link); {BH}:31-32, 99-100",
-         True, "A", block="LINK", note="shunt on while programming the FCU or the GNS; silkscreen 'NAV RST HOLD'")
+         PROG_POP, "A", block="LINK",
+         note="shunt on while programming the FCU or the GNS; silkscreen 'NAV RST HOLD'. " + PROG_NOTE)
     net("NAV_RESET", "J24.1")
     net("GND", "J24.2")
     part("J25", "J", H2V, "2-pin header + shunt", "FCU reset hold (shunt on = FCU held in reset)",
-         f"{RM}:651 (program the COM: unplug the ilink); {BH}:59-61", True, "A", block="LINK",
-         note="shunt on while programming the COM (FCU PD3 / PD2 go high-Z); silkscreen 'FCU RST HOLD'")
+         f"{RM}:651 (program the COM: unplug the ilink); {BH}:59-61", PROG_POP, "A", block="LINK",
+         note="shunt on while programming the COM (FCU PD3 / PD2 go high-Z); silkscreen 'FCU RST HOLD'. " + PROG_NOTE)
     net("FCU_RESET", "J25.1")
     net("GND", "J25.2")
     part("J26", "J", H2V, "2-pin header + shunt", "COM reset hold (shunt on = COM held in reset)",
-         f"NEW (rev 2): while the ESP-12E is flashed through J3 the COM must not toggle the ESP's RST (COM PC6) or drive "
-         f"its RXD0 (COM PD3); {RM}:647-651 hold-in-reset approach", True, "A", block="COM",
-         note="shunt on while flashing the ESP-12E; silkscreen 'COM RST HOLD'")
+         f"NEW (rev 2): while the ESP-12F is flashed through J3 the COM must not toggle the ESP's RST (COM PC6) or drive "
+         f"its RXD0 (COM PD3); {RM}:647-651 hold-in-reset approach", PROG_POP, "A", block="COM",
+         note="shunt on while flashing the ESP-12F; silkscreen 'COM RST HOLD'. " + PROG_NOTE)
     net("COM_RESET", "J26.1")
     net("GND", "J26.2")
 
-    # ======================================================================= power: 1S logic battery -> boost -> 5 V -> LDO -> 3.3 V
+    # ============================================ power: 1S logic battery -> boost converter U8 -> 5 V -> LDO -> 3.3 V
     part("J14", "J", SPOX2, "Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",
          "logic battery input (1S Li-Po DTP105565P 3.7 V 4200 mAh ONLY, separate from the 6S)",
          f"{USER4} (separate logic battery); {USER5} (this pack, {BAT}); 'C5264RR' read as a Molex 5264-type 2.50 mm "
@@ -355,7 +405,8 @@ def build() -> None:
          f"free space beside the 6S pack ({REV} MF-4 bend room)", True, "A", block="PWR",
          note="pin 1 = + (red), pin 2 = - (A: check the pack's polarity with a meter before the first plug-in - Q10 "
               "blocks a reversed pack). Silkscreen '+ - 1S LOGIC BAT 3.0-4.2V' with the + at pin 1. A 2S / 3S pack must "
-              "never be plugged in (boost module input and Q10 not rated for it in this design)")
+              "never be plugged in (the boost converter U8, the comparator U9 and Q10 are not rated for it in this "
+              "design)")
     net("VBAT_LOGIC_RAW", "J14.1", source=USER5)
     net("GND", "J14.2")
     part("Q10", "Q", PFET, "AO3401A (-30 V, -4 A, Vgs(th) -0.5..-1.3 V, Rds(on) <= 85 mOhm at Vgs -2.5 V: A)",
@@ -365,7 +416,8 @@ def build() -> None:
          note="drain = battery +, source = load: the body diode starts conduction, Vgs = -Vbat turns it on; a reversed "
               "pack leaves it off. 1S worst case: Vgs = -3.0 V at the PCM-limited end (-2.5 V if the PCM cuts at 2.5 V, "
               "A) is beyond the -2.5 V Rds(on) rating point and >= 1.9x the max |Vgs(th)| 1.3 V (A) -> fully on; drop "
-              "<= 85 mOhm x 1.34 A = 0.11 V at the boost peak (E). |Vgs| <= 4.2 V (+ ringing, E < 8.4 V) stays inside "
+              "<= 85 mOhm x 1.746 A = 0.148 V at the boost input peak with a 3.0 V pack (E, plan power_block). |Vgs| "
+              "<= 4.2 V (+ ringing, E < 8.4 V) stays inside "
               "+-12 V: the rev-1 gate zener is dropped")
     net("VBAT_LOGIC_RAW", "Q10.D")
     net("VBAT_LOGIC", "Q10.S")
@@ -383,40 +435,92 @@ def build() -> None:
               "decision). Silkscreen 'LOGIC PWR SW'")
     net("VBAT_LOGIC", "J15.1")
     net("VBAT_LOGIC_SW", "J15.2")
-    c("22u 10V", "VBAT_LOGIC_SW", "GND", "boost input capacitor 1", "A (boost input ripple at 1.3 A peak)", True,
+    c("22u 10V", "VBAT_LOGIC_SW", "GND", "boost input capacitor 1",
+      "A (boost input ripple; 1.75 A average input current at the 3.0 V peak, E plan power_block)", True,
       block="PWR", lib=C1206)
     c("22u 10V", "VBAT_LOGIC_SW", "GND", "boost input capacitor 2", "A", True, block="PWR", lib=C1206)
-    part("J6", "J", H5V, "1x5 2.54 mm: Pololu S9V11F5S6CMA 5 V step-up/step-down module (VOUT, GND, VIN, EN, PG)",
-         "5 V regulator module (boost from the 1S pack, adjustable low-voltage cut-off)",
-         f"{USER5} (1S cannot feed a buck / LDO to 5 V; 'prefer a boost MODULE on a pin header'; 'add an under-voltage "
-         f"cutoff or at least make the logic-battery monitor mandatory'); devicemart no=15855364 = Pololu #2870 "
-         f"(pololu.com/product/2870: 5 V, 1.7 A typ. max, VIN 2-16 V after a 3 V start, EN pin with an 11-turn pot to "
-         f"VIN = adjustable low-VIN cut-off, off below EN 0.7 V / on above 0.8 V = ~114 % hysteresis, PG open-drain, "
-         f"12.7 x 15.3 x 6.4 mm, no reverse-voltage protection - read 2026-11-05); {P} "
-         f"configs.vtol.electronics.carrier.model '5 V buck for the logic' (line 1755) is superseded", True, "A",
+    # ---- rev 3: on-board 5 V boost converter (replaces the Pololu S9V11F5S6CMA module on J6, plan I3 / D1 = A).
+    # Pins of U8 / U9 are given by NUMBER (U8 has a generic symbol, U9 a substitute symbol); the numbers are those of
+    # the datasheet pin tables and are compared again on the exported netlist by rev3_checks.py u8-u9.
+    part("U8", "U", BOOST, "TPS61023DRLR",
+         "5 V synchronous boost converter (replaces the Pololu S9V11F5S6CMA module on J6)",
+         f"{PLAN3} changes[U8], power_block; {DS_TPS}:148-160 (Figure 5-1 DRL package, pin functions: 1 FB, 2 EN, "
+         f"3 VIN, 4 GND, 5 SW, 6 VOUT), :19 and :559 (true disconnection between input and output in shutdown); "
+         f"JLC C919459", True, "F", block="PWR",
+         note="GENERIC SYMBOL: the KiCad 10 libraries hold no TPS61023 symbol (plan: 1695 symbols scanned, 0 "
+              "pin-identical). The 6-pin connector symbol keeps the pad numbers of SOT-563 but has passive pins: ERC "
+              "gives NO evidence for U8 - the pad -> net table check (rev3_checks.py u8-u9) replaces it. Vout = 0.595 V "
+              "x (1 + R63 / R64) = 5.06 V nominal")
+    net("BOOST_FB", "U8.1", source=f"{PLAN3} new_nets BOOST_FB; {DS_TPS}:241-242 (VREF 580 / 595 / 610 mV), :728",
+        note="feedback, 0.595 V")
+    net("BOOST_EN", "U8.2", source=f"{PLAN3} new_nets BOOST_EN, power_block.en_drive",
+        note="enable = UVLO comparator output (push-pull, low impedance; 1M pull-down R68)")
+    net("VBAT_LOGIC_SW", "U8.3")
+    net("GND", "U8.4")
+    net("BOOST_SW", "U8.5", source=f"{PLAN3} new_nets BOOST_SW; {DS_TPS}:158 (pin 5 SW)",
+        note="switch node (1 MHz, keep the copper minimal)")
+    net("+5V", "U8.6", source=f"{P} flight_computer.vcc_V 5.0 (line 2137); {RM}:244 (5 V logic rail)")
+    part("L5", "L", LPWR, "1.0 uH FXL0420-1R0-MA1", "boost inductor (molded, 2.0 mm high, Isat 6.5 A typ)",
+         f"{PLAN3} changes[L5]; {DS_TPS}:197 and :746 (effective inductance 0.37 / 1.0 / 2.9 uH); JLC C53426685", True,
+         "F", block="PWR",
+         note="refdes L5 was the AVCC inductor of the removed 5th MCU (rev 2b); rev 3 re-uses the number for the "
+              "boost inductor. No signal trace under it on F.Cu (plan routing notes)")
+    net("VBAT_LOGIC_SW", "L5.1")
+    net("BOOST_SW", "L5.2")
+
+    def pwr2(ref: str, lib: tuple[str, str], value: str, n1: str, n2: str, role: str, source: str) -> None:
+        part(ref, ref.rstrip("0123456789"), lib, value, role, source, True, "F", block="PWR")
+        net(n1, f"{ref}.1")
+        net(n2, f"{ref}.2")
+
+    pwr2("C57", C1206, "22u", "+5V", "GND", "boost output capacitor 2 (next to U8 pin 6 / pin 4, with C43)",
+         f"{PLAN3} changes[C57]; {DS_TPS}:199 (effective output capacitance 4 / 10 / 1000 uF); JLC C12891")
+    pwr2("C58", C0603, "1n 50V X7R", "+5V", "BOOST_FB", "feed-forward capacitor across R63",
+         f"{PLAN3} changes[C58]; {DS_TPS}:838-860 (zero at about 1 kHz with the upper divider resistor: 1061 Hz with "
+         f"150k); JLC C1588")
+    pwr2("R63", R0603, "150k 1%", "+5V", "BOOST_FB", "boost feedback divider, upper",
+         f"{PLAN3} changes[R63]; {DS_TPS}:241-242, :728 (Vout = 0.595 V x (1 + 150k / 20k) = 5.06 V nominal); JLC "
+         f"C22807")
+    pwr2("R64", R0603, "20k 1%", "BOOST_FB", "GND", "boost feedback divider, lower",
+         f"{PLAN3} changes[R64]; see R63; JLC C4184")
+    # under-voltage lock-out: U9 compares the divided battery voltage with its 1.242 V reference and drives EN
+    part("U9", "U", CMP, "TLV3012BIDBVR",
+         "battery under-voltage lock-out comparator with 1.242 V reference, push-pull output drives the boost EN pin",
+         f"{PLAN3} changes[U9], power_block.uvlo; {DS_TLV}:154-163 (Table 5-1 pin functions, DBV: 1 OUT, 2 V-, 3 IN+, "
+         f"4 IN-, 5 REF, 6 V+), :479 (power-on reset), :1511-1539 (external hysteresis); JLC C20345924", True, "F",
          block="PWR",
-         note="pin order A: the vendor page names the five edge pins VOUT, GND, VIN, EN, PG in this order - check the "
-              "silkscreen of the bought module before soldering. The module sits FLAT on its supplied straight 1x6 "
-              "header strip (5 pins used; SEL left open = 5 V output, never bridged to VIN = 6 V). EN and PG are not "
-              "wired on the carrier: EN keeps the module's own pot (set the cut-off to 3.2 V before the first flight: "
-              "EN = 0.7 V x Vbat / 3.2 V, e.g. 0.81 V at 3.7 V; restart only above ~3.65 V, A/E); PG unused (firmware "
-              "does not read it). Height on the header ~2.5 + 6.4 = ~9 mm < 13.4 mm (E). Startup current limited to "
-              "~700 mA until 5 V is reached (vendor) - the board's typical 0.27 A load starts fine (E)")
-    net("+5V", "J6.1", source=f"{P} flight_computer.vcc_V 5.0 (line 2137); {RM}:244 (5 V logic rail)")
-    net("GND", "J6.2")
-    net("VBAT_LOGIC_SW", "J6.3")
-    nc("J6.4", "Pololu EN: module-internal 11-turn pot to VIN sets the low-voltage cut-off; not wired on the carrier "
-               "(a later revision could pull it low from the FCU for a soft-off)")
-    nc("J6.5", "Pololu PG (power good, open drain): not read by the firmware; left open")
+         note="SUBSTITUTE SYMBOL: no TLV3012 symbol on disk; Comparator:MCP65R41 has the same six pin numbers and "
+              "functions (1 push-pull output, 2 V-, 3 +, 4 -, 5 Vref, 6 V+). Thresholds (plan power_block.uvlo, E, 256 "
+              "corners): on 3.59 V nominal (3.44 .. 3.73 V), off 3.13 V nominal (3.01 .. 3.25 V)")
+    net("BOOST_EN", "U9.1")
+    net("GND", "U9.2")
+    net("UVLO_SENSE", "U9.3", source=f"{PLAN3} new_nets UVLO_SENSE, power_block.uvlo",
+        note="battery divider tap (163 kOhm Thevenin, 100 nF filter)")
+    net("UVLO_REF", "U9.4", "U9.5", source=f"{PLAN3} new_nets UVLO_REF; {DS_TLV}:154-163 (pin 5 REF, pin 4 IN-)",
+        note="1.242 V reference tied to IN-")
+    net("VBAT_LOGIC_SW", "U9.6")
+    pwr2("C59", C0603, "100n", "VBAT_LOGIC_SW", "GND", "U9 supply bypass",
+         f"{PLAN3} changes[C59]; {DS_TLV}:1706 (0.1 uF ceramic supply decoupling); JLC C14663")
+    pwr2("C60", C0603, "100n", "UVLO_SENSE", "GND", "UVLO sense filter (16.3 ms with the 163 kOhm divider node)",
+         f"{PLAN3} changes[C60], power_block.uvlo.sense_filter_tau_ms_100nF; JLC C14663")
+    pwr2("R65", R0603, "470k 1%", "VBAT_LOGIC_SW", "UVLO_SENSE", "UVLO divider, upper",
+         f"{PLAN3} changes[R65], power_block.uvlo (worst-case search with the TLV3012B limits); JLC C23178")
+    pwr2("R66", R0603, "270k 1%", "UVLO_SENSE", "GND", "UVLO divider, lower",
+         f"{PLAN3} changes[R66], power_block.uvlo; JLC C22965")
+    pwr2("R67", R0603, "3.3M 1%", "UVLO_SENSE", "BOOST_EN", "UVLO hysteresis resistor",
+         f"{PLAN3} changes[R67], power_block.uvlo; {DS_TLV}:1511-1539, :1549-1550; JLC C26096")
+    pwr2("R68", R0603, "1M 1%", "BOOST_EN", "GND",
+         "pull-down on the boost EN pin: EN stays low while U9 is unpowered or in its power-on reset",
+         f"{PLAN3} changes[R68], power_block.en_drive; JLC C22935")
     c("22u", "+5V", "GND", "5 V rail bulk at the boost output", "A", True, block="PWR", lib=C1206)
-    part("U6", "U", LDO, "AMS1117-3.3", "3.3 V LDO (ESP-12E, BMP280, GPS, shifter LV side)",
+    part("U6", "U", LDO, "AMS1117-3.3", "3.3 V LDO (ESP-12F, BMP280, GPS, shifter LV side)",
          f"{P} configs.vtol.electronics.carrier.model 'AMS1117-3.3' (line 1755); {RM}:245-246", True, "F",
          block="PWR")
     net("+5V", "U6.VI")
     net("+3V3", "U6.VO", source=f"{RM}:245-246; {P} electronics.gps.power '3.3 V rail' (line 1012)")
     net("GND", "U6.GND")
     c("10u", "+5V", "GND", "AMS1117 input capacitor", "A (AMS1117 datasheet class value)", True, block="PWR", lib=C0805)
-    c("22u 10V tantalum", "+3V3", "GND", "AMS1117 output capacitor (stability, ESR)",
+    c("22u 10V tantalum (TAJA226K010RNJ, +-10 %)", "+3V3", "GND", "AMS1117 output capacitor (stability, ESR)",
       f"A (AMS1117 class datasheets: >= 22 uF tantalum, ESR in a stable window - check the bought vendor's sheet); "
       f"tantalum, not a large MLCC ({REV} E5)", True, block="PWR", lib=TANT_A)
     # logic battery monitor on the FCU's free PF3 (populated; firmware does not read it yet)
@@ -431,13 +535,15 @@ def build() -> None:
       block="PWR")
     net("FCU_LBAT_ADC", "U2.PF3",
         source="NEW (not in params / firmware): logic-battery sense on FCU PF3/ADC3 - mandatory monitor of the 1S pack "
-               "(boost modules keep running down to ~2 V, A)", kind="adc")
+               "(rev 3: the U9 under-voltage lock-out stops the converter near 3.13 V, the ADC is the early "
+               "warning)", kind="adc")
 
     # ======================================================================= ground tie
     part("NT1", "NT", NETTIE, "net tie", "single tie point logic GND <-> propulsion GND (GND_PWR), at J12 pin 3",
          f"{USER4} (common ground, one tie point); {RM}:247, 323 (GND common); {BH}:84, 91, 107", True, "A",
-         block="PWR",
-         note="place NT1 touching J12 (ESC lead) pin 3; servo return currents stay on GND_PWR (J8-J13 pin 3 -> J12 pin 3)")
+         block="PWR", fit="none",
+         note="copper only (no part to fit). Place NT1 touching J12 (ESC lead) pin 3; servo return currents stay on "
+              "GND_PWR (J8-J11 pin 3 -> J12 pin 3)")
     net("GND", "NT1.1")
     net("GND_PWR", "NT1.2", source=f"{USER4}; {RM}:322-324 (servo 5 V rail from the ESC BEC, grounds common)")
 
@@ -565,8 +671,9 @@ def build() -> None:
     net("I2C_SDA_5V", "U1.PD1", kind="i2c")
     part("J1", "J", H8V, "1x8 2.54 mm (GY-521 soldered flat on straight pins)", "IMU module GY-521 MPU-6050 [SZH-EK007]",
          f"devicemart no=1247052; {P} flight_computer.nav (line 2169-2184); {RM}:197 (module VCC 5 V, I2C 3.3 V, 0x68)",
-         True, "A", block="NAV",
-         note="pin order A: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT - check the silkscreen. Mount flat, parallel to the "
+         True, "A", block="NAV", fit="user",
+         note="rev 3: 8 bare plated holes from JLC; the user solders the module's own 1x8 pin strip into them (8 "
+              "joints). Pin order A: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT - check the silkscreen. Mount flat, parallel to the "
               f"carrier, with a 2 mm foam / nylon support under the far edge (cantilever, {REV} MF-9) - area reserved, "
               "no parts under the module; set fc_config.json imu_mounting after placement")
     net("+5V", "J1.1")
@@ -592,22 +699,22 @@ def build() -> None:
     net("I2C_SCL_3V3", "J2.3")
     net("I2C_SDA_3V3", "J2.4")
 
-    # ======================================================================= radio: ESP-12E (ESP8266) soldered on the carrier
+    # ======================================================================= radio: ESP-12F (ESP8266) soldered on the carrier
     esp_src = f"{USER5} ('ESP-12E 직접 납땜', 'PLM100 완전히 빼기'); {ESPLIB}"
-    part("U7", "U", ESP, "ESP-12E (ESP8266EX + 4 MB SPI flash, PCB antenna)",
+    part("U7", "U", ESP, "ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)",
          "Wi-Fi radio: transparent UART <-> Wi-Fi bridge for the COM (no flight computing on it)", esp_src, True, "F",
          block="COM",
          note="antenna end (footprint local -y, keep-out y -12.12..-4.80) flush with the +y board edge; the footprint's "
-              "keep-out (all copper layers) + a board rule area 4 mm wider on both sides (no copper either layer, no "
+              "keep-out (all copper layers) + a board rule area 4 mm wider on both sides (no copper on any layer, no "
               "parts, A: Espressif / Ai-Thinker guidance - check). Runs ONLY a UART <-> Wi-Fi bridge (project rule: "
               "all flight computing on the ATmega128s); its firmware is a follow-up")
     net("+3V3", "U7.VCC", source=f"{ESPLIB} pin 8 VCC; 3.0-3.6 V supply ({ESPA})")
     net("GND", "U7.GND")
-    c("100u 10V tantalum", "+3V3", "GND", "ESP-12E bulk (TX bursts), at the VCC pin",
+    c("100u 10V tantalum", "+3V3", "GND", "ESP-12F bulk (TX bursts), at the VCC pin",
       f"{USER5} '>= 100 uF + 100 nF close to the module'; {ESPA}; 10 V rating = 33 % of rating on 3.3 V (6.3 V part = "
       f"52 %, above the usual <= 50 % tantalum derating, A - {REV2} E-m4)", True, block="COM", lib=TANT_B)
-    c("10u", "+3V3", "GND", "ESP-12E VCC ceramic", ESPA, True, block="COM", lib=C0805)
-    c("100n", "+3V3", "GND", "ESP-12E VCC decoupling (at pin 8, own GND via)", ESPA, True, block="COM", lib=C0402)
+    c("10u", "+3V3", "GND", "ESP-12F VCC ceramic", ESPA, True, block="COM", lib=C0805)
+    c("100n", "+3V3", "GND", "ESP-12F VCC decoupling (at pin 8, own GND via)", ESPA, True, block="COM", lib=C0402)
     net("ESP_EN", "U7.EN", source=f"{ESPLIB} pin 3 EN (CH_PD): high = chip enabled ({ESPA})")
     r("10k", "ESP_EN", "+3V3", "ESP EN (CH_PD) pull-up", f"{USER5} 'EN pull-up 10k'; {ESPA}", True, block="COM")
     c("100n", "ESP_EN", "GND", "ESP EN RC delay (enable after the 3.3 V rail has settled)",
@@ -623,7 +730,7 @@ def build() -> None:
     net("COM_LINK_TX", "U3.PD3",
         source=f"{P} com.pins.link_uart_tx 'PD3/TXD1 (to module RXD through a BSS138 channel)' (line 2213); {BH}:66",
         kind="uart")
-    bss138("Q4", "COM_LINK_TX", "ESP_RXD_SH", "COM PD3 TXD1 -> ESP-12E RXD0 (GPIO3, pin 21)",
+    bss138("Q4", "COM_LINK_TX", "ESP_RXD_SH", "COM PD3 TXD1 -> ESP-12F RXD0 (GPIO3, pin 21)",
            f"{P} com.pins.link_uart_tx (line 2213); {RM}:254, 261 (MCU -> module through a channel)", block="COM")
     r("1k", "ESP_RXD_SH", "ESP_RXD0", "ESP RXD0 series resistor (a programmer on J3 wins against the COM side)",
       f"{USER5} ('series resistors on the COM side' so the COM does not fight the programmer); value A", True,
@@ -633,7 +740,7 @@ def build() -> None:
     net("ESP_TXD0", "U7.GPIO1/TXD", "J3.3",
         source=f"{ESPLIB} pin 22 GPIO1/TXD (UART0 TX; prints a boot log at 74880 baud after every reset, {ESPA})",
         kind="uart")
-    part("Q11", "Q", NFET, "BSS138", "level shifter channel: ESP-12E TXD0 (GPIO1) -> COM PD2 RXD1",
+    part("Q11", "Q", NFET, "BSS138", "level shifter channel: ESP-12F TXD0 (GPIO1) -> COM PD2 RXD1",
          f"{USER5} ('this time put the ESP TX -> AVR RX direction through a BSS138 channel too'); {REV} E2 (3.3 V direct "
          f"drive leaves <= 0.3 V over V_IH 3.0 V); replaces {P} com.pins.link_uart_rx 'direct' (line 2212)", True, "F",
          block="COM")
@@ -649,16 +756,16 @@ def build() -> None:
     net("COM_ESP_RESET", "U3.PC6",
         source=f"{P} com.pins.lora_reset PC6 (line 2222); {BH}:74; PC6 is driven only by "
                "firmware/atmega128_fc/src/hal/sx127x.c:87-88, 113 - the lora_uart build leaves it an input (Hi-Z)")
-    bss138("Q5", "COM_ESP_RESET", "ESP_RST", "COM PC6 -> ESP-12E RST (pin 1, active low)",
+    bss138("Q5", "COM_ESP_RESET", "ESP_RST", "COM PC6 -> ESP-12F RST (pin 1, active low)",
            f"rev-1 used COM PC6 via Q5 for PLM100 RESET_N - reused ({USER5}); {RM}:276 (sx127x RESET through a channel)",
            block="COM", src_lv=f"; this LV pull-up IS the ESP RST 10k pull-up ({USER5} 'RST pull-up 10k'; {ESPA})")
     net("ESP_RST", "U7.~{RST}", "J3.5", source=f"{ESPLIB} pin 1 ~RST (active low)")
     # ESP programming header (3.3 V logic ONLY)
-    part("J3", "J", H2X3V, "2x3 2.54 mm vertical: ESP-12E programming header (3.3 V logic ONLY)",
-         "ESP-12E flash header: 1 IO0, 2 GND, 3 TXD0, 4 RXD0, 5 RST, 6 GND",
-         f"{USER5} (programming header: GND, ESP TXD0, ESP RXD0, GPIO0 to GND via jumper, RST; 3.3 V only)", True, "A",
-         block="COM",
-         note="pin order chosen here: a shunt on pins 1-2 (IO0-GND) = download mode at the next reset; touch / shunt 5-6 "
+    part("J3", "J", H2X3V, "2x3 2.54 mm vertical: ESP-12F programming header (3.3 V logic ONLY)",
+         "ESP-12F flash header: 1 IO0, 2 GND, 3 TXD0, 4 RXD0, 5 RST, 6 GND",
+         f"{USER5} (programming header: GND, ESP TXD0, ESP RXD0, GPIO0 to GND via jumper, RST; 3.3 V only)", PROG_POP,
+         "A", block="COM",
+         note=PROG_NOTE + " Pin order chosen here: a shunt on pins 1-2 (IO0-GND) = download mode at the next reset; touch / shunt 5-6 "
               "(RST-GND) = reset. Programmer = a 3.3 V USB-UART: its RX to pin 3, TX to pin 4, GND to pin 2 / 6 - NO "
               "supply pin: the board runs from the logic battery while flashing (ESP RF calibration peaks exceed most "
               "USB-UART 3.3 V outputs, A). A 5 V USB-UART would exceed the ESP's 3.6 V abs. max (A). Silkscreen "
@@ -674,14 +781,14 @@ def build() -> None:
                      ("GPIO9", "SPI FLASH pin (QIO) - must stay unconnected"),
                      ("GPIO10", "SPI FLASH pin (QIO) - must stay unconnected"),
                      ("MOSI", "SPI FLASH pin - must stay unconnected"), ("SCLK", "SPI FLASH pin - must stay unconnected")]:
-        nc(f"U7.{pin}", f"ESP-12E {why} ({ESPLIB}; {ESPA})")
+        nc(f"U7.{pin}", f"ESP-12F {why} ({ESPLIB}; {ESPA})")
     for pin, why in [("PC3", "link_m0 (Ebyte M0): the lora_uart firmware drives it low; the ESP has no M0"),
                      ("PC4", "link_m1 (Ebyte M1): driven low by the firmware; the ESP has no M1"),
                      ("PC5", "link_aux (Ebyte AUX): input with internal pull-up = 'ready' when open "
                              "(firmware/atmega128_fc/src/hal/lora_uart.c:69-70)"),
                      ("PB0", "lora_spi_nss (sx127x backend only)"), ("PB2", "lora_spi_mosi (sx127x only)"),
                      ("PB3", "lora_spi_miso (sx127x only)"), ("PE7", "lora_dio0 (sx127x only)")]:
-        nc(f"U3.{pin}", f"COM {why} - {P} com.pins (line 2214-2221); left open for the ESP-12E (firmware follow-up)")
+        nc(f"U3.{pin}", f"COM {why} - {P} com.pins (line 2214-2221); left open for the ESP-12F (firmware follow-up)")
 
     # ======================================================================= GPS lead (NEO-7M in the top cap) -> GNS USART1
     part("J7", "J", JSTGH, "JST-GH 1.25 mm 4-pin vertical (top entry)", "GPS lead (u-blox NEO-7M module in the top cap)",
@@ -695,7 +802,8 @@ def build() -> None:
     net("GND", "J7.4", "J7.MP")
     part("JP1", "JP", SJ3, "solder jumper, 1-2 bridged", "GPS supply select: 1-2 = 3.3 V (default, params), 2-3 = 5 V",
          f"{P} electronics.gps.power (line 1012); NEO-7M board supply '3.3-5 V' typical (A, not on the product page)",
-         True, "A", block="GNS")
+         True, "A", block="GNS", fit="none",
+         note="copper only (pads 1-2 bridged in the footprint; no part to fit)")
     net("+3V3", "JP1.A")
     net("GPS_VCC", "JP1.C")
     net("+5V", "JP1.B")
@@ -874,7 +982,7 @@ def check() -> dict:
     for m in ESP_FLASH_PINS:
         nums = resolve(m)
         if nums and f"{m.split('.')[0]}.{nums[0]}" in pin_net:
-            ERRORS.append(f"ESP-12E flash pin {m} is connected - it must stay open")
+            ERRORS.append(f"ESP-12F flash pin {m} is connected - it must stay open")
     report["esp_flash_pins_open"] = len(ESP_FLASH_PINS)
     strap_rows = []
     for pin, rail, why in STRAPS:
@@ -948,150 +1056,12 @@ def battery_spots() -> dict:
 
 
 # ----------------------------------------------------------------------------------------------- part sources (BOM)
-SRC_FILE = HERE / "spec" / "parts_sources.json"
-# LCSC package text that must appear for the footprint used (catches a wrong-size substitute)
-PKG_EXPECT = {"r10k": "0603", "r1k": "0603", "r4k7": "0603", "r47k": "0603", "r220": "0603", "r100k": "0603",
-              "c100n0402": "0402", "c22p0402": "0402", "c27p0402": "0402", "c100n0603": "0603", "c10u0805": "0805", "c22u1206": "1206",
-              "tant22u": "3216-18", "tant100u": "3528-21", "elec220u": "6.3xL5.4", "ind10u": "0805", "led": "0603",
-              "schottky": "SOD-123", "bss138": "SOT-23", "pfet": "SOT-23", "npn": "SOT-23", "ldo": "SOT-223",
-              "mcu": "TQFP-64", "xtal": "3225", "esp": "24x16", "gh4": "1.25", "ph2": "2mm", "spox2": "2.5mm",
-              "hdr2x3": "2.54", "hdr1x2v": "2.54", "hdr1x6v": "2.54", "hdr1x3ra": "2.54", "hdr1x2ra": "2.54",
-              "hdr1x4ra": "2.54", "sock1x6ra": "2.54"}
-NO_BOM = {"NT1": "net tie: copper only, no part", "JP1": "solder jumper: copper only (bridged 1-2 in the copper)"}
-# lead / mating / loose items that have no footprint of their own: (key, qty, for)
-EXTRA_BOM = [
-    ("shunt", 4, "jumper shunts for J24, J25, J26 (reset holds, fitted only while programming) and J3 pins 1-2 (ESP "
-                 "download mode); J15 (JST-PH) is bridged on the bench with the switch lead closed"),
-    ("bmp280", 1, "plugs into J2 with its own right-angle header"),
-    ("openlog", 1, "plugs into J5, lies flat"),
-    ("hdr1x6ra", 1, "1x6 right-angle male header soldered on the OpenLog (so it lies flat in J5)"),
-    ("neo7m", 1, "GPS module in the top cap (not on the carrier)"),
-    ("ghr4", 2, "GPS lead housings (carrier end J7 + NEO-7M end if it has a GH socket; else a 2.54 Dupont end, A)"),
-    ("ghcrimp", 8, "GPS lead crimp contacts"),
-    ("phr2", 2, "JST-PH 2-pin housings: buzzer lead (mates J17) + power-switch lead (mates J15)"),
-    ("phcrimp", 4, "JST-PH crimp contacts (buzzer lead 2 + switch lead 2)"),
-    ("toggle", 1, "logic power switch; its Dupont lead end is cut and re-terminated with a JST-PH housing (phr2 + "
-                  "2 phcrimp) to plug onto J15 (switch reachability = user decision)"),
-    ("logic_battery", 1, "1S logic pack, its own 5264-type plug mates J14"),
-]
-
-
-def bom_key(p: dict) -> str | None:
-    fp, v, ref = p["footprint"], p["value"], p["refdes"]
-    if ref in NO_BOM:
-        return None
-    if ref == "J1":
-        return "gy521"            # the GY-521's own straight 1x8 header is soldered into J1
-    if ref == "J6":
-        return "boost"            # the Pololu module's own straight header strip is soldered into J6
-    table = [("TQFP-64", "mcu"), ("SOT-223", "ldo"), ("RF_Module:ESP-12E", "esp"), ("Crystal_SMD_3225", "xtal"),
-             ("D_SOD-123", "schottky"), ("LED_0603", "led"), ("L_0805", "ind10u"), ("Kemet-A", "tant22u"),
-             ("Kemet-B", "tant100u"), ("CP_Elec", "elec220u"), ("PinHeader_2x03", "hdr2x3"),
-             ("PinHeader_1x02_P2.54mm_Vertical", "hdr1x2v"), ("PinHeader_1x06_P2.54mm_Vertical", "hdr1x6v"),
-             ("PinHeader_1x03_P2.54mm_Horizontal", "hdr1x3ra"), ("PinHeader_1x02_P2.54mm_Horizontal", "hdr1x2ra"),
-             ("PinHeader_1x04_P2.54mm_Horizontal", "hdr1x4ra"), ("PinSocket_1x06_P2.54mm_Horizontal", "sock1x6ra"),
-             ("Molex_SPOX", "spox2"), ("JST_GH", "gh4"), ("JST_PH", "ph2")]
-    for frag, key in table:
-        if frag in fp:
-            return key
-    if p["symbol"] == "Transistor_FET:BSS138":
-        return "bss138"
-    if p["symbol"] == "Transistor_FET:AO3401A":
-        return "pfet"
-    if p["symbol"] == "Transistor_BJT:MMBT3904":
-        return "npn"
-    if p["symbol"] == "Device:R":
-        val = v.split()[0]
-        return {"10k": "r10k", "1k": "r1k", "4.7k": "r4k7", "47k": "r47k", "220": "r220", "100k": "r100k"}.get(val)
-    if p["symbol"] == "Device:C":
-        size = re.search(r"C_(\d{4})_", fp).group(1)
-        return {("0402", "100n"): "c100n0402", ("0402", "22p"): "c22p0402", ("0402", "27p"): "c27p0402",
-                ("0603", "100n"): "c100n0603",
-                ("0805", "10u"): "c10u0805", ("1206", "22u"): "c22u1206"}.get((size, v.split()[0]))
-    return None
-
-
 def sourcing(parts: list[dict]) -> dict:
-    """Attach the online-verified source to every part; build the JLC BOM view and the devicemart purchase list."""
-    if not SRC_FILE.exists():
-        ERRORS.append(f"{SRC_FILE} missing - run scripts/fetch_parts_sources.py (online, read-only)")
-        return {}
-    src = json.loads(SRC_FILE.read_text(encoding="utf-8"))
-    for e in src.get("errors", []):
-        ERRORS.append(f"parts source error (fetch_parts_sources.py): {e}")
-    allsrc = {**src["lcsc"], **src["devicemart"]}
-    lines: dict[str, dict] = {}
-    for p in parts:
-        key = bom_key(p)
-        if key is None:
-            if p["refdes"] in NO_BOM:
-                p["bom"] = {"line": None, "why": NO_BOM[p["refdes"]]}
-                continue
-            ERRORS.append(f"{p['refdes']} ({p['value']}, {p['footprint']}): no BOM source mapping")
-            continue
-        s = allsrc.get(key)
-        if s is None or not s.get("found"):
-            ERRORS.append(f"{p['refdes']}: source '{key}' not verified online")
-            continue
-        m_size = re.search(r"_(\d{4})_\d{4}Metric", p["footprint"])   # chip size read from the FOOTPRINT name
-        want = m_size.group(1) if m_size else PKG_EXPECT.get(key)
-        if want and want not in (s.get("package") or ""):
-            ERRORS.append(f"{p['refdes']}: source {s['part_number']} package {s.get('package')!r} does not match "
-                          f"footprint {p['footprint']} (expected '{want}')")
-        smd = s["source"] == "JLCPCB/LCSC" and not (s.get("package") or "").startswith(("Plugin", "Push-Pull"))
-        assembly = ("JLC SMT assembly" if smd else
-                    "hand-solder (THT; JLC THT assembly optional)" if s["source"] == "JLCPCB/LCSC" else
-                    "hand-solder (devicemart module)")
-        p["bom"] = {"line": key, "source": s["source"], "part_number": s["part_number"],
-                    "mpn": s.get("mpn") or s.get("product_name"), "jlc_type": s.get("jlc_library_type"),
-                    "assembly": assembly}
-        ln = lines.setdefault(key, {"line": key, "refs": [], "dnp_refs": [], "qty_populated": 0,
-                                    "value": p["value"], "footprint": p["footprint"], **p["bom"]})
-        if p["populate"] is True:
-            ln["refs"].append(p["refdes"])
-            ln["qty_populated"] += 1
-        else:
-            ln["dnp_refs"].append(p["refdes"])
-    extra = []
-    for key, qty, why in EXTRA_BOM:
-        s = allsrc.get(key)
-        if s is None or not s.get("found"):
-            ERRORS.append(f"extra BOM item '{key}' not verified online")
-            continue
-        extra.append({"line": key, "qty": qty, "for": why, "source": s["source"], "part_number": s["part_number"],
-                      "mpn": s.get("mpn") or s.get("product_name"), "jlc_type": s.get("jlc_library_type")})
-    board_lines = sorted(lines.values(), key=lambda d: natural(d["refs"][0] if d["refs"] else d["dnp_refs"][0]))
-    jlc = [d for d in board_lines if d["source"] == "JLCPCB/LCSC"]
-    dm_board = [d for d in board_lines if d["source"] == "devicemart"]
-    detail = {k: {kk: v[kk] for kk in ("source", "part_number", "for", "urls", "fetched", "raw_sha256") if kk in v}
-              | {"mpn_or_name": v.get("mpn") or v.get("product_name"), "package": v.get("package"),
-                 "stock": v.get("stock", (v.get("search_record") or {}).get("stock_field")),
-                 "status": v.get("jlc_library_type") or (v.get("search_record") or {}).get("goods_status"),
-                 "price_krw": (v.get("search_record") or {}).get("sale_price_krw")}
-              for k, v in sorted(allsrc.items())}
-    return {
-        "rule": "user 2026-11-05: every part from the JLCPCB parts library (LCSC C-number) or devicemart.co.kr (no=); "
-                "verified online by scripts/fetch_parts_sources.py (read-only GETs, no login / cart / purchase)",
-        "fetched": src.get("fetched"), "evidence": "spec/parts_sources.json; raw pages out/reports/sourcing/",
-        "jlc_bom_columns": ["Comment", "Designator", "Footprint", "LCSC Part #"],
-        "board_lines": board_lines,
-        "jlc_lines": len(jlc), "jlc_basic_lines": sum(1 for d in jlc if d["jlc_type"] == "Basic"),
-        "jlc_extended_lines": sum(1 for d in jlc if d["jlc_type"] == "Extended"),
-        "devicemart_on_board": dm_board,
-        "extra_items": extra,
-        "devicemart_purchase_list": [d for d in extra if d["source"] == "devicemart"] +
-                                    [{"line": d["line"], "qty": d["qty_populated"], "for": ", ".join(d["refs"]),
-                                      "source": d["source"], "part_number": d["part_number"], "mpn": d["mpn"]}
-                                     for d in dm_board],
-        "lcsc_loose_items": [d for d in extra if d["source"] == "JLCPCB/LCSC"],
-        "alternatives": {"esp_alt": "devicemart no=1378118 '[정품] ESP8266 ESP-12E' if U7 is hand-soldered instead of "
-                                    "JLC-assembled"},
-        "sources_detail": detail,
-        "notes": ["JLC 'Extended' lines add a per-line loading fee at assembly (A: JLC policy, not fetched)",
-                  "THT headers / sockets / SPOX / PH: hand-soldered after JLC SMT assembly (or JLC THT assembly)",
-                  "devicemart 'stock' field meaning is undocumented; goods_status 'normal' = on sale at fetch time",
-                  "stock numbers change daily - re-run scripts/fetch_parts_sources.py before ordering"],
-    }
+    """rev 3: every JLC-fitted part gets its BOM line from spec/parts_sources.json (scripts/jlc_sources.py, rule I7).
+
+    The table of LCSC codes, the per-part bom entry and the bom_sources section live in scripts/rev3_spec.py;
+    a JLC-fitted part without an orderable line is an error (ERRORS), never a warning."""
+    return R3.sourcing(parts, PROG_HEADERS, ERRORS)
 
 
 # ----------------------------------------------------------------------------------------------- narrative sections
@@ -1672,6 +1642,13 @@ def main() -> int:
         if not n["notes"]:
             n.pop("notes")
     ncl = sorted(({"pin": k, "reason": v} for k, v in NC.items()), key=lambda d: natural(d["pin"]))
+    plan_rep = R3.plan_check(parts, nets, ncl, PROG_HEADERS, ERRORS)
+    if ERRORS:
+        for e in ERRORS:
+            print("ERROR", e)
+        print(f"{len(ERRORS)} error(s) - spec NOT written")
+        return 1
+    fit_main, fit_mcu = fitsets.summary(parts), fitsets.summary(parts, with_mcu=True)
     summary = {
         "parts": len(parts),
         "parts_populated": sum(1 for p in parts if p["populate"] is True),
@@ -1679,16 +1656,31 @@ def main() -> int:
         "nets": len(nets),
         "by_prefix": {k: sum(1 for p in parts if re.match(rf"{k}\d", p["refdes"]))
                       for k in ["U", "J", "Q", "R", "C", "L", "Y", "D", "JP", "NT"]},
+        "fit_counts": fit_main["fit_counts"],
+        "jlc_fitted_parts": fit_main["jlc_fitted_parts"],
+        "jlc_bom_lines": {"total": fit_main["bom_lines"], "smt": fit_main["bom_lines_smt"],
+                          "tht": fit_main["bom_lines_tht"]},
+        "with_mcu_pair": {"jlc_fitted_parts": fit_mcu["jlc_fitted_parts"], "jlc_bom_lines": fit_mcu["bom_lines"]},
+        "prog_headers": PROG_HEADERS,
     }
     spec = {
-        "schema": "vtol_carrier_spec/3",
-        "revision": "rev 2c (2026-11-05): rev 2b (ESP-12E Wi-Fi + 1S logic battery with a 5 V buck-boost module "
-                    "(low-voltage cut-off), 5th ATmega128A removed, every part sourced from JLCPCB/LCSC or devicemart, "
-                    "verified online) + the rev-2b independent review fixes (rev_2c_changes); rev 1 (PLM100 LoRa + 2S) "
-                    "archived in archive/rev1_plm100_2s/",
-        "title": "CanSat EDF VTOL avionics carrier PCB - electrical specification (not drawn yet)",
-        "status": "electrical spec only; the KiCad schematic and board are generated from it later (scripts/). "
-                  "NOT_VERIFIED: nothing built, drawn or measured; checks below are scripted netlist checks, not ERC / DRC",
+        "schema": "vtol_carrier_spec/4",
+        "revision": "rev 3 (2026-11-10): rev 2c with every part except the MCUs and the sensor modules taken from the "
+                    "JLCPCB assembly library and fitted by JLC - on-board 5 V boost converter (U8 TPS61023 + U9 "
+                    "TLV3012B under-voltage lock-out) instead of the Pololu module on J6, ESP-12F instead of ESP-12E, "
+                    "per-part 'fit' (jlc / jlc_optional / user / none), parts sources re-checked against rule I7 "
+                    "(spec/parts_sources.json). The MCU pin nets, outline and connector positions are those of rev 2c "
+                    "(archived in archive/rev2c_pololu_1s/); rev 1 (PLM100 LoRa + 2S) is in archive/rev1_plm100_2s/",
+        "title": "CanSat EDF VTOL avionics carrier PCB - electrical specification (rev 3)",
+        "status": "electrical spec; the KiCad schematic and board are generated from it (scripts/). NOT_VERIFIED: nothing "
+                  "built or measured; the checks below are scripted netlist checks, not ERC / DRC (those come only from "
+                  "kicad-cli reports under out/reports/)",
+        "prog_headers": {"option": PROG_HEADERS,
+                         "meaning": "A = J3, J19..J22, J24..J26 are bare plated holes (rev 2c positions, fit none); "
+                                    "B = the same refs as JLC-fitted SMD headers outside the tie band (fit jlc)",
+                         "switch": "environment VTOL_PROG_HEADERS (default A)"},
+        "plan": {"file": "spec/rev3_plan.json", "sha256": R3.PLAN_SHA256, "text": "spec/REV3_PLAN.md",
+                 "check": "checks.plan_rev3"},
         "labels": {"F": "from a file (params / firmware / docs / vendor page / KiCad library)", "M": "measured by a tool",
                    "E": "estimated", "A": "assumed (reason given)"},
         "sources": SOURCES,
@@ -1755,15 +1747,28 @@ def main() -> int:
         "parts": parts,
         "nets": nets,
         "no_connect": ncl,
-        "checks": {"tool": "scripts/build_spec.py (scripted netlist checks; not ERC / DRC)", "result": "PASS", **rep},
+        "checks": {"tool": "scripts/build_spec.py (scripted netlist checks; not ERC / DRC)", "result": "PASS", **rep,
+                   "plan_rev3": plan_rep},
         "firmware_followup": firmware_followup(),
         "user_decisions": user_decisions(),
         "conflicts": conflicts(),
         "assumptions": assumptions(),
         "bom_sources": bom,
     }
+    # rev 3 texts: narrative sections that still described rev 2c (Pololu module, ESP-12E, 2 layers, 22 pF) are
+    # rewritten from the plan; a leftover stale keyword outside the history sections is an error
+    R3.apply_rev3_text(spec, PROG_HEADERS, ERRORS)
+    if ERRORS:
+        for e in ERRORS:
+            print("ERROR", e)
+        print(f"{len(ERRORS)} error(s) - spec NOT written")
+        return 1
+    SPEC_DIR.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(spec, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    R3.write_spec_ko(spec, SPEC_DIR / "SPEC_ko.md", HERE)
     print(f"wrote {OUT}: {summary}")
+    print(f"plan check: {plan_rep['result']}, {plan_rep['items_compared']} items, differences "
+          f"{len(plan_rep['differences'])}, declared {len(plan_rep['declared_differences'])}")
     print(f"checks: pins {rep['pins_total']} = connected {rep['pins_connected']} + nc {rep['pins_no_connect']}; "
           f"paths {sum(1 for p in rep['signal_paths'] if p['ok'])}/{len(rep['signal_paths'])}; "
           f"bss138 {len(rep['bss138_channels'])}; straps {sum(1 for s in rep['esp_straps'] if s['ok'])}/{len(rep['esp_straps'])}")

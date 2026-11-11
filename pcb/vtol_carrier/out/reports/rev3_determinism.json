@@ -1,0 +1,68 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_determinism.json",
+ "result": "PASS",
+ "tool": "scripts/rev3_checks.py determinism",
+ "scope": "spec (carrier_spec.json, SPEC_ko.md), IR, schematic sheets, .kicad_pro, schematic manifest. The .kicad_pcb, BOM, CPL and gerbers do not exist for rev 3 yet (later steps).",
+ "prog_headers": "A",
+ "commands": [
+  "build 1: B:/Claude/.venv/Scripts/python.exe -X utf8 -B build_spec.py (cwd B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts, VTOL_PROG_HEADERS=A) -> exit 0",
+  "build 1: B:/Claude/.venv/Scripts/python.exe -X utf8 -B build_schematic.py (cwd B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts, VTOL_PROG_HEADERS=A) -> exit 0",
+  "build 2: B:/Claude/.venv/Scripts/python.exe -X utf8 -B build_spec.py (cwd B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts, VTOL_PROG_HEADERS=A) -> exit 0",
+  "build 2: B:/Claude/.venv/Scripts/python.exe -X utf8 -B build_schematic.py (cwd B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts, VTOL_PROG_HEADERS=A) -> exit 0"
+ ],
+ "problems": [],
+ "files": 13,
+ "sha256_on_disk_before": {
+  "spec/carrier_spec.json": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
+  "spec/SPEC_ko.md": "e9dfbbb350a8658caefe3f3b0bc9f139b04ba59d3493493482527b2e7ac79b0f",
+  "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
+  "kicad/schematic_manifest.json": "d57916faeb2496eb7ca253fcc6b11692828f60eee3bdbb3e11d8a74ce2270c57",
+  "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
+  "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
+  "kicad/fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",
+  "kicad/gns.kicad_sch": "b82c957e69f98ead5408eb6eab73c54999fdfb08b6e579a50424e496ecea8236",
+  "kicad/io.kicad_sch": "7a4d5cd3b7c1cb5c71ddcca46196d8339a7968c7f039a00caf8c6ce6b78d9f0b",
+  "kicad/level_shift.kicad_sch": "80917e3cf8e8f68bde7ce11550ec714492f2b798c002bb9423c942cf292b5dd0",
+  "kicad/nav.kicad_sch": "f53cdba94d5f3b9ba0809433bedc9e370a21e0c22ff8876b7a811ec8e2663915",
+  "kicad/power.kicad_sch": "e36be8f042bf1ffa8c0c02937bb3e261f7a4df9e893a9c33a98195c921455326",
+  "kicad/vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1"
+ },
+ "sha256_after_build_1": {
+  "spec/carrier_spec.json": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
+  "spec/SPEC_ko.md": "e9dfbbb350a8658caefe3f3b0bc9f139b04ba59d3493493482527b2e7ac79b0f",
+  "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
+  "kicad/schematic_manifest.json": "d57916faeb2496eb7ca253fcc6b11692828f60eee3bdbb3e11d8a74ce2270c57",
+  "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
+  "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
+  "kicad/fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",
+  "kicad/gns.kicad_sch": "b82c957e69f98ead5408eb6eab73c54999fdfb08b6e579a50424e496ecea8236",
+  "kicad/io.kicad_sch": "7a4d5cd3b7c1cb5c71ddcca46196d8339a7968c7f039a00caf8c6ce6b78d9f0b",
+  "kicad/level_shift.kicad_sch": "80917e3cf8e8f68bde7ce11550ec714492f2b798c002bb9423c942cf292b5dd0",
+  "kicad/nav.kicad_sch": "f53cdba94d5f3b9ba0809433bedc9e370a21e0c22ff8876b7a811ec8e2663915",
+  "kicad/power.kicad_sch": "e36be8f042bf1ffa8c0c02937bb3e261f7a4df9e893a9c33a98195c921455326",
+  "kicad/vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1"
+ },
+ "sha256_after_build_2": {
+  "spec/carrier_spec.json": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
+  "spec/SPEC_ko.md": "e9dfbbb350a8658caefe3f3b0bc9f139b04ba59d3493493482527b2e7ac79b0f",
+  "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
+  "kicad/schematic_manifest.json": "d57916faeb2496eb7ca253fcc6b11692828f60eee3bdbb3e11d8a74ce2270c57",
+  "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
+  "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
+  "kicad/fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",
+  "kicad/gns.kicad_sch": "b82c957e69f98ead5408eb6eab73c54999fdfb08b6e579a50424e496ecea8236",
+  "kicad/io.kicad_sch": "7a4d5cd3b7c1cb5c71ddcca46196d8339a7968c7f039a00caf8c6ce6b78d9f0b",
+  "kicad/level_shift.kicad_sch": "80917e3cf8e8f68bde7ce11550ec714492f2b798c002bb9423c942cf292b5dd0",
+  "kicad/nav.kicad_sch": "f53cdba94d5f3b9ba0809433bedc9e370a21e0c22ff8876b7a811ec8e2663915",
+  "kicad/power.kicad_sch": "e36be8f042bf1ffa8c0c02937bb3e261f7a4df9e893a9c33a98195c921455326",
+  "kicad/vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1"
+ },
+ "byte_identical": true,
+ "netlist_without_date_line": {
+  "status": "PASS",
+  "export_1": "c4475e142ba6d9947df43699bf7473368d18bb84d137abcfc04e98cca3943fe6",
+  "export_2": "c4475e142ba6d9947df43699bf7473368d18bb84d137abcfc04e98cca3943fe6",
+  "out_vtol_carrier_net": "c4475e142ba6d9947df43699bf7473368d18bb84d137abcfc04e98cca3943fe6",
+  "note": "sha256 of the netlist text without the '(date ...)' line of its design header; the raw netlist carries the export time and is evidence, not a deterministic artifact"
+ }
+}

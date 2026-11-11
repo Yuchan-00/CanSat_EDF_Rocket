@@ -1,0 +1,768 @@
+{
+ "freerouting_jar_sha256": "f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7",
+ "unrouted_board_sha256": "fe4854f262f8860244459e9601714bc549716a2bd9c6005366383c42c2464f00",
+ "copper_layers": 2,
+ "final_session": "vtol_carrier_complete.ses",
+ "vias_shrunk_after_inflation": 0,
+ "neckdowns_widened_to_0.127mm": [
+  {
+   "net": "I2C_SDA_5V",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 122.234,
+   "y": 112.26
+  },
+  {
+   "net": "I2C_SDA_5V",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 122.312,
+   "y": 112.338
+  },
+  {
+   "net": "VANE3_SIG",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 94.022,
+   "y": 111.127
+  },
+  {
+   "net": "VANE3_SIG",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 94.022,
+   "y": 111.292
+  },
+  {
+   "net": "FCU_LED",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 115.305,
+   "y": 107.751
+  },
+  {
+   "net": "FCU_LED",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 115.539,
+   "y": 107.751
+  },
+  {
+   "net": "BUZ_N",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 118.385,
+   "y": 81.36
+  },
+  {
+   "net": "BUZ_N",
+   "layer": "F.Cu",
+   "was_mm": 0.1,
+   "x": 117.473,
+   "y": 81.36
+  },
+  {
+   "net": "I2C_SCL_3V3",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 87.679,
+   "y": 113.346
+  },
+  {
+   "net": "I2C_SCL_3V3",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 87.513,
+   "y": 113.346
+  },
+  {
+   "net": "I2C_SDA_3V3",
+   "layer": "B.Cu",
+   "was_mm": 0.12,
+   "x": 107.04,
+   "y": 132.823
+  },
+  {
+   "net": "FCU_VBUF_ADC",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 111.274,
+   "y": 82.174
+  },
+  {
+   "net": "FCU_VBUF_ADC",
+   "layer": "F.Cu",
+   "was_mm": 0.12,
+   "x": 111.31,
+   "y": 82.174
+  }
+ ],
+ "dangling_vias_removed": [
+  {
+   "net": "GLINK_G2N",
+   "x": 123.011,
+   "y": 119.0
+  },
+  {
+   "net": "ILINK_C2F",
+   "x": 79.669,
+   "y": 99.819
+  },
+  {
+   "net": "ESC_PWM",
+   "x": 108.501,
+   "y": 95.592
+  },
+  {
+   "net": "NAV_GLINK_TX",
+   "x": 103.507,
+   "y": 112.5
+  },
+  {
+   "net": "FCU_LOG_TX",
+   "x": 103.915,
+   "y": 93.602
+  },
+  {
+   "net": "VS_BUF_ISIGN",
+   "x": 80.486,
+   "y": 116.6
+  },
+  {
+   "net": "GPS_TXD_3V3",
+   "x": 66.355,
+   "y": 132.034
+  },
+  {
+   "net": "GNS_LED_A",
+   "x": 75.411,
+   "y": 128.34
+  },
+  {
+   "net": "GNS_LED",
+   "x": 75.433,
+   "y": 129.825
+  },
+  {
+   "net": "GNS_LED",
+   "x": 81.312,
+   "y": 132.532
+  },
+  {
+   "net": "VS_VIN",
+   "x": 102.897,
+   "y": 82.667
+  },
+  {
+   "net": "NAV_RESET",
+   "x": 102.312,
+   "y": 73.348
+  },
+  {
+   "net": "IMU_INT_5V",
+   "x": 112.331,
+   "y": 133.693
+  },
+  {
+   "net": "ESP_RXD_SH",
+   "x": 102.11,
+   "y": 106.625
+  },
+  {
+   "net": "ESP_RXD_SH",
+   "x": 87.471,
+   "y": 113.959
+  },
+  {
+   "net": "+3V3",
+   "x": 121.151,
+   "y": 86.106
+  },
+  {
+   "net": "+5V",
+   "x": 109.779,
+   "y": 128.662
+  },
+  {
+   "net": "+5V",
+   "x": 106.409,
+   "y": 84.843
+  },
+  {
+   "net": "+5V",
+   "x": 114.725,
+   "y": 131.805
+  },
+  {
+   "net": "GPS_VCC",
+   "x": 65.052,
+   "y": 132.034
+  },
+  {
+   "net": "FCU_BUZ",
+   "x": 124.976,
+   "y": 86.085
+  },
+  {
+   "net": "FCU_ISP_MOSI",
+   "x": 106.376,
+   "y": 92.725
+  }
+ ],
+ "segments": 2452,
+ "routed_vias": 238,
+ "gnd_stitching_vias": 123,
+ "routed_board_sha256": "041713e17636dc02a4f1f3a9a3bd144ab2520105523a9be687844c55ca6f3538",
+ "stages": {
+  "servo": {
+   "seconds": 13.3,
+   "exit_code": 0,
+   "dsn_sha256": "b7590a539d856a29ce6daaf319e1829c00a45e76275bb62609614c600e0aaa50",
+   "ses_sha256": "cf4a1eb244d1ac51139300a18e070cc973fa703099f75e522822f16dc42333c6",
+   "passes_unrouted": [
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "nets_routed_here": 2,
+   "via": "Via[0-1]_1200:600_um",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 1,
+   "items_locked": 48,
+   "unconnected_after_import_and_fill": 234,
+   "ses": "vtol_carrier_servo.ses"
+  },
+  "power_high": {
+   "seconds": 11.6,
+   "exit_code": 0,
+   "dsn_sha256": "a57b30a2ab397ecb5449519fd3d9cf242518d8cff5408608cb548e209abe7219",
+   "ses_sha256": "55fbd31ceaf77ba85d69544736309ee5ca9f5d763e860f314c1a099162cf42af",
+   "passes_unrouted": [
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     1
+    ],
+    [
+     4,
+     1
+    ],
+    [
+     5,
+     1
+    ],
+    [
+     6,
+     1
+    ],
+    [
+     7,
+     1
+    ],
+    [
+     8,
+     1
+    ],
+    [
+     9,
+     1
+    ],
+    [
+     10,
+     1
+    ],
+    [
+     11,
+     1
+    ],
+    [
+     12,
+     1
+    ],
+    [
+     13,
+     1
+    ],
+    [
+     14,
+     1
+    ],
+    [
+     15,
+     1
+    ],
+    [
+     16,
+     1
+    ],
+    [
+     17,
+     1
+    ],
+    [
+     18,
+     1
+    ]
+   ],
+   "nets_routed_here": 3,
+   "via": "Via[0-1]_800:400_um",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 3,
+   "items_locked": 40,
+   "unconnected_after_import_and_fill": 228,
+   "ses": "vtol_carrier_power_high.ses"
+  },
+  "power": {
+   "seconds": 71.6,
+   "exit_code": 0,
+   "dsn_sha256": "64b8a2fa836361417665413618ba8648d84f0632df90da53e98a3a886e40a5a6",
+   "ses_sha256": "d3b852b9bce8fa556ba96970aa40519952f1913a14be87bf6c81b35090af9e20",
+   "passes_unrouted": [
+    [
+     1,
+     24
+    ],
+    [
+     2,
+     48
+    ],
+    [
+     3,
+     28
+    ],
+    [
+     4,
+     39
+    ],
+    [
+     5,
+     32
+    ],
+    [
+     6,
+     37
+    ],
+    [
+     7,
+     32
+    ],
+    [
+     8,
+     24
+    ],
+    [
+     9,
+     47
+    ],
+    [
+     10,
+     27
+    ],
+    [
+     11,
+     41
+    ],
+    [
+     12,
+     24
+    ],
+    [
+     13,
+     47
+    ],
+    [
+     14,
+     27
+    ],
+    [
+     15,
+     42
+    ],
+    [
+     16,
+     24
+    ],
+    [
+     17,
+     47
+    ],
+    [
+     18,
+     27
+    ]
+   ],
+   "nets_routed_here": 7,
+   "via": "Via[0-1]_600:300_um",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 25,
+   "items_locked": 354,
+   "unconnected_after_import_and_fill": 162,
+   "ses": "vtol_carrier_power.ses"
+  },
+  "signals": {
+   "seconds": 1512.6,
+   "exit_code": 0,
+   "dsn_sha256": "a5fb97d00b068b01f2519c71d7ced22738f717bff410e8b93a67cee6a028eb09",
+   "ses_sha256": "08cac847c03be3b288ac187a58dcc3a8300485833c5a8efd1bc749c95eb5dcaf",
+   "passes_unrouted": [
+    [
+     1,
+     115
+    ],
+    [
+     2,
+     99
+    ],
+    [
+     3,
+     94
+    ],
+    [
+     4,
+     90
+    ],
+    [
+     5,
+     88
+    ],
+    [
+     6,
+     89
+    ],
+    [
+     7,
+     77
+    ],
+    [
+     8,
+     77
+    ],
+    [
+     9,
+     73
+    ],
+    [
+     10,
+     75
+    ],
+    [
+     11,
+     72
+    ],
+    [
+     12,
+     72
+    ],
+    [
+     13,
+     73
+    ],
+    [
+     14,
+     81
+    ],
+    [
+     15,
+     77
+    ],
+    [
+     16,
+     72
+    ],
+    [
+     17,
+     68
+    ],
+    [
+     18,
+     66
+    ],
+    [
+     19,
+     63
+    ],
+    [
+     20,
+     63
+    ],
+    [
+     21,
+     65
+    ],
+    [
+     22,
+     61
+    ],
+    [
+     23,
+     65
+    ],
+    [
+     24,
+     61
+    ],
+    [
+     25,
+     60
+    ],
+    [
+     26,
+     63
+    ],
+    [
+     27,
+     59
+    ],
+    [
+     28,
+     58
+    ],
+    [
+     29,
+     60
+    ],
+    [
+     30,
+     57
+    ],
+    [
+     31,
+     62
+    ],
+    [
+     32,
+     54
+    ],
+    [
+     33,
+     59
+    ],
+    [
+     34,
+     54
+    ],
+    [
+     35,
+     58
+    ],
+    [
+     36,
+     54
+    ],
+    [
+     37,
+     59
+    ],
+    [
+     38,
+     59
+    ],
+    [
+     39,
+     64
+    ],
+    [
+     40,
+     54
+    ]
+   ],
+   "nets_routed_here": 89,
+   "via": "all",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 208,
+   "items_locked": 1958,
+   "unconnected_after_import_and_fill": 82,
+   "ses": "vtol_carrier_signals.ses"
+  },
+  "gnd": {
+   "seconds": 639.5,
+   "exit_code": 0,
+   "dsn_sha256": "cb46f38fdd7d84e1cd1d0fda04862ff9215a365ab84c71655e5fc5a61544ba29",
+   "ses_sha256": "2cfde6972c58e4a9461ebe09292c4e773474d01457aeddbcd54d547857286592",
+   "passes_unrouted": [
+    [
+     1,
+     122
+    ],
+    [
+     2,
+     172
+    ],
+    [
+     3,
+     168
+    ],
+    [
+     4,
+     172
+    ],
+    [
+     5,
+     168
+    ],
+    [
+     6,
+     172
+    ],
+    [
+     7,
+     168
+    ],
+    [
+     8,
+     122
+    ],
+    [
+     9,
+     172
+    ],
+    [
+     10,
+     168
+    ],
+    [
+     11,
+     172
+    ],
+    [
+     12,
+     122
+    ],
+    [
+     13,
+     172
+    ],
+    [
+     14,
+     168
+    ],
+    [
+     15,
+     172
+    ],
+    [
+     16,
+     122
+    ],
+    [
+     17,
+     172
+    ],
+    [
+     18,
+     168
+    ]
+   ],
+   "nets_routed_here": 1,
+   "via": "all",
+   "b_cu_gnd_plane_in_dsn": true,
+   "vias_shrunk": 21,
+   "items_locked": 219,
+   "unconnected_after_import_and_fill": 69,
+   "ses": "vtol_carrier_gnd.ses"
+  },
+  "complete": {
+   "seconds": 483.3,
+   "exit_code": 0,
+   "dsn_sha256": "69cccc34aada6f615a25cabbeecec7847ee274bab522c970c9f20697d4c587d1",
+   "ses_sha256": "c3a3023a4dbb9a87a66c8bb0a8c0f2423796c6e9e6fcbd5ce76864fa4a5cde6e",
+   "passes_unrouted": [
+    [
+     1,
+     120
+    ],
+    [
+     2,
+     125
+    ],
+    [
+     3,
+     121
+    ],
+    [
+     4,
+     125
+    ],
+    [
+     5,
+     121
+    ],
+    [
+     6,
+     125
+    ],
+    [
+     7,
+     121
+    ],
+    [
+     8,
+     120
+    ],
+    [
+     9,
+     125
+    ],
+    [
+     10,
+     121
+    ],
+    [
+     11,
+     125
+    ],
+    [
+     12,
+     120
+    ],
+    [
+     13,
+     125
+    ],
+    [
+     14,
+     121
+    ],
+    [
+     15,
+     125
+    ],
+    [
+     16,
+     120
+    ],
+    [
+     17,
+     125
+    ],
+    [
+     18,
+     121
+    ]
+   ],
+   "nets_routed_here": 0,
+   "via": "all",
+   "b_cu_gnd_plane_in_dsn": true,
+   "vias_shrunk": 1,
+   "items_locked": 50,
+   "unconnected_after_import_and_fill": 68,
+   "ses": "vtol_carrier_complete.ses"
+  }
+ }
+}
+
+real	45m41.097s
+user	0m0.015s
+sys	0m0.000s

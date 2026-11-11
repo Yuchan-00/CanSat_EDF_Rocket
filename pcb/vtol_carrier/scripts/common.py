@@ -34,13 +34,16 @@ from ai_eda.ir.nets import NetKind
 from ai_eda.ir.project import ProjectMeta
 from ai_eda.tools.kicad.library import KicadLibrary, SymbolDef
 
+import fitsets
+from fitsets import bom_groups, fit_of, fit_sets, jlc_fitted  # noqa: F401  (re-exported for the export step)
+
 ROOT = Path(__file__).resolve().parent.parent  # .../pcb/vtol_carrier
 SPEC_PATH = ROOT / "spec" / "carrier_spec.json"
 KICAD_DIR = ROOT / "kicad"
 OUT_DIR = ROOT / "out"
 WORK_DIR = KICAD_DIR / "work"
-#: copper layer count of the delivered board. User decision 2026-11-05: try 2 layers first; if routing does not reach
-#: 0 unconnected within ~90 min of attempts, 4 layers (F.Cu signal / In1.Cu GND / In2.Cu power / B.Cu signal).
+#: copper layer count of the delivered board: 4 (F.Cu signal + parts / In1.Cu GND / In2.Cu +5V / B.Cu signal), as
+#: rev 2c was delivered and as spec/rev3_plan.json invariants (d) fixes it for rev 3.
 #: CARRIER_LAYERS overrides it for experiments; CARRIER_WORK_DIR sends build_pcb.py's unrouted board elsewhere.
 import os as _os_l  # noqa: E402
 
@@ -60,10 +63,10 @@ _MEMBER_RE = re.compile(r"^([A-Z]+[0-9]+)\.(.+?)(?:\(([^()]+)\))?$")
 
 #: schematic sheets: (sheet name, file stem, spec blocks, title)
 SHEETS: list[tuple[str, str, tuple[str, ...], str]] = [
-    ("Power", "power", ("PWR",), "1S logic battery input, reverse-polarity P-FET, power-switch lead, 5 V boost module, AMS1117-3.3, ground tie, logic-battery monitor"),
+    ("Power", "power", ("PWR",), "1S logic battery input, reverse-polarity P-FET, power-switch lead, 5 V boost converter (TPS61023) with under-voltage lock-out (TLV3012B), AMS1117-3.3, ground tie, logic-battery monitor"),
     ("NAV", "nav", ("NAV",), "NAV ATmega128A + GY-521 IMU + BMP280 barometer"),
     ("FCU", "fcu", ("FCU",), "FCU ATmega128A"),
-    ("COM", "com", ("COM",), "COM ATmega128A + ESP-12E Wi-Fi bridge (soldered), its shifters, straps and flash header"),
+    ("COM", "com", ("COM",), "COM ATmega128A + ESP-12F Wi-Fi bridge (soldered), its shifters, straps and flash header"),
     ("GNS", "gns", ("GNS",), "GNS ATmega128A + NEO-7M GPS lead"),
     ("Level_shift", "level_shift", ("SHIFT",), "BSS138 level shifters 5 V <-> 3.3 V"),
     ("IO_connectors", "io", ("IO", "LOG", "LINK"), "Servo / ESC / arm / buzzer / power-sense headers, OpenLog, inter-chip links"),
@@ -92,26 +95,38 @@ FOOTPRINT_OVERRIDES: dict[str, str] = {}
 #: parts that keep the spec package although their class is overridden (none at the moment)
 FOOTPRINT_KEEP: set[str] = set()
 
-#: Programming-only footprints that sit in the cable-tie band (x -3..+3 mm) and are therefore NOT populated (rev-1
-#: practice, README_ko.md): ISP is done with the avionics module lifted off the intake, i.e. with the tie removed
-#: (firmware/README.md:655-659). The 2x3 2.54 mm footprints stay USBasp-compatible (press a header / pogo adapter
-#: into the holes, or solder a header if the tie is routed elsewhere) - user decision.
+#: Programming-only footprints. Option A of the spec switch PROG_HEADERS (rev 2c layout, default): they sit in the
+#: cable-tie band (x -3..+3 mm) as bare plated holes (spec populate False, fit none): ISP is done with the avionics
+#: module lifted off the intake, i.e. with the tie removed (firmware/README.md:655-659). The 2x3 2.54 mm footprints
+#: stay USBasp-compatible (press a header / pogo adapter into the holes, or solder a header). Option B: the same
+#: refs are SMD headers fitted by JLC (spec populate True, fit jlc) and must be placed OUTSIDE the band - the names
+#: below then only say which refs are the programming headers.
 ISP_IN_BAND = ("J19", "J20", "J21", "J22")
 #: reset-hold shunt headers, also programming-only: in the band, unpopulated (press a 2-pin header + shunt into the
 #: holes, or short them with a jumper wire, while programming)
 HOLD_IN_BAND: tuple[str, ...] = ("J24", "J25", "J26")
-#: ESP-12E flash header J3 (rev 2c: 2x3, same pin numbers): programming-only like the ISP headers, at the top of the
-#: band right beside the ESP-12E's GPIO0 / TXD0 / RXD0 pins (rev 2b had a 1x6 under the OpenLog at the far +x edge -
+#: ESP flash header J3 (rev 2c: 2x3, same pin numbers): programming-only like the ISP headers, at the top of the
+#: band right beside the ESP module's GPIO0 / TXD0 / RXD0 pins (rev 2b had a 1x6 under the OpenLog at the far +x edge -
 #: four ESP nets crossed the board; rev-2b review E-B1 / PF-B1)
 ESP_FLASH_IN_BAND: tuple[str, ...] = ("J3",)
 IN_BAND = ESP_FLASH_IN_BAND + ISP_IN_BAND + HOLD_IN_BAND
-UNPOPULATED_PROG: tuple[str, ...] = ()
-POPULATE_OVERRIDES = {r: False for r in IN_BAND + UNPOPULATED_PROG}
 
 
 def populated(part: dict) -> bool:
-    """Spec ``populate`` is True, False or "optional (DNP)"; only True is fitted by default."""
-    return POPULATE_OVERRIDES.get(part["refdes"], part["populate"] is True)
+    """Spec ``populate`` is True, False or "optional (DNP)"; only True carries a part on the finished vehicle.
+
+    rev 3: the spec alone decides (rev 2c overrode the programming headers here; the spec now says populate False /
+    fit none for them in option A). This is the schematic / board DNP flag, NOT the JLC BOM filter: U1..U4 and J1 are
+    populated by the user - the BOM / CPL use ``jlc_fitted`` (fitsets.py, ``part["fit"]``)."""
+    return fitsets.populated(part)
+
+
+def prog_headers(spec: dict) -> str:
+    """'A' (bare holes in the tie band) or 'B' (JLC-fitted headers outside the band) - the spec's switch."""
+    option = spec["prog_headers"]["option"]
+    if option not in ("A", "B"):
+        raise ValueError(f"spec prog_headers.option {option!r}")
+    return option
 
 
 def footprint_of(part: dict) -> str:
@@ -216,14 +231,16 @@ def build_ir(spec: dict | None = None, library: KicadLibrary | None = None) -> C
                 raise ValueError(f"pin {c.ref}.{pin.number} is both in net {seen[key]} and no-connect")
     return CircuitIR(
         project=ProjectMeta(id=PROJECT_ID, name="VTOL avionics carrier", created_at=FIXED_TIME,
-                            description="76 x 70 mm carrier rev 2c: 4x ATmega128A, GY-521, BMP280, ESP-12E, OpenLog, NEO-7M lead, 1S logic battery + Pololu 5 V buck-boost module"),
+                            description="76 x 70 mm carrier rev 3: 4x ATmega128A, GY-521, BMP280, ESP-12F, OpenLog, NEO-7M lead, 1S logic battery + on-board 5 V boost converter (TPS61023) with under-voltage lock-out"),
         components=components,
         nets=nets,
     )
 
 
 #: net class per net (stated in README_ko.md and written to the .kicad_pro)
-#: logic-battery path to the boost module: 1.34 A peak at a 3.0 V cell (spec power, E) -> >= 1.0 mm (spec layout_rules)
+#: logic-battery path to the boost converter: 1.75 A at the 3.0 V peak (spec power, E). The net class (rev 2c rule
+#: file, unchanged) is the MINIMUM width; the routing notes of rev 3 ask for a pour or >= 2.0 mm on this path
+#: (spec layout_rules / rev3_plan_extract.routing_notes) - that is checked by the routing step, not by the class.
 POWER_NETS_WIDE = ("VBAT_LOGIC_RAW", "VBAT_LOGIC", "VBAT_LOGIC_SW")
 #: servo supply and return (4 x MG90S, stall ~0.7 A each, A): >= 1.5 mm (spec layout_rules, rev-1 review)
 SERVO_NETS = ("SERVO_5V", "GND_PWR")

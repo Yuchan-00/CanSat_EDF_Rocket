@@ -1,9 +1,10 @@
-"""Deterministic placement of the VTOL carrier rev 2c (writes kicad/placement.json).
+"""Deterministic placement of the VTOL carrier rev 3 (writes kicad/placement.json).
 
 Invariants
 ----------
-* Pure function of ``spec/carrier_spec.json`` + the KiCad footprint libraries on disk: no randomness, no time,
-  fixed iteration order -> the same placement every run.
+* Pure function of ``spec/carrier_spec.json`` + the KiCad footprint libraries on disk + the archived rev 2c
+  placement (KEEP_FROM, sha256 recorded in the output): no randomness, no time, fixed iteration order -> the same
+  placement every run.
 * Courtyards are the library F.CrtYd outlines (polygons, e.g. the cross-shaped TQFP-64 courtyard), rasterised
   conservatively on a 0.05 mm grid per board side; two courtyards on the same side never overlap (a placement
   that would is refused, never "fixed up" silently).
@@ -17,6 +18,13 @@ Invariants
 * rev 2c (rev-2b review): J14 / J15 in the -x / +y corner next to battery spot A (user decision 2026-11-05), J13
   removed, J3 (ESP flash, 2x3) at the top of the tie band beside the ESP-12E, each MCU GND pin 22 / 53 / 63 with its
   own locked GND via inside the pad ring (review E-B2), ESP 100 nF / 10 uF 2.4 mm from pin 8 (review PF-m2).
+* rev 3 (spec/REV3_PLAN.md section 12): the Pololu module J6 and its body are gone; the on-board boost converter
+  (U8, L5, C57, C43, C41, FB divider, LDO U6 + C45) sits at explicit spots in the former Pololu corner (POWER_BLOCK,
+  how = "power"), the cut-off comparator cluster and the remaining power parts are aimed at it (POWER_AUTO). No
+  anchor moved. Every other greedy part first tries its rev 2c spot (how = "keep"): the rev 2c placement was routed
+  to 0 open connections, so only the parts the new block displaces are placed afresh (how = "auto").
+* Option B of the programming headers (spec prog_headers.option): the eight headers are fitted parts and are placed
+  by PROG_B (outside the tie band); option A keeps them as bare holes in the band exactly as rev 2c.
 * Every footprint is the spec package (common.FOOTPRINT_OVERRIDES is empty: the sourced LCSC parts fix the package).
 * Everything else: greedy, nearest free spot (0.1 mm grid, rotations 0/90/180/270) to the pads it connects to.
 
@@ -339,9 +347,7 @@ MCUS: dict[str, tuple[float, float, float, str]] = {
 #:   J1 PinHeader_1x08 vertical: pins along local +y 0..17.78; GY-521 21.2 x 16.4, header row 1.3 mm inside the
 #:      long edge, body toward local +x, soldered flat on the header (2.54 mm spacer)
 #:   J2 / J5 PinSocket_1x06 horizontal: opening at local x -10.03; the module lies flat beyond it (from x -10.55)
-#:   J6 PinHeader_1x05 vertical: pins along local +y 0..10.16; Pololu S9V11F5S6CMA 12.7 x 15.3 mm (spec keep-outs,
-#:      pololu.com/product/2870), pin row ~1.27 mm inside one 12.7 mm edge (A), body toward local -x, soldered flat on
-#:      the header spacer (2.54 mm, A); its cut-off trimmer faces up (reachable from above)
+#:   rev 3: the Pololu module (J6) and its 2.0 mm under-module limit are gone (on-board boost converter, POWER_BLOCK)
 MODULES = {
     "J1": ("GY-521 module ~21.2 x 16.4 mm (A)", (-1.3, 15.1, 8.89 - 10.6, 8.89 + 10.6), 2.0,
            "parts <= 2.0 mm high only (module on the 2.54 mm header spacer, A)"),
@@ -349,8 +355,6 @@ MODULES = {
            "parts <= 1.1 mm high only (module ~1.5 mm above the board in a right-angle socket, A)"),
     "J5": ("OpenLog ~19 x 16 mm (A)", (-10.55 - 19.0, -10.55, 6.35 - 8.0, 6.35 + 8.0), 1.1,
            "parts <= 1.1 mm high only (module ~1.5 mm above the board in a right-angle socket, A)"),
-    "J6": ("Pololu S9V11F5S6CMA 12.7 x 15.3 mm (vendor size, pin-row offset A)", (-15.3 + 1.27, 1.27, 5.08 - 6.35, 5.08 + 6.35), 2.0,
-           "parts <= 2.0 mm high only (module on the 2.54 mm header spacer, A); trimmer on top, reachable"),
 }
 
 
@@ -370,7 +374,23 @@ def module_bodies(anch: dict) -> list[dict]:
 
 
 #: parts that must stay reachable (headers / shunts / jumpers / plugs) - never under a module body
-ACCESS = {"J15", "J5", "J2", "J1", "J6", "JP1", "J14", "J17", "J7", "J12", "J16", "C47", "D1", "D2", "D3", "D4"}  # LEDs stay visible
+#: rev 3: extra height-limited zone (KiCad rect, max part height, reason). The OpenLog outline built from
+#: spec/module_dimensions.json (PCB length 19.05 mm F, hole-row offset A) ends at y 120.81, 2.26 mm beyond the rev 2c
+#: MODULES["J5"] rectangle (y 118.55): no part taller than 1.1 mm and no reachable part is placed up to y 121.25
+#: either (A: both outlines are assumptions until the bought module is measured; scripts/fit_checks.py has the numbers)
+LOW_ZONES: list[tuple[tuple[float, float, float, float], float, str]] = [
+    ((121.6, 118.55, 137.6, 121.25), 1.1, "OpenLog outline by spec/module_dimensions.json + 0.44 mm (A)"),
+    # The module's own right-angle header has a 2.5 mm plastic bar between the socket opening and the module PCB; by
+    # spec/module_dimensions.json (contact axis 1.25 mm A, plastic 2.5 mm A) it rests on the carrier (z 0..2.5 mm), so
+    # nothing at all may stand in that strip (limit -1 = no part, fitted or not). Measured on the first rev 3
+    # placement by scripts/fit_checks.py: the rev 2c spots of R29 / R43 / R45 were in the OpenLog strip.
+    ((121.95, 99.55, 137.25, 101.55), -1.0, "OpenLog header plastic bar rests on the carrier (A)"),
+    ((103.65, 77.55, 118.70, 79.55), -1.0, "BMP280 header plastic bar rests on the carrier (A)"),
+    # BMP280 outline by spec/module_dimensions.json ends at y 91.23, 2.18 mm beyond the rev 2c MODULES["J2"] rectangle
+    ((103.65, 89.05, 118.70, 91.25), 1.1, "BMP280 outline by spec/module_dimensions.json (A)"),
+]
+
+ACCESS = {"J15", "J5", "J2", "J1", "JP1", "J14", "J17", "J7", "J12", "J16", "C47", "D1", "D2", "D3", "D4"}  # LEDs stay visible
 
 #: body height above the board per footprint (mm, A: typical package heights, not measured)
 FP_HEIGHT = {
@@ -380,7 +400,18 @@ FP_HEIGHT = {
     "Crystal_SMD_3225-4Pin_3.2x2.5mm": 0.9, "D_SOD-123": 1.35, "TQFP-64_14x14mm_P0.8mm": 1.2,
     "NetTie-2_SMD_Pad0.5mm": 0.05, "SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm": 0.05,
     "CP_Elec_6.3x5.8": 5.8, "CP_Elec_6.3x5.4": 5.4, "CP_EIA-3216-18_Kemet-A": 1.8, "CP_EIA-3528-21_Kemet-B": 2.1, "ESP-12E": 3.2,
+    # rev 3 power block: L5 2.0 mm = datasheet maximum (F, REV3_PLAN section 12), SOT-563 0.6 / SOT-23-6 1.45 nominal (E)
+    "L_Changjiang_FXL0420": 2.0, "SOT-563": 0.6, "SOT-23-6": 1.45,
+    # connectors: height of the mated plug / the fitted module above the board top (A, scout current_design.md: none
+    # measured on a bought part) - used for the 13.4 mm limit only, connectors are anchors
+    "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical": 11.0, "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical": 11.0,
+    "JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical": 9.0, "PinHeader_1x02_P2.54mm_Horizontal": 3.0,
+    "PinHeader_1x03_P2.54mm_Horizontal": 3.0, "PinHeader_1x04_P2.54mm_Horizontal": 3.0,
+    "PinHeader_1x08_P2.54mm_Vertical": 8.6, "PinSocket_1x06_P2.54mm_Horizontal": 5.9,
+    "PinHeader_2x03_P2.54mm_Vertical": 8.6, "PinHeader_1x02_P2.54mm_Vertical": 8.6,
+    "PinHeader_2x03_P2.54mm_Vertical_SMD": 8.6, "PinHeader_1x02_P2.54mm_Vertical_SMD_Pin1Right": 8.6,
 }
+HEIGHT_LIMIT = 13.4  # mm above the board top (spec board.height_limit_top_mm)
 
 # --------------------------------------------------------------------------- MCU support clusters (review F1 / F2)
 # MCU-local coordinates (MCU at rotation 0, KiCad y down): TQFP-64 pads 17-32 at y +7.662, 49-64 at y -7.662,
@@ -435,8 +466,10 @@ CLUSTER_BLOCKS = {"NAV": "U1", "FCU": "U2", "COM": "U3", "GNS": "U4"}
 
 #: where to aim parts whose nets are all broad rails (ref -> (ref, pad))
 TARGET_HINT = {
-    "C41": ("J6", "3"), "C42": ("J6", "3"), "C43": ("J6", "1"), "C44": ("U6", "3"), "C45": ("U6", "2"),
-    "C47": ("J12", "2"), "U6": ("J6", "1"), "C52": ("U7", "8"), "C53": ("U7", "8"), "C54": ("U7", "8"), "C56": ("J7", "1"),
+    # rev 3 power block (POWER_AUTO): the cut-off cluster aims at the comparator pins, the second input capacitor at
+    # the switch-lead header (no 1206 spot is left at the L5 / VIN end - M, scripts/place.py run 2026-11-11)
+    "C42": ("J15", "2"), "C44": ("U6", "3"), "R68": ("U8", "2"),
+    "C47": ("J12", "2"), "C52": ("U7", "8"), "C53": ("U7", "8"), "C54": ("U7", "8"), "C56": ("J7", "1"),
     "D6": ("J17", "2"),
     # rev 2c: ESP GPIO0 / GPIO2 strap pull-ups and the Q11 LV pull-up aim at the ESP's lower right corner (the free
     # strip between the ESP and the COM): aimed at their pads they landed right of the tie band under the BMP280
@@ -467,6 +500,7 @@ class Placer:
     def __init__(self, spec: dict, library: KicadLibrary) -> None:
         self.spec = spec
         self.lib = library
+        self.spec = spec
         self.parts = {p["refdes"]: p for p in spec["parts"]}
         self.ir = common.build_ir(spec, library)
         self.fp = {}
@@ -484,7 +518,8 @@ class Placer:
         self.occ = {TOP: Bitmap(), BOT: Bitmap()}
         self.problems: list[str] = []
         self.anchors = dict(ANCHORS)
-        self.anchors.update(band_anchors(self.fp))
+        if common.prog_headers(spec) == "A":  # option B: the headers are fitted parts outside the band (PROG_B)
+            self.anchors.update(band_anchors(self.fp))
         self.anchors.update(EXTRA_ANCHORS)
         self.bodies = module_bodies(self.anchors)
         # static zone bitmaps
@@ -503,6 +538,12 @@ class Placer:
             bm = Bitmap()
             bm.mark_rect(Rect(*b["rect"]))
             self.z_body.append((b, bm))
+        self.z_low = []
+        for z in LOW_ZONES:
+            bm = Bitmap()
+            bm.mark_rect(Rect(*z[0]))
+            self.z_low.append((z, bm))
+        self.keep_from = keep_placements()
         self.z_tht = Bitmap()  # bottom side: THT pads of top parts (+0.35 mm)
 
     # --- geometry ------------------------------------------------------------------
@@ -564,6 +605,9 @@ class Placer:
         h = self.height(ref)
         for b, bm in self.z_body:
             if (ref in ACCESS or h > b["max_h"]) and bm.hits(sh, x, y):
+                return False
+        for (_rect, max_h, _why), bm in self.z_low:
+            if (ref in ACCESS or h > max_h) and bm.hits(sh, x, y):
                 return False
         return True
 
@@ -683,6 +727,16 @@ class Placer:
                 self.occ[TOP].mark_rect(Rect(x - 0.55, y - 0.55, x + 0.55, y + 0.55))
         for ref, (x, y, rot, why) in esp_parts(self).items():
             self.put(ref, x, y, rot, TOP, "esp", why)
+        # rev 3: boost converter + LDO at explicit spots (each one must pass every placement rule - never forced)
+        for ref, (x, y, rot, why) in {**POWER_BLOCK, **MOVED}.items():
+            if not self.allowed(ref, x, y, rot, TOP):
+                self.problems.append(f"{ref}: POWER_BLOCK spot ({x}, {y}, {rot}) breaks a placement rule")
+            self.put(ref, x, y, rot, TOP, "power" if ref in POWER_BLOCK else "moved", why)
+        if common.prog_headers(self.spec) == "B":
+            for ref, (x, y, rot, why) in PROG_B.items():
+                if not self.allowed(ref, x, y, rot, TOP):
+                    self.problems.append(f"{ref}: PROG_B spot ({x}, {y}, {rot}) breaks a placement rule")
+                self.put(ref, x, y, rot, TOP, "prog", why)
         order = ["D6"]  # buzzer flyback diode (1.35 mm): only the 2.0 mm module bodies take it - place it before the fill
         for block in ("COM", "GNS", "NAV", "FCU"):
             refs = [r for r, p in self.parts.items() if p["block"] == block and r not in self.placed]
@@ -699,7 +753,16 @@ class Placer:
         for block in PRE_BLOCK_ORDER:
             order += sorted([r for r, p in self.parts.items() if p["block"] == block and r not in self.placed and r not in order],
                             key=common_key)
+        order = [r for r in order if r not in POWER_AUTO]
+        # rev 3 keep pass: a greedy part whose rev 2c spot is still legal stays there (same routing neighbourhood)
+        rest = []
         for ref in order:
+            k = self.keep_from.get(ref)
+            if k and ref not in KEEP_EXCLUDE and k["side"] == TOP and self.allowed(ref, k["x"], k["y"], k["rot"], TOP):
+                self.put(ref, k["x"], k["y"], k["rot"], TOP, "keep", "rev 2c spot kept (archive/rev2c_pololu_1s/kicad/placement.json)")
+            else:
+                rest.append(ref)
+        for ref in [r for r in POWER_AUTO if r not in self.placed] + rest:
             self.auto(ref)
 
     def auto_spot(self, ref: str) -> bool:
@@ -721,7 +784,64 @@ class Placer:
 #: blocks in placement order after the four MCU blocks
 PRE_BLOCK_ORDER = ("PWR", "SHIFT", "LINK", "LOG", "IO")
 #: power parts first, in this order (their targets chain: battery corner -> lead headers -> LDO)
-PWR_FIRST = ["Q10", "R14", "U6", "C45", "C44", "C43", "C41", "C42", "C47"]
+PWR_FIRST = ["Q10", "R14", "C47"]
+
+# --------------------------------------------------------------------------- rev 3 power block (REV3_PLAN section 12)
+# Former Pololu corner (+x / -y). Library geometry (read from disk, rotation 0): SOT-563 pads 1 FB / 2 EN / 3 VIN at
+# x -0.7125, 4 GND / 5 SW / 6 VOUT at x +0.7125 (y +0.5 / 0 / -0.5); L_Changjiang_FXL0420 pads at x -+1.85;
+# C_1206 pads at x -+1.475. Reasons for the spots:
+#   L5   rot 180 in the corner: pad 2 (BOOST_SW) at (133.05, 132.40), 1.5 mm right of U8 pin 5, pad 1 (VBAT) in the
+#        far corner (fed from B.Cu / a pour - no F.Cu corridor is left, routing note)
+#   U8   rot 0: hot pins 4 / 5 / 6 face L5, FB / EN / VIN face away from it
+#   C57  first output capacitor directly above U8: pad 1 (+5V) 0.95 mm above pin 6, pad 2 (GND) to In1 by vias
+#   C43  second output capacitor left of U8 in the edge strip (courtyard gap 0.6 mm = escape channel for pins 1-3)
+#   C41  input capacitor left of C43 (the only 1206 spot near pin 3; none exists at the L5 pad-1 end)
+#   R63 / R64 / C58: feedback parts on the side away from L5 and BOOST_SW, FB pads toward each other
+#   U6   LDO above L5 (tab = +3V3 toward C45), body below the OpenLog outline (y >= 121.25)
+#   U9   comparator in the edge strip under the NAV with C60 / R65 / R67 / R66 / C59 around it (UVLO_SENSE stays
+#        inside x 113..117); the pull-down R68, the LDO input capacitor C44 and the second input capacitor C42 find
+#        no spot in the corner and are placed greedily (POWER_AUTO)
+POWER_BLOCK: dict[str, tuple[float, float, float, str]] = {
+    "L5": (134.90, 132.40, 180, "boost inductor in the +x/-y corner, pad 2 (BOOST_SW) next to U8 pin 5"),
+    "U8": (130.85, 133.80, 0, "boost converter: pins 4-6 (GND / SW / VOUT) toward L5, pins 1-3 away from it"),
+    "C57": (129.75, 131.30, 180, "boost output capacitor 1 directly above U8: pad 1 (+5V) at pin 6 (hot loop)"),
+    "C43": (126.75, 133.60, 180, "boost output capacitor 2 left of U8 (0.6 mm courtyard gap), pad 1 (+5V) toward U8"),
+    "C41": (122.15, 133.60, 180, "boost input capacitor 1 left of C43, pad 1 (VBAT) toward U8 pin 3"),
+    "U6": (134.05, 125.65, 270, "3.3 V LDO above L5, tab (+3V3) toward C45, body clear of the OpenLog outline"),
+    "C45": (127.65, 128.10, 180, "LDO output tantalum between the NAV bulk capacitor and C57, pad 1 (+3V3) toward the U6 tab"),
+    "R64": (126.70, 130.97, 270, "FB divider bottom resistor left of C57: pad 1 (BOOST_FB) up, pad 2 (GND) beside the C57 GND pad"),
+    "R63": (125.20, 130.97, 90, "FB divider top resistor beside R64: pad 2 (BOOST_FB) level with R64 pad 1"),
+    "C58": (122.95, 130.85, 0, "feed-forward capacitor left of R63 (below the former D1 spot, 1.0 mm clear of the NAV pad ring): pad 2 (BOOST_FB) 1.6 mm from R63 pad 2"),
+    "U9": (117.80, 133.05, 0, "cut-off comparator in the edge strip under the NAV, 11 mm from U8 pin 2 (BOOST_EN is low impedance)"),
+    "C60": (115.00, 133.20, 90, "UVLO_SENSE filter capacitor beside U9 pin 3 (pad 1 down, level with pin 3)"),
+    "R65": (113.50, 133.20, 90, "UVLO divider top resistor beside C60: pad 2 (UVLO_SENSE) up toward R67"),
+    "R67": (113.90, 130.90, 0, "hysteresis resistor above R65 / C60 (0.1 mm below the former R46 spot, 1.0 mm clear of the NAV pad ring): pad 2 (BOOST_EN) toward U9 pin 1"),
+    "R66": (116.90, 130.40, 0, "UVLO divider bottom resistor above U9: pad 1 (UVLO_SENSE) toward R67 / pin 3 side"),
+    "C59": (119.90, 130.40, 0, "comparator bypass above U9: pad 1 (VBAT) 1.7 mm from U9 pin 6"),
+}
+#: power parts placed greedily right after the keep pass, in this order (targets: TARGET_HINT)
+POWER_AUTO = ["R68", "C44", "C42"]
+#: greedy rev 2c parts the power block displaced, at explicit spots (how = "moved")
+MOVED: dict[str, tuple[float, float, float, str]] = {
+    "D1": (129.70, 125.50, 90, "NAV status LED moved 7 mm from its rev 2c spot (now C58) into the slot between C3 and U6: reachable, not under a module"),
+}
+#: greedy parts that must not go back to their rev 2c spot (the power block needs the room): NAV status LED D1
+#: (spot taken by C58) and the Q3 pull-up R46 (spot taken by R67; Q3 itself is an unpopulated option)
+KEEP_EXCLUDE: set[str] = {"D1", "R46"}
+#: option B spots of the programming headers (ref -> x, y, rot, reason); empty = no legal set found (see
+#: out/reports/programming_access.json) -> option B cannot be built and the spec must stay on option A
+PROG_B: dict[str, tuple[float, float, float, str]] = {}
+#: rev 2c placement the keep pass reads (archived, never rewritten)
+KEEP_FROM = common.ROOT / "archive" / "rev2c_pololu_1s" / "kicad" / "placement.json"
+
+
+def keep_placements() -> dict[str, dict]:
+    """rev 2c greedy placements (how == 'auto') by refdes; CARRIER_NO_KEEP=1 switches the keep pass off (experiments)."""
+    if os.environ.get("CARRIER_NO_KEEP") == "1" or not KEEP_FROM.is_file():
+        return {}
+    old = json.loads(KEEP_FROM.read_text(encoding="utf-8"))["placements"]
+    return {r: p for r, p in old.items() if p["how"] == "auto"}
+
 #: anchors that depend on decisions made while iterating (filled below)
 EXTRA_ANCHORS: dict[str, tuple[float, float, float, str]] = {
     # BMP280 right-angle socket in the top middle, opening toward -y: the module lies over the FCU's top decoupling
@@ -731,12 +851,8 @@ EXTRA_ANCHORS: dict[str, tuple[float, float, float, str]] = {
     # servo-rail 220 uF (5.4 mm tall, never under a module) right at the ESC BEC input J12 pin 2 (spec parts C47)
     "C47": (125.30, 83.62, 0, "servo-rail 220 uF between J12 (ESC BEC +5 V) and the OpenLog socket"),
     # GY-521 header along the -y edge, module body over the NAV (TQFP 1.2 mm < 2.0 mm clearance, A)
-    "J1": (104.90, 115.10, 0, "GY-521 header vertical right of the tie band, module flat toward +x over the NAV (the 12.7 mm Pololu strip stays free at the +x edge)"),
-    # tall power parts (not allowed under any module) packed in the +x/-y corner below the OpenLog outline
-    # Pololu 5 V module in the +x/-y corner: header along the -y edge (pin 1 VOUT at +x), module flat toward +y
-    # between the GY-521 body (x <= 124.4) and the OpenLog body (y <= 117.0); the only 12.7 x 15.3 mm spot left
-    # (no module over another module, no tall / reachable part under it - checked below)
-    "J6": (135.95, 132.90, 270, "Pololu 5 V module header in the +x/-y corner, module flat toward +y (trimmer on top)"),
+    "J1": (104.90, 115.10, 0, "GY-521 header vertical right of the tie band, module flat toward +x over the NAV"),
+    # rev 3: the Pololu module header J6 is gone; the +x/-y corner carries POWER_BLOCK
 }
 
 
@@ -802,6 +918,152 @@ def checks(pl: Placer) -> dict:
         area[pl.placed[r]["side"]] += (c.x1 - c.x0) * (c.y1 - c.y0)
     out["courtyard_bbox_area_mm2"] = {k: round(v, 1) for k, v in area.items()}
     out["board_area_minus_tie_band_mm2"] = round((BX1 - BX0) * (BY1 - BY0) - (TIE_X1 - TIE_X0) * (BY1 - BY0), 1)
+    out["courtyard_occupancy_percent"] = round(100.0 * area[TOP] / out["board_area_minus_tie_band_mm2"], 1)
+    out["rev3"] = rev3_report(pl, cy)
+    return out
+
+
+#: pads whose distance to the NAV crystal is compared with the rev 2c Pololu header pins (REV3_PLAN section 12):
+#: the switching node, the converter pins and the hot-loop / input capacitors
+SWITCHING_PARTS = ["U8", "L5", "C57", "C43", "C41"]
+#: bulk capacitors of the four MCUs that are not cluster members (TARGET_HINT aims them at the MCU)
+MCU_BULK = {"C3": "U1", "C11": "U2", "C19": "U3", "C27": "U4"}
+
+
+def _dist(a: tuple[float, float], b: tuple[float, float]) -> float:
+    return math.hypot(a[0] - b[0], a[1] - b[1])
+
+
+def rev3_report(pl: Placer, cy: dict[str, Rect]) -> dict:
+    """Hard checks of the rev 3 placement against the archived rev 2c placement (all numbers computed here, M).
+
+    * heights: every fitted footprint has an FP_HEIGHT entry (the heights themselves are assumptions, A) and none
+      exceeds HEIGHT_LIMIT; no part taller than a LOW_ZONES limit inside that zone.
+    * fixed parts: every rev 2c anchor / cluster / ESP part still has the same x, y, rotation and side.
+    * decoupling: centre distance of every MCU capacitor to the nearest MCU pad on its non-GND net, per MCU, is not
+      worse than the worst rev 2c value of that MCU.
+    * crystal distance (placement note, soft): pads of SWITCHING_PARTS vs the rev 2c J6 pins, measured to the Y1 pads
+      and U1 pins 23 / 24.
+    """
+    out: dict = {}
+    refs = sorted(pl.placed, key=common_key)
+    fitted = [r for r in refs if common.populated(pl.parts[r])]
+    hs = {r: pl.height(r) for r in fitted}
+    out["heights"] = {
+        "limit_mm": HEIGHT_LIMIT,
+        "source": "FP_HEIGHT in scripts/place.py (A: body heights assumed per footprint, not measured parts)",
+        "tallest": [[r, hs[r]] for r in sorted(fitted, key=lambda r: (-hs[r], common_key(r)))[:6]],
+        "no_height_entry": [r for r in fitted if pl.fp[r].name not in FP_HEIGHT],
+        "over_limit": [r for r in fitted if hs[r] > HEIGHT_LIMIT],
+    }
+    zones = []
+    for (rect, max_h, why), bm in pl.z_low:
+        inside = sorted([r for r in refs if pl.placed[r]["side"] == TOP and bm.hits(
+            pl.shape(r, pl.placed[r]["rot"], TOP, pl.placed[r]["x"], pl.placed[r]["y"]), pl.placed[r]["x"], pl.placed[r]["y"], inner=True)],
+            key=common_key)
+        tall = [r for r in inside if r in ACCESS or pl.height(r) > max_h]
+        # an anchored part (MCU / connector, position fixed by the plan) is reported, not failed: scripts/fit_checks.py
+        # measures its real clearance to the module
+        zones.append({"rect": list(rect), "max_h": max_h, "why": why, "parts_inside": inside,
+                      "too_tall_or_access_inside": [r for r in tall if pl.placed[r]["how"] != "anchor"],
+                      "anchored_parts_above_limit": [r for r in tall if pl.placed[r]["how"] == "anchor"]})
+    out["low_zones"] = zones
+    if not KEEP_FROM.is_file():
+        out["rev2c"] = {"status": "NOT_VERIFIED", "why": f"{KEEP_FROM.name} not found in the archive"}
+        return out
+    old_all = json.loads(KEEP_FROM.read_text(encoding="utf-8"))
+    old = old_all["placements"]
+    opt_b = common.prog_headers(pl.spec) == "B"
+    fixed = sorted([r for r, p in old.items() if p["how"] in ("anchor", "cluster", "esp") and not (opt_b and r in common.IN_BAND)], key=common_key)
+    moved = [r for r in fixed if r in pl.placed and any(pl.placed[r][k] != old[r][k] for k in ("x", "y", "rot", "side"))]
+    how = {}
+    for r in refs:
+        how[pl.placed[r]["how"]] = how.get(pl.placed[r]["how"], 0) + 1
+    out["rev2c"] = {
+        "file": "archive/rev2c_pololu_1s/kicad/placement.json", "sha256": common.sha256_file(KEEP_FROM),
+        "removed_refs": sorted([r for r in old if r not in pl.placed], key=common_key),
+        "new_refs": sorted([r for r in pl.placed if r not in old], key=common_key),
+        "fixed_parts_compared": len(fixed), "fixed_parts_moved": moved,
+        "crystals_unchanged": {r: pl.placed[r] == {**pl.placed[r], **{k: old[r][k] for k in ("x", "y", "rot", "side")}}
+                               for r in refs if r.startswith("Y") and r in old},
+        "how_counts": dict(sorted(how.items())),
+        "greedy_parts_not_at_rev2c_spot": sorted([r for r in refs if r in old and old[r]["how"] == "auto" and any(
+            pl.placed[r][k] != old[r][k] for k in ("x", "y", "rot", "side"))], key=common_key),
+        "courtyard_bbox_area_mm2": old_all["placement_checks"]["courtyard_bbox_area_mm2"],
+    }
+    # decoupling distances (capacitor centre -> nearest MCU pad on the capacitor's non-GND net)
+    dec: dict = {}
+    for block, u in sorted(CLUSTER_BLOCKS.items(), key=lambda kv: kv[1]):
+        rows = []
+        caps = [r for r in refs if r.startswith("C") and r in old and r in pl.placed
+                and ((old[r]["how"] == "cluster" and pl.parts[r]["block"] == block) or MCU_BULK.get(r) == u)]
+        for c in caps:
+            nets = {pl.pin_net.get((c, pin.number)) for pin in pl.ir.component(c).pins} - {None, "GND"}
+            pads = [pl.pad_xy(u, num) for (ref, num) in sorted({(ref, num) for n in nets for (ref, num) in pl.net_pins[n]}) if ref == u]
+            pads = [p for p in pads if p is not None]
+            if not pads:
+                continue
+            now = min(_dist((pl.placed[c]["x"], pl.placed[c]["y"]), p) for p in pads)
+            was = min(_dist((old[c]["x"], old[c]["y"]), p) for p in pads)
+            rows.append({"ref": c, "net": sorted(nets), "rev2c_mm": round(was, 3), "rev3_mm": round(now, 3)})
+        worst_old = max((r["rev2c_mm"] for r in rows), default=0.0)
+        dec[u] = {"capacitors": rows, "worst_rev2c_mm": worst_old, "worst_rev3_mm": max((r["rev3_mm"] for r in rows), default=0.0),
+                  "worse_than_rev2c_worst": [r["ref"] for r in rows if r["rev3_mm"] > worst_old + 1e-6]}
+    out["decoupling"] = dec
+    # distance of the switching parts to the NAV crystal vs the rev 2c Pololu header pins
+    ref_pts = {f"Y1.{p.number}": pl.pad_xy("Y1", p.number) for p in pl.fp["Y1"].pads}
+    ref_pts.update({"U1.23": pl.pad_xy("U1", "23"), "U1.24": pl.pad_xy("U1", "24")})
+    ref_pts = {k: v for k, v in ref_pts.items() if v is not None}
+    xt = {"reference_points": {k: [round(v[0], 3), round(v[1], 3)] for k, v in sorted(ref_pts.items())}}
+    old_spec_path = KEEP_FROM.parent.parent / "spec" / "carrier_spec.json"
+    j6_min = None
+    if "J6" in old and old_spec_path.is_file():
+        j6 = next((p for p in json.loads(old_spec_path.read_text(encoding="utf-8"))["parts"] if p["refdes"] == "J6"), None)
+        if j6 is not None:
+            lib, name = common.split_lib_id(common.footprint_of(j6))
+            fp = pl.lib.load_footprint(LibraryRef(library=lib, name=name))
+            plc = Placement(component_ref="J6", x_mm=old["J6"]["x"], y_mm=old["J6"]["y"], rotation_deg=float(old["J6"]["rot"]), side=BoardSide.TOP)
+            pins = {p.number: pad_center(plc, p) for p in fp.pads}
+            xt["rev2c_J6_pins"] = {k: [round(v[0], 3), round(v[1], 3)] for k, v in sorted(pins.items())}
+            j6_min = {k: round(min(_dist(v, q) for v in pins.values()), 3) for k, q in sorted(ref_pts.items())}
+            xt["rev2c_J6_min_mm"] = {"to_Y1_pads": min(v for k, v in j6_min.items() if k.startswith("Y1")),
+                                     "to_U1_xtal_pins": min(v for k, v in j6_min.items() if k.startswith("U1"))}
+    rows = {}
+    for r in SWITCHING_PARTS:
+        if r not in pl.placed:
+            continue
+        pads = [(p.number, pl.pad_xy(r, p.number)) for p in pl.fp[r].pads]
+        dy = min((_dist(xy, q), f"{r}.{num} -> {k}") for num, xy in pads for k, q in ref_pts.items() if k.startswith("Y1"))
+        du = min((_dist(xy, q), f"{r}.{num} -> {k}") for num, xy in pads for k, q in ref_pts.items() if k.startswith("U1"))
+        rows[r] = {"to_Y1_pads_mm": round(dy[0], 3), "nearest_Y1": dy[1], "to_U1_xtal_pins_mm": round(du[0], 3), "nearest_U1": du[1]}
+    xt["rev3_parts"] = rows
+    sw = [pl.pad_xy("L5", "2"), pl.pad_xy("U8", "5")]
+    if all(sw):
+        xt["rev3_BOOST_SW_pads_min_mm"] = {
+            "to_Y1_pads": round(min(_dist(a, q) for a in sw for k, q in ref_pts.items() if k.startswith("Y1")), 3),
+            "to_U1_xtal_pins": round(min(_dist(a, q) for a in sw for k, q in ref_pts.items() if k.startswith("U1")), 3)}
+    if j6_min is not None:
+        lim = xt["rev2c_J6_min_mm"]
+        xt["closer_than_rev2c_pins"] = [r for r, v in rows.items() if v["to_Y1_pads_mm"] < lim["to_Y1_pads"] - 1e-6
+                                        or v["to_U1_xtal_pins_mm"] < lim["to_U1_xtal_pins"] - 1e-6]
+        xt["placement_note_met"] = not xt["closer_than_rev2c_pins"]
+    else:
+        xt["placement_note_met"] = "NOT_VERIFIED"
+    out["crystal_distance"] = xt
+    hard = []
+    if out["heights"]["no_height_entry"]:
+        hard.append("fitted footprints without FP_HEIGHT entry: " + ", ".join(out["heights"]["no_height_entry"]))
+    if out["heights"]["over_limit"]:
+        hard.append("parts above the height limit: " + ", ".join(out["heights"]["over_limit"]))
+    for z in zones:
+        if z["too_tall_or_access_inside"]:
+            hard.append("too tall / reachable parts in a low zone: " + ", ".join(z["too_tall_or_access_inside"]))
+    if moved:
+        hard.append("rev 2c anchor / cluster / ESP parts moved: " + ", ".join(moved))
+    for u, d in dec.items():
+        if d["worse_than_rev2c_worst"]:
+            hard.append(f"{u} decoupling capacitors farther than the rev 2c worst: " + ", ".join(d["worse_than_rev2c_worst"]))
+    out["hard_failures"] = hard
     return out
 
 
@@ -845,7 +1107,8 @@ def main() -> int:
     chk = checks(pl)
     data = {
         "frame": "KiCad coordinates (mm, y down); board outline x 62..138, y 65..135; spec (x, y) = (X - 100, 100 - Y)",
-        "generator": "scripts/place.py (deterministic: anchored floorplan + MCU clusters + greedy fill, polygon courtyards)",
+        "generator": "scripts/place.py rev 3 (deterministic: anchored floorplan + MCU clusters + power block + rev 2c keep pass + greedy fill, polygon courtyards)",
+        "prog_headers_option": common.prog_headers(spec),
         "spec_sha256": common.sha256_file(common.SPEC_PATH),
         "placements": {r: pl.placed[r] for r in sorted(pl.placed, key=common_key)},
         "courtyards": {r: courtyard_rect(pl, r).as_list() for r in sorted(pl.placed, key=common_key)},
@@ -853,6 +1116,7 @@ def main() -> int:
         "cluster_routes": cluster_routes_board({r: pl.placed[r] for r in pl.placed}),
         "cluster_vias": cluster_vias_board({r: pl.placed[r] for r in pl.placed}),
         "antenna_rule_area": list(ESP_KEEPOUT),
+        "part_heights_mm": {r: pl.height(r) for r in sorted(pl.placed, key=common_key)},  # A (FP_HEIGHT); 0.0 = not fitted
         "placement_checks": chk,
     }
     path = common.KICAD_DIR / "placement.json"
@@ -866,7 +1130,10 @@ def main() -> int:
         print(b["name"], "under:", b["parts_under"], "BAD:", b["too_tall_or_access_under"], b["inside_outline"])
     unplaced = sorted(set(pl.parts) - set(pl.placed), key=common_key)
     print("placed", len(pl.placed), "unplaced", unplaced)
-    return 0 if not unplaced and not chk["courtyard_overlaps"] and not pl.problems else 1
+    print("rev3 hard failures:", chk["rev3"].get("hard_failures"))
+    bad = bool(unplaced or chk["courtyard_overlaps"] or pl.problems or chk["outside_outline"] or chk["in_tie_band"]
+               or chk["in_antenna_rule_area"] or chk["rev3"].get("hard_failures"))
+    return 1 if bad else 0
 
 
 if __name__ == "__main__":

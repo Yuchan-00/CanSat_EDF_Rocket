@@ -1,0 +1,1207 @@
+{
+ "tool": "scripts/board_metrics.py (pcbnew, KiCad 10)",
+ "cluster_paths": [
+  {
+   "block": "COM",
+   "what": "VCC pin 21 -> 100 nF",
+   "from": "U3.21",
+   "to": "C17.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "GND pin 22 -> 100 nF",
+   "from": "U3.22",
+   "to": "C17.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "VCC pin 52 -> 100 nF",
+   "from": "U3.52",
+   "to": "C18.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "GND pin 53 -> 100 nF",
+   "from": "U3.53",
+   "to": "C18.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "AVCC pin 64 -> 100 nF",
+   "from": "U3.64",
+   "to": "C20.1",
+   "net": "COM_AVCC",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "GND pin 63 -> 100 nF",
+   "from": "U3.63",
+   "to": "C20.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "XTAL2 pin 23 -> crystal",
+   "from": "U3.23",
+   "to": "Y3.3",
+   "net": "COM_XTAL2",
+   "straight_mm": 2.91,
+   "copper_path_mm": 2.91,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "XTAL1 pin 24 -> crystal",
+   "from": "U3.24",
+   "to": "Y3.1",
+   "net": "COM_XTAL1",
+   "straight_mm": 5.18,
+   "copper_path_mm": 5.96,
+   "ok_le_3mm": false
+  },
+  {
+   "block": "COM",
+   "what": "crystal -> XTAL2 load cap",
+   "from": "Y3.3",
+   "to": "C23.1",
+   "net": "COM_XTAL2",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "COM",
+   "what": "crystal -> XTAL1 load cap",
+   "from": "Y3.1",
+   "to": "C22.1",
+   "net": "COM_XTAL1",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "VCC pin 21 -> 100 nF",
+   "from": "U2.21",
+   "to": "C9.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "GND pin 22 -> 100 nF",
+   "from": "U2.22",
+   "to": "C9.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "VCC pin 52 -> 100 nF",
+   "from": "U2.52",
+   "to": "C10.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "GND pin 53 -> 100 nF",
+   "from": "U2.53",
+   "to": "C10.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "AVCC pin 64 -> 100 nF",
+   "from": "U2.64",
+   "to": "C12.1",
+   "net": "FCU_AVCC",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "GND pin 63 -> 100 nF",
+   "from": "U2.63",
+   "to": "C12.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "XTAL2 pin 23 -> crystal",
+   "from": "U2.23",
+   "to": "Y2.3",
+   "net": "FCU_XTAL2",
+   "straight_mm": 2.91,
+   "copper_path_mm": 2.91,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "XTAL1 pin 24 -> crystal",
+   "from": "U2.24",
+   "to": "Y2.1",
+   "net": "FCU_XTAL1",
+   "straight_mm": 5.18,
+   "copper_path_mm": 5.96,
+   "ok_le_3mm": false
+  },
+  {
+   "block": "FCU",
+   "what": "AREF pin 62 -> 100 nF",
+   "from": "U2.62",
+   "to": "C13.1",
+   "net": "FCU_AREF",
+   "straight_mm": 2.63,
+   "copper_path_mm": 2.63,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "AVCC 100 nF -> 10 uH",
+   "from": "C12.1",
+   "to": "L2.2",
+   "net": "FCU_AVCC",
+   "straight_mm": 1.38,
+   "copper_path_mm": 1.38,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "crystal -> XTAL2 load cap",
+   "from": "Y2.3",
+   "to": "C15.1",
+   "net": "FCU_XTAL2",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "FCU",
+   "what": "crystal -> XTAL1 load cap",
+   "from": "Y2.1",
+   "to": "C14.1",
+   "net": "FCU_XTAL1",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "VCC pin 21 -> 100 nF",
+   "from": "U4.21",
+   "to": "C25.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "GND pin 22 -> 100 nF",
+   "from": "U4.22",
+   "to": "C25.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "VCC pin 52 -> 100 nF",
+   "from": "U4.52",
+   "to": "C26.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "GND pin 53 -> 100 nF",
+   "from": "U4.53",
+   "to": "C26.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "AVCC pin 64 -> 100 nF",
+   "from": "U4.64",
+   "to": "C28.1",
+   "net": "GNS_AVCC",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "GND pin 63 -> 100 nF",
+   "from": "U4.63",
+   "to": "C28.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "XTAL2 pin 23 -> crystal",
+   "from": "U4.23",
+   "to": "Y4.3",
+   "net": "GNS_XTAL2",
+   "straight_mm": 2.91,
+   "copper_path_mm": 2.91,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "XTAL1 pin 24 -> crystal",
+   "from": "U4.24",
+   "to": "Y4.1",
+   "net": "GNS_XTAL1",
+   "straight_mm": 5.18,
+   "copper_path_mm": 5.96,
+   "ok_le_3mm": false
+  },
+  {
+   "block": "GNS",
+   "what": "crystal -> XTAL2 load cap",
+   "from": "Y4.3",
+   "to": "C31.1",
+   "net": "GNS_XTAL2",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "GNS",
+   "what": "crystal -> XTAL1 load cap",
+   "from": "Y4.1",
+   "to": "C30.1",
+   "net": "GNS_XTAL1",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "VCC pin 21 -> 100 nF",
+   "from": "U1.21",
+   "to": "C1.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "GND pin 22 -> 100 nF",
+   "from": "U1.22",
+   "to": "C1.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "VCC pin 52 -> 100 nF",
+   "from": "U1.52",
+   "to": "C2.1",
+   "net": "+5V",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "GND pin 53 -> 100 nF",
+   "from": "U1.53",
+   "to": "C2.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "AVCC pin 64 -> 100 nF",
+   "from": "U1.64",
+   "to": "C4.1",
+   "net": "NAV_AVCC",
+   "straight_mm": 1.45,
+   "copper_path_mm": 1.45,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "GND pin 63 -> 100 nF",
+   "from": "U1.63",
+   "to": "C4.2",
+   "net": "GND",
+   "straight_mm": 1.46,
+   "copper_path_mm": 1.46,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "XTAL2 pin 23 -> crystal",
+   "from": "U1.23",
+   "to": "Y1.3",
+   "net": "NAV_XTAL2",
+   "straight_mm": 2.91,
+   "copper_path_mm": 2.91,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "XTAL1 pin 24 -> crystal",
+   "from": "U1.24",
+   "to": "Y1.1",
+   "net": "NAV_XTAL1",
+   "straight_mm": 5.18,
+   "copper_path_mm": 5.96,
+   "ok_le_3mm": false
+  },
+  {
+   "block": "NAV",
+   "what": "crystal -> XTAL2 load cap",
+   "from": "Y1.3",
+   "to": "C7.1",
+   "net": "NAV_XTAL2",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  },
+  {
+   "block": "NAV",
+   "what": "crystal -> XTAL1 load cap",
+   "from": "Y1.1",
+   "to": "C6.1",
+   "net": "NAV_XTAL1",
+   "straight_mm": 1.33,
+   "copper_path_mm": 1.33,
+   "ok_le_3mm": true
+  }
+ ],
+ "cluster_paths_all_le_3mm": false,
+ "xtal_nets": {
+  "COM_XTAL1": {
+   "track_mm": 7.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  },
+  "COM_XTAL2": {
+   "track_mm": 4.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  },
+  "FCU_XTAL1": {
+   "track_mm": 7.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  },
+  "FCU_XTAL2": {
+   "track_mm": 4.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  },
+  "GNS_XTAL1": {
+   "track_mm": 7.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  },
+  "GNS_XTAL2": {
+   "track_mm": 4.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  },
+  "NAV_XTAL1": {
+   "track_mm": 7.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  },
+  "NAV_XTAL2": {
+   "track_mm": 4.29,
+   "vias": 0,
+   "layers": [
+    "F.Cu"
+   ]
+  }
+ },
+ "gnd": {
+  "copper_layers": 4,
+  "gnd_vias": 248,
+  "gnd_fill_polygons": {
+   "F.Cu": 55,
+   "B.Cu": 56,
+   "In1.Cu": 1
+  },
+  "gnd_fill_area_mm2": {
+   "F.Cu": 2450.1,
+   "B.Cu": 2860.8,
+   "In1.Cu": 4507.2
+  },
+  "plus5v_in2_fill_area_mm2": 4190.0,
+  "plus5v_in2_fill_polygons": 5,
+  "gnd_track_mm": 106.6,
+  "gnd_track_widths": {
+   "0.3": 87,
+   "0.4": 18,
+   "0.2": 4,
+   "0.25": 12
+  },
+  "track_length_over_adjacent_plane_pct": {
+   "F.Cu": 88.6,
+   "B.Cu": 88.1
+  },
+  "track_mm_per_layer": {
+   "F.Cu": 1706.7,
+   "B.Cu": 1718.8
+  },
+  "nlink_pct_on_F_over_In1_GND": {
+   "NLINK_SS": 29.3,
+   "NLINK_SCK": 36.5,
+   "NLINK_MOSI": 52.9,
+   "NLINK_MISO": 29.0
+  }
+ },
+ "power_and_servo_nets": {
+  "SERVO_5V": {
+   "length_by_width_mm": {
+    "1.3": 6.0,
+    "1.45": 4.3,
+    "1.5": 96.6
+   },
+   "vias": {
+    "1.2/0.6": 1
+   },
+   "track_mm": 106.8
+  },
+  "GND_PWR": {
+   "length_by_width_mm": {
+    "0.5": 0.1,
+    "1.5": 94.1
+   },
+   "vias": {},
+   "track_mm": 94.3
+  },
+  "+5V": {
+   "length_by_width_mm": {
+    "0.5": 44.8
+   },
+   "vias": {
+    "0.6/0.3": 40
+   },
+   "track_mm": 44.8
+  },
+  "+3V3": {
+   "length_by_width_mm": {
+    "0.3": 1.1,
+    "0.4": 0.8,
+    "0.45": 14.9,
+    "0.5": 267.4
+   },
+   "vias": {
+    "0.6/0.3": 9
+   },
+   "track_mm": 284.1
+  },
+  "VBAT_LOGIC": {
+   "length_by_width_mm": {
+    "1.0": 13.3
+   },
+   "vias": {},
+   "track_mm": 13.3
+  },
+  "VBAT_LOGIC_SW": {
+   "length_by_width_mm": {
+    "0.8": 35.0,
+    "0.95": 9.7,
+    "1.0": 95.4
+   },
+   "vias": {
+    "0.8/0.4": 2
+   },
+   "track_mm": 140.1
+  },
+  "VBAT_LOGIC_RAW": {
+   "length_by_width_mm": {
+    "1.0": 6.8
+   },
+   "vias": {},
+   "track_mm": 6.8
+  }
+ },
+ "hole_to_hole": {
+  "min_drill_edge_mm_different_nets": 0.537,
+  "pair": [
+   [
+    96.1532,
+    82.347,
+    0.15,
+    "ESP_GPIO0"
+   ],
+   [
+    96.1388,
+    83.184,
+    0.15,
+    "ESP_TXD0"
+   ]
+  ],
+  "rule_mm": 0.5
+ },
+ "silk": {
+  "board_texts": {
+   "F.Silkscreen": 5,
+   "B.Silkscreen": 20,
+   "User.Drawings": 10
+  },
+  "reference_layers": {
+   "F.Fab": 152,
+   "F.Silkscreen": 10
+  }
+ },
+ "u6_cap_distance_mm": {
+  "C44.1 -> U6.3": 6.97,
+  "C45.1 -> U6.2": 5.12
+ },
+ "esp12e": {
+  "pin8_to_C54_copper_mm": 2.4,
+  "pin8_to_C53_pad1_straight_mm": 4.08,
+  "pin8_to_C52_pad1_straight_mm": 7.47,
+  "C54_gnd_pad_to_nearest_gnd_via_mm": 0.7,
+  "rule_area_kicad": [
+   74.63,
+   65.0,
+   98.87,
+   72.4
+  ],
+  "copper_items_inside_rule_area": [],
+  "pour_area_inside_rule_area_mm2": 0.0,
+  "module_antenna_end_y_kicad": 65.08,
+  "antenna_end_to_board_edge_mm": 0.08,
+  "ok": true
+ },
+ "min_track_width_mm": {
+  "VBAT_LOGIC_RAW": {
+   "min_mm": 1.0,
+   "segments": 2
+  },
+  "VBAT_LOGIC": {
+   "min_mm": 1.0,
+   "segments": 7
+  },
+  "VBAT_LOGIC_SW": {
+   "min_mm": 0.8,
+   "segments": 32
+  },
+  "SERVO_5V": {
+   "min_mm": 1.3,
+   "segments": 27
+  },
+  "GND_PWR": {
+   "min_mm": 0.5,
+   "segments": 17
+  },
+  "+5V": {
+   "min_mm": 0.5,
+   "segments": 48
+  },
+  "+3V3": {
+   "min_mm": 0.3,
+   "segments": 172
+  },
+  "GPS_VCC": {
+   "min_mm": 0.5,
+   "segments": 5
+  }
+ },
+ "plug_fit": [
+  {
+   "ref": "J8",
+   "kind": "right-angle",
+   "plug_box_spec_xy": [
+    [
+     -45.74,
+     -31.24
+    ],
+    [
+     14.17,
+     21.97
+    ]
+   ],
+   "outer_corner_r": 50.74,
+   "gap_to_bore": 6.26,
+   "gap_to_motor_joint_zone": 73.26,
+   "joint_zone_min_clear": 2.0,
+   "joint_screws_within_3mm": {},
+   "ok": true
+  },
+  {
+   "ref": "J9",
+   "kind": "right-angle",
+   "plug_box_spec_xy": [
+    [
+     -45.74,
+     -31.24
+    ],
+    [
+     5.55,
+     13.35
+    ]
+   ],
+   "outer_corner_r": 47.65,
+   "gap_to_bore": 9.35,
+   "gap_to_motor_joint_zone": 73.24,
+   "joint_zone_min_clear": 2.0,
+   "joint_screws_within_3mm": {},
+   "ok": true
+  },
+  {
+   "ref": "J10",
+   "kind": "right-angle",
+   "plug_box_spec_xy": [
+    [
+     -45.74,
+     -31.24
+    ],
+    [
+     -3.07,
+     4.73
+    ]
+   ],
+   "outer_corner_r": 45.98,
+   "gap_to_bore": 11.02,
+   "gap_to_motor_joint_zone": 73.24,
+   "joint_zone_min_clear": 2.0,
+   "joint_screws_within_3mm": {},
+   "ok": true
+  },
+  {
+   "ref": "J11",
+   "kind": "right-angle",
+   "plug_box_spec_xy": [
+    [
+     -45.74,
+     -31.24
+    ],
+    [
+     -11.69,
+     -3.89
+    ]
+   ],
+   "outer_corner_r": 47.21,
+   "gap_to_bore": 9.79,
+   "gap_to_motor_joint_zone": 73.24,
+   "joint_zone_min_clear": 2.0,
+   "joint_screws_within_3mm": {},
+   "ok": true
+  },
+  {
+   "ref": "J12",
+   "kind": "right-angle",
+   "plug_box_spec_xy": [
+    [
+     31.25,
+     45.75
+    ],
+    [
+     20.39,
+     28.19
+    ]
+   ],
+   "outer_corner_r": 53.74,
+   "gap_to_bore": 3.26,
+   "gap_to_motor_joint_zone": 7.89,
+   "joint_zone_min_clear": 2.0,
+   "joint_screws_within_3mm": {},
+   "ok": true
+  },
+  {
+   "ref": "J16",
+   "kind": "right-angle",
+   "plug_box_spec_xy": [
+    [
+     19.84,
+     24.94
+    ],
+    [
+     28.25,
+     42.25
+    ]
+   ],
+   "outer_corner_r": 49.06,
+   "gap_to_bore": 7.94,
+   "gap_to_motor_joint_zone": 23.22,
+   "joint_zone_min_clear": 2.0,
+   "joint_screws_within_3mm": {},
+   "ok": true
+  },
+  {
+   "ref": "J18",
+   "kind": "right-angle",
+   "plug_box_spec_xy": [
+    [
+     -45.24,
+     -31.24
+    ],
+    [
+     -22.78,
+     -12.58
+    ]
+   ],
+   "outer_corner_r": 50.65,
+   "gap_to_bore": 6.35,
+   "gap_to_motor_joint_zone": 73.24,
+   "joint_zone_min_clear": 2.0,
+   "joint_screws_within_3mm": {},
+   "ok": true
+  },
+  {
+   "ref": "J14",
+   "kind": "vertical (lead from above)",
+   "courtyard_spec_xy": [
+    [
+     -37.8,
+     -29.31
+    ],
+    [
+     28.8,
+     34.8
+    ]
+   ],
+   "mated_height_A_mm": 11.0,
+   "height_limit_mm": 13.4,
+   "outer_corner_r": 51.37,
+   "gap_to_bore": 5.63,
+   "ok": true
+  },
+  {
+   "ref": "J15",
+   "kind": "vertical (lead from above)",
+   "courtyard_spec_xy": [
+    [
+     -37.8,
+     -30.81
+    ],
+    [
+     23.2,
+     28.8
+    ]
+   ],
+   "mated_height_A_mm": 11.0,
+   "height_limit_mm": 13.4,
+   "outer_corner_r": 47.51,
+   "gap_to_bore": 9.49,
+   "ok": true
+  },
+  {
+   "ref": "J17",
+   "kind": "vertical (lead from above)",
+   "courtyard_spec_xy": [
+    [
+     30.81,
+     37.79
+    ],
+    [
+     14.31,
+     19.89
+    ]
+   ],
+   "mated_height_A_mm": 11.0,
+   "height_limit_mm": 13.4,
+   "outer_corner_r": 42.71,
+   "gap_to_bore": 14.29,
+   "ok": true
+  },
+  {
+   "ref": "J7",
+   "kind": "vertical (lead from above)",
+   "courtyard_spec_xy": [
+    [
+     -37.8,
+     -28.25
+    ],
+    [
+     -34.79,
+     -28.1
+    ]
+   ],
+   "mated_height_A_mm": 9.0,
+   "height_limit_mm": 13.4,
+   "outer_corner_r": 51.37,
+   "gap_to_bore": 5.63,
+   "ok": true
+  }
+ ],
+ "net_clusters": {
+  "nets_checked": 100,
+  "nets_split": {},
+  "ok": true
+ },
+ "vias_touching_pads": {
+  "count": 0,
+  "items": []
+ },
+ "silk_over_bodies": {
+  "front_texts": 15,
+  "over_bodies": [],
+  "ok": true
+ },
+ "supply_pads": {
+  "J6.1": {
+   "net": "+5V",
+   "tracks_attached_mm": [],
+   "zone_connection": "solid"
+  },
+  "J6.2": {
+   "net": "GND",
+   "tracks_attached_mm": [],
+   "zone_connection": "solid"
+  },
+  "J14.1": {
+   "net": "VBAT_LOGIC_RAW",
+   "tracks_attached_mm": [
+    1.0
+   ],
+   "zone_connection": "inherited (THT thermal / SMD solid)"
+  },
+  "J14.2": {
+   "net": "GND",
+   "tracks_attached_mm": [],
+   "zone_connection": "solid"
+  },
+  "U6.2": {
+   "net": "+3V3",
+   "tracks_attached_mm": [
+    0.5,
+    0.5
+   ],
+   "zone_connection": "inherited (THT thermal / SMD solid)"
+  },
+  "U6.3": {
+   "net": "+5V",
+   "tracks_attached_mm": [
+    0.5
+   ],
+   "zone_connection": "inherited (THT thermal / SMD solid)"
+  },
+  "J12.2": {
+   "net": "SERVO_5V",
+   "tracks_attached_mm": [
+    1.5
+   ],
+   "zone_connection": "inherited (THT thermal / SMD solid)"
+  },
+  "J12.3": {
+   "net": "GND_PWR",
+   "tracks_attached_mm": [
+    1.5,
+    1.5,
+    1.5
+   ],
+   "zone_connection": "inherited (THT thermal / SMD solid)"
+  }
+ },
+ "power_narrow_outside_pad_entry": {
+  "VBAT_LOGIC_SW": {
+   "segments": 3,
+   "length_mm": 44.75,
+   "min_mm": 0.8
+  },
+  "+3V3": {
+   "segments": 14,
+   "length_mm": 16.76,
+   "min_mm": 0.3
+  },
+  "SERVO_5V": {
+   "segments": 5,
+   "length_mm": 10.24,
+   "min_mm": 1.3
+  }
+ },
+ "cad_round_envelopes": {
+  "board_top_z_vehicle": 328.7,
+  "boxes": [
+   {
+    "what": "J8 mated right-angle plug (A)",
+    "x": [
+     -45.74,
+     -31.24
+    ],
+    "y": [
+     14.17,
+     21.97
+    ],
+    "z_above_board_top": [
+     -0.3,
+     3.0
+    ]
+   },
+   {
+    "what": "J9 mated right-angle plug (A)",
+    "x": [
+     -45.74,
+     -31.24
+    ],
+    "y": [
+     5.55,
+     13.35
+    ],
+    "z_above_board_top": [
+     -0.3,
+     3.0
+    ]
+   },
+   {
+    "what": "J10 mated right-angle plug (A)",
+    "x": [
+     -45.74,
+     -31.24
+    ],
+    "y": [
+     -3.07,
+     4.73
+    ],
+    "z_above_board_top": [
+     -0.3,
+     3.0
+    ]
+   },
+   {
+    "what": "J11 mated right-angle plug (A)",
+    "x": [
+     -45.74,
+     -31.24
+    ],
+    "y": [
+     -11.69,
+     -3.89
+    ],
+    "z_above_board_top": [
+     -0.3,
+     3.0
+    ]
+   },
+   {
+    "what": "J12 mated right-angle plug (A)",
+    "x": [
+     31.25,
+     45.75
+    ],
+    "y": [
+     20.39,
+     28.19
+    ],
+    "z_above_board_top": [
+     -0.3,
+     3.0
+    ]
+   },
+   {
+    "what": "J16 mated right-angle plug (A)",
+    "x": [
+     19.84,
+     24.94
+    ],
+    "y": [
+     28.25,
+     42.25
+    ],
+    "z_above_board_top": [
+     -0.3,
+     3.0
+    ]
+   },
+   {
+    "what": "J18 mated right-angle plug (A)",
+    "x": [
+     -45.24,
+     -31.24
+    ],
+    "y": [
+     -22.78,
+     -12.58
+    ],
+    "z_above_board_top": [
+     -0.3,
+     3.0
+    ]
+   },
+   {
+    "what": "J14 mated vertical plug + lead bend (A)",
+    "x": [
+     -37.8,
+     -29.31
+    ],
+    "y": [
+     28.8,
+     34.8
+    ],
+    "z_above_board_top": [
+     0.0,
+     11.0
+    ]
+   },
+   {
+    "what": "J15 mated vertical plug + lead bend (A)",
+    "x": [
+     -37.8,
+     -30.81
+    ],
+    "y": [
+     23.2,
+     28.8
+    ],
+    "z_above_board_top": [
+     0.0,
+     11.0
+    ]
+   },
+   {
+    "what": "J17 mated vertical plug + lead bend (A)",
+    "x": [
+     30.81,
+     37.79
+    ],
+    "y": [
+     14.31,
+     19.89
+    ],
+    "z_above_board_top": [
+     0.0,
+     11.0
+    ]
+   },
+   {
+    "what": "J7 mated vertical plug + lead bend (A)",
+    "x": [
+     -37.8,
+     -28.25
+    ],
+    "y": [
+     -34.79,
+     -28.1
+    ],
+    "z_above_board_top": [
+     0.0,
+     9.0
+    ]
+   },
+   {
+    "what": "GY-521 module ~21.2 x 16.4 mm (A)",
+    "x": [
+     3.6,
+     20.0
+    ],
+    "y": [
+     -34.59,
+     -13.39
+    ],
+    "z_above_board_top": [
+     0.0,
+     5.3
+    ]
+   },
+   {
+    "what": "BMP280 module ~15.2 x 11.5 mm (A)",
+    "x": [
+     3.58,
+     18.78
+    ],
+    "y": [
+     10.95,
+     22.45
+    ],
+    "z_above_board_top": [
+     0.0,
+     5.9
+    ]
+   },
+   {
+    "what": "OpenLog ~19 x 16 mm (A)",
+    "x": [
+     21.6,
+     37.6
+    ],
+    "y": [
+     -18.55,
+     0.45
+    ],
+    "z_above_board_top": [
+     0.0,
+     5.9
+    ]
+   },
+   {
+    "what": "Pololu S9V11F5S6CMA 12.7 x 15.3 mm (vendor size, pin-row offset A)",
+    "x": [
+     24.52,
+     37.22
+    ],
+    "y": [
+     -34.17,
+     -18.87
+    ],
+    "z_above_board_top": [
+     0.0,
+     8.9
+    ]
+   }
+  ],
+  "note": "vehicle x / y (spec frame); add these boxes to the CAD carrier envelope (the CAD carries a bare 76 x 70 x 15 box)"
+ }
+}

@@ -1,0 +1,57 @@
+2026-11-05 08:47:35.450 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-05 08:47:35.748 INFO   Hardware: 16 CPU cores, 398 CPU score, 4026 MB RAM
+2026-11-05 08:47:35.748 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 08:47:35.751 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-05 08:47:36.805 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-05 08:47:37.074 INFO   [60DE41\0611D1] Loading board file 'vtol_carrier_complete.dsn'...
+2026-11-05 08:47:37.558 WARN   DSN file 'vtol_carrier_complete.dsn' was loaded with 49 warning(s).
+2026-11-05 08:47:37.638 INFO   [60DE41\0611D1] Job '60DE41\0611D1' started at 2026-11-04T23:47:37.638752700Z.
+2026-11-05 08:47:38.634 WARN   Design Warning: Board has 136 pre-existing clearance violation(s) in the loaded design (before routing):
+  - 136 unfixable violation(s) (cannot be resolved by Freerouting):
+      * 136 fixed trace/via clearance violations (first 5 shown):
+          - FixedVia#3224 [net GND] <-> U4.9 [net unconnected-(U4-PE7-Pad9)__0]
+          - FixedVia#3211 [net +5V] <-> R61.1 [net GNS_GPS_RX]
+          - FixedVia#3210 [net +5V] <-> R59.1 [net GNS_GPS_TX]
+          - FixedVia#3209 [net +5V] <-> R57.1 [net COM_ESP_RESET]
+          - FixedVia#3208 [net +5V] <-> R55.1 [net COM_LINK_RX]
+          ... and 131 more
+  - 0 potentially fixable violations
+Notice: Freerouting does not modify component placement, board outlines, or fixed items.
+Resolving these 136 unfixable violation(s) is the responsibility of the board author in their EDA tool (e.g. KiCad).
+2026-11-05 08:47:38.712 INFO   [60DE41\0611D1] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-05 08:47:39.871 INFO   [60DE41\0611D1] Fanout stage started on board 'ef4d6ba028a8bd2c60c02d0d4ad943fc' with 333 of 576 SMD pins needing fanout (243 already connected, 0 netless).
+2026-11-05 08:47:45.137 INFO   [60DE41\0611D1] Fanout pass #1 on board '54275db91848764e4cf404edd2c4f95d' completed in 4.73 seconds with 126 SMD pins fanouted, 26 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-05 08:47:48.343 INFO   [60DE41\0611D1] Fanout pass #2 on board 'e24aefb081515e43b8098e658a6a7cfe' completed in 3.16 seconds with 98 SMD pins fanouted, 11 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-05 08:47:51.354 INFO   [60DE41\0611D1] Fanout pass #3 on board '5c7b1b95f8462df1021a21600d2b1efc' completed in 2.96 seconds with 98 SMD pins fanouted, 10 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=300).
+2026-11-05 08:47:54.378 INFO   [60DE41\0611D1] Fanout pass #4 on board 'e24aefb081515e43b8098e658a6a7cfe' completed in 2.96 seconds with 98 SMD pins fanouted, 10 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=400).
+2026-11-05 08:47:57.134 INFO   [60DE41\0611D1] Fanout pass #5 on board '6217c9053014d584b41cf123a1e2ec06' completed in 2.71 seconds with 98 SMD pins fanouted, 10 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=500).
+2026-11-05 08:47:57.134 INFO   Fanout stopped after 5 passes: no progress for 3 consecutive passes.
+2026-11-05 08:47:57.618 INFO   [60DE41\0611D1] Fanout stage completed: started with 576 total SMD pins, completed in 17.27 seconds, escaped pins: 299/576 (51.9%), using 17.86 total CPU seconds, 5.05 GB total allocated, and 180.3 MB peak heap usage.
+2026-11-05 08:47:59.350 INFO   [60DE41\0611D1] Auto-routing stage started on board '6217c9053014d584b41cf123a1e2ec06' with baseline score 612.38 for 110 unrouted items.
+2026-11-05 08:48:36.875 INFO   [60DE41\0611D1] Auto-routing pass #1 on board '6217c9053014d584b41cf123a1e2ec06' was completed in 36.91 seconds with score 664.60 (95 unrouted and 136 violations), using 57.05 CPU seconds and the job allocated 23.87 GB of memory so far.
+2026-11-05 08:49:11.915 INFO   [60DE41\0611D1] Auto-routing pass #2 on board '9003cabe767da791ef7c61e4ec707bd1' was completed in 34.40 seconds with score 633.27 (104 unrouted and 136 violations), using 91.59 CPU seconds and the job allocated 41.18 GB of memory so far.
+2026-11-05 08:49:47.866 INFO   [60DE41\0611D1] Auto-routing pass #3 on board '2649fd70b0e397135d680faa03457d93' was completed in 35.31 seconds with score 650.68 (99 unrouted and 136 violations), using 127.05 CPU seconds and the job allocated 58.95 GB of memory so far.
+2026-11-05 08:50:23.265 INFO   [60DE41\0611D1] Auto-routing pass #4 on board '2ec470e3fe0f7d964a87af469d847c24' was completed in 34.78 seconds with score 633.27 (104 unrouted and 136 violations), using 161.56 CPU seconds and the job allocated 76.39 GB of memory so far.
+2026-11-05 08:50:57.851 INFO   [60DE41\0611D1] Auto-routing pass #5 on board '2649fd70b0e397135d680faa03457d93' was completed in 34.53 seconds with score 650.68 (99 unrouted and 136 violations), using 196.08 CPU seconds and the job allocated 94.01 GB of memory so far.
+2026-11-05 08:51:39.046 INFO   [60DE41\0611D1] Auto-routing pass #6 on board '81a61272081874a2260268c9ba1857a7' was completed in 40.52 seconds with score 633.27 (104 unrouted and 136 violations), using 236.53 CPU seconds and the job allocated 111.64 GB of memory so far.
+2026-11-05 08:52:15.123 INFO   [60DE41\0611D1] Auto-routing pass #7 on board '2649fd70b0e397135d680faa03457d93' was completed in 36.02 seconds with score 650.68 (99 unrouted and 136 violations), using 272.08 CPU seconds and the job allocated 129.21 GB of memory so far.
+2026-11-05 08:52:50.169 INFO   [60DE41\0611D1] Auto-routing pass #8 on board 'fce545e8da47f03d167f45c5f92b78c7' was completed in 34.42 seconds with score 633.27 (104 unrouted and 136 violations), using 306.80 CPU seconds and the job allocated 146.74 GB of memory so far.
+2026-11-05 08:53:24.080 INFO   [60DE41\0611D1] Auto-routing pass #9 on board '2649fd70b0e397135d680faa03457d93' was completed in 33.87 seconds with score 650.68 (99 unrouted and 136 violations), using 340.39 CPU seconds and the job allocated 164.28 GB of memory so far.
+2026-11-05 08:53:58.368 INFO   [60DE41\0611D1] Auto-routing pass #10 on board 'f82a121a5acfe4211945c58c69e8be3d' was completed in 33.65 seconds with score 633.27 (104 unrouted and 136 violations), using 373.94 CPU seconds and the job allocated 181.76 GB of memory so far.
+2026-11-05 08:54:32.407 INFO   [60DE41\0611D1] Auto-routing pass #11 on board '2649fd70b0e397135d680faa03457d93' was completed in 34.00 seconds with score 650.68 (99 unrouted and 136 violations), using 407.56 CPU seconds and the job allocated 199.30 GB of memory so far.
+2026-11-05 08:55:07.545 INFO   [60DE41\0611D1] Auto-routing pass #12 on board '9003cabe767da791ef7c61e4ec707bd1' was completed in 0.00 seconds with score 664.60 (95 unrouted and 136 violations), using 442.17 CPU seconds and the job allocated 217.03 GB of memory so far.
+2026-11-05 08:55:39.087 INFO   [60DE41\0611D1] Auto-routing pass #13 on board '9003cabe767da791ef7c61e4ec707bd1' was completed in 31.50 seconds with score 633.27 (104 unrouted and 136 violations), using 473.77 CPU seconds and the job allocated 234.42 GB of memory so far.
+2026-11-05 08:56:11.685 INFO   [60DE41\0611D1] Auto-routing pass #14 on board '2649fd70b0e397135d680faa03457d93' was completed in 32.56 seconds with score 650.68 (99 unrouted and 136 violations), using 505.39 CPU seconds and the job allocated 251.88 GB of memory so far.
+2026-11-05 08:56:44.830 INFO   [60DE41\0611D1] Auto-routing pass #15 on board 'f1198b222db655056010c4c9498eabc7' was completed in 32.06 seconds with score 633.27 (104 unrouted and 136 violations), using 538.13 CPU seconds and the job allocated 269.65 GB of memory so far.
+2026-11-05 08:57:17.810 INFO   [60DE41\0611D1] Auto-routing pass #16 on board '9003cabe767da791ef7c61e4ec707bd1' was completed in 0.00 seconds with score 664.60 (95 unrouted and 136 violations), using 570.61 CPU seconds and the job allocated 287.53 GB of memory so far.
+2026-11-05 08:57:49.474 INFO   [60DE41\0611D1] Auto-routing pass #17 on board '9003cabe767da791ef7c61e4ec707bd1' was completed in 31.62 seconds with score 633.27 (104 unrouted and 136 violations), using 602.23 CPU seconds and the job allocated 304.95 GB of memory so far.
+2026-11-05 08:58:23.219 INFO   [60DE41\0611D1] Auto-routing pass #18 on board '2649fd70b0e397135d680faa03457d93' was completed in 33.69 seconds with score 650.68 (99 unrouted and 136 violations), using 635.94 CPU seconds and the job allocated 322.62 GB of memory so far.
+2026-11-05 08:58:55.922 INFO   [60DE41\0611D1] Auto-routing pass #19 on board 'f1198b222db655056010c4c9498eabc7' was completed in 32.66 seconds with score 633.27 (104 unrouted and 136 violations), using 667.61 CPU seconds and the job allocated 339.87 GB of memory so far.
+2026-11-05 08:59:29.296 INFO   [60DE41\0611D1] Auto-routing pass #20 on board '9003cabe767da791ef7c61e4ec707bd1' was completed in 0.00 seconds with score 664.60 (95 unrouted and 136 violations), using 701.45 CPU seconds and the job allocated 357.90 GB of memory so far.
+2026-11-05 08:59:30.821 INFO   [60DE41\0611D1] Auto-routing stage completed: started with 136 unrouted nets, completed in 711.62 seconds, final score: 664.60 (95 unrouted and 136 violations), using 702.41 total CPU seconds, 358.25 GB total allocated, and 542.2 MB peak heap usage.
+2026-11-05 08:59:31.368 INFO   [60DE41\0611D1] Skipping optimization stage: the board has 95 unrouted connection(s) (optimizer only runs on completely routed boards).
+2026-11-05 08:59:31.424 INFO   [60DE41\0611D1] Job '60DE41\0611D1' finished with state: COMPLETED (elapsed: 11 minutes 53.78 seconds, finished at UTC: 2026-11-04T23:59:31.423106500Z).
+2026-11-05 08:59:31.430 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\B--Claude\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb\l4j\kicad\work\vtol_carrier_complete.ses' (SES)...
+2026-11-05 08:59:31.433 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\B--Claude\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb\l4j\kicad\work\vtol_carrier_complete.ses' (16540 bytes).
+
+--- stderr ---

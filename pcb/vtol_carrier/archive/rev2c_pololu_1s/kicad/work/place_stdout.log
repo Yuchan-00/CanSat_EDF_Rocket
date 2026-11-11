@@ -1,0 +1,66 @@
+{
+ "problems": [],
+ "courtyard_overlaps": [],
+ "outside_outline": [],
+ "in_tie_band": [],
+ "in_antenna_rule_area": [],
+ "unpopulated_footprints_in_tie_band": [
+  "J19",
+  "J20",
+  "J21",
+  "J22",
+  "J24",
+  "J25",
+  "J26"
+ ],
+ "edge_rules": {
+  "-x": {
+   "J8": true,
+   "J9": true,
+   "J10": true,
+   "J11": true,
+   "J13": true,
+   "J18": true
+  },
+  "-x,y<-12": {
+   "J18": true
+  },
+  "+x,y>+14": {
+   "J12": true,
+   "J17": true
+  },
+  "+x/+y corner (x>+25, y>+18)": {
+   "J14": true,
+   "J15": true
+  },
+  "+y,x>+5": {
+   "J16": true
+  },
+  "-y,x<-5": {
+   "J7": true
+  },
+  "+y antenna edge": {
+   "U7": true
+  }
+ },
+ "esp_module_spec_x": [
+  -21.37,
+  -5.13
+ ],
+ "antenna_rule_area_kicad": [
+  74.63,
+  65.0,
+  98.87,
+  72.4
+ ],
+ "courtyard_bbox_area_mm2": {
+  "top": 4390.4,
+  "bottom": 0.0
+ },
+ "board_area_minus_tie_band_mm2": 4900.0
+}
+GY-521 module ~21.2 x 16.4 mm (A) under: ['C2', 'C4', 'C5', 'C41', 'C42', 'J1', 'L1', 'Q3', 'R11', 'R46', 'R47', 'U1'] BAD: ['J1'] True
+BMP280 module ~15.2 x 11.5 mm (A) under: ['C10', 'C12', 'C13', 'C16', 'C46', 'C49', 'C50', 'C51', 'L2', 'Q8', 'Q9', 'Q10', 'Q11', 'R3', 'R14', 'R16', 'R21', 'R23', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R40', 'R41', 'R51', 'R56'] BAD: [] True
+OpenLog ~19 x 16 mm (A) under: ['C6', 'C48', 'J3', 'Q2', 'R2', 'R29', 'R39', 'R42', 'R44', 'R45', 'U1'] BAD: ['U1'] True
+Pololu S9V11F5S6CMA 12.7 x 15.3 mm (vendor size, pin-row offset A) under: ['C1', 'C3', 'C6', 'C7', 'C43', 'C44', 'C45', 'J6', 'R2', 'U1', 'U6', 'Y1'] BAD: ['J6'] True
+placed 164 unplaced []

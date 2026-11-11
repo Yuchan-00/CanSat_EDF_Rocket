@@ -1,0 +1,175 @@
+ref,value,footprint,fit,populate,side,tht,body_source,body_to_edge_mm,body_nearest_edge,pad_to_edge_mm,pad_nearest_edge,body_under_2p5,body_under_0p3,pad_under_0p3,dist_-x,dist_+y,dist_+x,dist_-y
+C1,100n,C_0402_1005Metric,jlc,True,top,False,fab,11.13,-y,10.92,-y,False,False,False,63.41,57.77,11.99,11.13
+C2,100n,C_0402_1005Metric,jlc,True,top,False,fab,16.57,-y,16.36,-y,False,False,False,45.19,52.33,30.21,16.57
+C3,10u,C_0805_2012Metric,jlc,True,top,False,fab,8.325,-y,8.275,-y,False,False,False,63.95,60.325,9.95,8.325
+C4,100n,C_0402_1005Metric,jlc,True,top,False,fab,7.93,-y,7.72,-y,False,False,False,45.19,60.97,30.21,7.93
+C5,100n,C_0603_1608Metric,jlc,True,top,False,fab,4.15,-y,4.125,-y,False,False,False,48.05,64.95,26.25,4.15
+C6,27p,C_0402_1005Metric,jlc,True,top,False,fab,8.33,+x,8.32,+x,False,False,False,67.07,53.19,8.33,15.71
+C7,27p,C_0402_1005Metric,jlc,True,top,False,fab,10.39,-y,10.18,-y,False,False,False,64.87,58.51,10.53,10.39
+C8,100n,C_0603_1608Metric,jlc,True,top,False,fab,21.25,-y,20.875,-y,False,False,False,45.25,47.05,29.85,21.25
+C9,100n,C_0402_1005Metric,jlc,True,top,False,fab,26.97,+x,26.76,+x,False,False,False,47.93,41.56,26.97,27.84
+C10,100n,C_0402_1005Metric,jlc,True,top,False,fab,21.53,+x,21.32,+x,False,False,False,53.37,23.34,21.53,46.06
+C11,10u,C_0805_2012Metric,jlc,True,top,False,fab,25.85,-y,25.45,-y,False,False,False,45.125,42.05,29.525,25.85
+C12,100n,C_0402_1005Metric,jlc,True,top,False,fab,23.34,+y,23.33,+y,False,False,False,44.73,23.34,30.17,46.06
+C13,100n,C_0603_1608Metric,jlc,True,top,False,fab,20.84,+y,20.465,+y,False,False,False,46.15,20.84,28.95,47.46
+C14,27p,C_0402_1005Metric,jlc,True,top,False,fab,22.39,+x,22.18,+x,False,False,False,52.51,45.22,22.39,24.18
+C15,27p,C_0402_1005Metric,jlc,True,top,False,fab,26.38,-y,26.37,-y,False,False,False,47.19,43.02,27.71,26.38
+C16,100n,C_0603_1608Metric,jlc,True,top,False,fab,28.35,-y,27.975,-y,False,False,False,41.35,39.95,33.75,28.35
+C17,100n,C_0402_1005Metric,jlc,True,top,False,fab,20.98,-x,20.77,-x,False,False,False,20.98,47.26,53.92,22.14
+C18,100n,C_0402_1005Metric,jlc,True,top,False,fab,26.42,-x,26.21,-x,False,False,False,26.42,29.04,48.48,40.36
+C19,10u,C_0805_2012Metric,jlc,True,top,False,fab,18.125,-x,18.075,-x,False,False,False,18.125,47.75,56.525,20.15
+C20,100n,C_0402_1005Metric,jlc,True,top,False,fab,17.78,-x,17.57,-x,False,False,False,17.78,29.04,57.12,40.36
+C21,100n,C_0603_1608Metric,jlc,True,top,False,fab,19.95,-x,19.575,-x,False,False,False,19.95,28.55,54.35,40.55
+C22,27p,C_0402_1005Metric,jlc,True,top,False,fab,18.48,-y,18.47,-y,False,False,False,25.56,50.92,49.34,18.48
+C23,27p,C_0402_1005Metric,jlc,True,top,False,fab,20.24,-x,20.03,-x,False,False,False,20.24,48.72,54.66,20.68
+C24,100n,C_0603_1608Metric,jlc,True,top,False,fab,23.05,-y,23.025,-y,False,False,False,31.05,46.05,43.25,23.05
+C25,100n,C_0402_1005Metric,jlc,True,top,False,fab,10.67,-y,10.46,-y,False,False,False,14.44,58.23,60.96,10.67
+C26,100n,C_0402_1005Metric,jlc,True,top,False,fab,5.23,-y,5.02,-y,False,False,False,32.66,63.67,42.74,5.23
+C27,10u,C_0805_2012Metric,jlc,True,top,False,fab,13.525,-x,13.15,-y,False,False,False,13.525,54.35,61.125,13.55
+C28,100n,C_0402_1005Metric,jlc,True,top,False,fab,13.87,-y,13.66,-y,False,False,False,32.66,55.03,42.74,13.87
+C29,100n,C_0603_1608Metric,jlc,True,top,False,fab,11.15,-y,10.775,-y,False,False,False,32.85,57.15,42.25,11.15
+C30,27p,C_0402_1005Metric,jlc,True,top,False,fab,6.09,-y,5.88,-y,False,False,False,10.78,62.81,64.62,6.09
+C31,27p,C_0402_1005Metric,jlc,True,top,False,fab,11.41,-y,11.2,-y,False,False,False,12.98,57.49,62.42,11.41
+C32,100n,C_0603_1608Metric,jlc,True,top,False,fab,17.85,-y,17.825,-y,False,False,False,27.75,51.25,46.55,17.85
+C41,22u 10V,C_1206_3216Metric,jlc,True,top,False,fab,0.55,-y,0.5,-y,True,False,False,58.5,67.75,14.2,0.55
+C42,22u 10V,C_1206_3216Metric,jlc,True,top,False,fab,2.65,+y,2.25,+y,False,False,False,9.75,2.65,64.55,64.05
+C43,22u,C_1206_3216Metric,jlc,True,top,False,fab,0.55,-y,0.5,-y,True,False,False,63.1,67.75,9.6,0.55
+C44,10u,C_0805_2012Metric,jlc,True,top,False,fab,2.05,-y,1.65,-y,True,False,False,33.225,65.85,41.425,2.05
+C45,"22u 10V tantalum (TAJA226K010RNJ, +-10 %)",CP_EIA-3216-18_Kemet-A,jlc,True,top,False,fab,6.05,-y,6.205,-y,False,False,False,64.0,62.25,8.7,6.05
+C46,100n,C_0603_1608Metric,jlc,True,top,False,fab,22.85,+y,22.825,+y,False,False,False,48.75,22.85,25.55,46.25
+C47,220u 10V,CP_Elec_6.3x5.4,jlc,True,top,False,fab,9.35,+x,8.15,+x,False,False,False,59.95,15.27,9.35,48.03
+C48,100n,C_0603_1608Metric,jlc,True,top,False,fab,14.15,+x,13.775,+x,False,False,False,60.15,37.95,14.15,31.15
+C49,100n,C_0603_1608Metric,jlc,True,top,False,fab,19.85,+y,19.825,+y,False,False,False,51.45,19.85,22.85,49.25
+C50,100n,C_0603_1608Metric,jlc,True,top,False,fab,18.35,+y,18.325,+y,False,False,False,50.35,18.35,23.95,50.75
+C51,100n,C_0603_1608Metric,jlc,True,top,False,fab,20.75,+y,20.375,+y,False,False,False,54.15,20.75,20.95,47.55
+C52,100u 10V tantalum,CP_EIA-3528-21_Kemet-B,jlc,True,top,False,fab,23.0,-x,22.59,-x,False,False,False,23.0,25.55,49.4,41.55
+C53,10u,C_0805_2012Metric,jlc,True,top,False,fab,13.875,-x,13.825,-x,False,False,False,13.875,19.45,60.775,48.45
+C54,100n,C_0402_1005Metric,jlc,True,top,False,fab,14.45,-x,14.44,-x,False,False,False,14.45,22.63,60.95,46.27
+C55,100n,C_0603_1608Metric,jlc,True,top,False,fab,11.85,+y,11.475,+y,False,False,False,14.45,11.85,60.65,56.45
+C56,10u,C_0805_2012Metric,jlc,True,top,False,fab,2.95,-x,2.55,-x,False,False,False,2.95,61.725,70.95,6.925
+C57,22u,C_1206_3216Metric,jlc,True,top,False,fab,2.85,-y,2.8,-y,False,False,False,66.1,65.45,6.6,2.85
+C58,1n 50V X7R,C_0603_1608Metric,jlc,True,top,False,fab,3.7,-y,3.675,-y,False,False,False,60.1,65.4,14.2,3.7
+C59,100n,C_0603_1608Metric,jlc,True,top,False,fab,4.15,-y,4.125,-y,False,False,False,57.05,64.95,17.25,4.15
+C60,100n,C_0603_1608Metric,jlc,True,top,False,fab,0.95,-y,0.575,-y,True,False,False,52.55,67.35,22.55,0.95
+D1,LED 0603 (colour A),LED_0603_1608Metric,jlc,True,top,False,fab,7.85,+x,7.825,+x,False,False,False,67.25,59.65,7.85,8.65
+D2,LED 0603 (colour A),LED_0603_1608Metric,jlc,True,top,False,fab,22.55,+x,22.525,+x,False,False,False,52.55,42.05,22.55,26.25
+D3,LED 0603 (colour A),LED_0603_1608Metric,jlc,True,top,False,fab,16.05,-x,16.025,-x,False,False,False,16.05,46.35,59.05,21.95
+D4,LED 0603 (colour A),LED_0603_1608Metric,jlc,True,top,False,fab,14.95,-x,14.575,-x,False,False,False,14.95,52.45,59.35,16.65
+D6,SS14 / B5819W class Schottky,D_SOD-123,jlc,True,top,False,fab,1.25,+x,0.6,+x,True,False,False,71.85,4.25,1.25,63.85
+J1,1x8 2.54 mm (GY-521 soldered flat on straight pins),PinHeader_1x08_P2.54mm_Vertical,user,True,top,True,fab,0.8,-y,1.27,-y,True,False,False,41.58,48.78,31.78,0.8
+J2,1x6 2.54 mm right-angle socket (module lies flat),PinSocket_1x06_P2.54mm_Horizontal,jlc,True,top,True,fab,1.95,+y,1.15,+y,True,False,False,41.51,1.95,19.15,57.92
+J3,2x3 2.54 mm vertical: ESP-12F programming header (3.3 V logic ONLY),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,7.93,+y,8.4,+y,False,False,False,35.38,7.93,35.44,54.35
+J5,1x6 2.54 mm right-angle socket: OpenLog lies FLAT beside it (outline reserved),PinSocket_1x06_P2.54mm_Horizontal,jlc,True,top,True,fab,0.73,+x,1.2,+x,True,False,False,59.93,23.95,0.73,35.92
+J7,JST-GH 1.25 mm 4-pin vertical (top entry),JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical,jlc,True,top,False,fab,0.805,-x,0.75,-y,True,False,False,0.805,63.9,66.845,1.75
+J8,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,13.07,64.83,49.21
+J9,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,21.69,64.83,40.59
+J10,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,30.31,64.83,31.97
+J11,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,38.93,64.83,23.35
+J12,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,jlc,True,top,True,fab,0.7,+x,7.32,+y,True,False,False,64.84,6.85,0.7,55.43
+J14,"Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical,jlc,True,top,True,fab,0.7,-x,2.35,-x,True,False,False,0.7,0.7,67.8,64.3
+J15,JST-PH 2.0 2-pin vertical: lead to an external logic power switch,JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,jlc,True,top,True,fab,0.29,-x,2.1,-x,True,True,False,0.29,6.29,69.3,58.7
+J16,1x2 right-angle header,PinHeader_1x02_P2.54mm_Horizontal,jlc,True,top,True,fab,0.7,+y,9.94,+y,True,False,False,57.8,0.7,13.02,58.84
+J17,JST-PH 2.0 2-pin vertical (top entry),JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,jlc,True,top,True,fab,0.7,+x,2.1,+x,True,False,False,68.89,15.19,0.7,49.8
+J18,1x4 right-angle header,PinHeader_1x04_P2.54mm_Horizontal,jlc,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,47.55,64.83,12.19
+J19,AVR ISP 2x3 (USBasp),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,1.45,-y,1.92,-y,True,False,False,35.38,60.83,35.44,1.45
+J20,AVR ISP 2x3 (USBasp),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,22.68,+y,23.15,+y,False,False,False,35.38,22.68,35.44,39.6
+J21,AVR ISP 2x3 (USBasp),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,24.85,-y,25.32,-y,False,False,False,35.38,37.43,35.44,24.85
+J22,AVR ISP 2x3 (USBasp),PinHeader_2x03_P2.54mm_Vertical,none,False,top,True,fab,10.1,-y,10.57,-y,False,False,False,35.38,52.18,35.44,10.1
+J24,2-pin header + shunt,PinHeader_1x02_P2.54mm_Vertical,none,False,top,True,fab,16.58,+y,17.05,+y,False,False,False,36.68,16.58,36.68,48.24
+J25,2-pin header + shunt,PinHeader_1x02_P2.54mm_Vertical,none,False,top,True,fab,31.33,+y,31.8,+y,False,False,False,36.68,31.33,36.68,33.49
+J26,2-pin header + shunt,PinHeader_1x02_P2.54mm_Vertical,none,False,top,True,fab,18.74,-y,19.21,-y,False,False,False,36.68,46.08,36.68,18.74
+JP1,"solder jumper, 1-2 bridged",SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm,none,True,top,False,courtyard,0.775,-x,1.3,-x,True,False,False,0.775,58.825,70.575,8.625
+L1,10uH,L_0805_2012Metric,jlc,True,top,False,fab,4.65,-y,4.2,-y,False,False,False,46.0,63.25,29.0,4.65
+L2,10uH,L_0805_2012Metric,jlc,True,top,False,fab,20.15,+y,19.7,+y,False,False,False,44.3,20.15,30.7,47.75
+L3,10uH,L_0805_2012Metric,jlc,True,top,False,fab,15.9,-x,15.8,-x,False,False,False,15.9,28.35,59.1,39.55
+L4,10uH,L_0805_2012Metric,jlc,True,top,False,fab,15.8,-y,15.7,-y,False,False,False,31.85,53.2,42.05,15.8
+L5,1.0 uH FXL0420-1R0-MA1,L_Changjiang_FXL0420,jlc,True,top,False,fab,0.45,-y,0.5,+x,True,False,False,70.925,65.25,1.125,0.45
+NT1,net tie,NetTie-2_SMD_Pad0.5mm,none,True,top,False,pads,13.0,+y,13.0,+y,False,False,False,61.5,13.0,13.0,56.5
+Q1,BSS138,SOT-23,jlc,True,top,False,fab,18.8,+x,19.05,+x,False,False,False,54.2,44.2,18.8,24.4
+Q2,BSS138,SOT-23,jlc,True,top,False,fab,15.4,+x,15.65,+x,False,False,False,57.6,40.6,15.4,28.0
+Q3,BSS138,SOT-23,none,optional (DNP),top,False,fab,0.6,-y,0.85,-y,True,False,False,47.9,66.4,26.7,0.6
+Q4,BSS138,SOT-23,jlc,True,top,False,fab,19.7,-y,19.95,-y,False,False,False,26.5,47.3,48.1,19.7
+Q5,BSS138,SOT-23,jlc,True,top,False,fab,25.5,+y,25.75,+y,False,False,False,28.6,25.5,46.0,41.5
+Q6,BSS138,SOT-23,jlc,True,top,False,fab,3.0,-y,2.025,-y,False,False,False,10.0,65.6,63.0,3.0
+Q7,BSS138,SOT-23,jlc,True,top,False,fab,7.1,-y,6.425,-x,False,False,False,7.4,59.9,67.2,7.1
+Q8,BSS138,SOT-23,jlc,True,top,False,fab,19.9,+y,18.925,+y,False,False,False,47.6,19.9,25.4,48.7
+Q9,MMBT3904,SOT-23,jlc,True,top,False,fab,3.2,+y,3.45,+y,False,False,False,68.3,3.2,6.3,63.8
+Q10,"AO3401A (-30 V, -4 A, Vgs(th) -0.5..-1.3 V, Rds(on) <= 85 mOhm at Vgs -2.5 V: A)",SOT-23,jlc,True,top,False,fab,6.8,+y,5.825,+y,False,False,False,7.4,6.8,65.6,61.8
+Q11,BSS138,SOT-23,jlc,True,top,False,fab,26.6,+y,25.625,+y,False,False,False,31.5,26.6,41.5,42.0
+R1,10k,R_0603_1608Metric,jlc,True,top,False,fab,21.95,-y,21.575,-y,False,False,False,46.737,46.35,28.338,21.95
+R2,1k,R_0603_1608Metric,jlc,True,top,False,fab,11.538,+x,11.525,+x,False,False,False,63.537,52.25,11.538,16.05
+R3,10k,R_0603_1608Metric,jlc,True,top,False,fab,27.65,-y,27.275,-y,False,False,False,42.837,40.65,32.238,27.65
+R4,1k,R_0603_1608Metric,jlc,True,top,False,fab,19.45,+x,19.075,+x,False,False,False,54.85,41.737,19.45,27.338
+R5,10k,R_0603_1608Metric,jlc,True,top,False,fab,21.538,-y,21.525,-y,False,False,False,30.65,47.537,43.65,21.538
+R6,1k,R_0603_1608Metric,jlc,True,top,False,fab,18.238,-y,18.225,-y,False,False,False,19.35,50.837,54.95,18.238
+R7,10k,R_0603_1608Metric,jlc,True,top,False,fab,17.438,-y,17.425,-y,False,False,False,31.05,51.637,43.25,17.438
+R8,1k,R_0603_1608Metric,jlc,True,top,False,fab,5.15,-y,4.775,-y,False,False,False,13.938,63.15,61.138,5.15
+R11,10k,R_0603_1608Metric,jlc,True,top,False,fab,22.038,-y,22.025,-y,False,False,False,42.55,47.037,31.75,22.038
+R12,1k,R_0603_1608Metric,jlc,True,top,False,fab,25.35,-y,24.975,-y,False,False,False,41.337,42.95,33.738,25.35
+R13,1k,R_0603_1608Metric,jlc,True,top,False,fab,18.95,-y,18.575,-y,False,False,False,33.737,49.35,41.338,18.95
+R14,10k,R_0603_1608Metric,jlc,True,top,False,fab,7.85,-x,7.475,-x,False,False,False,7.85,9.737,66.45,59.338
+R15,47k 1%,R_0603_1608Metric,jlc,True,top,False,fab,23.938,-y,23.925,-y,False,False,False,44.05,45.137,30.25,23.938
+R16,47k 1%,R_0603_1608Metric,jlc,True,top,False,fab,21.75,+y,21.375,+y,False,False,False,51.438,21.75,23.638,46.55
+R17,220,R_0603_1608Metric,jlc,True,top,False,fab,18.037,-x,18.025,-x,False,False,False,18.037,26.45,57.038,41.85
+R18,220,R_0603_1608Metric,jlc,True,top,False,fab,14.337,-x,14.325,-x,False,False,False,14.337,29.55,60.737,38.75
+R19,220,R_0603_1608Metric,jlc,True,top,False,fab,22.05,-y,21.675,-y,False,False,False,33.737,46.25,41.338,22.05
+R20,220,R_0603_1608Metric,jlc,True,top,False,fab,13.938,-x,13.925,-x,False,False,False,13.938,36.75,61.138,31.55
+R21,220,R_0603_1608Metric,jlc,True,top,False,fab,18.337,+y,18.325,+y,False,False,False,53.35,18.337,20.95,50.737
+R23,10k,R_0603_1608Metric,jlc,True,top,False,fab,17.438,+y,17.425,+y,False,False,False,47.35,17.438,26.95,51.638
+R24,10k,R_0603_1608Metric,jlc,True,top,False,fab,15.35,-x,14.975,-x,False,False,False,15.35,26.438,58.95,42.638
+R25,10k,R_0603_1608Metric,jlc,True,top,False,fab,13.938,-x,13.925,-x,False,False,False,13.938,33.75,61.138,34.55
+R26,10k,R_0603_1608Metric,jlc,True,top,False,fab,8.15,-y,7.775,-y,False,False,False,33.637,60.15,41.438,8.15
+R27,10k,R_0603_1608Metric,jlc,True,top,False,fab,13.938,-x,13.925,-x,False,False,False,13.938,39.75,61.138,28.55
+R28,1k,R_0603_1608Metric,jlc,True,top,False,fab,16.95,+x,16.575,+x,False,False,False,57.35,20.837,16.95,48.237
+R29,10k,R_0603_1608Metric,jlc,True,top,False,fab,11.15,+x,10.775,+x,False,False,False,63.15,36.837,11.15,32.238
+R30,1k,R_0603_1608Metric,jlc,True,top,False,fab,6.75,+x,6.375,+x,False,False,False,67.55,20.938,6.75,48.138
+R31,10k,R_0603_1608Metric,jlc,True,top,False,fab,5.138,+y,5.125,+y,False,False,False,64.65,5.138,9.65,63.938
+R32,47k 1%,R_0603_1608Metric,jlc,True,top,False,fab,13.25,-x,12.875,-x,False,False,False,13.25,49.438,61.05,19.638
+R33,4.7k 1%,R_0603_1608Metric,jlc,True,top,False,fab,16.737,+y,16.725,+y,False,False,False,43.25,16.737,31.05,52.338
+R34,47k 1%,R_0603_1608Metric,jlc,True,top,False,fab,13.25,-x,12.875,-x,False,False,False,13.25,47.938,61.05,21.138
+R35,4.7k 1%,R_0603_1608Metric,jlc,True,top,False,fab,15.237,+y,15.225,+y,False,False,False,43.25,15.237,31.05,53.838
+R36,47k 1%,R_0603_1608Metric,jlc,True,top,False,fab,13.25,-x,12.875,-x,False,False,False,13.25,46.438,61.05,22.638
+R37,4.7k 1%,R_0603_1608Metric,jlc,True,top,False,fab,15.938,+y,15.925,+y,False,False,False,46.25,15.938,28.05,53.138
+R38,10k,R_0603_1608Metric,jlc,True,top,False,fab,13.938,-x,13.925,-x,False,False,False,13.938,42.75,61.138,25.55
+R39,100k,R_0603_1608Metric,jlc,True,top,False,fab,16.25,+x,15.875,+x,False,False,False,58.05,43.537,16.25,25.538
+R40,10k,R_0603_1608Metric,jlc,True,top,False,fab,18.237,+y,18.225,+y,False,False,False,43.25,18.237,31.05,50.838
+R41,10k,R_0603_1608Metric,jlc,True,top,False,fab,18.25,+x,17.875,+x,False,False,False,56.05,22.337,18.25,46.737
+R42,4.7k,R_0603_1608Metric,jlc,True,top,False,fab,16.15,+x,15.775,+x,False,False,False,58.15,46.137,16.15,22.938
+R43,10k,R_0603_1608Metric,jlc,True,top,False,fab,13.938,+x,13.925,+x,False,False,False,61.137,39.85,13.938,28.45
+R44,4.7k,R_0603_1608Metric,jlc,True,top,False,fab,13.638,+x,13.625,+x,False,False,False,61.438,46.35,13.638,21.95
+R45,10k,R_0603_1608Metric,jlc,True,top,False,fab,12.438,+x,12.425,+x,False,False,False,62.637,39.85,12.438,28.45
+R46,10k,R_0603_1608Metric,jlc,True,top,False,fab,10.038,+x,10.025,+x,False,False,False,65.037,52.25,10.038,16.05
+R47,10k,R_0603_1608Metric,none,optional (DNP),top,False,fab,0.95,-y,0.575,-y,True,False,False,45.037,67.35,30.038,0.95
+R48,10k,R_0603_1608Metric,jlc,True,top,False,fab,12.25,+y,11.875,+y,False,False,False,12.938,12.25,62.138,56.05
+R49,10k,R_0603_1608Metric,jlc,True,top,False,fab,29.537,+y,29.525,+y,False,False,False,31.45,29.537,42.85,39.538
+R50,10k,R_0603_1608Metric,jlc,True,top,False,fab,21.85,+y,21.475,+y,False,False,False,41.337,21.85,33.738,46.45
+R51,10k,R_0603_1608Metric,jlc,True,top,False,fab,31.45,+y,31.075,+y,False,False,False,32.837,31.45,42.238,36.85
+R52,10k,R_0603_1608Metric,jlc,True,top,False,fab,19.438,-y,19.425,-y,False,False,False,28.75,49.637,45.55,19.438
+R53,10k,R_0603_1608Metric,jlc,True,top,False,fab,33.537,-x,33.475,-y,False,False,False,33.537,34.45,41.538,33.85
+R54,1k,R_0603_1608Metric,jlc,True,top,False,fab,18.85,+y,18.475,+y,False,False,False,41.337,18.85,33.738,49.45
+R55,10k,R_0603_1608Metric,jlc,True,top,False,fab,30.85,-y,30.475,-y,False,False,False,32.837,37.45,42.238,30.85
+R56,10k,R_0603_1608Metric,jlc,True,top,False,fab,15.85,+y,15.475,+y,False,False,False,41.337,15.85,33.738,52.45
+R57,10k,R_0603_1608Metric,jlc,True,top,False,fab,27.85,-y,27.475,-y,False,False,False,32.837,40.45,42.238,27.85
+R58,10k,R_0603_1608Metric,jlc,True,top,False,fab,19.95,-x,19.575,-x,False,False,False,19.95,25.638,54.35,43.438
+R59,10k,R_0603_1608Metric,jlc,True,top,False,fab,2.15,-y,1.775,-y,True,False,False,13.537,66.15,61.538,2.15
+R60,10k,R_0603_1608Metric,jlc,True,top,False,fab,0.537,-y,0.525,-y,True,False,False,10.35,68.537,63.95,0.537
+R61,10k,R_0603_1608Metric,jlc,True,top,False,fab,12.938,-x,12.925,-x,False,False,False,12.938,51.35,62.138,16.95
+R62,10k,R_0603_1608Metric,jlc,True,top,False,fab,14.85,-x,14.475,-x,False,False,False,14.85,50.938,59.45,18.138
+R63,150k 1%,R_0603_1608Metric,jlc,True,top,False,fab,3.18,-y,2.805,-y,False,False,False,62.737,65.12,12.338,3.18
+R64,20k 1%,R_0603_1608Metric,jlc,True,top,False,fab,3.18,-y,2.805,-y,False,False,False,64.237,65.12,10.838,3.18
+R65,470k 1%,R_0603_1608Metric,jlc,True,top,False,fab,0.95,-y,0.575,-y,True,False,False,51.037,67.35,24.038,0.95
+R66,270k 1%,R_0603_1608Metric,jlc,True,top,False,fab,4.138,-y,4.125,-y,False,False,False,54.05,64.938,20.25,4.138
+R67,3.3M 1%,R_0603_1608Metric,jlc,True,top,False,fab,3.638,-y,3.625,-y,False,False,False,51.05,65.438,23.25,3.638
+R68,1M 1%,R_0603_1608Metric,jlc,True,top,False,fab,5.25,+x,4.875,+x,False,False,False,69.05,55.037,5.25,14.038
+U1,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,fab,6.95,-y,5.6,-y,False,False,False,47.55,48.95,14.35,6.95
+U2,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,fab,18.15,+x,16.8,+x,False,False,False,43.75,25.7,18.15,30.2
+U3,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,fab,16.8,-x,15.45,-x,False,False,False,16.8,31.4,45.1,24.5
+U4,ATmega128A-AU 16 MHz 5 V,TQFP-64_14x14mm_P0.8mm,jlc_optional,True,top,False,fab,1.85,-y,0.5,-y,True,False,False,16.8,54.05,45.1,1.85
+U6,AMS1117-3.3,SOT-223-3_TabPin2,jlc,True,top,False,fab,0.55,+x,0.9,+x,True,False,False,68.65,58.75,0.55,7.45
+U7,"ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna)",ESP-12E,jlc,True,top,False,fab,0.15,+y,8.2,+y,True,True,False,16.7,0.15,43.2,45.75
+U8,TPS61023DRLR,SOT-563,jlc,True,top,False,fab,0.35,-y,0.525,-y,True,False,False,68.2,67.95,6.5,0.35
+U9,TLV3012BIDBVR,SOT-23-6,jlc,True,top,False,fab,0.45,-y,0.7,-y,True,False,False,54.95,66.55,19.35,0.45
+Y1,"16 MHz, CL 18 pF, 3225 SMD (X322516MRB4SI)",Crystal_SMD_3225-4Pin_3.2x2.5mm,jlc,True,top,False,fab,8.08,+x,7.93,+x,False,False,False,64.62,55.1,8.08,12.3
+Y2,"16 MHz, CL 18 pF, 3225 SMD (X322516MRB4SI)",Crystal_SMD_3225-4Pin_3.2x2.5mm,jlc,True,top,False,fab,23.93,-y,23.78,-y,False,False,False,49.1,42.77,24.3,23.93
+Y3,"16 MHz, CL 18 pF, 3225 SMD (X322516MRB4SI)",Crystal_SMD_3225-4Pin_3.2x2.5mm,jlc,True,top,False,fab,18.23,-y,18.08,-y,False,False,False,22.15,48.47,51.25,18.23
+Y4,"16 MHz, CL 18 pF, 3225 SMD (X322516MRB4SI)",Crystal_SMD_3225-4Pin_3.2x2.5mm,jlc,True,top,False,fab,8.0,-y,7.85,-y,False,False,False,10.53,59.4,62.17,8.0

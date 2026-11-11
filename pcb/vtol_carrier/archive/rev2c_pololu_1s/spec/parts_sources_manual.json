@@ -1,0 +1,9 @@
+{
+ "schema": "vtol_carrier_parts_sources_manual/1",
+ "why": "devicemart.co.kr refused every connection from this PC from about 05:32 KST 2026-11-05 on (ECONNREFUSED / timeouts after ~15 page + search requests; the WebFetch tool and the built-in browser pane were refused too). These records come from devicemart's own search stream (https://www.devicemart.co.kr/goods/search_sse_stream?search_text=<keyword>, the request the site's search box sends), read by the scratch helper C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb/dm_search.py at about 05:20-05:28 KST the same day, BEFORE the refusal. The goods pages themselves were not read; the raw stream was not saved (console output only). Verification level: 'devicemart search listing'. fetch_parts_sources.py uses a record from here only when a direct fetch of that goods page fails, and says so in the output.",
+ "devicemart": {
+  "openlog": {"no": "1313116", "goods_name": "SparkFun OpenLog [DEV-13712]", "goods_status": "normal", "sale_price_krw": 42900, "stock_field": "0", "search_keyword": "OpenLog", "fetched": "2026-11-05"},
+  "toggle": {"no": "13029107", "goods_name": "2단3P MTS-102 하네스 토글스위치 듀폰타입", "goods_status": "normal", "sale_price_krw": 1100, "stock_field": "0", "search_keyword": "MTS-102", "fetched": "2026-11-05"},
+  "esp_alt": {"no": "1378118", "goods_name": "[정품] ESP8266 ESP-12E 시리얼 와이파이 모듈 SMD 타입", "goods_status": "normal", "sale_price_krw": 2640, "stock_field": "0", "search_keyword": "ESP-12E", "fetched": "2026-11-05"}
+ }
+}

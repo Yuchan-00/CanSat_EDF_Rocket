@@ -1,0 +1,415 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_u8_u9_pads.json",
+ "result": "PASS",
+ "tool": "kicad-cli netlist export + scripts/rev3_checks.py u8-u9",
+ "netlist": {
+  "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
+  "sha256": "299785ca80a14c92cc51f29e3e38322ef22f7c8aaf66af9e69eae44dede13896",
+  "tool": "Eeschema 10.0.6",
+  "export_date_in_file": "2026-11-11T01:30:07",
+  "components": 174,
+  "named_nets": 105,
+  "unconnected_single_pin_nets": 183
+ },
+ "statement": "ERC gives no evidence for U8 (generic connector symbol with passive pins). The pad -> net table below was transcribed from the datasheet pin tables (source lines cited, re-read by this script from the text extracts) and compared with the exported netlist and with the plan.",
+ "function_to_net_source": "spec/rev3_plan.json power_block / new_nets (design intent)",
+ "not_checked_here": [
+  "pads of the .kicad_pcb (the PCB step repeats this table on the board: expected_pad_nets)",
+  "second-reader review of the table against the datasheet PDF (plan checks_to_add): NOT_VERIFIED",
+  "the package drawings are graphics: the pad-1 corner / counter-clockwise order of the datasheet figures was not read by a tool, only the pad numbering of the KiCad library footprints was"
+ ],
+ "parts": {
+  "U8": {
+   "part": "TPS61023DRLR (SOT-563, DRL)",
+   "source": "tps61023.txt:148-160 (TI SLVSF14B, Figure 5-1 and the pin-function rows)",
+   "symbol": "Connector_Generic:Conn_02x03_Counter_Clockwise",
+   "footprint": "Package_TO_SOT_SMD:SOT-563",
+   "pad_net_table": [
+    {
+     "pad": "1",
+     "datasheet_pin": "FB",
+     "expected_net": "BOOST_FB",
+     "netlist_net": "BOOST_FB",
+     "plan_net": "BOOST_FB",
+     "netlist_pin_type": "passive",
+     "equal": true
+    },
+    {
+     "pad": "2",
+     "datasheet_pin": "EN",
+     "expected_net": "BOOST_EN",
+     "netlist_net": "BOOST_EN",
+     "plan_net": "BOOST_EN",
+     "netlist_pin_type": "passive",
+     "equal": true
+    },
+    {
+     "pad": "3",
+     "datasheet_pin": "VIN",
+     "expected_net": "VBAT_LOGIC_SW",
+     "netlist_net": "VBAT_LOGIC_SW",
+     "plan_net": "VBAT_LOGIC_SW",
+     "netlist_pin_type": "passive",
+     "equal": true
+    },
+    {
+     "pad": "4",
+     "datasheet_pin": "GND",
+     "expected_net": "GND",
+     "netlist_net": "GND",
+     "plan_net": "GND",
+     "netlist_pin_type": "passive",
+     "equal": true
+    },
+    {
+     "pad": "5",
+     "datasheet_pin": "SW",
+     "expected_net": "BOOST_SW",
+     "netlist_net": "BOOST_SW",
+     "plan_net": "BOOST_SW",
+     "netlist_pin_type": "passive",
+     "equal": true
+    },
+    {
+     "pad": "6",
+     "datasheet_pin": "VOUT",
+     "expected_net": "+5V",
+     "netlist_net": "+5V",
+     "plan_net": "+5V",
+     "netlist_pin_type": "passive",
+     "equal": true
+    }
+   ],
+   "datasheet": {
+    "file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/datasheets/tps61023/tps61023.txt",
+    "document": "TI TPS61023 datasheet SLVSF14B, section 5: Figure 5-1 (DRL package, 6-pin SOT563, top view) and the Pin Functions table below it",
+    "cited_lines": "148-160",
+    "expected_sha256": "db5a2ea386e175f6062f84b450919e809d82d583006790b1e0b299994a8f8cad",
+    "sha256": "db5a2ea386e175f6062f84b450919e809d82d583006790b1e0b299994a8f8cad",
+    "rows_read": {
+     "1": {
+      "name": "FB",
+      "line": 153
+     },
+     "2": {
+      "name": "EN",
+      "line": 154
+     },
+     "3": {
+      "name": "VIN",
+      "line": 156
+     },
+     "4": {
+      "name": "GND",
+      "line": 157
+     },
+     "5": {
+      "name": "SW",
+      "line": 158
+     },
+     "6": {
+      "name": "VOUT",
+      "line": 160
+     }
+    },
+    "transcribed_table": {
+     "1": "FB",
+     "2": "EN",
+     "3": "VIN",
+     "4": "GND",
+     "5": "SW",
+     "6": "VOUT"
+    },
+    "status": "PASS",
+    "reason": null
+   },
+   "footprint_library": {
+    "footprint": "Package_TO_SOT_SMD:SOT-563",
+    "library_file": "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-563.kicad_mod",
+    "pads_in_probe": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6"
+    ],
+    "pad_centres_mm": {
+     "1": [
+      -0.7125,
+      -0.5
+     ],
+     "2": [
+      -0.7125,
+      0.0
+     ],
+     "3": [
+      -0.7125,
+      0.5
+     ],
+     "4": [
+      0.7125,
+      0.5
+     ],
+     "5": [
+      0.7125,
+      0.0
+     ],
+     "6": [
+      0.7125,
+      -0.5
+     ]
+    },
+    "library_file_sha256": "5db336475df2eb434a83572346092efba42569eff34d06282fa8f90bf3b786a4",
+    "numbering": "pads 1-2-3 on the -x side from top to bottom, 4-5-6 on the +x side from bottom to top (counter-clockwise seen from the top)",
+    "status": "PASS"
+   },
+   "symbol_pins": [
+    {
+     "number": "1",
+     "name": "Pin_1",
+     "type": "passive"
+    },
+    {
+     "number": "2",
+     "name": "Pin_2",
+     "type": "passive"
+    },
+    {
+     "number": "3",
+     "name": "Pin_3",
+     "type": "passive"
+    },
+    {
+     "number": "4",
+     "name": "Pin_4",
+     "type": "passive"
+    },
+    {
+     "number": "5",
+     "name": "Pin_5",
+     "type": "passive"
+    },
+    {
+     "number": "6",
+     "name": "Pin_6",
+     "type": "passive"
+    }
+   ],
+   "erc_evidence": "NONE: generic connector symbol, all six pins passive - ERC cannot see a wrong connection on U8; this table is the only netlist-level check of U8",
+   "checks": {
+    "netlist_equals_table": true,
+    "plan_equals_table": true,
+    "datasheet_rows_reread": "PASS",
+    "footprint_pads": "PASS",
+    "symbol_is_generic_passive": true
+   },
+   "result": "PASS"
+  },
+  "U9": {
+   "part": "TLV3012BIDBVR (SOT-23-6, DBV)",
+   "source": "tlv3011.txt:154-163 (TI SBOS300C, Table 5-1 Pin Functions, DBV column)",
+   "symbol": "Comparator:MCP65R41",
+   "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+   "pad_net_table": [
+    {
+     "pad": "1",
+     "datasheet_pin": "OUT",
+     "expected_net": "BOOST_EN",
+     "netlist_net": "BOOST_EN",
+     "plan_net": "BOOST_EN",
+     "netlist_pin_type": "output",
+     "equal": true
+    },
+    {
+     "pad": "2",
+     "datasheet_pin": "V-",
+     "expected_net": "GND",
+     "netlist_net": "GND",
+     "plan_net": "GND",
+     "netlist_pin_type": "power_in",
+     "equal": true
+    },
+    {
+     "pad": "3",
+     "datasheet_pin": "IN+",
+     "expected_net": "UVLO_SENSE",
+     "netlist_net": "UVLO_SENSE",
+     "plan_net": "UVLO_SENSE",
+     "netlist_pin_type": "input",
+     "equal": true
+    },
+    {
+     "pad": "4",
+     "datasheet_pin": "IN-",
+     "expected_net": "UVLO_REF",
+     "netlist_net": "UVLO_REF",
+     "plan_net": "UVLO_REF",
+     "netlist_pin_type": "input",
+     "equal": true
+    },
+    {
+     "pad": "5",
+     "datasheet_pin": "REF",
+     "expected_net": "UVLO_REF",
+     "netlist_net": "UVLO_REF",
+     "plan_net": "UVLO_REF",
+     "netlist_pin_type": "power_out",
+     "equal": true
+    },
+    {
+     "pad": "6",
+     "datasheet_pin": "V+",
+     "expected_net": "VBAT_LOGIC_SW",
+     "netlist_net": "VBAT_LOGIC_SW",
+     "plan_net": "VBAT_LOGIC_SW",
+     "netlist_pin_type": "power_in",
+     "equal": true
+    }
+   ],
+   "datasheet": {
+    "file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/verify/electrical_work/tlv3011.txt",
+    "document": "TI TLV3011 / TLV3012 datasheet SBOS300C, Table 5-1 Pin Functions (DCK / DBV package)",
+    "cited_lines": "154-163",
+    "expected_sha256": "bc930405eef950466c3522ef976e71974eb38b6c2e38bf8aaebf32fc22bc2d05",
+    "sha256": "bc930405eef950466c3522ef976e71974eb38b6c2e38bf8aaebf32fc22bc2d05",
+    "rows_read": {
+     "1": {
+      "name": "OUT",
+      "line": 158
+     },
+     "2": {
+      "name": "V-",
+      "line": 159
+     },
+     "3": {
+      "name": "IN+",
+      "line": 160
+     },
+     "4": {
+      "name": "IN-",
+      "line": 161
+     },
+     "5": {
+      "name": "REF",
+      "line": 162
+     },
+     "6": {
+      "name": "V+",
+      "line": 163
+     }
+    },
+    "transcribed_table": {
+     "1": "OUT",
+     "2": "V-",
+     "3": "IN+",
+     "4": "IN-",
+     "5": "REF",
+     "6": "V+"
+    },
+    "status": "PASS",
+    "reason": null
+   },
+   "footprint_library": {
+    "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+    "library_file": "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-23-6.kicad_mod",
+    "pads_in_probe": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6"
+    ],
+    "pad_centres_mm": {
+     "1": [
+      -1.1375,
+      -0.95
+     ],
+     "2": [
+      -1.1375,
+      0.0
+     ],
+     "3": [
+      -1.1375,
+      0.95
+     ],
+     "4": [
+      1.1375,
+      0.95
+     ],
+     "5": [
+      1.1375,
+      0.0
+     ],
+     "6": [
+      1.1375,
+      -0.95
+     ]
+    },
+    "library_file_sha256": "ea29040bed73e5dfa455e36f2c9324b0de7782c5a6cf79040b7d885ff766fdb4",
+    "numbering": "pads 1-2-3 on the -x side from top to bottom, 4-5-6 on the +x side from bottom to top (counter-clockwise seen from the top)",
+    "status": "PASS"
+   },
+   "symbol_pins": [
+    {
+     "number": "1",
+     "name": "",
+     "type": "output"
+    },
+    {
+     "number": "2",
+     "name": "V-",
+     "type": "power_in"
+    },
+    {
+     "number": "3",
+     "name": "+",
+     "type": "input"
+    },
+    {
+     "number": "4",
+     "name": "-",
+     "type": "input"
+    },
+    {
+     "number": "5",
+     "name": "Vref",
+     "type": "power_out"
+    },
+    {
+     "number": "6",
+     "name": "V+",
+     "type": "power_in"
+    }
+   ],
+   "substitute_symbol": {
+    "symbol_pin_function_as_tlv3012": {
+     "1": "OUT",
+     "2": "V-",
+     "3": "IN+",
+     "4": "IN-",
+     "5": "REF",
+     "6": "V+"
+    },
+    "datasheet": {
+     "1": "OUT",
+     "2": "V-",
+     "3": "IN+",
+     "4": "IN-",
+     "5": "REF",
+     "6": "V+"
+    },
+    "note": "Comparator:MCP65R41 is a substitute symbol (no TLV3012 symbol on disk); ERC sees U9 with the pin types of the MCP65R41, which match the TLV3012B pin functions pad by pad"
+   },
+   "checks": {
+    "netlist_equals_table": true,
+    "plan_equals_table": true,
+    "datasheet_rows_reread": "PASS",
+    "footprint_pads": "PASS",
+    "substitute_symbol_pin_functions_equal_datasheet": true
+   },
+   "result": "PASS"
+  }
+ }
+}

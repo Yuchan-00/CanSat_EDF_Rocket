@@ -1,0 +1,185 @@
+{
+ "schema": "vtol_carrier.module_dimensions/1",
+ "revision": "rev3",
+ "units": "mm",
+ "purpose": "Every dimension used by scripts/make_module_models.py (3D models for the sensor-mounting renders). These models are pictures, not fit evidence: the OpenLog / BMP280 fit is decided by the fit check from calliper dimensions (plan D15), not by a render.",
+ "tags": {
+  "F": "read from a named document or file (see sources); F says where the number comes from, not that the delivered part was measured",
+  "A": "assumed (no document for this exact part, or a number taken from a different part's document); measure with callipers before trusting it"
+ },
+ "entry_format": "each dimension is {v: value, tag: F|A, src: key of sources (+ note)}",
+ "sources": {
+  "openlog_brd": "SparkFun OpenLog DEV-13712 Eagle board file hardware/OpenLog.brd from https://github.com/sparkfun/OpenLog (Eagle 7.5.0 XML, 108170 bytes): outline, element positions, pad positions, silk order and the '0.8mm Thin PCB' text",
+  "hongcheng_c22436147": "Hong Cheng HC-PM254-8.5H-1xNPW drawing, https://datasheet.lcsc.com/datasheet/pdf/7670a99c55984cf32080a39fb7ce1e6d.pdf?productCode=C22436147 (right-angle 2.54 mm socket fitted at J2 / J5)",
+  "hanxia_c32713262": "HANXIA PZ2.54-1xNP WZ right-angle pin header drawing, https://datasheet.lcsc.com/datasheet/pdf/310553b178618f94c3fe1fa804bc8d3d.pdf?productCode=C32713262 (a right-angle header family drawing; NOT the header on the delivered modules)",
+  "jst_egh": "JST GH connector catalogue eGH.pdf, https://www.jst-mfg.com/product/pdf/eng/eGH.pdf, pages 2 and 3 (reference values)",
+  "jlc_c5364642": "JLCPCB part record C5364642 (Molex 22035025), cached in out/reports/sourcing/LCSC_C5364642.json: X-Length 7.4 mm, Y-Width 4.9 mm, Z-Height 5.9 mm, Pitch 2.5 mm, Color White",
+  "kicad_lib": "KiCad 10.0.6 library files on disk (footprints/*.pretty/*.kicad_mod and 3dmodels/*.3dshapes/*.step); pad positions are re-read from the .kicad_mod at run time",
+  "components101_bmp280": "https://components101.com/sensors/gy-bmp280-module (GY-BMP280-3.3 family page; that the TYE-BMP29 is this board is A)",
+  "indiamart_neo7m": "https://www.indiamart.com/proddetail/neo-7m-gps-module-10408242112.html (generic NEO-6M / NEO-7M board; that the SZH-NT07 is this board is A)",
+  "vehicle_params": "params.json of this repository, configs.vtol.top_cap.gps (GY-NEO6MV2 = NEO-6M vendor data, kept for the SZH-NT07 as A)",
+  "place_rev2c": "pcb/vtol_carrier/scripts/place.py MODULES (rev 2c reserved outlines; all A there)",
+  "plan": "pcb/vtol_carrier/spec/rev3_plan.json (user_fitted, changes)",
+  "none": "no document - assumption of this file"
+ },
+ "pin_strip_2p54": {
+  "what": "2.54 mm pin strips the modules carry: straight 1x8 under the GY-521, right-angle 1x6 on the BMP280 and on the OpenLog",
+  "pitch": {"v": 2.54, "tag": "F", "src": "kicad_lib: PinHeader_1x08_P2.54mm_Vertical.kicad_mod pads"},
+  "pin_square": {"v": 0.64, "tag": "A", "src": "hanxia_c32713262 value, applied to the unknown strips of the modules"},
+  "straight_plastic_h": {"v": 2.54, "tag": "A", "src": "kicad_lib model PinHeader_1x08_P2.54mm_Vertical.step (plastic 0..2.54); the strip delivered with the GY-521 is not documented"},
+  "straight_plastic_w": {"v": 2.54, "tag": "A", "src": "kicad_lib model, same remark"},
+  "straight_pin_above_board": {"v": 8.54, "tag": "A", "src": "kicad_lib model bbox z max (6.0 mm pin above a 2.54 mm plastic)"},
+  "straight_tail_below_board": {"v": 3.0, "tag": "A", "src": "kicad_lib model bbox z min -3.0"},
+  "ra_plastic": {"v": 2.5, "tag": "A", "src": "hanxia_c32713262 (2.50 x 2.50 plastic); header on the modules is a different / unknown part"},
+  "ra_mating_pin_len": {"v": 6.0, "tag": "A", "src": "hanxia_c32713262 (6.00 +-0.2)"},
+  "ra_hole_to_plastic": {"v": 1.5, "tag": "A", "src": "kicad_lib footprint PinHeader_1x06_P2.54mm_Horizontal.kicad_mod (plastic starts 1.5 mm from the hole row)"},
+  "ra_tail_through_module": {"v": 3.0, "tag": "A", "src": "hanxia_c32713262 (solder tail 3.00 +-0.2)"}
+ },
+ "socket_j2_j5": {
+  "what": "right-angle socket on the carrier (JLC-fitted), Hong Cheng HC-PM254-8.5H-1x6PW, C22436147",
+  "body_h": {"v": 2.5, "tag": "F", "src": "hongcheng_c22436147 (2.5 +-0.15, height of the lying body)"},
+  "body_depth": {"v": 8.5, "tag": "F", "src": "hongcheng_c22436147 (8.5 +-0.15)"},
+  "opening_x": {"v": -10.03, "tag": "F", "src": "kicad_lib model PinSocket_1x06_P2.54mm_Horizontal.step bbox x min (the model drawn in the render); Hong Cheng overall 10.20 +-0.3"},
+  "contact_axis_z": {"v": 1.25, "tag": "A", "src": "half of body_h (the drawing does not dimension the contact axis)"}
+ },
+ "gy521": {
+  "what": "GY-521 MPU-6050 module (SZH-EK007, devicemart 1247052)",
+  "pcb_l": {"v": 21.2, "tag": "A", "src": "place_rev2c envelope; seller listings 20.2 .. 21 mm, no drawing"},
+  "pcb_w": {"v": 16.4, "tag": "A", "src": "place_rev2c envelope; seller listings 15.4 .. 16 mm, no drawing"},
+  "pcb_t": {"v": 1.6, "tag": "A", "src": "none"},
+  "header_n": {"v": 8, "tag": "F", "src": "plan: J1 is a 1x8 row; pin order VCC GND SCL SDA XDA XCL AD0 INT is A (seller listings)"},
+  "header_row_inset": {"v": 1.3, "tag": "A", "src": "place_rev2c (row centre 1.3 mm inside one long edge)"},
+  "hole_d": {"v": 3.0, "tag": "A", "src": "seller listings (two holes about 3 mm on the edge opposite the header)"},
+  "hole_inset": {"v": 2.3, "tag": "A", "src": "none"},
+  "hole_spacing": {"v": 15.2, "tag": "A", "src": "none"},
+  "ic_mpu6050": {"v": [4.0, 4.0, 0.9], "tag": "A", "src": "none (QFN-24 body from memory, position on the board assumed)"},
+  "part_h_max": {"v": 1.0, "tag": "A", "src": "none"},
+  "support_h": {"v": 2.54, "tag": "A", "src": "equal to the strip plastic so the module lies level; the plan text says 'about 2 mm foam / nylon support'"},
+  "support_size": {"v": [5.0, 5.0], "tag": "A", "src": "none"}
+ },
+ "bmp280": {
+  "what": "BMP280 module TYE-BMP29 (devicemart 15442588), taken as a GY-BMP280-3.3 board",
+  "pcb_l": {"v": 15.0, "tag": "F", "src": "components101_bmp280 (edge along the 6 pins)"},
+  "pcb_w": {"v": 11.5, "tag": "F", "src": "components101_bmp280"},
+  "pcb_t": {"v": 1.6, "tag": "A", "src": "none"},
+  "header_n": {"v": 6, "tag": "F", "src": "components101_bmp280 (VCC GND SCL SDA CSB SDO)"},
+  "header_row_inset": {"v": 1.3, "tag": "A", "src": "none"},
+  "hole_d": {"v": 3.0, "tag": "A", "src": "none (sister boards are listed with one hole of about 3 mm)"},
+  "hole_inset": {"v": 2.4, "tag": "A", "src": "none"},
+  "sensor_can": {"v": [2.0, 2.5, 0.95], "tag": "A", "src": "none (Bosch BMP280 LGA metal lid from memory; datasheet not opened)"},
+  "part_h_max": {"v": 1.0, "tag": "A", "src": "none"},
+  "header_type": {"v": "right_angle", "tag": "A", "src": "plan: 'if the delivered module has a straight header, solder a right-angle strip first'; the delivered header type is NOT_VERIFIED"},
+  "face_up": {"v": "back", "tag": "A", "src": "none: assumes the silk order VCC..SDO reads left to right on the component side with the header edge toward the viewer; then VCC meets J2 pin 1 only with the component side facing the carrier. Check the printed order on the module"}
+ },
+ "openlog": {
+  "what": "SparkFun OpenLog DEV-13712; coordinates are Eagle board coordinates (x 0..15.24 along the header edge, y 0..19.05, top = ATmega328 side)",
+  "pcb_l": {"v": 15.24, "tag": "F", "src": "openlog_brd outline (edge along the 6 pins)"},
+  "pcb_w": {"v": 19.05, "tag": "F", "src": "openlog_brd outline (insertion direction)"},
+  "pcb_t": {"v": 0.8, "tag": "F", "src": "openlog_brd text '0.8mm Thin PCB'"},
+  "header_n": {"v": 6, "tag": "F", "src": "openlog_brd JP2"},
+  "header_row_y": {"v": 1.27, "tag": "F", "src": "openlog_brd JP2 pads"},
+  "header_x": {"v": [1.27, 3.81, 6.35, 8.89, 11.43, 13.97], "tag": "F", "src": "openlog_brd JP2 pads; silk GRN RXI TXO VCC GND BLK in this order"},
+  "top_parts": {
+   "tag": "F", "src": "openlog_brd element positions (centres); body sizes and heights below are A",
+   "v": {
+    "U1_atmega328_tqfp32": [7.112, 10.16],
+    "U2_ldo_sot23_5": [12.73, 5.08],
+    "Q1_resonator": [13.81, 11.89],
+    "D3_led_green": [1.86, 15.81],
+    "D1_led_blue": [13.36, 15.80],
+    "C4": [14.05, 8.51], "R2": [1.27, 8.255], "C3": [1.27, 11.43], "C2": [1.27, 5.08],
+    "C1": [12.83, 8.51], "R6": [1.84, 14.45], "R1": [13.38, 14.51]
+   }
+  },
+  "test_pads": {"v": {"y": 17.78, "x": [3.81, 6.35, 8.89, 11.43, 13.97]}, "tag": "F", "src": "openlog_brd TP1..TP5"},
+  "microsd_socket_xy": {"v": [0.76, 3.43, 14.76, 18.4], "tag": "A", "src": "x range and near edge from openlog_brd U3 drawing extent (bottom side, origin 14.732 / 3.429); the far end of the metal shell (y 18.4) is assumed"},
+  "microsd_drawing_end_y": {"v": 24.13, "tag": "F", "src": "openlog_brd U3 package drawing extent; that this is the end of an inserted card is A"},
+  "microsd_socket_h": {"v": 1.9, "tag": "A", "src": "none"},
+  "microsd_card": {"v": [11.0, 15.0, 1.0], "tag": "A", "src": "none (microSD card size from memory)"},
+  "tqfp32_body": {"v": [7.0, 7.0, 1.0], "tag": "A", "src": "none"},
+  "tqfp32_h_max": {"v": 1.2, "tag": "A", "src": "none (TQFP seated height from memory)"},
+  "face_up": {"v": "microsd", "tag": "F", "src": "openlog_brd silk order + plan J5 pin 1 = GRN: GRN meets pin 1 only with the microSD side up, i.e. the ATmega side and the header plastic face the carrier (geometry, see mounting.J5)"}
+ },
+ "neo7m": {
+  "what": "NEO-7M GPS module SZH-NT07 (devicemart 10895400); the outline in hand is the generic NEO-6M / NEO-7M board",
+  "pcb_l": {"v": 35.0, "tag": "F", "src": "indiamart_neo7m (25 x 35 mm); the vehicle CAD holds 36.0 x 25.8 (vehicle_params)"},
+  "pcb_w": {"v": 25.0, "tag": "F", "src": "indiamart_neo7m"},
+  "pcb_t": {"v": 1.6, "tag": "A", "src": "none"},
+  "hole_d": {"v": 3.0, "tag": "F", "src": "indiamart_neo7m"},
+  "hole_inset": {"v": 2.5, "tag": "A", "src": "none"},
+  "ublox_can": {"v": [12.2, 16.0, 2.4], "tag": "A", "src": "none (u-blox NEO package from memory)"},
+  "backup_cell": {"v": [6.8, 2.1], "tag": "A", "src": "none (diameter, height)"},
+  "stack_h": {"v": 4.0, "tag": "F", "src": "vehicle_params board_lwh[2] (NEO-6M data)"},
+  "antenna_l": {"v": 25.0, "tag": "F", "src": "indiamart_neo7m (25 x 25 mm ceramic antenna); vehicle_params holds 25.5"},
+  "antenna_h": {"v": 8.8, "tag": "F", "src": "vehicle_params patch_lwh[2] (NEO-6M data)"},
+  "antenna_ceramic_h": {"v": 4.0, "tag": "A", "src": "none (split of antenna_h into ceramic and base)"},
+  "antenna_on_ufl_lead": {"v": true, "tag": "A", "src": "vehicle_params note ('patch ... on a u.FL lead'); NOT_VERIFIED for the SZH-NT07"},
+  "header_n": {"v": 4, "tag": "A", "src": "none: VCC GND TXD RXD (+PPS on some boards); physical order NOT_VERIFIED"}
+ },
+ "gh_plug": {
+  "what": "JST GHR-04V-S housing with 4 crimped wires, mated on J7 (BM04B-GHS-TBT, JLC-fitted)",
+  "housing_w": {"v": 6.25, "tag": "F", "src": "jst_egh GHR-04V-S dimension B"},
+  "housing_len": {"v": 5.7, "tag": "F", "src": "jst_egh housing length in the mating direction"},
+  "housing_depth": {"v": 4.15, "tag": "F", "src": "jst_egh housing depth"},
+  "mated_h": {"v": 7.3, "tag": "F", "src": "jst_egh assembly layout, top entry type: (7.3) reference value"},
+  "pitch": {"v": 1.25, "tag": "F", "src": "jst_egh; pad positions from kicad_lib JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical.kicad_mod"},
+  "header_h": {"v": 4.05, "tag": "F", "src": "jst_egh BM04B-GHS-TBT height"},
+  "wire_od": {"v": 0.9, "tag": "A", "src": "jst_egh allows insulation OD 0.76 .. 1.0; the lead itself is not chosen"},
+  "lead_rise": {"v": 2.0, "tag": "A", "src": "none: straight wire above the plug before the bend"},
+  "lead_bend_r": {"v": 3.0, "tag": "A", "src": "none: bend radius of the wires (top of the bend = mated_h + lead_rise + lead_bend_r + wire_od / 2 = 12.75, kept under the 13.4 mm limit on purpose)"},
+  "lead_run": {"v": 12.0, "tag": "A", "src": "none: only the first part of the lead is drawn on the board renders; it runs toward the board interior (footprint -y)"},
+  "body_centre_y": {"v": -0.375, "tag": "A", "src": "centre of the header body in the kicad_lib footprint fab outline (y -2.5 .. 1.75)"}
+ },
+ "j14_molex": {
+  "what": "Molex 22035025 (5267-02A), 2.5 mm 2-pin vertical header, JLC-fitted; the KiCad library has the footprint but no 3D model file on disk",
+  "body_x": {"v": 7.4, "tag": "F", "src": "jlc_c5364642 X-Length; equals the kicad_lib fab outline -2.45 .. 4.95"},
+  "body_y": {"v": 4.9, "tag": "F", "src": "jlc_c5364642 Y-Width; equals the kicad_lib fab outline -3.1 .. 1.8"},
+  "body_h": {"v": 5.9, "tag": "F", "src": "jlc_c5364642 Z-Height"},
+  "pitch": {"v": 2.5, "tag": "F", "src": "jlc_c5364642; pad positions from kicad_lib Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical.kicad_mod"},
+  "fab_x0": {"v": -2.45, "tag": "F", "src": "kicad_lib footprint fab outline"},
+  "fab_y0": {"v": -3.1, "tag": "F", "src": "kicad_lib footprint fab outline"},
+  "base_h": {"v": 3.2, "tag": "A", "src": "none (height of the shroud floor; inner shape is illustrative)"},
+  "wall_t": {"v": 0.8, "tag": "A", "src": "none"},
+  "pin_square": {"v": 0.64, "tag": "A", "src": "none"},
+  "pin_top_z": {"v": 5.4, "tag": "A", "src": "none"},
+  "tail_below_board": {"v": 3.0, "tag": "A", "src": "none (drawn as board 1.6 + 1.4; the real tail length is NOT_VERIFIED, the Molex drawing was not read in this step)"}
+ },
+ "height_limit": {
+  "what": "thin red frame drawn at the height limit above the board top in the side elevation b4 (a marker, not a part)",
+  "limit_above_board": {"v": 13.4, "tag": "F", "src": "plan: height limit 13.4 mm above the board top"},
+  "board_x": {"v": 76.0, "tag": "F", "src": "plan: outline 76 x 70 mm (render_rev3.py checks the board edges against it)"},
+  "board_y": {"v": 70.0, "tag": "F", "src": "plan: outline 76 x 70 mm"},
+  "bar": {"v": 0.3, "tag": "A", "src": "none: thickness of the marker bars"}
+ },
+ "mounting": {
+  "frame": "connector footprint 3D frame: x = footprint x, y = -footprint y, z = up from the board top, origin = footprint origin; models are written in this frame and attached with offset 0 / rotation 0",
+  "J1": {
+   "model": "gy521_on_J1.step",
+   "how": "user solders the module's own straight 1x8 strip into the 8 plated holes; module flat, component side up, body toward footprint +x, VCC on pad 1",
+   "body_side": {"v": "+x", "tag": "A", "src": "place_rev2c MODULES J1"},
+   "pin1_is": {"v": "VCC", "tag": "A", "src": "seller listings; plan J1 pin 1 = +5V"},
+   "underside_z": "= pin_strip_2p54.straight_plastic_h"
+  },
+  "J2": {
+   "model": "bmp280_in_J2.step",
+   "how": "module with a right-angle 1x6 header plugged into the right-angle socket; module lies flat, header plastic on the face toward the carrier",
+   "underside_z": "= socket_j2_j5.contact_axis_z + pin_strip_2p54.ra_plastic / 2",
+   "hole_row_x": "= socket_j2_j5.opening_x - pin_strip_2p54.ra_plastic - pin_strip_2p54.ra_hole_to_plastic"
+  },
+  "J5": {
+   "model": "openlog_in_J5.step",
+   "how": "user solders a right-angle 1x6 header (C55629820) on the ATmega side of the OpenLog and plugs it into the right-angle socket; microSD side up, card toward the far edge",
+   "underside_z": "= socket_j2_j5.contact_axis_z + pin_strip_2p54.ra_plastic / 2",
+   "hole_row_x": "= socket_j2_j5.opening_x - pin_strip_2p54.ra_plastic - pin_strip_2p54.ra_hole_to_plastic"
+  },
+  "J7": {
+   "model": "gh_plug_in_J7.step",
+   "how": "GHR-04V-S plug mated in the top-entry header, 4 wires straight up (lead to the NEO-7M on the top cap)",
+   "top_z": "= gh_plug.mated_h"
+  },
+  "J14": {
+   "model": "molex_22035025_J14.step",
+   "how": "replaces the missing library model in both render boards (JLC-fitted part)"
+  }
+ }
+}

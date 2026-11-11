@@ -10,7 +10,8 @@ import json
 import sys
 from pathlib import Path
 
-CANSAT = Path(r"B:/0)AI_Cad/CanSat_EDF_Rocket")
+#: the repository this script lives in (<repo>/pcb/vtol_carrier/scripts/cad_envelope.py) - never another checkout
+CANSAT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(CANSAT / "cad"))
 sys.path.insert(0, str(CANSAT))
 
