@@ -156,8 +156,10 @@ def main() -> int:
     chosen = [n for n in chosen if n not in skip]
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     if reroute:
-        # relayout step: the adopted board = a7 sessions as ECO seed (only nets with changed pads or conflicts are
-        # routed again) + the normal stages + the clean-up with rip-up
+        # relayout step: the adopted board = a7 sessions as ECO seed (nets with changed pads or conflicts start
+        # unrouted; in the adopted run 97 of 105 nets started with their a7 routes) + the normal stages + the clean-up
+        # with rip-up. The clean-up changes further nets (review RR-6, M: ESP_TXD0, COM_LED, I2C_SCL_3V3 and the nets
+        # under ripup.nets_changed in kicad/work/route_reuse_log.json) - 'seeded' does not mean 'untouched'
         env.update(CARRIER_SEED_DIR=str(ROOT / "kicad" / "work" / "seed_a7"))
     log = {"tool": "scripts/make_all.py", "argv": sys.argv[1:], "reroute": reroute,
            "interpreters": {"PY": Path(sys.executable).as_posix(), "KPY": KPY.as_posix(), "MPY": MPY.as_posix()},

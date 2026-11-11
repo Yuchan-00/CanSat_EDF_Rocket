@@ -18,7 +18,21 @@ and out/manifest.json carry this result.
 
 Writes out/reports/determinism.json. Exit 0 = PASS, 1 = FAIL (or a build step failed).
 
-Usage:  cd <board>/scripts && B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py [--no-renders]
+Second folder (relayout-fix step, review RR-2): ``--cross-folder <dir>`` copies this board folder (without the
+pictures) and the repository files it reads to <dir>, runs ``make_all.py --no-renders`` there and compares every file
+of the deterministic set that the copy rebuilt with this folder's second build. Boards, schematic sheets, gerbers,
+zips, BOM and CPL must be equal byte for byte. Files that state their folder (spec/carrier_spec.json 'repository',
+the Korean documents, the netlists) or carry the sha256 of such a file (placement.json, the manifests) are compared
+after the folder name / those sha256 values are replaced by this folder's (cross_folder() docstring). A difference
+is a FAIL of the whole check; without the switch the group is NOT_VERIFIED. Until this existed, byte identity was only shown inside one folder
+(M: a replay in a scratch folder gave the same copper with other track uuids).
+
+The JLC stock snapshot is bound to the spec's sha256, and the spec states its checkout: the clone's copy of
+out/jlc_gate_report.json is given the clone's spec sha256 only after the clone's spec was built and found equal to
+this folder's spec apart from the folder name. ``--cross-only`` keeps the two in-place builds of the existing report
+and (re)runs only the second-folder part (refused if the files changed since build 2).
+
+Usage:  cd <board>/scripts && B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py [--no-renders] [--cross-folder <dir> [--cross-only]]
         --no-renders is passed through to make_all.py (pictures are evidence anyway; saves about 6 min per build).
 A full run takes about two make_all.py runs (about 25-30 min each on this PC): start it in the background.
 """
@@ -128,8 +142,238 @@ def compare(a: dict[str, str], b: dict[str, str]) -> dict:
     return {"files": len(keys), "differing": [k for k in keys if a.get(k) != b.get(k)]}
 
 
+# ------------------------------------------------------------------------------------------- second folder (RR-2)
+CLONE_MARK = ".determinism_clone"
+#: picture steps are not run in the clone (make_all.py --no-renders): their outputs are copies, never compared
+CLONE_SKIP_DIRS = ("out/render", "out/presentation")
+#: kicad-cli netlists carry the schematic's full path; rev3_checks.py compares a fresh export with the file on disk,
+#: so the copies from this folder are removed in the clone (they are written again by the build)
+CLONE_DROP = ("out/vtol_carrier.net", "kicad/work/vtol_carrier.net")
+#: the files a fab order is made of, the boards and the schematic: must be equal WITHOUT any renaming
+MUST_BE_RAW_IDENTICAL = ("kicad/vtol_carrier.kicad_pcb", "kicad/work/vtol_carrier_unrouted.kicad_pcb",
+                         "out/vtol_carrier_gerber.zip", "out/vtol_carrier_gerber_with_mcu.zip", "out/jlcpcb_bom.csv",
+                         "out/jlcpcb_cpl.csv", "out/jlcpcb_bom_with_mcu.csv", "out/jlcpcb_cpl_with_mcu.csv",
+                         "out/cpl_rotation_table.csv")
+MUST_BE_RAW_PREFIX = ("out/gerber/", "out/gerber_with_mcu/")
+MUST_BE_RAW_SUFFIX = (".kicad_sch",)
+
+
+def path_tokens(a: Path, b: Path) -> list[tuple[bytes, bytes]]:
+    """Every spelling of folder ``a`` paired with the same spelling of folder ``b``: forward slashes (JSON, Markdown),
+    backslashes, doubled backslashes (kicad-cli netlist)."""
+    forms = (lambda q: q.as_posix(), lambda q: q.as_posix().replace("/", "\\"), lambda q: q.as_posix().replace("/", "\\\\"))
+    return [(f(a).encode("utf-8"), f(b).encode("utf-8")) for f in forms]
+
+
+def clone(dst: Path) -> tuple[Path, dict]:
+    """Copy this board folder (without the pictures) and the few repository files the chain reads outside it
+    (params.json, cad/layout.py, cad/exports/*.json, cad/livery/) to ``dst/pcb/vtol_carrier``. ``dst`` must not exist,
+    be empty, or be an earlier clone of this tool (marker file) - nothing else is ever deleted.
+
+    The kicad-cli netlists are dropped (CLONE_DROP) and reported."""
+    import shutil
+
+    repo = ROOT.parents[1]
+    if dst.exists() and any(dst.iterdir()):
+        if not (dst / CLONE_MARK).is_file():
+            raise SystemExit(f"--cross-folder: {dst} is not empty and was not made by determinism.py")
+        shutil.rmtree(dst)
+    croot = dst / "pcb" / ROOT.name
+    skip = {(ROOT / d).resolve() for d in CLONE_SKIP_DIRS}
+
+    def ignore(folder: str, names: list[str]) -> list[str]:
+        return [n for n in names if (Path(folder) / n).resolve() in skip or n == "__pycache__"]
+    shutil.copytree(ROOT, croot, ignore=ignore)
+    (dst / CLONE_MARK).write_text("scratch copy made by scripts/determinism.py --cross-folder\n", encoding="utf-8", newline="\n")
+    shutil.copyfile(repo / "params.json", dst / "params.json")
+    (dst / "cad" / "exports").mkdir(parents=True)
+    shutil.copyfile(repo / "cad" / "layout.py", dst / "cad" / "layout.py")
+    for p in sorted((repo / "cad" / "exports").glob("*.json")):
+        shutil.copyfile(p, dst / "cad" / "exports" / p.name)
+    # cad/layout.py reads the livery polygons named in params.json (cad_envelope.py, step 'exports')
+    shutil.copytree(repo / "cad" / "livery", dst / "cad" / "livery", ignore=shutil.ignore_patterns("__pycache__"))
+    dropped = []
+    for rel in CLONE_DROP:
+        if (croot / rel).is_file():
+            (croot / rel).unlink()
+            dropped.append(rel)
+    return croot, {"netlists_dropped": dropped}
+
+
+def cross_folder(dst: Path, here: dict[str, dict]) -> dict:
+    """Build the same inputs once more in another folder and compare the deterministic set with this folder's last
+    build (review RR-2: byte identity had only been shown for two builds in the same folder).
+
+    Only files the clone build wrote itself are compared (modification time after the build start); the rest are
+    listed. Three classes, nothing else is tolerated:
+      identical                    same bytes
+      identical_after_renaming     same bytes after (1) every spelling of the clone's folder is replaced by this folder
+                                   and (2) the sha256 of another file of the set, where the clone's file differs, is
+                                   replaced by this folder's sha256 (spec/carrier_spec.json states its checkout, and
+                                   placement.json / the manifests carry the sha256 of the spec)
+      differing                    anything else
+    PASS = nothing differing AND every board, schematic sheet, gerber, zip, BOM and CPL is in the first class."""
+    croot, adapted = clone(dst)
+    repo = ROOT.parents[1]
+    t0 = time.time()
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    make = [sys.executable, "-B", "-X", "utf8", str(croot / "scripts" / "make_all.py")]
+    # The JLC stock snapshot out/jlc_gate_report.json is bound to the sha256 of spec/carrier_spec.json, and the spec
+    # states its checkout (key 'repository'): in another folder the same design has another spec sha256 and the gate
+    # would read 'STALE (other spec)' (M). So the clone's spec is built first; ONLY IF it equals this folder's spec
+    # once the folder name is put back, the clone's copy of the snapshot gets the clone's spec sha256. Otherwise
+    # nothing is touched, the gate reads STALE there and the documents differ - which the comparison reports.
+    pre = subprocess.run(make + ["--only", "probe,sources,spec"], cwd=str(croot / "scripts"), env=env, text=True,
+                         encoding="utf-8", errors="replace", capture_output=True)
+    spec_here = (ROOT / "spec" / "carrier_spec.json").read_bytes()
+    spec_there = (croot / "spec" / "carrier_spec.json").read_bytes()
+    back = spec_there
+    for a, b in path_tokens(dst, repo):
+        back = back.replace(a, b)
+    gate = croot / "out" / "jlc_gate_report.json"
+    adapted["spec_step_exit"] = pre.returncode
+    adapted["clone_spec_equals_this_spec_apart_from_the_folder_name"] = back == spec_here
+    adapted["jlc_gate_report_translated"] = False
+    if pre.returncode == 0 and back == spec_here and gate.is_file() and sha(spec_here).encode() in gate.read_bytes():
+        gate.write_bytes(gate.read_bytes().replace(sha(spec_here).encode(), sha(spec_there).encode()))
+        adapted["jlc_gate_report_translated"] = True
+        adapted["jlc_gate_report_spec_sha256"] = {"here": sha(spec_here), "clone": sha(spec_there)}
+    r = subprocess.run(make + ["--no-renders"], cwd=str(croot / "scripts"), env=env, text=True,
+                       encoding="utf-8", errors="replace", capture_output=True)
+    try:
+        log = json.loads((croot / "kicad" / "work" / "make_all_log.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        log = {"failed_checks": None, "stopped_at": "make_all_log.json missing", "steps": []}
+    out: dict = {"folder": croot.as_posix(), "command": "make_all.py --no-renders", "clone": adapted,
+                 "build": {"exit": r.returncode, "minutes": round((time.time() - t0) / 60, 1),
+                           "failed_checks": log["failed_checks"], "stopped_at": log.get("stopped_at"),
+                           "steps": [(s["step"], s["exit"], s["seconds"]) for s in log["steps"]]},
+                 "renaming_rule": f"every spelling of '{dst.as_posix()}' -> '{repo.as_posix()}'; sha256 of a differing "
+                                  "file of the set -> this folder's sha256 of that file"}
+    if r.returncode not in (0, 2):
+        out.update(result="FAIL", why=f"the build in the second folder stopped (exit {r.returncode}, step {log.get('stopped_at')})",
+                   stdout_tail=(r.stdout or "")[-800:])
+        return out
+    tokens = path_tokens(dst, repo)
+    raw = {}
+    not_rebuilt, missing = [], []
+    for rel in sorted(here["deterministic"]):
+        p = croot / rel
+        if not p.is_file():
+            missing.append(rel)
+        elif p.stat().st_mtime < t0:
+            not_rebuilt.append(rel)
+        else:
+            raw[rel] = p.read_bytes()
+    sha_map = [(sha(d).encode(), here["deterministic"][rel].encode()) for rel, d in raw.items()
+               if sha(d) != here["deterministic"][rel]]
+
+    def renamed(data: bytes) -> bytes:
+        for a, b in tokens + sha_map:
+            data = data.replace(a, b)
+        return data
+    same, after, differing = [], [], [m + " (missing in the second folder)" for m in missing]
+    for rel, d in raw.items():
+        want = here["deterministic"][rel]
+        if sha(d) == want:
+            same.append(rel)
+        elif sha(renamed(d)) == want:
+            after.append(rel)
+        else:
+            differing.append(rel)
+    norm_same, norm_diff = [], []
+    for rel, want in sorted(here["normalised"].items()):
+        p = croot / rel
+        if p.is_file() and p.stat().st_mtime >= t0 and not rel.endswith(".step"):
+            (norm_same if sha(renamed(normalised_bytes(rel, p.read_bytes()))) == want["normalised"] else norm_diff).append(rel)
+    must = [rel for rel in here["deterministic"] if rel in MUST_BE_RAW_IDENTICAL or rel.startswith(MUST_BE_RAW_PREFIX)
+            or rel.endswith(MUST_BE_RAW_SUFFIX)]
+    must_bad = sorted(rel for rel in must if rel not in same)
+    gate_there = None
+    try:
+        gate_there = json.loads((croot / "out" / "manifest.json").read_text(encoding="utf-8"))["release_gate"]["reasons"]
+    except (OSError, ValueError, KeyError):
+        pass
+    out.update(compared=len(raw) + len(missing), identical=len(same), identical_after_renaming=sorted(after),
+               differing=sorted(differing), netlists_identical_after_date_and_renaming=norm_same,
+               normalised_netlists_differing=norm_diff, not_rebuilt_in_the_second_folder=not_rebuilt,
+               order_files_boards_schematic_checked=len(must), order_files_boards_schematic_not_raw_identical=must_bad,
+               spec_sha256_in_the_clone=sha(raw["spec/carrier_spec.json"]) if "spec/carrier_spec.json" in raw else None,
+               release_gate_reasons_in_the_clone=gate_there,
+               sha256_second_folder={rel: sha(raw[rel]) for rel in MUST_BE_RAW_IDENTICAL if rel in raw},
+               result="PASS" if not differing and not norm_diff and not must_bad and same else "FAIL")
+    return out
+
+
+CROSS_GROUP = ("second folder (boards / schematic / gerbers / BOM / CPL byte-identical; files that state their folder "
+               "identical after renaming)")
+#: regenerated by the docs step after the two builds (they print this report): may differ from build 2 on disk
+DOCS_AFTER = ("README_ko.md", "out/ORDER_ko.md")
+
+
+def judge_cross(res: dict) -> None:
+    """Put the second-folder result into result_by_group / result (a FAIL there fails the whole check)."""
+    x = res["cross_folder"]
+    res["result_by_group"][CROSS_GROUP] = x["result"]
+    res.pop("why_cross_folder", None)
+    if x["result"] == "FAIL":
+        res["result"] = "FAIL"
+        res["why_cross_folder"] = ("files differing between this folder and the second folder: "
+                                   + ", ".join(x.get("differing", []) + x.get("normalised_netlists_differing", [])
+                                               + [f"{f} (not raw-identical)" for f in
+                                                  x.get("order_files_boards_schematic_not_raw_identical", [])])
+                                   if "differing" in x else x.get("why", ""))
+
+
+def cross_only(xdir: Path | None) -> int:
+    """``--cross-folder <dir> --cross-only``: keep the two in-place builds of the existing report and (re)run only the
+    second-folder build. Refused unless the deterministic files on disk still equal build 2 of that report (the two
+    documents regenerated after the builds excepted)."""
+    if xdir is None:
+        raise SystemExit("--cross-only needs --cross-folder <dir>")
+    try:
+        res = json.loads(REPORT.read_text(encoding="utf-8"))
+        want = res["sha256_build2"]["deterministic"]
+    except (OSError, ValueError, KeyError):
+        raise SystemExit("--cross-only: no complete out/reports/determinism.json - run determinism.py without it first")
+    now = snapshot()
+    drift = sorted(k for k in set(want) | set(now["deterministic"])
+                   if want.get(k) != now["deterministic"].get(k) and k not in DOCS_AFTER)
+    if drift:
+        raise SystemExit("--cross-only: files changed since build 2 of the report: " + ", ".join(drift))
+    b = res["build1_vs_build2"]
+    res["result"] = "PASS" if not b["deterministic"]["differing"] and not b["normalised"]["differing"] else "FAIL"
+    res["cross_folder"] = cross_folder(xdir, now)
+    res["cross_folder"]["mode"] = ("--cross-only at " + time.strftime("%Y-%m-%dT%H:%M:%S%z") + ": compared with the files on disk, "
+                                   "which equal build 2 of this report except " + " / ".join(DOCS_AFTER)
+                                   + " (regenerated after the builds; the clone makes them from the same report)")
+    judge_cross(res)
+    res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    REPORT.write_text(json.dumps(res, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    post = subprocess.run([sys.executable, "-B", "-X", "utf8", str(HERE / "make_all.py"), "--only", "docs,manifest"],
+                          cwd=str(HERE), env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"), text=True,
+                          encoding="utf-8", errors="replace", capture_output=True)
+    print(json.dumps({"result": res["result"], "result_by_group": res["result_by_group"],
+                      "cross_folder": {k: v for k, v in res["cross_folder"].items()
+                                       if k in ("result", "why", "compared", "identical", "identical_after_renaming", "differing",
+                                                "normalised_netlists_differing", "order_files_boards_schematic_not_raw_identical",
+                                                "clone", "release_gate_reasons_in_the_clone", "folder")},
+                      "post_docs_manifest_exit": post.returncode, "report": REPORT.as_posix()}, indent=1))
+    return 0 if res["result"] == "PASS" and post.returncode == 0 else 1
+
+
 def main() -> int:
     extra = ["--no-renders"] if "--no-renders" in sys.argv else []
+    xdir = None
+    if "--cross-folder" in sys.argv:
+        i = sys.argv.index("--cross-folder")
+        if i + 1 >= len(sys.argv):
+            raise SystemExit("--cross-folder needs a folder (empty, or an earlier clone of this tool)")
+        xdir = Path(sys.argv[i + 1]).resolve()
+        if ROOT in xdir.parents or xdir == ROOT or xdir in ROOT.parents:
+            raise SystemExit("--cross-folder: the second folder must lie outside this board folder")
+    if "--cross-only" in sys.argv:
+        return cross_only(xdir)
     started = time.strftime("%Y-%m-%dT%H:%M:%S%z")
     before = snapshot()
     runs = []
@@ -172,6 +416,12 @@ def main() -> int:
             "normalised (STEP without FILE_NAME header, netlists without date)": "PASS" if not norm["differing"] else "FAIL",
             "step_canonical (entities without numbering / order, information)": "PASS" if not canon["differing"] else "FAIL"}
         res["result"] = "PASS" if not det["differing"] and not norm["differing"] else "FAIL"
+        # relayout-fix step (review RR-2): the same inputs built once more in ANOTHER folder
+        if xdir is not None:
+            res["cross_folder"] = cross_folder(xdir, b2)
+        else:
+            res["cross_folder"] = {"result": "NOT_VERIFIED", "why": "not run (determinism.py --cross-folder <empty folder>)"}
+        judge_cross(res)
         if not det["differing"] and norm["differing"]:
             res["why"] = ("byte comparison after the stated normalisation failed for " + ", ".join(norm["differing"])
                           + "; kicad-cli 10.0.6 'pcb export step' writes the STEP entities in a different order on every "
@@ -192,6 +442,10 @@ def main() -> int:
                                            for k, v in res.get("build1_vs_build2", {}).items()},
                       "on_disk_before_vs_build1": {k: v["differing"]
                                                    for k, v in res.get("on_disk_before_vs_build1", {}).items()},
+                      "cross_folder": {k: v for k, v in res.get("cross_folder", {}).items()
+                                       if k in ("result", "why", "compared", "identical", "identical_after_renaming",
+                                                "differing", "normalised_netlists_differing",
+                                                "order_files_boards_schematic_not_raw_identical", "folder")},
                       "post_docs_manifest_exit": post.returncode, "report": REPORT.as_posix()}, indent=1))
     return 0 if res["result"] == "PASS" and post.returncode == 0 else 1
 

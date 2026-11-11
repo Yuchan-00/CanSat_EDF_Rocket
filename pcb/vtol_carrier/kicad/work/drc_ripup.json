@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-11T21:03:53",
+    "date": "2026-11-11T22:37:15",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -67,12 +67,12 @@
                     "uuid": "5497328e-0e0e-5426-a1b5-410132e402c0"
                 },
                 {
-                    "description": "배선 [+3V3] on F.Cu, 길이 0.3277 mm",
+                    "description": "배선 [+3V3] on F.Cu, 길이 3.2110 mm",
                     "pos": {
                         "x": 105.6574,
-                        "y": 87.5765
+                        "y": 90.7875
                     },
-                    "uuid": "34c4f7e6-277d-4c00-b92f-ddbb93465d57"
+                    "uuid": "e537363f-e508-44cd-a350-8bed81fa2023"
                 }
             ],
             "severity": "error",

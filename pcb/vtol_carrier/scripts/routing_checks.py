@@ -25,6 +25,12 @@ Checks -> ``out/reports/routing_rules.json``:
   fb_clear_of_caps  relayout step: no BOOST_FB copper inside the pad span of an output capacitor (review E-R3)
   rail_edge_copper  relayout step: copper >= 0.4 mm from the two 76 mm edges y 65 / y 135 that carry the JLC rails
                     (review J2); the 0.3 mm board rule itself is unchanged
+  sw_node           relayout-fix step (review RR-1): plan lines 449 / 466 - U8.5 and L5.2 next to each other (<= 2.0 mm
+                    pad gap, E) and the BOOST_SW track under no other part. boost_sw above stays as it was: its
+                    criterion (track <= pad centre distance) holds for any placement and says nothing about nearness
+  crystal_distance  relayout-fix step (review RR-1): plan line 452 - switching parts and BOOST_SW copper not nearer to
+                    the Y1 pads / U1 XTAL pins than the J6 (Pololu) pads of the archived rev 2c board
+  information       (not a check) C59.2 ground via and the battery vias at L5.1 (review RR-4 / RR-5)
   crystals          XTAL cluster paths and XTAL net lengths against the archived rev 2c board_metrics.json
   u8_u9_pads        pad -> net of U8 / U9 on the board against rev3_checks.expected_pad_nets (datasheet table)
   mcu_pinmap        the 256 pads of U1..U4 against the rev 2c pin map
@@ -779,6 +785,137 @@ def check_rail_edges(board, fps) -> dict:
                          "unchanged 0.3 mm board rule"}
 
 
+# ---------------------------------------------------- relayout-fix step checks (review of the relayout, RR-1 / RR-4 / RR-5)
+SW_NEXT_MM = 2.0      # E: reading of 'L5 next to U8 pins 3 / 5' with the plan's own 2.0 mm of line 448 (no number in line 449)
+#: the switching parts whose distance to the NAV crystal the plan compares with the rev 2c Pololu pins (= place.SWITCHING_PARTS)
+SWITCHING_REFS = ("U8", "L5", "C57", "C43", "C41")
+L5_VIA_MM = 4.0       # information only: VBAT_LOGIC_SW vias this close to the L5.1 pad are listed (review RR-5)
+
+
+def _pad_span(fp):
+    """Bounding box of all pads of a footprint (the strip a track crosses when it runs 'under the part')."""
+    bs = [box(p.GetBoundingBox()) for p in fp.Pads()]
+    return (min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs))
+
+
+def check_sw_node(board, fps) -> dict:
+    """plan line 449: 'L5 next to U8 pins 3 / 5 ... BOOST_SW copper only as large as the two pads need'; line 466:
+    'BOOST_SW: F.Cu only, no via, as short as the pads allow'. check_boost_sw only compares the track with the pad
+    centre distance, which holds for ANY placement (review RR-1), so the placement itself is judged here."""
+    a, b = pad(fps, "U8", "5"), pad(fps, "L5", "2")
+    gap = shape_gap(a.GetEffectiveShape(pcbnew.F_Cu), b.GetEffectiveShape(pcbnew.F_Cu))
+    tr = tracks_of(board, "BOOST_SW")
+    length = round(sum(mm(t.GetLength()) for t in tr), 3)
+    area = round(sum(mm(t.GetLength()) * mm(t.GetWidth()) for t in tr), 3)
+    ohm = round(sum(SHEET_OHM * mm(t.GetLength()) / mm(t.GetWidth()) for t in tr if t.GetWidth()), 5)
+    under = []
+    for ref in sorted(fps):
+        if ref in ("U8", "L5") or not list(fps[ref].Pads()):
+            continue
+        span = _pad_span(fps[ref])
+        n = 0
+        for t in tr:
+            if t.GetLayer() != pcbnew.F_Cu:
+                continue
+            (ax, ay), (bx, by) = pt(t.GetStart()), pt(t.GetEnd())
+            steps = max(1, int(math.hypot(bx - ax, by - ay) / 0.02))
+            r = mm(t.GetWidth()) / 2
+            # the track's copper (centre line sampled every 0.02 mm, half width r) reaches into the pad span box
+            if any(rect_dist(ax + (bx - ax) * i / steps, ay + (by - ay) * i / steps, span) < r for i in range(steps + 1)):
+                n += 1
+        if n and not fps[ref].IsFlipped():
+            gaps = [shape_gap(t.GetEffectiveShape(pcbnew.F_Cu), p.GetEffectiveShape(pcbnew.F_Cu))
+                    for t in tr for p in fps[ref].Pads() if p.IsOnLayer(pcbnew.F_Cu)]
+            under.append({"ref": ref, "sw_segments_inside_pad_span": n, "min_gap_sw_track_to_its_pads_mm": min(gaps)})
+    ok = gap <= SW_NEXT_MM and not under
+    return {"result": PASS if ok else FAIL, "label": "M (resistance from track length / width, E)",
+            "pad_edge_gap_U8.5_L5.2_mm": gap, "limit_mm": SW_NEXT_MM, "track_length_mm": length,
+            "widths_mm": sorted({round(mm(t.GetWidth()), 3) for t in tr}), "track_copper_area_mm2": area,
+            "track_resistance_ohm_20C_E": ohm, "parts_the_sw_track_passes_under": under,
+            "criterion": f"plan lines 449 / 466: the SW pads U8.5 and L5.2 are within {SW_NEXT_MM} mm of each other (copper "
+                         "edge gap; E: this script's reading of 'L5 next to U8 pins 3 / 5' with the 2.0 mm of plan line 448 - "
+                         "the plan gives no number) AND the BOOST_SW track crosses the pad span of no other part "
+                         "('copper only as large as the two pads need')"}
+
+
+def check_crystal_distance(board, fps) -> dict:
+    """plan line 452: 'Keep the block at least as far from the NAV crystal Y1 / U1 XTAL pins as the rev 2c Pololu pins
+    were.' Reference = the J6 pads of the archived rev 2c board, measured here the same way (copper edge to copper
+    edge in plan view). place.py reports the same note with pad centres (placement_checks.rev3.crystal_distance)."""
+    old_path = REV2C / "kicad" / "vtol_carrier.kicad_pcb"
+    if not old_path.is_file():
+        return {"result": NOT_VERIFIED, "label": "-", "why": f"{old_path.name} not found in the rev 2c archive"}
+    old = pcbnew.LoadBoard(str(old_path))
+    ofps = {fp.GetReference(): fp for fp in old.GetFootprints()}
+
+    def targets(f) -> dict:
+        return {"Y1 pads": [p.GetEffectiveShape(pcbnew.F_Cu) for p in f["Y1"].Pads()],
+                "U1 XTAL pins 23 / 24": [pad(f, "U1", n).GetEffectiveShape(pcbnew.F_Cu) for n in ("23", "24")]}
+
+    def xtal_copper(brd, f) -> tuple[list, list]:
+        nets = sorted({pad(f, "U1", n).GetNetname() for n in ("23", "24")})
+        return nets, [s for n in nets for _w, s in copper_shapes(brd, f, n)]
+
+    def gaps(shapes: list, tg: dict, xt: list) -> dict:
+        out = {k: min(shape_gap(s, t) for s in shapes for t in v) for k, v in tg.items()}
+        out["NAV XTAL net copper (tracks, vias, pads)"] = min(shape_gap(s, t) for s in shapes for t in xt)
+        return out
+    if "J6" not in ofps:
+        return {"result": NOT_VERIFIED, "label": "-", "why": "no J6 on the archived rev 2c board"}
+    onets, oxt = xtal_copper(old, ofps)
+    nnets, nxt = xtal_copper(board, fps)
+    ref = gaps([p.GetEffectiveShape(pcbnew.F_Cu) for p in ofps["J6"].Pads()], targets(ofps), oxt)
+    tg = targets(fps)
+    parts = {r: gaps([p.GetEffectiveShape(pcbnew.F_Cu) for p in fps[r].Pads()], tg, nxt) for r in SWITCHING_REFS}
+    sw_shapes = [t.GetEffectiveShape(t.GetLayer()) for t in tracks_of(board, "BOOST_SW")]
+    sw_shapes += [pad(fps, "U8", "5").GetEffectiveShape(pcbnew.F_Cu), pad(fps, "L5", "2").GetEffectiveShape(pcbnew.F_Cu)]
+    sw = gaps(sw_shapes, tg, nxt)
+    hard = ("Y1 pads", "U1 XTAL pins 23 / 24")
+    closer = sorted(r for r, g in parts.items() if any(g[k] < ref[k] - 1e-6 for k in hard))
+    sw_closer = [k for k in hard if sw[k] < ref[k] - 1e-6]
+    ok = not closer and not sw_closer
+    return {"result": PASS if ok else FAIL, "label": "M (this board and the archived rev 2c board, pcbnew)",
+            "rev2c_J6_pins_min_gap_mm": ref, "rev3_parts_min_gap_mm": parts, "rev3_BOOST_SW_copper_min_gap_mm": sw,
+            "parts_closer_than_the_rev2c_pins": closer, "BOOST_SW_copper_closer_than_the_rev2c_pins_to": sw_closer,
+            "xtal_nets": {"rev2c": onets, "rev3": nnets},
+            "reference": {"file": str(old_path).replace("\\", "/"), "sha256": sha256_file(old_path)},
+            "criterion": "plan line 452: no pad of U8 / L5 / C57 / C43 / C41 and no BOOST_SW copper (track + its two pads) is "
+                         "nearer to the Y1 pads or to U1 pins 23 / 24 than the nearest J6 (Pololu) pad was on the rev 2c "
+                         "board (copper edge gap in plan view, 1 um). The gap to the NAV XTAL net copper is reported, not judged"}
+
+
+def information(board, fps) -> dict:
+    """Measured facts that are not requirements of the plan (review RR-4 / RR-5): reported, never judged."""
+    g = _FcuGnd(board, fps)
+    c59 = pad(fps, "C59", "2")
+    piece = g.piece(c59.GetEffectiveShape(pcbnew.F_Cu))
+    cb = box(c59.GetBoundingBox())
+    in1 = zone_of(board, "GND", pcbnew.In1_Cu)
+    near = []
+    for v in vias_of(board, "GND"):
+        x, y = pt(v.GetPosition())
+        d = rect_dist(x, y, cb)
+        if d <= VIA_NEAR_MM:
+            near.append({"at": [round(x, 3), round(y, 3)], "to_pad_mm": round(d, 3), "in_In1_fill": in_fill(in1, pcbnew.In1_Cu, x, y),
+                         "on_the_pad_F.Cu_gnd_piece": g.piece(v.GetEffectiveShape(pcbnew.F_Cu)) == piece})
+    on_piece = [v for v in vias_of(board, "GND") if piece is not None and g.piece(v.GetEffectiveShape(pcbnew.F_Cu)) == piece]
+    lb = box(pad(fps, "L5", "1").GetBoundingBox())
+    l5 = []
+    for v in vias_of(board, "VBAT_LOGIC_SW"):
+        x, y = pt(v.GetPosition())
+        d = rect_dist(x, y, lb)
+        if d <= L5_VIA_MM:
+            l5.append({"at": [round(x, 3), round(y, 3)], "to_pad_mm": round(d, 3), "drill_mm": mm(v.GetDrillValue()),
+                       "size_mm": mm(v.GetWidth(pcbnew.F_Cu))})
+    l5.sort(key=lambda r: (r["to_pad_mm"], r["at"]))
+    return {"label": "M", "note": "not requirements of the plan: reported for the user, never part of the result",
+            "C59.2_gnd": {"gnd_vias_within_1.5mm_of_the_pad": near,
+                          "own_via": any(v["on_the_pad_F.Cu_gnd_piece"] and v["in_In1_fill"] for v in near),
+                          "gnd_vias_on_its_F.Cu_gnd_piece": len(on_piece),
+                          "nearest_via_on_its_piece_mm": min((round(rect_dist(*pt(v.GetPosition()), cb), 3) for v in on_piece), default=None)},
+            "L5.1_battery_vias": {"radius_mm": L5_VIA_MM, "vias_within_radius_of_the_pad": l5, "count": len(l5)}}
+
+
 # ---------------------------------------------------------------------------------------------------- crystals
 def check_crystals(board, fps) -> dict:
     ref = json.loads((REV2C / "out" / "reports" / "board_metrics.json").read_text(encoding="utf-8"))
@@ -956,6 +1093,8 @@ def main() -> int:
         "input_cap_l5": check_input_cap_l5(board, fps),
         "fb_clear_of_caps": check_fb_clear_of_caps(board, fps),
         "rail_edge_copper": check_rail_edges(board, fps),
+        "sw_node": check_sw_node(board, fps),
+        "crystal_distance": check_crystal_distance(board, fps),
         "crystals": check_crystals(board, fps),
         "u8_u9_pads": check_u8_u9(fps),
         "mcu_pinmap": check_mcu(fps),
@@ -966,7 +1105,7 @@ def main() -> int:
     res = {"tool": "scripts/routing_checks.py (pcbnew " + pcbnew.GetBuildVersion() + ")",
            "board": {"file": str(BOARD).replace("\\", "/"), "sha256": sha256_file(BOARD)},
            "result": FAIL if FAIL in results.values() else (NOT_VERIFIED if NOT_VERIFIED in results.values() else PASS),
-           "results": results, "checks": checks}
+           "results": results, "checks": checks, "information": information(board, fps)}
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(res, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps({"result": res["result"], "results": results,

@@ -6,9 +6,9 @@
 
 ## 0. 먼저 결정할 것: 도구 판정은 아직 '주문 불가'입니다
 
-출고 판정: **NOT ORDERABLE** (routing_rules FAIL (battery_path, hot_loop, input_cap_l5)).
+출고 판정: **NOT ORDERABLE** (routing_rules FAIL (battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance)).
 
-결정할 문제는 두 가지(A, B)입니다. B의 큰 문제(승압 IC 주변의 고전류 루프와 입력 커패시터)는 재배치 단계에서 고쳤고, 아래에는 고친 뒤에도 남은 것만 적었습니다.
+결정할 문제는 두 가지(A, B)입니다. B의 큰 문제(승압 IC 주변의 고전류 루프와 입력 커패시터)는 재배치 단계에서 고쳤지만, 그 대가로 스위칭 노드(SW) 선이 길어지고 승압부가 NAV 크리스털에 가까워졌습니다. 아래에는 고친 것, 남은 것, 나빠진 것을 모두 적었습니다.
 
 ### A. 배터리 전원 경로의 구리 폭
 
@@ -18,17 +18,20 @@
 - 선택지 (도구가 정하지 않습니다):
   1. 이대로 주문: 폭 규칙 위반을 알고 받아들인다고 사용자가 정합니다. 파일은 그대로 쓸 수 있지만 도구 판정은 바뀌지 않습니다. 보드를 받으면 7장의 '배터리에서 U8 입력까지 저항' 측정을 꼭 하십시오.
   2. 고친 뒤 주문: 해당 구간의 미리 그린 배선이나 배치를 바꾸고 배선을 새로 해야 합니다 (시간이 걸리고, 결과가 달라질 수 있음). 사용자의 승인이 필요합니다.
+- 참고 (M, 폭 검사는 비아를 세지 않음): L5 입력 패드에서 4 mm 안에 있는 배터리 네트(VBAT_LOGIC_SW) 비아는 드릴 0.4 mm 2개, 드릴 0.3 mm 1개 입니다 (재배치 전 드릴 0.4 mm 5개). 드릴 0.4 mm 이상 비아 2개의 도금 구리 단면은 합쳐서 약 0.045 mm2 로, 폭 2.0 mm 1 oz 배선의 0.07 mm2 보다 작습니다 (도금 18 um 가정, E). 배선을 다시 한다면 이 자리에 드릴 0.4 mm 비아를 3~4개 두는 것이 좋습니다.
 
 ### B. 승압 IC U8 주변 배치 (독립 전기 검토 E-R1 / E-R2 / E-R3 뒤 재배치함)
 
 - 고친 것 (재배치 단계, 모두 지금 보드에서 잰 값 M):
   - 윗면 GND: PASS (U8.4, C57.2, C43.2, C41.2 이 같은 윗면 GND 구리 한 덩어리 위에 있음; 자기 비아가 있는 패드 4 / 4). 전에는 출력 커패시터의 GND가 내층과 비아 하나로만 U8 GND 핀에 돌아갔습니다.
-  - 입력 커패시터: PASS: C41 → U8 VIN 구리 길이 1.54 mm (비아 0개, 기준 5 mm 이하), GND 패드가 U8 GND와 같은 윗면 구리: 예. 전에는 구리 길이 23.36 mm 였습니다.
+  - 입력 커패시터 (검사 input_cap_vin PASS): C41 → U8 VIN 구리 길이 1.54 mm (비아 0개; 기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E), GND 패드가 U8 GND와 같은 윗면 구리: 예. 전에는 구리 길이 23.36 mm 였습니다.
   - 되먹임(FB) 선: PASS (출력 커패시터 패드 사이를 지나는 FB 구리 0곳, 가장 가까운 간격 2.613 mm, FB 선 길이 4.575 mm). 전에는 C57 패드 사이를 지났습니다.
 - 남은 것 1 (검사 hot_loop FAIL): C57 +5V 패드-U8.6 0.95 mm, GND 패드-U8.4 1.611 mm; C43 +5V 패드-U8.6 3.25 mm, GND 패드-U8.4 3.537 mm. 계획 12장은 두 출력 커패시터 모두 IC에서 2 mm 안을 요구합니다. U8(SOT-563)의 VOUT / SW / GND 핀은 한 줄에 0.5 mm 간격이라, 1206 커패시터는 SW 선을 사이에 두고 그 옆에 하나(C57)만 설 수 있습니다. 둘째(C43)는 C57 바로 옆에서 같은 윗면 +5V / GND 구리에 붙였습니다.
-- 남은 것 2 (검사 input_cap_l5 FAIL): FAIL: C41 → L5 입력 패드 구리 길이 13.53 mm (기준 5 mm 이하; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 10.675 mm). 전에는 26.48 mm 였습니다. 인덕터 L5의 입력 패드는 U8의 VIN 핀 반대쪽 끝에 있어, 커패시터 하나를 두 곳 모두 몇 mm 안에 둘 수 없습니다. 이 모서리에 1206 자리가 하나 더 없어서 둘째 입력 커패시터 C42는 스위치 단자 J15 옆에 그대로 두었습니다.
-- 달라진 점 (E, NOT_VERIFIED): PASS: 길이 6.619 mm, 폭 0.35 mm, 비아 0개, F.Cu만. SW 선이 두 출력 커패시터 몸체 아래를 지나 전(1.174 mm)보다 길어졌습니다. 데이터시트의 SW / VOUT 절대 최대는 7 V (10 ns 동안 8 V) 입니다 (F, tps61023.txt:172-174). 과전압·리플·발열이 얼마인지는 보드에서 재기 전에는 모릅니다.
-- 선택지: 1. 이대로 주문하고 7장의 오실로스코프 측정(켜질 때 VIN, 0.78 A 부하에서 SW와 +5V 과전압, 입력 리플)을 반드시 함; 2. 남은 두 항목까지 없애려면 저전압 차단 회로(U9 주변)까지 옮겨 모서리 전체를 다시 배치해야 합니다 (사용자 승인 필요).
+- 남은 것 2 (검사 input_cap_l5 FAIL): C41 → L5 입력 패드 구리 길이 13.53 mm (기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 10.675 mm). 전에는 26.48 mm 였습니다. 인덕터 L5의 입력 패드는 U8의 VIN 핀 반대쪽 끝에 있어, 커패시터 하나를 두 곳 모두 몇 mm 안에 둘 수 없습니다. 이 모서리에 1206 자리가 하나 더 없어서 둘째 입력 커패시터 C42는 스위치 단자 J15 옆에 그대로 두었습니다.
+- **나빠진 것 1 (검사 sw_node FAIL; 계획 12장·13장을 지키지 못함):** U8의 SW 패드와 L5의 SW 패드 사이 간격 5.551 mm (기준 2 mm 이하 - 계획 12장의 'L5는 U8 핀 바로 옆'에 숫자가 없어 스크립트가 계획 12장의 2 mm를 빌려 읽은 값, E), SW 선 구리 넓이 2.317 mm2, 구리 저항 약 9.3 mOhm (20 C, E), SW 선이 패드 사이를 지나는 다른 부품: C43, C57. SW 선은 길이 6.619 mm, 폭 0.35 mm, 비아 0개, F.Cu만 입니다. 재배치 전에는 SW 선 길이 1.174 mm, 패드 간격 0.464 mm 였습니다. 출력 커패시터를 U8 옆에 붙이느라 인덕터 L5가 U8에서 멀어졌고, SW 선이 두 출력 커패시터의 패드 사이를 지납니다. 층과 비아만 보는 검사 boost_sw는 PASS 이지만 그것은 SW 선이 짧다는 뜻이 아닙니다. SW 선은 전압이 빠르게 오르내리는 선이라 길수록 잡음을 더 내고, 선의 인덕턴스 때문에 순간 과전압이 커질 수 있습니다. 데이터시트의 SW / VOUT 절대 최대는 7 V (10 ns 동안 8 V) 입니다 (F, tps61023.txt:172-174). 과전압·리플·발열이 얼마인지는 보드에서 재기 전에는 모릅니다 (NOT_VERIFIED).
+- **나빠진 것 2 (검사 crystal_distance FAIL; 계획 12장을 재배치 전에도 지키지 못했고 재배치로 더 가까워짐):** rev 2c의 Pololu 핀은 NAV 크리스털 Y1 패드에서 9.217 mm, U1의 XTAL 핀에서 9.616 mm 떨어져 있었습니다. 지금은 가장 가까운 부품이 Y1 패드에서 7.501 mm (C57), XTAL 핀에서 8.35 mm (U8) 이고, SW 구리(선과 두 패드)는 Y1 패드에서 8.475 mm, XTAL 핀에서 8.943 mm, 크리스털 배선 구리에서 7.465 mm (rev 2c Pololu 핀은 크리스털 배선에서 8.243 mm) 입니다. rev 2c보다 가까운 부품: C43, C57, L5, U8. 재배치 전의 SW 구리는 Y1 패드에서 8.714 mm, XTAL 핀에서 11.497 mm, 크리스털 배선에서 8.891 mm 였고, 그때 rev 2c보다 가까웠던 부품은 C57, L5 입니다. NAV 칩 U1의 16 MHz 크리스털에 스위칭 잡음이 실리면 시계가 흔들릴 수 있습니다. 실제로 그런지는 보드에서 재기 전에는 모릅니다 (NOT_VERIFIED).
+- 알려진 작은 항목 (M, 검사 대상 아님): 저전압 차단 비교기 U9의 바이패스 커패시터 C59는 GND 패드 옆에 자기 비아가 없습니다 (패드 1.5 mm 안에 GND 비아 없음; 같은 윗면 GND 구리 조각에서 가장 가까운 GND 비아까지 3.287 mm; 재배치 전: 패드 1.5 mm 안에 자기 GND 비아 있음). U9는 전류가 아주 작은 비교기라 영향은 작을 것으로 보지만 (E), 다음에 배선을 다시 한다면 비아를 하나 붙이는 것이 좋습니다.
+- 선택지: 1. 이대로 주문하고 7장의 오실로스코프 측정(켜질 때 VIN, 0.78 A 부하에서 SW와 +5V 과전압, 입력 리플, NAV 칩 시계)을 반드시 함; 2. 남은 것과 나빠진 것까지 없애려면 저전압 차단 회로(U9 주변)까지 옮겨 모서리 전체를 다시 배치해야 합니다 (사용자 승인 필요); 3. 재배치 전 배치로 되돌림 (SW 선은 짧지만 E-R1 / E-R2 / E-R3 지적이 그대로 남음; 이것도 사용자 승인과 새 빌드가 필요).
 
 - 아래 1~9장은 A와 B 모두 '이대로 주문'을 고를 경우를 기준으로 쓴 주문 절차입니다.
 
@@ -38,7 +41,7 @@
 
 | 순서 | 파일 | 어디에 올리나 | sha256 앞부분 |
 |---|---|---|---|
-| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` | PCB 주문 첫 화면 'Add gerber file' | f619da10e8280e6c... |
+| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` | PCB 주문 첫 화면 'Add gerber file' | 9436c800dcc27996... |
 | 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv` | PCB Assembly 단계 'BOM file' | fa4c8e2622885f4d... |
 | 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv` | PCB Assembly 단계 'CPL file' (Pick and Place) | 738c4ea451000e0e... |
 
@@ -46,7 +49,7 @@
 
 | 순서 | 파일 | sha256 앞부분 |
 |---|---|---|
-| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip` | b0895002fa826aef... |
+| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip` | fe71f45be66bcbdb... |
 | 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv` | 465199b917ff914d... |
 | 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv` | b0ab3d4240db4473... |
 
@@ -81,7 +84,7 @@
 - Standard를 고른 이유 (D9): 부품 몸체 34개가 기판 끝에서 2.5 mm 안에 있고, 그중 U7 0.15 mm, J15 0.29 mm 는 Economic 방식이 권하는 0.3 mm보다 가깝습니다 (M; 0.3 mm와 2.5 mm는 계획 10장의 JLC 규정, F). 커넥터 위치는 기체에 맞춰 고정이라 옮길 수 없습니다. Standard는 JLC가 공정 레일을 붙이고, 리플로 온도도 더 낮습니다 (240 C, 계획 10장, F).
 - 2.5 mm 안 몸체 34개 중 JLC가 실장하는 것은 28개입니다 (with_mcu 29개). 나머지 6개 (U4, J1, J19, JP1, Q3, R47) 은 JLC가 부품을 달지 않는 자리입니다 (M).
 - 레일 쪽 (E): 표에서 '+y / -y' 쌍(거버 화면에서 위·아래의 76 mm 긴 변)을 골랐습니다. 이 경우 레일이 없는 쪽에 2.5 mm 안 부품이 14개 남습니다. JLC가 받아 주는지는 DFM 결과로만 압니다.
-- **레일을 붙이는 방식:** 구리 이격(M): PASS: 레일이 붙는 두 76 mm 변에서 0.4 mm 이상 (기준 0.4 mm), 나머지 두 변 0.3005 mm (보드 규칙 0.3 mm). JLC 기준(F)으로 V-cut 가장자리는 구리 이격이 0.4 mm 이상, 라우팅·마우스바이트 가장자리는 0.2 mm 이상 이어야 하므로, 레일이 붙는 두 변은 구리 기준으로 V-cut도 가능합니다 (재배치 단계에서 면과 배선을 0.4 mm로 물림). 다만 ESP-12F 몸체가 윗변에서 0.15 mm라 메모에는 라우팅 탭 / 마우스바이트를 먼저 부탁합니다. JLC가 어떤 방식을 받아 주는지는 DFM 결과로만 압니다 (NOT_VERIFIED).
+- **레일을 붙이는 방식:** 구리 이격(M): PASS: 레일이 붙는 두 76 mm 변에서 0.4 mm 이상 (기준 0.4 mm), 나머지 두 변 0.3005 mm (보드 규칙 0.3 mm). JLC 기준(F)으로 V-cut 가장자리는 구리 이격이 0.4 mm 이상, 라우팅·마우스바이트 가장자리는 0.2 mm 이상 이어야 합니다. 레일이 붙는 두 변의 구리 이격 0.4 mm는 라우팅 탭 기준에는 여유가 있지만, V-cut 기준값에는 여유 없이 딱 맞는 값입니다 (재배치 단계에서 면과 배선을 0.4 mm로 물림). 그 JLC 기준값은 검토 단계가 읽은 값(F)이고 이 단계에서 다시 읽지 않았으므로 **V-cut이 가능한지는 NOT_VERIFIED** 입니다. ESP-12F 몸체도 윗변에서 0.15 mm라, 메모에는 라우팅 탭 / 마우스바이트를 첫째로 부탁합니다. JLC가 어떤 방식을 받아 주는지는 DFM 결과로만 압니다 (NOT_VERIFIED).
 - 툴링 홀 부품(H) 수: 0 (설계에 없음, M).
 
 메모 문장 (기본 묶음, 그대로 복사):
@@ -194,7 +197,7 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | 전압을 천천히 내릴 때 꺼지는 전압 | 3.00 ~ 3.25 V | |
 
    켜지는 순간의 +5V와 EN 파형을 오실로스코프로 한 장 남깁니다. 같은 때 VBAT_LOGIC_SW(U8 입력, C41)의 파형도 남깁니다: 스위치 리드로 들어오는 전원은 세라믹 커패시터만 있어 울릴 수 있습니다 (VIN 절대 최대 7 V, F; 검토 E-R6, NOT_VERIFIED).
-5. **부하 시험:** +5V에 0.27 A와 0.78 A, 전원 3.4 V와 3.7 V (전류 제한 2 A). 전압이 유지되고 U8 / L5가 약 60 C 아래인지 봅니다 (E, 계획 15장). 실제 배터리·스위치·리드로 배터리에서 U8 입력까지 저항을 잽니다 (전압 강하 / 입력 전류): 0.29 Ohm 이하여야 합니다. 넘으면 비행 전에 보고합니다. (0장의 배선 폭 문제 때문에 이 측정이 특히 중요합니다.) 0.78 A 부하에서 U8 SW 핀(L5 쪽 패드)과 +5V(C57)의 순간 과전압, U8 입력(VIN)의 리플을 짧은 접지선으로 오실로스코프에 담습니다 (0장 B: 승압부를 재배치했고 SW 선이 길어짐). SW가 7 V에 가까우면 비행 전에 보고합니다.
+5. **부하 시험:** +5V에 0.27 A와 0.78 A, 전원 3.4 V와 3.7 V (전류 제한 2 A). 전압이 유지되고 U8 / L5가 약 60 C 아래인지 봅니다 (E, 계획 15장). 실제 배터리·스위치·리드로 배터리에서 U8 입력까지 저항을 잽니다 (전압 강하 / 입력 전류): 0.29 Ohm 이하여야 합니다. 넘으면 비행 전에 보고합니다. (0장의 배선 폭 문제 때문에 이 측정이 특히 중요합니다.) 0.78 A 부하에서 U8 SW 핀(L5 쪽 패드)과 +5V(C57)의 순간 과전압, U8 입력(VIN)의 리플을 짧은 접지선으로 오실로스코프에 담습니다 (0장 B: 승압부를 재배치했고 SW 선이 길어짐). SW가 7 V에 가까우면 비행 전에 보고합니다. MCU를 납땜한 뒤에는 같은 0.78 A 부하를 건 채로 NAV 칩 U1의 시리얼 통신이 깨지지 않는지도 확인합니다 (0장 B: 승압부가 U1의 16 MHz 크리스털에 rev 2c보다 가까움, 영향은 NOT_VERIFIED).
 6. **MCU 4개 납땜** (JLC가 안 붙였을 때): 1번 핀을 표시에 맞추고, 가는 인두·플럭스로 0.8 mm 피치 핀을 모두 확대 검사합니다. 패드 1 mm 안에 이미 붙은 부품 수: U1 14, U2 14, U3 20, U4 15 (M). U1을 GY-521보다 먼저 납땜하십시오 (GY-521이 U1 위에 걸침). 그림: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/c5_mcu_pin1.png`
 7. **모듈 장착:** 각 모듈에 인쇄된 핀 순서를 보드 실크와 먼저 비교합니다. GY-521은 자기 1x8 핀으로 J1에 납땜, 받침 2.54 mm (A) (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2a_gy521_J1.png`); BMP280은 J2에 꽂음 (헤더 직각이 아니면 직각 핀을 먼저 납땜, `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2b_bmp280_J2.png`); OpenLog는 직각 6핀 헤더를 납땜한 뒤 microSD 쪽이 위로 오게 J5에 꽂음 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2c_openlog_J5.png`); NEO-7M은 윗뚜껑에 두고 JST-GH 케이블을 J7에 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e3_gps_lead_J7.png`). 받은 상태와 완성 상태 비교: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e1_delivered_vs_completed.png`, 전체 안내: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e4_overview_callouts.png`. OpenLog는 먼저 아랫면(ATmega328 쪽) 높이를 재고 끼워 보십시오: 아랫면 부품이 1.2 mm라고 보는 보수적 경우(A) 꽂는 길에서 C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end') 이 겹칩니다.
 8. **프로그래밍 (전원은 한 가지만):** 로직 배터리(3.73 V 넘게 충전) 또는 J14에 4.0 V 벤치 전원으로 보드를 켜고, USBasp의 타깃 전원 점퍼는 **빼 둡니다** (5 V를 두 곳에서 넣지 않기). 단자는 D6 선택대로 (헤더 납땜 + 점퍼, 또는 포고핀 어댑터). ESP-12F는 J3로 3.3 V 신호로만 굽습니다.
@@ -238,7 +241,7 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | D16 | 표면처리·색상 등 (기본: ENIG, 녹색, JLC 기본값(추가 요금 미확인)) | 주문 화면에서 사용자가 선택 (2장: ENIG, 녹색, 기본 적층) |
 | D17 | 실장하지 않은 여분 보드 (기본: 기구 확인용으로만 사용) | 여분 기판 3장은 기구 확인용 (주문 화면 수량으로 정해짐) |
 | 추가 (배선 후 발견) | 배터리 경로 폭 규칙 FAIL을 받아들이고 주문할지, 고친 뒤 주문할지 (0장 A) | 결정 전: 도구 판정 NOT ORDERABLE |
-| 추가 (독립 검토 후) | 재배치 뒤에도 남은 승압부 FAIL (hot_loop, input_cap_l5)을 받아들이고 주문할지 (0장 B) | 결정 전 |
+| 추가 (독립 검토 후) | 재배치 뒤에도 남은 승압부 FAIL (hot_loop, input_cap_l5, sw_node, crystal_distance)을 받아들이고 주문할지 (0장 B) | 결정 전 |
 
 ## 10. 변경 범위 표 (rev 2c 대비, 부품마다 이유 분류)
 
@@ -287,26 +290,42 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | 값 이름 | 값 | 출처 파일 | 표시 |
 |---|---|---|---|
 | 출고 판정 | NOT ORDERABLE | out/manifest.json release_gate | M (도구 검사) |
-| 출고 판정 이유 | routing_rules FAIL (battery_path, hot_loop, input_cap_l5) | out/manifest.json release_gate.reasons | M |
+| 출고 판정 이유 | routing_rules FAIL (battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance) | out/manifest.json release_gate.reasons | M |
 | 2 mm보다 좁은 길이 | 8.57 mm | out/reports/routing_rules.json battery_path | M |
 | 좁은 구간 | VBAT_LOGIC_RAW 1.07 mm (폭 1 mm); VBAT_LOGIC_SW 7.5 mm (폭 1.5/1.56 mm) | out/reports/routing_rules.json battery_path.legs | M |
 | 재배치 전 좁은 길이 | 16.1 mm | out/reports/routing_rules_before_relayout.json battery_path (재배치 전 보드) | M |
 | 배터리 경로 저항 20C | 0.03173 Ohm | out/reports/routing_rules.json battery_path | E |
 | 배터리 경로 목표 | 0.035 Ohm | out/reports/routing_rules.json battery_path | F (계획 13절) |
 | 배터리 경로 저항 60C | 0.03672 Ohm | out/reports/routing_rules.json battery_path | E |
+| L5 입력 비아 | 드릴 0.4 mm 2개, 드릴 0.3 mm 1개 | out/reports/routing_rules.json information.L5.1_battery_vias (L5 입력 패드에서 4 mm 안의 VBAT_LOGIC_SW 비아) | M |
+| 재배치 전 L5 입력 비아 | 드릴 0.4 mm 5개 | out/reports/routing_rules_before_relayout.json information.L5.1_battery_vias (재배치 전 보드) | M |
+| L5 입력 비아 단면 | 드릴 0.4 mm 이상 비아 2개의 도금 구리 단면은 합쳐서 약 0.045 mm2 로, 폭 2.0 mm 1 oz 배선의 0.07 mm2 보다 작습니다 (도금 18 um 가정, E). | out/reports/routing_rules.json information.L5.1_battery_vias 에서 계산 (pi x 드릴 x 0.018 mm) | E |
 | 윗면 GND 한 덩어리 | PASS (U8.4, C57.2, C43.2, C41.2 이 같은 윗면 GND 구리 한 덩어리 위에 있음; 자기 비아가 있는 패드 4 / 4) | out/reports/routing_rules.json hot_loop_top_gnd | M |
-| 입력 커패시터 VIN 경로 | PASS: C41 → U8 VIN 구리 길이 1.54 mm (비아 0개, 기준 5 mm 이하), GND 패드가 U8 GND와 같은 윗면 구리: 예 | out/reports/routing_rules.json input_cap_vin | M (길이는 배선 모델, E) |
+| 검사 input_cap_vin | PASS | out/reports/routing_rules.json results | M |
+| 입력 커패시터 VIN 경로 | C41 → U8 VIN 구리 길이 1.54 mm (비아 0개; 기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E), GND 패드가 U8 GND와 같은 윗면 구리: 예 | out/reports/routing_rules.json input_cap_vin | M (길이는 배선 모델, E) |
 | 재배치 전 VIN 경로 | 23.36 mm | out/reports/routing_rules_before_relayout.json input_cap_vin (재배치 전 보드) | M (배선 모델, E) |
 | FB 선과 출력 커패시터 | PASS (출력 커패시터 패드 사이를 지나는 FB 구리 0곳, 가장 가까운 간격 2.613 mm, FB 선 길이 4.575 mm) | out/reports/routing_rules.json fb_clear_of_caps | M |
+| 검사 hot_loop | FAIL | out/reports/routing_rules.json results | M |
 | 출력 커패시터 간격 | C57 +5V 패드-U8.6 0.95 mm, GND 패드-U8.4 1.611 mm; C43 +5V 패드-U8.6 3.25 mm, GND 패드-U8.4 3.537 mm | out/reports/routing_rules.json hot_loop | M |
-| 입력 커패시터 L5 경로 | FAIL: C41 → L5 입력 패드 구리 길이 13.53 mm (기준 5 mm 이하; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 10.675 mm) | out/reports/routing_rules.json input_cap_l5 | M (길이는 배선 모델, E) |
+| 검사 input_cap_l5 | FAIL | out/reports/routing_rules.json results | M |
+| 입력 커패시터 L5 경로 | C41 → L5 입력 패드 구리 길이 13.53 mm (기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 10.675 mm) | out/reports/routing_rules.json input_cap_l5 | M (길이는 배선 모델, E) |
 | 재배치 전 L5 경로 | 26.48 mm | out/reports/routing_rules_before_relayout.json input_cap_l5 (재배치 전 보드) | M (배선 모델, E) |
-| SW 선 | PASS: 길이 6.619 mm, 폭 0.35 mm, 비아 0개, F.Cu만 | out/reports/routing_rules.json boost_sw | M |
+| 검사 sw_node | FAIL | out/reports/routing_rules.json results | M |
+| SW 노드 | U8의 SW 패드와 L5의 SW 패드 사이 간격 5.551 mm (기준 2 mm 이하 - 계획 12장의 'L5는 U8 핀 바로 옆'에 숫자가 없어 스크립트가 계획 12장의 2 mm를 빌려 읽은 값, E), SW 선 구리 넓이 2.317 mm2, 구리 저항 약 9.3 mOhm (20 C, E), SW 선이 패드 사이를 지나는 다른 부품: C43, C57 | out/reports/routing_rules.json sw_node | M (기준과 저항은 E) |
+| SW 선 | 길이 6.619 mm, 폭 0.35 mm, 비아 0개, F.Cu만 | out/reports/routing_rules.json boost_sw | M |
 | 재배치 전 SW 선 길이 | 1.174 mm | out/reports/routing_rules_before_relayout.json boost_sw (재배치 전 보드) | M |
-| zip main sha256 | f619da10e8280e6c... | out/manifest.json fab.sets | M |
+| 재배치 전 SW 패드 간격 | 0.464 mm | out/reports/routing_rules_before_relayout.json sw_node (재배치 전 보드) | M |
+| 검사 boost_sw | PASS | out/reports/routing_rules.json results | M |
+| 검사 crystal_distance | FAIL | out/reports/routing_rules.json results | M |
+| 크리스털 거리 | rev 2c의 Pololu 핀은 NAV 크리스털 Y1 패드에서 9.217 mm, U1의 XTAL 핀에서 9.616 mm 떨어져 있었습니다. 지금은 가장 가까운 부품이 Y1 패드에서 7.501 mm (C57), XTAL 핀에서 8.35 mm (U8) 이고, SW 구리(선과 두 패드)는 Y1 패드에서 8.475 mm, XTAL 핀에서 8.943 mm, 크리스털 배선 구리에서 7.465 mm (rev 2c Pololu 핀은 크리스털 배선에서 8.243 mm) 입니다. rev 2c보다 가까운 부품: C43, C57, L5, U8 | out/reports/routing_rules.json crystal_distance (rev 2c 값은 archive/rev2c_pololu_1s/kicad/vtol_carrier.kicad_pcb 에서 같은 방법으로 잼) | M |
+| 재배치 전 SW 구리-크리스털 | Y1 패드에서 8.714 mm, XTAL 핀에서 11.497 mm, 크리스털 배선에서 8.891 mm | out/reports/routing_rules_before_relayout.json crystal_distance (재배치 전 보드) | M |
+| 재배치 전 크리스털보다 가까운 부품 | C57, L5 | out/reports/routing_rules_before_relayout.json crystal_distance (재배치 전 보드) | M |
+| C59 GND 비아 | 패드 1.5 mm 안에 GND 비아 없음; 같은 윗면 GND 구리 조각에서 가장 가까운 GND 비아까지 3.287 mm | out/reports/routing_rules.json information.C59.2_gnd | M |
+| 재배치 전 C59 GND 비아 | 패드 1.5 mm 안에 자기 GND 비아 있음 | out/reports/routing_rules_before_relayout.json information.C59.2_gnd (재배치 전 보드) | M |
+| zip main sha256 | 9436c800dcc27996... | out/manifest.json fab.sets | M |
 | jlcpcb_bom.csv sha256 | fa4c8e2622885f4d... | out/manifest.json sha256 | M |
 | jlcpcb_cpl.csv sha256 | 738c4ea451000e0e... | out/manifest.json sha256 | M |
-| zip with_mcu sha256 | b0895002fa826aef... | out/manifest.json fab.sets | M |
+| zip with_mcu sha256 | fe71f45be66bcbdb... | out/manifest.json fab.sets | M |
 | jlcpcb_bom_with_mcu.csv sha256 | 465199b917ff914d... | out/manifest.json sha256 | M |
 | jlcpcb_cpl_with_mcu.csv sha256 | b0ab3d4240db4473... | out/manifest.json sha256 | M |
 | F.Paste 패드 main | 342 | out/manifest.json fab.sets | M |
@@ -336,8 +355,8 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | 레일 변 구리 이격 | PASS: 레일이 붙는 두 76 mm 변에서 0.4 mm 이상 (기준 0.4 mm), 나머지 두 변 0.3005 mm (보드 규칙 0.3 mm) | out/reports/routing_rules.json rail_edge_copper | M |
 | V-cut 구리 이격 | 0.4 mm 이상 | https://jlcpcb.com/capabilities/pcb-capabilities (rev 3 JLC 검토가 2026-11-11에 읽음; 이 단계에서 다시 읽지 않음) | F |
 | 라우팅·마우스바이트 구리 이격 | 0.2 mm 이상 | https://jlcpcb.com/capabilities/pcb-capabilities (rev 3 JLC 검토가 2026-11-11에 읽음; 이 단계에서 다시 읽지 않음) | F |
-| 툴링 홀(H) 부품 | 0 | spec/carrier_spec.json summary.by_prefix | M |
 | 레일 변 구리 이격 값 | 0.4 | out/reports/routing_rules.json rail_edge_copper | M |
+| 툴링 홀(H) 부품 | 0 | spec/carrier_spec.json summary.by_prefix | M |
 | 1번 핀 번호 반대 | J8, J9, J10, J11, J12, J14, J16 | out/cpl_rotation_table.csv notes ('mirrored') | M |
 | 빈 자리 | J3, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47 | spec/carrier_spec.json parts[].fit == none | M |
 | JLC 확인 시각 | 2026-11-11T16:19:27+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
@@ -386,5 +405,5 @@ J1 is intentionally NOT assembled (no BOM/CPL row).
 | 코드 J15 | C131337 | out/jlcpcb_bom.csv | M |
 | 코드 Q1 | C40912 | out/jlcpcb_bom.csv | M |
 | 분압 저항 | R15 47k 1%, R16 47k 1% | spec/carrier_spec.json | M |
-| 승압부 배치 FAIL | hot_loop, input_cap_l5 | out/reports/routing_rules.json | M |
+| 승압부 배치 FAIL | hot_loop, input_cap_l5, sw_node, crystal_distance | out/reports/routing_rules.json | M |
 | 변경 행 | 교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140 | spec/rev3_plan.json changes | F (계획) |

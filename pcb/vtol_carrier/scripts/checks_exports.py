@@ -605,9 +605,15 @@ def main() -> int:
                              "JLC DFM result (edge distances, Standard PCBA rails)",
                              "jlc_gate.py again on the order day, directly before paying"]}
     files = {}
+    # relayout-fix step (review RR-8): files that a LATER step rewrites would be listed here with the hash of the
+    # previous run (M: reports/determinism.json). They are hashed by make_manifest.py instead
+    # (build.written_after_checks_exports = make_manifest.LATE), after they were written.
+    written_later = ("reports/determinism.json", "reports/rev3_export_files.json", "reports/rev3_export_determinism.json",
+                     "ORDER_ko.md")
     for p in sorted(OUT.rglob("*")):
         rel = p.relative_to(OUT).as_posix()
-        if p.is_file() and p.name != "manifest.json" and not rel.startswith(("render/", "presentation/")):
+        if p.is_file() and p.name != "manifest.json" and not rel.startswith(("render/", "presentation/")) \
+                and rel not in written_later:
             files[rel] = common.sha256_file(p)
     for p in [SCH, PCB, common.KICAD_DIR / f"{common.PROJECT_ID}.kicad_pro", common.KICAD_DIR / "placement.json",
               common.SPEC_PATH]:
@@ -621,7 +627,8 @@ def main() -> int:
                             "Sample-CPL_JLCSMT.xlsx (19 Sep 2019), read 2026-11-11 (SCR/impl/export/jlc_sample_files.txt); "
                             "CSV with UTF-8 BOM (Excel). Acceptance of the exact header strings / encoding is "
                             "NOT_VERIFIED until JLC's upload preview shows every line matched.",
-        "excluded_from_hashes": "out/render/, out/presentation/ (render step)"}
+        "excluded_from_hashes": "out/render/, out/presentation/ (render step); " + ", ".join("out/" + r for r in written_later)
+                                + " (written by later steps: their hashes are under build.written_after_checks_exports)"}
     s["sha256"] = files
     write_json(OUT / "manifest.json", s)
     brief = {k: s[k] for k in ("erc", "netlist_vs_spec", "drc", "jlc_gate", "release_gate")}

@@ -45,6 +45,7 @@ import shutil
 import subprocess
 import sys
 import time
+import uuid
 from pathlib import Path
 
 import pcbnew
@@ -92,6 +93,73 @@ def seed_ids(tag: str) -> None:
     The KIID generator is re-seeded from ``tag`` before every step that creates items (fan-out, each session import,
     the clean-up / silkscreen), in the live run and in the replay alike."""
     pcbnew.KIID.SeedGenerator(int(hashlib.sha256(tag.encode("utf-8")).hexdigest()[:8], 16))
+
+
+#: uuids of the board-level drawings of the unrouted board (build_pcb.py gives them stable ids): never restamped
+PRE_DRAWING_IDS: set[str] = set()
+
+
+def drop_duplicate_tracks(board) -> dict:
+    """relayout-fix step (review RR-6): the ECO seed sessions and the stage sessions both carry some wires, so the
+    import stacks exact copies of a segment (M: 173 extra copies on board 7b858d8d, mostly 0.5 um pad stubs). A copy
+    with the same net, layer, width and end points (either direction) adds no copper: all but one are deleted. Vias
+    and arcs are not touched."""
+    seen: set = set()
+    dup = []
+    segs = [t for t in board.GetTracks() if t.GetClass() == "PCB_TRACK"]
+    # the copy that stays: locked before unlocked, then the smaller (start, end) - never a question of the uuid
+    for t in sorted(segs, key=lambda t: (t.GetNetname(), t.GetLayer(), t.GetWidth(), not t.IsLocked(), t.GetStart().x,
+                                         t.GetStart().y, t.GetEnd().x, t.GetEnd().y, t.m_Uuid.AsString())):
+        a, b = sorted([(t.GetStart().x, t.GetStart().y), (t.GetEnd().x, t.GetEnd().y)])
+        key = (t.GetNetname(), t.GetLayer(), t.GetWidth(), a, b)
+        if key in seen:
+            dup.append(t)
+        else:
+            seen.add(key)
+    nets = sorted({t.GetNetname() for t in dup})
+    for t in dup:
+        board.Delete(t)
+    return {"segments_before": len(segs), "exact_copies_removed": len(dup), "nets": len(nets)}
+
+
+def restamp_ids(board) -> dict:
+    """relayout-fix step (review RR-2): pcbnew draws a KIID for every item it creates and writes tracks in KIID order.
+    M: the same scripts, sessions and placement replayed in another folder drew ONE more KIID between
+    seed_ids('finish:leftovers') and the first leftover track (cause not found), which shifted 30 uuids and the order
+    of those segments in the file (same copper, other bytes). The ids of everything this script creates are therefore
+    replaced at the very end by uuid5 values of the item's own content: every track / via (net, layer, width, end
+    points, drill; identical items are numbered) and every board-level drawing that is not in the unrouted board
+    (the silkscreen texts / marks of silk.py). No draw count can change the result any more."""
+    def stamp(items: list[tuple[tuple, object]]) -> int:
+        n: dict[tuple, int] = {}
+        for key, it in sorted(items, key=lambda ki: (ki[0], ki[1].m_Uuid.AsString())):
+            i = n.get(key, 0)
+            n[key] = i + 1
+            it.SetUuid(pcbnew.KIID(str(uuid.uuid5(uuid.NAMESPACE_URL, "vtol_carrier/route|" + "|".join(map(str, key)) + f"|{i}"))))
+        return len(items)
+
+    tracks = []
+    for t in board.GetTracks():
+        cls = t.GetClass()
+        if cls == "PCB_VIA":
+            key = ("via", t.GetNetname(), t.GetPosition().x, t.GetPosition().y, t.GetWidth(pcbnew.F_Cu), t.GetDrillValue(),
+                   t.TopLayer(), t.BottomLayer(), int(t.IsLocked()))
+        else:
+            mid = (t.GetMid().x, t.GetMid().y) if cls == "PCB_ARC" else ()
+            key = (cls, t.GetNetname(), t.GetLayer(), t.GetWidth(), t.GetStart().x, t.GetStart().y, t.GetEnd().x,
+                   t.GetEnd().y, *mid, int(t.IsLocked()))
+        tracks.append((key, t))
+    drawings = []
+    for d in board.GetDrawings():
+        if d.m_Uuid.AsString() in PRE_DRAWING_IDS:
+            continue
+        bb = d.GetBoundingBox()
+        key = ("drawing", d.GetClass(), d.GetLayer(), d.GetPosition().x, d.GetPosition().y, bb.GetLeft(), bb.GetTop(),
+               bb.GetRight(), bb.GetBottom(),
+               d.GetText() if hasattr(d, "GetText") else (int(d.GetShape()) if hasattr(d, "GetShape") else ""))
+        drawings.append((key, d))
+    return {"tracks_and_vias": stamp(tracks), "drawings_made_by_route": stamp(drawings),
+            "drawings_of_the_unrouted_board_kept": len(PRE_DRAWING_IDS)}
 
 
 def export_dsn(board, dsn: Path, keep_bplane: bool = False, allow_in2: bool = False) -> int:
@@ -536,12 +604,18 @@ def finish(board) -> dict:
     if stubs:
         pcbnew.ZONE_FILLER(board).Fill(board.Zones())
         board.Save(str(BOARD))
+    # relayout-fix step: last of all, exact copies of a segment go and every id made during routing becomes a
+    # function of the item's content (no copper changes: the fills stay as they are)
+    copies = drop_duplicate_tracks(board)
+    restamped = restamp_ids(board)
+    board.Save(str(BOARD))
     # unconnected items are counted by kicad-cli DRC (checks_exports.py), not here
     return {"vias_shrunk_after_inflation": shrunk, "neckdowns_widened_to_0.127mm": fixed, "dangling_vias_removed": dangling,
             "segments": n_segs, "routed_vias": n_vias - len(dangling), "gnd_stitching_vias": len(stitch),
             "tracks_narrowed_for_clearance": narrowed, "power_tracks_widened": widened, "leftovers_routed_by_script": leftovers,
             "ripup": ripped, "rail_edge_nudged": nudged,
-            "dangling_track_stubs_removed": stubs, "silk": silk_log, "routed_board_sha256": sha(BOARD)}
+            "dangling_track_stubs_removed": stubs, "duplicate_segments": copies, "ids_restamped": restamped,
+            "silk": silk_log, "routed_board_sha256": sha(BOARD)}
 
 
 #: class width per power / servo net (common.net_class_of; .kicad_pro classes)
@@ -1003,6 +1077,7 @@ def main() -> int:
     src = WORK / "vtol_carrier_unrouted.kicad_pcb"
     shutil.copyfile(src, BOARD)
     board = pcbnew.LoadBoard(str(BOARD))
+    PRE_DRAWING_IDS.update(d.m_Uuid.AsString() for d in board.GetDrawings())
     seed_ids("start")
     final_ses = WORK / "vtol_carrier.ses"
     replay_path = WORK / "ses_replay.json"

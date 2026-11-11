@@ -499,10 +499,10 @@
   "gnd_track_mm": 117.9,
   "gnd_track_widths": {
    "0.3": 91,
-   "0.2": 31,
-   "0.15": 2,
    "0.25": 12,
+   "0.2": 27,
    "0.4": 5,
+   "0.15": 2,
    "1.0": 1
   },
   "track_length_over_adjacent_plane_pct": {
@@ -510,7 +510,7 @@
    "B.Cu": 86.9
   },
   "track_mm_per_layer": {
-   "F.Cu": 2128.1,
+   "F.Cu": 2127.8,
    "B.Cu": 1945.4
   },
   "nlink_pct_on_F_over_In1_GND": {
@@ -691,7 +691,7 @@
   },
   "+3V3": {
    "min_mm": 0.375,
-   "segments": 239
+   "segments": 232
   },
   "GPS_VCC": {
    "min_mm": 0.5,

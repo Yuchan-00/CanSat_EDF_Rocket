@@ -1283,9 +1283,9 @@
  ],
  "netlist": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
-  "sha256": "8d3f4f58f4f0d4978946284e3ed3f99b7b46bcafb7a05ff239ac0fd64e1a5797",
+  "sha256": "a3efd566ae3fcfd61c2b516f712e253b044c99792b9b2a0ba45a0d8d1aa65786",
   "tool": "Eeschema 10.0.6",
-  "export_date_in_file": "2026-11-11T21:02:38",
+  "export_date_in_file": "2026-11-11T22:35:37",
   "components": 174,
   "named_nets": 105,
   "unconnected_single_pin_nets": 183,

@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-11T21:02:54",
+    "date": "2026-11-11T22:35:55",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -151,12 +151,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "비아 [ESP_TXD0] on F.Cu - B.Cu",
+                    "description": "배선 [ESP_TXD0] on F.Cu, 길이 1.2223 mm",
                     "pos": {
                         "x": 95.95,
-                        "y": 92.0152
+                        "y": 93.2375
                     },
-                    "uuid": "2942af7f-a671-4f44-8d7c-d1fc7a436a1c"
+                    "uuid": "06a8a13a-d8b9-47f9-a956-06e2f2c182ad"
                 },
                 {
                     "description": "배선 [ESP_TXD0] on B.Cu, 길이 1.6898 mm",
@@ -174,20 +174,20 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "비아 [BOOST_EN] on F.Cu - B.Cu",
+                    "description": "배선 [BOOST_EN] on B.Cu, 길이 4.0582 mm",
                     "pos": {
-                        "x": 121.1304,
-                        "y": 127.3265
+                        "x": 124.0,
+                        "y": 130.1961
                     },
-                    "uuid": "f209ee37-3d54-4512-a17b-4523468878d6"
+                    "uuid": "8ce9fa04-9c49-4488-bd20-03efbac17504"
                 },
                 {
-                    "description": "배선 [BOOST_EN] on F.Cu, 길이 0.0318 mm",
+                    "description": "배선 [BOOST_EN] on F.Cu, 길이 1.2205 mm",
                     "pos": {
-                        "x": 116.6625,
-                        "y": 132.1
+                        "x": 116.685,
+                        "y": 132.0775
                     },
-                    "uuid": "ad870797-7e73-42ff-8ce8-685e535365cb"
+                    "uuid": "ad301530-73ac-4d3a-8136-7a65dfb52052"
                 }
             ],
             "severity": "error",

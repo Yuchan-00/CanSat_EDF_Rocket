@@ -1,5 +1,63 @@
 # rev 3 독립 검토 지적 사항 판정과 조치
 
+## 추가 기록 (2026-11-11, 재배치 단계와 재배치 수정 단계 뒤) - 먼저 읽으십시오
+
+**이 아래 '수정 단계 기록'(표와 English detail)은 수정(fix) 단계 당시의 기록이며, 그때의 보드(sha256 b1fe1813...)를 설명합니다. 지금 보드와 다릅니다.**
+그 기록은 고치지 않고 보존했습니다. 그 뒤에 한 일은 두 가지입니다.
+
+1. 재배치 단계: 승압 IC U8 주변 부품 7개(U8, C57, C43, C41, R63, R64, C58)를 옮기고 배선을 새로 했습니다.
+2. 재배치 수정 단계: 재배치에 대한 독립 검토(RR-1 ~ RR-9)의 지적을 확인하고 조치했습니다. 부품 위치와 구리 모양은 바꾸지 않았습니다.
+
+지금 납품 보드: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb`,
+sha256 b8648809d12090d5bdfc8cb9d6c71ae6eb0c80db95c8ae288a5727fa634db65d.
+지금의 숫자와 판정은 생성 문서인 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 0장과
+`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/README_ko.md` 1장이 기준입니다. 이 추가 기록의 숫자는 2026-11-11 재배치 수정 단계의 측정값(M,
+`out/reports/routing_rules.json`)입니다. 출고 판정은 여전히 NOT ORDERABLE입니다.
+
+### 아래 표에서 상태가 바뀐 줄
+
+| Id | 아래 표의 상태 | 지금 상태 | 근거 (M) |
+|---|---|---|---|
+| E-R1 | 인정 (미수정) | 대부분 고침 | U8.4 / C57.2 / C43.2 / C41.2가 윗면 GND 구리 한 덩어리 위 (검사 hot_loop_top_gnd PASS). 다만 계획 448줄의 '두 출력 커패시터 모두 2 mm 안'(검사 hot_loop)은 FAIL로 남음: C43 간격 3.25 / 3.537 mm |
+| E-R2 | 인정 (미수정) | 일부 고침 | C41 → U8 VIN 구리 길이 1.54 mm (검사 input_cap, input_cap_vin PASS). C41 → L5 입력 13.53 mm (검사 input_cap_l5 FAIL; 5 mm 기준은 스크립트가 정한 값, E) |
+| E-R3 | 인정 (미수정) | 고침 | FB 선이 출력 커패시터 패드 사이를 지나지 않음 (검사 fb_clear_of_caps PASS) |
+| E-R4 / MR-3 | 인정 (수정) | 숫자 바뀜 | 세그먼트·비아 수는 README가 최종 보드 파일에서 다시 셉니다 (겹쳐 있던 똑같은 배선 조각 173개를 지운 뒤의 수) |
+| E-R5 / J5 | 일부 인정 (문서만) | 고침 | gbrjob 표면처리가 ENIG (build_pcb.py 적층 설정) |
+| J2 | 인정 (수정) | 더 고침 | 레일이 붙는 두 변의 구리 이격 0.400 mm (검사 rail_edge_copper PASS). V-cut 기준값(0.4 mm, F)에 여유 없이 딱 맞으므로 V-cut 가능 여부는 NOT_VERIFIED, 메모는 라우팅 탭을 첫째로 요청 |
+| J7 | 인정 (수정) | 숫자 바뀜 | 가장자리 2.5 mm 안 몸체 34개 = JLC 실장 28 / with_mcu 29 / 미실장 6 (edge_distance.json) |
+| MR-5 | 일부 인정 | 대부분 고침 | 보드 주석층(Dwgs.User) 글자는 고침. B.SilkS의 U8 / U9 글자는 그대로임 |
+
+배터리 경로 폭(검사 battery_path)은 여전히 FAIL입니다: 2.0 mm보다 좁은 길이 16.1 mm → 8.57 mm, 구리 저항 0.03173 Ohm (20 C, E).
+
+### 재배치로 나빠진 것 (재배치 검토 RR-1, 인정)
+
+- 검사 sw_node FAIL (재배치 전 보드에서는 PASS: 간격 0.464 mm, SW 선 1.174 mm): U8의 SW 패드와 L5의 SW 패드 사이 간격 5.551 mm, SW 선 길이 6.619 mm, SW 선이 C57 / C43의 패드 사이를 지남.
+  계획 449줄·466줄('L5는 U8 핀 바로 옆', 'SW 구리는 두 패드에 필요한 만큼만', '패드가 허락하는 한 짧게')을 지키지 못합니다.
+  2.0 mm 기준은 계획에 숫자가 없어 스크립트가 계획 448줄의 값을 빌려 읽은 것(E)입니다.
+- 검사 crystal_distance FAIL: rev 2c의 Pololu 핀은 NAV 크리스털 Y1 패드에서 9.217 mm, U1 XTAL 핀에서 9.616 mm였습니다 (보관된 rev 2c 보드에서 같은 방법으로 잼).
+  지금은 C57이 Y1 패드에서 7.501 mm, U8이 XTAL 핀에서 8.35 mm, SW 구리가 Y1 패드에서 8.475 mm / XTAL 핀에서 8.943 mm / 크리스털 배선에서 7.465 mm입니다.
+  계획 452줄을 지키지 못합니다. 재배치 전 보드도 이 검사는 FAIL이었습니다 (C57 7.557 mm, L5 8.714 mm가 Y1 패드에 rev 2c보다 가까움);
+  재배치로 U8과 C43도 더 가까워졌고, SW 구리와 XTAL 핀 사이는 11.497 mm → 8.943 mm, SW 구리와 크리스털 배선 사이는 8.891 mm → 7.465 mm가 되었습니다.
+- 이 두 검사는 재배치 수정 단계에서 새로 넣었고, 출고 판정 이유에 들어갑니다. 전기적 영향(과전압, 리플, 발열, 크리스털 잡음)은 보드에서 재기 전까지 NOT_VERIFIED입니다.
+
+### 재배치 검토(RR) 지적별 조치
+
+| Id | 심각도 | 판정 | 조치 |
+|---|---|---|---|
+| RR-1 | major | 인정 (수정: 검사·문서) | 검사 sw_node, crystal_distance 추가 (둘 다 FAIL), 출고 판정 이유와 ORDER 0장 B·README 1장에 숫자와 함께 기재. 보드는 바꾸지 않음 (배치 변경은 사용자 결정) |
+| RR-2 | major | 인정 (수정) | route.py가 배선·비아·실크 글자의 uuid를 항목 내용에서 만들도록 바꿈. determinism.py에 `--cross-folder` 추가: 다른 폴더에서 다시 만든 파일과 바이트 비교. 결과는 README 1장·6장 |
+| RR-3 | major | 인정 (수정) | 이 추가 기록 |
+| RR-4 | minor | 인정 (문서) | C59 GND 패드 옆에 자기 비아 없음을 routing_rules.json information에 측정값으로 기록, ORDER 0장 B에 기재. 비아 추가는 다음 새 배선 때 |
+| RR-5 | minor | 인정 (문서) | L5 입력 앞 비아 수를 측정값으로 기록, ORDER 0장 A에 기재 |
+| RR-6 | minor | 인정 (수정) | 겹쳐 있던 똑같은 배선 조각 173개 제거 (구리 모양은 같음), make_all.py 설명 수정 |
+| RR-7 | minor | 인정 (수정) | 5 mm 기준이 스크립트가 정한 값(E)임을 문서에 표기, 겹친 PASS / FAIL 말머리 제거 |
+| RR-8 | minor | 인정 (수정) | 뒤 단계가 다시 쓰는 파일은 manifest 첫 목록에서 빼고 build.written_after_checks_exports 에만 둠 |
+| RR-9 | minor | 인정 (문서) | V-cut은 'JLC 기준값에 딱 맞음, NOT_VERIFIED'로 표기, 라우팅 탭을 첫째로 요청 |
+
+---
+
+## 수정 단계 기록 (재배치 전 보드 b1fe1813... 기준, 보존)
+
 세 검토(전기, JLC 주문, 기구·그림·문서)가 낸 지적 21건을 1차 자료(보드 파일, 도구 보고서, 계획서, 데이터시트 발췌)와 직접 대조해 판정했습니다.
 막는 문제(blocker)는 없었습니다. 표시: M = 이 PC에서 도구로 측정, E = 추정, A = 가정, F = 문서 근거.
 판정: 인정 = 지적이 맞음, 일부 인정 = 일부만 맞거나 일부만 고침, 기각 = 근거와 함께 받아들이지 않음 (이번에는 기각 없음).
