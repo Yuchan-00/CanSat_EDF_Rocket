@@ -1,0 +1,741 @@
+"""User documents of the rev 3 carrier: README_ko.md (board folder) and out/ORDER_ko.md (ordering guide).
+
+Invariant: every number in the two documents is read from a generated file in this run (spec, plan, reports, BOM /
+CPL / CSV files) through ``Facts``; the documents end with a table that names the file each number came from and its
+label (M measured by a tool here, E estimate, A assumption, F from a document). A number that has no source file is
+not written. Fixed wording (procedures, explanations) is Korean prose without numbers, or quotes the plan by section.
+Nothing here edits the design or an order file. The output is deterministic for the same input files.
+
+Run: cd <board>/scripts && B:/Claude/.venv/Scripts/python.exe -X utf8 -B docs_ko.py   (step 'docs' of make_all.py)
+"""
+
+from __future__ import annotations
+
+import collections
+import csv
+import json
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+OUT = ROOT / "out"
+REP = OUT / "reports"
+R = ROOT.as_posix()
+
+BLOCK_KO = {
+    "PWR": "전원: 1S 로직 배터리 입력 J14, 역극성 보호 Q10, 스위치 리드 J15, 5 V 승압 U8 TPS61023 + L5, 저전압 차단 U9 TLV3012B, "
+           "3.3 V 레귤레이터 U6, 접지 연결 NT1, 배터리 전압 분압",
+    "NAV": "NAV 칩 U1 ATmega128A + GY-521 IMU 자리 J1 + BMP280 소켓 J2",
+    "FCU": "FCU 칩 U2 ATmega128A",
+    "COM": "COM 칩 U3 ATmega128A + ESP-12F Wi-Fi 모듈 U7, 레벨 시프터, 부트 스트랩, ESP 굽기 단자 J3",
+    "GNS": "GNS 칩 U4 ATmega128A + GPS 리드 커넥터 J7 (NEO-7M)",
+    "SHIFT": "BSS138 레벨 시프터 5 V <-> 3.3 V",
+    "IO": "서보 J8~J11, ESC J12, 아밍 스위치 J16, 부저 J17, 6S 전압 감지 J18 등 입출력 커넥터",
+    "LOG": "OpenLog 소켓 J5",
+    "LINK": "칩 사이 연결선 (UART / SPI) 부품",
+}
+TAG_KO = [  # first matching prefix wins
+    ("optional sourcing", "선택: 재고·도면 근거 (D3 / D12에서 rev 2c 번호로 되돌릴 수 있음)"),
+    ("forced", "필수: 요청(모든 부품을 JLC가 실장) 때문에"),
+    ("keeps a rev 2c function", "rev 2c 기능 유지: Pololu 모듈 안에 있던 저전압 차단 (D2에서 뺄 수 있음)"),
+    ("sourcing", "조달: JLC 주문 방식·재고 때문에 (핀 호환 부품)"),
+    ("unchanged", "변경 없음: 부품 없는 자리 (rev 2c와 같음)"),
+]
+ACTION_KO = {"replace": "교체", "add": "추가", "remove": "삭제", "keep-dnp": "그대로 (부품 없음)"}
+FIT_KO = {"jlc": "JLC가 실장 (주문 BOM / CPL에 들어감)", "jlc_optional": "기본은 사용자 납땜, with_mcu 파일 쌍을 쓰면 JLC 실장",
+          "user": "사용자가 납땜", "none": "부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만)"}
+
+
+def load(rel: str) -> dict:
+    return json.loads((ROOT / rel).read_text(encoding="utf-8"))
+
+
+def rows(rel: str) -> list[dict]:
+    with open(ROOT / rel, encoding="utf-8-sig", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def p(rel: str) -> str:
+    """absolute path in backticks (user documents name full paths)"""
+    return f"`{R}/{rel}`"
+
+
+class Facts:
+    """key -> (text, source file, label); ``v(key)`` returns the text and marks the key as used in a document."""
+
+    def __init__(self) -> None:
+        self.data: dict[str, tuple[str, str, str]] = {}
+        self.used: list[str] = []
+
+    def put(self, key: str, value, source: str, label: str) -> None:
+        if isinstance(value, float):
+            value = f"{value:g}"
+        elif isinstance(value, (list, tuple)):
+            value = ", ".join(str(x) for x in value) if value else "없음"
+        self.data[key] = (str(value), source, label)
+
+    def v(self, key: str) -> str:
+        if key not in self.data:
+            raise KeyError(f"docs_ko: no fact {key!r} - a number without a source is not written")
+        if key not in self.used:
+            self.used.append(key)
+        return self.data[key][0]
+
+    def table(self, keys: list[str]) -> list[str]:
+        out = ["| 값 이름 | 값 | 출처 파일 | 표시 |", "|---|---|---|---|"]
+        for k in keys:
+            t, s, lab = self.data[k]
+            out.append(f"| {k} | {t} | {s} | {lab} |")
+        return out
+
+
+def gather() -> tuple[Facts, dict]:
+    F = Facts()
+    spec = load("spec/carrier_spec.json")
+    plan = load("spec/rev3_plan.json")
+    man = load("out/manifest.json")
+    rr = load("out/reports/routing_rules.json")
+    edge = load("out/reports/edge_distance.json")
+    fit = load("out/fit_checks.json")
+    rot = load("out/reports/cpl_rotation.json")
+    gate = load("out/jlc_gate_report.json")
+    prog = load("out/reports/programming_access.json")
+    pin = load("out/reports/rev3_mcu_pinmap.json")
+    u89 = load("out/reports/rev3_u8_u9_pads.json")
+    ef = load("out/reports/rev3_export_files.json")
+    ed = load("out/reports/rev3_export_determinism.json")
+    reuse = load("kicad/work/route_reuse_log.json")
+    dims = load("spec/module_dimensions.json")
+    fees = rows("out/jlc_fee_estimate.csv")
+    offb = rows("out/off_board_purchase.csv")
+    bom = rows("out/jlcpcb_bom.csv")
+    bom_mcu = rows("out/jlcpcb_bom_with_mcu.csv")
+    det_path = REP / "determinism.json"
+    det = json.loads(det_path.read_text(encoding="utf-8")) if det_path.is_file() else None
+
+    S, M = "spec/carrier_spec.json", "out/manifest.json"
+    s = spec["summary"]
+    F.put("부품 자리", s["parts"], S, "M (스크립트 집계)")
+    F.put("실장 부품(populated)", s["parts_populated"], S, "M")
+    F.put("네트", s["nets"], S, "M")
+    for k, n in s["fit_counts"].items():
+        F.put(f"fit {k}", n, S, "M")
+    b = spec["board"]
+    F.put("외곽", f"{b['outline_mm']['size'][0]:g} x {b['outline_mm']['size'][1]:g} mm", S, b["outline_mm"]["label"])
+    F.put("층 수", b["layers"], S, "F (계획 불변조건 d)")
+    F.put("두께", f"{b['thickness_mm']:g} mm", S, "F")
+    F.put("높이 한계", f"{dims['height_limit']['limit_above_board']['v']:g} mm", "spec/module_dimensions.json", "F (계획)")
+    F.put("GY-521 받침 높이", f"{dims['gy521']['support_h']['v']:g} mm", "spec/module_dimensions.json gy521.support_h", "A")
+    F.put("BMP280 헤더 종류", "직각" if dims["bmp280"]["header_type"]["v"] == "right_angle" else dims["bmp280"]["header_type"]["v"],
+          "spec/module_dimensions.json bmp280.header_type", "A")
+    F.put("프로그래밍 헤더 선택", spec["prog_headers"]["option"], S + " prog_headers.option", "M")
+
+    pairs = man["bom_cpl"]["pairs"]
+    for name, pr in pairs.items():
+        for k in ("bom_lines", "bom_lines_smt", "bom_lines_tht", "parts", "cpl_rows"):
+            F.put(f"{name} {k}", pr[k], M + f" bom_cpl.pairs.{name}", "M")
+        F.put(f"{name} 회전 미확인", pr["orientation_critical_rotation_not_verified"], M, "NOT_VERIFIED 목록")
+    F.put("BOM 줄(파일)", len(bom), "out/jlcpcb_bom.csv", "M")
+    F.put("BOM 줄 with_mcu(파일)", len(bom_mcu), "out/jlcpcb_bom_with_mcu.csv", "M")
+    for name, st in man["fab"]["sets"].items():
+        F.put(f"zip {name} sha256", st["zip_sha256"][:16] + "...", M + " fab.sets", "M")
+        F.put(f"F.Paste 패드 {name}", st["f_paste_flashes"], M + " fab.sets", "M")
+    sha = man["sha256"]
+    for rel in ("jlcpcb_bom.csv", "jlcpcb_cpl.csv", "jlcpcb_bom_with_mcu.csv", "jlcpcb_cpl_with_mcu.csv"):
+        F.put(f"{rel} sha256", sha[rel][:16] + "...", M + " sha256", "M")
+    F.put("ERC", f"오류 {man['erc']['errors']}, 경고 {man['erc']['warnings']} (시트 {man['erc']['sheets_checked']}장)",
+          "out/reports/erc.json (kicad-cli " + man["erc"]["kicad_version"] + ")", "M")
+    d = man["drc"]
+    F.put("DRC", f"위반 {d['errors']}, 경고 {d['warnings']}, 미연결 {d['unconnected']}, 회로도 불일치 {d['parity_count']}",
+          "out/reports/drc.json (kicad-cli " + d["kicad_version"] + ")", "M")
+    F.put("넷리스트=사양", f"{man['netlist_vs_spec']['result']} (부품 {man['netlist_vs_spec']['components']}, 네트 "
+          f"{man['netlist_vs_spec']['spec_nets']})", M + " netlist_vs_spec", "M")
+    F.put("보드=IR", f"{man['board_vs_ir']['result']} (핀 {man['board_vs_ir']['pins_found_on_board']} / "
+          f"{man['board_vs_ir']['ir_pins']})", M + " board_vs_ir", "M")
+    F.put("MCU 핀맵", f"{pin['result']} (핀 {pin['pins_compared']}, 차이 {len(pin['differences'])})",
+          "out/reports/rev3_mcu_pinmap.json", "M")
+    F.put("U8/U9 패드표", u89["result"], "out/reports/rev3_u8_u9_pads.json", "M (표는 데이터시트에서 옮김, F)")
+    F.put("주문 파일 검사", ef["result"], "out/reports/rev3_export_files.json", "M")
+    F.put("주문 파일 재현", ed["result"], "out/reports/rev3_export_determinism.json", "M")
+    bm = man["board_metrics"]
+    F.put("구리 섬", "없음 (모든 네트 한 덩어리)" if bm["net_clusters_ok"] else "있음", M + " board_metrics", "M")
+    F.put("패드에 닿는 비아", bm["vias_touching_pads"], M + " board_metrics", "M")
+    F.put("배선 세그먼트", reuse["segments"], "kicad/work/route_reuse_log.json", "M")
+    F.put("배선 비아", reuse["routed_vias"], "kicad/work/route_reuse_log.json", "M")
+    F.put("GND 스티칭 비아", reuse["gnd_stitching_vias"], "kicad/work/route_reuse_log.json", "M")
+    F.put("보드 sha256", reuse["routed_board_sha256"][:16] + "...", "kicad/work/route_reuse_log.json", "M")
+
+    res = rr["results"]
+    F.put("배선 규칙 PASS 수", sum(1 for x in res.values() if x == "PASS"), "out/reports/routing_rules.json", "M")
+    F.put("배선 규칙 수", len(res), "out/reports/routing_rules.json", "M")
+    F.put("배선 규칙 FAIL", [k for k, x in res.items() if x != "PASS"], "out/reports/routing_rules.json", "M")
+    bp = rr["checks"]["battery_path"]
+    F.put("배터리 경로 저항 20C", f"{bp['copper_resistance_ohm_20C']:g} Ohm", "out/reports/routing_rules.json battery_path", "E")
+    F.put("배터리 경로 저항 60C", f"{bp['copper_resistance_ohm_60C']:g} Ohm", "out/reports/routing_rules.json battery_path", "E")
+    F.put("배터리 경로 목표", f"{bp['target_ohm']:g} Ohm", "out/reports/routing_rules.json battery_path", "F (계획 13절)")
+    F.put("2 mm보다 좁은 길이", f"{bp['current_carrying_length_narrower_than_2mm']:g} mm",
+          "out/reports/routing_rules.json battery_path", "M")
+    legs = []
+    for leg in bp["legs"]:
+        n = leg["narrower_than_2mm"]
+        if n["length_mm"] > 0:
+            legs.append(f"{leg['net']} {n['length_mm']:g} mm (폭 {'/'.join(f'{w:g}' for w in n['widths_mm'])} mm)")
+    F.put("좁은 구간", "; ".join(legs), "out/reports/routing_rules.json battery_path.legs", "M")
+    cr = rr["checks"]["crystals"]
+    F.put("XTAL1 최악", f"{cr['XTAL1_worst_mm']:g} mm (한계 {cr['XTAL1_limit_mm']:g} mm)", "out/reports/routing_rules.json crystals", "M")
+    F.put("규칙 파일", rr["checks"]["rule_file"]["result"], "out/reports/routing_rules.json rule_file", "M")
+
+    F.put("가장자리 2.5 mm 안 몸체", len(edge["bodies_under_2p5"]), "out/reports/edge_distance.json", "M")
+    F.put("가장자리 0.3 mm 안 몸체", [f"{r_[0]} {r_[1]:g} mm" for r_ in edge["bodies_under_0p3"]],
+          "out/reports/edge_distance.json", "M")
+    pair = edge["rail_sides_for_standard_order"]["pair"]
+    F.put("레일 쪽", pair, "out/reports/edge_distance.json rail_sides_for_standard_order", "E (표에서 고름)")
+    F.put("레일 없는 쪽 2.5 mm 안", edge["rail_pairs"][pair]["count_without_rail"], "out/reports/edge_distance.json rail_pairs", "M")
+    tl = fit["tht_leads"]
+    F.put("뒷면 다리 규칙", f"{tl['rule_mm']:g} mm", "out/fit_checks.json tht_leads", "F (계획)")
+    F.put("다리 규칙 초과", tl["over_rule_nominal"], "out/fit_checks.json tht_leads", "F (도면값)")
+    F.put("다리 길이 미확인", tl["not_verified"], "out/fit_checks.json tht_leads", "NOT_VERIFIED")
+    rf = fit["reflow_rating"]
+    F.put("리플로 한계", [x.split(" ")[0] for x in rf["exceeds_or_at_limit"]], "out/fit_checks.json reflow_rating", "F (데이터시트)")
+    F.put("리플로 미확인 줄 수", len(rf["not_verified"]), "out/fit_checks.json reflow_rating", "NOT_VERIFIED")
+    F.put("모듈 간섭", f"{fit['module_keepouts']['status']}, 가정 치수로 충돌 {len(fit['module_keepouts']['collisions_under_stated_assumptions'])}건",
+          "out/fit_checks.json module_keepouts", "A")
+    acc = fit["mcu_access"]["per_mcu"]
+    F.put("MCU 1 mm 안 부품", ", ".join(f"{k} {acc[k]['fitted_parts_within_1mm']}" for k in sorted(acc)),
+          "out/fit_checks.json mcu_access", "M")
+    F.put("회전 미확인", rot["summary"]["orientation_critical_not_verified"], "out/reports/cpl_rotation.json", "NOT_VERIFIED")
+    F.put("방향 중요 부품 수", rot["summary"]["orientation_critical_rows"], "out/reports/cpl_rotation.json", "M")
+
+    F.put("JLC 확인 시각", gate["started_at"], "out/jlc_gate_report.json", "M (그 시각의 재고)")
+    F.put("JLC 확인 결과", f"{gate['status']} ({gate['main_pair_lines_pass']}/{gate['main_pair_lines']}줄), with_mcu {gate['with_mcu_status']}",
+          "out/jlc_gate_report.json", "M")
+    F.put("JLC 기록 사양 일치", "예" if man["jlc_gate"]["status"] == "PASS" else man["jlc_gate"]["status"], M + " jlc_gate", "M")
+    watch = [ln for ln in gate["lines"] if ln.get("available", 10 ** 9) < 2000]
+    F.put("재고 주의 줄", [f"{ln['jlc_code']} ({','.join(ln['designators'])}) {ln['available']}개, 필요 {ln['need_20_boards']}"
+                         for ln in watch], "out/jlc_gate_report.json lines (available < 2000)", "M")
+    F.put("얇은 재고 기준", f"{gate['thin_threshold']}개", "out/jlc_gate_report.json", "F (계획 I7)")
+    F.put("얇은 재고 줄", gate["thin_lines"], "out/jlc_gate_report.json", "M")
+    alt = collections.defaultdict(list)
+    for a in gate["alternates_and_options"]:
+        if a["group"] == "alternate":
+            alt[a["for"]].append(f"{a['jlc_code']} {a.get('mpn', '')} ({a['available']}개, {a['verdict']})")
+    for k, lst in alt.items():
+        F.put(f"대체 {k}", "; ".join(lst), "out/jlc_gate_report.json alternates_and_options", "M")
+
+    for r_ in fees:
+        key = f"비용 {r_['pair']} {r_['order']} {r_['boards']}장"
+        F.put(key, f"{float(r_['sum_E']):.2f} USD", "out/jlc_fee_estimate.csv sum_E", "E")
+        if r_.get("sum_E_with_standard_only_fees"):
+            F.put(key + " (Standard 전용 수수료 포함)", f"{float(r_['sum_E_with_standard_only_fees']):.2f} USD",
+                  "out/jlc_fee_estimate.csv", "E (적용 여부 NOT_VERIFIED)")
+            F.put("Standard 전용 수수료", f"{float(r_['standard_only_fees_applicability_NOT_VERIFIED']):.2f} USD",
+                  "out/jlc_fee_estimate.csv", "E")
+        F.put(f"THT 납땜점 {r_['pair']}", r_["tht_joints_per_board"], "out/jlc_fee_estimate.csv", "M")
+    F.put("따로 살 품목 수", len(offb), "out/off_board_purchase.csv", "M")
+
+    v_ = prog["verdict_per_family"]
+    F.put("B안 2x3 자리", f"SMD {v_['smd']['final_2x3_legal_origins']}곳, THT {v_['tht']['final_2x3_legal_origins']}곳",
+          "out/reports/programming_access.json verdict_per_family", "M")
+    F.put("B안 결론", "불가 (고정 부품만 남겨도 2x3 다섯 개 자리가 없음)" if v_["smd"]["impossible_even_with_every_greedy_part_removed"]
+          else "가능성 있음", "out/reports/programming_access.json", "M")
+
+    uv = plan["power_block"]["uvlo"]
+    vo = plan["power_block"]["vout_V"]
+    F.put("켜짐 전압", f"{uv['V_on_worst'][0]:.2f} ~ {uv['V_on_worst'][1]:.2f} V", "spec/rev3_plan.json power_block.uvlo", "E")
+    F.put("꺼짐 전압", f"{uv['V_off_worst'][0]:.2f} ~ {uv['V_off_worst'][1]:.2f} V", "spec/rev3_plan.json power_block.uvlo", "E")
+    F.put("+5V 범위", f"{vo['min_V']:.2f} ~ {vo['max_V_pfm_E']:.2f} V", "spec/rev3_plan.json power_block.vout_V", "E")
+    parts = {q["refdes"]: q for q in spec["parts"]}
+    F.put("UVLO 저항", f"R65 {parts['R65']['value']}, R66 {parts['R66']['value']}, R67 {parts['R67']['value']}", S, "M")
+    F.put("분압 저항", f"R15 {parts['R15']['value']}, R16 {parts['R16']['value']}", S, "M")
+    code = {}
+    for row in bom:
+        for ref in row["Designator"].split(","):
+            code[ref.strip()] = row["JLCPCB Part #\uff08optional\uff09"]
+    for ref in ("U8", "U9", "L5", "C45", "J2", "J5", "J8", "J15", "J17", "Q1", "U7", "J14"):
+        F.put(f"코드 {ref}", code.get(ref, "BOM에 없음"), "out/jlcpcb_bom.csv", "M")
+    F.put("U1-U4 기본 BOM", "없음" if not any(code.get(f"U{i}") for i in range(1, 5)) else "있음", "out/jlcpcb_bom.csv", "M")
+    mcu_codes = {ref.strip(): row["JLCPCB Part #\uff08optional\uff09"] for row in bom_mcu for ref in row["Designator"].split(",")}
+    F.put("U1-U4 with_mcu", ", ".join(sorted({mcu_codes.get(f"U{i}", "-") for i in range(1, 5)})), "out/jlcpcb_bom_with_mcu.csv", "M")
+    F.put("툴링 홀(H) 부품", s["by_prefix"].get("H", 0), S + " summary.by_prefix", "M")
+    F.put("출고 판정", man["release_gate"]["status"], M + " release_gate", "M (도구 검사)")
+    F.put("출고 판정 이유", man["release_gate"]["reasons"], M + " release_gate.reasons", "M")
+    if det and "build1_vs_build2" in det:
+        bb = det["build1_vs_build2"]
+        txt = (f"{det['result']} - 바이트 비교 파일 {bb['deterministic']['files']}개 중 다른 것 {len(bb['deterministic']['differing'])}개; "
+               f"시각 줄을 뺀 비교 {bb['normalised']['files']}개 중 다른 것 {len(bb['normalised']['differing'])}개")
+        if bb["normalised"]["differing"]:
+            canon = bb.get("step_canonical", {})
+            txt += (f" ({', '.join(bb['normalised']['differing'])}: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. "
+                    f"번호·순서를 뺀 내용 비교는 {'같음' if canon and not canon.get('differing') else '다름'})")
+        F.put("결정성", txt, "out/reports/determinism.json", "M")
+        F.put("결정성 시각", det.get("finished", "-"), "out/reports/determinism.json", "M")
+        F.put("빌드 시간", ", ".join(f"{b_['minutes']}분" for b_ in det["builds"]), "out/reports/determinism.json builds", "M")
+    elif det:
+        F.put("결정성", f"{det.get('result')} ({det.get('why', '')})", "out/reports/determinism.json", "M")
+        F.put("결정성 시각", det.get("finished", "-"), "out/reports/determinism.json", "M")
+        F.put("빌드 시간", "-", "out/reports/determinism.json", "M")
+    else:
+        F.put("결정성", "NOT_VERIFIED (scripts/determinism.py 아직 실행 안 됨)", "out/reports/determinism.json 없음", "NOT_VERIFIED")
+        F.put("결정성 시각", "-", "-", "NOT_VERIFIED")
+        F.put("빌드 시간", "-", "-", "NOT_VERIFIED")
+    ctx = {"spec": spec, "plan": plan, "man": man, "gate": gate, "fees": fees, "offb": offb, "code": code,
+           "parts": parts, "alt": alt}
+    return F, ctx
+
+
+def change_table(F: Facts, ctx: dict) -> list[str]:
+    """plan changes that are not 'keep', with the tag in Korean; the rev 3 code is checked against the BOM file."""
+    out = ["| Ref | 변경 | rev 2c | rev 3 | 누가 붙임 | 분류 (태그) | BOM 파일과 대조 |", "|---|---|---|---|---|---|---|"]
+    bad = []
+    for c in ctx["plan"]["changes"]:
+        if c["action"] == "keep":
+            continue
+        tag = c.get("tag", "")
+        tko = next((k for pre, k in TAG_KO if tag.startswith(pre)), tag)
+        r2 = c.get("rev2c") or {}
+        r3 = c.get("rev3") or {}
+        old = f"{r2.get('value', '-')} / {r2.get('part_number', '-')}" if r2 else "-"
+        new = f"{r3.get('value', '-')} / {r3.get('jlc_code') or '-'}" if r3 else "-"
+        who = {"JLC": "JLC"}.get(r3.get("populate_by", ""), r3.get("populate_by") or "-") if r3 else "-"
+        in_bom = ctx["code"].get(c["refdes"])
+        want = r3.get("jlc_code") if r3 and r3.get("fit") == "jlc" else None
+        if want and in_bom != want:
+            bad.append(c["refdes"])
+        chk = "일치" if want and in_bom == want else ("BOM에 없음 (맞음)" if not want and not in_bom else "불일치")
+        out.append(f"| {c['refdes']} | {ACTION_KO.get(c['action'], c['action'])} | {old} | {new} | {who} | {tko} | {chk} |")
+    if bad:
+        raise SystemExit(f"docs_ko: plan change rows disagree with out/jlcpcb_bom.csv: {bad}")
+    n = collections.Counter(c["action"] for c in ctx["plan"]["changes"])
+    F.put("변경 행", ", ".join(f"{ACTION_KO.get(k, k)} {n[k]}" for k in ("replace", "add", "remove", "keep-dnp"))
+          + f", 그대로 {n['keep']}", "spec/rev3_plan.json changes", "F (계획)")
+    return out
+
+
+def readme(F: Facts, ctx: dict) -> str:
+    spec, man = ctx["spec"], ctx["man"]
+    L: list[str] = []
+    A = L.append
+    A("# VTOL 아비오닉스 캐리어 PCB rev 3 (JLC가 실장해서 보내는 판)")
+    A("")
+    A("**이 보드는 아직 만들거나 전원을 넣어 본 적이 없습니다 (NOT_VERIFIED).** 아래의 PASS는 모두 도구(kicad-cli ERC/DRC, 스크립트)의 "
+      "결과이며 보드가 동작한다는 뜻이 아닙니다. JLC가 이 파일을 받아 주는지도 업로드 후 JLC의 DFM 결과와 견적을 봐야 압니다.")
+    A("")
+    A("표시: M = 이 PC에서 도구로 측정, E = 추정(계산), A = 가정(실물로 확인 필요), F = 문서·데이터시트 근거. 근거가 없으면 NOT_VERIFIED. "
+      "이 문서는 `scripts/docs_ko.py` 가 보고서 파일에서 숫자를 읽어 만든 것입니다 (손으로 고치지 말고 다시 생성). 측정·계산된 숫자의 출처는 맨 끝 8장에 있고, "
+      "그 표에 없는 숫자(칩 종류, 규칙 값, 시험 조건)는 계획서 `spec/REV3_PLAN.md` 와 사양 `spec/carrier_spec.json` 에서 옮긴 고정값(F)입니다.")
+    A("")
+    A("## 1. 지금 상태")
+    A("")
+    A(f"**출고 판정(도구 검사 기준): {F.v('출고 판정')}** - 이유: {F.v('출고 판정 이유')}.")
+    A("")
+    A(f"배선이 끝난 보드에서 배터리 전원 경로(J14 → Q10 → J15 → L5)의 구리 저항은 {F.v('배터리 경로 저항 20C')} (20 C, E)로 "
+      f"계획 목표 {F.v('배터리 경로 목표')} 를 만족하지만, 계획이 요구한 '2.0 mm 이상 폭'을 {F.v('2 mm보다 좁은 길이')} 구간에서 "
+      f"지키지 못했습니다 ({F.v('좁은 구간')}). 60 C에서는 {F.v('배터리 경로 저항 60C')} (E)로 목표를 넘습니다. "
+      "도구는 이 규칙을 느슨하게 하지 않았습니다. 그대로 주문할지, 배선을 고칠지는 사용자가 정할 일입니다 "
+      f"({p('out/ORDER_ko.md')} 0장).")
+    A("")
+    A("| 항목 | 결과 | 표시 |")
+    A("|---|---|---|")
+    A(f"| 회로도 ERC | {F.v('ERC')} | M |")
+    A(f"| PCB DRC (`--schematic-parity --severity-all --refill-zones`) | {F.v('DRC')} | M |")
+    A(f"| 넷리스트 = 사양 | {F.v('넷리스트=사양')} | M |")
+    A(f"| 보드 패드 넷 = IR | {F.v('보드=IR')} | M |")
+    A(f"| MCU 4개 핀 = rev 2c | {F.v('MCU 핀맵')} | M |")
+    A(f"| U8 / U9 핀-네트 표 | {F.v('U8/U9 패드표')} | M (표는 F) |")
+    A(f"| 배선 규칙 (계획 13장) | {F.v('배선 규칙 PASS 수')} / {F.v('배선 규칙 수')} PASS, FAIL: {F.v('배선 규칙 FAIL')} | M / E |")
+    A(f"| 크리스털 XTAL1 길이 (rev 2c보다 나빠지면 안 됨) | {F.v('XTAL1 최악')} | M |")
+    A(f"| 설계 규칙 파일 = rev 2c | {F.v('규칙 파일')} | M |")
+    A(f"| 구리 섬 / 패드에 닿는 비아 | {F.v('구리 섬')} / {F.v('패드에 닿는 비아')} | M |")
+    A(f"| JLC 부품 재고·주문 가능 확인 | {F.v('JLC 확인 결과')}, {F.v('JLC 확인 시각')} | M (그 시각 기준) |")
+    A(f"| 주문 파일 형식·fit 집합 검사 | {F.v('주문 파일 검사')} | M |")
+    A(f"| 주문 파일을 두 번 써서 같은지 | {F.v('주문 파일 재현')} | M |")
+    A(f"| 전체 다시 만들기 두 번 = 같은 파일 | {F.v('결정성')} | M |")
+    A(f"| 가장자리 2.5 mm 안 부품 몸체 | {F.v('가장자리 2.5 mm 안 몸체')}개 (0.3 mm 안: {F.v('가장자리 0.3 mm 안 몸체')}) | M |")
+    A(f"| 모듈(OpenLog / BMP280 / GY-521) 간섭 | {F.v('모듈 간섭')} | A / NOT_VERIFIED |")
+    A("")
+    A("## 2. 이 기판은 무엇인가")
+    A("")
+    A(f"- 크기 {F.v('외곽')}, 두께 {F.v('두께')}, {F.v('층 수')}층 (F.Cu 신호와 부품 / In1 GND 전면 / In2 +5V 전면 / B.Cu 신호). "
+      "부착 구멍 없음: 3 mm 폼테이프 + 케이블타이 1개. 케이블타이 띠(x -3..+3 mm)에는 실장 부품이 없습니다.")
+    A(f"- 부품은 모두 윗면에만 있습니다. 부품 높이 한계는 기판 윗면에서 {F.v('높이 한계')} 입니다. 아랫면은 폼테이프 자리라 비어 있습니다.")
+    A("- 비행 컴퓨터 칩 4개: U1 NAV, U2 FCU, U3 COM, U4 GNS (ATmega128A-AU, 16 MHz, 5 V). 무선은 U7 ESP-12F (Wi-Fi 중계).")
+    A("- 센서: GY-521 (IMU, J1에 납땜), BMP280 (기압, 소켓 J2), NEO-7M GPS (기체 윗뚜껑, 케이블로 J7). 기록기 OpenLog는 소켓 J5.")
+    A("- 전원 흐름: 1S 로직 배터리 J14 → Q10 역극성 보호 → 스위치 리드 J15 → U8 승압 5 V (+ U9 저전압 차단) → +5V 면 → U6 → +3V3.")
+    A("")
+    A("블록 (회로도 시트 기준, 부품 수는 사양에서 셈):")
+    A("")
+    A("| 블록 | 내용 | 부품 자리 | 그중 JLC 실장 |")
+    A("|---|---|---|---|")
+    cnt = collections.Counter(q["block"] for q in spec["parts"])
+    cj = collections.Counter(q["block"] for q in spec["parts"] if q["fit"] == "jlc")
+    for blk in ("PWR", "NAV", "FCU", "COM", "GNS", "SHIFT", "IO", "LOG", "LINK"):
+        if cnt.get(blk):
+            F.put(f"블록 {blk}", f"{cnt[blk]} / {cj.get(blk, 0)}", "spec/carrier_spec.json parts[].block, parts[].fit", "M")
+            a, bb = F.v(f"블록 {blk}").split(" / ")
+            A(f"| {blk} | {BLOCK_KO.get(blk, blk)} | {a} | {bb} |")
+    A("")
+    A("## 3. rev 2c에서 바뀐 것과 이유")
+    A("")
+    A("- **5 V 전원 모듈을 없앴습니다.** 꽂는 Pololu 모듈(J6, 디바이스마트 부품)은 JLC가 실장할 수 없어서, JLC 부품으로 만든 승압 회로 "
+      f"U8 TPS61023 ({F.v('코드 U8')}) + L5 ({F.v('코드 L5')})를 예전 모듈 자리(+x / -y 모서리)에 올렸습니다. 이유: 요청(모든 부품 JLC 실장).")
+    A(f"- **저전압 차단을 유지했습니다.** 예전 모듈 안에 있던 기능입니다. U9 TLV3012B ({F.v('코드 U9')}) + {F.v('UVLO 저항')}: "
+      f"켜짐 {F.v('켜짐 전압')}, 꺼짐 {F.v('꺼짐 전압')} (계산값 E, 실측 전).")
+    A(f"- **Wi-Fi 모듈 ESP-12E → ESP-12F** ({F.v('코드 U7')}). 핀과 풋프린트가 같고, ESP-12E는 JLC에서 재고가 적고 Standard 주문에만 쓸 수 있었습니다.")
+    A(f"- **스루홀 커넥터도 JLC가 납땜합니다.** 소켓 J2 / J5 ({F.v('코드 J2')}), 서보 헤더 J8~J12 ({F.v('코드 J8')}), J16, J18, "
+      f"배터리 J14 ({F.v('코드 J14')}), 스위치·부저 J15 / J17 ({F.v('코드 J15')}). 탄탈 C45 ({F.v('코드 C45')})와 헤더·소켓 번호 일부는 재고나 도면 근거로 "
+      "바꿨고 D3 / D12에서 rev 2c 번호로 되돌릴 수 있습니다.")
+    A(f"- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 ({F.v('MCU 핀맵')}), 외곽, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치와 방향, 설계 규칙 "
+      f"({F.v('규칙 파일')}), 크리스털 배선 ({F.v('XTAL1 최악')}).")
+    A(f"- **배치·배선을 다시 했습니다.** 새 부품 13개를 넣느라 주변 수동 부품 일부가 옮겨졌고, 배선은 새로 했습니다 (세그먼트 {F.v('배선 세그먼트')}개, "
+      f"비아 {F.v('배선 비아')}개 중 GND 스티칭 {F.v('GND 스티칭 비아')}개). 배선은 Freerouting 실행 기록(세션 파일)을 다시 넣는 방식으로 재현됩니다.")
+    A(f"- 부품마다 바뀐 내용과 이유 분류(태그)의 전체 표: {p('out/ORDER_ko.md')} 10장 ({F.v('변경 행')}).")
+    A("")
+    A("## 4. 누가 무엇을 붙이나")
+    A("")
+    A("| 구분 | 뜻 | 개수 |")
+    A("|---|---|---|")
+    for k in ("jlc", "jlc_optional", "user", "none"):
+        A(f"| {k} | {FIT_KO[k]} | {F.v('fit ' + k)} |")
+    A("")
+    A(f"- JLC가 붙이는 것: 기본 파일 쌍 기준 BOM {F.v('main bom_lines')}줄 (SMT {F.v('main bom_lines_smt')} + THT {F.v('main bom_lines_tht')}), "
+      f"부품 {F.v('main parts')}개. MCU까지 맡기는 with_mcu 쌍은 {F.v('with_mcu bom_lines')}줄 / {F.v('with_mcu parts')}개 "
+      f"(U1~U4 = {F.v('U1-U4 with_mcu')}).")
+    A("- 사용자가 붙이는 것: ATmega128A-AU 4개 (기본, with_mcu 쌍이면 JLC), GY-521 (J1 구멍에 모듈 핀을 납땜), BMP280 (J2에 꽂음), "
+      "OpenLog (모듈에 직각 6핀 헤더를 납땜한 뒤 J5에 꽂음), NEO-7M (케이블로 J7).")
+    A(f"- 부품 없이 비워 둔 자리: 프로그래밍 단자 J3, J19~J22 (2x3), J24~J26 (1x2) - 현재 선택 {F.v('프로그래밍 헤더 선택')}안 (빈 도금 구멍). "
+      f"JLC가 헤더를 띠 밖에 실장하는 B안은 배치 검색 결과 {F.v('B안 결론')} ({F.v('B안 2x3 자리')}).")
+    A(f"- MCU·센서 말고 사용자가 해야 하는 일(레일 떼기, 다리 자르기, 프로그래밍 단자 등)은 {p('out/ORDER_ko.md')} 8장에 모았습니다.")
+    A("")
+    A("## 5. 확인되지 않은 것 (NOT_VERIFIED)")
+    A("")
+    for t in [
+        f"배터리 경로 폭 규칙 FAIL ({F.v('2 mm보다 좁은 길이')}): 사용자 결정 전까지 도구 판정은 {F.v('출고 판정')} 입니다.",
+        "보드 동작 전체: 만들거나 전원을 넣은 적이 없습니다. 전원부 수치(5 V 출력, 차단 전압, 전류 여유)는 데이터시트 계산(E)입니다.",
+        f"JLC의 수락: 가장자리 가까운 부품, THT {F.v('main bom_lines_tht')}줄 손납땜, BOM / CPL 형식, Standard 주문의 레일은 업로드 후 DFM 결과와 견적으로만 확인됩니다.",
+        f"CPL 회전: 방향이 중요한 {F.v('방향 중요 부품 수')}개 중 {F.v('회전 미확인')} 은 자료끼리 어긋나 NOT_VERIFIED입니다. "
+        "나머지도 JLC 미리보기로만 확정됩니다. 탄탈 C45 / C52, 전해 C47을 거꾸로 붙이면 화재 위험이 있습니다.",
+        f"리플로 온도: Economic(255 C)에서 한계에 걸리는 줄 {F.v('리플로 한계')}; 문서에서 정격을 찾지 못한 부품 번호 {F.v('리플로 미확인 줄 수')}개.",
+        f"뒷면 다리 길이: {F.v('다리 규칙 초과')} 은 규칙 {F.v('뒷면 다리 규칙')} 보다 길어 잘라야 합니다. {F.v('다리 길이 미확인')} 은 확인 못 함.",
+        f"모듈 치수와 끼움: GY-521, BMP280, OpenLog, NEO-7M 치수는 가정값입니다 (GY-521 받침 {F.v('GY-521 받침 높이')}, BMP280 헤더 {F.v('BMP280 헤더 종류')} - 모두 A). "
+        "그림과 간섭 검사도 이 가정 위에 있습니다. 실물을 버니어로 재야 확정됩니다 (D15).",
+        "J14 Molex 커넥터: 라이브러리 3D 모델이 없고 구멍 지름을 도면과 대조하지 못했습니다.",
+        f"재고: {F.v('JLC 확인 시각')} 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.",
+        "비용: 수수료 표로 계산한 추정(E)입니다. 실제 금액은 JLC 견적뿐입니다.",
+        "GPS 케이블이 기체 안에서 지나갈 길은 설계되지 않았습니다 (그림은 예시).",
+    ]:
+        A(f"- {t}")
+    A("")
+    A("## 6. 다시 만드는 방법")
+    A("")
+    A(f"작업 폴더 {p('scripts')} 에서 (환경변수 `PYTHONDONTWRITEBYTECODE=1`):")
+    A("")
+    A("```")
+    A("B:/Claude/.venv/Scripts/python.exe -X utf8 -B make_all.py           # 전체 (사양 -> 회로도 -> 배치 -> 배선 재생 -> 검사 -> 주문 파일 -> 그림 -> 문서 -> manifest)")
+    A("B:/Claude/.venv/Scripts/python.exe -X utf8 -B make_all.py --list    # 단계 목록")
+    A("B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py        # 전체를 두 번 만들어 파일이 바이트까지 같은지 비교")
+    A("B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당일 JLC 재고 확인 (인터넷, 읽기만)")
+    A("```")
+    A("")
+    A(f"- 한 번 만드는 데 걸린 시간: {F.v('빌드 시간')} (determinism.py의 두 빌드, M). 마지막 결정성 검사: {F.v('결정성 시각')}.")
+    A("- make_all.py는 인터넷을 쓰지 않습니다. JLC 부품 근거는 저장된 기록으로 다시 평가하고, 재고 확인(jlc_gate.py)은 따로 실행합니다.")
+    A("- 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 "
+      "필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다.")
+    A(f"- 결정성 검사 결과: {F.v('결정성')}. 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, "
+      "STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. "
+      "STEP 파일(기구 확인용)은 주문 파일이 아닙니다.")
+    A("- 인터프리터: 대부분 `B:/Claude/.venv`, 보드 처리는 KiCad 10.0.6의 python, 3D 모델·그림 일부는 "
+      "`B:/0)AI_Cad/CanSat_EDF_Rocket/.venv` (실행만 함).")
+    A("")
+    A("## 7. 파일 지도")
+    A("")
+    A("| 무엇 | 경로 |")
+    A("|---|---|")
+    for what, rel in [
+        ("주문 안내서 (먼저 읽기)", "out/ORDER_ko.md"),
+        ("주문 파일: 거버 zip / BOM / CPL (기본 쌍)", "out/vtol_carrier_gerber.zip"),
+        ("", "out/jlcpcb_bom.csv"),
+        ("", "out/jlcpcb_cpl.csv"),
+        ("주문 파일: MCU까지 JLC 실장 쌍", "out/vtol_carrier_gerber_with_mcu.zip"),
+        ("", "out/jlcpcb_bom_with_mcu.csv"),
+        ("", "out/jlcpcb_cpl_with_mcu.csv"),
+        ("부품 회전 표 / 미리보기 대조 그림", "out/cpl_rotation_table.csv"),
+        ("", "out/cpl_rotation_check.png"),
+        ("따로 살 것", "out/off_board_purchase.csv"),
+        ("비용 추정 (E)", "out/jlc_fee_estimate.csv"),
+        ("JLC 재고 확인 결과", "out/jlc_gate_report.json"),
+        ("검사 결과 모음 + 파일 해시 + 출고 판정 (계획의 MANIFEST.json)", "out/manifest.json"),
+        ("검사 보고서 폴더", "out/reports"),
+        ("회로도 PDF", "out/schematic/vtol_carrier_schematic.pdf"),
+        ("3D STEP (J14 모델 없음)", "out/vtol_carrier.step"),
+        ("장착 그림·슬라이드와 설명", "out/render/INDEX_ko.md"),
+        ("회로도·보드 발표용 그림 (보드 그림에는 모든 부품 모델이 보임)", "out/presentation"),
+        ("옛 rev 2c 시험 그림 (보관용, 납품물 아님)", "out/render/_spike_rev2c"),
+        ("KiCad 프로젝트 (회로도·보드)", "kicad/vtol_carrier.kicad_pro"),
+        ("", "kicad/vtol_carrier.kicad_sch"),
+        ("", "kicad/vtol_carrier.kicad_pcb"),
+        ("사양 / 사양 요약", "spec/carrier_spec.json"),
+        ("", "spec/SPEC_ko.md"),
+        ("계획 (설계 기준)", "spec/REV3_PLAN.md"),
+        ("", "spec/rev3_plan.json"),
+        ("모듈 치수 (대부분 가정)", "spec/module_dimensions.json"),
+        ("스크립트", "scripts"),
+        ("rev 2c 보관본", "archive/rev2c_pololu_1s"),
+    ]:
+        A(f"| {what} | {p(rel)} |")
+    A("")
+    return "\n".join(L)
+
+
+def order(F: Facts, ctx: dict) -> str:
+    gate, alt = ctx["gate"], ctx["alt"]
+    L: list[str] = []
+    A = L.append
+    A("# JLCPCB 주문 안내서 - VTOL 캐리어 PCB rev 3")
+    A("")
+    A("이 안내서는 PCB 실장 주문(PCBA)을 처음 하는 사람도 따라 할 수 있게 썼습니다. **이 도구는 아무것도 업로드하거나 주문하지 않았습니다.** "
+      "업로드, 확인, 결제는 모두 사용자가 JLCPCB 사이트에서 직접 합니다.")
+    A("")
+    A("표시: M = 도구로 측정, E = 추정, A = 가정, F = 문서 근거, NOT_VERIFIED = 근거 없음. 측정·계산된 숫자의 출처는 맨 끝 11장에 있습니다. "
+      "그 표에 없는 숫자(시험 전류·전압, 규칙 값, 수량 기본값)는 계획서 `spec/REV3_PLAN.md` 의 괄호 안 장(15장, 16장의 D 번호 등)에서 옮긴 값(F, 계산값은 E)입니다. "
+      "이 파일은 `scripts/docs_ko.py` 가 만든 것입니다.")
+    A("")
+    A("## 0. 먼저 결정할 것: 도구 판정은 아직 '주문 불가'입니다")
+    A("")
+    A(f"출고 판정: **{F.v('출고 판정')}** ({F.v('출고 판정 이유')}).")
+    A("")
+    A(f"- 무엇이 문제인가: 배터리 → 승압 회로로 가는 전원 경로의 구리 폭을 계획은 2.0 mm 이상(또는 면)으로 정했는데, {F.v('2 mm보다 좁은 길이')} 구간이 "
+      f"더 좁습니다: {F.v('좁은 구간')}.")
+    A(f"- 영향(E): 구리 저항은 20 C에서 {F.v('배터리 경로 저항 20C')} 로 목표 {F.v('배터리 경로 목표')} 안이지만, 60 C에서는 {F.v('배터리 경로 저항 60C')} 로 넘습니다. "
+      "저항이 크면 방전 끝에서 저전압 차단이 켜졌다 꺼졌다 할 여유가 줄어듭니다 (계획 17장).")
+    A("- 선택지 (도구가 정하지 않습니다):")
+    A("  1. 이대로 주문: 폭 규칙 위반을 알고 받아들인다고 사용자가 정합니다. 파일은 그대로 쓸 수 있지만 도구 판정은 바뀌지 않습니다. "
+      "보드를 받으면 7장의 '배터리에서 U8 입력까지 저항' 측정을 꼭 하십시오.")
+    A("  2. 고친 뒤 주문: 해당 구간의 미리 그린 배선이나 배치를 바꾸고 배선을 새로 해야 합니다 (시간이 걸리고, 결과가 달라질 수 있음). 사용자의 승인이 필요합니다.")
+    A("- 아래 1~9장은 1번을 고를 경우를 기준으로 쓴 주문 절차입니다.")
+    A("")
+    A("## 1. 올릴 파일 3개")
+    A("")
+    A("기본 (MCU 4개는 사용자가 직접 납땜, 요청대로):")
+    A("")
+    A("| 순서 | 파일 | 어디에 올리나 | sha256 앞부분 |")
+    A("|---|---|---|---|")
+    A(f"| 1 | {p('out/vtol_carrier_gerber.zip')} | PCB 주문 첫 화면 'Add gerber file' | {F.v('zip main sha256')} |")
+    A(f"| 2 | {p('out/jlcpcb_bom.csv')} | PCB Assembly 단계 'BOM file' | {F.v('jlcpcb_bom.csv sha256')} |")
+    A(f"| 3 | {p('out/jlcpcb_cpl.csv')} | PCB Assembly 단계 'CPL file' (Pick and Place) | {F.v('jlcpcb_cpl.csv sha256')} |")
+    A("")
+    A("다른 선택 (MCU 4개도 JLC가 실장, 결정 D4의 권장안): 아래 3개를 **한 묶음으로** 올립니다.")
+    A("")
+    A("| 순서 | 파일 | sha256 앞부분 |")
+    A("|---|---|---|")
+    A(f"| 1 | {p('out/vtol_carrier_gerber_with_mcu.zip')} | {F.v('zip with_mcu sha256')} |")
+    A(f"| 2 | {p('out/jlcpcb_bom_with_mcu.csv')} | {F.v('jlcpcb_bom_with_mcu.csv sha256')} |")
+    A(f"| 3 | {p('out/jlcpcb_cpl_with_mcu.csv')} | {F.v('jlcpcb_cpl_with_mcu.csv sha256')} |")
+    A("")
+    A(f"- **두 묶음을 섞지 마십시오.** 두 zip은 F.Paste(솔더 페이스트) 층만 다릅니다: 기본 zip은 U1~U4 패드에 페이스트 구멍이 없고 "
+      f"(페이스트 패드 {F.v('F.Paste 패드 main')}개), with_mcu zip은 있습니다 ({F.v('F.Paste 패드 with_mcu')}개).")
+    A(f"- 기본 BOM: {F.v('main bom_lines')}줄 (SMT {F.v('main bom_lines_smt')} + THT {F.v('main bom_lines_tht')}), 부품 {F.v('main parts')}개, CPL {F.v('main cpl_rows')}행. "
+      f"with_mcu: {F.v('with_mcu bom_lines')}줄, 부품 {F.v('with_mcu parts')}개, CPL {F.v('with_mcu cpl_rows')}행.")
+    A(f"- 기본 BOM에 MCU(U1~U4)가 들어 있는지: {F.v('U1-U4 기본 BOM')}. 센서 자리 J1과 프로그래밍 단자도 들어 있지 않습니다 (사용자 몫).")
+    A("- 파일 형식은 JLC 견본 파일(Sample-BOM_JLCSMT, Sample-CPL_JLCSMT)과 같은 머리줄로 만들었지만, JLC가 받아들이는지는 업로드 미리보기에서 "
+      "모든 줄이 매칭될 때까지 NOT_VERIFIED입니다.")
+    A("")
+    A("## 2. 주문 화면 입력표 (결정 D9, D10, D11, D14, D16)")
+    A("")
+    A("화면의 항목 이름은 확인하지 못했습니다 (NOT_VERIFIED - 업로드한 적 없음). 비슷한 이름의 항목을 찾아 아래 값으로 맞추십시오.")
+    A("")
+    A("| 화면 항목 | 넣을 값 | 근거 |")
+    A("|---|---|---|")
+    A(f"| Layers | {F.v('층 수')} | 보드 {F.v('층 수')}층 (거버 검사 M) |")
+    A(f"| Dimensions | {F.v('외곽')} (거버를 올리면 자동으로 읽힘 - 같은지 확인) | 사양 |")
+    A("| PCB Qty | 5 | D11 기본 (PCB 5장 중 2장 실장) |")
+    A(f"| PCB Thickness | {F.v('두께')} | 사양 |")
+    A("| Surface Finish | ENIG | D16 (MCU 0.8 mm 피치 패드와 나중에 납땜할 구멍에 평평한 표면; 추가 요금 NOT_VERIFIED) |")
+    A("| Solder Mask / Silkscreen | Green / White | D16 (JLC 기본값) |")
+    A("| 적층(Stackup), 동박 두께, Impedance Control | JLC 기본 4층 적층, 기본 동박, 임피던스 제어 없음 | D16 |")
+    A("| Via Covering | Tented | D16 |")
+    A("| 주문번호 표시 (Mark on PCB / Remove Order Number) | 기본값 (JLC가 위치를 정함) | D16 |")
+    A("| PCB Assembly | 켬 (On) | 요청 |")
+    A("| PCBA Type | Standard | D9 (아래 설명) |")
+    A("| Assembly Side | Top Side | 모든 부품이 윗면 (사양) |")
+    A("| PCBA Qty | 2 | D11 (JLC 최소 2장) |")
+    A("| Edge Rails / Tooling holes | JLC가 붙임 (Added by JLCPCB) | D10: 설계에 툴링 홀 없음 |")
+    A("| Confirm Parts Placement | Yes | 회전이 NOT_VERIFIED인 부품이 있음 (3장) |")
+    A("| 메모 (Remark) | 아래 문장 붙여넣기 | D14, 가장자리 거리 표 |")
+    A("")
+    A(f"- Standard를 고른 이유 (D9): 부품 몸체 {F.v('가장자리 2.5 mm 안 몸체')}개가 기판 끝에서 2.5 mm 안에 있고, 그중 {F.v('가장자리 0.3 mm 안 몸체')} 는 "
+      "Economic 방식이 권하는 0.3 mm보다 가깝습니다 (M; 0.3 mm와 2.5 mm는 계획 10장의 JLC 규정, F). 커넥터 위치는 기체에 맞춰 고정이라 옮길 수 없습니다. "
+      "Standard는 JLC가 공정 레일을 붙이고, 리플로 온도도 더 낮습니다 (240 C, 계획 10장, F).")
+    A(f"- 레일 쪽 (E): 표에서 '{F.v('레일 쪽')}' 쌍(거버 화면에서 위·아래의 76 mm 긴 변)을 골랐습니다. 이 경우 레일이 없는 쪽에 2.5 mm 안 부품이 "
+      f"{F.v('레일 없는 쪽 2.5 mm 안')}개 남습니다. JLC가 받아 주는지는 DFM 결과로만 압니다.")
+    A(f"- 툴링 홀 부품(H) 수: {F.v('툴링 홀(H) 부품')} (설계에 없음, M).")
+    A("")
+    A("메모 문장 (기본 묶음, 그대로 복사):")
+    A("")
+    A("```")
+    A("Please bake the moisture-sensitive parts (ESP-12F C82891, LEDs C2286) before assembly.")
+    A("Please add 5 mm process edge rails on the two 76 mm long edges (top and bottom in the Gerber view):")
+    A("several parts are closer than 2.5 mm to the board edge.")
+    A(f"The {F.v('main bom_lines_tht')} THT lines (J2/J5, J8-J12, J14, J15/J17, J16, J18) are to be soldered by JLCPCB.")
+    A("U1-U4 and J1 are intentionally NOT assembled (no BOM/CPL rows). Please do not add parts for them.")
+    A("```")
+    A("")
+    A("with_mcu 묶음이면 마지막 줄을 `J1 is intentionally NOT assembled (no BOM/CPL row).` 로 바꾸십시오.")
+    A("")
+    A("## 3. 결제하기 전에 확인할 것 (하나라도 다르면 멈추고 결제하지 마십시오)")
+    A("")
+    A(f"1. 주문 당일, 업로드 직전에 재고를 다시 확인합니다: {p('scripts')} 에서 `B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py` "
+      f"(인터넷, 읽기만, 약 2~3분). 결과 {p('out/jlc_gate_report.json')} 의 status가 PASS여야 합니다. 마지막 확인: {F.v('JLC 확인 시각')} {F.v('JLC 확인 결과')}.")
+    A(f"2. BOM 매칭 화면: 기본 묶음이면 {F.v('main bom_lines')}줄 모두, with_mcu면 {F.v('with_mcu bom_lines')}줄 모두 부품이 매칭되어야 합니다. "
+      "'부품 없음', '다른 부품 추천', '재고 부족'이 하나라도 있으면 멈춥니다 (대체는 5장의 정해진 대체 부품만, 그것도 다시 확인 후).")
+    A(f"3. THT {F.v('main bom_lines_tht')}줄(J2/J5, J8~J12, J14, J15/J17, J16, J18; 납땜점 {F.v('THT 납땜점 main')}개)이 견적에 'JLC가 납땜'으로 들어가 있어야 합니다. "
+      "빠져 있거나 거절되면 멈춥니다.")
+    A(f"4. 부품 위치 미리보기(Confirm Parts Placement)를 {p('out/cpl_rotation_check.png')} 그림과 하나씩 비교합니다. 특히 극성: 탄탈 C45 / C52, 전해 C47 "
+      f"(거꾸로면 화재 위험), 그리고 회전이 확인 안 된 {F.v('회전 미확인')}. U7 / U8 / U9 / J7의 1번 핀 방향. "
+      f"회전 근거는 {p('out/cpl_rotation_table.csv')} 의 status 칸에 있습니다.")
+    A(f"5. DFM 결과: 가장자리 가까운 부품({F.v('가장자리 0.3 mm 안 몸체')} 등)에 대한 이의, 레일 위치, 구멍·간격 지적이 없어야 합니다. "
+      "JLC가 이의를 달면 주문 방식이나 부품을 마음대로 바꾸지 말고 멈춘 뒤 다시 검토합니다.")
+    A("6. 견적 금액을 4장의 추정과 비교합니다. 크게 다르면 이유를 확인합니다.")
+    A("")
+    A("## 4. 예상 비용 (E, 추정)")
+    A("")
+    A("| 묶음 | 방식 | 실장 장수 | 합계 (E) | Standard 전용 수수료까지 붙으면 |")
+    A("|---|---|---|---|---|")
+    for r_ in ctx["fees"]:
+        if (r_["pair"], r_["order"], r_["boards"]) in {("main", "Standard", "2"), ("main", "Standard", "5"), ("main", "Economic", "2"),
+                                                        ("with_mcu", "Standard", "2")}:
+            key = f"비용 {r_['pair']} {r_['order']} {r_['boards']}장"
+            extra = F.v(key + " (Standard 전용 수수료 포함)") if r_.get("sum_E_with_standard_only_fees") else "-"
+            A(f"| {'기본' if r_['pair'] == 'main' else 'with_mcu'} | {r_['order']} | {r_['boards']} | {F.v(key)} | {extra} |")
+    A("")
+    A(f"- 포함: 셋업, 스텐실, 부품 종류 수수료, 부품 장착, THT 손납땜, 위치 확인 수수료, 부품값(손실분·최소 수량 포함). Standard 전용 수수료 {F.v('Standard 전용 수수료')} "
+      "(취급·고정구·포장)는 적용 여부가 NOT_VERIFIED입니다.")
+    A("- **빠진 것:** PCB 제작비, ENIG 추가 요금, 베이킹 요금, 레일 분리 요금, 배송비, 세금. 실제 금액은 JLC 견적뿐입니다.")
+    A(f"- 전체 표: {p('out/jlc_fee_estimate.csv')}")
+    A("")
+    A("## 5. 재고가 적은 줄과 대체 부품")
+    A("")
+    A(f"- 얇은 재고(기준 {F.v('얇은 재고 기준')} 미만): {F.v('얇은 재고 줄')}.")
+    A(f"- 지켜볼 줄 (2000개 미만): {F.v('재고 주의 줄')}.")
+    A("- 대체는 계획에 적힌 순서대로만 씁니다. 다른 부품으로 바꾸는 것은 설계 변경이라 다시 검사하고 사용자가 정해야 합니다.")
+    A("")
+    A("| 원래 부품 | 대체 부품 (주문 가능 수량, 판정) |")
+    A("|---|---|")
+    for k in alt:
+        A(f"| {k} | {F.v('대체 ' + k)} |")
+    A("| U9 (C20345924) | 없음 - 같은 사양의 두 번째 부품이 없습니다. 재고가 없으면 주문을 미룹니다 (계획 7장, F) |")
+    A("")
+    A("## 6. 따로 사야 하는 것 (JLC는 낱개 부품을 보내주지 않습니다)")
+    A("")
+    A(f"목록 {F.v('따로 살 품목 수')}개: {p('out/off_board_purchase.csv')}. 재고와 가격은 확인하지 않았습니다 (NOT_VERIFIED).")
+    A("")
+    A("| 품목 | 보드당 | 2장 분 | 어디에 | 구입처 (제안) |")
+    A("|---|---|---|---|---|")
+    for r_ in ctx["offb"]:
+        A(f"| {r_['item']} | {r_['qty per board']} | {r_['qty for 2 boards']} | {r_['plugs into / used at']} | {r_['purchase channel (suggestion)']} |")
+    A("")
+    A("## 7. 보드를 받은 뒤 할 일 (계획 15장 순서)")
+    A("")
+    A("1. **검사:** 탄탈 C45 / C52와 전해 C47의 극성을 실크 표시와 비교, U7 / U8 / U9 / J7 방향, U8(0.5 mm 피치) 납땜 브리지가 없는지 확대해서 봅니다.")
+    A("2. **레일 떼기:** Standard 주문이면 보드 둘레의 레일을 꺾어 떼고 모서리를 다듬습니다.")
+    A(f"3. **뒷면 다리 자르기:** 뒷면으로 나온 다리를 재서 {F.v('뒷면 다리 규칙')} 보다 긴 것은 모두 자릅니다. {F.v('다리 규칙 초과')} 은 반드시 (다리 4개). "
+      "소켓·핀헤더(J2, J5, J8~J12, J16, J18)도 공차 끝이면 넘을 수 있으니 재 봅니다. 폼테이프는 그 뒤에 붙입니다.")
+    A("4. **모듈·MCU 없이 벤치 전원 시험:** J14에 전류 제한(100 mA) 전원, J15는 단락. 아래 값을 적습니다. 범위를 벗어나면 멈춥니다.")
+    A("")
+    A("| 측정 | 허용 범위 (E, 계획) | 측정값 |")
+    A("|---|---|---|")
+    A(f"| 전압을 천천히 올릴 때 5 V가 켜지는 전압 | {F.v('켜짐 전압')} (3.3 V에서는 꺼져 있어야 함) | |")
+    A(f"| 켜진 뒤 +5V | {F.v('+5V 범위')} | |")
+    A("| 켜진 뒤 +3V3 | 3.0 V 이상 (ESP-12F 공급 범위, F) | |")
+    A(f"| 전압을 천천히 내릴 때 꺼지는 전압 | {F.v('꺼짐 전압')} | |")
+    A("")
+    A("   켜지는 순간의 +5V와 EN 파형을 오실로스코프로 한 장 남깁니다.")
+    A("5. **부하 시험:** +5V에 0.27 A와 0.78 A, 전원 3.4 V와 3.7 V (전류 제한 2 A). 전압이 유지되고 U8 / L5가 약 60 C 아래인지 봅니다 (E, 계획 15장). "
+      "실제 배터리·스위치·리드로 배터리에서 U8 입력까지 저항을 잽니다 (전압 강하 / 입력 전류): 0.29 Ohm 이하여야 합니다. 넘으면 비행 전에 보고합니다. "
+      "(0장의 배선 폭 문제 때문에 이 측정이 특히 중요합니다.)")
+    A(f"6. **MCU 4개 납땜** (JLC가 안 붙였을 때): 1번 핀을 표시에 맞추고, 가는 인두·플럭스로 0.8 mm 피치 핀을 모두 확대 검사합니다. "
+      f"패드 1 mm 안에 이미 붙은 부품 수: {F.v('MCU 1 mm 안 부품')} (M). U1을 GY-521보다 먼저 납땜하십시오 (GY-521이 U1 위에 걸침). "
+      f"그림: {p('out/render/c5_mcu_pin1.png')}")
+    A(f"7. **모듈 장착:** 각 모듈에 인쇄된 핀 순서를 보드 실크와 먼저 비교합니다. GY-521은 자기 1x8 핀으로 J1에 납땜, 받침 {F.v('GY-521 받침 높이')} (A) "
+      f"({p('out/render/e2a_gy521_J1.png')}); BMP280은 J2에 꽂음 (헤더 {F.v('BMP280 헤더 종류')}이 아니면 직각 핀을 먼저 납땜, {p('out/render/e2b_bmp280_J2.png')}); "
+      f"OpenLog는 직각 6핀 헤더를 납땜한 뒤 microSD 쪽이 위로 오게 J5에 꽂음 ({p('out/render/e2c_openlog_J5.png')}); "
+      f"NEO-7M은 윗뚜껑에 두고 JST-GH 케이블을 J7에 ({p('out/render/e3_gps_lead_J7.png')}). 받은 상태와 완성 상태 비교: "
+      f"{p('out/render/e1_delivered_vs_completed.png')}, 전체 안내: {p('out/render/e4_overview_callouts.png')}.")
+    A("8. **프로그래밍 (전원은 한 가지만):** 로직 배터리(3.73 V 넘게 충전) 또는 J14에 4.0 V 벤치 전원으로 보드를 켜고, USBasp의 타깃 전원 점퍼는 "
+      "**빼 둡니다** (5 V를 두 곳에서 넣지 않기). 단자는 D6 선택대로 (헤더 납땜 + 점퍼, 또는 포고핀 어댑터). ESP-12F는 J3로 3.3 V 신호로만 굽습니다.")
+    A("9. 첫 Wi-Fi 송신 때 +5V와 +3V3의 최저값을 기록합니다.")
+    A("10. 커넥터 연결: 배터리 J14, 스위치 J15, GPS J7, 서보 J8~J11 / ESC J12, 아밍 J16, 부저 J17. 장착은 rev 2c와 같이 3 mm 폼테이프 + 케이블타이 1개 "
+      "(x -3..+3 mm 띠).")
+    A("")
+    A("## 8. MCU·센서 말고 사용자가 해야 하는 일 (숨기지 않고 모음)")
+    A("")
+    A("요청은 'MCU와 센서만 빼고 모두 JLC가 실장'이었지만, 아래 일은 이 보드에서 사용자 몫으로 남습니다:")
+    A("")
+    A("- Standard 주문의 레일 떼기 (7장 2).")
+    A(f"- 뒷면 다리 자르기: {F.v('다리 규칙 초과')} (다리 4개, 도면값으로 규칙 초과), 공차 끝인 소켓·헤더 확인 (7장 3).")
+    A(f"- 프로그래밍 단자 ({F.v('프로그래밍 헤더 선택')}안): J3, J19~J22 (2x3) 와 J24~J26 (1x2)는 빈 구멍입니다. 헤더를 직접 납땜(36곳, 계획 D6)하고 점퍼 3개를 끼우거나, "
+      f"포고핀 어댑터를 대고 굽습니다 (접촉 NOT_VERIFIED). JLC가 띠 밖에 헤더를 실장하는 B안은 {F.v('B안 결론')} ({F.v('B안 2x3 자리')}).")
+    A("- OpenLog에 직각 6핀 헤더 납땜 (모듈 쪽 6곳; 보드에는 납땜 없음). OpenLog는 센서가 아니라 기록기라 D5에서 '센서처럼 사용자가 장착'으로 정했습니다.")
+    A("- BMP280 헤더가 일자형으로 오면 직각 핀으로 바꿔 납땜.")
+    A("- GPS 케이블(JST-GH 4선), 스위치·부저·아밍 리드 준비 (6장 목록).")
+    A("- 벤치 전원 시험과 기록 (7장 4~5) - 보드가 만들어진 적이 없어서 필요합니다.")
+    A("- 폼테이프와 케이블타이로 장착.")
+    A("")
+    A("## 9. 사용자 결정 D1~D17과 이번 파일에 쓴 값")
+    A("")
+    A("계획의 기본값으로 만들었습니다. '이번 파일에서 확인한 값'은 생성된 파일에서 읽은 것입니다.")
+    A("")
+    A("| Id | 질문과 기본값 (계획 19장) | 이번 파일에서 확인한 값 |")
+    A("|---|---|---|")
+    built = {
+        "D1": f"U8 {F.v('코드 U8')}, U9 {F.v('코드 U9')}, L5 {F.v('코드 L5')} (BOM)",
+        "D2": f"{F.v('UVLO 저항')} → 켜짐 {F.v('켜짐 전압')}, 꺼짐 {F.v('꺼짐 전압')} (E)",
+        "D3": f"C45 {F.v('코드 C45')}, J8 {F.v('코드 J8')}, J2 / J5 {F.v('코드 J2')} (BOM)",
+        "D4": f"기본 BOM에 U1~U4 {F.v('U1-U4 기본 BOM')}; with_mcu 쌍 U1~U4 = {F.v('U1-U4 with_mcu')} (두 쌍 모두 생성)",
+        "D5": f"소켓 J5 {F.v('코드 J5')} (JLC), OpenLog는 따로 구매",
+        "D6": f"{F.v('프로그래밍 헤더 선택')}안 (빈 구멍); B안 검색 {F.v('B안 2x3 자리')} → {F.v('B안 결론')}",
+        "D7": f"J15 / J17 {F.v('코드 J15')} (THT); 다리 자르기 {F.v('다리 규칙 초과')}",
+        "D8": f"Q1 등 {F.v('코드 Q1')} (BOM)",
+        "D9": "주문 화면에서 사용자가 선택 (2장: Standard)",
+        "D10": f"툴링 홀 부품 {F.v('툴링 홀(H) 부품')}개 (설계에 없음)",
+        "D11": "주문 화면에서 사용자가 선택 (2장: PCB 5 / 실장 2)",
+        "D12": f"J2 / J5 {F.v('코드 J2')}; 대체 순서는 5장",
+        "D13": f"{F.v('분압 저항')} (그대로)",
+        "D14": "주문 메모에 베이킹 요청 (2장)",
+        "D15": "가정 치수 사용 (spec/module_dimensions.json, 그림과 검사에 '가정' 표시)",
+        "D16": "주문 화면에서 사용자가 선택 (2장: ENIG, 녹색, 기본 적층)",
+        "D17": "여분 기판 3장은 기구 확인용 (주문 화면 수량으로 정해짐)",
+    }
+    for d in ctx["plan"]["user_report_ko"]["decisions"]:
+        did = d.split(":")[0]
+        A(f"| {did} | {d.split(':', 1)[1].strip()} | {built.get(did, '-')} |")
+    A(f"| 추가 (배선 후 발견) | 배터리 경로 폭 규칙 FAIL을 받아들이고 주문할지, 고친 뒤 주문할지 (0장) | 결정 전: 도구 판정 {F.v('출고 판정')} |")
+    A("")
+    A("## 10. 변경 범위 표 (rev 2c 대비, 부품마다 이유 분류)")
+    A("")
+    table = change_table(F, ctx)
+    A(f"계획 3장의 표를 계획 파일에서 읽고, rev 3 부품 번호를 주문 BOM 파일과 대조했습니다 ({F.v('변경 행')}). 그대로인 부품은 표에서 뺐습니다.")
+    A("")
+    L.extend(table)
+    A("")
+    return "\n".join(L)
+
+
+def main() -> int:
+    F, ctx = gather()
+    order_text = order(F, ctx)
+    order_keys = list(F.used)
+    F.used.clear()
+    readme_text = readme(F, ctx)
+    readme_keys = list(F.used)
+    readme_text += "\n## 8. 이 문서의 숫자 출처\n\n" + "\n".join(F.table(readme_keys)) + "\n"
+    order_text += "\n## 11. 이 문서의 숫자 출처\n\n" + "\n".join(F.table(order_keys)) + "\n"
+    (ROOT / "README_ko.md").write_text(readme_text, encoding="utf-8", newline="\n")
+    (OUT / "ORDER_ko.md").write_text(order_text, encoding="utf-8", newline="\n")
+    print(json.dumps({"README_ko.md": {"facts": len(readme_keys)}, "out/ORDER_ko.md": {"facts": len(order_keys)},
+                      "release_gate": F.data["출고 판정"][0]}, ensure_ascii=False, indent=1))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -688,7 +688,7 @@ _D_KO = (
 )
 _USER_FIT_KO = (
     ("U1~U4", "ATmega128A-AU (TQFP-64) 4개", "기본: 사용자가 납땜 (칩당 64핀, 모두 256곳). JLC에 맡기려면 with_mcu BOM / CPL 쌍으로 주문 (LCSC C6510)"),
-    ("J1", "GY-521 MPU-6050 모듈", "모듈에 딸린 1x8 핀을 기판의 도금 구멍 8개에 납땜 (모듈은 2 mm 받침 위에 눕힘). 기판에는 구멍만 있음"),
+    ("J1", "GY-521 MPU-6050 모듈", "모듈에 딸린 1x8 핀을 기판의 도금 구멍 8개에 납땜 (모듈은 약 2.5 mm 받침 위에 눕힘 - 핀 스트립 플라스틱 높이, 가정 A). 기판에는 구멍만 있음"),
     ("J2", "BMP280 모듈 TYE-BMP29", "직각 6핀 헤더를 JLC가 실장한 소켓 J2에 꽂음 (받은 모듈의 헤더가 일자형이면 직각 핀을 먼저 납땜 - 헤더 종류 NOT_VERIFIED)"),
     ("J7", "NEO-7M GPS 모듈 SZH-NT07", "기체 상단 캡에 두고 4선 JST-GH 리드를 J7에 꽂음"),
     ("J5", "SparkFun OpenLog DEV-13712", "OpenLog에 직각 1x6 핀을 납땜한 뒤 소켓 J5에 꽂음 (맞는지 NOT_VERIFIED)"),
@@ -697,12 +697,12 @@ _NOT_VERIFIED_KO = (
     "만들거나 측정한 것은 없습니다. 전원부 수치는 모두 데이터시트 계산값(E)입니다.",
     "JLC가 이 기판을 받아 주는지는 사용자가 파일을 올리고 DFM 결과와 견적을 본 뒤에야 알 수 있습니다 (결제 전 확인).",
     "THT 6줄을 JLC가 납땜해 주는지는 견적에 표시될 때까지 NOT_VERIFIED입니다.",
-    "전원부 13개 부품이 예전 5 V 모듈 자리에 들어가는지는 배치 단계 전까지 NOT_VERIFIED입니다 (필요 약 95 mm2, 비는 자리 45.6 mm2).",
+    "이 문서는 사양 단계의 내용만 담습니다. 배치·배선 뒤의 결과(전원부 자리, 배터리 경로 폭 검사, 가장자리 거리, 모듈 간섭)는 README_ko.md 와 out/reports/ 의 보고서에 있습니다.",
     "U8은 라이브러리에 전용 심볼이 없어 일반 6핀 심볼을 씁니다. ERC는 U8 핀에 대해 아무 근거도 주지 않으며, 핀-네트 표 검사(rev3_checks.py u8-u9)가 그 역할을 합니다.",
     "차단 히스테리시스 여유는 최대 부하에서 28 mV(E)입니다. 전원 경로 저항이 0.29 Ohm을 넘으면 방전 끝에서 켜짐/꺼짐을 반복할 수 있습니다 (첫 기판에서 측정).",
     "켜짐 문턱이 최대 3.73 V입니다. 쉬는 전압이 그보다 낮은 팩은 보드를 켜지 못할 수 있습니다.",
     "극성 부품과 IC의 CPL 회전은 NOT_VERIFIED입니다. 주문 때 'Confirm Parts Placement'를 켜고, 전원을 넣기 전에 탄탈 방향을 눈으로 확인하십시오.",
-    "재고는 움직입니다. 오늘 재고가 얇은 줄: C22436147 (소켓 J2 / J5). 주문일에 scripts/jlc_sources.py --online 을 다시 돌립니다.",
+    "재고는 움직입니다. spec/parts_sources.json 기록({day}) 기준으로 재고가 얇은 줄: C22436147 (소켓 J2 / J5). 주문일에는 scripts/jlc_gate.py 를 다시 돌려 모든 줄을 새로 확인합니다.",
     "센서 모듈·OpenLog의 치수와 핀 순서는 가정(A)입니다. 받은 모듈의 실크를 확인하십시오.",
 )
 
@@ -720,6 +720,8 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     uv = PLAN["power_block"]["uvlo"]
     pb = PLAN["power_block"]
     prog = spec["prog_headers"]["option"]
+    # snapshot day of the JLC records the spec was built from (make_all.py re-evaluates the cache with this day)
+    day = json.loads((board_dir / "spec" / "parts_sources.json").read_text(encoding="utf-8"))["today"]
     L: list[str] = []
     A = L.append
     A("# VTOL 캐리어 PCB rev 3 - 전기 사양 요약")
@@ -784,14 +786,17 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("| 줄 | Comment | Designator | Footprint | LCSC Part # | 공정 | 수량 |")
     A("|---|---|---|---|---|---|---|")
     for r in bs["board_lines"]:
-        A(f"| {r['line']} | {r['comment']} | {', '.join(r['refs'])} | {r['footprint_name']} | {r['part_number']} | "
+        A(f"| {r['line']} | {r['comment']} | {', '.join(r['refs'])} | {r['footprint'].split(':', 1)[1]} | {r['part_number']} | "
           f"{r['process']} | {r['qty']} |")
     A("")
     for r in bs["with_mcu_extra_lines"]:
-        A(f"with_mcu 쌍에만 추가되는 줄: {r['comment']} | {', '.join(r['refs'])} | {r['footprint_name']} | {r['part_number']} | "
+        A(f"with_mcu 쌍에만 추가되는 줄: {r['comment']} | {', '.join(r['refs'])} | {r['footprint'].split(':', 1)[1]} | {r['part_number']} | "
           f"{r['process']} | {r['qty']}")
     A("")
-    A("실제 주문용 BOM / CPL 파일은 배치·배선이 끝난 뒤 내보내기 단계에서 만들어집니다. 위 표는 그 파일의 근거입니다.")
+    A("Footprint 칸은 KiCad 풋프린트 이름입니다 (주문용 BOM 파일의 Footprint 칸과 같은 값). "
+      f"주문용 파일은 내보내기 단계(`{root}/scripts/checks_exports.py`)가 이 사양의 `fit` 값으로 만든 "
+      f"`{root}/out/jlcpcb_bom.csv` / `{root}/out/jlcpcb_cpl.csv` (MCU 포함 쌍: `*_with_mcu.csv`) 이고, 위 표는 그 파일의 근거입니다. "
+      f"주문 방법은 `{root}/out/ORDER_ko.md` 에 있습니다.")
     A("")
     A("## 5. 프로그래밍 헤더 (결정 D6)")
     A("")
@@ -799,7 +804,8 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("- A: J3, J19~J22 (2x3), J24~J26 (1x2) 은 rev 2c와 같은 자리의 빈 도금 구멍입니다. 프로그래밍하려면 사용자가 헤더를 납땜하거나 "
       "포고핀 어댑터를 씁니다 (포고핀 접촉은 NOT_VERIFIED).")
     A("- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; BOM 42줄, JLC 실장 165개). "
-      "띠 밖에 자리가 있는지는 배치 단계에서 찾아 보고합니다. 사용자의 승인이 있어야 적용합니다.")
+      "사용자의 승인이 있어야 적용합니다. 띠 밖에 자리가 있는지 배치 단계에서 찾은 결과는 "
+      f"`{root}/out/reports/programming_access.json` 에 있습니다 (사양 문서는 배치 결과를 읽지 않습니다; 요약은 `{root}/README_ko.md`).")
     A("")
     A("## 6. 사용자가 붙이거나 꽂는 것")
     A("")
@@ -809,7 +815,8 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
         A(f"| {ref} | {what} | {how} |")
     A("")
     A("기판 밖에서 따로 사는 것(배터리, 스위치와 리드, GPS 리드, 부저, 모듈, MCU 등)의 목록은 계획서의 off_board_purchase 항목"
-      f"(`{root}/spec/rev3_plan.json`)에 있고, 주문 안내서에 한국어로 옮겨집니다. 이 품목들의 오늘 재고·가격은 NOT_VERIFIED입니다.")
+      f"(`{root}/spec/rev3_plan.json`)에 있고, 구매 목록 `{root}/out/off_board_purchase.csv` 와 주문 안내서 `{root}/out/ORDER_ko.md` 6장에 "
+      "표로 있습니다. 이 품목들의 재고·가격은 NOT_VERIFIED입니다.")
     A("")
     A("## 7. 사용자 결정 (기본값으로 진행 중)")
     A("")
@@ -819,7 +826,7 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("## 8. 확인되지 않은 것")
     A("")
     for t in _NOT_VERIFIED_KO:
-        A(f"- {t}")
+        A("- " + t.replace("{day}", day))
     A("")
     A("## 9. 파일과 다시 만드는 방법")
     A("")
@@ -829,12 +836,14 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A(f"- 라이브러리 확인: `{root}/spec/library_probe.json`")
     A(f"- rev 2c 보관본: `{root}/archive/rev2c_pololu_1s/`")
     A("")
-    A(f"작업 폴더를 `{root}/scripts` 로 두고 다음 순서로 실행합니다 (파이썬은 `B:/Claude/.venv/Scripts/python.exe -X utf8 -B`).")
+    A(f"전체(사양 → 회로도 → 배치 → 기록된 배선 재생 → 검사 → 주문 파일 → 그림 → 문서)는 작업 폴더 `{root}/scripts` 에서 "
+      "`B:/Claude/.venv/Scripts/python.exe -X utf8 -B make_all.py` 한 줄로 다시 만듭니다 (단계 목록: `make_all.py --list`). "
+      "사양 부분만 다시 만들 때의 순서:")
     A("")
     A("1. `probe_library.py` - KiCad 라이브러리에서 심볼·풋프린트·핀을 읽어 기록")
-    A("2. `jlc_sources.py --online` - JLC 부품 재고를 읽기 전용으로 다시 확인 (주문일에 반드시)")
+    A(f"2. `jlc_sources.py --today {day}` - 저장된 JLC 기록으로 부품 근거를 다시 평가 (네트워크 없음; 주문일 재고 확인은 `jlc_gate.py`)")
     A("3. `build_spec.py` - 이 사양과 이 문서를 생성")
-    A("4. `build_schematic.py` - 회로도 생성, 이어서 kicad-cli 로 ERC와 네트리스트 내보내기")
-    A("5. `rev3_checks.py all` - 네트리스트 기준 검사")
+    A("4. `build_schematic.py` - 회로도 생성")
+    A("5. `rev3_checks.py all` - kicad-cli ERC·네트리스트 내보내기와 네트리스트 기준 검사")
     A("")
     path.write_text("\n".join(L), encoding="utf-8", newline="\n")

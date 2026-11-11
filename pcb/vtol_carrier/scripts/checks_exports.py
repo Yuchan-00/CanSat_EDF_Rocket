@@ -472,7 +472,7 @@ def off_board_purchase() -> dict:
         ["ATmega128A-AU (TQFP-64)", len(mcus), len(mcus) * 2, " ".join(mcus) + " footprints (user solders 64 pins each)",
          "LCSC C6510 or a domestic distributor - not needed if the *_with_mcu files are ordered", nv,
          "REV3_PLAN 8 / 9; spec fit jlc_optional"],
-        ["GY-521 MPU-6050 module (SZH-EK007)", 1, 2, "J1 (solder the module's own 1x8 strip, 2 mm foam support)",
+        ["GY-521 MPU-6050 module (SZH-EK007)", 1, 2, "J1 (solder the module's own 1x8 strip; support about 2.5 mm = strip plastic height, A)",
          "devicemart no=1247052", nv, "spec user_parts.imu: " + up["imu"]],
         ["BMP280 module TYE-BMP29", 1, 2, "J2 socket (right-angle 6-pin header of the module)",
          "devicemart no=15442588", nv, "spec user_parts.barometer"],

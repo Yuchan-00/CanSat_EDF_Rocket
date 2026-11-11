@@ -4,7 +4,7 @@
  "sets": {
   "main": {
    "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip",
-   "zip_sha256": "edc46afbdecfa418fb4ec7d4ba6733ea4f76f95817837863a82a83f4e6cc8c9f",
+   "zip_sha256": "9cea8391a5c3da906a295be614c4861ebce2310eec6a74b2ad365bfa39c3a3c7",
    "files": [
     "vtol_carrier-B_Cu.gbl",
     "vtol_carrier-B_Mask.gbs",
@@ -32,7 +32,7 @@
   },
   "with_mcu": {
    "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip",
-   "zip_sha256": "b386018ef3a107a0c5037dc37679dc989074f203b9412af5b4f34aa758d8a2ed",
+   "zip_sha256": "3c8df77ed79e4aafd0917eb50e813ab471a089483b1f63fc4e2ee4fb319005b2",
    "files": [
     "vtol_carrier-B_Cu.gbl",
     "vtol_carrier-B_Mask.gbs",

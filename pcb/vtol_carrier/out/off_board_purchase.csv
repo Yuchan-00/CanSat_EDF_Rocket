@@ -1,6 +1,6 @@
 ﻿item,qty per board,qty for 2 boards,plugs into / used at,purchase channel (suggestion),stock / price,source
 ATmega128A-AU (TQFP-64),4,8,U1 U2 U3 U4 footprints (user solders 64 pins each),LCSC C6510 or a domestic distributor - not needed if the *_with_mcu files are ordered,NOT_VERIFIED (not fetched),REV3_PLAN 8 / 9; spec fit jlc_optional
-GY-521 MPU-6050 module (SZH-EK007),1,2,"J1 (solder the module's own 1x8 strip, 2 mm foam support)",devicemart no=1247052,NOT_VERIFIED (not fetched),spec user_parts.imu: GY-521 MPU-6050 SZH-EK007 (devicemart 1247052) - as before
+GY-521 MPU-6050 module (SZH-EK007),1,2,"J1 (solder the module's own 1x8 strip; support about 2.5 mm = strip plastic height, A)",devicemart no=1247052,NOT_VERIFIED (not fetched),spec user_parts.imu: GY-521 MPU-6050 SZH-EK007 (devicemart 1247052) - as before
 BMP280 module TYE-BMP29,1,2,J2 socket (right-angle 6-pin header of the module),devicemart no=15442588,NOT_VERIFIED (not fetched),spec user_parts.barometer
 right-angle 1x6 2.54 mm pin strip (only if the BMP280 comes with a straight header),1,2,BMP280 module -> J2,domestic shop (any RA 2.54 mm strip cut to 6),NOT_VERIFIED (not fetched),REV3_PLAN 8 (header type NOT_VERIFIED)
 NEO-7M GPS module SZH-NT07,1,2,vehicle top cap; lead to J7,devicemart no=10895400,NOT_VERIFIED (not fetched),spec user_parts.gps

@@ -2091,21 +2091,5 @@
   }
  ],
  "alternates_and_options_not_orderable": [],
- "fetched_in_this_run": [
-  {
-   "jlc_code": "C32713283",
-   "why": "forced",
-   "result": "fetched"
-  },
-  {
-   "jlc_code": "C32713268",
-   "why": "forced",
-   "result": "fetched"
-  },
-  {
-   "jlc_code": "C41417359",
-   "why": "forced",
-   "result": "fetched"
-  }
- ]
+ "fetched_in_this_run": []
 }

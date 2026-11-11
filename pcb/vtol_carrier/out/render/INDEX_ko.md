@@ -2,7 +2,8 @@
 
 이 폴더(B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render)의 그림은 모두 최종 배선 기판
 B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb
-(sha256 32bf9856575563cefdafe4491dae46af3f4eb165b60ecc81d94155423cacc1a3)으로 만들었습니다.
+(sha256 b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274, scripts/make_all.py 로 다시 만든 판)으로 만들었습니다.
+처음 그림을 그린 기판(sha256 32bf9856...)과 구리 모양은 같고(선·비아 3054개가 집합으로 일치, M) 파일 안의 순서만 다릅니다.
 기판 파일은 고치지 않고, 그림용 사본 세 개만 만들어 그렸습니다.
 
 - B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/render_as_delivered.kicad_pcb : JLC에서 받는 상태 (U1~U4, J1의 3D 모양을 숨김)

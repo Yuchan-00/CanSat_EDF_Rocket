@@ -1,8 +1,11 @@
 """Presentation images for the VTOL carrier (deliver step).
 
-Invariant: this script only READS the finished board / schematic exports and writes new
-images under out/presentation/. It never touches the manifest-hashed files in out/
-(render_*.png, schematic/*.svg, *.pdf), so out/manifest.json stays valid.
+Invariant: this script only READS the finished board / schematic and writes new images
+under out/presentation/ (the sheet SVGs it needs are exported into a temp folder). It never
+touches the manifest-hashed files in out/, so out/manifest.json stays valid. The PNGs are
+evidence pictures, not deterministic artifacts (kicad-cli renders differ in bytes between runs).
+The board renders show every footprint's library 3D model (U1..U4 included); the curated
+'as delivered' / 'completed' pictures are out/render/ (scripts/render_rev3.py).
 
 Run with KiCad's Python (it has wx and PIL):
   C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/python.exe scripts/make_presentation.py
@@ -60,8 +63,15 @@ def sheets_to_png(width: int = 3000) -> dict:
     import tempfile
     res = {}
     tmp = Path(tempfile.mkdtemp(prefix="vtol_sch_"))
+    # rev 3: checks_exports.py writes only the schematic PDF, so the sheet SVGs are exported here into the temp
+    # folder (kicad-cli names them <root>.svg and <root>-<sheet name>.svg, the names in SHEETS)
+    svg_dir = tmp / "svg"
+    svg_dir.mkdir()
+    r = run([K, "sch", "export", "svg", "-o", str(svg_dir), str(ROOT / "kicad" / "vtol_carrier.kicad_sch")])
+    if r.returncode != 0:
+        raise SystemExit(f"kicad-cli sch export svg failed: {r.stdout[-1000:]} {r.stderr[-1000:]}")
     for s in SHEETS:
-        svg = SCH_DIR / f"{s}.svg"
+        svg = svg_dir / f"{s}.svg"
         head = svg.read_text(encoding="utf-8", errors="replace")[:2000]
         m = re.search(r'width="([\d.]+)mm" height="([\d.]+)mm"', head)
         w_mm, h_mm = float(m.group(1)), float(m.group(2))

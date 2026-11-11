@@ -1,7 +1,7 @@
 {
  "schema": "vtol_carrier.fit_checks/1",
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "32bf9856575563cefdafe4491dae46af3f4eb165b60ecc81d94155423cacc1a3",
+ "board_sha256": "b1fe181392074abbfcc1acc4c36b6b6ae51c150fc4f4a96effd6c2150a884274",
  "placement_sha256": "8cb73c2e7aff7c7f2369aa10c3b507f8a2cbc9a5a9fbe9c95cf48f640256dd02",
  "module_dimensions_sha256": "40d59de412501d88cf2bad976145d006efe22f416afe23d556c44c15ac6a17dd",
  "tool": "pcbnew 10.0.6",

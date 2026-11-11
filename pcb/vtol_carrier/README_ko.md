@@ -1,214 +1,228 @@
-# VTOL 아비오닉스 캐리어 PCB rev 2c (ESP-12E + 1S 로직 배터리, 4층)
+# VTOL 아비오닉스 캐리어 PCB rev 3 (JLC가 실장해서 보내는 판)
 
-**NOT_VERIFIED: 이 보드는 만들거나 전원을 넣어 본 적이 없습니다.** 아래의 "통과"는 모두 도구(kicad-cli ERC/DRC, Freerouting, 스크립트) 결과일 뿐이고, 보드가 동작한다는 뜻이 아닙니다.
+**이 보드는 아직 만들거나 전원을 넣어 본 적이 없습니다 (NOT_VERIFIED).** 아래의 PASS는 모두 도구(kicad-cli ERC/DRC, 스크립트)의 결과이며 보드가 동작한다는 뜻이 아닙니다. JLC가 이 파일을 받아 주는지도 업로드 후 JLC의 DFM 결과와 견적을 봐야 압니다.
 
-표시: M = 도구로 측정, E = 추정, A = 가정(구입한 부품으로 확인 필요), F = 파일·업체 페이지 근거.
+표시: M = 이 PC에서 도구로 측정, E = 추정(계산), A = 가정(실물로 확인 필요), F = 문서·데이터시트 근거. 근거가 없으면 NOT_VERIFIED. 이 문서는 `scripts/docs_ko.py` 가 보고서 파일에서 숫자를 읽어 만든 것입니다 (손으로 고치지 말고 다시 생성). 측정·계산된 숫자의 출처는 맨 끝 8장에 있고, 그 표에 없는 숫자(칩 종류, 규칙 값, 시험 조건)는 계획서 `spec/REV3_PLAN.md` 와 사양 `spec/carrier_spec.json` 에서 옮긴 고정값(F)입니다.
 
-rev 2c = rev 2b에 독립 검토 3건(전기, PCB·제조, 기계 맞춤)의 지적을 반영한 판입니다. 지적별 처리는 11장 표에 있습니다.
+## 1. 지금 상태
 
-## 1. 결과 요약 (M, kicad-cli 10.0.6)
+**출고 판정(도구 검사 기준): NOT ORDERABLE** - 이유: routing_rules FAIL (battery_path).
 
-- 회로도 ERC: **오류 0, 경고 0** (시트 8장).
-- PCB DRC (`--schematic-parity --severity-all --refill-zones`): **오류 0, 경고 0, 미연결 0, 회로도 불일치 0**.
-- 넷마다 구리가 한 덩어리인지 스크립트로 셌습니다 (pcbnew 연결, 채움 포함): **100개 넷 모두 한 덩어리** (rev 2b에서 놓친 GND 섬 검사).
-- 패드에 닿는 비아 0개, 몸체 밑 앞면 실크 글자 0개, 구멍 사이 최소 0.537 mm (규칙 0.5 mm).
-- 넷리스트 = 스펙 (부품 162, 넷 100, 무연결 핀 185) PASS. 보드 패드 넷 475개 = IR PASS.
-- 거버 12장 + 드릴 1장 형식 검사 PASS (4층). BOM·CPL 구매처 검사 PASS (구매처 없는 실장 부품 0).
-- 출고 판정 스크립트(`out/manifest.json` `release_gate`): **"ORDERABLE (도구 검사만)"**. 이 판정은 도구 검사만 뜻합니다. 7장의 확인 항목(모듈 핀 순서, JLC 회전 미리보기, 벤치 절차)은 사람이 해야 합니다.
-- 결정성 PASS: 두 번 만든 회로도·배치·IR·배선 전 보드가 바이트 단위로 같고, 기록된 세션을 다시 넣은 배선 보드는 형상이 같습니다 (uuid만 다름, `out/reports/determinism.json`).
+배선이 끝난 보드에서 배터리 전원 경로(J14 → Q10 → J15 → L5)의 구리 저항은 0.03231 Ohm (20 C, E)로 계획 목표 0.035 Ohm 를 만족하지만, 계획이 요구한 '2.0 mm 이상 폭'을 16.1 mm 구간에서 지키지 못했습니다 (VBAT_LOGIC_RAW 1.07 mm (폭 1 mm); VBAT_LOGIC 3.93 mm (폭 1 mm); VBAT_LOGIC_SW 11.1 mm (폭 1.5/1.56 mm)). 60 C에서는 0.03739 Ohm (E)로 목표를 넘습니다. 도구는 이 규칙을 느슨하게 하지 않았습니다. 그대로 주문할지, 배선을 고칠지는 사용자가 정할 일입니다 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 0장).
 
-## 2. 보드에 있는 것
-
-- 크기 76 × 70 × 1.6 mm, 모서리 R1 (F: params `configs.vtol.electronics.carrier.dims_lwh`; R1은 A). 부착 구멍 없음: 3 mm 폼테이프 + 케이블타이. 케이블타이 띠(x −3..+3 mm)에는 실장 부품이 없습니다 (프로그래밍용 미실장 풋프린트만).
-- 4층: F.Cu 신호 / In1.Cu GND 전면 / In2.Cu +5V 전면 / B.Cu 신호. JLCPCB 표준 4층 1.6 mm (JLC04161H-7628 계열, 외층 1 oz, 내층 0.5 oz - A, 주문 때 스택업 이름 확인).
-- 부품 162개 (스펙): 실장 152, 미실장 10 (프로그래밍 헤더 8 + 스펙상 선택 부품 2).
-- 칩: U1 NAV, U2 FCU, U3 COM, U4 GNS = ATmega128A-AU 16 MHz 5 V. 칩마다 16 MHz 크리스털 + **27 pF** 2개, VCC 100 nF 2개, AVCC 10 µH + 100 nF, AREF 100 nF, 리셋 10 kΩ + 100 nF, LED, ISP 2×3(미실장).
-- 5번째 ATmega128A는 없습니다 (사용자 결정). **J13(사출 서보 헤더, 미실장)도 뺐습니다**: VTOL에는 사출 서보가 없고(params `configs.vtol`), 사용자가 "미실장인데 왜 만들어둔거야"라며 5번째 칩을 뺀 것과 같은 이유입니다. U2 PE5는 무연결입니다. 되돌리려면 `scripts/build_spec.py`의 J13 줄을 살리면 됩니다.
-- U7 ESP-12E (Wi-Fi 중계, 직접 납땜). 안테나 끝이 +y 모서리에서 0.08 mm 안쪽 (M), 안테나 아래와 양옆 4 mm는 4개 층 모두 구리·비아·부품 금지 (안에 구리 0, M).
-- J1 GY-521 (헤더에 눕혀 납땜), J2 BMP280 (직각 소켓), J5 OpenLog (직각 소켓), J6 Pololu S9V11F5S6CMA 5 V 승강압 모듈 (1×5 헤더에 눕혀 납땜, 트리머 위).
-- 전원: **J14 1S 배터리(Molex SPOX 2핀, −x/+y 모서리)** → Q10 AO3401A 역극성 보호 → **J15 전원 스위치 리드 (JST-PH 2핀 세로형, J14 바로 아래)** → C41/C42 → J6 Pololu VIN → +5V (In2 전면) → U6 AMS1117-3.3 → +3V3.
-- 서보 J8-J11 (−x 모서리), ESC J12, 아밍 J16, 부저 J17, 6S 감지 J18, GPS 리드 J7 (JST-GH), ESP 굽기 헤더 J3 (2×3, 케이블타이 띠 맨 위, 미실장).
-- 접지: 로직 GND와 추진 GND_PWR는 NT1(J12 3번 핀 옆) 한 곳에서만 만납니다.
-
-```
- 1S Li-Po (J14) --Q10 역극성--J15 스위치--+--J6 Pololu 5V 승강압-- +5V (In2.Cu 전면) --U6 AMS1117-- +3V3
-                                          |                        |                                 |
-                                       R15/R16 -> FCU PF3          +-- U1 NAV  U2 FCU  U3 COM  U4 GNS  +-- U7 ESP-12E, J2 BMP280,
-                                                                   |    (ATmega128A x4, 16 MHz)        |   GPS(JP1), 시프터 LV 쪽
- ESC BEC (J12 2번) -- SERVO_5V -- J8..J11 서보 (+ C47 220 uF)       +-- J1 GY-521, J5 OpenLog, 부저
- GND_PWR (J12 3번) == NT1 == GND (In1.Cu 전면)
- NAV --nlink SPI--> FCU --ilink UART--> COM --UART1 (Q4/Q11 BSS138)--> ESP-12E (Wi-Fi)
- NAV --I2C (Q1/Q2)--> GY-521, BMP280      NAV <--glink UART--> GNS --UART1 (Q6/Q7)--> J7 GPS (NEO-7M)
- FCU --PWM--> J8..J12 (220 Ω + 10 kΩ 풀다운)   FCU --UART0 (Q8)--> J5 OpenLog   FCU PF0..PF2 <-- J18 6S 분압기
-```
-
-## 3. 층 수와 배선 (사용자 규칙 "답이 안 보이면 4층")
-
-- 2층은 rev 2b에서 약 65분 시험해 미연결 63개에서 멈췄습니다 (M, `kicad/work/two_layer_attempt/`). 그래서 4층입니다. 2층 시험은 이번에 다시 하지 않았습니다.
-- 4층 규칙은 2층 규칙 그대로입니다 (신호 0.2 mm, 간격 0.13 mm, 비아 0.3/0.6 mm 관통만, 가장자리 0.3 mm, 구멍-구멍 0.5 mm). 보드 최소 선폭만 0.1 mm입니다 (JLC 4층 0.09 mm, A).
-- 기판값: 4층은 2층보다 비쌉니다 (E, 가격 조회 안 함).
-- rev 2c 배선 순서 (`scripts/route.py`): 팬아웃(GND·+5V 패드마다 비아) → Freerouting 단계 servo → power_high → power → signals → gnd → complete → 마무리 스크립트.
-- 채택한 Freerouting 실행 "vM" (2026-11-05 11:51-12:12, 스크래치 폴더): 단계 뒤 KiCad 미연결 181 → 175 → 140 → 2 → 1 → 1 (M). rev 2b는 같은 방식으로 25개가 남았습니다.
-- rev 2c에서 배치를 바꿔 11개 변형을 돌려 비교했습니다 (M, 모두 스크래치): 마무리 스크립트 뒤 미연결 1-4개였고, vM이 마무리 뒤 0이 된 유일한 것이라 채택했습니다. Freerouting은 같은 입력이면 같은 결과를 냈습니다 (vA = vB, vD = vE).
-- **마무리 스크립트 `scripts/close_leftovers.py` (새로)**: Freerouting이 남긴 연결을 0.1 mm 격자 A*로 잇습니다. 신호 넷과 AVCC만 (GND·+5V·+3V3·서보·배터리 넷은 손대지 않음), 새 구리만 추가, 기존 것은 옮기지 않음, 간격 0.13 mm + 여유, 가장자리 0.3 mm, 안테나 금지 영역 밖, 비아는 0.6/0.3 mm이고 **패드 안이나 패드에 닿는 자리에는 두지 않음**. 결과는 kicad-cli DRC가 다시 판정합니다. 이번 보드에서 이은 것 (M, `kicad/work/route_reuse_log.json`):
-  - ESP_RXD_SH: 0.2 mm, 0.8 mm, 비아 1개.
-  - NT1 1번 패드(GND 쪽)가 F.Cu GND 채움 섬에 갇혀 있었습니다 (팬아웃 비아 자리 없음). 0.4 mm 선 10.3 mm(비아 2개)로 주 GND에 이었습니다. NT1을 지나는 전류는 로직 GND 기준 전류뿐이고, 서보·ESC 전류는 GND_PWR에 머뭅니다 (스펙 `grounding`).
-- 그 밖의 마무리: 전원선 가늘어진 곳을 간격이 허락하는 만큼 다시 넓힘 (91구간, M), 끝선 제거, GND 스티칭 비아 158개 (패드에 닿는 자리 제외), 실크 라벨.
-- Freerouting "rip-up" 단계(`route.py --reuse-ses --polish`)도 만들어 시험했지만 남은 연결을 줄이지 못했습니다 (M, 2 → 2). 채택 배선에는 쓰지 않았습니다.
-
-## 4. 측정 (M, `out/reports/board_metrics.json`)
-
-- 디커플링: 칩 4개 × VCC·AVCC 핀 → 100 nF 동박 1.45-1.46 mm. **MCU GND 핀 22/53/63마다 패드 링 안쪽에 잠근 GND 비아** (rev 2b의 GND 섬 원인 제거).
-- FCU는 AREF 100 nF와 AVCC 10 µH도 고정 배치·고정 배선입니다: AREF 핀 62 → 콘덴서 2.63 mm, AVCC 콘덴서 → 인덕터 1.38 mm. (NAV·GNS·COM은 같은 자리가 J1·J22·다른 부품과 겹쳐 자동 배치 그대로입니다.)
-- 크리스털: 4개 모두 F.Cu, 비아 0, 판 가장자리에서 8 mm 이상. XTAL2 핀 23 → 크리스털 2.91 mm (통과). **XTAL1 핀 24 → 크리스털 5.96 mm (직선 5.18 mm), XTAL1 넷 7.29 mm: 3 mm 규칙을 못 맞춥니다.** 이유 (M, 라이브러리 치수): 3225 크리스털의 XTAL 패드 1과 3은 대각선에 있어, 어느 방향으로 놓아도 한 패드는 TQFP 핀 끝에서 3.2 mm 이상 멉니다 (패드 중심 기준). 16 MHz에서 7 mm 선은 부하용량 약 1 pF 정도 (E)라 동작에는 문제가 적다고 봅니다 (E). 
-- ESP-12E: 100 nF(C54)가 핀 8에서 **2.4 mm** (rev 2b 3.55 mm). 10 µF 4.1 mm, 100 µF 7.5 mm (직선).
-- 전원 패드: J6 1번(+5V 출력)·2번(GND), J14 2번(GND)은 면에 꽉 붙음(solid). rev 2b는 J6 +5V가 0.5 mm 스포크 하나였습니다.
-- 선폭 (길이별): SERVO_5V 1.5 mm 96.6 mm, 1.45 mm 4.3 mm, 1.3 mm 6.0 mm (rev 2b 최소 0.9). GND_PWR 1.5 mm 94.1 mm + NT1 쪽 0.5 mm 0.1 mm. VBAT_LOGIC_RAW·VBAT_LOGIC 1.0 mm. **VBAT_LOGIC_SW 1.0 mm 95.4 mm, 0.95 mm 9.7 mm, 0.8 mm 35.0 mm** (스펙 1.0 mm보다 좁은 곳이 남음). +3V3 0.5 mm 267 mm, 0.45 mm 14.9 mm, 0.3-0.4 mm 1.9 mm.
-- 배터리 경로가 깁니다: J15(−x/+y)에서 Pololu(+x/−y)까지 VBAT_LOGIC_SW 140 mm. 저항 약 0.08 Ω, 1.34 A 순간에 약 0.11 V 강하 (E, 1 oz). Pololu 차단 전압은 이만큼 일찍 걸립니다 (E).
-- 서보 레일 비아: C47로 가는 1.2/0.6 mm 비아 1개뿐입니다. 서보 직류 전류는 THT 패드 사이 B.Cu 선으로 흐르고, 이 비아는 콘덴서 리플만 나릅니다 (E).
-- 신호선이 바로 옆 전면 위에 있는 비율: F.Cu 88.6 %, B.Cu 88.1 %. NLINK(SPI)은 F.Cu(In1 GND 위) 비율 29-53 %, 나머지는 B.Cu(In2 +5V 면 위). +5V 면은 칩마다 100 nF로 GND와 결합되어 있어 그대로 두었습니다 (리뷰 PF-m4, 고치지 않음).
-- 플러그 맞춤 (CAD 보어·조인트 나사·모터 선 구역): J8-J12, J16, J18, J14, **J15**, J17, J7 모두 통과. 최소 보어 여유 3.26 mm (J12). 플러그 크기는 A.
-- CAD 라운드용 상자 목록 (꽂힌 플러그, 모듈 외곽): `board_metrics.json`의 `cad_round_envelopes` (차량 좌표 x/y, 보드 윗면 기준 높이).
-- 실크: 앞면 이름 5개 (J14 "1S BAT +-", J8 "V1 S+-", J16 "ARM SW AG", J17 "BUZ +-", U7 "ESP-12E") + 참조번호 10개. **나머지 이름 20개는 뒷면(B.SilkS, 거울 글자)**입니다. 앞면 빈자리가 모자랍니다 (부품 면적 약 88 %). 규칙: 어떤 글자도 다른 부품 몸체나 모듈 몸체 위에 두지 않음 (위반 0, M). 커넥터 이름에는 1번 핀(네모 패드)부터 핀 뜻이 붙어 있습니다 (예: "6S NO GND VI VT VB IS").
-
-## 5. 다시 만드는 방법 (정확한 명령)
-
-작업 폴더: `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/scripts`
-
-```
-B:/Claude/.venv/Scripts/python.exe -X utf8 fetch_parts_sources.py   # (온라인, 읽기만) 구매처 다시 확인 -> spec/parts_sources.json
-B:/Claude/.venv/Scripts/python.exe -X utf8 build_spec.py            # 스펙 JSON (네트워크 없음)
-B:/Claude/.venv/Scripts/python.exe -X utf8 make_all.py              # 회로도 -> 배치 -> 배선 전 보드 -> 세션 재생 + 마무리 -> 검사·출력
-B:/Claude/.venv/Scripts/python.exe -X utf8 determinism.py           # 두 번 만들어 비교
-```
-
-- `make_all.py` 순서: `build_schematic.py` → `place.py` → `build_pcb.py` → KiCad python `route.py --reuse-ses` → `checks_exports.py`.
-- Freerouting을 새로 돌리려면 `make_all.py --reroute` (같은 입력이면 같은 결과였지만, 입력이 바뀌면 결과가 크게 바뀝니다).
-- 채택 실행의 단계 명령: `java -Dfile.encoding=UTF-8 -jar C:/Users/yc012/AppData/Local/Temp/claude/B--Claude/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/tools_dl/freerouting/freerouting-2.5.0.jar -de <stage>.dsn -do <stage>.ses -mp 40 -mt 5 --gui.enabled=false` (signals 외 단계는 `-mp 20`). 로그·DSN·실행 기록: `kicad/work/freerouting_4layer_rev2c/`.
-- 세션 6개(`kicad/work/vtol_carrier_<단계>.ses`)와 순서(`kicad/work/ses_replay.json`)를 보관하고 `route.py --reuse-ses`가 같은 순서로 다시 넣습니다. rev 2b 세션과 로그는 `kicad/work/rev2b_sessions/`, `kicad/work/rev2b_freerouting_4layer/`에 남겨 두었습니다.
-
-## 6. 스펙과 다르게 한 것 (측정 근거)
-
-1. 프로그래밍 전용 헤더 8개(J3 ESP 굽기, ISP J19-J22, 리셋 고정 J24-J26)는 케이블타이 띠 안 미실장 풋프린트입니다. 스펙은 실장이지만 놓을 자리가 없습니다. 프로그래밍할 때 헤더를 눌러 꽂거나 납땜합니다 (7장 절차).
-2. 모듈 밑에 낮은 부품: 높이 제한(GY-521·Pololu 2.0 mm, BMP280·OpenLog 1.1 mm, A) 아래 부품만. U6 AMS1117은 Pololu 밑입니다 (열, A).
-3. XTAL1 3 mm 규칙 (4장, 기하 한계).
-4. VBAT_LOGIC_SW 일부 0.8-0.95 mm, +3V3 일부 0.3-0.45 mm (4장).
-5. 마무리 스크립트가 이은 선은 Freerouting 선보다 꺾임이 많습니다 (격자 45°). DRC는 통과입니다.
-6. AMS1117 콘덴서: C45(22 µF 출력) 5.1 mm, C44(10 µF 입력) 7.0 mm (리뷰 PF-m2, 고치지 않음).
-
-## 7. 주문·조립 전에 꼭 할 것
-
-### 7.1 확인 (A)
-
-- 모듈 핀 순서 (모두 A, 산 물건의 실크로 확인):
-  - J1 GY-521: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT.
-  - J2 BMP280: VCC, GND, SCL, SDA, CSB, SDO (I2C 0x77). 직각 헤더 플라스틱이 부품 없는 면에 있어야 모듈이 바로 눕습니다.
-  - J5 OpenLog: GRN, RXI, TXO, VCC, GND, BLK (직각 수 헤더 C55629820를 납땜).
-  - J6 Pololu: VOUT, GND, VIN, EN, PG (pololu.com 확인, 리뷰). SEL은 비워 둠.
-  - J7 GPS 리드: 1 VCC, 2 GPS TXD, 3 GPS RXD, 4 GND. JP1 기본 3.3 V.
-  - J14 배터리: 1번 = +. 첫 연결 전에 계측기로 팩 극성 확인 (Q10이 역극성을 막지만 확인).
-  - J15: 극성 없음 (스위치). 토글 스위치의 듀폰 끝을 잘라 JST-PH 하우징으로 다시 끼움.
-  - J3 ESP 굽기: 1 IO0, 2 GND, 3 TXD0, 4 RXD0, 5 RST, 6 GND (2×3). **3.3 V 신호 전용**, 전원 핀 없음.
-- JLC CPL 회전: 커뮤니티 표(`spec/jlc_cpl_rotations_db.csv`, github matthewlai/JLCKicadTools, 2026-11-05 읽음, A)로 SOT-23 −90°, SOT-223·탄탈 +180°, TQFP +270°를 더했습니다 (17행, `out/reports/jlcpcb_cpl_rotation_offsets.csv`). **JLC 미리보기에서 극성 부품(C45, C47, C52, D1-D4, D6, Q1-Q11, U1-U4, U6, U7, Y1-Y4, J7) 방향을 하나씩 확인하십시오.**
-- 4층 스택업(JLC04161H-7628 계열)과 0.09 mm 최소 규격은 가져와 확인하지 않았습니다 (A). 주문할 때 `.kicad_pro`의 규칙(간격 0.127/0.13 mm)을 같이 보내십시오: `.kicad_pro` 없이 DRC를 돌리면 KiCad 기본 규칙이라 위반이 많이 나옵니다.
-- 가장자리에 붙은 부품 때문에 JLC가 조립 레일을 요구할 수 있습니다 (A).
-
-### 7.2 벤치 절차 (리뷰 지적, 문서로 반영)
-
-1. **Pololu 저전압 차단 먼저 설정** (E-m3): 보드에 꽂기 전에 벤치 전원으로 차단 3.2 V를 맞추고(업체: EN이 VIN을 나눠 0.7 V 아래에서 꺼짐) 5.0 V 출력을 확인합니다. SEL 패드는 비워 둡니다 (1.1 V 넘으면 6 V 출력 → ATmega128A 최대 5.5 V 초과, A). 공장 기본값은 업체 페이지에 없습니다. 3.0 V 입력에서 ESP 송신 순간 5 V 처짐을 재 보십시오.
-2. **퓨즈가 없습니다** (E-m4): 1S 팩과 보드 사이 전류 제한은 팩의 PCM(A)뿐입니다. 선이 합선되면 팩 전류가 그대로 흐릅니다. PTC 퓨즈 추가는 사용자 결정 (9장).
-3. **6S 감지 역급전** (E-m7): 로직을 켠 다음 6S를 꽂고, 6S를 먼저 뺀 다음 로직을 끕니다 (로직이 꺼진 채 6S가 꽂히면 PF0 분압기로 약 0.4 mA가 꺼진 +5V로 흘러 들어감, E). J18에는 GND 핀이 없고 기준은 ESC 리드 GND(NT1)입니다.
-4. **BUF_ISIGN 입력** (E-m7): 테더 키트가 정해질 때까지 0-5 V 논리 신호만 넣으십시오 (5.6 V를 넘으면 (V − 5.6 V)/10 kΩ가 PC3 클램프로, 25 V에서 약 2 mA, E).
-5. **I2C 풀업** (E-m6): 산 GY-521·BMP280 모듈의 풀업을 재 보고, 10 kΩ 이하면 R43/R45를 빼는(DNP) 것을 검토. 400 kHz 상승 시간 확인.
-6. **서보 전원** (E-m5): 서보 4개 전류가 모두 J12 2번 핀(ESC BEC 선 하나)으로 들어옵니다 (MG90S 정지 토크 때 약 0.7 A × 4, A). 벤치에서 서보 4개를 동시에 막아 BEC 리드 전압 강하를 재 보십시오.
-7. **프로그래밍** (E-m8): ISP는 USBasp 전원 점퍼를 끄고 보드를 로직 배터리로 켠 상태에서. 칩별 헤더와 리셋 고정: FCU·GNS 굽기 = J24(NAV 리셋 고정), COM 굽기 = J25(FCU 리셋 고정), ESP 굽기 = J26(COM 리셋 고정) + J3 1-2 점퍼(IO0) 후 리셋. 헤더 J19-J22, J24-J26, J3는 미실장이라 눌러 꽂거나 납땜합니다. USBasp 2번 핀은 +5V에 이어져 있어 USBasp가 5 V를 내면 Pololu 출력 쪽으로 역급전됩니다 (A).
-8. **THT 핀 자르기** (MF2-8): 보드 밑으로 나온 핀(J17 1.8 mm, J2·J5 1.7 mm)을 1.0 mm 이하로 잘라 폼테이프에 닿지 않게 합니다.
-9. **조인트 나사** (MF2-5): 흡입구-아비오닉스 조인트 나사는 M3 × 6 권장 (보어 안쪽 돌출 약 3 mm, E). J14·J7 세로 플러그 때문에 5.5 mm 이상 들어가면 안 됩니다 (E). 135° 나사는 나일론 권장 (안테나 쪽).
-10. 모듈 외곽 (MF2-7): OpenLog과 Pololu 사이 간격 약 0.2 mm (E). 산 모듈을 재고, OpenLog·BMP280·GY-521 자유단 밑에 2-3 mm 폼 패드를 넣으십시오.
-
-## 8. 부품 구매처 (사용자 규칙: JLCPCB 또는 디바이스마트만)
-
-- 2026-11-05 이번 단계에서 **모든 줄을 다시 온라인으로 확인**했습니다 (읽기만, 로그인·장바구니·구매 없음): LCSC 45줄, 디바이스마트 8줄 모두 found. 디바이스마트 상품 페이지 8개를 이번에는 직접 읽었습니다 (rev 2b 때는 3개를 검색 목록으로만 확인). 원본 응답: `out/reports/sourcing/`.
-- 새로 확인한 부품: 27 pF 0402 C0G **LCSC C1557** (0402CG270J500NT, Extended, 재고 292,832), 100 µF 10 V 탄탈 B형 **LCSC C7196** (TAJB107M010RNJ, Extended, 재고 105,178).
-- J15는 J17과 같은 JST-PH(C131337), J3는 ISP와 같은 2×3(C65114)이라 새 부품 줄이 없습니다. PH 하우징 2개, 크림프 4개로 늘었습니다.
-- 디바이스마트 '재고' 숫자 칸은 뜻이 문서화되어 있지 않습니다. GY-521, BMP280, NEO-7M, OpenLog, 토글, ESP-12E 대안은 0으로 보였고 판매 상태는 'normal'입니다. 배터리 93, Pololu 100. 주문 직전에 `fetch_parts_sources.py`를 다시 돌리십시오.
-- 파일: `out/jlcpcb_bom.csv` (SMT 25줄, 136개, LCSC Part # 열), `out/jlcpcb_cpl.csv` (136행), `out/jlcpcb_bom_tht_hand_solder.csv` (손납땜 THT 6줄), `out/devicemart_purchase_list.csv` (7줄), `out/lcsc_loose_items.csv`, `out/bom_sources_all_lines.csv` (출처·번호·URL·조회일·재고).
-
-## 9. 사용자가 정할 것 / 후속 작업 (이번에 바꾸지 않음)
-
-### 9.1 로직 배터리 (사용자 결정 2026-11-05 "배터리는 A 위치")
-
-- 가정한 팩 위치 (CAD 라운드용, 차량 좌표, E): **x −48.4..−37.9, y −27.75..+27.75, z 346.1..413.1 mm**, 리드 끝이 +y. 보드에서는 J14·J15를 −x/+y 모서리로 옮겨 리드가 평면으로 약 6 mm만 내려옵니다 (M, 리뷰 계산). 서보 리드(−x 가장자리 y −12..+22에서 180° 구멍으로)와 ESC·모터 리드(+x)를 건너지 않습니다.
-- A 자리는 배터리 구성에서만 맞습니다. 테더·하이브리드 구성에서는 버스 클램프(약 13,500 mm³)·XT90(약 190-940 mm³)과 겹칩니다 (E, MF2-2). 다른 구성의 자리는 사용자 결정입니다.
-- A 자리 주변: 서보 리드 구멍과 평면 1.6 mm, GPS 리드(J7)와 0.37 mm, J18 플러그가 팩 아래 약 14 mm (E, MF2-10). CAD 라운드에서 2 mm 이상 여유 상자를 넣으십시오.
-- 전원 스위치와 배터리 플러그는 기체를 닫으면 손이 닿지 않습니다 (MF2-3). J15 리드를 158° 창의 작은 토글로 빼는 방법 (리드 약 28 mm, E) 또는 팩 플러그를 창 높이에서 빼는 방법 중 선택 (CAD 변경). 그 전에는 보관할 때 J14를 뽑으십시오.
-- 무게: 84 g 팩으로 VTOL 배터리 구성이 목표보다 약 88 g 무겁습니다 (E). params.json은 고치지 않았습니다.
-- PTC 퓨즈(약 2 A 유지) 추가 여부 (E-m4) - 자리 확보가 필요합니다.
-
-### 9.2 무선 (사용자 결정 2026-11-05 "가능하면 wifi, 아니면 lora")
-
-- Wi-Fi(ESP8266) 채택. 기체 쪽은 납땜한 ESP-12E(PCB 안테나) 그대로입니다. 거리는 프로토콜과 지상국 쪽에서 늘립니다:
-  - ESP-NOW (또는 802.11b 고정) 1 Mbps: 수신 감도 약 −98 dBm (802.11n 고속 약 −72 dBm), TX +20 dBm (A, Espressif ESP8266EX 데이터시트 - 디스크에 없음).
-  - 지상국 = 두 번째 ESP8266 + 외부 안테나 모듈(ESP-07S 계열, u.FL) + 8-9 dBi 무지향 또는 12-14 dBi 지향성 2.4 GHz 안테나.
-  - 링크 계산 (E): 20 dBm − 2 dBi(기체 안) + 8 dBi(지상) − 자유공간 손실 − 10 dB 여유 = 500 m 약 −78 dBm, 1 km 약 −84 dBm (여유 14 dB), 2 km 약 −90 dBm.
-- **비행 조건: 비행 전에 예상 최대 경사 거리의 2배 이상(예: 1 km) 지상 거리 시험.** 실패하면 LoRa로 돌아갑니다 (PLM100 1차 빌드: `archive/rev1_plm100_2s/`).
-- 한국 2.4 GHz EIRP 제한을 고이득 지상 안테나에 대해 확인해야 합니다 (A).
-- 보드: 안테나는 +y 모서리, 금지 영역 유지, PLA 벽(2.8 mm)을 향함. 6S 팩 18.4 mm, 1S A 자리 21.8 mm, ESC 26.9 mm, 모터 선 49.5 mm (E, 리뷰 MF2-12). 안테나 −x 쪽 2-6 mm에 있던 J13은 없앴고, J8 서보 리드는 안테나 모서리에서 떨어지게 정리하십시오 (PF-m6).
-- 로켓 구성(params `configs.rocket`, 펌웨어 lora 빌드)은 아직 LoRa입니다. 같은 변경이 필요한지는 사용자 결정 (읽기만 함).
-- 후속(펌웨어): ESP 중계 펌웨어·ESP-NOW 프로토콜, COM 링크 드라이버, `sim/link_model.py`, 지상국.
-
-### 9.3 그 밖의 후속
-
-- 펌웨어: FCU PF3 로직 배터리 읽기, BMP280 드라이버와 기압 모델 (제어 관련 → 전/후 비교 영상 규칙), NEO-7M 설정, `sim/tether.py:171`, PE5(사출 서보 PWM)는 이제 보드에 이어진 것이 없음.
-- params/문서 충돌 (고치지 않음): 5번째 칩, LoRa ↔ ESP-12E, 6S ↔ 1S 로직 전원, 사출 서보 헤더.
-- 앞면 실크 공간: 이름 20개가 뒷면입니다. 하네스 끝에 라벨을 붙이는 것을 권합니다.
-
-## 10. 파일
-
-- KiCad 프로젝트: `B:/0)AI_Cad/CanSat_EDF_Rocket/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pro`, `vtol_carrier.kicad_sch` (+ 시트 7장), `vtol_carrier.kicad_pcb` (배선된 4층 보드, 제목 블록 rev 2c).
-- 스펙: `spec/carrier_spec.json` (rev 2c, `rev_2c_changes`, `battery_spot_A_assumed`, `radio_decision_2026_11_05`), `spec/SPEC_ko.md`, `spec/parts_sources.json`, `spec/jlc_cpl_rotations_db.csv`.
-- 배치: `kicad/placement.json`. IR: `kicad/ir/`.
-- 배선 기록: `kicad/work/ses_replay.json`, `kicad/work/vtol_carrier_*.ses`, `kicad/work/freerouting_4layer_rev2c/`, `kicad/work/route_reuse_log.json`.
-- 출력: `out/vtol_carrier_gerber.zip` (+ `out/gerber/`), `out/vtol_carrier.net`, `out/schematic/` (PDF + SVG 8장), `out/vtol_carrier_bom.csv`, `out/vtol_carrier_cpl.csv`, JLC·디바이스마트 목록 (8장), `out/vtol_carrier.step` (미실장 제외), `out/render_top.png`, `render_bottom.png`, `render_iso.png`, `out/manifest.json` (sha256 + `release_gate`).
-- 보고서: `out/reports/erc.json`, `drc.json`, `netlist_vs_spec.json`, `board_vs_ir.json`, `gerber_check.json`, `board_metrics.json`, `determinism.json`, `jlcpcb_cpl_rotation_offsets.csv`.
-- 스크립트: `common.py`, `build_spec.py`, `fetch_parts_sources.py`, `build_schematic.py`, `place.py`, `build_pcb.py`, `fanout.py`, `route.py`, `close_leftovers.py` (새로), `silk.py`, `board_metrics.py`, `checks_exports.py`, `cad_envelope.py`, `determinism.py`, `make_all.py`.
-- AI_EDA 엔진(`B:/Claude`)은 가져다 쓰기만 했고 고치지 않았습니다. params.json, CAD, 펌웨어, `archive/`도 고치지 않았습니다.
-
-## 11. rev 2b 독립 검토 지적 처리표 (2026-11-05)
-
-표시: 고침 = 스크립트/스펙을 고치고 다시 만들어 도구로 확인함, 일부 = 일부만 고침, 사용자 = 사용자 결정 필요(이번에 적용 안 함), 문서 = README·조립 절차에만 반영.
-
-| 지적 | 내용 | 처리 |
+| 항목 | 결과 | 표시 |
 |---|---|---|
-| E-B1 / PF-B1 | 미연결 25개 | 고침: 미연결 0 (M). J3를 ESP 옆으로, Q10·R14를 새 모서리로, ESP 스트랩 저항을 ESP 쪽으로, FCU AREF·AVCC 고정 배치, 6S 분압기 윗저항을 J18 옆으로 + 마무리 배선 스크립트 |
-| E-B2 | MCU GND 핀 3개 + 콘덴서가 GND 섬 | 고침: MCU GND 핀 22/53/63마다 패드 링 안쪽에 잠근 GND 비아. 모든 넷이 한 덩어리인지 스크립트로 검사(`net_clusters`) |
-| E-m1 / PF-m1 | XTAL1 경로 5.1 mm (규칙 3 mm) | 못 고침 (기하 한계, 4장) |
-| E-m1 / PF-m2 | ESP 100 nF 3.55 mm | 고침: 2.4 mm (M) |
-| E-m2 | 22 pF ↔ CL 18 pF | 고침: 27 pF (LCSC C1557, 온라인 확인) |
-| E-m3 | Pololu 차단 전압·SEL | 문서: 첫 연결 전 벤치 설정 절차 (7장) |
-| E-m4 | 탄탈 6.3 V, 퓨즈 없음 | 탄탈 10 V로 고침 (LCSC C7196). 퓨즈는 사용자 결정 (팩 PCM에 의존, 9장) |
-| E-m5 | 서보 전류가 J12 2번 핀 하나 | 사용자 결정 (별도 서보 전원 입력) + 벤치 측정 절차 |
-| E-m6 | I2C 풀업 중복 | 문서: 모듈 풀업 측정 후 R43/R45 DNP 판단 |
-| E-m7 | 6S 분압기 역급전, BUF_ISIGN 입력 | 문서 (7장) |
-| E-m8 | 프로그래밍 헤더 미실장 | 일부: J3를 ESP 옆 띠로 옮김. 미실장 유지 (자리 없음) + 절차 문서화 |
-| E-m9 | 디바이스마트 출처 약함 | 고침: 8개 상품 페이지를 직접 다시 읽음 (2026-11-05) |
-| PF-M1 | J6 +5V가 스포크 1개 | 고침: J6.1·J6.2·J14.2 패드를 면에 꽉 붙임 (solid) |
-| PF-M2 / MF2-9 | 앞면 실크 라벨 | 일부: 몸체 밑 라벨 0개(M). 앞면에 다 들어가지 않아 나머지는 뒷면 |
-| PF-M3 | 스티칭 비아가 패드 안 | 고침: 패드에 닿는 비아 0개 (M) |
-| PF-M4 / MF2-1 | J14·J15 위치 | 고침: −x/+y 모서리 (배터리 A 자리 옆) |
-| PF-M5 | JLC CPL 회전 | 고침: 회전 보정표 적용 (A, JLC 미리보기 확인 필수) |
-| PF-M6 | 전원선 가늘어짐 | 일부: 서보 최소 1.3 mm (rev 2b 0.9), VBAT_LOGIC_SW 0.8 mm 35 mm 남음 (4장) |
-| PF-m3 | 0.1-0.12 mm 선 | 측정값 4장 |
-| PF-m4 | NLINK이 B.Cu | 그대로 (In2 +5V 면은 100 nF로 GND와 결합), 측정값 4장 |
-| PF-m5 | 끝선·실크 겹침 | 고침: 끝선 자동 제거, LED-크리스털 간격 규칙 |
-| PF-m6 | 안테나 옆 J13 | 고침: J13 제거 |
-| PF-m7 | J14 3D 모델 없음, 리비전 | 리비전 2c 기록. 3D 모델은 라이브러리에 없음 → CAD 상자 목록으로 대체 |
-| MF2-2 | A 자리는 테더/하이브리드와 겹침 | 사용자 결정 |
-| MF2-3 | 스위치·플러그 손 닿지 않음 | 사용자 결정 (CAD) |
-| MF2-4 | J15 플러그 높이 | 고침: JST-PH 세로형 |
-| MF2-5 | 조인트 나사 길이 | 문서: M3 × 6 권장 |
-| MF2-6 | STEP·CAD 상자 | 고침: STEP에서 미실장 제외, CAD용 상자 목록(`board_metrics.json` `cad_round_envelopes`) |
-| MF2-7 | 모듈 외곽 간격 | 문서: 산 모듈 측정 |
-| MF2-8 | THT 핀 1.7-1.8 mm | 문서: 1.0 mm 이하로 자르기 |
-| MF2-10 | A 자리 주변 리드 | CAD 라운드 (문서) |
-| MF2-11 | README에 결정 없음 | 고침 (9장) |
+| 회로도 ERC | 오류 0, 경고 0 (시트 8장) | M |
+| PCB DRC (`--schematic-parity --severity-all --refill-zones`) | 위반 0, 경고 0, 미연결 0, 회로도 불일치 0 | M |
+| 넷리스트 = 사양 | PASS (부품 174, 네트 105) | M |
+| 보드 패드 넷 = IR | PASS (핀 506 / 506) | M |
+| MCU 4개 핀 = rev 2c | PASS (핀 256, 차이 0) | M |
+| U8 / U9 핀-네트 표 | PASS | M (표는 F) |
+| 배선 규칙 (계획 13장) | 11 / 12 PASS, FAIL: battery_path | M / E |
+| 크리스털 XTAL1 길이 (rev 2c보다 나빠지면 안 됨) | 5.96 mm (한계 5.96 mm) | M |
+| 설계 규칙 파일 = rev 2c | PASS | M |
+| 구리 섬 / 패드에 닿는 비아 | 없음 (모든 네트 한 덩어리) / 0 | M |
+| JLC 부품 재고·주문 가능 확인 | PASS (40/40줄), with_mcu PASS, 2026-11-11T16:19:27+09:00 | M (그 시각 기준) |
+| 주문 파일 형식·fit 집합 검사 | PASS | M |
+| 주문 파일을 두 번 써서 같은지 | PASS | M |
+| 전체 다시 만들기 두 번 = 같은 파일 | FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | M |
+| 가장자리 2.5 mm 안 부품 몸체 | 32개 (0.3 mm 안: U7 0.15 mm, J15 0.29 mm) | M |
+| 모듈(OpenLog / BMP280 / GY-521) 간섭 | A / NOT_VERIFIED, 가정 치수로 충돌 0건 | A / NOT_VERIFIED |
+
+## 2. 이 기판은 무엇인가
+
+- 크기 76 x 70 mm, 두께 1.6 mm, 4층 (F.Cu 신호와 부품 / In1 GND 전면 / In2 +5V 전면 / B.Cu 신호). 부착 구멍 없음: 3 mm 폼테이프 + 케이블타이 1개. 케이블타이 띠(x -3..+3 mm)에는 실장 부품이 없습니다.
+- 부품은 모두 윗면에만 있습니다. 부품 높이 한계는 기판 윗면에서 13.4 mm 입니다. 아랫면은 폼테이프 자리라 비어 있습니다.
+- 비행 컴퓨터 칩 4개: U1 NAV, U2 FCU, U3 COM, U4 GNS (ATmega128A-AU, 16 MHz, 5 V). 무선은 U7 ESP-12F (Wi-Fi 중계).
+- 센서: GY-521 (IMU, J1에 납땜), BMP280 (기압, 소켓 J2), NEO-7M GPS (기체 윗뚜껑, 케이블로 J7). 기록기 OpenLog는 소켓 J5.
+- 전원 흐름: 1S 로직 배터리 J14 → Q10 역극성 보호 → 스위치 리드 J15 → U8 승압 5 V (+ U9 저전압 차단) → +5V 면 → U6 → +3V3.
+
+블록 (회로도 시트 기준, 부품 수는 사양에서 셈):
+
+| 블록 | 내용 | 부품 자리 | 그중 JLC 실장 |
+|---|---|---|---|
+| PWR | 전원: 1S 로직 배터리 입력 J14, 역극성 보호 Q10, 스위치 리드 J15, 5 V 승압 U8 TPS61023 + L5, 저전압 차단 U9 TLV3012B, 3.3 V 레귤레이터 U6, 접지 연결 NT1, 배터리 전압 분압 | 27 | 26 |
+| NAV | NAV 칩 U1 ATmega128A + GY-521 IMU 자리 J1 + BMP280 소켓 J2 | 17 | 14 |
+| FCU | FCU 칩 U2 ATmega128A | 15 | 13 |
+| COM | COM 칩 U3 ATmega128A + ESP-12F Wi-Fi 모듈 U7, 레벨 시프터, 부트 스트랩, ESP 굽기 단자 J3 | 36 | 32 |
+| GNS | GNS 칩 U4 ATmega128A + GPS 리드 커넥터 J7 (NEO-7M) | 18 | 15 |
+| SHIFT | BSS138 레벨 시프터 5 V <-> 3.3 V | 18 | 16 |
+| IO | 서보 J8~J11, ESC J12, 아밍 스위치 J16, 부저 J17, 6S 전압 감지 J18 등 입출력 커넥터 | 37 | 37 |
+| LOG | OpenLog 소켓 J5 | 1 | 1 |
+| LINK | 칩 사이 연결선 (UART / SPI) 부품 | 5 | 3 |
+
+## 3. rev 2c에서 바뀐 것과 이유
+
+- **5 V 전원 모듈을 없앴습니다.** 꽂는 Pololu 모듈(J6, 디바이스마트 부품)은 JLC가 실장할 수 없어서, JLC 부품으로 만든 승압 회로 U8 TPS61023 (C919459) + L5 (C53426685)를 예전 모듈 자리(+x / -y 모서리)에 올렸습니다. 이유: 요청(모든 부품 JLC 실장).
+- **저전압 차단을 유지했습니다.** 예전 모듈 안에 있던 기능입니다. U9 TLV3012B (C20345924) + R65 470k 1%, R66 270k 1%, R67 3.3M 1%: 켜짐 3.44 ~ 3.73 V, 꺼짐 3.00 ~ 3.25 V (계산값 E, 실측 전).
+- **Wi-Fi 모듈 ESP-12E → ESP-12F** (C82891). 핀과 풋프린트가 같고, ESP-12E는 JLC에서 재고가 적고 Standard 주문에만 쓸 수 있었습니다.
+- **스루홀 커넥터도 JLC가 납땜합니다.** 소켓 J2 / J5 (C22436147), 서보 헤더 J8~J12 (C32713262), J16, J18, 배터리 J14 (C5364642), 스위치·부저 J15 / J17 (C131337). 탄탈 C45 (C11366)와 헤더·소켓 번호 일부는 재고나 도면 근거로 바꿨고 D3 / D12에서 rev 2c 번호로 되돌릴 수 있습니다.
+- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 (PASS (핀 256, 차이 0)), 외곽, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치와 방향, 설계 규칙 (PASS), 크리스털 배선 (5.96 mm (한계 5.96 mm)).
+- **배치·배선을 다시 했습니다.** 새 부품 13개를 넣느라 주변 수동 부품 일부가 옮겨졌고, 배선은 새로 했습니다 (세그먼트 2308개, 비아 327개 중 GND 스티칭 102개). 배선은 Freerouting 실행 기록(세션 파일)을 다시 넣는 방식으로 재현됩니다.
+- 부품마다 바뀐 내용과 이유 분류(태그)의 전체 표: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 10장 (교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140).
+
+## 4. 누가 무엇을 붙이나
+
+| 구분 | 뜻 | 개수 |
+|---|---|---|
+| jlc | JLC가 실장 (주문 BOM / CPL에 들어감) | 157 |
+| jlc_optional | 기본은 사용자 납땜, with_mcu 파일 쌍을 쓰면 JLC 실장 | 4 |
+| user | 사용자가 납땜 | 1 |
+| none | 부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만) | 12 |
+
+- JLC가 붙이는 것: 기본 파일 쌍 기준 BOM 40줄 (SMT 34 + THT 6), 부품 157개. MCU까지 맡기는 with_mcu 쌍은 41줄 / 161개 (U1~U4 = C6510).
+- 사용자가 붙이는 것: ATmega128A-AU 4개 (기본, with_mcu 쌍이면 JLC), GY-521 (J1 구멍에 모듈 핀을 납땜), BMP280 (J2에 꽂음), OpenLog (모듈에 직각 6핀 헤더를 납땜한 뒤 J5에 꽂음), NEO-7M (케이블로 J7).
+- 부품 없이 비워 둔 자리: 프로그래밍 단자 J3, J19~J22 (2x3), J24~J26 (1x2) - 현재 선택 A안 (빈 도금 구멍). JLC가 헤더를 띠 밖에 실장하는 B안은 배치 검색 결과 불가 (고정 부품만 남겨도 2x3 다섯 개 자리가 없음) (SMD 0곳, THT 0곳).
+- MCU·센서 말고 사용자가 해야 하는 일(레일 떼기, 다리 자르기, 프로그래밍 단자 등)은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 8장에 모았습니다.
+
+## 5. 확인되지 않은 것 (NOT_VERIFIED)
+
+- 배터리 경로 폭 규칙 FAIL (16.1 mm): 사용자 결정 전까지 도구 판정은 NOT ORDERABLE 입니다.
+- 보드 동작 전체: 만들거나 전원을 넣은 적이 없습니다. 전원부 수치(5 V 출력, 차단 전압, 전류 여유)는 데이터시트 계산(E)입니다.
+- JLC의 수락: 가장자리 가까운 부품, THT 6줄 손납땜, BOM / CPL 형식, Standard 주문의 레일은 업로드 후 DFM 결과와 견적으로만 확인됩니다.
+- CPL 회전: 방향이 중요한 43개 중 C45, C47, C52, U9 은 자료끼리 어긋나 NOT_VERIFIED입니다. 나머지도 JLC 미리보기로만 확정됩니다. 탄탈 C45 / C52, 전해 C47을 거꾸로 붙이면 화재 위험이 있습니다.
+- 리플로 온도: Economic(255 C)에서 한계에 걸리는 줄 C2833309, C2286, C53426685; 문서에서 정격을 찾지 못한 부품 번호 32개.
+- 뒷면 다리 길이: J15, J17 은 규칙 1.5 mm 보다 길어 잘라야 합니다. J1, J14 은 확인 못 함.
+- 모듈 치수와 끼움: GY-521, BMP280, OpenLog, NEO-7M 치수는 가정값입니다 (GY-521 받침 2.54 mm, BMP280 헤더 직각 - 모두 A). 그림과 간섭 검사도 이 가정 위에 있습니다. 실물을 버니어로 재야 확정됩니다 (D15).
+- J14 Molex 커넥터: 라이브러리 3D 모델이 없고 구멍 지름을 도면과 대조하지 못했습니다.
+- 재고: 2026-11-11T16:19:27+09:00 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.
+- 비용: 수수료 표로 계산한 추정(E)입니다. 실제 금액은 JLC 견적뿐입니다.
+- GPS 케이블이 기체 안에서 지나갈 길은 설계되지 않았습니다 (그림은 예시).
+
+## 6. 다시 만드는 방법
+
+작업 폴더 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts` 에서 (환경변수 `PYTHONDONTWRITEBYTECODE=1`):
+
+```
+B:/Claude/.venv/Scripts/python.exe -X utf8 -B make_all.py           # 전체 (사양 -> 회로도 -> 배치 -> 배선 재생 -> 검사 -> 주문 파일 -> 그림 -> 문서 -> manifest)
+B:/Claude/.venv/Scripts/python.exe -X utf8 -B make_all.py --list    # 단계 목록
+B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py        # 전체를 두 번 만들어 파일이 바이트까지 같은지 비교
+B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당일 JLC 재고 확인 (인터넷, 읽기만)
+```
+
+- 한 번 만드는 데 걸린 시간: 10.7분, 11.2분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-11T17:53:25+0900.
+- make_all.py는 인터넷을 쓰지 않습니다. JLC 부품 근거는 저장된 기록으로 다시 평가하고, 재고 확인(jlc_gate.py)은 따로 실행합니다.
+- 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다.
+- 결정성 검사 결과: FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음). 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. STEP 파일(기구 확인용)은 주문 파일이 아닙니다.
+- 인터프리터: 대부분 `B:/Claude/.venv`, 보드 처리는 KiCad 10.0.6의 python, 3D 모델·그림 일부는 `B:/0)AI_Cad/CanSat_EDF_Rocket/.venv` (실행만 함).
+
+## 7. 파일 지도
+
+| 무엇 | 경로 |
+|---|---|
+| 주문 안내서 (먼저 읽기) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` |
+| 주문 파일: 거버 zip / BOM / CPL (기본 쌍) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv` |
+| 주문 파일: MCU까지 JLC 실장 쌍 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv` |
+| 부품 회전 표 / 미리보기 대조 그림 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/cpl_rotation_table.csv` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/cpl_rotation_check.png` |
+| 따로 살 것 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/off_board_purchase.csv` |
+| 비용 추정 (E) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_fee_estimate.csv` |
+| JLC 재고 확인 결과 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_gate_report.json` |
+| 검사 결과 모음 + 파일 해시 + 출고 판정 (계획의 MANIFEST.json) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/manifest.json` |
+| 검사 보고서 폴더 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports` |
+| 회로도 PDF | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/schematic/vtol_carrier_schematic.pdf` |
+| 3D STEP (J14 모델 없음) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.step` |
+| 장착 그림·슬라이드와 설명 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/INDEX_ko.md` |
+| 회로도·보드 발표용 그림 (보드 그림에는 모든 부품 모델이 보임) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/presentation` |
+| 옛 rev 2c 시험 그림 (보관용, 납품물 아님) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/_spike_rev2c` |
+| KiCad 프로젝트 (회로도·보드) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pro` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_sch` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb` |
+| 사양 / 사양 요약 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/SPEC_ko.md` |
+| 계획 (설계 기준) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/REV3_PLAN.md` |
+|  | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json` |
+| 모듈 치수 (대부분 가정) | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/module_dimensions.json` |
+| 스크립트 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts` |
+| rev 2c 보관본 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s` |
+
+## 8. 이 문서의 숫자 출처
+
+| 값 이름 | 값 | 출처 파일 | 표시 |
+|---|---|---|---|
+| 출고 판정 | NOT ORDERABLE | out/manifest.json release_gate | M (도구 검사) |
+| 출고 판정 이유 | routing_rules FAIL (battery_path) | out/manifest.json release_gate.reasons | M |
+| 배터리 경로 저항 20C | 0.03231 Ohm | out/reports/routing_rules.json battery_path | E |
+| 배터리 경로 목표 | 0.035 Ohm | out/reports/routing_rules.json battery_path | F (계획 13절) |
+| 2 mm보다 좁은 길이 | 16.1 mm | out/reports/routing_rules.json battery_path | M |
+| 좁은 구간 | VBAT_LOGIC_RAW 1.07 mm (폭 1 mm); VBAT_LOGIC 3.93 mm (폭 1 mm); VBAT_LOGIC_SW 11.1 mm (폭 1.5/1.56 mm) | out/reports/routing_rules.json battery_path.legs | M |
+| 배터리 경로 저항 60C | 0.03739 Ohm | out/reports/routing_rules.json battery_path | E |
+| ERC | 오류 0, 경고 0 (시트 8장) | out/reports/erc.json (kicad-cli 10.0.6) | M |
+| DRC | 위반 0, 경고 0, 미연결 0, 회로도 불일치 0 | out/reports/drc.json (kicad-cli 10.0.6) | M |
+| 넷리스트=사양 | PASS (부품 174, 네트 105) | out/manifest.json netlist_vs_spec | M |
+| 보드=IR | PASS (핀 506 / 506) | out/manifest.json board_vs_ir | M |
+| MCU 핀맵 | PASS (핀 256, 차이 0) | out/reports/rev3_mcu_pinmap.json | M |
+| U8/U9 패드표 | PASS | out/reports/rev3_u8_u9_pads.json | M (표는 데이터시트에서 옮김, F) |
+| 배선 규칙 PASS 수 | 11 | out/reports/routing_rules.json | M |
+| 배선 규칙 수 | 12 | out/reports/routing_rules.json | M |
+| 배선 규칙 FAIL | battery_path | out/reports/routing_rules.json | M |
+| XTAL1 최악 | 5.96 mm (한계 5.96 mm) | out/reports/routing_rules.json crystals | M |
+| 규칙 파일 | PASS | out/reports/routing_rules.json rule_file | M |
+| 구리 섬 | 없음 (모든 네트 한 덩어리) | out/manifest.json board_metrics | M |
+| 패드에 닿는 비아 | 0 | out/manifest.json board_metrics | M |
+| JLC 확인 결과 | PASS (40/40줄), with_mcu PASS | out/jlc_gate_report.json | M |
+| JLC 확인 시각 | 2026-11-11T16:19:27+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
+| 주문 파일 검사 | PASS | out/reports/rev3_export_files.json | M |
+| 주문 파일 재현 | PASS | out/reports/rev3_export_determinism.json | M |
+| 결정성 | FAIL - 바이트 비교 파일 70개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | out/reports/determinism.json | M |
+| 가장자리 2.5 mm 안 몸체 | 32 | out/reports/edge_distance.json | M |
+| 가장자리 0.3 mm 안 몸체 | U7 0.15 mm, J15 0.29 mm | out/reports/edge_distance.json | M |
+| 모듈 간섭 | A / NOT_VERIFIED, 가정 치수로 충돌 0건 | out/fit_checks.json module_keepouts | A |
+| 외곽 | 76 x 70 mm | spec/carrier_spec.json | F (size) / A (corner radius) |
+| 두께 | 1.6 mm | spec/carrier_spec.json | F |
+| 층 수 | 4 | spec/carrier_spec.json | F (계획 불변조건 d) |
+| 높이 한계 | 13.4 mm | spec/module_dimensions.json | F (계획) |
+| 블록 PWR | 27 / 26 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 NAV | 17 / 14 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 FCU | 15 / 13 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 COM | 36 / 32 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 GNS | 18 / 15 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 SHIFT | 18 / 16 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 IO | 37 / 37 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 LOG | 1 / 1 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 블록 LINK | 5 / 3 | spec/carrier_spec.json parts[].block, parts[].fit | M |
+| 코드 U8 | C919459 | out/jlcpcb_bom.csv | M |
+| 코드 L5 | C53426685 | out/jlcpcb_bom.csv | M |
+| 코드 U9 | C20345924 | out/jlcpcb_bom.csv | M |
+| UVLO 저항 | R65 470k 1%, R66 270k 1%, R67 3.3M 1% | spec/carrier_spec.json | M |
+| 켜짐 전압 | 3.44 ~ 3.73 V | spec/rev3_plan.json power_block.uvlo | E |
+| 꺼짐 전압 | 3.00 ~ 3.25 V | spec/rev3_plan.json power_block.uvlo | E |
+| 코드 U7 | C82891 | out/jlcpcb_bom.csv | M |
+| 코드 J2 | C22436147 | out/jlcpcb_bom.csv | M |
+| 코드 J8 | C32713262 | out/jlcpcb_bom.csv | M |
+| 코드 J14 | C5364642 | out/jlcpcb_bom.csv | M |
+| 코드 J15 | C131337 | out/jlcpcb_bom.csv | M |
+| 코드 C45 | C11366 | out/jlcpcb_bom.csv | M |
+| 배선 세그먼트 | 2308 | kicad/work/route_reuse_log.json | M |
+| 배선 비아 | 327 | kicad/work/route_reuse_log.json | M |
+| GND 스티칭 비아 | 102 | kicad/work/route_reuse_log.json | M |
+| 변경 행 | 교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140 | spec/rev3_plan.json changes | F (계획) |
+| fit jlc | 157 | spec/carrier_spec.json | M |
+| fit jlc_optional | 4 | spec/carrier_spec.json | M |
+| fit user | 1 | spec/carrier_spec.json | M |
+| fit none | 12 | spec/carrier_spec.json | M |
+| main bom_lines | 40 | out/manifest.json bom_cpl.pairs.main | M |
+| main bom_lines_smt | 34 | out/manifest.json bom_cpl.pairs.main | M |
+| main bom_lines_tht | 6 | out/manifest.json bom_cpl.pairs.main | M |
+| main parts | 157 | out/manifest.json bom_cpl.pairs.main | M |
+| with_mcu bom_lines | 41 | out/manifest.json bom_cpl.pairs.with_mcu | M |
+| with_mcu parts | 161 | out/manifest.json bom_cpl.pairs.with_mcu | M |
+| U1-U4 with_mcu | C6510 | out/jlcpcb_bom_with_mcu.csv | M |
+| 프로그래밍 헤더 선택 | A | spec/carrier_spec.json prog_headers.option | M |
+| B안 결론 | 불가 (고정 부품만 남겨도 2x3 다섯 개 자리가 없음) | out/reports/programming_access.json | M |
+| B안 2x3 자리 | SMD 0곳, THT 0곳 | out/reports/programming_access.json verdict_per_family | M |
+| 방향 중요 부품 수 | 43 | out/reports/cpl_rotation.json | M |
+| 회전 미확인 | C45, C47, C52, U9 | out/reports/cpl_rotation.json | NOT_VERIFIED |
+| 리플로 한계 | C2833309, C2286, C53426685 | out/fit_checks.json reflow_rating | F (데이터시트) |
+| 리플로 미확인 줄 수 | 32 | out/fit_checks.json reflow_rating | NOT_VERIFIED |
+| 다리 규칙 초과 | J15, J17 | out/fit_checks.json tht_leads | F (도면값) |
+| 뒷면 다리 규칙 | 1.5 mm | out/fit_checks.json tht_leads | F (계획) |
+| 다리 길이 미확인 | J1, J14 | out/fit_checks.json tht_leads | NOT_VERIFIED |
+| GY-521 받침 높이 | 2.54 mm | spec/module_dimensions.json gy521.support_h | A |
+| BMP280 헤더 종류 | 직각 | spec/module_dimensions.json bmp280.header_type | A |
+| 빌드 시간 | 10.7분, 11.2분 | out/reports/determinism.json builds | M |
+| 결정성 시각 | 2026-11-11T17:53:25+0900 | out/reports/determinism.json | M |

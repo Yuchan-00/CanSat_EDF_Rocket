@@ -14,7 +14,7 @@
  "files": 13,
  "sha256_on_disk_before": {
   "spec/carrier_spec.json": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
-  "spec/SPEC_ko.md": "e9dfbbb350a8658caefe3f3b0bc9f139b04ba59d3493493482527b2e7ac79b0f",
+  "spec/SPEC_ko.md": "c1696870a0807e3443e817850ea2e2afa340c453a0990960eeff8888f10d78c0",
   "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
   "kicad/schematic_manifest.json": "d57916faeb2496eb7ca253fcc6b11692828f60eee3bdbb3e11d8a74ce2270c57",
   "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
@@ -29,7 +29,7 @@
  },
  "sha256_after_build_1": {
   "spec/carrier_spec.json": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
-  "spec/SPEC_ko.md": "e9dfbbb350a8658caefe3f3b0bc9f139b04ba59d3493493482527b2e7ac79b0f",
+  "spec/SPEC_ko.md": "c1696870a0807e3443e817850ea2e2afa340c453a0990960eeff8888f10d78c0",
   "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
   "kicad/schematic_manifest.json": "d57916faeb2496eb7ca253fcc6b11692828f60eee3bdbb3e11d8a74ce2270c57",
   "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
@@ -44,7 +44,7 @@
  },
  "sha256_after_build_2": {
   "spec/carrier_spec.json": "457e9b800990c2c7c90b6d83cafe1a3630b704a57ba21bb947dc188a7a871077",
-  "spec/SPEC_ko.md": "e9dfbbb350a8658caefe3f3b0bc9f139b04ba59d3493493482527b2e7ac79b0f",
+  "spec/SPEC_ko.md": "c1696870a0807e3443e817850ea2e2afa340c453a0990960eeff8888f10d78c0",
   "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
   "kicad/schematic_manifest.json": "d57916faeb2496eb7ca253fcc6b11692828f60eee3bdbb3e11d8a74ce2270c57",
   "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
