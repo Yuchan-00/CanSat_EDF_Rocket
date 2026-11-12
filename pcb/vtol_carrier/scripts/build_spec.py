@@ -53,9 +53,12 @@ from pathlib import Path
 
 import fitsets
 import rev3_spec as R3
+import outline as OL  # noqa: E402  (redesign2: the board outline with the tab)
 
 HERE = Path(__file__).resolve().parent.parent
-PROJ = HERE.parent.parent                      # the repository this script lives in (never another checkout)
+#: redesign2: CARRIER_PROJ names the checkout for a scratch copy of the board folder that has no checkout around it
+#: (read-only use of params.json / cad/exports / firmware); unset = the repository this script lives in, as before
+PROJ = Path(os.environ["CARRIER_PROJ"]) if os.environ.get("CARRIER_PROJ") else HERE.parent.parent
 PROBE = json.loads((HERE / "spec" / "library_probe.json").read_text(encoding="utf-8"))
 SPEC_DIR = Path(os.environ["VTOL_SPEC_DIR"]) if os.environ.get("VTOL_SPEC_DIR") else HERE / "spec"
 OUT = SPEC_DIR / "carrier_spec.json"
@@ -1078,7 +1081,27 @@ def narrative(spots: dict) -> dict:
             "outline_mm": {"x": [-38.0, 38.0], "y": [-35.0, 35.0], "size": [76.0, 70.0], "corner_radius_mm": 1.0,
                            "label": "F (size) / A (corner radius)",
                            "source": f"{P} configs.vtol.electronics.carrier.dims_lwh [76, 70, 15] (line 1758-1762); "
-                                     f"{CADR} parts.carrier.bbox_mm [[-38,-35,327.1],[38,35,342.1]]"},
+                                     f"{CADR} parts.carrier.bbox_mm [[-38,-35,327.1],[38,35,342.1]]",
+                           # redesign2 Layout stage (user request 2026-11-12 "보드의 사이즈를 조정하는 방법은 없어?"): a tab on the
+                           # vehicle -y edge carries the boost converter; 'size' stays the 76 x 70 main rectangle
+                           "tab": {"x": [round(OL.TAB_X0 - 100.0, 3), round(OL.TAB_X1 - 100.0, 3)],
+                                   "y": [round(100.0 - OL.TAB_Y1, 3), -35.0],
+                                   "outer_corner_radius_mm": OL.TAB_R_OUT, "inner_fillet_radius_mm": OL.TAB_R_IN,
+                                   "area_mm2": OL.describe()["tab_area_mm2"],
+                                   "label": "A (layout decision) inside the envelope measured on the airframe CAD (M, Fit stage: "
+                                            "x -6..34, y >= -43.74 with r 1)",
+                                   "source": "scripts/outline.py (the one definition every generator and check reads)",
+                                   "user_request_verbatim": "보드의 사이즈를 조정하는 방법은 없어?",
+                                   "user_request_date": "2026-11-12",
+                                   "plan_invariant_deviation": "spec/rev3_plan.json invariants (b) says 'board outline 76 x 70 mm "
+                                                               "... unchanged'. The 76 x 70 main rectangle, its corner radius and "
+                                                               "all its edges are unchanged; the tab is ADDED at the user's request "
+                                                               "so that the boost converter passes every routing check with the "
+                                                               "present parts. The JLC order bounding box becomes bbox_size.",
+                                   "ir_note": "the ai_eda IR BoardOutline holds a rectangle only: the IR keeps the 76 x 70 main "
+                                              "rectangle, the Edge.Cuts with the tab come from scripts/outline.py (build_pcb.py) - "
+                                              "for the outline the IR is NOT the only design data"},
+                           "bbox_size": [round(OL.BBOX[2] - OL.BBOX[0], 3), round(OL.BBOX[3] - OL.BBOX[1], 3)]},
             "frame": "board origin = vehicle axis; board +x = CAD +x (ESC / misc side, motor-lead hole at theta 0 deg), "
                      "+y = CAD +y (theta 90 deg); component side = top = +Z (up, toward the tray). "
                      "Source: cad/layout.py (carrier centred, edges along x / y); "
@@ -1102,8 +1125,9 @@ def narrative(spots: dict) -> dict:
                              "A - not used unless needed); vias 0.3 / 0.6 mm through-hole only, no blind / buried",
                     "keepouts": "the ESP-12E antenna keep-out applies to ALL four layers (no inner plane under the "
                                 "antenna)"},
-                "cost_note": "4 layers cost noticeably more than 2 layers at JLCPCB for a 76 x 70 mm board (E; prices "
-                             "not fetched) - reported to the user with the routed result",
+                "cost_note": "4 layers cost noticeably more than 2 layers at JLCPCB for a board of this size (76 x 70 mm "
+                             f"main rectangle, {OL.BBOX[2] - OL.BBOX[0]:g} x {OL.BBOX[3] - OL.BBOX[1]:g} mm bounding box "
+                             "with the tab; E, prices not fetched) - reported to the user with the routed result",
                 "freed_area": "the removed 5th chip block (~20 x 20 mm incl. its crystal, caps and ISP header, E) is "
                               "free for routing / the boost module"},
             "height_limit_top_mm": {"value": 13.4, "label": "F/E",

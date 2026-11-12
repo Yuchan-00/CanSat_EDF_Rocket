@@ -1,55 +1,55 @@
 {
  "board_box_px_a1": [
-  431,
-  53,
-  1473,
-  1012
+  439,
+  11,
+  1465,
+  1053
  ],
  "generated_by": "scripts/render_rev3.py --slides-only",
  "inputs": {
-  "a1_as_delivered_top.png": "b4aa6ad90463ecb237cc37d91119b8eaa363d505659be3181b54f18449404bd5",
-  "a2_as_delivered_front.png": "2fdf77d12a9dd773dc8e36445b27ff04a439e050be2aa3c558c2ef9776f7888f",
-  "a3_as_delivered_bottom.png": "14a4480c31db70d377bcb6a52ba6326965145fc18c35b3aeff624cf3596083e3",
-  "b1_completed_top.png": "35be2f748f50f3a1ba0ada7e2d9a255a528fe636dcb0103682776fcb9766e7ec",
-  "b2_completed_front.png": "7547f275e5a455bef2713ab1172c4be20f1413f6a247ac8b7d7ff269b2486242",
-  "b3_completed_back.png": "734966926524e02629f5441c458b8fe651419d0663f125ed59bff33e81a303e9",
-  "b4_completed_side_limit.png": "86d7fd5f86a927f8c188d9da1c59154b66ed31a9d133230e85b768957b118aaf",
-  "c1_gy521_on_J1.png": "6889a0c2aa36c83b9af9a73e9534f4d9b4f440f91d447ec1a0baed9f8eddbaa6",
-  "c2_bmp280_in_J2.png": "fb3420847a3e3e23a849b08461fcd3e9547c680f0db81e42da8e5ce2f0e6250a",
-  "c3_openlog_in_J5.png": "ad30bc71b3b0c2c86b1f71c99e5f04ce870b474ce24984946c97a86a00ad3b4f",
-  "c4_esp12f_keepout.png": "499a504e58f755f1bc7c13665a9b32dbbe87bd0e9fd7ec68aa7a8306ee7c72d7",
-  "c5_mcu_pin1.png": "ed4ce359873a0222081ac8bbcaf7404b99a9eca9efdfd1d2fc475699fa165cce",
-  "d1_gps_plug_J7.png": "accd5807489f48c0fd583c5f2b638120008de4291532255b0bfb08586c4e941a",
-  "d2_neo7m_top_cap.png": "3e0efc4c57ba8076156bde5c6fc2fbfa50a21dcad5e031e4376863f40928553e"
+  "a1_as_delivered_top.png": "1fbd7abd971ba94b6f4f0e67669da3d51f9f09573beceb56bd36d94c8261ca29",
+  "a2_as_delivered_front.png": "88d15e873594002ad4c9416443e547ab005948c090ae42a653d5034ebd3e33d6",
+  "a3_as_delivered_bottom.png": "e4daf8ab96f2316a06f1bdc80cc5f3da1f988253ea111ccbf911d37684a5c260",
+  "b1_completed_top.png": "75a17f3f42d3e4af2abfc6885c00c74056c27a5ddc066860cca10ef778bf8f65",
+  "b2_completed_front.png": "5014f14ace2e91cf14717678f58a031a3dbeac147b49a7db82749577704a0923",
+  "b3_completed_back.png": "8325216a3ff300b062c4c6d285f11672cde1a62b3d1edfd634479deb507d7c81",
+  "b4_completed_side_limit.png": "6c23114449f032eb5f0d152ed7ce0cf4d57da97b13e6d39a0a96ae77e49656a1",
+  "c1_gy521_on_J1.png": "657860644106a37980c70eadf5acdfeebbec712c56db125fd4dd6d3523f6ae65",
+  "c2_bmp280_in_J2.png": "ce90b7e59acc6309cea5e23e8641e8ab816b9e5bb007db8005f43aa8e4fe98f5",
+  "c3_openlog_in_J5.png": "febd67bf7d234fa7f35c54086df72715e28bb1a1ff51496845ddfb9036f282a7",
+  "c4_esp12f_keepout.png": "2989c884193ac0fe2a9b24647053f8ebc370aa34199bc1e6d7413d7382356507",
+  "c5_mcu_pin1.png": "9b9bfbf0fed1bf248c76ee02c4b83f43cfd18a21ac08f28a74a6d216696640cd",
+  "d1_gps_plug_J7.png": "99cf4cdf5ce84e461a36985616ef214113357ca97c3b944611b72db25c728324",
+  "d2_neo7m_top_cap.png": "ea0f0fe59c22d564ee6f3aa90deaa0818fb9df7769c9e70709d817dd5f7f27ff"
  },
  "label": "composed illustrations; '가정' marks assumed dimensions / routes; not fit evidence",
  "schema": "vtol_carrier.render_slides/1",
  "slides": {
   "e1": {
    "file": "e1_delivered_vs_completed.png",
-   "sha256": "2ed5b98b4740b79564119c6e767ec6218d3dff26cc990163bf8d1cda65a7f956"
+   "sha256": "2292e663126f09f403d1a1577ccc9d233da085606079673e0e752fca9f045fe8"
   },
   "e2a": {
    "file": "e2a_gy521_J1.png",
-   "sha256": "0ccd8ed5e16b68ab987936fb69a3459d785ca6adf2165720ffb26069f6434042"
+   "sha256": "ee25b31999373849c7a85e9ff52d57f71a5d97e245af2df7e73de481a7df01b5"
   },
   "e2b": {
    "file": "e2b_bmp280_J2.png",
-   "sha256": "b8382dee3414957fb25f787dc499c3c05a9c9a0c19f068bb3049907ff7d3ab39"
+   "sha256": "2c1b8c1f1d63ded94d323d44a3d573253e1463f25d964469f34778490a49ebcb"
   },
   "e2c": {
    "file": "e2c_openlog_J5.png",
-   "sha256": "42f4215390a2b926af221afa41f7187f4ddbd35b4650b718b178228adff2b303"
+   "sha256": "35ad548370af539c07e9d2889ff894977800e494fb0523fec1164dbb888924e0"
   },
   "e3": {
    "file": "e3_gps_lead_J7.png",
-   "sha256": "6a44d504ba1b5da8b56228687a8c0a971c5f558041de41c8706ff77cccb23248"
+   "sha256": "51f66928b425a9db39bdb3605a14f2a54de13597f9c2a8e6def19981d0de5af4"
   },
   "e4": {
    "file": "e4_overview_callouts.png",
-   "sha256": "a5d2465316bae8abcc9d2de4d3ce30158f9122e8a85f90362d91c4fe68b7beeb"
+   "sha256": "e11e0f3f8d0971650ede08c14c59d686484e26935bfe01587a156b28479ebe4d"
   }
  },
  "source_board": "vtol_carrier.kicad_pcb",
- "source_board_sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2"
+ "source_board_sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d"
 }

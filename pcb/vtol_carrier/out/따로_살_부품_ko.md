@@ -11,7 +11,7 @@
 - JLC가 실장해서 보내는 것: SMT 부품 144개 (BOM 33줄). GPS 커넥터 J7(SMD)은 여기에 들어 있습니다 (M).
 - 이번에 JLC BOM에서 빠져 사용자가 사게 된 것 ((a) 묶음): ESP-12F 1종 + 스루홀 커넥터 6종 (보드당 커넥터 12개, 납땜 39곳; ESP-12F는 패드 22개) (M).
 - (a) 묶음을 LCSC에서 최소 주문 수량대로 2장 분 사면 약 10.39 USD입니다 (그중 커넥터 6종 4.56 USD; E: 2026-11-12T02:50:37+09:00 ~ 02:51:09+09:00 LCSC 기록의 단가 x 수량, 배송비·세금 제외). 일곱 가지 모두 그 시각에 재고가 필요 수량보다 많았습니다.
-- 참고 (M, 주문 화면 2026-11-12): 스루홀 6줄을 JLC에 맡기면 주문 합계가 83.15 USD, 빼면 76.82 USD였습니다 (배송 제외, ESP-12F 미실장 기준).
+- 참고 (M, 주문 화면 2026-11-12, 재설계 전 76 x 70 mm 거버의 견적 - 지금 파일의 값은 NOT_VERIFIED): 스루홀 6줄을 JLC에 맡기면 주문 합계가 83.15 USD, 빼면 76.82 USD였습니다 (배송 제외, ESP-12F 미실장 기준).
 - 사는 곳은 제안일 뿐이고, LCSC 말고는 재고·가격을 확인하지 않았습니다. 디바이스마트 번호는 rev 2c 때 정한 품목 번호입니다 (이번에 다시 열어 보지 않음).
 
 ## (a) JLC BOM에 있다가 이번에 사용자가 직접 사서 납땜하게 된 부품
@@ -88,5 +88,5 @@
 | (a) 묶음의 부품 번호와 LCSC 번호 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json` bom_lines_now_bought_by_the_user (2026-11-10의 JLC BOM 줄 그대로) | F |
 | 납땜 곳 수, ESP 패드 수 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/fit_checks.json` user_soldered_tht / user_soldered_smd (보드 파일에서 셈) | M |
 | LCSC 재고·가격 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/lcsc_snapshot_20261112.json` (LCSC 공개 상품 기록을 읽기만 함, 로그인·장바구니 없음) | M (그 시각 기준) |
-| JLC 주문 합계 비교 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/jlc_order_page_20261112.json` quotes_usd | M, 주문 화면 2026-11-12 |
+| JLC 주문 합계 비교 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/jlc_order_page_20261112.json` quotes_usd | M, 주문 화면 2026-11-12, 재설계 전 76 x 70 mm 거버의 견적 - 지금 파일의 값은 NOT_VERIFIED |
 | 같은 내용의 CSV | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/off_board_purchase.csv` | - |

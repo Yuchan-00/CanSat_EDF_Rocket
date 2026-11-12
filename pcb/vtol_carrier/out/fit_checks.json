@@ -1,8 +1,8 @@
 {
  "schema": "vtol_carrier.fit_checks/1",
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
- "placement_sha256": "efaee986a565145d441a18483793922ff99b4660b2cfef70ffe76f12300bda4a",
+ "board_sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d",
+ "placement_sha256": "e2a63ad84e365a52f00d7041b04b7080152c6a5919fc36bc7d5f620ecb5dadf8",
  "module_dimensions_sha256": "40d59de412501d88cf2bad976145d006efe22f416afe23d556c44c15ac6a17dd",
  "tool": "pcbnew 10.0.6",
  "labels": "positions M (board file); part heights A (kicad/placement.json part_heights_mm); module dimensions F / A as tagged; no hardware measurement",
@@ -19,8 +19,8 @@
      129.4
     ],
     "rev2c_all_footprints_within_1mm": 14,
-    "all_footprints_within_1mm": 14,
-    "fitted_parts_within_1mm": 14,
+    "all_footprints_within_1mm": 13,
+    "fitted_parts_within_1mm": 13,
     "fitted_within_1mm": [
      [
       "L1",
@@ -64,11 +64,6 @@
      ],
      [
       "R42",
-      0.54,
-      0.55
-     ],
-     [
-      "R63",
       0.54,
       0.55
      ],
@@ -606,7 +601,7 @@
         "height_mm": 0.55,
         "overlap_mm2": 2.33,
         "by": "body",
-        "how": "auto",
+        "how": "moved",
         "clearance_mm": 1.95,
         "clearance_conservative_mm": 0.75
        },
@@ -2453,7 +2448,7 @@
   ],
   "gate_report": {
    "file": "out/jlc_gate_report.json",
-   "started_at": "2026-11-12T02:54:37+09:00"
+   "started_at": "2026-11-12T22:27:21+09:00"
   }
  },
  "connector_drawings": {

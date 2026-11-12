@@ -30,7 +30,12 @@ import math
 import numpy as np
 import pcbnew
 
+import outline as OL  # redesign2: the outline with the tab (scripts/outline.py)
+
 BX0, BY0, BX1, BY1 = 62.0, 65.0, 138.0, 135.0
+#: redesign2 (outline adaptation): the bitmaps reach down to the tab bottom so the tab parts (U8, L5, ...) are seen;
+#: whether a box lies on the board is OL.rect_inside (identical to the old rectangle test above y 135 - 0.5)
+GY1 = OL.BBOX[3]
 CELL = 0.05
 T = 0.15
 NAME_H = (1.0, 0.8)
@@ -110,7 +115,7 @@ def pin_glyph(net: str, ref: str = "") -> str | None:
 class Bitmap:
     def __init__(self) -> None:
         self.nx = int(round((BX1 - BX0) / CELL))
-        self.ny = int(round((BY1 - BY0) / CELL))
+        self.ny = int(round((GY1 - BY0) / CELL))
         self.rows = [0] * self.ny
 
     def _span(self, x0: float, y0: float, x1: float, y1: float):
@@ -130,7 +135,7 @@ class Bitmap:
 
     def free(self, box) -> bool:
         x0, y0, x1, y1 = box
-        if x0 < BX0 + 0.5 or y0 < BY0 + 0.5 or x1 > BX1 - 0.5 or y1 > BY1 - 0.5:
+        if x0 < BX0 + 0.5 or y0 < BY0 + 0.5 or x1 > BX1 - 0.5 or not OL.rect_inside(box, 0.5):
             return False
         i0, i1, j0, j1 = self._span(*box)
         m = ((1 << (i1 - i0)) - 1) << i0
@@ -642,7 +647,7 @@ def id_obstacles(ctx: Ctx, side: str, avoid_band: bool) -> Bitmap:
     if avoid_band:
         bm.mark((TIE_BAND[0], BY0, TIE_BAND[1], BY1))
     for strip in ((BX0, BY0, BX0 + 0.5, BY1), (BX1 - 0.5, BY0, BX1, BY1), (BX0, BY0, BX1, BY0 + 0.5),
-                  (BX0, BY1 - 0.5, BX1, BY1)):
+                  (BX0, BY1 - 0.5, BX1, GY1)):  # redesign2: and everything below it (no identification line in the tab)
         bm.mark(strip)
     return bm
 

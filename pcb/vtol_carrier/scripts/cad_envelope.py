@@ -7,11 +7,13 @@ typed here. Run with the AI_EDA venv python (B:/Claude/.venv/Scripts/python.exe)
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
-#: the repository this script lives in (<repo>/pcb/vtol_carrier/scripts/cad_envelope.py) - never another checkout
-CANSAT = Path(__file__).resolve().parents[3]
+#: the repository this script lives in (<repo>/pcb/vtol_carrier/scripts/cad_envelope.py) - never another checkout;
+#: redesign2: $CARRIER_PROJ names the checkout for a scratch copy of the board folder (read-only, as build_spec.py)
+CANSAT = Path(os.environ["CARRIER_PROJ"]) if os.environ.get("CARRIER_PROJ") else Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(CANSAT / "cad"))
 sys.path.insert(0, str(CANSAT))
 

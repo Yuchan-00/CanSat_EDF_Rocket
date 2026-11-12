@@ -269,12 +269,16 @@ def prepare(board_in: Path, kicad_dir: Path, manifest: dict, share: Path) -> dic
             anchor = need(LIMIT_ANCHOR)
             if abs(anchor.GetOrientationDegrees()) > 1e-9:
                 raise RuntimeError(f"{LIMIT_ANCHOR} is rotated: the limit frame needs an unrotated anchor footprint")
-            size = (edges[2] - edges[0], edges[3] - edges[1])
+            # outline adaptation (redesign2): the board edges are the 76 x 70 main rectangle + the tab of
+            # scripts/outline.py; the limit frame belongs to the main rectangle (plan board_x / board_y)
+            import outline as OL
             want = (rec["info"]["board_x"], rec["info"]["board_y"])
-            if abs(size[0] - want[0]) > OUTLINE_TOL or abs(size[1] - want[1]) > OUTLINE_TOL:
-                raise RuntimeError(f"board edges {size[0]:.3f} x {size[1]:.3f} mm differ from the plan outline {want}")
+            if any(abs(e - o) > OUTLINE_TOL for e, o in zip(edges, OL.BBOX)) or \
+                    abs((OL.MAIN_X1 - OL.MAIN_X0) - want[0]) > OUTLINE_TOL or abs((OL.MAIN_Y1 - OL.MAIN_Y0) - want[1]) > OUTLINE_TOL:
+                raise RuntimeError(f"board edges {edges} differ from the outline {OL.BBOX} / main rectangle {want}")
+            fc = ((OL.MAIN_X0 + OL.MAIN_X1) / 2, (OL.MAIN_Y0 + OL.MAIN_Y1) / 2)
             ax, ay = pcbnew.ToMM(anchor.GetPosition().x), pcbnew.ToMM(anchor.GetPosition().y)
-            attach(anchor, "${KIPRJMOD}/3d/" + rec["file"], (centre[0] - ax, -(centre[1] - ay), 0.0))
+            attach(anchor, "${KIPRJMOD}/3d/" + rec["file"], (fc[0] - ax, -(fc[1] - ay), 0.0))
             attached.append(f"{LIMIT_ANCHOR} <- {rec['file']} (marker)")
         if key == "C":
             for view in VIEWS:

@@ -33,6 +33,7 @@ from ai_eda.ir import LibraryRef
 from ai_eda.tools.kicad.library import KicadLibrary
 
 import common
+import outline
 import place
 from place import BX0, BX1, BY0, BY1, CELL, NX, NY, TOP, Rect
 
@@ -161,6 +162,30 @@ def runs(rows: list[int], di: int, dj: int) -> list[list[float]]:
     return out
 
 
+def block_outside_outline(c: Canvas) -> dict:
+    """Outline adaptation (redesign2 fix stage): place.NY now spans the outline's bounding box (y down to the tab
+    bottom, outline.BBOX), so the rows below y 135 are board-wide. Every cell of those rows that is not inside the
+    outline with the placer's EDGE_MARGIN (outline.rect_inside on the 0.05 mm cell, the rule place.Shape.inside_board
+    applies to a courtyard) is blocked: beside the tab, below the tab bottom and outside its outer corner arcs. Without
+    this the band y 135 .. tab bottom across x 62..138 (about 500 mm2 off the board, the tie band included) counted as
+    free board. Rows above y 135 - EDGE_MARGIN are unchanged (the rev 3 rectangle with its margin strips)."""
+    m = place.EDGE_MARGIN
+    j_first = math.floor((BY1 - m - BY0) / CELL + 1e-9)
+    n = 0
+    for j in range(max(0, j_first), NY):
+        y0, y1 = BY0 + j * CELL, BY0 + (j + 1) * CELL
+        bits = 0
+        for i in range(NX):
+            x0 = BX0 + i * CELL
+            if not outline.rect_inside((x0, y0, x0 + CELL, y1), m):
+                bits |= 1 << i
+        n += bin(bits).count("1")
+        c.rows[PAD + j] |= bits << PAD
+    return {"rows_kicad_y": [round(BY0 + max(0, j_first) * CELL, 3), round(BY0 + NY * CELL, 3)], "cells_blocked": n,
+            "area_blocked_mm2": round(n * CELL * CELL, 1),
+            "rule": "cell blocked unless outline.rect_inside(cell, place.EDGE_MARGIN) (outline adaptation)"}
+
+
 def main() -> int:
     spec = common.load_spec()
     lib = KicadLibrary()
@@ -187,6 +212,7 @@ def main() -> int:
               Rect(BX0, BY0, BX0 + place.EDGE_MARGIN, BY1), Rect(BX1 - place.EDGE_MARGIN, BY0, BX1, BY1),
               Rect(place.TIE_X0, BY0, place.TIE_X1, BY1), Rect(*place.ESP_KEEPOUT)):
         static.mark(r)
+    outside = block_outside_outline(static)
     plug_static = Canvas(False)  # plug body: outside the board is free
     for rect, _why in zones:
         static.mark(Rect(*rect))
@@ -216,6 +242,7 @@ def main() -> int:
                         "grid_mm": CELL, "rotations": [0, 90, 180, 270]},
         "forbidden_zones": [{"rect_kicad": [round(v, 3) for v in rect], "why": why} for rect, why in zones],
         "tie_band_kicad": [place.TIE_X0, BY0, place.TIE_X1, BY1], "antenna_rule_area_kicad": list(place.ESP_KEEPOUT),
+        "outline_cells_blocked": outside,
         "candidates": {f"{fam}_{kind}": {"footprint": v["lib_id"], "courtyard_local": [round(x, 3) for x in v["courtyard"]],
                                            "courtyard_mm": [round(v["courtyard"][2] - v["courtyard"][0], 2), round(v["courtyard"][3] - v["courtyard"][1], 2)]}
                        for (fam, kind), v in fps.items()},
@@ -371,6 +398,7 @@ def main() -> int:
     report["bare_holes_option_A"] = {r: {"x": pl.placed[r]["x"], "y": pl.placed[r]["y"], "rot": pl.placed[r]["rot"], "courtyard_kicad": cy[r].as_list()} for r in common.IN_BAND}
     report["picture_inputs"] = {
         "outline_kicad": [BX0, BY0, BX1, BY1],
+        "outline_polygon_kicad": [[round(x, 3), round(y, 3)] for x, y in outline.polygon(8)],
         "courtyards": {r: {"rect": cy[r].as_list(), "how": pl.placed[r]["how"], "height_mm": pl.height(r)} for r in sorted(pl.placed, key=place.common_key)},
     }
     out = common.OUT_DIR / "reports" / "programming_access.json"

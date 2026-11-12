@@ -34,6 +34,8 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                      # pcb/vtol_carrier
 WT = ROOT.parents[1]                    # the worktree
+if __import__("os").environ.get("CARRIER_PROJ"):  # redesign2: scratch copy -> the checkout named there (read-only)
+    WT = Path(__import__("os").environ["CARRIER_PROJ"])
 for p in (HERE, WT / "cad", WT / "cad" / "cadquery"):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
@@ -159,8 +161,11 @@ def build_scene(board: Path, work: Path) -> dict:
     facts = board_facts(board)
     plan_x, plan_y = mm.val(dims, "height_limit", "board_x"), mm.val(dims, "height_limit", "board_y")
     ex0, ey0, ex1, ey1 = facts["edge"]
-    if abs((ex1 - ex0) - plan_x) > render_rev3.OUTLINE_TOL or abs((ey1 - ey0) - plan_y) > render_rev3.OUTLINE_TOL:
-        raise ValueError(f"board outline {ex1 - ex0:.3f} x {ey1 - ey0:.3f} is not the plan's {plan_x} x {plan_y}")
+    # outline adaptation (redesign2): edges = 76 x 70 main rectangle + the tab (scripts/outline.py)
+    import outline as OL
+    if any(abs(e - o) > render_rev3.OUTLINE_TOL for e, o in zip((ex0, ey0, ex1, ey1), OL.BBOX)) or \
+            abs((OL.MAIN_X1 - OL.MAIN_X0) - plan_x) > render_rev3.OUTLINE_TOL or abs((OL.MAIN_Y1 - OL.MAIN_Y0) - plan_y) > render_rev3.OUTLINE_TOL:
+        raise ValueError(f"board outline {(ex0, ey0, ex1, ey1)} is not the outline {OL.BBOX} / plan {plan_x} x {plan_y}")
     if facts["j7_rot"] != 0.0:
         raise ValueError("J7 is rotated: the lead-end transform of this script assumes rotation 0 (ANCHORS)")
     cx, cy = facts["centre"]

@@ -60,6 +60,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import board_metrics as BM  # noqa: E402
 import silk as SILK  # noqa: E402
+import outline as OL  # noqa: E402  (redesign2: the real outline with the tab)
 
 BOARD = Path(os.environ["CARRIER_BOARD"]) if os.environ.get("CARRIER_BOARD") else ROOT / "kicad" / "vtol_carrier.kicad_pcb"
 OUT = Path(os.environ["CARRIER_ROUTING_OUT"]) if os.environ.get("CARRIER_ROUTING_OUT") else ROOT / "out" / "reports" / "routing_rules.json"
@@ -748,23 +749,49 @@ def check_fb_clear_of_caps(board, fps) -> dict:
 
 def check_rail_edges(board, fps) -> dict:
     x0, y0, x1, y1 = BOARD_BOX
-    sides = {"y65 (top, rail)": lambda b: b[1] - y0, "y135 (bottom, rail)": lambda b: y1 - b[3],
+    # outline adaptation (redesign2 Layout stage): the y-max side is no longer one straight line. A box that lies
+    # beside the tab is measured exactly as before (y 135 - bottom); otherwise the exact distance to every y-max side
+    # segment of scripts/outline.py (y 135 pieces, fillets, tab sides, outer arcs, tab bottom) - OL.minus_y_distance
+    sides = {"y65 (top, rail)": lambda b: b[1] - y0, "y135 (bottom, rail)": lambda b: OL.minus_y_distance(b),
              "x62": lambda b: b[0] - x0, "x138": lambda b: x1 - b[2]}
     rows: dict = {s: {} for s in sides}
 
-    def put(kind: str, b, what: str) -> None:
+    def put(kind: str, b, what: str, only: tuple = ()) -> None:
         for s, fn in sides.items():
+            if only and s not in only:
+                continue
             d = round(fn(b), 4)
             cur = rows[s].get(kind)
             if cur is None or d < cur["min_mm"]:
                 rows[s][kind] = {"min_mm": d, "item": what}
+    beside = (OL.TAB_X0 - OL.TAB_R_IN, OL.TAB_X1 + OL.TAB_R_IN)
     for z in board.Zones():
         if z.GetIsRuleArea():
             continue
         for lay in z.GetLayerSet().Seq():
             ps = z.GetFilledPolysList(lay)
             if ps.OutlineCount():
-                put(f"zone fill {board.GetLayerName(lay)}", box(ps.BBox()), f"{z.GetNetname()} fill on {board.GetLayerName(lay)}")
+                what = f"{z.GetNetname()} fill on {board.GetLayerName(lay)}"
+                kind = f"zone fill {board.GetLayerName(lay)}"
+                put(kind, box(ps.BBox()), what, ("y65 (top, rail)", "x62", "x138"))
+                # y-max side: the fill outlines themselves (bounding box of a fill that reaches into the tab says nothing)
+                best = None
+                for i in range(ps.OutlineCount()):
+                    ch = ps.Outline(i)
+                    pts = [pt(ch.CPoint(k)) for k in range(ch.PointCount())]
+                    for a_, b_ in zip(pts, pts[1:] + pts[:1]):
+                        if max(a_[1], b_[1]) < y1 - 3.0:
+                            continue
+                        if (a_[0] < beside[0] and b_[0] < beside[0]) or (a_[0] > beside[1] and b_[0] > beside[1]):
+                            d = y1 - max(a_[1], b_[1])
+                        else:
+                            d = min(OL.seg_prim_distance(a_, b_, q) for q in OL.MINUS_Y_PRIMITIVES)
+                        best = d if best is None else min(best, d)
+                if best is not None:
+                    d = round(best, 4)
+                    cur = rows["y135 (bottom, rail)"].get(kind)
+                    if cur is None or d < cur["min_mm"]:
+                        rows["y135 (bottom, rail)"][kind] = {"min_mm": d, "item": what}
     for t in board.GetTracks():
         if t.GetClass() == "PCB_VIA":
             x, y = pt(t.GetPosition())
@@ -781,11 +808,14 @@ def check_rail_edges(board, fps) -> dict:
     mins = {s: min(v["min_mm"] for v in k.values()) for s, k in rows.items()}
     rail = [s for s in sides if "rail" in s]
     bad = [f"{s}: {k} {v['min_mm']} mm ({v['item']})" for s in rail for k, v in sorted(rows[s].items()) if v["min_mm"] < RAIL_EDGE_MM - 1e-9]
-    return {"result": PASS if not bad else FAIL, "label": "M (zones refilled in memory; distances to the straight outline lines, bounding boxes)",
+    return {"result": PASS if not bad else FAIL,
+            "label": "M (zones refilled in memory; distances to the outline lines / segments of scripts/outline.py, bounding boxes)",
             "limit_mm_rail_edges": RAIL_EDGE_MM, "min_copper_to_edge_mm": mins, "per_edge": rows, "below_limit": bad,
+            "outline": OL.describe(),
             "criterion": f"zone fills (all copper layers), tracks, vias and pads keep >= {RAIL_EDGE_MM} mm from the two 76 mm "
-                         "edges y 65 and y 135 (JLC edge rails, review J2); the other two edges are reported against the "
-                         "unchanged 0.3 mm board rule"}
+                         "edges y 65 and y 135 (JLC edge rails, review J2) - on the y 135 side from EVERY segment of the "
+                         "outline there, the tab included (redesign2 outline adaptation); the other two edges are reported "
+                         "against the unchanged 0.3 mm board rule"}
 
 
 # ---------------------------------------------------- relayout-fix step checks (review of the relayout, RR-1 / RR-4 / RR-5)
@@ -1093,7 +1123,9 @@ def id_lines(board) -> dict:
             others += [_ink_box(g) for g in fp.GraphicalItems() if g.GetLayer() == lay]
             others += [_ink_box(f) for f in fp.GetFields() if f.GetLayer() == lay and f.IsVisible()]
         silk_gap = min((_box_gap(ink, o) for o in others), default=None)
-        edge_gap = min(ink[0] - eb[0], ink[1] - eb[1], eb[2] - ink[2], eb[3] - ink[3])
+        # outline adaptation (redesign2 fix stage): the edge bounding box now ends at the tab bottom, so the y-max side
+        # is measured against the real '-y' edge segments (y 135 beside the tab, fillets, tab sides / arcs / bottom)
+        edge_gap = min(ink[0] - eb[0], ink[1] - eb[1], eb[2] - ink[2], OL.minus_y_distance(ink))
         h, th = mm(d.GetTextHeight()), mm(d.GetTextThickness())
         row = {"line": n, "what": kind, "characters": len(s), "layer": d.GetLayerName(), "mirrored": bool(d.IsMirrored()),
                "height_mm": round(h, 3), "stroke_mm": round(th, 3), "angle_deg": round(d.GetTextAngle().AsDegrees(), 1),

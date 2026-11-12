@@ -1,77 +1,77 @@
-2026-11-11 20:09:38.901 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
-2026-11-11 20:09:39.182 INFO   Hardware: 16 CPU cores, 553 CPU score, 4026 MB RAM
-2026-11-11 20:09:39.183 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
-2026-11-11 20:09:39.184 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
-2026-11-11 20:09:40.225 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
-2026-11-11 20:09:40.320 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-11 20:09:40.320 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-11 20:09:40.393 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.430 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.434 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.435 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.467 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.748 INFO   [7C9F6A\52E607] Loading board file 'vtol_carrier_power.dsn'...
-2026-11-11 20:09:40.776 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-11 20:09:40.776 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-11 20:09:40.782 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.793 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.795 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.796 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:40.808 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:41.127 WARN   DSN file 'vtol_carrier_power.dsn' was loaded with 3 warning(s).
-2026-11-11 20:09:41.196 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-11 20:09:41.196 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-11 20:09:41.200 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:41.223 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:41.226 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:41.227 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:41.249 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-11 20:09:41.290 INFO   [7C9F6A\52E607] Job '7C9F6A\52E607' started at 2026-11-11T11:09:41.290177300Z.
-2026-11-11 20:09:42.005 WARN   Design Warning: Board has 158 pre-existing clearance violation(s) in the loaded design (before routing):
-  - 158 unfixable violation(s) (cannot be resolved by Freerouting):
-      * 158 fixed trace/via clearance violations (first 5 shown):
-          - FixedVia#7988 [net +3V3] <-> ObstacleArea#1385
-          - FixedVia#7987 [net +3V3] <-> ObstacleArea#2555
-          - FixedVia#7987 [net +3V3] <-> ObstacleArea#2554
-          - FixedVia#7987 [net +3V3] <-> ObstacleArea#2552
-          - FixedVia#7987 [net +3V3] <-> ObstacleArea#2551
-          ... and 153 more
+2026-11-12 18:44:56.438 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-12 18:44:56.734 INFO   Hardware: 16 CPU cores, 375 CPU score, 4026 MB RAM
+2026-11-12 18:44:56.735 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-12 18:44:56.738 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-12 18:44:57.789 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-12 18:44:57.882 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-12 18:44:57.882 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-12 18:44:57.989 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.032 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.035 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.036 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.065 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.316 INFO   [D15CB7\6C9639] Loading board file 'vtol_carrier_power.dsn'...
+2026-11-12 18:44:58.353 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-12 18:44:58.353 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-12 18:44:58.365 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.384 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.385 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.386 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.410 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:58.925 WARN   DSN file 'vtol_carrier_power.dsn' was loaded with 3 warning(s).
+2026-11-12 18:44:59.130 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-12 18:44:59.130 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-12 18:44:59.138 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:59.154 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:59.156 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:59.157 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:59.178 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-12 18:44:59.231 INFO   [D15CB7\6C9639] Job 'D15CB7\6C9639' started at 2026-11-12T09:44:59.230800Z.
+2026-11-12 18:45:00.057 WARN   Design Warning: Board has 122 pre-existing clearance violation(s) in the loaded design (before routing):
+  - 122 unfixable violation(s) (cannot be resolved by Freerouting):
+      * 122 fixed trace/via clearance violations (first 5 shown):
+          - FixedVia#7007 [net +3V3] <-> ObstacleArea#2191
+          - FixedVia#7007 [net +3V3] <-> ObstacleArea#2190
+          - FixedVia#7007 [net +3V3] <-> ObstacleArea#2188
+          - FixedVia#7007 [net +3V3] <-> ObstacleArea#2187
+          - FixedVia#7007 [net +3V3] <-> ObstacleArea#2184
+          ... and 117 more
   - 0 potentially fixable violations
 Notice: Freerouting does not modify component placement, board outlines, or fixed items.
-Resolving these 158 unfixable violation(s) is the responsibility of the board author in their EDA tool (e.g. KiCad).
-2026-11-11 20:09:42.081 INFO   [7C9F6A\52E607] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
-2026-11-11 20:09:42.377 INFO   [7C9F6A\52E607] Fanout stage started on board '3a995341645526967cc4b66aab7849cb' with 38 of 608 SMD pins needing fanout (570 already connected, 0 netless).
-2026-11-11 20:09:43.326 INFO   [7C9F6A\52E607] Fanout pass #1 on board '8fac2708c42ce3e18e0e53b6c51bcf48' completed in 0.73 seconds with 14 SMD pins fanouted, 2 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
-2026-11-11 20:09:43.774 INFO   [7C9F6A\52E607] Fanout pass #2 on board '3a995341645526967cc4b66aab7849cb' completed in 0.37 seconds with 14 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
-2026-11-11 20:09:44.211 INFO   [7C9F6A\52E607] Fanout pass #3 on board '5f34f40d5ba5d24168afacb2d1d281e2' completed in 0.36 seconds with 14 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=300).
-2026-11-11 20:09:44.658 INFO   [7C9F6A\52E607] Fanout pass #4 on board '3a995341645526967cc4b66aab7849cb' completed in 0.38 seconds with 14 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=400).
-2026-11-11 20:09:44.658 INFO   Fanout stopped after 4 passes: no progress for 3 consecutive passes.
-2026-11-11 20:09:44.696 INFO   [7C9F6A\52E607] Fanout stage completed: started with 608 total SMD pins, completed in 2.18 seconds, escaped pins: 32/608 (5.3%), using 2.25 total CPU seconds, 1.52 GB total allocated, and 141.9 MB peak heap usage.
-2026-11-11 20:09:45.202 INFO   [7C9F6A\52E607] Auto-routing stage started on board '3a995341645526967cc4b66aab7849cb' with baseline score 664.18 for 13 unrouted items.
-2026-11-11 20:09:48.930 INFO   [7C9F6A\52E607] Auto-routing pass #1 on board '3a995341645526967cc4b66aab7849cb' was completed in 3.53 seconds with score 689.82 (12 unrouted and 158 violations), using 6.16 CPU seconds and the job allocated 3.91 GB of memory so far.
-2026-11-11 20:09:51.700 INFO   [7C9F6A\52E607] Auto-routing pass #2 on board '38eb1386cce15a352deb1fca930d00b2' was completed in 2.57 seconds with score 664.18 (13 unrouted and 158 violations), using 9.14 CPU seconds and the job allocated 6.26 GB of memory so far.
-2026-11-11 20:09:54.324 INFO   [7C9F6A\52E607] Auto-routing pass #3 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.60 seconds with score 664.18 (13 unrouted and 158 violations), using 12.11 CPU seconds and the job allocated 8.72 GB of memory so far.
-2026-11-11 20:09:56.959 INFO   [7C9F6A\52E607] Auto-routing pass #4 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.61 seconds with score 664.18 (13 unrouted and 158 violations), using 14.11 CPU seconds and the job allocated 10.31 GB of memory so far.
-2026-11-11 20:09:59.456 INFO   [7C9F6A\52E607] Auto-routing pass #5 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.48 seconds with score 689.82 (12 unrouted and 158 violations), using 17.09 CPU seconds and the job allocated 12.77 GB of memory so far.
-2026-11-11 20:10:02.109 INFO   [7C9F6A\52E607] Auto-routing pass #6 on board '486c06c62c3785f5967bc8cd8e87800d' was completed in 2.46 seconds with score 664.18 (13 unrouted and 158 violations), using 19.06 CPU seconds and the job allocated 14.42 GB of memory so far.
-2026-11-11 20:10:04.542 INFO   [7C9F6A\52E607] Auto-routing pass #7 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.41 seconds with score 664.18 (13 unrouted and 158 violations), using 21.97 CPU seconds and the job allocated 16.94 GB of memory so far.
-2026-11-11 20:10:07.060 INFO   [7C9F6A\52E607] Auto-routing pass #8 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.50 seconds with score 664.18 (13 unrouted and 158 violations), using 23.94 CPU seconds and the job allocated 18.60 GB of memory so far.
-2026-11-11 20:10:09.586 INFO   [7C9F6A\52E607] Auto-routing pass #9 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.51 seconds with score 664.18 (13 unrouted and 158 violations), using 26.91 CPU seconds and the job allocated 21.05 GB of memory so far.
-2026-11-11 20:10:12.065 INFO   [7C9F6A\52E607] Auto-routing pass #10 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.46 seconds with score 664.18 (13 unrouted and 158 violations), using 28.91 CPU seconds and the job allocated 22.73 GB of memory so far.
-2026-11-11 20:10:14.546 INFO   [7C9F6A\52E607] Auto-routing pass #11 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.46 seconds with score 689.82 (12 unrouted and 158 violations), using 31.88 CPU seconds and the job allocated 25.23 GB of memory so far.
-2026-11-11 20:10:17.096 INFO   [7C9F6A\52E607] Auto-routing pass #12 on board 'f95e2e0828320e2146cbdd6f8bfc41d9' was completed in 2.37 seconds with score 664.18 (13 unrouted and 158 violations), using 33.88 CPU seconds and the job allocated 26.90 GB of memory so far.
-2026-11-11 20:10:19.534 INFO   [7C9F6A\52E607] Auto-routing pass #13 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.42 seconds with score 664.18 (13 unrouted and 158 violations), using 36.83 CPU seconds and the job allocated 29.42 GB of memory so far.
-2026-11-11 20:10:22.025 INFO   [7C9F6A\52E607] Auto-routing pass #14 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.47 seconds with score 664.18 (13 unrouted and 158 violations), using 38.80 CPU seconds and the job allocated 31.09 GB of memory so far.
-2026-11-11 20:10:24.691 INFO   [7C9F6A\52E607] Auto-routing pass #15 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.48 seconds with score 664.18 (13 unrouted and 158 violations), using 41.70 CPU seconds and the job allocated 33.56 GB of memory so far.
-2026-11-11 20:10:27.166 INFO   [7C9F6A\52E607] Auto-routing pass #16 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.46 seconds with score 664.18 (13 unrouted and 158 violations), using 43.69 CPU seconds and the job allocated 35.29 GB of memory so far.
-2026-11-11 20:10:29.625 INFO   [7C9F6A\52E607] Auto-routing pass #17 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.44 seconds with score 689.82 (12 unrouted and 158 violations), using 46.64 CPU seconds and the job allocated 37.77 GB of memory so far.
-2026-11-11 20:10:32.257 INFO   [7C9F6A\52E607] Auto-routing pass #18 on board 'd4cd741fcfa99341b7f288eb7adeb2cf' was completed in 2.45 seconds with score 664.18 (13 unrouted and 158 violations), using 48.64 CPU seconds and the job allocated 39.42 GB of memory so far.
-2026-11-11 20:10:34.676 INFO   [7C9F6A\52E607] Auto-routing pass #19 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.39 seconds with score 664.18 (13 unrouted and 158 violations), using 51.59 CPU seconds and the job allocated 41.89 GB of memory so far.
-2026-11-11 20:10:37.117 INFO   [7C9F6A\52E607] Auto-routing pass #20 on board '3a995341645526967cc4b66aab7849cb' was completed in 2.42 seconds with score 664.18 (13 unrouted and 158 violations), using 53.58 CPU seconds and the job allocated 43.59 GB of memory so far.
-2026-11-11 20:10:38.030 INFO   [7C9F6A\52E607] Auto-routing stage completed: started with 13 unrouted nets, completed in 55.79 seconds, final score: 689.82 (12 unrouted and 158 violations), using 54.58 total CPU seconds, 44.49 GB total allocated, and 249.7 MB peak heap usage.
-2026-11-11 20:10:38.185 INFO   [7C9F6A\52E607] Skipping optimization stage: the board has 12 unrouted connection(s) (optimizer only runs on completely routed boards).
-2026-11-11 20:10:38.237 INFO   [7C9F6A\52E607] Job '7C9F6A\52E607' finished with state: COMPLETED (elapsed: 56.95 seconds, finished at UTC: 2026-11-11T11:10:38.236146900Z).
-2026-11-11 20:10:38.263 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\impl\relayout\T\kicad\work\vtol_carrier_power.ses' (SES)...
-2026-11-11 20:10:38.266 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\impl\relayout\T\kicad\work\vtol_carrier_power.ses' (10742 bytes).
+Resolving these 122 unfixable violation(s) is the responsibility of the board author in their EDA tool (e.g. KiCad).
+2026-11-12 18:45:00.158 INFO   [D15CB7\6C9639] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-12 18:45:00.651 INFO   [D15CB7\6C9639] Fanout stage started on board '73d6d8f2429633ffd40d91523872dfa8' with 38 of 608 SMD pins needing fanout (570 already connected, 0 netless).
+2026-11-12 18:45:02.115 INFO   [D15CB7\6C9639] Fanout pass #1 on board '936e00c8c3510783ba152d965d747127' completed in 1.11 seconds with 14 SMD pins fanouted, 2 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-12 18:45:02.759 INFO   [D15CB7\6C9639] Fanout pass #2 on board '73d6d8f2429633ffd40d91523872dfa8' completed in 0.55 seconds with 14 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-11-12 18:45:03.398 INFO   [D15CB7\6C9639] Fanout pass #3 on board 'd6e5cc903f94403e2bcb467e9303d551' completed in 0.54 seconds with 14 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=300).
+2026-11-12 18:45:04.051 INFO   [D15CB7\6C9639] Fanout pass #4 on board '73d6d8f2429633ffd40d91523872dfa8' completed in 0.55 seconds with 14 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=400).
+2026-11-12 18:45:04.052 INFO   Fanout stopped after 4 passes: no progress for 3 consecutive passes.
+2026-11-12 18:45:04.119 INFO   [D15CB7\6C9639] Fanout stage completed: started with 608 total SMD pins, completed in 3.24 seconds, escaped pins: 33/608 (5.4%), using 3.52 total CPU seconds, 1.39 GB total allocated, and 222.0 MB peak heap usage.
+2026-11-12 18:45:04.873 INFO   [D15CB7\6C9639] Auto-routing stage started on board '73d6d8f2429633ffd40d91523872dfa8' with baseline score 664.75 for 13 unrouted items.
+2026-11-12 18:45:10.747 INFO   [D15CB7\6C9639] Auto-routing pass #1 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 5.60 seconds with score 664.75 (13 unrouted and 122 violations), using 10.09 CPU seconds and the job allocated 4.05 GB of memory so far.
+2026-11-12 18:45:14.647 INFO   [D15CB7\6C9639] Auto-routing pass #2 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.87 seconds with score 664.75 (13 unrouted and 122 violations), using 14.06 CPU seconds and the job allocated 6.27 GB of memory so far.
+2026-11-12 18:45:18.406 INFO   [D15CB7\6C9639] Auto-routing pass #3 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.73 seconds with score 664.75 (13 unrouted and 122 violations), using 17.98 CPU seconds and the job allocated 8.58 GB of memory so far.
+2026-11-12 18:45:22.123 INFO   [D15CB7\6C9639] Auto-routing pass #4 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.69 seconds with score 664.75 (13 unrouted and 122 violations), using 20.95 CPU seconds and the job allocated 10.33 GB of memory so far.
+2026-11-12 18:45:25.920 INFO   [D15CB7\6C9639] Auto-routing pass #5 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.77 seconds with score 690.39 (12 unrouted and 122 violations), using 24.92 CPU seconds and the job allocated 12.66 GB of memory so far.
+2026-11-12 18:45:29.936 INFO   [D15CB7\6C9639] Auto-routing pass #6 on board '40dfabc652a0109ebf5efbda8c7a6651' was completed in 3.79 seconds with score 664.75 (13 unrouted and 122 violations), using 28.92 CPU seconds and the job allocated 15.02 GB of memory so far.
+2026-11-12 18:45:34.036 INFO   [D15CB7\6C9639] Auto-routing pass #7 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 4.07 seconds with score 664.75 (13 unrouted and 122 violations), using 32.88 CPU seconds and the job allocated 17.14 GB of memory so far.
+2026-11-12 18:45:37.446 INFO   [D15CB7\6C9639] Auto-routing pass #8 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.38 seconds with score 664.75 (13 unrouted and 122 violations), using 36.81 CPU seconds and the job allocated 19.59 GB of memory so far.
+2026-11-12 18:45:40.794 INFO   [D15CB7\6C9639] Auto-routing pass #9 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.31 seconds with score 664.75 (13 unrouted and 122 violations), using 39.73 CPU seconds and the job allocated 21.50 GB of memory so far.
+2026-11-12 18:45:44.067 INFO   [D15CB7\6C9639] Auto-routing pass #10 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.25 seconds with score 664.75 (13 unrouted and 122 violations), using 42.70 CPU seconds and the job allocated 23.56 GB of memory so far.
+2026-11-12 18:45:47.325 INFO   [D15CB7\6C9639] Auto-routing pass #11 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.24 seconds with score 690.39 (12 unrouted and 122 violations), using 46.64 CPU seconds and the job allocated 26.30 GB of memory so far.
+2026-11-12 18:45:50.723 INFO   [D15CB7\6C9639] Auto-routing pass #12 on board 'ef91587e8bcd94953846846a8a82a6d9' was completed in 3.17 seconds with score 664.75 (13 unrouted and 122 violations), using 49.59 CPU seconds and the job allocated 28.29 GB of memory so far.
+2026-11-12 18:45:54.297 INFO   [D15CB7\6C9639] Auto-routing pass #13 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.55 seconds with score 664.75 (13 unrouted and 122 violations), using 53.50 CPU seconds and the job allocated 30.75 GB of memory so far.
+2026-11-12 18:45:57.573 INFO   [D15CB7\6C9639] Auto-routing pass #14 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.26 seconds with score 664.75 (13 unrouted and 122 violations), using 56.44 CPU seconds and the job allocated 32.72 GB of memory so far.
+2026-11-12 18:46:01.024 INFO   [D15CB7\6C9639] Auto-routing pass #15 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.26 seconds with score 664.75 (13 unrouted and 122 violations), using 59.42 CPU seconds and the job allocated 34.67 GB of memory so far.
+2026-11-12 18:46:04.260 INFO   [D15CB7\6C9639] Auto-routing pass #16 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.22 seconds with score 664.75 (13 unrouted and 122 violations), using 62.38 CPU seconds and the job allocated 36.72 GB of memory so far.
+2026-11-12 18:46:07.503 INFO   [D15CB7\6C9639] Auto-routing pass #17 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.22 seconds with score 690.39 (12 unrouted and 122 violations), using 66.38 CPU seconds and the job allocated 39.37 GB of memory so far.
+2026-11-12 18:46:11.020 INFO   [D15CB7\6C9639] Auto-routing pass #18 on board 'dadc2e16620ac69b84b8d7eb94848a9b' was completed in 3.28 seconds with score 664.75 (13 unrouted and 122 violations), using 69.36 CPU seconds and the job allocated 41.31 GB of memory so far.
+2026-11-12 18:46:14.260 INFO   [D15CB7\6C9639] Auto-routing pass #19 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.22 seconds with score 664.75 (13 unrouted and 122 violations), using 72.36 CPU seconds and the job allocated 43.32 GB of memory so far.
+2026-11-12 18:46:17.596 INFO   [D15CB7\6C9639] Auto-routing pass #20 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.31 seconds with score 664.75 (13 unrouted and 122 violations), using 76.31 CPU seconds and the job allocated 46.00 GB of memory so far.
+2026-11-12 18:46:18.649 INFO   [D15CB7\6C9639] Auto-routing stage completed: started with 13 unrouted nets, completed in 78.31 seconds, final score: 690.39 (12 unrouted and 122 violations), using 77.31 total CPU seconds, 46.66 GB total allocated, and 283.2 MB peak heap usage.
+2026-11-12 18:46:18.821 INFO   [D15CB7\6C9639] Skipping optimization stage: the board has 12 unrouted connection(s) (optimizer only runs on completely routed boards).
+2026-11-12 18:46:18.883 INFO   [D15CB7\6C9639] Job 'D15CB7\6C9639' finished with state: COMPLETED (elapsed: 1 minute 19.65 seconds, finished at UTC: 2026-11-12T09:46:18.882543700Z).
+2026-11-12 18:46:18.899 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\redesign2\T\kicad\work\vtol_carrier_power.ses' (SES)...
+2026-11-12 18:46:18.901 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\redesign2\T\kicad\work\vtol_carrier_power.ses' (10744 bytes).
 
 --- stderr ---

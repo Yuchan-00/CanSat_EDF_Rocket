@@ -50,7 +50,64 @@ TAG_KO = [  # first matching prefix wins
     ("unchanged", "변경 없음: 부품 없는 자리 (rev 2c와 같음)"),
 ]
 ACTION_KO = {"replace": "교체", "add": "추가", "remove": "삭제", "keep-dnp": "그대로 (부품 없음)"}
-FIT_KO = {"jlc": "JLC가 실장 (주문 BOM / CPL에 들어감)", "jlc_optional": "기본은 사용자 납땜, with_mcu 파일 쌍을 쓰면 JLC 실장",
+#: redesign2 (2026-11-12): the user's requests, verbatim (task text of the redesign; F = the user's own words)
+REDESIGN_REQUESTS = ("그럼 다시 설계를 진행해줘. 실패한게 있다면 완료되었다고 말하지마", "보드의 사이즈를 조정하는 방법은 없어?",
+                     "옮겨도 됨")
+#: the routing report of the committed board before redesign2 (evidence copy, written once by the redesign2 pipeline stage)
+BEFORE_RD2 = "out/reports/routing_rules_before_redesign2.json"
+
+
+def gnd_chain_mm(pcb_text: str, start: tuple[float, float]) -> tuple[float, list[tuple[float, float]]]:
+    """Length of the F.Cu GND track run that starts at ``start`` (a via / track end) and follows connected GND F.Cu
+    segments in both directions while the run does not branch (M: segment ends from the board file, 1 um tolerance).
+    Returns the total length and the two end points."""
+    segs = []
+    for m in re.finditer(r"\n\t\(segment\n\t\t\(start ([\d.\-]+) ([\d.\-]+)\)\n\t\t\(end ([\d.\-]+) ([\d.\-]+)\)\n\t\t\(width [\d.]+\)\n"
+                         r"(?:\t\t\(locked yes\)\n)?\t\t\(layer \"F\.Cu\"\)\n\t\t\(net \"GND\"\)", pcb_text):
+        x1, y1, x2, y2 = (round(float(v), 3) for v in m.groups())
+        segs.append(((x1, y1), (x2, y2)))
+    at = collections.defaultdict(list)
+    for i, (a, b) in enumerate(segs):
+        at[a].append(i)
+        at[b].append(i)
+    s0 = (round(start[0], 3), round(start[1], 3))
+    used: set[int] = set()
+    total, ends = 0.0, []
+    for first in list(at.get(s0, [])):
+        if first in used:
+            continue
+        node, i = s0, first
+        while True:
+            used.add(i)
+            a, b = segs[i]
+            total += math.dist(a, b)
+            node = b if a == node else a
+            nxt = [j for j in at[node] if j not in used]
+            if len(nxt) != 1:
+                break
+            i = nxt[0]
+        ends.append(node)
+    return round(total, 3), ends
+
+
+def gnd_tracks_in_box(pcb_text: str, p: tuple[float, float], q: tuple[float, float], grow: float = 0.5) -> list[tuple[float, float]]:
+    """[(width, total length)] of the GND F.Cu segments with both ends inside the box spanned by the via centres ``p``
+    and ``q`` grown by ``grow``, without the via stubs (segments with an end on ``p`` or ``q``) (M: segment ends and
+    widths from the board file)."""
+    x0, x1 = min(p[0], q[0]) - grow, max(p[0], q[0]) + grow
+    y0, y1 = min(p[1], q[1]) - grow, max(p[1], q[1]) + grow
+    by_w: dict[float, float] = collections.defaultdict(float)
+    for m in re.finditer(r"\n\t\(segment\n\t\t\(start ([\d.\-]+) ([\d.\-]+)\)\n\t\t\(end ([\d.\-]+) ([\d.\-]+)\)\n\t\t\(width ([\d.]+)\)\n"
+                         r"(?:\t\t\(locked yes\)\n)?\t\t\(layer \"F\.Cu\"\)\n\t\t\(net \"GND\"\)", pcb_text):
+        ax, ay, bx, by, w = (float(v) for v in m.groups())
+        if any(math.dist(e, v) < 1e-3 for e in ((ax, ay), (bx, by)) for v in (p, q)):
+            continue
+        if all(x0 <= x <= x1 for x in (ax, bx)) and all(y0 <= y <= y1 for y in (ay, by)):
+            by_w[w] += math.dist((ax, ay), (bx, by))
+    return sorted((w, round(L, 3)) for w, L in by_w.items())
+
+
+FIT_KO ={"jlc": "JLC가 실장 (주문 BOM / CPL에 들어감)", "jlc_optional": "기본은 사용자 납땜, with_mcu 파일 쌍을 쓰면 JLC 실장",
           "user": "사용자가 납땜", "none": "부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만)"}
 
 
@@ -88,8 +145,9 @@ def order_remarks(spec: dict, tht_user: list[str], limit: int, rail_cu: str) -> 
     remark says so, forbids any through-hole part and names every footprint that stays empty - the list is the set of
     spec parts whose fit is not JLC in that pair (never typed)."""
     out: dict = {"limit": limit}
-    rails = ("If edge rails are needed: routed tabs / mouse bites please "
-             f"(copper is {rail_cu} mm from the 76 mm edges).")
+    # redesign2: the y 135 side carries the boost tab, so it is no straight edge any more (no V-cut there)
+    rails = ("If edge rails are needed: routed tabs / mouse bites please, no V-cut (one long edge has a tab; "
+             f"copper is {rail_cu} mm from both long edges).")
     bs = spec["bom_sources"]
     if any(ln["process"] != "SMT" for ln in bs["board_lines"] + bs["with_mcu_extra_lines"]):
         raise SystemExit("docs_ko: a JLC BOM line is not SMT - the remark text says 'SMT assembly only'")
@@ -190,6 +248,10 @@ def gather() -> tuple[Facts, dict]:
         F.put(f"fit {k}", n, S, "M")
     b = spec["board"]
     F.put("외곽", f"{b['outline_mm']['size'][0]:g} x {b['outline_mm']['size'][1]:g} mm", S, b["outline_mm"]["label"])
+    if b["outline_mm"].get("tab"):   # redesign2: the tab on the vehicle -y edge (scripts/outline.py)
+        t_ = b["outline_mm"]["tab"]
+        F.put("외곽 탭 (-y 변)", f"x {t_['x'][0]:g}..{t_['x'][1]:g}, y {t_['y'][0]:g}..{t_['y'][1]:g} mm, {t_['area_mm2']:g} mm2 "
+              f"(전체 외접 {b['outline_mm']['bbox_size'][0]:g} x {b['outline_mm']['bbox_size'][1]:g} mm)", S + ".tab", t_["label"])
     F.put("층 수", b["layers"], S, "F (계획 불변조건 d)")
     F.put("두께", f"{b['thickness_mm']:g} mm", S, "F")
     F.put("높이 한계", f"{dims['height_limit']['limit_above_board']['v']:g} mm", "spec/module_dimensions.json", "F (계획)")
@@ -360,7 +422,8 @@ def gather() -> tuple[Facts, dict]:
           "out/reports/routing_rules.json fb_clear_of_caps", "M")
     rmin = rec["min_copper_to_edge_mm"]
     rail_min = min(v for k, v in rmin.items() if "rail" in k)
-    F.put("레일 변 구리 이격", f"{rec['result']}: 레일이 붙는 두 76 mm 변에서 {rail_min:g} mm 이상 (기준 {rec['limit_mm_rail_edges']:g} mm), "
+    F.put("레일 변 구리 이격", f"{rec['result']}: 레일이 붙는 두 긴 변(y 65 변, 그리고 y 135 변과 탭의 모든 변)에서 {rail_min:g} mm 이상 "
+          f"(기준 {rec['limit_mm_rail_edges']:g} mm), "
           f"나머지 두 변 {min(v for k, v in rmin.items() if 'rail' not in k):g} mm (보드 규칙 0.3 mm)",
           "out/reports/routing_rules.json rail_edge_copper", "M")
     F.put("레일 변 구리 이격 값", f"{rail_min:g}", "out/reports/routing_rules.json rail_edge_copper", "M")
@@ -540,6 +603,14 @@ def gather() -> tuple[Facts, dict]:
         F.put("결정성", "NOT_VERIFIED (scripts/determinism.py 아직 실행 안 됨)", "out/reports/determinism.json 없음", "NOT_VERIFIED")
         F.put("결정성 시각", "-", "-", "NOT_VERIFIED")
         F.put("빌드 시간", "-", "-", "NOT_VERIFIED")
+    cn_ = (man.get("step_docs", {}).get("step", {}) or {}).get("canonical_numbering")
+    if cn_:
+        F.put("STEP 번호 정렬", (f"kicad-cli가 쓴 STEP 항목 {cn_['entities']}개의 번호와 순서를 내용으로 다시 매김 (scripts/step_canon.py); "
+                              f"다시 읽어 모든 항목이 같은 그래프인지 확인: {'통과' if cn_['ok'] else '실패 - kicad-cli 파일 그대로 둠'}")
+              if cn_.get("entities") else f"실패 ({cn_.get('why', '')}) - kicad-cli 파일 그대로 둠",
+              M + " step_docs.step.canonical_numbering", "M")
+    else:
+        F.put("STEP 번호 정렬", "없음 (kicad-cli 파일 그대로)", M + " step_docs.step", "M")
     # relayout-fix step (review RR-2): the same inputs built in a second folder
     xf = (det or {}).get("cross_folder") or {}
     if xf.get("result") == "PASS":
@@ -743,6 +814,98 @@ def gather() -> tuple[Facts, dict]:
     placement = load("kicad/placement.json")
     F.put("부품 자리 점유율", f"{placement['placement_checks']['courtyard_occupancy_percent']:g} %",
           "kicad/placement.json placement_checks.courtyard_occupancy_percent (윗면 부품 자리 면적 / 케이블타이 띠를 뺀 기판 면적)", "M")
+    # ---- redesign2 (2026-11-12): outline tab, three programming holes, C42, boost block, battery path
+    F.put("재설계 요청 원문", " / ".join(f"\"{t_}\"" for t_ in REDESIGN_REQUESTS),
+          "사용자 요청 2026-11-12 (재설계 작업 지시에 옮겨 적힌 원문)", "F (사용자 요청 그대로)")
+    rd_all = load(BEFORE_RD2)
+    rd, rdr = rd_all["checks"], rd_all["results"]
+    F.put("재설계 전 배선 규칙", f"{sum(1 for x in rdr.values() if x == 'PASS')} / {len(rdr)} PASS, FAIL: "
+          + (", ".join(k for k, x in rdr.items() if x != "PASS") or "없음"), BEFORE_RD2 + " results (재설계 전 보드)", "M")
+    F.put("재설계 전 보드 sha256", rd_all["board"]["sha256"][:16] + "...", BEFORE_RD2 + " board.sha256", "M")
+    rbp = rd["battery_path"]
+    F.put("재설계 전 배터리 경로", f"20 C {rbp['copper_resistance_ohm_20C']:g} Ohm, 60 C {rbp['copper_resistance_ohm_60C']:g} Ohm, "
+          f"2.0 mm보다 좁은 길이 {rbp['current_carrying_length_narrower_than_2mm']:g} mm", BEFORE_RD2 + " battery_path (재설계 전 보드)",
+          "E (저항), M (좁은 길이)")
+    F.put("재설계 전 출력 커패시터 간격", "; ".join(f"{c['cap']} {c['gap_pad1_to_U8.6_mm']:g} / {c['gap_pad2_to_U8.4_mm']:g} mm"
+                                          for c in rd["hot_loop"]["caps"]), BEFORE_RD2 + " hot_loop (재설계 전 보드)", "M")
+    F.put("재설계 전 SW 패드 간격", f"{rd['sw_node']['pad_edge_gap_U8.5_L5.2_mm']:g} mm", BEFORE_RD2 + " sw_node (재설계 전 보드)", "M")
+    F.put("재설계 전 C41-L5 경로", f"{rd['input_cap_l5']['copper_path_to_L5.1_mm']:g} mm", BEFORE_RD2 + " input_cap_l5 (재설계 전 보드)", "M (배선 모델, E)")
+    F.put("재설계 전 크리스털보다 가까운 부품", rd["crystal_distance"]["parts_closer_than_the_rev2c_pins"],
+          BEFORE_RD2 + " crystal_distance (재설계 전 보드)", "M")
+    BM = "out/reports/board_metrics.json board_fit"
+    bfit = load("out/reports/board_metrics.json")["board_fit"]
+    ol = bfit["outline"]
+    tk, mr, bb = ol["tab_kicad_mm"], ol["main_rect_kicad_mm"], ol["bbox_kicad_mm"]
+    F.put("본체 사각형", f"KiCad x {mr[0]:g}..{mr[2]:g}, y {mr[1]:g}..{mr[3]:g} mm ({mr[2] - mr[0]:g} x {mr[3] - mr[1]:g} mm, "
+          f"모서리 r {ol['corner_radius_mm']:g} mm)", BM + ".outline", "M")
+    F.put("탭 위치", f"KiCad x {tk['x'][0]:g}..{tk['x'][1]:g}, y {tk['y'][0]:g}..{tk['y'][1]:g} mm (바깥 모서리 r {tk['outer_corner_radius_mm']:g} mm, "
+          f"본체와 만나는 안쪽 모서리 r {tk['inner_fillet_radius_mm']:g} mm, 기판 재료는 x {tk['edge_cuts_material_x'][0]:g}..{tk['edge_cuts_material_x'][1]:g})",
+          BM + ".outline.tab_kicad_mm", "M")
+    F.put("탭 넓이", f"{ol['tab_area_mm2']:g} mm2", BM + ".outline.tab_area_mm2", "M")
+    F.put("외접 크기", f"{bb[2] - bb[0]:g} x {bb[3] - bb[1]:g} mm", BM + ".outline.bbox_kicad_mm", "M")
+    F.put("기판 넓이", f"{ol['area_mm2']:g} mm2", BM + ".outline.area_mm2", "M")
+    F.put("탭 질량 추정", f"{ol['tab_area_mm2'] * 1.6 * 1.85 / 1000:.2f} g", BM + ".outline.tab_area_mm2 x 1.6 mm x 1.85 g/cm3 (FR4 밀도 A)", "E")
+    fe = ol["fit_envelope"]
+    F.put("Fit 허용 범위", f"KiCad x {fe['x_min']:g}..{fe['x_max']:g}, 바깥 변 y {fe['y_edge_max_r1']:g} mm 이하 (바깥 모서리 r 1 mm)",
+          BM + ".outline.fit_envelope (redesign2 Fit 단계가 기체 CAD에서 잰 허용 범위)", "M")
+    rl = bfit["rules"]
+    F.put("기체 맞춤 판정", "PASS" if bfit["ok"] else "FAIL: " + "; ".join(bfit["problems"]), BM + ".ok", "M")
+    F.put("기체 맞춤", f"흡입구 보어 벽까지 {bfit['gap_to_bore_mm']:g} mm (기준 {rl['bore_gap_min_mm']:g} mm 이상), "
+          f"탭에서 270도 통풍구까지 {bfit['tab_to_vent_270_mm']:g} mm (기준 {rl['tab_vent_gap_min_mm']:g} mm 이상), "
+          f"탭에서 모터 리드 연결부 영역까지 {bfit['motor_joint_zone_gap_mm']:g} mm (본체 사각형 쪽은 재설계 전과 같음), "
+          f"315도 조인트 나사에서 평면 {rl['screw_plan_gap_mm']:g} mm 안의 부품: "
+          + (", ".join(bfit["parts_within_plan_gap_of_the_315_screw"]) or "없음")
+          + f", 나사 아래 기판 윗면 높이 여유 {bfit['screw_z_gap_board_top_mm']:g} mm (기준 {rl['screw_z_gap_min_mm']:g} mm 이상), "
+          f"탭 안 부품 {', '.join(bfit['parts_in_the_tab'])} (높이 한계 {rl['height_limit_mm']:g} mm 넘는 것: "
+          + (", ".join(bfit["parts_in_the_tab_above_limit"]) or "없음") + ")",
+          BM, "M (나사 길이는 A / NOT_VERIFIED)")
+    rv = placement["placement_checks"]["rev3"]["rev2c"]
+    ud = rv["fixed_parts_at_user_decided_spot"]
+    if sorted(ud) != ["J19", "J22", "J26"] or rv["user_decided_reference_offsets_mm"] != ud:
+        raise SystemExit("docs_ko: placement.json does not report J19 / J22 / J26 at the user-decided spot")
+    PR = "kicad/placement.json placement_checks.rev3.rev2c"
+    F.put("옮긴 프로그래밍 구멍", ", ".join(f"{r_} (x {o_[0]:+g}, y {o_[1]:+g} mm)" for r_, o_ in sorted(ud.items(), key=lambda kv: ref_key(kv[0]))),
+          PR + ".fixed_parts_at_user_decided_spot", "M")
+    F.put("고정 부품 비교", f"{rv['fixed_parts_compared']}개 중 rev 2c 자리에서 움직인 것: " + (", ".join(rv["fixed_parts_moved"]) or "없음"),
+          PR + " (fixed_parts_compared, fixed_parts_moved)", "M")
+    pl = placement["placements"]
+    c42w = re.search(r"([+-]\d+(?:\.\d+)?) mm in x", pl["C42"]["why"])
+    if not c42w:
+        raise SystemExit("docs_ko: placement.json C42 'why' does not state its x shift")
+    F.put("C42 이동", f"x {c42w.group(1)} mm (지금 x {pl['C42']['x']:g}, y {pl['C42']['y']:g} mm)", "kicad/placement.json placements.C42 (x, y, why)", "M")
+    F.put("승압부 자리", "; ".join(f"{r_} ({pl[r_]['x']:g}, {pl[r_]['y']:g}) {pl[r_]['rot']:g}도" for r_ in ("U8", "L5", "C43", "C57", "C41", "R63", "C58", "R64")),
+          "kicad/placement.json placements (KiCad mm, 회전)", "M")
+    legs_t = "; ".join(f"{lg['from']} → {lg['to']} {lg['ohm']:g} Ohm, {lg['length_carrying_mm']:g} mm, 가장 좁은 곳 {lg['min_width_carrying_mm']:g} mm, "
+                       f"비아 {lg['vias_carrying_ge_20pct']}개" for lg in bp["legs"])
+    F.put("배터리 경로 구간", legs_t, "out/reports/routing_rules.json battery_path.legs", "E (저항), M (길이·폭)")
+    F.put("배터리 경로 최소 폭", f"{min(lg['min_width_carrying_mm'] for lg in bp['legs']):g} mm", "out/reports/routing_rules.json battery_path.legs", "M")
+    tgc = rr["checks"]["hot_loop_top_gnd"]
+    c41v = tgc["own_via_at"]["C41.2"]
+    glen, gends = gnd_chain_mm(pcb_text, tuple(c41v))
+    F.put("C41 GND 윗면 길", f"C41 GND 패드의 비아 ({c41v[0]:g}, {c41v[1]:g})에서 윗면 GND 선을 따라 {glen:g} mm "
+          f"(끝점 {', '.join(f'({x_:g}, {y_:g})' for x_, y_ in gends)}; 가는 0.2 mm 선이 FB 분압 저항 두 줄 사이를 지나 C43 GND 패드를 거쳐 U8 GND 핀으로 감), "
+          f"C41 GND 패드-U8.4 직선 간격 {tgc['pad_edge_gap_mm']['C41.2 -> U8.4']:g} mm",
+          "kicad/vtol_carrier.kicad_pcb GND F.Cu 선 조각 (scripts/docs_ko.py gnd_chain_mm), out/reports/routing_rules.json hot_loop_top_gnd", "M")
+    F.put("C41 GND 비아 거리", f"{next(v_['within_1.5mm_of']['C41.2'] for v_ in tgc['gnd_vias_near_the_pads'] if 'C41.2' in v_['within_1.5mm_of']):g} mm",
+          "out/reports/routing_rules.json hot_loop_top_gnd.gnd_vias_near_the_pads", "M")
+    F.put("SW 간격 여유", f"{sn['limit_mm'] - sn['pad_edge_gap_U8.5_L5.2_mm']:.3f} mm", "out/reports/routing_rules.json sw_node (기준 - 간격)", "M")
+    # redesign2 fix stage (verifier findings): the real HF return paths on In1 and the thin C43 GND track
+    ov_ = tgc["own_via_at"]
+    F.put("내층 귀환 거리", "; ".join(f"{a_} GND 비아 → U8.4 GND 비아 {math.dist(ov_[a_], ov_['U8.4']):.2f} mm" for a_ in ("C43.2", "C57.2", "C41.2"))
+          + " (비아 중심 사이 직선, In1 GND 면 위)",
+          "out/reports/routing_rules.json hot_loop_top_gnd.own_via_at (비아 위치 M) 사이 직선 거리", "E")
+    cwl_ = gnd_tracks_in_box(pcb_text, ov_["C43.2"], ov_["U8.4"])
+    F.put("C43 GND 선", "C43 GND 패드에서 U8 GND 핀까지 윗면 GND 선 " + ", ".join(f"폭 {w__:g} mm {l__:g} mm" for w__, l__ in cwl_)
+          + " (비아 연결선 제외; SOT-563 패드 두 줄 사이를 지나는 가는 선; 패드마다 0.3 mm GND 비아 하나씩)",
+          "kicad/vtol_carrier.kicad_pcb GND F.Cu 선 (C43.2 비아와 U8.4 비아가 이루는 상자 + 0.5 mm 안, scripts/docs_ko.py gnd_tracks_in_box)", "M")
+    oth_ = bfit.get("information_parts_within_plan_gap_of_the_other_screws_unchanged_corners", [])
+    F.put("다른 조인트 나사 옆 부품", ", ".join(f"{o_['screw_deg']}도 나사 - {o_['ref']} {o_['plan_gap_courtyard_mm']:g} mm" for o_ in oth_) or "없음",
+          BM + ".information_parts_within_plan_gap_of_the_other_screws_unchanged_corners (나사 끝 r 49.5 mm 가정 A, 음수 = 평면에서 겹침)", "M (나사 길이 A)")
+    marg = []
+    for part_, gaps_ in sorted(cd["rev3_parts_min_gap_mm"].items(), key=lambda kv: kv[1][KY]):
+        marg.append(f"{part_} Y1 {gaps_[KY]:g} / XTAL 핀 {gaps_[KU]:g} mm")
+    F.put("크리스털 거리 부품별", "; ".join(marg) + f" (rev 2c 기준 Y1 {r2c[KY]:g} / XTAL 핀 {r2c[KU]:g} mm)",
+          "out/reports/routing_rules.json crystal_distance.rev3_parts_min_gap_mm", "M")
     F.put("리플로 Economic", rf["oven_C"]["Economic"].replace(" +-", "±") + " C", "out/fit_checks.json reflow_rating.oven_C", "F (계획 10장)")
     F.put("리플로 Standard", rf["oven_C"]["Standard"].replace(" +-", "±") + " C", "out/fit_checks.json reflow_rating.oven_C", "F (계획 10장)")
     at_limit = [r_ for r_ in rf["rows"] if str(r_.get("Economic", "")).startswith("AT THE LIMIT")]
@@ -983,11 +1146,17 @@ def readme(F: Facts, ctx: dict) -> str:
       f"(2) 스루홀 커넥터 {F.v('스루홀 부품 수')}개({F.v('스루홀 목록')}, 납땜 {F.v('스루홀 납땜점')}곳)도 JLC가 달지 않고 사용자가 사서 납땜합니다. "
       f"(3) 주문은 Economic PCBA이고 JLC는 SMT 부품 {F.v('main parts')}개(BOM {F.v('main bom_lines')}줄)만 실장합니다. "
       f"(4) 기판 표면처리는 무연 HASL입니다 (보드 파일 표기 '{F.v('보드 표면처리')}'). "
-      "풋프린트·네트·위치는 모두 그대로이고, "
-      f"구리와 배치는 바뀌지 않았습니다 (배선 재생에 쓴 배선 전 보드: '{F.v('배선 재생 입력 보드')}', M). "
+      "이 변경 때는 풋프린트·네트·위치와 구리가 그대로였습니다. "
       f"실크에서는 같은 날 검증 지적으로 아랫면 이름표의 핀 글자 순서만 고쳤습니다: 핀 줄과 나란히 적힌 이름표는 이제 그 면에서 본 패드 순서대로입니다 "
       f"(아랫면: {F.v('아랫면 나란한 라벨')}; 검사 {F.v('라벨 검사')}, M). "
       f"주문 방법은 {p('out/ORDER_ko.md')}, 따로 살 부품은 {p('out/' + KO_NAME)}.")
+    A("")
+    A(f"**{F.v('변경 날짜')} 재설계 (사용자 요청: {F.v('재설계 요청 원문')}):** 재설계 전 보드(sha256 {F.v('재설계 전 보드 sha256')})는 "
+      f"배선 규칙 {F.v('재설계 전 배선 규칙')} 이었습니다 (M). 부품을 바꾸지 않고 자리를 주려고 (1) 기판 -y 변에 승압 회로용 탭을 붙였고 "
+      f"(외접 크기 {F.v('외접 크기')}; 본체 76 x 70 mm 사각형과 그 변은 그대로), (2) 케이블타이 띠 안의 프로그래밍 구멍 "
+      f"{F.v('옮긴 프로그래밍 구멍')} 을 옮겼고 (사용자 승인), (3) C42를 {F.v('C42 이동')} 옮겼고, (4) 승압부(U8, L5, C41, C43, C57, R63, C58, R64)를 탭에 "
+      "다시 놓고, (5) 배터리 전원 경로를 2.0 mm 폭으로 다시 그린 뒤 전체를 새로 배선했습니다. 회로도와 부품(BOM)은 바뀌지 않았습니다. "
+      "자세한 내용은 1장과 3장, 검사를 글자로만 통과한 부분은 1장의 '목적과 다른 점'에 있습니다.")
     A("")
     A("표시: M = 이 PC에서 도구로 측정, E = 추정(계산), A = 가정(실물로 확인 필요), F = 문서·데이터시트 근거. 근거가 없으면 NOT_VERIFIED. "
       "이 문서는 `scripts/docs_ko.py` 가 보고서 파일에서 숫자를 읽어 만든 것입니다 (손으로 고치지 말고 다시 생성). 측정·계산된 숫자의 출처는 맨 끝 8장에 있고, "
@@ -995,34 +1164,55 @@ def readme(F: Facts, ctx: dict) -> str:
     A("")
     A("## 1. 지금 상태")
     A("")
-    A(f"**출고 판정(도구 검사 기준): {F.v('출고 판정')}** - 이유: {F.v('출고 판정 이유')}.")
+    A(f"**출고 판정(도구 검사 기준): {F.v('출고 판정')}** - 판정을 막는 항목: {F.v('출고 판정 이유')}.")
     A("")
-    A(f"배선이 끝난 보드에서 배터리 전원 경로(J14 → Q10 → J15 → L5)의 구리 저항은 {F.v('배터리 경로 저항 20C')} (20 C, E)로 "
-      f"계획 목표 {F.v('배터리 경로 목표')} 를 만족하지만, 계획이 요구한 '2.0 mm 이상 폭'을 {F.v('2 mm보다 좁은 길이')} 구간에서 "
-      f"지키지 못했습니다 ({F.v('좁은 구간')}). 60 C에서는 {F.v('배터리 경로 저항 60C')} (E)로 목표를 넘습니다. "
-      "도구는 이 규칙을 느슨하게 하지 않았습니다. 그대로 주문할지, 배선을 고칠지는 사용자가 정할 일입니다 "
-      f"({p('out/ORDER_ko.md')} 0장).")
+    A(f"전체 다시 만들기 두 번이 같은 파일을 내는지 (determinism.py, 출고 판정과 따로 봄): {F.v('결정성')}. "
+      f"다른 폴더에서: {F.v('다른 폴더 결정성')}. STEP: {F.v('STEP 번호 정렬')}.")
     A("")
-    A("독립 검토(E-R1 / E-R2 / E-R3) 뒤 승압 IC U8 주변을 다시 배치하고 새로 배선했습니다 (재배치 단계). 지금 보드에서 잰 값(M):")
+    A("이 판정은 도구 검사만 본 것입니다. 보드는 만들어지거나 전원이 들어간 적이 없고, JLC 업로드 미리보기·DFM·견적, "
+      "위치 확인과 결제는 사용자가 합니다 (주문 안내서 0장과 3장).")
     A("")
-    A(f"- 윗면 GND: {F.v('윗면 GND 한 덩어리')}. 출력 커패시터 C57이 U8 바로 옆에서 VOUT 핀과 GND 핀을 윗면 구리로 잇습니다.")
-    A(f"- 입력 커패시터 (검사 input_cap_vin {F.v('검사 input_cap_vin')}): {F.v('입력 커패시터 VIN 경로')}.")
+    A(f"**배선 규칙 {F.v('배선 규칙 PASS 수')} / {F.v('배선 규칙 수')} PASS** (FAIL: {F.v('배선 규칙 FAIL')}; 재설계 전 보드: {F.v('재설계 전 배선 규칙')}). "
+      "규칙과 기준값은 바꾸지 않았습니다. 바꾼 검사 코드는 새 외곽에 맞춘 부분, 추가한 검사, 사용자가 승인한 구멍 이동, 그리고 결정성 검사의 폴더 이름 바꾸기뿐입니다 "
+      "(목록은 3장 끝). 지금 보드에서 잰 값:")
+    A("")
+    A(f"- 배터리 전원 경로 (J14 → Q10 → J15 → L5): 구리 저항 {F.v('배터리 경로 저항 20C')} (20 C, E; 목표 {F.v('배터리 경로 목표')}), "
+      f"전류가 흐르는 구간의 가장 좁은 폭 {F.v('배터리 경로 최소 폭')} (M), 2.0 mm보다 좁은 길이 {F.v('2 mm보다 좁은 길이')}. "
+      f"구간별: {F.v('배터리 경로 구간')}. **60 C에서는 {F.v('배터리 경로 저항 60C')} (E)로 0.035 Ohm 목표를 넘습니다** "
+      f"(검사는 계획대로 20 C 값으로 판정). 재설계 전: {F.v('재설계 전 배터리 경로')}.")
+    A(f"- 출력 커패시터 (검사 hot_loop {F.v('검사 hot_loop')}): {F.v('출력 커패시터 간격')} (기준 각 2.0 mm 이하; 재설계 전 {F.v('재설계 전 출력 커패시터 간격')}). "
+      f"윗면에서 U8 GND 핀과 이어진 출력 커패시터 GND: {F.v('출력 커패시터 GND 윗면 연결')}.")
+    A(f"- 입력 커패시터 C41 (검사 input_cap_l5 {F.v('검사 input_cap_l5')}, input_cap_vin {F.v('검사 input_cap_vin')}): {F.v('입력 커패시터 L5 경로')}; "
+      f"{F.v('입력 커패시터 VIN 경로')}. 재설계 전 C41 → L5 경로는 {F.v('재설계 전 C41-L5 경로')} 였습니다.")
+    A(f"- 윗면 GND: {F.v('윗면 GND 한 덩어리')}.")
+    A(f"- SW 노드 (검사 sw_node {F.v('검사 sw_node')}): {F.v('SW 노드')}. SW 선: {F.v('SW 선')}. 재설계 전 패드 간격 {F.v('재설계 전 SW 패드 간격')}.")
+    A(f"- 크리스털 거리 (검사 crystal_distance {F.v('검사 crystal_distance')}): {F.v('크리스털 거리')}. 부품별 (가까운 순): {F.v('크리스털 거리 부품별')}. "
+      f"재설계 전 rev 2c보다 가까웠던 부품: {F.v('재설계 전 크리스털보다 가까운 부품')}.")
     A(f"- 되먹임(FB) 선: {F.v('FB 선과 출력 커패시터')}.")
-    A(f"- 통과한 승압부 검사: {F.v('승압부 배치 PASS')}. **아직 FAIL인 검사: {F.v('승압부 배치 FAIL')}.**")
-    A(f"- 남은 편차 1 (hot_loop {F.v('검사 hot_loop')}): {F.v('출력 커패시터 간격')}. 계획 12장은 두 출력 커패시터 모두 IC에서 2 mm 안을 요구하지만, "
-      "1206 커패시터는 U8의 VOUT / GND 핀 옆에 하나만 놓을 수 있어 둘째(C43)는 C57 바로 옆, 같은 윗면 +5V / GND 구리 위에 두었습니다.")
-    A(f"- 남은 편차 2 (input_cap_l5 {F.v('검사 input_cap_l5')}): {F.v('입력 커패시터 L5 경로')}. U8의 VIN 핀과 L5 입력 패드가 떨어져 있어 커패시터 하나로 "
-      "두 곳 모두 몇 mm 안에 둘 수 없습니다. 둘째 입력 커패시터 C42는 스위치 단자 J15 옆 그대로입니다 (모서리에 1206 자리가 더 없음).")
-    A(f"- **남은 편차 3 (sw_node {F.v('검사 sw_node')}) - 재배치로 나빠진 점:** {F.v('SW 노드')}. SW 선은 {F.v('SW 선')} 이고, "
-      f"재배치 전에는 길이 {F.v('재배치 전 SW 선 길이')}, 패드 간격 {F.v('재배치 전 SW 패드 간격')} 였습니다. 계획 12장·13장은 "
-      "'L5는 U8 핀 바로 옆, SW 구리는 두 패드에 필요한 만큼만, 패드가 허락하는 한 짧게'를 요구하는데 지금 보드는 이를 지키지 못합니다. "
-      f"층·비아만 보는 검사 boost_sw는 {F.v('검사 boost_sw')} 이지만, 이것은 SW 선이 짧다는 뜻이 아닙니다.")
-    A(f"- **남은 편차 4 (crystal_distance {F.v('검사 crystal_distance')}) - 재배치 전에도 지키지 못했고 재배치로 더 가까워진 점:** {F.v('크리스털 거리')}. "
-      f"재배치 전의 SW 구리는 {F.v('재배치 전 SW 구리-크리스털')} 였고, 그때 rev 2c보다 가까웠던 부품은 {F.v('재배치 전 크리스털보다 가까운 부품')} 입니다. "
-      "계획 12장은 승압부를 rev 2c의 Pololu 핀보다 크리스털에 가깝게 두지 말라고 했습니다. 16 MHz 크리스털(NAV 칩 U1)에 잡음이 "
-      "얼마나 실리는지는 보드에서 재기 전까지 NOT_VERIFIED입니다.")
-    A("- 편차 3, 4의 실제 영향(스위칭 과전압, 입력 리플, SW 선 발열, 크리스털 잡음)은 보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다.")
-    A(f"- 자세한 내용과 선택지: {p('out/ORDER_ko.md')} 0장 B.")
+    A(f"- 레일 쪽 변의 구리: {F.v('레일 변 구리 이격')}.")
+    A(f"- 기체 맞춤 (탭 포함, 검사 board_fit {F.v('기체 맞춤 판정')}): {F.v('기체 맞춤')}.")
+    A("")
+    A("**목적과 다른 점 (검사는 통과했지만 글자로만 통과했거나 여유가 작은 곳 - 숨기지 않음):**")
+    A("")
+    A(f"- 입력 커패시터 C41의 GND: {F.v('C41 GND 윗면 길')}. 검사 hot_loop_top_gnd와 input_cap_vin은 이 가는 선 덕분에 통과합니다. "
+      f"짧은 고리가 아닙니다: C41의 고주파 귀환은 실제로는 자기 비아({F.v('C41 GND 비아 거리')} 떨어짐)를 거쳐 내층 GND 면으로 갑니다. "
+      "탭 안에서는 U8 VIN 선, L5 입력 패드와 배터리 선이 C41 GND 패드와 U8 GND 핀 사이를 막고 있습니다. "
+      f"내층에서의 귀환 거리: {F.v('내층 귀환 거리')}. TI 데이터시트 10.1절은 입력 커패시터를 VIN 핀과 GND 핀 가까이 두라고 하지만, "
+      "C41은 L5 입력 패드 옆에 있고 U8 VIN 핀(3번) 옆에는 따로 커패시터가 없습니다 (작은 커패시터를 더하려면 회로도 변경 = 사용자 결정).")
+    A("- C41의 VIN 쪽 경로(위 숫자)는 L5 입력 패드를 지나 U8 VIN 핀으로 갑니다.")
+    A(f"- 출력 커패시터 C43의 GND: {F.v('C43 GND 선')}. 고리는 작지만 TI 예시(10.2절)·발열 안내(10.3절)처럼 넓은 GND 구리와 여러 비아가 아니라 "
+      "가는 선입니다. U8의 발열은 측정 전까지 NOT_VERIFIED입니다.")
+    A(f"- 배터리 경로는 L5 입력 패드 바로 앞에서 비아 두 개를 지납니다: {F.v('L5 입력 비아')}. {F.v('L5 입력 비아 단면')} "
+      "폭 검사(2.0 mm)는 선만 재므로 이 비아들은 글자로만 통과합니다.")
+    A("- 출력 커패시터 C57의 GND 패드는 SW 선(U8.5 → L5.2) 건너편에 있어, 윗면에서는 L5 둘레·아래의 GND 면(구리 채움)을 통해서만 U8 GND 핀과 이어집니다. "
+      "검사는 그 면이 한 덩어리라서 통과합니다. C57의 실제 귀환은 자기 비아와 U8 GND 핀의 비아를 거친 내층 GND입니다. 배선 프로그램이 이 면을 끊지 못하게 "
+      "탭 위 윗면에 배선 금지 영역을 두었습니다 (Freerouting 입력 파일에만 있고 보드 파일에는 없음).")
+    A(f"- SW 패드 간격 여유는 {F.v('SW 간격 여유')} 뿐입니다 (부품 자리가 맞닿아 배치로 정해짐; 배선으로는 줄일 수 없음).")
+    A("- 미리 그린 배선(승압부, 배터리 경로의 갈래)은 이제 배선 마무리 단계의 자동 넓히기에서 빠져 설계한 폭 그대로입니다. 재설계 전 흐름은 이 갈래들을 넓혔습니다. "
+      "2.0 mm 배터리 경로는 이와 무관합니다.")
+    A("- 회로 IR(설계 데이터)은 외곽을 사각형으로만 담을 수 있어 76 x 70 mm 사각형을 그대로 갖고, 탭이 있는 실제 외곽은 `scripts/outline.py` 에서 옵니다. "
+      "외곽에 대해서는 IR이 유일한 설계 데이터가 아닙니다.")
+    A("- 이 영향(스위칭 과전압, 입력 리플, 잡음, 크리스털 흔들림)은 보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다 (주문 안내서 7장).")
     A("")
     A("| 항목 | 결과 | 표시 |")
     A("|---|---|---|")
@@ -1051,7 +1241,8 @@ def readme(F: Facts, ctx: dict) -> str:
     A("")
     A("## 2. 이 기판은 무엇인가")
     A("")
-    A(f"- 크기 {F.v('외곽')}, 두께 {F.v('두께')}, {F.v('층 수')}층 (F.Cu 신호와 부품 / In1 GND 전면 / In2 +5V 전면 / B.Cu 신호). "
+    A(f"- 크기: 본체 {F.v('외곽')} 사각형 + -y 변의 탭 ({F.v('탭 위치')}, 넓이 {F.v('탭 넓이')}) → 외접 {F.v('외접 크기')}, "
+      f"기판 넓이 {F.v('기판 넓이')}. 두께 {F.v('두께')}, {F.v('층 수')}층 (F.Cu 신호와 부품 / In1 GND 전면 / In2 +5V 전면 / B.Cu 신호). "
       "부착 구멍 없음: 3 mm 폼테이프 + 케이블타이 1개. 케이블타이 띠(x -3..+3 mm)에는 실장 부품이 없습니다.")
     A(f"- 부품은 모두 윗면에만 있습니다. 부품 높이 한계는 기판 윗면에서 {F.v('높이 한계')} 입니다. 아랫면은 폼테이프 자리라 비어 있습니다.")
     A("- 비행 컴퓨터 칩 4개: U1 NAV, U2 FCU, U3 COM, U4 GNS (ATmega128A-AU, 16 MHz, 5 V). 무선은 U7 ESP-12F (Wi-Fi 중계; 사용자가 직접 납땜).")
@@ -1088,8 +1279,28 @@ def readme(F: Facts, ctx: dict) -> str:
       f"J18 {F.v('참고 코드 J18')}, 배터리 J14 {F.v('참고 코드 J14')}, 스위치·부저 J15 / J17 {F.v('참고 코드 J15')}. "
       f"JLC BOM에는 없습니다 (J2: {F.v('코드 J2')}). 탄탈 C45 ({F.v('코드 C45')}, JLC 실장)와 헤더·소켓 번호 일부는 재고나 도면 근거로 "
       "바꿨고 D3 / D12에서 rev 2c 번호로 되돌릴 수 있습니다.")
-    A(f"- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 ({F.v('MCU 핀맵')}), 외곽, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치와 방향, 설계 규칙 "
+    A(f"- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 ({F.v('MCU 핀맵')}), 본체 76 x 70 mm 사각형과 그 변, 커넥터·MCU·크리스털·모듈 소켓·ESP "
+      f"위치와 방향 (고정 부품 {F.v('고정 부품 비교')}; 프로그래밍 구멍 3개는 아래 재설계에서 사용자 승인으로 옮김), 설계 규칙 "
       f"({F.v('규칙 파일')}), 크리스털 배선 ({F.v('XTAL1 최악')}).")
+    A(f"- **{F.v('변경 날짜')} 재설계 - 외곽에 탭 추가** (사용자 요청 {F.v('재설계 요청 원문')}): 지금 부품(U8 TPS61023, L5 FXL0420, 22 uF 1206 커패시터)으로 "
+      "승압부 검사와 크리스털 거리 검사를 모두 지키려면 76 x 70 mm 안에 자리가 모자랐습니다 (재설계 전 연구, M). 그래서 본체의 변은 그대로 두고 -y 변에 탭을 붙였습니다: "
+      f"{F.v('탭 위치')}, 넓이 {F.v('탭 넓이')}, 외접 {F.v('외접 크기')}. 탭은 기체 CAD에서 잰 허용 범위({F.v('Fit 허용 범위')}) 안에 있습니다. "
+      "이것은 계획 불변조건 (b) '외곽 76 x 70 mm 그대로'에서 벗어난 사용자 결정입니다.")
+    A(f"- **승압부 자리 (재설계):** {F.v('승압부 자리')}. U8의 VOUT / GND 핀 옆에 출력 커패시터 C43(위)과 C57(오른쪽), 아래에 L5, L5 입력 패드 옆에 C41. "
+      "저전압 차단(U9 주변), LDO U6, 그 밖의 부품 자리는 그대로입니다.")
+    A(f"- **프로그래밍 구멍 3개 이동 (사용자 승인 \"{REDESIGN_REQUESTS[2]}\"):** {F.v('옮긴 프로그래밍 구멍')}. 케이블타이 띠를 건너는 배터리 선이 2.0 mm 폭으로 "
+      "지나갈 틈을 만들기 위해서입니다. 배치 검사(place.py)는 이 세 부품만 'rev 2c 자리 + 이 거리'와 정확히 같은지 봅니다 (다른 고정 부품은 rev 2c 자리 그대로인지 봄). "
+      "외곽 맞춤과 추가한 검사 말고, 설계 판정에 쓰이는 검사 코드에서 사용자 결정 때문에 바꾼 곳은 이것 하나입니다.")
+    A(f"- **C42 이동:** {F.v('C42 이동')} - 2.0 mm 배터리 선이 Q10 3번 패드로 들어가게.")
+    A(f"- **배터리 전원 경로:** 선은 모든 구간 {F.v('배터리 경로 최소 폭')} 이상 (1장의 숫자). 다만 L5 입력 패드 앞의 비아 두 개({F.v('L5 입력 비아')})는 "
+      "선이 아니라서 폭 검사 대상이 아니고, 도금 단면이 2.0 mm 선보다 작습니다 (1장 '목적과 다른 점').")
+    A(f"- **바꾼 검사 코드 (규칙·기준값은 그대로):** 외곽 맞춤 - 판의 모서리·변으로 재던 검사(routing_checks 레일 변 구리와 식별 문구의 가장자리 거리, "
+      "place.py 기판 안쪽, fit_checks와 edge_distance의 -y 변 거리, silk.py 글자 자리, prog_access.py 헤더 자리 검색의 기판 밖 칸)가 이제 탭의 모든 변을 "
+      "실제 선분으로 잽니다 (y 135 선 옆에서는 예전과 같은 값). 추가한 검사 - 기체 맞춤 board_fit (board_metrics.py)과 315도 조인트 나사 아래 부품 금지 "
+      "영역 (place.py). 사용자 결정 - J26 / J22 / J19의 기준 자리 (위). 결정성 검사 determinism.py - 다른 폴더 비교의 폴더 이름 바꾸기 규칙만 "
+      "작업 복사본에서도 돌도록 고침 (비교 종류와 PASS 규칙은 그대로).")
+    A(f"- **내보내기 (검사 아님):** STEP 파일 - {F.v('STEP 번호 정렬')}. kicad-cli가 내보낼 때마다 같은 항목을 다른 순서로 써서 결정성 검사가 "
+      "실패하던 원인을 생성기에서 고친 것이며, 결정성 검사 자체는 바꾸지 않았습니다.")
     A(f"- **배치·배선을 다시 했습니다.** 새 부품 13개를 넣느라 주변 수동 부품 일부가 옮겨졌고, 배선은 새로 했습니다 (최종 보드 파일 기준 세그먼트 {F.v('배선 세그먼트')}개, "
       f"원호 {F.v('배선 원호')}개, 비아 {F.v('배선 비아')}개: {F.v('비아 크기별')}). 배선은 Freerouting 실행 기록(세션 파일)을 다시 넣는 방식으로 재현됩니다.")
     A(f"- 부품마다 바뀐 내용과 이유 분류(태그)의 전체 표: {p('out/ORDER_ko.md')} 10장 ({F.v('변경 행')}).")
@@ -1116,11 +1327,21 @@ def readme(F: Facts, ctx: dict) -> str:
     A("## 5. 확인되지 않은 것 (NOT_VERIFIED)")
     A("")
     for t in [
-        f"배터리 경로 폭 규칙 FAIL ({F.v('2 mm보다 좁은 길이')})과 승압부에 남은 FAIL ({F.v('승압부 배치 FAIL')}): "
-        f"사용자 결정 전까지 도구 판정은 {F.v('출고 판정')} 입니다.",
-        f"재배치한 승압부의 전기적 효과: SW 선이 두 출력 커패시터 아래를 지나 길어졌고(검사 sw_node {F.v('검사 sw_node')}), 승압부와 SW 구리가 "
-        f"크리스털 Y1 / U1 XTAL 핀에 rev 2c의 Pololu 핀보다 가까워졌습니다(검사 crystal_distance {F.v('검사 crystal_distance')}; 숫자는 1장). "
-        "스위칭 과전압, 입력 리플, SW 선 발열, 크리스털 잡음 영향은 보드에서 재기 전까지 NOT_VERIFIED입니다.",
+        "재설계한 승압부의 전기적 효과: 검사는 모두 통과했지만 1장의 '목적과 다른 점'(C41 GND가 가는 선으로만 윗면에서 이어짐, C57 GND가 GND 면으로만 "
+        f"이어짐, SW 간격 여유 {F.v('SW 간격 여유')})이 실제로 어떤 영향을 주는지 - 스위칭 과전압, 입력 리플, SW 선 발열, 크리스털 잡음 - 는 "
+        "보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다.",
+        f"배터리 경로 60 C: 구리 저항이 {F.v('배터리 경로 저항 60C')} (E)로 0.035 Ohm 목표를 넘습니다. 검사는 계획대로 20 C 값({F.v('배터리 경로 저항 20C')})으로 "
+        "판정합니다. 뜨거운 곳에서 오래 쓰면 저전압 차단 여유가 줄 수 있습니다 (계획 17장, 첫 보드에서 저항 측정: 주문 안내서 7장).",
+        "새 외곽의 JLC 수락과 값: 탭이 있는 거버는 아직 JLC에 올려 본 적이 없습니다. 주문 화면이 읽을 크기(외접 사각형으로 읽을 것으로 봄, E), "
+        "PCB 값, DFM 결과는 NOT_VERIFIED입니다. 2026-11-12에 저장한 견적은 모두 재설계 전 76 x 70 mm 거버의 것입니다 (주문 안내서 4장).",
+        "Standard 대안의 레일: y 135 쪽 긴 변에 탭이 있어 그 변은 곧은 선이 아니므로 V-cut 레일은 쓸 수 없고, 라우팅 탭 / 마우스바이트 레일이 필요합니다. "
+        "JLC가 그렇게 해 주는지와 값은 NOT_VERIFIED입니다 (Economic 주문은 레일이 없어 해당 없음).",
+        "기체 CAD는 아직 탭이 없는 76 x 70 x 15 mm 상자로 캐리어를 그립니다 (이 단계는 CAD 저장소를 읽기만 했음). 남은 일: params.json의 캐리어 항목에 탭 추가, "
+        "cad/layout.py의 캐리어 검사(보어 거리, 통풍구, 케이블타이 길, 폼테이프 면적, 조인트 나사 여유)를 사각형 + 탭으로 바꾸기, C25 등 CAD 검사와 내보내기 다시 실행, "
+        f"캐리어 무게에 탭 몫 약 {F.v('탭 질량 추정')} 더하기, 76 x 70 을 적은 기체 문서·그림 고치기. "
+        f"이 PCB 쪽 검사(board_fit)는 Fit 단계가 CAD에서 잰 값으로 탭을 확인했습니다 ({F.v('기체 맞춤 판정')}).",
+        "흡입구/아비오닉스 연결부 315도 조인트 나사의 길이: params.json에는 'M3'만 있습니다. 부품 금지 영역은 나사 끝이 반지름 49.5 mm까지 들어온다고 보고 잡았습니다 (A). "
+        "M3 x 6 이하를 권합니다. 나사 길이는 NOT_VERIFIED입니다.",
         f"모듈 끼움, 보수적 경우: OpenLog 아랫면 부품을 1.2 mm로 잡으면 꽂는 길에서 {F.v('모듈 간섭 보수적 충돌')} 이 겹치고, "
         f"{F.v('모듈 간섭 보수적 0.5 mm 미만')} 은 {F.v('모듈 최소 간격')} 보다 가깝습니다 (A). OpenLog 아랫면 높이를 재고, 막을 수 있는 부품을 "
         "납땜하기 전에 실제로 꽂아 보십시오.",
@@ -1128,7 +1349,7 @@ def readme(F: Facts, ctx: dict) -> str:
         f"JLC의 수락: Economic 주문에서 JLC가 기판 안에 툴링 홀 자리를 찾는지 (부품 자리 점유율 {F.v('부품 자리 점유율')}; 못 찾으면 레일 = Standard를 요구할 수 있음), "
         f"가장자리 가까운 부품 (JLC 실장 중 가장 가까운 것 {F.v('JLC 실장 가장 가까운 몸체')}; 0.3 mm 안: {F.v('JLC 실장 몸체 0.3 mm 안')}), "
         "지금 파일의 BOM / CPL 매칭은 업로드 후 화면과 DFM 결과, 견적으로만 확인됩니다.",
-        f"주문 화면에서 본 것 ({F.v('주문 화면 확인 시각')}, M): 이 변경 전 빌드의 파일을 올려 {F.v('주문 화면 매칭')}했고, 화면에서 ESP-12F와 스루홀 줄을 뺀 "
+        f"주문 화면에서 본 것 ({F.v('주문 화면 확인 시각')}, M): ESP·스루홀 변경과 재설계 전 빌드의 파일(76 x 70 mm 거버)을 올려 {F.v('주문 화면 매칭')}했고, 화면에서 ESP-12F와 스루홀 줄을 뺀 "
         f"Economic 견적은 배송 제외 {F.v('견적 economic_no_tht 합계')} USD였습니다 (Economic이 ESP-12F를 뺀 {F.v('Economic 받은 줄 수')}줄을 모두 받음). "
         "지금 파일(처음부터 SMT만 든 BOM)로는 아직 올려 보지 않았습니다.",
         f"사용자가 사는 스루홀 커넥터 {F.v('스루홀 종류 수')}종과 ESP-12F: 낱개로 산 부품이 구멍·패드에 맞는지, 그 재고와 가격 "
@@ -1145,7 +1366,8 @@ def readme(F: Facts, ctx: dict) -> str:
         "그림과 간섭 검사도 이 가정 위에 있습니다. 실물을 버니어로 재야 확정됩니다 (D15).",
         "J14 Molex 커넥터: 라이브러리 3D 모델이 없고 구멍 지름을 도면과 대조하지 못했습니다.",
         f"재고: {F.v('JLC 확인 시각')} 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.",
-        f"비용: 주문 화면의 견적 {F.v('견적 economic_no_tht 합계')} USD (M, 배송 제외)는 이전 업로드에서 줄을 빼고 읽은 값입니다. 지금 파일의 견적, 메모 검토 뒤 금액, "
+        f"비용: 주문 화면의 견적 {F.v('견적 economic_no_tht 합계')} USD (M, 배송 제외)는 재설계 전 76 x 70 mm 거버의 이전 업로드에서 줄을 빼고 읽은 값입니다. "
+        f"지금 파일(외접 {F.v('외접 크기')})의 견적, 메모 검토 뒤 금액, "
         "배송비와 세금은 NOT_VERIFIED입니다.",
         "GPS 케이블이 기체 안에서 지나갈 길은 설계되지 않았습니다 (그림은 예시).",
     ]:
@@ -1173,8 +1395,8 @@ def readme(F: Facts, ctx: dict) -> str:
     A("- make_all.py는 인터넷을 쓰지 않습니다. JLC 부품 근거는 저장된 기록으로 다시 평가하고, 재고 확인(jlc_gate.py)은 따로 실행합니다.")
     A("- 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 "
       "필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다. "
-      f"{F.v('변경 날짜')}에 표면처리 표기만 '{F.v('보드 표면처리')}' 로 바꿨을 때는 새 배선 없이 재생했습니다: route.py는 배선 전 보드가 "
-      "세션을 기록한 보드와 표면처리 글자 한 곳만 다르고 나머지 바이트가 모두 같을 때에만 재생을 받아들입니다 "
+      f"{F.v('변경 날짜')} 재설계는 배치가 바뀌어 새 배선(Freerouting 실시간 실행)을 했고, 그 실행의 세션을 기록해 두었습니다. "
+      "route.py는 배선 전 보드가 세션을 기록한 보드와 바이트까지 같을 때(표면처리 글자 한 곳만 다른 경우 포함)에만 재생을 받아들입니다 "
       f"(이번 재생의 판정: '{F.v('배선 재생 입력 보드')}', M).")
     A(f"- 결정성 검사 결과: {F.v('결정성')}. 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, "
       "STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. "
@@ -1248,62 +1470,71 @@ def order(F: Facts, ctx: dict) -> str:
       "그 표에 없는 숫자(시험 전류·전압, 규칙 값, 수량 기본값)는 계획서 `spec/REV3_PLAN.md` 의 괄호 안 장(15장, 16장의 D 번호 등)에서 옮긴 값(F, 계산값은 E)입니다. "
       "이 파일은 `scripts/docs_ko.py` 가 만든 것입니다.")
     A("")
-    A("## 0. 먼저 결정할 것: 도구 판정은 아직 '주문 불가'입니다")
+    A("## 0. 먼저 읽을 것: 도구 판정과 2026-11-12 재설계")
     A("")
-    A(f"출고 판정: **{F.v('출고 판정')}** ({F.v('출고 판정 이유')}).")
+    ok_ = F.data["출고 판정"][0].startswith("ORDERABLE")
+    A(f"출고 판정 (도구 검사): **{F.v('출고 판정')}**. 판정을 막는 항목: {F.v('출고 판정 이유')}.")
     A("")
-    A("결정할 문제는 두 가지(A, B)입니다. B의 큰 문제(승압 IC 주변의 고전류 루프와 입력 커패시터)는 재배치 단계에서 고쳤지만, "
-      "그 대가로 스위칭 노드(SW) 선이 길어지고 승압부가 NAV 크리스털에 가까워졌습니다. 아래에는 고친 것, 남은 것, 나빠진 것을 모두 적었습니다.")
+    A(f"결정성 검사 (determinism.py, 출고 판정과 따로 봄): {F.v('결정성')}. 다른 폴더에서: {F.v('다른 폴더 결정성')}.")
     A("")
-    A("### A. 배터리 전원 경로의 구리 폭")
+    if ok_:
+        A("이 판정은 도구 검사(회로도 ERC, 보드 DRC, 배선 규칙 21개, 기체 맞춤, 주문 파일 검사, 오늘의 JLC 재고 확인)를 모두 통과했다는 뜻일 뿐입니다. "
+          "**보드는 한 번도 만들어지거나 전원이 들어간 적이 없고 (NOT_VERIFIED), 지금 파일은 JLC에 올려 본 적이 없습니다.** "
+          "도구가 볼 수 없는 아래 항목은 사용자가 주문 화면에서 확인합니다 (3장):")
+    else:
+        A("**판정이 '주문 불가'인 동안에는 주문하지 마십시오.** 위 항목을 먼저 해결해야 합니다. 도구가 보지 않는 항목도 그대로 남습니다 (3장):")
     A("")
-    A(f"- 무엇이 문제인가: 배터리 → 승압 회로로 가는 전원 경로의 구리 폭을 계획은 2.0 mm 이상(또는 면)으로 정했는데, {F.v('2 mm보다 좁은 길이')} 구간이 "
-      f"더 좁습니다: {F.v('좁은 구간')}.")
-    A(f"- 재배치 단계에서 줄인 것: 좁은 길이 {F.v('재배치 전 좁은 길이')} → {F.v('2 mm보다 좁은 길이')} (Q10 → J15 구간을 2.0 mm로 넓히고 L5 앞 비아를 패드 바로 위로 옮김). "
-      "남은 구간은 모양 때문에 2.0 mm 한 줄이 들어가지 않습니다: 케이블타이 띠를 건너는 곳은 프로그래밍 단자 구멍 사이 틈이 1.86 mm라 1.56 mm가 한계이고 "
-      "(scripts/build_pcb.py VBAT_TRUNK 설명, M), Q10(SOT-23) 3번 패드로 들어가는 짧은 구간은 옆 패드와 C42 패드에 막히며, L5 입력 패드는 폭이 1.5 mm입니다. "
-      "이 검사와 2.0 mm / 0.035 Ohm 기준은 바꾸지 않았으므로 FAIL로 남습니다.")
-    A(f"- 영향(E): 구리 저항은 20 C에서 {F.v('배터리 경로 저항 20C')} 로 목표 {F.v('배터리 경로 목표')} 안이지만, 60 C에서는 {F.v('배터리 경로 저항 60C')} 로 넘습니다. "
-      "저항이 크면 방전 끝에서 저전압 차단이 켜졌다 꺼졌다 할 여유가 줄어듭니다 (계획 17장).")
-    A("- 선택지 (도구가 정하지 않습니다):")
-    A("  1. 이대로 주문: 폭 규칙 위반을 알고 받아들인다고 사용자가 정합니다. 파일은 그대로 쓸 수 있지만 도구 판정은 바뀌지 않습니다. "
-      "보드를 받으면 7장의 '배터리에서 U8 입력까지 저항' 측정을 꼭 하십시오.")
-    A("  2. 고친 뒤 주문: 해당 구간의 미리 그린 배선이나 배치를 바꾸고 배선을 새로 해야 합니다 (시간이 걸리고, 결과가 달라질 수 있음). 사용자의 승인이 필요합니다.")
-    A(f"- 참고 (M, 폭 검사는 비아를 세지 않음): L5 입력 패드에서 4 mm 안에 있는 배터리 네트(VBAT_LOGIC_SW) 비아는 {F.v('L5 입력 비아')} 입니다 "
-      f"(재배치 전 {F.v('재배치 전 L5 입력 비아')}). {F.v('L5 입력 비아 단면')} "
-      "배선을 다시 한다면 이 자리에 드릴 0.4 mm 비아를 3~4개 두는 것이 좋습니다.")
+    for g_ in ctx["man"]["release_gate"]["user_gates_not_covered"]:
+        A(f"- {g_}")
     A("")
-    A("### B. 승압 IC U8 주변 배치 (독립 전기 검토 E-R1 / E-R2 / E-R3 뒤 재배치함)")
+    A("위 목록은 out/manifest.json 의 release_gate.user_gates_not_covered 를 그대로 옮긴 것입니다 (영어 원문). 특히 C45 / C47 / C52 / U9의 회전·극성은 "
+      "JLC의 위치 확인 화면에서 직접 확인하고, 주문 당일 결제 직전에 jlc_gate.py를 다시 실행하며, 결제는 사용자가 합니다.")
     A("")
-    A("- 고친 것 (재배치 단계, 모두 지금 보드에서 잰 값 M):")
-    A(f"  - 윗면 GND: {F.v('윗면 GND 한 덩어리')}. 전에는 출력 커패시터의 GND가 내층과 비아 하나로만 U8 GND 핀에 돌아갔습니다.")
-    A(f"  - 입력 커패시터 (검사 input_cap_vin {F.v('검사 input_cap_vin')}): {F.v('입력 커패시터 VIN 경로')}. 전에는 구리 길이 {F.v('재배치 전 VIN 경로')} 였습니다.")
-    A(f"  - 되먹임(FB) 선: {F.v('FB 선과 출력 커패시터')}. 전에는 C57 패드 사이를 지났습니다.")
-    A(f"- 남은 것 1 (검사 hot_loop {F.v('검사 hot_loop')}): {F.v('출력 커패시터 간격')}. 계획 12장은 두 출력 커패시터 모두 IC에서 2 mm 안을 요구합니다. "
-      "U8(SOT-563)의 VOUT / SW / GND 핀은 한 줄에 0.5 mm 간격이라, 1206 커패시터는 SW 선을 사이에 두고 그 옆에 하나(C57)만 설 수 있습니다. "
-      "둘째(C43)는 C57 바로 옆에서 같은 윗면 +5V / GND 구리에 붙였습니다.")
-    A(f"- 남은 것 2 (검사 input_cap_l5 {F.v('검사 input_cap_l5')}): {F.v('입력 커패시터 L5 경로')}. 전에는 {F.v('재배치 전 L5 경로')} 였습니다. 인덕터 L5의 입력 패드는 U8의 VIN 핀 반대쪽 "
-      "끝에 있어, 커패시터 하나를 두 곳 모두 몇 mm 안에 둘 수 없습니다. 이 모서리에 1206 자리가 하나 더 없어서 둘째 입력 커패시터 C42는 "
-      "스위치 단자 J15 옆에 그대로 두었습니다.")
-    A(f"- **나빠진 것 1 (검사 sw_node {F.v('검사 sw_node')}; 계획 12장·13장을 지키지 못함):** {F.v('SW 노드')}. "
-      f"SW 선은 {F.v('SW 선')} 입니다. 재배치 전에는 SW 선 길이 {F.v('재배치 전 SW 선 길이')}, 패드 간격 {F.v('재배치 전 SW 패드 간격')} 였습니다. "
-      "출력 커패시터를 U8 옆에 붙이느라 인덕터 L5가 U8에서 멀어졌고, SW 선이 두 출력 커패시터의 패드 사이를 지납니다. "
-      f"층과 비아만 보는 검사 boost_sw는 {F.v('검사 boost_sw')} 이지만 그것은 SW 선이 짧다는 뜻이 아닙니다. "
-      "SW 선은 전압이 빠르게 오르내리는 선이라 길수록 잡음을 더 내고, 선의 인덕턴스 때문에 순간 과전압이 커질 수 있습니다. "
-      "데이터시트의 SW / VOUT 절대 최대는 7 V (10 ns 동안 8 V) 입니다 (F, tps61023.txt:172-174). 과전압·리플·발열이 얼마인지는 "
-      "보드에서 재기 전에는 모릅니다 (NOT_VERIFIED).")
-    A(f"- **나빠진 것 2 (검사 crystal_distance {F.v('검사 crystal_distance')}; 계획 12장을 재배치 전에도 지키지 못했고 재배치로 더 가까워짐):** {F.v('크리스털 거리')}. "
-      f"재배치 전의 SW 구리는 {F.v('재배치 전 SW 구리-크리스털')} 였고, 그때 rev 2c보다 가까웠던 부품은 {F.v('재배치 전 크리스털보다 가까운 부품')} 입니다. "
-      "NAV 칩 U1의 16 MHz 크리스털에 스위칭 잡음이 실리면 시계가 흔들릴 수 있습니다. 실제로 그런지는 보드에서 재기 전에는 모릅니다 (NOT_VERIFIED).")
-    A(f"- 알려진 작은 항목 (M, 검사 대상 아님): 저전압 차단 비교기 U9의 바이패스 커패시터 C59는 GND 패드 옆에 자기 비아가 없습니다 "
-      f"({F.v('C59 GND 비아')}; 재배치 전: {F.v('재배치 전 C59 GND 비아')}). U9는 전류가 아주 작은 비교기라 영향은 작을 것으로 보지만 (E), "
-      "다음에 배선을 다시 한다면 비아를 하나 붙이는 것이 좋습니다.")
-    A("- 선택지: 1. 이대로 주문하고 7장의 오실로스코프 측정(켜질 때 VIN, 0.78 A 부하에서 SW와 +5V 과전압, 입력 리플, NAV 칩 시계)을 반드시 함; "
-      "2. 남은 것과 나빠진 것까지 없애려면 저전압 차단 회로(U9 주변)까지 옮겨 모서리 전체를 다시 배치해야 합니다 (사용자 승인 필요); "
-      "3. 재배치 전 배치로 되돌림 (SW 선은 짧지만 E-R1 / E-R2 / E-R3 지적이 그대로 남음; 이것도 사용자 승인과 새 빌드가 필요).")
+    A(f"### A. 이번 재설계에서 바뀐 것 (사용자 요청 {F.v('재설계 요청 원문')})")
     A("")
-    A("- 아래 1~9장은 A와 B 모두 '이대로 주문'을 고를 경우를 기준으로 쓴 주문 절차입니다 "
-      "(Economic PCBA로 SMT 부품만 실장, 무연 HASL; ESP-12F와 스루홀 커넥터는 사용자가 사서 납땜).")
+    A(f"- 재설계 전 보드의 배선 규칙: {F.v('재설계 전 배선 규칙')} (M). 지금: {F.v('배선 규칙 PASS 수')} / {F.v('배선 규칙 수')} PASS.")
+    A(f"- 외곽: 본체 {F.v('본체 사각형')}는 그대로이고 -y 변에 탭을 붙였습니다: {F.v('탭 위치')}, 넓이 {F.v('탭 넓이')}. 외접 크기 {F.v('외접 크기')}. "
+      f"기체 맞춤 (Fit 단계가 기체 CAD에서 잰 값으로 확인, board_fit {F.v('기체 맞춤 판정')}): {F.v('기체 맞춤')}.")
+    A(f"- 프로그래밍 구멍 이동 (사용자 승인): {F.v('옮긴 프로그래밍 구멍')}. 이 세 구멍(빈 도금 구멍, 부품 없음)의 위치가 바뀌었으므로 "
+      "옛 위치에 맞춰 만든 포고핀 어댑터나 지그가 있다면 맞춰 고쳐야 합니다 (위치: out/reports/programming_access.json bare_holes_option_A). "
+      f"C42 이동: {F.v('C42 이동')}.")
+    A(f"- 승압부 자리: {F.v('승압부 자리')}.")
+    A(f"- 배터리 전원 경로: 저항 {F.v('배터리 경로 저항 20C')} (20 C, E; 목표 {F.v('배터리 경로 목표')}), 가장 좁은 폭 {F.v('배터리 경로 최소 폭')}; "
+      f"{F.v('배터리 경로 구간')}. 60 C에서는 {F.v('배터리 경로 저항 60C')} (E)로 목표를 넘습니다 (판정은 20 C 값). 재설계 전: {F.v('재설계 전 배터리 경로')}.")
+    A(f"- 출력 커패시터: {F.v('출력 커패시터 간격')} (재설계 전 {F.v('재설계 전 출력 커패시터 간격')}). 입력 커패시터: {F.v('입력 커패시터 L5 경로')}. "
+      f"SW: {F.v('SW 노드')}. 크리스털: {F.v('크리스털 거리 부품별')}.")
+    A("")
+    A("### B. 검사는 통과했지만 목적과 다른 점 (숨기지 않음)")
+    A("")
+    A(f"- 입력 커패시터 C41의 GND: {F.v('C41 GND 윗면 길')}. 검사 hot_loop_top_gnd / input_cap_vin은 이 가는 선으로 통과합니다. 데이터시트가 말하는 "
+      f"'입력 커패시터 GND를 IC GND 바로 옆에' 같은 짧은 고리는 아닙니다. C41의 고주파 귀환은 자기 비아({F.v('C41 GND 비아 거리')})를 거친 내층 GND입니다.")
+    A("- C41의 VIN 쪽 경로는 L5 입력 패드를 지나 U8 VIN 핀으로 갑니다.")
+    A("- 출력 커패시터 C57의 GND는 윗면에서 L5 둘레·아래의 GND 면(구리 채움)으로만 U8 GND 핀과 이어집니다 (SW 선이 사이에 있어 선을 그을 수 없음). "
+      "자동 배선이 이 면을 끊지 않도록 Freerouting 입력에만 탭 위 윗면 배선 금지 영역을 두었습니다.")
+    A(f"- SW 패드 간격 여유 {F.v('SW 간격 여유')} (부품 자리가 맞닿은 배치로 정해짐).")
+    A("- 미리 그린 배선(승압부와 배터리 경로의 갈래)은 자동 넓히기에서 빠져 설계한 폭 그대로입니다 (재설계 전 흐름은 넓혔음).")
+    A("- 배치 검사 place.py는 J26 / J22 / J19만 'rev 2c 자리 + 사용자가 승인한 이동'과 비교합니다. 외곽 맞춤과 추가한 검사 말고 사용자 결정 때문에 "
+      "바꾼 판정 검사 코드는 이것 하나입니다. 그 밖에 바꾼 검사 스크립트: determinism.py의 폴더 이름 바꾸기 규칙 (비교 종류·PASS 규칙은 그대로). "
+      "전체 목록은 README 3장.")
+    A(f"- 입력 커패시터 C41은 L5 입력 패드 옆에 있고 U8 VIN 핀 옆에는 커패시터가 없습니다. 내층 귀환 거리: {F.v('내층 귀환 거리')}.")
+    A(f"- 출력 커패시터 C43의 GND: {F.v('C43 GND 선')} (넓은 GND 구리가 아님; U8 발열 NOT_VERIFIED).")
+    A(f"- 배터리 경로의 L5 입력 비아: {F.v('L5 입력 비아 단면')} 폭 검사는 선만 잽니다.")
+    A("- 설계 데이터(IR)는 외곽을 76 x 70 mm 사각형으로만 갖고, 탭이 있는 외곽은 scripts/outline.py 에서 옵니다.")
+    A("- 이것들이 실제로 문제가 되는지는 보드를 받은 뒤 7장의 측정(켜질 때 VIN, 부하에서 SW와 +5V 과전압, 입력 리플, NAV 칩 시계)으로만 압니다 (NOT_VERIFIED).")
+    A("")
+    A("### C. 이번 재설계로 새로 생긴 확인 거리 (NOT_VERIFIED)")
+    A("")
+    A("- 새 거버(탭 있음)는 JLC에 올려 본 적이 없습니다. 주문 화면의 크기·PCB 값·DFM 결과는 올려 봐야 압니다. 4장의 견적은 모두 재설계 전 76 x 70 mm 거버의 것입니다.")
+    A("- Standard 대안(레일)으로 가면 탭이 있는 변에는 V-cut을 쓸 수 없습니다 (2장).")
+    A("- 기체 CAD는 아직 탭이 없는 상자로 캐리어를 그립니다. 315도 조인트 나사 길이는 정해지지 않았습니다 (README 5장).")
+    A(f"- 조인트 나사 4개 모두 길이 M3x6 이하를 권합니다: 나사 끝이 r 49.5 mm까지 들어온다고 가정하면(A) 다른 나사 옆 부품은 {F.v('다른 조인트 나사 옆 부품')} "
+      "(재설계 전과 같은 자리의 커넥터 J14 / J7이 길이를 정함; 315도 나사 옆에는 부품 없음).")
+    A("- 탭 안쪽 모서리 r 1.0 mm를 JLC의 라우터 날이 만들 수 있는지는 근거 문서가 없어 NOT_VERIFIED입니다 (업로드 미리보기에서 확인). "
+      "탭 부품 C41 / L5 / C57의 몸체는 가장자리에서 2.5 mm보다 가깝습니다 (README 1장 표) - JLC DFM 결과를 보십시오.")
+    A(f"- 알려진 작은 항목 (M, 검사 대상 아님): U9 바이패스 C59의 GND 비아 - {F.v('C59 GND 비아')}; L5 입력 패드 4 mm 안의 배터리 네트 비아 - "
+      f"{F.v('L5 입력 비아')}. {F.v('L5 입력 비아 단면')}")
+    A("")
+    A("- 아래 1~9장은 주문 절차입니다 (Economic PCBA로 SMT 부품만 실장, 무연 HASL; ESP-12F와 스루홀 커넥터는 사용자가 사서 납땜).")
     A("")
     A("## 1. 올릴 파일 3개")
     A("")
@@ -1347,14 +1578,16 @@ def order(F: Facts, ctx: dict) -> str:
     A(f"- 두 거버 zip 모두 기판 {F.v('식별 문구 위치')}에 깃 저장소 주소와 연락용 이메일 주소 두 줄이 들어 있습니다 "
       f"({F.v('식별 문구 크기')}, 검사 {F.v('식별 문구 검사')}); 거버 미리보기의 그 면에서 두 줄이 끊기지 않고 보이는지 확인하십시오 "
       "(JLC 인쇄 품질은 NOT_VERIFIED).")
-    A(f"- 구리·배치는 바뀌지 않았습니다: 배선은 기록된 세션을 다시 넣은 것이고, 재생에 쓴 배선 전 보드는 기록된 보드와 "
-      f"'{F.v('배선 재생 입력 보드')}' 입니다 (M, 표면처리 글자만 다름). 보드 파일의 표면처리 표기: '{F.v('보드 표면처리')}'.")
+    A(f"- {F.v('변경 날짜')} 재설계로 외곽(탭), 승압부 배치, 프로그래밍 구멍 3개, C42, 배선이 바뀌었습니다 (0장 A). 회로도와 BOM 줄은 그대로이고, CPL은 옮긴 "
+      f"부품의 좌표가 바뀌었습니다. 배선은 재설계 때 기록한 세션을 다시 넣어 만든 것이고, 재생에 쓴 배선 전 보드는 기록된 보드와 "
+      f"'{F.v('배선 재생 입력 보드')}' 입니다 (M). 보드 파일의 표면처리 표기: '{F.v('보드 표면처리')}'.")
     A("")
     A("## 2. 주문 화면 입력표 (결정 D9, D10, D11, D14, D16)")
     A("")
     A(f"아래 항목 이름과 선택지는 {F.v('주문 화면 확인 시각')}에 사용자의 로그인된 브라우저에서 JLCPCB 주문 화면을 직접 보고 적은 것입니다 "
       f"(M, 주문 화면 2026-11-12; 기록 파일 {p('spec/jlc_order_page_20261112.json')}). 이 도구(스크립트)가 화면을 열거나 로그인한 것은 아닙니다. "
-      f"그때 화면에 올라가 있던 파일은 {F.v('주문 화면에 올렸던 파일')} 로, 이 변경 전 빌드의 파일(BOM {F.v('주문 화면 올린 줄 수')}줄)입니다. "
+      f"그때 화면에 올라가 있던 파일은 {F.v('주문 화면에 올렸던 파일')} 로, ESP·스루홀 변경과 재설계 전 빌드의 파일(BOM {F.v('주문 화면 올린 줄 수')}줄, "
+      "탭이 없는 76 x 70 mm 거버)입니다. "
       f"화면은 거버를 {F.v('주문 화면 거버 인식')} 로 읽었고, BOM / CPL에서 {F.v('주문 화면 매칭')}했습니다 "
       "(모든 줄이 BOM에 적은 JLC 번호 그대로 매칭, 부족·대체 제안 없음). Economic 견적은 그 화면에서 ESP-12F와 스루홀 줄을 실장 목록에서 뺀 상태로 봤습니다 (4장). "
       "**지금 파일(스루홀과 ESP-12F가 처음부터 없는 BOM)은 그 뒤에 만들어져 아직 올려 보지 않았습니다 (NOT_VERIFIED).**")
@@ -1364,7 +1597,9 @@ def order(F: Facts, ctx: dict) -> str:
         if row.get("options") else "화면에 보인 값"  # noqa: E731
     note_ko = {
         "Layers": f"보드 {F.v('층 수')}층 (거버 검사 M)",
-        "Dimensions": f"거버를 올리면 읽힘: {F.v('주문 화면 거버 인식')} (M). 사양은 {F.v('외곽')} - 같은지 확인",
+        "Dimensions": f"거버를 올리면 읽힘. 재설계 전 거버는 {F.v('주문 화면 거버 인식')} 로 읽혔습니다 (M). 새 거버는 탭 때문에 외접 사각형 "
+                      f"{F.v('외접 크기')} 로 읽힐 것으로 봅니다 (E; 본체 {F.v('외곽')} + 탭). JLC는 이 크기로 PCB 값을 매기므로 값이 달라질 수 있습니다 "
+                      "(새 거버로는 견적을 받지 않았음: NOT_VERIFIED). 화면 값이 외접 크기와 같은지 확인",
         "PCB Qty": "D11 (PCB 5장 중 2장 실장)",
         "PCB Thickness": f"사양 {F.v('두께')}",
         "PCB Color": "D16", "Silkscreen": "D16",
@@ -1435,10 +1670,11 @@ def order(F: Facts, ctx: dict) -> str:
     A("### JLC가 Economic을 거절하면: Standard 대안")
     A("")
     A(f"PCBA Type을 Standard로 바꾸고, Tooling holes 칸 대신 나오는 '{F.v('화면 Standard 레일 칸')}' 을 'Added by JLCPCB' 로 둡니다. "
-      f"화면은 {F.v('화면 Standard 레일 문구')} 라고 알려 줍니다 (M) = 76 mm 변 두 곳에 5 mm 레일. "
-      f"그 두 변의 구리 이격은 {F.v('레일 변 구리 이격 값')} mm (M)로, JLC 기준(F) V-cut {F.v('V-cut 구리 이격')} 에는 여유 없이 딱 맞고 "
-      f"라우팅·마우스바이트 {F.v('라우팅·마우스바이트 구리 이격')} 에는 여유가 있습니다 (V-cut이 되는지는 NOT_VERIFIED). 그래서 메모 끝에 아래 한 문장을 덧붙입니다. "
-      f"같은 조건(무연 HASL, 스루홀 없음)의 Standard 견적은 PCBA {F.v('견적 standard_no_tht PCBA')} USD, PCB 포함 {F.v('견적 standard_no_tht 합계')} USD로 "
+      f"화면은 {F.v('화면 Standard 레일 문구')} 라고 알려 줍니다 (M) = 긴 변 두 곳에 5 mm 레일. "
+      f"그 두 변(y 135 쪽은 탭의 모든 변 포함)의 구리 이격은 {F.v('레일 변 구리 이격 값')} mm (M)로, JLC 기준(F) 라우팅·마우스바이트 "
+      f"{F.v('라우팅·마우스바이트 구리 이격')} 에는 여유가 있습니다. **재설계로 y 135 쪽 변에 탭이 생겨 그 변은 곧은 선이 아니므로 V-cut 레일은 쓸 수 없습니다** "
+      f"(V-cut 기준 {F.v('V-cut 구리 이격')} 와 무관). 라우팅 탭 / 마우스바이트 레일을 JLC가 해 주는지와 그 값은 NOT_VERIFIED입니다. 그래서 메모 끝에 아래 한 문장을 덧붙입니다. "
+      f"같은 조건(무연 HASL, 스루홀 없음, 재설계 전 76 x 70 mm 거버)의 Standard 견적은 PCBA {F.v('견적 standard_no_tht PCBA')} USD, PCB 포함 {F.v('견적 standard_no_tht 합계')} USD로 "
       f"Economic보다 {F.v('Standard 추가 값')} 비쌌습니다 (M, 4장). Standard는 리플로가 {F.v('리플로 Standard')} 로 낮고 베이킹을 고를 수 있으며, 받은 뒤 레일을 꺾어 떼야 합니다.")
     A("")
     rm = ctx["remarks"]
@@ -1487,7 +1723,8 @@ def order(F: Facts, ctx: dict) -> str:
     A(f"5. DFM 결과: 툴링 홀 위치(기판 안, 구리를 건드리지 않는지), 가장자리 가까운 부품({F.v('JLC 실장 가장 가까운 몸체')} 등)에 대한 이의, "
       "구멍·간격·선폭 지적이 없어야 합니다. JLC가 툴링 홀 자리가 없다며 레일을 요구하면 2장의 Standard 대안으로 견적을 다시 받아 비교한 뒤 정합니다. "
       "JLC가 이의를 달면 주문 방식이나 부품을 마음대로 바꾸지 말고 멈춘 뒤 다시 검토합니다.")
-    A(f"6. 견적 금액을 4장과 비교합니다 (기본 묶음: 배송 제외 {F.v('견적 economic_no_tht 합계')} USD, M). 크게 다르면 이유를 확인합니다.")
+    A(f"6. 견적 금액을 4장과 비교합니다 (재설계 전 76 x 70 mm 거버의 기본 묶음: 배송 제외 {F.v('견적 economic_no_tht 합계')} USD, M). "
+      f"지금 거버는 외접 {F.v('외접 크기')} 라 PCB 값이 다를 수 있습니다 (NOT_VERIFIED). 크게 다르면 이유를 확인합니다.")
     A("7. 'Confirm Parts Placement'는 Yes로 하고, 뜨는 창에서 'Do not confirm automatically'를 체크합니다 (2장). 체크하지 않으면 "
       f"자동으로 확정됩니다 (화면 안내: {F.v('위치 확인 창 안내')}, M). 주문 뒤 JLC가 위치 확인 사진이나 문제를 보내면 4번과 같은 기준으로 "
       "비교하고, 틀린 것이 있으면 바로잡아 달라고 답하거나, 판단이 서지 않으면 주문 보류(hold) 또는 취소를 요청한 뒤 다시 검토합니다. "
@@ -1495,6 +1732,9 @@ def order(F: Facts, ctx: dict) -> str:
     A("8. 메모(Assembly remark)를 넣으면 화면에 'Quote after review' 라고 나옵니다 (M): 검토 뒤 금액이 바뀔 수 있으니 최종 금액을 다시 봅니다.")
     A("")
     A("## 4. 비용: 주문 화면에서 본 견적 (M)")
+    A("")
+    A(f"**아래 견적은 모두 재설계 전 76 x 70 mm 거버로 받은 것입니다. 지금 파일(탭 포함, 외접 {F.v('외접 크기')})의 값은 NOT_VERIFIED입니다** "
+      "(PCB 크기가 커져 PCB 값이 달라질 수 있고, 실장 부품 줄 수는 같습니다).")
     A("")
     A(f"아래 네 열은 모두 {F.v('주문 화면 확인 시각')}에 주문 화면에서 본 견적입니다 (M, 주문 화면 2026-11-12). 공통 조건: PCB 5장 / 실장 2장, 배송비·세금 제외, 단위 USD. "
       "'-' 는 그 견적에 그 줄이 없었다는 뜻입니다. **이번 주문은 첫 열 (Economic, 스루홀 없음)입니다.**")
@@ -1746,8 +1986,8 @@ def order(F: Facts, ctx: dict) -> str:
       f"두 zip 모두 U7 패드 {F.v('ESP 패드 수')}개에 페이스트 없음 |")
     A(f"| 추가 ({F.v('변경 날짜')} 사용자 결정) | 스루홀 커넥터 {F.v('스루홀 부품 수')}개를 JLC가 아니라 사용자가 사서 납땜 (JLC는 SMT만) | "
       f"사양 fit user {F.v('fit user')}개 (J1, U7, 커넥터 {F.v('스루홀 부품 수')}개); 두 BOM의 스루홀 줄 {F.v('main bom_lines_tht')} / {F.v('with_mcu bom_lines_tht')} |")
-    A(f"| 추가 (배선 후 발견) | 배터리 경로 폭 규칙 FAIL을 받아들이고 주문할지, 고친 뒤 주문할지 (0장 A) | 결정 전: 도구 판정 {F.v('출고 판정')} |")
-    A(f"| 추가 (독립 검토 후) | 재배치 뒤에도 남은 승압부 FAIL ({F.v('승압부 배치 FAIL')})을 받아들이고 주문할지 (0장 B) | 결정 전 |")
+    A(f"| 추가 ({F.v('변경 날짜')} 사용자 결정) | 실패한 배선 규칙을 없애려고 기판 크기를 조정 (-y 변 탭) | 탭 {F.v('탭 위치')}, 외접 {F.v('외접 크기')} |")
+    A(f"| 추가 ({F.v('변경 날짜')} 사용자 결정) | 프로그래밍 구멍 J26 / J22 / J19 이동 (\"{REDESIGN_REQUESTS[2]}\") | {F.v('옮긴 프로그래밍 구멍')} |")
     A("")
     A("## 10. 변경 범위 표 (rev 2c 대비, 부품마다 이유 분류)")
     A("")
@@ -1776,7 +2016,8 @@ def main() -> int:
         "date": val("변경 날짜"), "request": val("변경 요청 원문 2"), "root": R, "jlc_lines": val("main bom_lines"),
         "jlc_parts": val("main parts"), "joints": val("스루홀 납땜점"), "esp_pads": val("ESP 패드 수"),
         "quote_no_tht": val("견적 economic_no_tht 합계"), "quote_tht": val("견적 economic_tht_placed 합계"),
-        "quote_label": "M, 주문 화면 2026-11-12", "snapshot_time": val("LCSC 기록 시각")})
+        "quote_label": "M, 주문 화면 2026-11-12, 재설계 전 76 x 70 mm 거버의 견적 - 지금 파일의 값은 NOT_VERIFIED",
+        "snapshot_time": val("LCSC 기록 시각")})
     print(json.dumps({"README_ko.md": {"facts": len(readme_keys)}, "out/ORDER_ko.md": {"facts": len(order_keys)},
                       "out/" + KO_NAME: {"rows": len(ctx["prow"])},
                       "release_gate": F.data["출고 판정"][0]}, ensure_ascii=False, indent=1))

@@ -146,7 +146,30 @@
    ],
    "corner_radius_mm": 1.0,
    "label": "F (size) / A (corner radius)",
-   "source": "params.json configs.vtol.electronics.carrier.dims_lwh [76, 70, 15] (line 1758-1762); cad/exports/cadquery_report_vtol.json parts.carrier.bbox_mm [[-38,-35,327.1],[38,35,342.1]]"
+   "source": "params.json configs.vtol.electronics.carrier.dims_lwh [76, 70, 15] (line 1758-1762); cad/exports/cadquery_report_vtol.json parts.carrier.bbox_mm [[-38,-35,327.1],[38,35,342.1]]",
+   "tab": {
+    "x": [
+     17.3,
+     32.0
+    ],
+    "y": [
+     -42.2,
+     -35.0
+    ],
+    "outer_corner_radius_mm": 1.0,
+    "inner_fillet_radius_mm": 1.0,
+    "area_mm2": 105.8,
+    "label": "A (layout decision) inside the envelope measured on the airframe CAD (M, Fit stage: x -6..34, y >= -43.74 with r 1)",
+    "source": "scripts/outline.py (the one definition every generator and check reads)",
+    "user_request_verbatim": "보드의 사이즈를 조정하는 방법은 없어?",
+    "user_request_date": "2026-11-12",
+    "plan_invariant_deviation": "spec/rev3_plan.json invariants (b) says 'board outline 76 x 70 mm ... unchanged'. The 76 x 70 main rectangle, its corner radius and all its edges are unchanged; the tab is ADDED at the user's request so that the boost converter passes every routing check with the present parts. The JLC order bounding box becomes bbox_size.",
+    "ir_note": "the ai_eda IR BoardOutline holds a rectangle only: the IR keeps the 76 x 70 main rectangle, the Edge.Cuts with the tab come from scripts/outline.py (build_pcb.py) - for the outline the IR is NOT the only design data"
+   },
+   "bbox_size": [
+    76.0,
+    77.2
+   ]
   },
   "frame": "board origin = vehicle axis; board +x = CAD +x (ESC / misc side, motor-lead hole at theta 0 deg), +y = CAD +y (theta 90 deg); component side = top = +Z (up, toward the tray). Source: cad/layout.py (carrier centred, edges along x / y); cad/exports/cadquery_report_vtol.json parts.carrier.bbox_mm",
   "layers": 4,

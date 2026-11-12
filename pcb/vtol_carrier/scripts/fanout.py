@@ -30,7 +30,10 @@ BX0, BY0, BX1, BY1 = 62.0, 65.0, 138.0, 135.0
 MCU_REFS = ("U1", "U2", "U3", "U4")
 #: rev 3: pads whose plane vias / tracks build_pcb.power_preroutes already placed (boost block) are skipped as well
 #: relayout step: R63 pad 1 / C58 pad 1 are the feedback sense node (own track to C57 pad 1) - no plane via at them
-PREROUTED_REFS = MCU_REFS + ("U8", "C57", "C43", "C41", "R63", "C58")
+#: redesign2 Layout stage: R64 pad 2 (GND) carries its own locked GND via (build_pcb.power_preroutes) - no second via.
+#: The candidate box below stays the main rectangle (BY1 = 135): no fan-out via is placed in the outline tab, whose
+#: pads are all pre-routed (U8, C57, C43, C41, R63, C58, R64; L5 carries no GND / +5V pad).
+PREROUTED_REFS = MCU_REFS + ("U8", "C57", "C43", "C41", "R63", "C58", "R64")
 
 
 def mm(v: float) -> int:

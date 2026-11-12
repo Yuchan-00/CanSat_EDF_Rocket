@@ -133,6 +133,10 @@ class Router:
         self._load()
 
     def _add_fixed(self, kind, m):
+        # redesign2 (route stage): fixed copper wholly outside the grid (the boost block in the outline tab below
+        # y 135) misses the grid; it is no obstacle there, and the grid's own edge band keeps the search out of the tab
+        if m is None:
+            return
         i0, j0, mask = m
         self.fixed[kind][j0:j0 + mask.shape[0], i0:i0 + mask.shape[1]] += mask.astype(np.int32)
 

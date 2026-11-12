@@ -2,28 +2,43 @@
 
 **이 보드는 아직 만들거나 전원을 넣어 본 적이 없습니다 (NOT_VERIFIED).** 아래의 PASS는 모두 도구(kicad-cli ERC/DRC, 스크립트)의 결과이며 보드가 동작한다는 뜻이 아닙니다. JLC가 이 파일을 받아 주는지도 업로드 후 JLC의 DFM 결과와 견적을 봐야 압니다.
 
-**2026-11-12 변경 (사용자 요청: "아, esp도 내가 직접 실장할거야. 그럼 이코노믹으로 진행하고 pcb의 코팅도 무연으로 해줘", "이코노믹으로 스루홀 제외하고 어떤 부품을 따로 구매해야하는건지 리스트를 정리해줘"):** (1) Wi-Fi 모듈 ESP-12F (U7)는 JLC가 아니라 사용자가 직접 납땜합니다 (JLC BOM / CPL에서 빠짐, 두 거버 묶음 모두 U7 패드 22개에 솔더 페이스트 구멍 없음). (2) 스루홀 커넥터 12개(J2, J5, J8~J12, J14~J18, 납땜 39곳)도 JLC가 달지 않고 사용자가 사서 납땜합니다. (3) 주문은 Economic PCBA이고 JLC는 SMT 부품 144개(BOM 33줄)만 실장합니다. (4) 기판 표면처리는 무연 HASL입니다 (보드 파일 표기 'HAL lead-free'). 풋프린트·네트·위치는 모두 그대로이고, 구리와 배치는 바뀌지 않았습니다 (배선 재생에 쓴 배선 전 보드: 'byte-identical to the recorded unrouted board except the copper_finish value', M). 실크에서는 같은 날 검증 지적으로 아랫면 이름표의 핀 글자 순서만 고쳤습니다: 핀 줄과 나란히 적힌 이름표는 이제 그 면에서 본 패드 순서대로입니다 (아랫면: J14 '1S BAT -+', J7 'GPS G RX TX V', J2 'BMP280 3V 3V SDA SCL G 3V'; 검사 PASS, M). 주문 방법은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md`, 따로 살 부품은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/따로_살_부품_ko.md`.
+**2026-11-12 변경 (사용자 요청: "아, esp도 내가 직접 실장할거야. 그럼 이코노믹으로 진행하고 pcb의 코팅도 무연으로 해줘", "이코노믹으로 스루홀 제외하고 어떤 부품을 따로 구매해야하는건지 리스트를 정리해줘"):** (1) Wi-Fi 모듈 ESP-12F (U7)는 JLC가 아니라 사용자가 직접 납땜합니다 (JLC BOM / CPL에서 빠짐, 두 거버 묶음 모두 U7 패드 22개에 솔더 페이스트 구멍 없음). (2) 스루홀 커넥터 12개(J2, J5, J8~J12, J14~J18, 납땜 39곳)도 JLC가 달지 않고 사용자가 사서 납땜합니다. (3) 주문은 Economic PCBA이고 JLC는 SMT 부품 144개(BOM 33줄)만 실장합니다. (4) 기판 표면처리는 무연 HASL입니다 (보드 파일 표기 'HAL lead-free'). 이 변경 때는 풋프린트·네트·위치와 구리가 그대로였습니다. 실크에서는 같은 날 검증 지적으로 아랫면 이름표의 핀 글자 순서만 고쳤습니다: 핀 줄과 나란히 적힌 이름표는 이제 그 면에서 본 패드 순서대로입니다 (아랫면: J14 '1S BAT -+', J7 'GPS G RX TX V', J2 'BMP280 3V 3V SDA SCL G 3V'; 검사 PASS, M). 주문 방법은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md`, 따로 살 부품은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/따로_살_부품_ko.md`.
+
+**2026-11-12 재설계 (사용자 요청: "그럼 다시 설계를 진행해줘. 실패한게 있다면 완료되었다고 말하지마" / "보드의 사이즈를 조정하는 방법은 없어?" / "옮겨도 됨"):** 재설계 전 보드(sha256 cc750ce9e23322b2...)는 배선 규칙 16 / 21 PASS, FAIL: battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance 이었습니다 (M). 부품을 바꾸지 않고 자리를 주려고 (1) 기판 -y 변에 승압 회로용 탭을 붙였고 (외접 크기 76 x 77.2 mm; 본체 76 x 70 mm 사각형과 그 변은 그대로), (2) 케이블타이 띠 안의 프로그래밍 구멍 J19 (x +0, y +0.55 mm), J22 (x +0, y +0.55 mm), J26 (x +0, y +0.55 mm) 을 옮겼고 (사용자 승인), (3) C42를 x +0.20 mm (지금 x 72.8, y 69.3 mm) 옮겼고, (4) 승압부(U8, L5, C41, C43, C57, R63, C58, R64)를 탭에 다시 놓고, (5) 배터리 전원 경로를 2.0 mm 폭으로 다시 그린 뒤 전체를 새로 배선했습니다. 회로도와 부품(BOM)은 바뀌지 않았습니다. 자세한 내용은 1장과 3장, 검사를 글자로만 통과한 부분은 1장의 '목적과 다른 점'에 있습니다.
 
 표시: M = 이 PC에서 도구로 측정, E = 추정(계산), A = 가정(실물로 확인 필요), F = 문서·데이터시트 근거. 근거가 없으면 NOT_VERIFIED. 이 문서는 `scripts/docs_ko.py` 가 보고서 파일에서 숫자를 읽어 만든 것입니다 (손으로 고치지 말고 다시 생성). 측정·계산된 숫자의 출처는 맨 끝 8장에 있고, 그 표에 없는 숫자(칩 종류, 규칙 값, 시험 조건)는 계획서 `spec/REV3_PLAN.md` 와 사양 `spec/carrier_spec.json` 에서 옮긴 고정값(F)입니다.
 
 ## 1. 지금 상태
 
-**출고 판정(도구 검사 기준): NOT ORDERABLE** - 이유: routing_rules FAIL (battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance).
+**출고 판정(도구 검사 기준): ORDERABLE (tool checks only; NOT_VERIFIED - never built)** - 판정을 막는 항목: 없음.
 
-배선이 끝난 보드에서 배터리 전원 경로(J14 → Q10 → J15 → L5)의 구리 저항은 0.03173 Ohm (20 C, E)로 계획 목표 0.035 Ohm 를 만족하지만, 계획이 요구한 '2.0 mm 이상 폭'을 8.57 mm 구간에서 지키지 못했습니다 (VBAT_LOGIC_RAW 1.07 mm (폭 1 mm); VBAT_LOGIC_SW 7.5 mm (폭 1.5/1.56 mm)). 60 C에서는 0.03672 Ohm (E)로 목표를 넘습니다. 도구는 이 규칙을 느슨하게 하지 않았습니다. 그대로 주문할지, 배선을 고칠지는 사용자가 정할 일입니다 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 0장).
+전체 다시 만들기 두 번이 같은 파일을 내는지 (determinism.py, 출고 판정과 따로 봄): PASS - 바이트 비교 파일 71개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 0개. 다른 폴더에서: PASS - 다른 폴더에 복사해 다시 만든 결정적 파일 60개 중 55개가 이 폴더의 것과 바이트까지 같음 (보드, 회로도, 거버와 zip, BOM, CPL 등 주문에 쓰는 파일 43개는 모두 여기에 듦). 나머지 5개(README_ko.md, out/ORDER_ko.md, out/따로_살_부품_ko.md, spec/SPEC_ko.md, spec/parts_sources.json)는 자기 폴더 이름이나 그런 파일의 sha256을 담고 있어, 폴더 이름과 그 sha256을 바꿔 넣은 뒤에 같음. 그림 단계 산출물 11개는 그 폴더에서 다시 만들지 않아 비교하지 않음. STEP: kicad-cli가 쓴 STEP 항목 131413개의 번호와 순서를 내용으로 다시 매김 (scripts/step_canon.py); 다시 읽어 모든 항목이 같은 그래프인지 확인: 통과.
 
-독립 검토(E-R1 / E-R2 / E-R3) 뒤 승압 IC U8 주변을 다시 배치하고 새로 배선했습니다 (재배치 단계). 지금 보드에서 잰 값(M):
+이 판정은 도구 검사만 본 것입니다. 보드는 만들어지거나 전원이 들어간 적이 없고, JLC 업로드 미리보기·DFM·견적, 위치 확인과 결제는 사용자가 합니다 (주문 안내서 0장과 3장).
 
-- 윗면 GND: PASS (U8.4, C57.2, C43.2, C41.2 이 같은 윗면 GND 구리 한 덩어리 위에 있음; 자기 비아가 있는 패드 4 / 4). 출력 커패시터 C57이 U8 바로 옆에서 VOUT 핀과 GND 핀을 윗면 구리로 잇습니다.
-- 입력 커패시터 (검사 input_cap_vin PASS): C41 → U8 VIN 구리 길이 1.54 mm (비아 0개; 기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E), GND 패드가 U8 GND와 같은 윗면 구리: 예.
-- 되먹임(FB) 선: PASS (출력 커패시터 패드 사이를 지나는 FB 구리 0곳, 가장 가까운 간격 2.613 mm, FB 선 길이 4.575 mm).
-- 통과한 승압부 검사: input_cap, hot_loop_top_gnd, input_cap_vin, fb_clear_of_caps. **아직 FAIL인 검사: hot_loop, input_cap_l5, sw_node, crystal_distance.**
-- 남은 편차 1 (hot_loop FAIL): C57 +5V 패드-U8.6 0.95 mm, GND 패드-U8.4 1.611 mm; C43 +5V 패드-U8.6 3.25 mm, GND 패드-U8.4 3.537 mm. 계획 12장은 두 출력 커패시터 모두 IC에서 2 mm 안을 요구하지만, 1206 커패시터는 U8의 VOUT / GND 핀 옆에 하나만 놓을 수 있어 둘째(C43)는 C57 바로 옆, 같은 윗면 +5V / GND 구리 위에 두었습니다.
-- 남은 편차 2 (input_cap_l5 FAIL): C41 → L5 입력 패드 구리 길이 13.53 mm (기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 10.675 mm). U8의 VIN 핀과 L5 입력 패드가 떨어져 있어 커패시터 하나로 두 곳 모두 몇 mm 안에 둘 수 없습니다. 둘째 입력 커패시터 C42는 스위치 단자 J15 옆 그대로입니다 (모서리에 1206 자리가 더 없음).
-- **남은 편차 3 (sw_node FAIL) - 재배치로 나빠진 점:** U8의 SW 패드와 L5의 SW 패드 사이 간격 5.551 mm (기준 2 mm 이하 - 계획 12장의 'L5는 U8 핀 바로 옆'에 숫자가 없어 스크립트가 계획 12장의 2 mm를 빌려 읽은 값, E), SW 선 구리 넓이 2.317 mm2, 구리 저항 약 9.3 mOhm (20 C, E), SW 선이 패드 사이를 지나는 다른 부품: C43, C57. SW 선은 길이 6.619 mm, 폭 0.35 mm, 비아 0개, F.Cu만 이고, 재배치 전에는 길이 1.174 mm, 패드 간격 0.464 mm 였습니다. 계획 12장·13장은 'L5는 U8 핀 바로 옆, SW 구리는 두 패드에 필요한 만큼만, 패드가 허락하는 한 짧게'를 요구하는데 지금 보드는 이를 지키지 못합니다. 층·비아만 보는 검사 boost_sw는 PASS 이지만, 이것은 SW 선이 짧다는 뜻이 아닙니다.
-- **남은 편차 4 (crystal_distance FAIL) - 재배치 전에도 지키지 못했고 재배치로 더 가까워진 점:** rev 2c의 Pololu 핀은 NAV 크리스털 Y1 패드에서 9.217 mm, U1의 XTAL 핀에서 9.616 mm 떨어져 있었습니다. 지금은 가장 가까운 부품이 Y1 패드에서 7.501 mm (C57), XTAL 핀에서 8.35 mm (U8) 이고, SW 구리(선과 두 패드)는 Y1 패드에서 8.475 mm, XTAL 핀에서 8.943 mm, 크리스털 배선 구리에서 7.465 mm (rev 2c Pololu 핀은 크리스털 배선에서 8.243 mm) 입니다. rev 2c보다 가까운 부품: C43, C57, L5, U8. 재배치 전의 SW 구리는 Y1 패드에서 8.714 mm, XTAL 핀에서 11.497 mm, 크리스털 배선에서 8.891 mm 였고, 그때 rev 2c보다 가까웠던 부품은 C57, L5 입니다. 계획 12장은 승압부를 rev 2c의 Pololu 핀보다 크리스털에 가깝게 두지 말라고 했습니다. 16 MHz 크리스털(NAV 칩 U1)에 잡음이 얼마나 실리는지는 보드에서 재기 전까지 NOT_VERIFIED입니다.
-- 편차 3, 4의 실제 영향(스위칭 과전압, 입력 리플, SW 선 발열, 크리스털 잡음)은 보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다.
-- 자세한 내용과 선택지: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 0장 B.
+**배선 규칙 21 / 21 PASS** (FAIL: 없음; 재설계 전 보드: 16 / 21 PASS, FAIL: battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance). 규칙과 기준값은 바꾸지 않았습니다. 바꾼 검사 코드는 새 외곽에 맞춘 부분, 추가한 검사, 사용자가 승인한 구멍 이동, 그리고 결정성 검사의 폴더 이름 바꾸기뿐입니다 (목록은 3장 끝). 지금 보드에서 잰 값:
+
+- 배터리 전원 경로 (J14 → Q10 → J15 → L5): 구리 저항 0.03096 Ohm (20 C, E; 목표 0.035 Ohm), 전류가 흐르는 구간의 가장 좁은 폭 2 mm (M), 2.0 mm보다 좁은 길이 0 mm. 구간별: J14.1 → Q10.3 0.00191 Ohm, 7.78 mm, 가장 좁은 곳 2 mm, 비아 0개; Q10.2 → J15.1 0.00388 Ohm, 15.77 mm, 가장 좁은 곳 2 mm, 비아 0개; J15.2 → L5.1 0.02517 Ohm, 132.22 mm, 가장 좁은 곳 2 mm, 비아 2개. **60 C에서는 0.03583 Ohm (E)로 0.035 Ohm 목표를 넘습니다** (검사는 계획대로 20 C 값으로 판정). 재설계 전: 20 C 0.03173 Ohm, 60 C 0.03672 Ohm, 2.0 mm보다 좁은 길이 8.57 mm.
+- 출력 커패시터 (검사 hot_loop PASS): C57 +5V 패드-U8.6 0.75 mm, GND 패드-U8.4 1.819 mm; C43 +5V 패드-U8.6 0.868 mm, GND 패드-U8.4 1.827 mm (기준 각 2.0 mm 이하; 재설계 전 C57 0.95 / 1.611 mm; C43 3.25 / 3.537 mm). 윗면에서 U8 GND 핀과 이어진 출력 커패시터 GND: C57.2, C43.2.
+- 입력 커패시터 C41 (검사 input_cap_l5 PASS, input_cap_vin PASS): C41 → L5 입력 패드 구리 길이 0.9 mm (기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 2.103 mm); C41 → U8 VIN 구리 길이 4.17 mm (비아 0개; 기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E), GND 패드가 U8 GND와 같은 윗면 구리: 예. 재설계 전 C41 → L5 경로는 13.53 mm 였습니다.
+- 윗면 GND: PASS (U8.4, C57.2, C43.2, C41.2 이 같은 윗면 GND 구리 한 덩어리 위에 있음; 자기 비아가 있는 패드 4 / 4).
+- SW 노드 (검사 sw_node PASS): U8의 SW 패드와 L5의 SW 패드 사이 간격 1.876 mm (기준 2 mm 이하 - 계획 12장의 'L5는 U8 핀 바로 옆'에 숫자가 없어 스크립트가 계획 12장의 2 mm를 빌려 읽은 값, E), SW 선 구리 넓이 1.061 mm2, 구리 저항 약 4.3 mOhm (20 C, E), SW 선이 패드 사이를 지나는 다른 부품: 없음. SW 선: 길이 3.032 mm, 폭 0.35 mm, 비아 0개, F.Cu만. 재설계 전 패드 간격 5.551 mm.
+- 크리스털 거리 (검사 crystal_distance PASS): rev 2c의 Pololu 핀은 NAV 크리스털 Y1 패드에서 9.217 mm, U1의 XTAL 핀에서 9.616 mm 떨어져 있었습니다. 지금은 가장 가까운 부품이 Y1 패드에서 9.55 mm (C43), XTAL 핀에서 9.935 mm (C43) 이고, SW 구리(선과 두 패드)는 Y1 패드에서 12.426 mm, XTAL 핀에서 12.969 mm, 크리스털 배선 구리에서 11.415 mm (rev 2c Pololu 핀은 크리스털 배선에서 8.243 mm) 입니다. rev 2c보다 가까운 부품: 없음. 부품별 (가까운 순): C43 Y1 9.55 / XTAL 핀 9.935 mm; C57 Y1 11.851 / XTAL 핀 12.753 mm; U8 Y1 11.925 / XTAL 핀 12.319 mm; L5 Y1 14.65 / XTAL 핀 15.025 mm; C41 Y1 15.762 / XTAL 핀 15.485 mm (rev 2c 기준 Y1 9.217 / XTAL 핀 9.616 mm). 재설계 전 rev 2c보다 가까웠던 부품: C43, C57, L5, U8.
+- 되먹임(FB) 선: PASS (출력 커패시터 패드 사이를 지나는 FB 구리 0곳, 가장 가까운 간격 0.65 mm, FB 선 길이 4.787 mm).
+- 레일 쪽 변의 구리: PASS: 레일이 붙는 두 긴 변(y 65 변, 그리고 y 135 변과 탭의 모든 변)에서 0.4 mm 이상 (기준 0.4 mm), 나머지 두 변 0.3005 mm (보드 규칙 0.3 mm).
+- 기체 맞춤 (탭 포함, 검사 board_fit PASS): 흡입구 보어 벽까지 4.44 mm (기준 2 mm 이상), 탭에서 270도 통풍구까지 13.05 mm (기준 2 mm 이상), 탭에서 모터 리드 연결부 영역까지 21.869 mm (본체 사각형 쪽은 재설계 전과 같음), 315도 조인트 나사에서 평면 2 mm 안의 부품: 없음, 나사 아래 기판 윗면 높이 여유 1.3 mm (기준 1 mm 이상), 탭 안 부품 C41, C57, C58, L5, R63, R64, U8 (높이 한계 13.4 mm 넘는 것: 없음).
+
+**목적과 다른 점 (검사는 통과했지만 글자로만 통과했거나 여유가 작은 곳 - 숨기지 않음):**
+
+- 입력 커패시터 C41의 GND: C41 GND 패드의 비아 (118.525, 137.2)에서 윗면 GND 선을 따라 13.923 mm (끝점 (127.1, 135.95), (118.525, 138.05); 가는 0.2 mm 선이 FB 분압 저항 두 줄 사이를 지나 C43 GND 패드를 거쳐 U8 GND 핀으로 감), C41 GND 패드-U8.4 직선 간격 8.033 mm. 검사 hot_loop_top_gnd와 input_cap_vin은 이 가는 선 덕분에 통과합니다. 짧은 고리가 아닙니다: C41의 고주파 귀환은 실제로는 자기 비아(0.65 mm 떨어짐)를 거쳐 내층 GND 면으로 갑니다. 탭 안에서는 U8 VIN 선, L5 입력 패드와 배터리 선이 C41 GND 패드와 U8 GND 핀 사이를 막고 있습니다. 내층에서의 귀환 거리: C43.2 GND 비아 → U8.4 GND 비아 5.15 mm; C57.2 GND 비아 → U8.4 GND 비아 4.02 mm; C41.2 GND 비아 → U8.4 GND 비아 8.33 mm (비아 중심 사이 직선, In1 GND 면 위). TI 데이터시트 10.1절은 입력 커패시터를 VIN 핀과 GND 핀 가까이 두라고 하지만, C41은 L5 입력 패드 옆에 있고 U8 VIN 핀(3번) 옆에는 따로 커패시터가 없습니다 (작은 커패시터를 더하려면 회로도 변경 = 사용자 결정).
+- C41의 VIN 쪽 경로(위 숫자)는 L5 입력 패드를 지나 U8 VIN 핀으로 갑니다.
+- 출력 커패시터 C43의 GND: C43 GND 패드에서 U8 GND 핀까지 윗면 GND 선 폭 0.2 mm 0.358 mm, 폭 0.25 mm 3.1 mm (비아 연결선 제외; SOT-563 패드 두 줄 사이를 지나는 가는 선; 패드마다 0.3 mm GND 비아 하나씩). 고리는 작지만 TI 예시(10.2절)·발열 안내(10.3절)처럼 넓은 GND 구리와 여러 비아가 아니라 가는 선입니다. U8의 발열은 측정 전까지 NOT_VERIFIED입니다.
+- 배터리 경로는 L5 입력 패드 바로 앞에서 비아 두 개를 지납니다: 드릴 0.4 mm 2개. 드릴 0.4 mm 이상 비아 2개의 도금 구리 단면은 합쳐서 약 0.045 mm2 로, 폭 2.0 mm 1 oz 배선의 0.07 mm2 보다 작습니다 (도금 18 um 가정, E). 폭 검사(2.0 mm)는 선만 재므로 이 비아들은 글자로만 통과합니다.
+- 출력 커패시터 C57의 GND 패드는 SW 선(U8.5 → L5.2) 건너편에 있어, 윗면에서는 L5 둘레·아래의 GND 면(구리 채움)을 통해서만 U8 GND 핀과 이어집니다. 검사는 그 면이 한 덩어리라서 통과합니다. C57의 실제 귀환은 자기 비아와 U8 GND 핀의 비아를 거친 내층 GND입니다. 배선 프로그램이 이 면을 끊지 못하게 탭 위 윗면에 배선 금지 영역을 두었습니다 (Freerouting 입력 파일에만 있고 보드 파일에는 없음).
+- SW 패드 간격 여유는 0.124 mm 뿐입니다 (부품 자리가 맞닿아 배치로 정해짐; 배선으로는 줄일 수 없음).
+- 미리 그린 배선(승압부, 배터리 경로의 갈래)은 이제 배선 마무리 단계의 자동 넓히기에서 빠져 설계한 폭 그대로입니다. 재설계 전 흐름은 이 갈래들을 넓혔습니다. 2.0 mm 배터리 경로는 이와 무관합니다.
+- 회로 IR(설계 데이터)은 외곽을 사각형으로만 담을 수 있어 76 x 70 mm 사각형을 그대로 갖고, 탭이 있는 실제 외곽은 `scripts/outline.py` 에서 옵니다. 외곽에 대해서는 IR이 유일한 설계 데이터가 아닙니다.
+- 이 영향(스위칭 과전압, 입력 리플, 잡음, 크리스털 흔들림)은 보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다 (주문 안내서 7장).
 
 | 항목 | 결과 | 표시 |
 |---|---|---|
@@ -33,22 +48,22 @@
 | 보드 패드 넷 = IR | PASS (핀 506 / 506) | M |
 | MCU 4개 핀 = rev 2c | PASS (핀 256, 차이 0) | M |
 | U8 / U9 핀-네트 표 | PASS | M (표는 F) |
-| 배선 규칙 (계획 13장) | 16 / 21 PASS, FAIL: battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance | M / E |
+| 배선 규칙 (계획 13장) | 21 / 21 PASS, FAIL: 없음 | M / E |
 | 크리스털 XTAL1 길이 (rev 2c보다 나빠지면 안 됨) | 5.96 mm (한계 5.96 mm) | M |
 | 설계 규칙 파일 = rev 2c | PASS | M |
 | 구리 섬 / 패드에 닿는 비아 | 없음 (모든 네트 한 덩어리) / 0 | M |
-| JLC 부품 재고·주문 가능 확인 | PASS (33/33줄), with_mcu PASS, 2026-11-12T02:54:37+09:00 | M (그 시각 기준) |
+| JLC 부품 재고·주문 가능 확인 | PASS (33/33줄), with_mcu PASS, 2026-11-12T22:27:21+09:00 | M (그 시각 기준) |
 | 주문 파일 형식·fit 집합 검사 | PASS | M |
 | 주문 파일을 두 번 써서 같은지 | PASS | M |
-| 전체 다시 만들기 두 번 = 같은 파일 | FAIL - 바이트 비교 파일 71개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | M |
-| 다른 폴더에서 다시 만들어도 같은 파일 | PASS - 다른 폴더에 복사해 다시 만든 결정적 파일 60개 중 51개가 이 폴더의 것과 바이트까지 같음 (보드, 회로도, 거버와 zip, BOM, CPL 등 주문에 쓰는 파일 43개는 모두 여기에 듦). 나머지 9개(README_ko.md, kicad/placement.json, kicad/schematic_manifest.json, kicad/work/unrouted_manifest.json, out/ORDER_ko.md, out/따로_살_부품_ko.md, spec/SPEC_ko.md, spec/carrier_spec.json, spec/parts_sources.json)는 자기 폴더 이름이나 그런 파일의 sha256을 담고 있어, 폴더 이름과 그 sha256을 바꿔 넣은 뒤에 같음. 그림 단계 산출물 11개는 그 폴더에서 다시 만들지 않아 비교하지 않음 | M |
-| 가장자리 2.5 mm 안 부품 몸체 | 모든 자리 34개 = JLC 실장 15개 (with_mcu 16개) + JLC가 붙이지 않는 자리 19개 (U4, J1, J2, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, U7, J19, JP1, Q3, R47) (0.3 mm 안: U7 0.15 mm, J15 0.29 mm - 둘 다 사용자가 납땜하는 자리; JLC 실장 부품 중 가장 가까운 것 L5 0.45 mm) | M |
+| 전체 다시 만들기 두 번 = 같은 파일 | PASS - 바이트 비교 파일 71개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 0개 | M |
+| 다른 폴더에서 다시 만들어도 같은 파일 | PASS - 다른 폴더에 복사해 다시 만든 결정적 파일 60개 중 55개가 이 폴더의 것과 바이트까지 같음 (보드, 회로도, 거버와 zip, BOM, CPL 등 주문에 쓰는 파일 43개는 모두 여기에 듦). 나머지 5개(README_ko.md, out/ORDER_ko.md, out/따로_살_부품_ko.md, spec/SPEC_ko.md, spec/parts_sources.json)는 자기 폴더 이름이나 그런 파일의 sha256을 담고 있어, 폴더 이름과 그 sha256을 바꿔 넣은 뒤에 같음. 그림 단계 산출물 11개는 그 폴더에서 다시 만들지 않아 비교하지 않음 | M |
+| 가장자리 2.5 mm 안 부품 몸체 | 모든 자리 31개 = JLC 실장 12개 (with_mcu 13개) + JLC가 붙이지 않는 자리 19개 (U4, J1, J2, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, U7, J19, JP1, Q3, R47) (0.3 mm 안: U7 0.15 mm, J15 0.29 mm - 둘 다 사용자가 납땜하는 자리; JLC 실장 부품 중 가장 가까운 것 R60 0.537 mm) | M |
 | 모듈(OpenLog / BMP280 / GY-521) 간섭, 보통 경우 | A / NOT_VERIFIED, 가정 치수(보통 경우)로 충돌 0건; 최소 간격 0.5 mm 미만: U1 | A / NOT_VERIFIED |
 | 모듈 간섭, 보수적 경우 (OpenLog 아랫면 부품 1.2 mm 가정) | 충돌: C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'); 0.5 mm 미만: C48, Q2, Q8, U1, U2, Y1 | A / NOT_VERIFIED |
 
 ## 2. 이 기판은 무엇인가
 
-- 크기 76 x 70 mm, 두께 1.6 mm, 4층 (F.Cu 신호와 부품 / In1 GND 전면 / In2 +5V 전면 / B.Cu 신호). 부착 구멍 없음: 3 mm 폼테이프 + 케이블타이 1개. 케이블타이 띠(x -3..+3 mm)에는 실장 부품이 없습니다.
+- 크기: 본체 76 x 70 mm 사각형 + -y 변의 탭 (KiCad x 117.3..132, y 135..142.2 mm (바깥 모서리 r 1 mm, 본체와 만나는 안쪽 모서리 r 1 mm, 기판 재료는 x 116.3..133), 넓이 105.8 mm2) → 외접 76 x 77.2 mm, 기판 넓이 5425 mm2. 두께 1.6 mm, 4층 (F.Cu 신호와 부품 / In1 GND 전면 / In2 +5V 전면 / B.Cu 신호). 부착 구멍 없음: 3 mm 폼테이프 + 케이블타이 1개. 케이블타이 띠(x -3..+3 mm)에는 실장 부품이 없습니다.
 - 부품은 모두 윗면에만 있습니다. 부품 높이 한계는 기판 윗면에서 13.4 mm 입니다. 아랫면은 폼테이프 자리라 비어 있습니다.
 - 비행 컴퓨터 칩 4개: U1 NAV, U2 FCU, U3 COM, U4 GNS (ATmega128A-AU, 16 MHz, 5 V). 무선은 U7 ESP-12F (Wi-Fi 중계; 사용자가 직접 납땜).
 - 센서: GY-521 (IMU, J1에 납땜), BMP280 (기압, 소켓 J2), NEO-7M GPS (기체 윗뚜껑, 케이블로 J7). 기록기 OpenLog는 소켓 J5.
@@ -76,8 +91,15 @@
 - **저전압 차단을 유지했습니다.** 예전 모듈 안에 있던 기능입니다. U9 TLV3012B (C20345924) + R65 470k 1%, R66 270k 1%, R67 3.3M 1%: 켜짐 3.44 ~ 3.73 V, 꺼짐 3.00 ~ 3.25 V (계산값 E, 실측 전).
 - **Wi-Fi 모듈 ESP-12E → ESP-12F** (참고 부품 LCSC C82891). 핀과 풋프린트가 같습니다. 계획은 JLC가 실장할 수 있는 부품이라 ESP-12F를 골랐는데, 2026-11-12 사용자 결정으로 이 모듈은 사용자가 직접 납땜합니다 (JLC BOM의 U7: BOM에 없음).
 - **스루홀 커넥터 12개는 사용자가 사서 납땜합니다** (2026-11-12 사용자 결정; 계획은 JLC가 손납땜). 참고 부품 번호 (계획 때 JLC BOM에 있던 번호, F): 소켓 J2 / J5 C22436147, 서보 헤더 J8~J12 C32713262, J16 C32713261, J18 C32713263, 배터리 J14 C5364642, 스위치·부저 J15 / J17 C131337. JLC BOM에는 없습니다 (J2: BOM에 없음). 탄탈 C45 (C11366, JLC 실장)와 헤더·소켓 번호 일부는 재고나 도면 근거로 바꿨고 D3 / D12에서 rev 2c 번호로 되돌릴 수 있습니다.
-- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 (PASS (핀 256, 차이 0)), 외곽, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치와 방향, 설계 규칙 (PASS), 크리스털 배선 (5.96 mm (한계 5.96 mm)).
-- **배치·배선을 다시 했습니다.** 새 부품 13개를 넣느라 주변 수동 부품 일부가 옮겨졌고, 배선은 새로 했습니다 (최종 보드 파일 기준 세그먼트 2557개, 원호 0개, 비아 442개: 0.6/0.3 mm 439개, 0.8/0.4 mm 3개). 배선은 Freerouting 실행 기록(세션 파일)을 다시 넣는 방식으로 재현됩니다.
+- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 (PASS (핀 256, 차이 0)), 본체 76 x 70 mm 사각형과 그 변, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치와 방향 (고정 부품 58개 중 rev 2c 자리에서 움직인 것: 없음; 프로그래밍 구멍 3개는 아래 재설계에서 사용자 승인으로 옮김), 설계 규칙 (PASS), 크리스털 배선 (5.96 mm (한계 5.96 mm)).
+- **2026-11-12 재설계 - 외곽에 탭 추가** (사용자 요청 "그럼 다시 설계를 진행해줘. 실패한게 있다면 완료되었다고 말하지마" / "보드의 사이즈를 조정하는 방법은 없어?" / "옮겨도 됨"): 지금 부품(U8 TPS61023, L5 FXL0420, 22 uF 1206 커패시터)으로 승압부 검사와 크리스털 거리 검사를 모두 지키려면 76 x 70 mm 안에 자리가 모자랐습니다 (재설계 전 연구, M). 그래서 본체의 변은 그대로 두고 -y 변에 탭을 붙였습니다: KiCad x 117.3..132, y 135..142.2 mm (바깥 모서리 r 1 mm, 본체와 만나는 안쪽 모서리 r 1 mm, 기판 재료는 x 116.3..133), 넓이 105.8 mm2, 외접 76 x 77.2 mm. 탭은 기체 CAD에서 잰 허용 범위(KiCad x 106..134, 바깥 변 y 143.74 mm 이하 (바깥 모서리 r 1 mm)) 안에 있습니다. 이것은 계획 불변조건 (b) '외곽 76 x 70 mm 그대로'에서 벗어난 사용자 결정입니다.
+- **승압부 자리 (재설계):** U8 (126.5, 135.45) 0도; L5 (125.15, 138.75) 0도; C43 (127.1, 133.3) 180도; C57 (129.2, 136.75) 270도; C41 (120, 138.75) 180도; R63 (123.85, 133.85) 270도; C58 (122.35, 133.85) 270도; R64 (120.85, 133.85) 90도. U8의 VOUT / GND 핀 옆에 출력 커패시터 C43(위)과 C57(오른쪽), 아래에 L5, L5 입력 패드 옆에 C41. 저전압 차단(U9 주변), LDO U6, 그 밖의 부품 자리는 그대로입니다.
+- **프로그래밍 구멍 3개 이동 (사용자 승인 "옮겨도 됨"):** J19 (x +0, y +0.55 mm), J22 (x +0, y +0.55 mm), J26 (x +0, y +0.55 mm). 케이블타이 띠를 건너는 배터리 선이 2.0 mm 폭으로 지나갈 틈을 만들기 위해서입니다. 배치 검사(place.py)는 이 세 부품만 'rev 2c 자리 + 이 거리'와 정확히 같은지 봅니다 (다른 고정 부품은 rev 2c 자리 그대로인지 봄). 외곽 맞춤과 추가한 검사 말고, 설계 판정에 쓰이는 검사 코드에서 사용자 결정 때문에 바꾼 곳은 이것 하나입니다.
+- **C42 이동:** x +0.20 mm (지금 x 72.8, y 69.3 mm) - 2.0 mm 배터리 선이 Q10 3번 패드로 들어가게.
+- **배터리 전원 경로:** 선은 모든 구간 2 mm 이상 (1장의 숫자). 다만 L5 입력 패드 앞의 비아 두 개(드릴 0.4 mm 2개)는 선이 아니라서 폭 검사 대상이 아니고, 도금 단면이 2.0 mm 선보다 작습니다 (1장 '목적과 다른 점').
+- **바꾼 검사 코드 (규칙·기준값은 그대로):** 외곽 맞춤 - 판의 모서리·변으로 재던 검사(routing_checks 레일 변 구리와 식별 문구의 가장자리 거리, place.py 기판 안쪽, fit_checks와 edge_distance의 -y 변 거리, silk.py 글자 자리, prog_access.py 헤더 자리 검색의 기판 밖 칸)가 이제 탭의 모든 변을 실제 선분으로 잽니다 (y 135 선 옆에서는 예전과 같은 값). 추가한 검사 - 기체 맞춤 board_fit (board_metrics.py)과 315도 조인트 나사 아래 부품 금지 영역 (place.py). 사용자 결정 - J26 / J22 / J19의 기준 자리 (위). 결정성 검사 determinism.py - 다른 폴더 비교의 폴더 이름 바꾸기 규칙만 작업 복사본에서도 돌도록 고침 (비교 종류와 PASS 규칙은 그대로).
+- **내보내기 (검사 아님):** STEP 파일 - kicad-cli가 쓴 STEP 항목 131413개의 번호와 순서를 내용으로 다시 매김 (scripts/step_canon.py); 다시 읽어 모든 항목이 같은 그래프인지 확인: 통과. kicad-cli가 내보낼 때마다 같은 항목을 다른 순서로 써서 결정성 검사가 실패하던 원인을 생성기에서 고친 것이며, 결정성 검사 자체는 바꾸지 않았습니다.
+- **배치·배선을 다시 했습니다.** 새 부품 13개를 넣느라 주변 수동 부품 일부가 옮겨졌고, 배선은 새로 했습니다 (최종 보드 파일 기준 세그먼트 2536개, 원호 0개, 비아 439개: 0.6/0.3 mm 436개, 0.8/0.4 mm 3개). 배선은 Freerouting 실행 기록(세션 파일)을 다시 넣는 방식으로 재현됩니다.
 - 부품마다 바뀐 내용과 이유 분류(태그)의 전체 표: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/ORDER_ko.md` 10장 (교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140).
 
 ## 4. 누가 무엇을 붙이나
@@ -96,12 +118,16 @@
 
 ## 5. 확인되지 않은 것 (NOT_VERIFIED)
 
-- 배터리 경로 폭 규칙 FAIL (8.57 mm)과 승압부에 남은 FAIL (hot_loop, input_cap_l5, sw_node, crystal_distance): 사용자 결정 전까지 도구 판정은 NOT ORDERABLE 입니다.
-- 재배치한 승압부의 전기적 효과: SW 선이 두 출력 커패시터 아래를 지나 길어졌고(검사 sw_node FAIL), 승압부와 SW 구리가 크리스털 Y1 / U1 XTAL 핀에 rev 2c의 Pololu 핀보다 가까워졌습니다(검사 crystal_distance FAIL; 숫자는 1장). 스위칭 과전압, 입력 리플, SW 선 발열, 크리스털 잡음 영향은 보드에서 재기 전까지 NOT_VERIFIED입니다.
+- 재설계한 승압부의 전기적 효과: 검사는 모두 통과했지만 1장의 '목적과 다른 점'(C41 GND가 가는 선으로만 윗면에서 이어짐, C57 GND가 GND 면으로만 이어짐, SW 간격 여유 0.124 mm)이 실제로 어떤 영향을 주는지 - 스위칭 과전압, 입력 리플, SW 선 발열, 크리스털 잡음 - 는 보드에서 오실로스코프로 재기 전까지 NOT_VERIFIED입니다.
+- 배터리 경로 60 C: 구리 저항이 0.03583 Ohm (E)로 0.035 Ohm 목표를 넘습니다. 검사는 계획대로 20 C 값(0.03096 Ohm)으로 판정합니다. 뜨거운 곳에서 오래 쓰면 저전압 차단 여유가 줄 수 있습니다 (계획 17장, 첫 보드에서 저항 측정: 주문 안내서 7장).
+- 새 외곽의 JLC 수락과 값: 탭이 있는 거버는 아직 JLC에 올려 본 적이 없습니다. 주문 화면이 읽을 크기(외접 사각형으로 읽을 것으로 봄, E), PCB 값, DFM 결과는 NOT_VERIFIED입니다. 2026-11-12에 저장한 견적은 모두 재설계 전 76 x 70 mm 거버의 것입니다 (주문 안내서 4장).
+- Standard 대안의 레일: y 135 쪽 긴 변에 탭이 있어 그 변은 곧은 선이 아니므로 V-cut 레일은 쓸 수 없고, 라우팅 탭 / 마우스바이트 레일이 필요합니다. JLC가 그렇게 해 주는지와 값은 NOT_VERIFIED입니다 (Economic 주문은 레일이 없어 해당 없음).
+- 기체 CAD는 아직 탭이 없는 76 x 70 x 15 mm 상자로 캐리어를 그립니다 (이 단계는 CAD 저장소를 읽기만 했음). 남은 일: params.json의 캐리어 항목에 탭 추가, cad/layout.py의 캐리어 검사(보어 거리, 통풍구, 케이블타이 길, 폼테이프 면적, 조인트 나사 여유)를 사각형 + 탭으로 바꾸기, C25 등 CAD 검사와 내보내기 다시 실행, 캐리어 무게에 탭 몫 약 0.31 g 더하기, 76 x 70 을 적은 기체 문서·그림 고치기. 이 PCB 쪽 검사(board_fit)는 Fit 단계가 CAD에서 잰 값으로 탭을 확인했습니다 (PASS).
+- 흡입구/아비오닉스 연결부 315도 조인트 나사의 길이: params.json에는 'M3'만 있습니다. 부품 금지 영역은 나사 끝이 반지름 49.5 mm까지 들어온다고 보고 잡았습니다 (A). M3 x 6 이하를 권합니다. 나사 길이는 NOT_VERIFIED입니다.
 - 모듈 끼움, 보수적 경우: OpenLog 아랫면 부품을 1.2 mm로 잡으면 꽂는 길에서 C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end') 이 겹치고, C48, Q2, Q8, U1, U2, Y1 은 0.5 mm 보다 가깝습니다 (A). OpenLog 아랫면 높이를 재고, 막을 수 있는 부품을 납땜하기 전에 실제로 꽂아 보십시오.
 - 보드 동작 전체: 만들거나 전원을 넣은 적이 없습니다. 전원부 수치(5 V 출력, 차단 전압, 전류 여유)는 데이터시트 계산(E)입니다.
-- JLC의 수락: Economic 주문에서 JLC가 기판 안에 툴링 홀 자리를 찾는지 (부품 자리 점유율 88.5 %; 못 찾으면 레일 = Standard를 요구할 수 있음), 가장자리 가까운 부품 (JLC 실장 중 가장 가까운 것 L5 0.45 mm; 0.3 mm 안: 없음), 지금 파일의 BOM / CPL 매칭은 업로드 후 화면과 DFM 결과, 견적으로만 확인됩니다.
-- 주문 화면에서 본 것 (2026-11-12 01:30-02:06 KST, M): 이 변경 전 빌드의 파일을 올려 부품 40줄을 인식하고 40줄을 확정했고, 화면에서 ESP-12F와 스루홀 줄을 뺀 Economic 견적은 배송 제외 76.82 USD였습니다 (Economic이 ESP-12F를 뺀 39줄을 모두 받음). 지금 파일(처음부터 SMT만 든 BOM)로는 아직 올려 보지 않았습니다.
+- JLC의 수락: Economic 주문에서 JLC가 기판 안에 툴링 홀 자리를 찾는지 (부품 자리 점유율 86.7 %; 못 찾으면 레일 = Standard를 요구할 수 있음), 가장자리 가까운 부품 (JLC 실장 중 가장 가까운 것 R60 0.537 mm; 0.3 mm 안: 없음), 지금 파일의 BOM / CPL 매칭은 업로드 후 화면과 DFM 결과, 견적으로만 확인됩니다.
+- 주문 화면에서 본 것 (2026-11-12 01:30-02:06 KST, M): ESP·스루홀 변경과 재설계 전 빌드의 파일(76 x 70 mm 거버)을 올려 부품 40줄을 인식하고 40줄을 확정했고, 화면에서 ESP-12F와 스루홀 줄을 뺀 Economic 견적은 배송 제외 76.82 USD였습니다 (Economic이 ESP-12F를 뺀 39줄을 모두 받음). 지금 파일(처음부터 SMT만 든 BOM)로는 아직 올려 보지 않았습니다.
 - 사용자가 사는 스루홀 커넥터 6종과 ESP-12F: 낱개로 산 부품이 구멍·패드에 맞는지, 그 재고와 가격 (LCSC 기록은 2026-11-12T02:50:37+09:00 ~ 02:51:09+09:00 기준 M, 그 밖의 쇼핑몰은 확인 안 함), 무연 HASL 구멍의 납땜성은 해 보기 전에는 NOT_VERIFIED입니다. 배터리 커넥터 J14는 방향이 틀리면 극성이 뒤집힙니다 (주문 안내서 7장 3번).
 - CPL 회전: 방향이 중요한 30개 중 C45, C47, C52, U9 은 자료끼리 어긋나 NOT_VERIFIED입니다. 나머지도 JLC 미리보기로만 확정됩니다. 탄탈 C45 / C52, 전해 C47을 거꾸로 붙이면 화재 위험이 있습니다.
 - 리플로 온도: 이번 주문 방식 Economic은 최고 255±5 C 입니다. 정격이 그 최악값과 같아 여유가 없는 부품: C2833309 (C47, 정격 260 C), C2286 (D1/D2/D3/D4, 정격 260 C), C53426685 (L5, 정격 260 C) (C47은 리플로는 한 번만 (두 번은 사이에 30분을 둘 때만)); 문서에서 정격을 찾지 못한 부품 번호 31개.
@@ -109,8 +135,8 @@
 - 뒷면 다리 길이 (모든 스루홀을 사용자가 납땜하고 자름; 도면값은 참고 부품 번호 기준 F): J15, J17 은 규칙 1.5 mm 보다 길어 잘라야 하고, J2, J5, J8~J12, J16, J18 는 공차 끝에서 넘습니다. J1, J14 은 확인 못 함.
 - 모듈 치수와 끼움: GY-521, BMP280, OpenLog, NEO-7M 치수는 가정값입니다 (GY-521 받침 2.54 mm, BMP280 헤더 직각 - 모두 A). 그림과 간섭 검사도 이 가정 위에 있습니다. 실물을 버니어로 재야 확정됩니다 (D15).
 - J14 Molex 커넥터: 라이브러리 3D 모델이 없고 구멍 지름을 도면과 대조하지 못했습니다.
-- 재고: 2026-11-12T02:54:37+09:00 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.
-- 비용: 주문 화면의 견적 76.82 USD (M, 배송 제외)는 이전 업로드에서 줄을 빼고 읽은 값입니다. 지금 파일의 견적, 메모 검토 뒤 금액, 배송비와 세금은 NOT_VERIFIED입니다.
+- 재고: 2026-11-12T22:27:21+09:00 기준입니다. 주문 직전에 scripts/jlc_gate.py 를 다시 돌려야 합니다.
+- 비용: 주문 화면의 견적 76.82 USD (M, 배송 제외)는 재설계 전 76 x 70 mm 거버의 이전 업로드에서 줄을 빼고 읽은 값입니다. 지금 파일(외접 76 x 77.2 mm)의 견적, 메모 검토 뒤 금액, 배송비와 세금은 NOT_VERIFIED입니다.
 - GPS 케이블이 기체 안에서 지나갈 길은 설계되지 않았습니다 (그림은 예시).
 
 계획서 17장의 나머지 위험 항목 (계획에서 그대로 옮김; 17장의 모든 항목이 이 문서나 주문 안내서의 어느 줄에 대응하는지 `scripts/docs_ko.py` 가 확인함):
@@ -139,11 +165,11 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B determinism.py        # 전체를 
 B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당일 JLC 재고 확인 (인터넷, 읽기만)
 ```
 
-- 한 번 만드는 데 걸린 시간: 8.3분, 9.0분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-12T05:24:10+0900.
+- 한 번 만드는 데 걸린 시간: 7.3분, 7.3분 (determinism.py의 두 빌드, M). 마지막 결정성 검사: 2026-11-12T22:56:51+0900.
 - make_all.py는 인터넷을 쓰지 않습니다. JLC 부품 근거는 저장된 기록으로 다시 평가하고, 재고 확인(jlc_gate.py)은 따로 실행합니다.
-- 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다. 2026-11-12에 표면처리 표기만 'HAL lead-free' 로 바꿨을 때는 새 배선 없이 재생했습니다: route.py는 배선 전 보드가 세션을 기록한 보드와 표면처리 글자 한 곳만 다르고 나머지 바이트가 모두 같을 때에만 재생을 받아들입니다 (이번 재생의 판정: 'byte-identical to the recorded unrouted board except the copper_finish value', M).
-- 결정성 검사 결과: FAIL - 바이트 비교 파일 71개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음). 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. STEP 파일(기구 확인용)은 주문 파일이 아닙니다.
-- 다른 폴더에서 다시 만들기 (`determinism.py --cross-folder <빈 폴더>`): PASS - 다른 폴더에 복사해 다시 만든 결정적 파일 60개 중 51개가 이 폴더의 것과 바이트까지 같음 (보드, 회로도, 거버와 zip, BOM, CPL 등 주문에 쓰는 파일 43개는 모두 여기에 듦). 나머지 9개(README_ko.md, kicad/placement.json, kicad/schematic_manifest.json, kicad/work/unrouted_manifest.json, out/ORDER_ko.md, out/따로_살_부품_ko.md, spec/SPEC_ko.md, spec/carrier_spec.json, spec/parts_sources.json)는 자기 폴더 이름이나 그런 파일의 sha256을 담고 있어, 폴더 이름과 그 sha256을 바꿔 넣은 뒤에 같음. 그림 단계 산출물 11개는 그 폴더에서 다시 만들지 않아 비교하지 않음. 재배치 검토(RR-2)에서 같은 입력을 다른 폴더에서 재생하면 구리는 같아도 배선의 uuid가 달라 보드 파일 바이트가 달랐습니다 (M). 그래서 route.py가 배선·비아·실크 글자의 uuid를 그 항목의 내용(네트, 층, 폭, 좌표)에서 만들도록 바꾸었고, 겹쳐 놓인 똑같은 배선 조각도 하나만 남깁니다. 주의: 사양 파일 `spec/carrier_spec.json` 은 자기가 만들어진 폴더 이름을 담고 있어서, 다른 폴더(예: 다른 체크아웃으로 합친 뒤)에서 다시 만들면 사양의 sha256이 달라지고 JLC 재고 기록(`out/jlc_gate_report.json`)은 '다른 사양'(STALE)으로 판정됩니다. 그때는 그 폴더에서 `jlc_gate.py` 를 다시 실행해야 합니다 (주문 당일에는 어차피 다시 실행합니다).
+- 배선은 기록된 Freerouting 세션을 다시 넣어 같은 보드를 만듭니다. 배치가 바뀌면 route.py가 재생을 거부하고, 새 배선(`make_all.py --reroute`)이 필요합니다. 새 배선은 실행마다 결과가 달라질 수 있습니다. 2026-11-12 재설계는 배치가 바뀌어 새 배선(Freerouting 실시간 실행)을 했고, 그 실행의 세션을 기록해 두었습니다. route.py는 배선 전 보드가 세션을 기록한 보드와 바이트까지 같을 때(표면처리 글자 한 곳만 다른 경우 포함)에만 재생을 받아들입니다 (이번 재생의 판정: 'byte-identical to the recorded unrouted board', M).
+- 결정성 검사 결과: PASS - 바이트 비교 파일 71개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 0개. 비교 대상은 회로도, 보드, BOM, CPL, 거버와 zip, 회전 표, 3D 모델, 사양, 이 문서와 주문 안내서이고, STEP 파일은 머리줄의 시각을 뺀 뒤 비교합니다 (계획 14장). PNG 그림, 보고서(실행 시각 포함), 회로도 PDF는 증거 자료이며 결정적 산출물이 아닙니다. STEP 파일(기구 확인용)은 주문 파일이 아닙니다.
+- 다른 폴더에서 다시 만들기 (`determinism.py --cross-folder <빈 폴더>`): PASS - 다른 폴더에 복사해 다시 만든 결정적 파일 60개 중 55개가 이 폴더의 것과 바이트까지 같음 (보드, 회로도, 거버와 zip, BOM, CPL 등 주문에 쓰는 파일 43개는 모두 여기에 듦). 나머지 5개(README_ko.md, out/ORDER_ko.md, out/따로_살_부품_ko.md, spec/SPEC_ko.md, spec/parts_sources.json)는 자기 폴더 이름이나 그런 파일의 sha256을 담고 있어, 폴더 이름과 그 sha256을 바꿔 넣은 뒤에 같음. 그림 단계 산출물 11개는 그 폴더에서 다시 만들지 않아 비교하지 않음. 재배치 검토(RR-2)에서 같은 입력을 다른 폴더에서 재생하면 구리는 같아도 배선의 uuid가 달라 보드 파일 바이트가 달랐습니다 (M). 그래서 route.py가 배선·비아·실크 글자의 uuid를 그 항목의 내용(네트, 층, 폭, 좌표)에서 만들도록 바꾸었고, 겹쳐 놓인 똑같은 배선 조각도 하나만 남깁니다. 주의: 사양 파일 `spec/carrier_spec.json` 은 자기가 만들어진 폴더 이름을 담고 있어서, 다른 폴더(예: 다른 체크아웃으로 합친 뒤)에서 다시 만들면 사양의 sha256이 달라지고 JLC 재고 기록(`out/jlc_gate_report.json`)은 '다른 사양'(STALE)으로 판정됩니다. 그때는 그 폴더에서 `jlc_gate.py` 를 다시 실행해야 합니다 (주문 당일에는 어차피 다시 실행합니다).
 - 인터프리터: 대부분 `B:/Claude/.venv`, 보드 처리는 KiCad 10.0.6의 python, 3D 모델·그림 일부는 `B:/0)AI_Cad/CanSat_EDF_Rocket/.venv` (실행만 함).
 
 ## 7. 파일 지도
@@ -198,67 +224,87 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | main parts | 144 | out/manifest.json bom_cpl.pairs.main | M |
 | main bom_lines | 33 | out/manifest.json bom_cpl.pairs.main | M |
 | 보드 표면처리 | HAL lead-free | kicad/vtol_carrier.kicad_pcb stackup copper_finish | M |
-| 배선 재생 입력 보드 | byte-identical to the recorded unrouted board except the copper_finish value | kicad/work/route_reuse_log.json unrouted_board_guard | M |
 | 아랫면 나란한 라벨 | J14 '1S BAT -+', J7 'GPS G RX TX V', J2 'BMP280 3V 3V SDA SCL G 3V' | out/reports/routing_rules.json silkscreen.pin_order_labels.labels (relation = along the pin row, layer B.Silkscreen) | M |
 | 라벨 검사 | PASS | out/reports/routing_rules.json silkscreen.pin_order_labels.ok | M |
-| 출고 판정 | NOT ORDERABLE | out/manifest.json release_gate | M (도구 검사) |
-| 출고 판정 이유 | routing_rules FAIL (battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance) | out/manifest.json release_gate.reasons | M |
-| 배터리 경로 저항 20C | 0.03173 Ohm | out/reports/routing_rules.json battery_path | E |
+| 재설계 요청 원문 | "그럼 다시 설계를 진행해줘. 실패한게 있다면 완료되었다고 말하지마" / "보드의 사이즈를 조정하는 방법은 없어?" / "옮겨도 됨" | 사용자 요청 2026-11-12 (재설계 작업 지시에 옮겨 적힌 원문) | F (사용자 요청 그대로) |
+| 재설계 전 보드 sha256 | cc750ce9e23322b2... | out/reports/routing_rules_before_redesign2.json board.sha256 | M |
+| 재설계 전 배선 규칙 | 16 / 21 PASS, FAIL: battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance | out/reports/routing_rules_before_redesign2.json results (재설계 전 보드) | M |
+| 외접 크기 | 76 x 77.2 mm | out/reports/board_metrics.json board_fit.outline.bbox_kicad_mm | M |
+| 옮긴 프로그래밍 구멍 | J19 (x +0, y +0.55 mm), J22 (x +0, y +0.55 mm), J26 (x +0, y +0.55 mm) | kicad/placement.json placement_checks.rev3.rev2c.fixed_parts_at_user_decided_spot | M |
+| C42 이동 | x +0.20 mm (지금 x 72.8, y 69.3 mm) | kicad/placement.json placements.C42 (x, y, why) | M |
+| 출고 판정 | ORDERABLE (tool checks only; NOT_VERIFIED - never built) | out/manifest.json release_gate | M (도구 검사) |
+| 출고 판정 이유 | 없음 | out/manifest.json release_gate.reasons | M |
+| 결정성 | PASS - 바이트 비교 파일 71개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 0개 | out/reports/determinism.json | M |
+| 다른 폴더 결정성 | PASS - 다른 폴더에 복사해 다시 만든 결정적 파일 60개 중 55개가 이 폴더의 것과 바이트까지 같음 (보드, 회로도, 거버와 zip, BOM, CPL 등 주문에 쓰는 파일 43개는 모두 여기에 듦). 나머지 5개(README_ko.md, out/ORDER_ko.md, out/따로_살_부품_ko.md, spec/SPEC_ko.md, spec/parts_sources.json)는 자기 폴더 이름이나 그런 파일의 sha256을 담고 있어, 폴더 이름과 그 sha256을 바꿔 넣은 뒤에 같음. 그림 단계 산출물 11개는 그 폴더에서 다시 만들지 않아 비교하지 않음 | out/reports/determinism.json cross_folder | M |
+| STEP 번호 정렬 | kicad-cli가 쓴 STEP 항목 131413개의 번호와 순서를 내용으로 다시 매김 (scripts/step_canon.py); 다시 읽어 모든 항목이 같은 그래프인지 확인: 통과 | out/manifest.json step_docs.step.canonical_numbering | M |
+| 배선 규칙 PASS 수 | 21 | out/reports/routing_rules.json | M |
+| 배선 규칙 수 | 21 | out/reports/routing_rules.json | M |
+| 배선 규칙 FAIL | 없음 | out/reports/routing_rules.json | M |
+| 배터리 경로 저항 20C | 0.03096 Ohm | out/reports/routing_rules.json battery_path | E |
 | 배터리 경로 목표 | 0.035 Ohm | out/reports/routing_rules.json battery_path | F (계획 13절) |
-| 2 mm보다 좁은 길이 | 8.57 mm | out/reports/routing_rules.json battery_path | M |
-| 좁은 구간 | VBAT_LOGIC_RAW 1.07 mm (폭 1 mm); VBAT_LOGIC_SW 7.5 mm (폭 1.5/1.56 mm) | out/reports/routing_rules.json battery_path.legs | M |
-| 배터리 경로 저항 60C | 0.03672 Ohm | out/reports/routing_rules.json battery_path | E |
-| 윗면 GND 한 덩어리 | PASS (U8.4, C57.2, C43.2, C41.2 이 같은 윗면 GND 구리 한 덩어리 위에 있음; 자기 비아가 있는 패드 4 / 4) | out/reports/routing_rules.json hot_loop_top_gnd | M |
+| 배터리 경로 최소 폭 | 2 mm | out/reports/routing_rules.json battery_path.legs | M |
+| 2 mm보다 좁은 길이 | 0 mm | out/reports/routing_rules.json battery_path | M |
+| 배터리 경로 구간 | J14.1 → Q10.3 0.00191 Ohm, 7.78 mm, 가장 좁은 곳 2 mm, 비아 0개; Q10.2 → J15.1 0.00388 Ohm, 15.77 mm, 가장 좁은 곳 2 mm, 비아 0개; J15.2 → L5.1 0.02517 Ohm, 132.22 mm, 가장 좁은 곳 2 mm, 비아 2개 | out/reports/routing_rules.json battery_path.legs | E (저항), M (길이·폭) |
+| 배터리 경로 저항 60C | 0.03583 Ohm | out/reports/routing_rules.json battery_path | E |
+| 재설계 전 배터리 경로 | 20 C 0.03173 Ohm, 60 C 0.03672 Ohm, 2.0 mm보다 좁은 길이 8.57 mm | out/reports/routing_rules_before_redesign2.json battery_path (재설계 전 보드) | E (저항), M (좁은 길이) |
+| 검사 hot_loop | PASS | out/reports/routing_rules.json results | M |
+| 출력 커패시터 간격 | C57 +5V 패드-U8.6 0.75 mm, GND 패드-U8.4 1.819 mm; C43 +5V 패드-U8.6 0.868 mm, GND 패드-U8.4 1.827 mm | out/reports/routing_rules.json hot_loop | M |
+| 재설계 전 출력 커패시터 간격 | C57 0.95 / 1.611 mm; C43 3.25 / 3.537 mm | out/reports/routing_rules_before_redesign2.json hot_loop (재설계 전 보드) | M |
+| 출력 커패시터 GND 윗면 연결 | C57.2, C43.2 | out/reports/routing_rules.json hot_loop | M |
+| 검사 input_cap_l5 | PASS | out/reports/routing_rules.json results | M |
 | 검사 input_cap_vin | PASS | out/reports/routing_rules.json results | M |
-| 입력 커패시터 VIN 경로 | C41 → U8 VIN 구리 길이 1.54 mm (비아 0개; 기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E), GND 패드가 U8 GND와 같은 윗면 구리: 예 | out/reports/routing_rules.json input_cap_vin | M (길이는 배선 모델, E) |
-| FB 선과 출력 커패시터 | PASS (출력 커패시터 패드 사이를 지나는 FB 구리 0곳, 가장 가까운 간격 2.613 mm, FB 선 길이 4.575 mm) | out/reports/routing_rules.json fb_clear_of_caps | M |
-| 승압부 배치 PASS | input_cap, hot_loop_top_gnd, input_cap_vin, fb_clear_of_caps | out/reports/routing_rules.json | M |
-| 승압부 배치 FAIL | hot_loop, input_cap_l5, sw_node, crystal_distance | out/reports/routing_rules.json | M |
-| 검사 hot_loop | FAIL | out/reports/routing_rules.json results | M |
-| 출력 커패시터 간격 | C57 +5V 패드-U8.6 0.95 mm, GND 패드-U8.4 1.611 mm; C43 +5V 패드-U8.6 3.25 mm, GND 패드-U8.4 3.537 mm | out/reports/routing_rules.json hot_loop | M |
-| 검사 input_cap_l5 | FAIL | out/reports/routing_rules.json results | M |
-| 입력 커패시터 L5 경로 | C41 → L5 입력 패드 구리 길이 13.53 mm (기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 10.675 mm) | out/reports/routing_rules.json input_cap_l5 | M (길이는 배선 모델, E) |
-| 검사 sw_node | FAIL | out/reports/routing_rules.json results | M |
-| SW 노드 | U8의 SW 패드와 L5의 SW 패드 사이 간격 5.551 mm (기준 2 mm 이하 - 계획 12장의 'L5는 U8 핀 바로 옆'에 숫자가 없어 스크립트가 계획 12장의 2 mm를 빌려 읽은 값, E), SW 선 구리 넓이 2.317 mm2, 구리 저항 약 9.3 mOhm (20 C, E), SW 선이 패드 사이를 지나는 다른 부품: C43, C57 | out/reports/routing_rules.json sw_node | M (기준과 저항은 E) |
-| SW 선 | 길이 6.619 mm, 폭 0.35 mm, 비아 0개, F.Cu만 | out/reports/routing_rules.json boost_sw | M |
-| 재배치 전 SW 선 길이 | 1.174 mm | out/reports/routing_rules_before_relayout.json boost_sw (재배치 전 보드) | M |
-| 재배치 전 SW 패드 간격 | 0.464 mm | out/reports/routing_rules_before_relayout.json sw_node (재배치 전 보드) | M |
-| 검사 boost_sw | PASS | out/reports/routing_rules.json results | M |
-| 검사 crystal_distance | FAIL | out/reports/routing_rules.json results | M |
-| 크리스털 거리 | rev 2c의 Pololu 핀은 NAV 크리스털 Y1 패드에서 9.217 mm, U1의 XTAL 핀에서 9.616 mm 떨어져 있었습니다. 지금은 가장 가까운 부품이 Y1 패드에서 7.501 mm (C57), XTAL 핀에서 8.35 mm (U8) 이고, SW 구리(선과 두 패드)는 Y1 패드에서 8.475 mm, XTAL 핀에서 8.943 mm, 크리스털 배선 구리에서 7.465 mm (rev 2c Pololu 핀은 크리스털 배선에서 8.243 mm) 입니다. rev 2c보다 가까운 부품: C43, C57, L5, U8 | out/reports/routing_rules.json crystal_distance (rev 2c 값은 archive/rev2c_pololu_1s/kicad/vtol_carrier.kicad_pcb 에서 같은 방법으로 잼) | M |
-| 재배치 전 SW 구리-크리스털 | Y1 패드에서 8.714 mm, XTAL 핀에서 11.497 mm, 크리스털 배선에서 8.891 mm | out/reports/routing_rules_before_relayout.json crystal_distance (재배치 전 보드) | M |
-| 재배치 전 크리스털보다 가까운 부품 | C57, L5 | out/reports/routing_rules_before_relayout.json crystal_distance (재배치 전 보드) | M |
+| 입력 커패시터 L5 경로 | C41 → L5 입력 패드 구리 길이 0.9 mm (기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E; U8 VIN 패드와 L5 입력 패드 사이 직선 거리 2.103 mm) | out/reports/routing_rules.json input_cap_l5 | M (길이는 배선 모델, E) |
+| 입력 커패시터 VIN 경로 | C41 → U8 VIN 구리 길이 4.17 mm (비아 0개; 기준 5 mm 이하 - 계획에 숫자가 없어 스크립트가 '몇 mm'를 이렇게 읽은 값, E), GND 패드가 U8 GND와 같은 윗면 구리: 예 | out/reports/routing_rules.json input_cap_vin | M (길이는 배선 모델, E) |
+| 재설계 전 C41-L5 경로 | 13.53 mm | out/reports/routing_rules_before_redesign2.json input_cap_l5 (재설계 전 보드) | M (배선 모델, E) |
+| 윗면 GND 한 덩어리 | PASS (U8.4, C57.2, C43.2, C41.2 이 같은 윗면 GND 구리 한 덩어리 위에 있음; 자기 비아가 있는 패드 4 / 4) | out/reports/routing_rules.json hot_loop_top_gnd | M |
+| 검사 sw_node | PASS | out/reports/routing_rules.json results | M |
+| SW 노드 | U8의 SW 패드와 L5의 SW 패드 사이 간격 1.876 mm (기준 2 mm 이하 - 계획 12장의 'L5는 U8 핀 바로 옆'에 숫자가 없어 스크립트가 계획 12장의 2 mm를 빌려 읽은 값, E), SW 선 구리 넓이 1.061 mm2, 구리 저항 약 4.3 mOhm (20 C, E), SW 선이 패드 사이를 지나는 다른 부품: 없음 | out/reports/routing_rules.json sw_node | M (기준과 저항은 E) |
+| SW 선 | 길이 3.032 mm, 폭 0.35 mm, 비아 0개, F.Cu만 | out/reports/routing_rules.json boost_sw | M |
+| 재설계 전 SW 패드 간격 | 5.551 mm | out/reports/routing_rules_before_redesign2.json sw_node (재설계 전 보드) | M |
+| 검사 crystal_distance | PASS | out/reports/routing_rules.json results | M |
+| 크리스털 거리 | rev 2c의 Pololu 핀은 NAV 크리스털 Y1 패드에서 9.217 mm, U1의 XTAL 핀에서 9.616 mm 떨어져 있었습니다. 지금은 가장 가까운 부품이 Y1 패드에서 9.55 mm (C43), XTAL 핀에서 9.935 mm (C43) 이고, SW 구리(선과 두 패드)는 Y1 패드에서 12.426 mm, XTAL 핀에서 12.969 mm, 크리스털 배선 구리에서 11.415 mm (rev 2c Pololu 핀은 크리스털 배선에서 8.243 mm) 입니다. rev 2c보다 가까운 부품: 없음 | out/reports/routing_rules.json crystal_distance (rev 2c 값은 archive/rev2c_pololu_1s/kicad/vtol_carrier.kicad_pcb 에서 같은 방법으로 잼) | M |
+| 크리스털 거리 부품별 | C43 Y1 9.55 / XTAL 핀 9.935 mm; C57 Y1 11.851 / XTAL 핀 12.753 mm; U8 Y1 11.925 / XTAL 핀 12.319 mm; L5 Y1 14.65 / XTAL 핀 15.025 mm; C41 Y1 15.762 / XTAL 핀 15.485 mm (rev 2c 기준 Y1 9.217 / XTAL 핀 9.616 mm) | out/reports/routing_rules.json crystal_distance.rev3_parts_min_gap_mm | M |
+| 재설계 전 크리스털보다 가까운 부품 | C43, C57, L5, U8 | out/reports/routing_rules_before_redesign2.json crystal_distance (재설계 전 보드) | M |
+| FB 선과 출력 커패시터 | PASS (출력 커패시터 패드 사이를 지나는 FB 구리 0곳, 가장 가까운 간격 0.65 mm, FB 선 길이 4.787 mm) | out/reports/routing_rules.json fb_clear_of_caps | M |
+| 레일 변 구리 이격 | PASS: 레일이 붙는 두 긴 변(y 65 변, 그리고 y 135 변과 탭의 모든 변)에서 0.4 mm 이상 (기준 0.4 mm), 나머지 두 변 0.3005 mm (보드 규칙 0.3 mm) | out/reports/routing_rules.json rail_edge_copper | M |
+| 기체 맞춤 판정 | PASS | out/reports/board_metrics.json board_fit.ok | M |
+| 기체 맞춤 | 흡입구 보어 벽까지 4.44 mm (기준 2 mm 이상), 탭에서 270도 통풍구까지 13.05 mm (기준 2 mm 이상), 탭에서 모터 리드 연결부 영역까지 21.869 mm (본체 사각형 쪽은 재설계 전과 같음), 315도 조인트 나사에서 평면 2 mm 안의 부품: 없음, 나사 아래 기판 윗면 높이 여유 1.3 mm (기준 1 mm 이상), 탭 안 부품 C41, C57, C58, L5, R63, R64, U8 (높이 한계 13.4 mm 넘는 것: 없음) | out/reports/board_metrics.json board_fit | M (나사 길이는 A / NOT_VERIFIED) |
+| C41 GND 윗면 길 | C41 GND 패드의 비아 (118.525, 137.2)에서 윗면 GND 선을 따라 13.923 mm (끝점 (127.1, 135.95), (118.525, 138.05); 가는 0.2 mm 선이 FB 분압 저항 두 줄 사이를 지나 C43 GND 패드를 거쳐 U8 GND 핀으로 감), C41 GND 패드-U8.4 직선 간격 8.033 mm | kicad/vtol_carrier.kicad_pcb GND F.Cu 선 조각 (scripts/docs_ko.py gnd_chain_mm), out/reports/routing_rules.json hot_loop_top_gnd | M |
+| C41 GND 비아 거리 | 0.65 mm | out/reports/routing_rules.json hot_loop_top_gnd.gnd_vias_near_the_pads | M |
+| 내층 귀환 거리 | C43.2 GND 비아 → U8.4 GND 비아 5.15 mm; C57.2 GND 비아 → U8.4 GND 비아 4.02 mm; C41.2 GND 비아 → U8.4 GND 비아 8.33 mm (비아 중심 사이 직선, In1 GND 면 위) | out/reports/routing_rules.json hot_loop_top_gnd.own_via_at (비아 위치 M) 사이 직선 거리 | E |
+| C43 GND 선 | C43 GND 패드에서 U8 GND 핀까지 윗면 GND 선 폭 0.2 mm 0.358 mm, 폭 0.25 mm 3.1 mm (비아 연결선 제외; SOT-563 패드 두 줄 사이를 지나는 가는 선; 패드마다 0.3 mm GND 비아 하나씩) | kicad/vtol_carrier.kicad_pcb GND F.Cu 선 (C43.2 비아와 U8.4 비아가 이루는 상자 + 0.5 mm 안, scripts/docs_ko.py gnd_tracks_in_box) | M |
+| L5 입력 비아 | 드릴 0.4 mm 2개 | out/reports/routing_rules.json information.L5.1_battery_vias (L5 입력 패드에서 4 mm 안의 VBAT_LOGIC_SW 비아) | M |
+| L5 입력 비아 단면 | 드릴 0.4 mm 이상 비아 2개의 도금 구리 단면은 합쳐서 약 0.045 mm2 로, 폭 2.0 mm 1 oz 배선의 0.07 mm2 보다 작습니다 (도금 18 um 가정, E). | out/reports/routing_rules.json information.L5.1_battery_vias 에서 계산 (pi x 드릴 x 0.018 mm) | E |
+| SW 간격 여유 | 0.124 mm | out/reports/routing_rules.json sw_node (기준 - 간격) | M |
 | ERC | 오류 0, 경고 0 (시트 8장) | out/reports/erc.json (kicad-cli 10.0.6) | M |
 | DRC | 위반 0, 경고 0, 미연결 0, 회로도 불일치 0 | out/reports/drc.json (kicad-cli 10.0.6) | M |
 | 넷리스트=사양 | PASS (부품 174, 네트 105) | out/manifest.json netlist_vs_spec | M |
 | 보드=IR | PASS (핀 506 / 506) | out/manifest.json board_vs_ir | M |
 | MCU 핀맵 | PASS (핀 256, 차이 0) | out/reports/rev3_mcu_pinmap.json | M |
 | U8/U9 패드표 | PASS | out/reports/rev3_u8_u9_pads.json | M (표는 데이터시트에서 옮김, F) |
-| 배선 규칙 PASS 수 | 16 | out/reports/routing_rules.json | M |
-| 배선 규칙 수 | 21 | out/reports/routing_rules.json | M |
-| 배선 규칙 FAIL | battery_path, hot_loop, input_cap_l5, sw_node, crystal_distance | out/reports/routing_rules.json | M |
 | XTAL1 최악 | 5.96 mm (한계 5.96 mm) | out/reports/routing_rules.json crystals | M |
 | 규칙 파일 | PASS | out/reports/routing_rules.json rule_file | M |
 | 구리 섬 | 없음 (모든 네트 한 덩어리) | out/manifest.json board_metrics | M |
 | 패드에 닿는 비아 | 0 | out/manifest.json board_metrics | M |
 | JLC 확인 결과 | PASS (33/33줄), with_mcu PASS | out/jlc_gate_report.json | M |
-| JLC 확인 시각 | 2026-11-12T02:54:37+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
+| JLC 확인 시각 | 2026-11-12T22:27:21+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
 | 주문 파일 검사 | PASS | out/reports/rev3_export_files.json | M |
 | 주문 파일 재현 | PASS | out/reports/rev3_export_determinism.json | M |
-| 결정성 | FAIL - 바이트 비교 파일 71개 중 다른 것 0개; 시각 줄을 뺀 비교 3개 중 다른 것 1개 (out/vtol_carrier.step: kicad-cli가 STEP을 내보낼 때마다 항목 순서가 바뀜. 번호·순서를 뺀 내용 비교는 같음) | out/reports/determinism.json | M |
-| 다른 폴더 결정성 | PASS - 다른 폴더에 복사해 다시 만든 결정적 파일 60개 중 51개가 이 폴더의 것과 바이트까지 같음 (보드, 회로도, 거버와 zip, BOM, CPL 등 주문에 쓰는 파일 43개는 모두 여기에 듦). 나머지 9개(README_ko.md, kicad/placement.json, kicad/schematic_manifest.json, kicad/work/unrouted_manifest.json, out/ORDER_ko.md, out/따로_살_부품_ko.md, spec/SPEC_ko.md, spec/carrier_spec.json, spec/parts_sources.json)는 자기 폴더 이름이나 그런 파일의 sha256을 담고 있어, 폴더 이름과 그 sha256을 바꿔 넣은 뒤에 같음. 그림 단계 산출물 11개는 그 폴더에서 다시 만들지 않아 비교하지 않음 | out/reports/determinism.json cross_folder | M |
-| 가장자리 2.5 mm 안 몸체 | 34 | out/reports/edge_distance.json | M |
-| 가장자리 2.5 mm 안 JLC 실장 | 15 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
-| 가장자리 2.5 mm 안 with_mcu | 16 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
+| 가장자리 2.5 mm 안 몸체 | 31 | out/reports/edge_distance.json | M |
+| 가장자리 2.5 mm 안 JLC 실장 | 12 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
+| 가장자리 2.5 mm 안 with_mcu | 13 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
 | 가장자리 2.5 mm 안 JLC 미실장 | 19개 (U4, J1, J2, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, U7, J19, JP1, Q3, R47) | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
 | 가장자리 0.3 mm 안 몸체 | U7 0.15 mm, J15 0.29 mm | out/reports/edge_distance.json | M |
-| JLC 실장 가장 가까운 몸체 | L5 0.45 mm | out/reports/edge_distance.json jlc_placed_bodies.default_order closest[0] | M |
+| JLC 실장 가장 가까운 몸체 | R60 0.537 mm | out/reports/edge_distance.json jlc_placed_bodies.default_order closest[0] | M |
 | 모듈 간섭 | A / NOT_VERIFIED, 가정 치수(보통 경우)로 충돌 0건 | out/fit_checks.json module_keepouts | A |
 | 모듈 최소 간격 | 0.5 mm | out/fit_checks.json module_keepouts.clearance_min_mm | F (계획) |
 | 모듈 간섭 보통 0.5 mm 미만 | U1 | out/fit_checks.json module_keepouts.modules[].zones[].below_clearance_min | A |
 | 모듈 간섭 보수적 충돌 | C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end') | out/fit_checks.json module_keepouts.modules[].zones[].below_clearance_min_conservative (<= 0) | A |
 | 모듈 간섭 보수적 0.5 mm 미만 | C48, Q2, Q8, U1, U2, Y1 | out/fit_checks.json module_keepouts.modules[].zones[].below_clearance_min_conservative | A |
 | 외곽 | 76 x 70 mm | spec/carrier_spec.json | F (size) / A (corner radius) |
+| 탭 위치 | KiCad x 117.3..132, y 135..142.2 mm (바깥 모서리 r 1 mm, 본체와 만나는 안쪽 모서리 r 1 mm, 기판 재료는 x 116.3..133) | out/reports/board_metrics.json board_fit.outline.tab_kicad_mm | M |
+| 탭 넓이 | 105.8 mm2 | out/reports/board_metrics.json board_fit.outline.tab_area_mm2 | M |
+| 기판 넓이 | 5425 mm2 | out/reports/board_metrics.json board_fit.outline.area_mm2 | M |
 | 두께 | 1.6 mm | spec/carrier_spec.json | F |
 | 층 수 | 4 | spec/carrier_spec.json | F (계획 불변조건 d) |
 | 높이 한계 | 13.4 mm | spec/module_dimensions.json | F (계획) |
@@ -291,10 +337,13 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 참고 코드 J15 | C131337 | spec/rev3_plan.json bom_lines_now_bought_by_the_user (J15) | F |
 | 코드 J2 | BOM에 없음 | out/jlcpcb_bom.csv | M |
 | 코드 C45 | C11366 | out/jlcpcb_bom.csv | M |
-| 배선 세그먼트 | 2557 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
+| 고정 부품 비교 | 58개 중 rev 2c 자리에서 움직인 것: 없음 | kicad/placement.json placement_checks.rev3.rev2c (fixed_parts_compared, fixed_parts_moved) | M |
+| Fit 허용 범위 | KiCad x 106..134, 바깥 변 y 143.74 mm 이하 (바깥 모서리 r 1 mm) | out/reports/board_metrics.json board_fit.outline.fit_envelope (redesign2 Fit 단계가 기체 CAD에서 잰 허용 범위) | M |
+| 승압부 자리 | U8 (126.5, 135.45) 0도; L5 (125.15, 138.75) 0도; C43 (127.1, 133.3) 180도; C57 (129.2, 136.75) 270도; C41 (120, 138.75) 180도; R63 (123.85, 133.85) 270도; C58 (122.35, 133.85) 270도; R64 (120.85, 133.85) 90도 | kicad/placement.json placements (KiCad mm, 회전) | M |
+| 배선 세그먼트 | 2536 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
 | 배선 원호 | 0 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
-| 배선 비아 | 442 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
-| 비아 크기별 | 0.6/0.3 mm 439개, 0.8/0.4 mm 3개 | kicad/vtol_carrier.kicad_pcb (지름/드릴) | M |
+| 배선 비아 | 439 | kicad/vtol_carrier.kicad_pcb (최종 보드 파일에서 셈) | M |
+| 비아 크기별 | 0.6/0.3 mm 436개, 0.8/0.4 mm 3개 | kicad/vtol_carrier.kicad_pcb (지름/드릴) | M |
 | 변경 행 | 교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140 | spec/rev3_plan.json changes | F (계획) |
 | fit jlc | 144 | spec/carrier_spec.json | M |
 | fit jlc_optional | 4 | spec/carrier_spec.json | M |
@@ -308,7 +357,8 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 프로그래밍 헤더 선택 | A | spec/carrier_spec.json prog_headers.option | M |
 | B안 결론 | 불가 (고정 부품만 남겨도 2x3 다섯 개 자리가 없음) | out/reports/programming_access.json | M |
 | B안 2x3 자리 | SMD 0곳, THT 0곳 | out/reports/programming_access.json verdict_per_family | M |
-| 부품 자리 점유율 | 88.5 % | kicad/placement.json placement_checks.courtyard_occupancy_percent (윗면 부품 자리 면적 / 케이블타이 띠를 뺀 기판 면적) | M |
+| 탭 질량 추정 | 0.31 g | out/reports/board_metrics.json board_fit.outline.tab_area_mm2 x 1.6 mm x 1.85 g/cm3 (FR4 밀도 A) | E |
+| 부품 자리 점유율 | 86.7 % | kicad/placement.json placement_checks.courtyard_occupancy_percent (윗면 부품 자리 면적 / 케이블타이 띠를 뺀 기판 면적) | M |
 | JLC 실장 몸체 0.3 mm 안 | 없음 | out/reports/edge_distance.json jlc_placed_bodies.default_order bodies_under_0p3 | M |
 | 주문 화면 확인 시각 | 2026-11-12 01:30-02:06 KST | spec/jlc_order_page_20261112.json read_at | M (주문 화면 2026-11-12) |
 | 주문 화면 매칭 | 부품 40줄을 인식하고 40줄을 확정 | spec/jlc_order_page_20261112.json files_uploaded_then | M (주문 화면 2026-11-12) |
@@ -340,5 +390,6 @@ B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py           # 주문 당
 | 계획17 ESP-12F RF behaviour | ESP-12F의 무선 성능은 같은 금지 영역에서 ESP-12E와 같다고 가정했습니다 (A). 펌웨어 이미지도 같은 ESP8266 / 4 MB 구성으로 가정합니다 (A). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
 | 계획17 Programming access | 프로그래밍: 빈 구멍에 포고핀 어댑터를 댈 때의 접촉은 확인하지 않았습니다 (NOT_VERIFIED). B안(JLC가 띠 밖에 헤더 실장)은 배치 검색에서 자리가 없었습니다. | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
 | 계획17 AVCC choke C1046 | AVCC 초크 C1046은 정격 15 mA (1.15 Ohm) 입니다. ATmega128A의 AVCC 전류와 대조하지 않았습니다 (NOT_VERIFIED). | spec/REV3_PLAN.md 17장 | 계획 17장의 표시 (E / A / NOT_VERIFIED) |
-| 빌드 시간 | 8.3분, 9.0분 | out/reports/determinism.json builds | M |
-| 결정성 시각 | 2026-11-12T05:24:10+0900 | out/reports/determinism.json | M |
+| 빌드 시간 | 7.3분, 7.3분 | out/reports/determinism.json builds | M |
+| 결정성 시각 | 2026-11-12T22:56:51+0900 | out/reports/determinism.json | M |
+| 배선 재생 입력 보드 | byte-identical to the recorded unrouted board | kicad/work/route_reuse_log.json unrouted_board_guard | M |

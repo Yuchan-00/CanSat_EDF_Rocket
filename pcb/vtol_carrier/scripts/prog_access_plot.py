@@ -15,7 +15,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Polygon, Rectangle
 
 ROOT = Path(__file__).resolve().parent.parent
 FIXED = ("anchor", "cluster", "esp", "power")
@@ -30,7 +30,11 @@ def main() -> int:
     pic = rep["picture_inputs"]
     o = pic["outline_kicad"]
     fig, ax = plt.subplots(figsize=(11.0, 10.4), dpi=150)
-    box(ax, o, fill=False, ec="black", lw=1.6, zorder=5)
+    if pic.get("outline_polygon_kicad"):  # redesign2: the real outline (main rectangle + tab)
+        ax.add_patch(Polygon(pic["outline_polygon_kicad"], closed=True, fill=False, ec="black", lw=1.6, zorder=5))
+        o = [o[0], o[1], o[2], max(p[1] for p in pic["outline_polygon_kicad"])]
+    else:
+        box(ax, o, fill=False, ec="black", lw=1.6, zorder=5)
     box(ax, rep["tie_band_kicad"], fc="#ffe08a", ec="#c79a00", lw=0.8, alpha=0.55, zorder=1)
     box(ax, rep["antenna_rule_area_kicad"], fc="none", ec="#7a3fb0", lw=1.0, ls="--", zorder=4)
     for z in rep["forbidden_zones"]:

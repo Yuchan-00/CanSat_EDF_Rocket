@@ -91,14 +91,7 @@
           )
         )
       )
-      (net "COM_RESET"
-        (wire
-          (path F.Cu 2000
-            822500 -1111120
-            822500 -1111125
-          )
-        )
-      )
+      
       (net "VANE2_PWM"
         (wire
           (path F.Cu 2000
@@ -153,14 +146,7 @@
           )
         )
       )
-      (net "NAV_RESET"
-        (wire
-          (path F.Cu 2000
-            1242625 -1246000
-            1242620 -1246000
-          )
-        )
-      )
+      
       (net "GNS_AVCC"
         (wire
           (path F.Cu 5000
@@ -201,22 +187,8 @@
           )
         )
       )
-      (net "NAV_GLINK_TX"
-        (wire
-          (path F.Cu 2000
-            1242625 -1182000
-            1242620 -1182000
-          )
-        )
-      )
-      (net "GNS_GLINK_RX"
-        (wire
-          (path F.Cu 2000
-            910500 -1184380
-            910500 -1184375
-          )
-        )
-      )
+      
+      
       (net "GPS_RXD_3V3"
         (wire
           (path F.Cu 2000
@@ -256,20 +228,7 @@
           )
         )
       )
-      (net "NLINK_SCK"
-        (wire
-          (path F.Cu 2000
-            1051375 -997500
-            1051380 -997500
-          )
-        )
-        (wire
-          (path F.Cu 2000
-            1186000 -1286620
-            1186000 -1286625
-          )
-        )
-      )
+      
       (net "NLINK_MOSI"
         (wire
           (path F.Cu 2000
@@ -292,14 +251,7 @@
           )
         )
       )
-      (net "VANE3_PWM"
-        (wire
-          (path F.Cu 2000
-            1068000 -1054120
-            1068000 -1054125
-          )
-        )
-      )
+      
       (net "ILINK_C2F"
         (wire
           (path F.Cu 2000
@@ -488,36 +440,9 @@
           )
         )
       )
-      (net "NAV_ISP_MOSI"
-        (wire
-          (path F.Cu 2000
-            1114000 -1286620
-            1114000 -1286625
-          )
-        )
-      )
-      (net "GLINK_G2N"
-        (wire
-          (path F.Cu 2000
-            902500 -1184380
-            902500 -1184375
-          )
-        )
-        (wire
-          (path F.Cu 2000
-            1242620 -1190000
-            1242625 -1190000
-          )
-        )
-      )
-      (net "GNS_ISP_SCK"
-        (wire
-          (path F.Cu 2000
-            838500 -1184380
-            838500 -1184375
-          )
-        )
-      )
+      
+      
+      
       (net "UVLO_REF"
         (wire
           (path F.Cu 2000

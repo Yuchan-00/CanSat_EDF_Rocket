@@ -2,14 +2,14 @@
  "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_export_files.json",
  "result": "PASS",
  "tool": "scripts/rev3_checks.py export-files",
- "spec_sha256": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
+ "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
  "problems": [],
  "pairs": {
   "main": {
    "bom": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv",
    "cpl": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv",
    "bom_sha256": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
-   "cpl_sha256": "8112abe695cb42e2632de75a84d5efee7b421db7c0e754a0daad0525550f9a07",
+   "cpl_sha256": "e250211c7c3fd33bfca4a13f0637a20403897f236246ed04be8737636ac75607",
    "bom_lines": 33,
    "cpl_rows": 144,
    "bom_header_exact": true,
@@ -43,7 +43,7 @@
    "bom": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv",
    "cpl": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv",
    "bom_sha256": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
-   "cpl_sha256": "1c2503e959057e7e2b6847ea0bb955654e5a00a5681fd60321dcb3965d8645e9",
+   "cpl_sha256": "ca865157515e163f27a1da2fef17e71fe4fae593b5e8081de9ae4081172fafaf",
    "bom_lines": 34,
    "cpl_rows": 148,
    "bom_header_exact": true,
@@ -81,8 +81,8 @@
   }
  },
  "silk_marks": {
-  "board_sha256_of_report": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
-  "board_sha256_now": "cc750ce9e23322b295687ed662a24f2a7e924d10c8ceb610b7e668cc46b414d2",
+  "board_sha256_of_report": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d",
+  "board_sha256_now": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d",
   "required": [
    "C45",
    "C47",

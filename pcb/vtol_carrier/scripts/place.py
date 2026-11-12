@@ -46,9 +46,12 @@ from ai_eda.tools.kicad.geometry import pad_center, to_board
 from ai_eda.tools.kicad.library import KicadLibrary
 
 import common
+import outline
 
 CX, CY = 100.0, 100.0  # board centre in KiCad coordinates (= vehicle axis)
-BX0, BX1, BY0, BY1 = 62.0, 138.0, 65.0, 135.0  # outline 76 x 70
+BX0, BX1, BY0, BY1 = 62.0, 138.0, 65.0, 135.0  # main rectangle 76 x 70; BY1 = the y 135 '-y edge' (band end, J7 rule)
+#: redesign2 Layout stage: the outline = main rectangle + the tab (scripts/outline.py); bitmaps cover its bounding box
+BY_MAX = outline.BBOX[3]
 TIE_X0, TIE_X1 = 97.0, 103.0  # cable-tie band x -3..+3 mm (spec board.mounting.tie_band)
 EDGE_MARGIN = 0.25
 CELL = 0.05
@@ -84,7 +87,7 @@ class Rect:
 
 
 NX = int(round((BX1 - BX0) / CELL))
-NY = int(round((BY1 - BY0) / CELL))
+NY = int(round((BY_MAX - BY0) / CELL))
 
 
 class Bitmap:
@@ -149,8 +152,8 @@ class Shape:
     polys: list[list[tuple[float, float]]] = field(default_factory=list)
 
     def inside_board(self, x: float, y: float, margin: float) -> bool:
-        return (x + self.bbox.x0 >= BX0 + margin - 1e-6 and x + self.bbox.x1 <= BX1 - margin + 1e-6
-                and y + self.bbox.y0 >= BY0 + margin - 1e-6 and y + self.bbox.y1 <= BY1 - margin + 1e-6)
+        # outline adaptation (redesign2): the rev 3 rectangle test for boxes above y 135 - margin, the tab test below
+        return outline.rect_inside((x + self.bbox.x0, y + self.bbox.y0, x + self.bbox.x1, y + self.bbox.y1), margin)
 
 
 def _xy(node) -> tuple[float, float]:
@@ -318,12 +321,16 @@ ANCHORS: dict[str, tuple[float, float, float, str]] = {
 
 #: unpopulated programming footprints in the cable-tie band, top to bottom (ESP rule area ends at y 72.4)
 BAND_ORDER = ["J3", "J24", "J20", "J25", "J21", "J26", "J22", "J19"]  # J3 (ESP flash) beside the ESP's right pad row
+#: gap left open above a band footprint (user decision 2026-11-12 "옮겨도 됨": J26 / J22 / J19 move +0.55 mm in y so that a
+#: 2.0 mm battery track crosses the band between J21 and J26 - redesign/battery_path study B); the stack-end limit is unchanged
+BAND_GAP_BEFORE = {"J26": 0.55}
 
 
 def band_anchors(fps: dict) -> dict[str, tuple[float, float, float, str]]:
     out = {}
     y = ESP_KEEPOUT[3] + 0.05  # top of the band stack: below the antenna rule area
     for ref in BAND_ORDER:
+        y += BAND_GAP_BEFORE.get(ref, 0.0)
         bb = fps[ref].courtyard
         x0 = (TIE_X0 + TIE_X1) / 2 - (bb.x1 + bb.x2) / 2
         oy = y - bb.y1
@@ -388,6 +395,10 @@ LOW_ZONES: list[tuple[tuple[float, float, float, float], float, str]] = [
     ((103.65, 77.55, 118.70, 79.55), -1.0, "BMP280 header plastic bar rests on the carrier (A)"),
     # BMP280 outline by spec/module_dimensions.json ends at y 91.23, 2.18 mm beyond the rev 2c MODULES["J2"] rectangle
     ((103.65, 89.05, 118.70, 91.25), 1.1, "BMP280 outline by spec/module_dimensions.json (A)"),
+    # redesign2 Fit stage (fit/tab_clearance.json, M): no part body or pad within 2.0 mm in plan of the 315 deg joint
+    # screw of the intake / avionics joint (screw length NOT_VERIFIED: modelled for a tip at r 49.5 = the longest screw
+    # the CAD's 7.5 mm screw room tolerates); bare copper, mask and silk are allowed there
+    ((131.40, 131.40, 138.0, 139.09), -1.0, "315 deg joint screw part-free zone (Fit stage, tip r 49.5, A for the screw length)"),
 ]
 
 ACCESS = {"J15", "J5", "J2", "J1", "JP1", "J14", "J17", "J7", "J12", "J16", "C47", "D1", "D2", "D3", "D4"}  # LEDs stay visible
@@ -803,19 +814,30 @@ PWR_FIRST = ["Q10", "R14", "C47"]
 #   U9   comparator in the edge strip under the NAV with C60 / R65 / R67 / R66 / C59 around it (UVLO_SENSE stays
 #        inside x 113..117); the pull-down R68, the LDO input capacitor C44 and the second input capacitor C42 find
 #        no spot in the corner and are placed greedily (POWER_AUTO)
+#: redesign2 Layout stage: the boost core sits in the outline tab (scripts/outline.py) below the NAV crystal, every
+#: position relative to U8 (BOOST_U8 = U8 centre). Local arrangement (U8 rot 0: pins 1 FB / 2 EN / 3 VIN at x -0.7125,
+#: 6 VOUT / 5 SW / 4 GND at x +0.7125, y -0.5 / 0 / +0.5): SW leaves pin 5 toward +x and turns down into L5 pad 2
+#: below the SW / GND column (pad gap 1.876 mm); output capacitor C43 above U8 (pad 1 +5V over pin 6, pad 2
+#: GND tied to pin 4 by a 0.25 mm track between the two pad rows under the SOT-563 body); output capacitor C57 upright
+#: right of the SW leg (pad 1 +5V level with pin 6, pad 2 GND 1.8 mm from pin 4); L5 pad 1 (VBAT) below the VIN side
+#: with the input capacitor C41 directly beside it (VIN pin -> L5.1 1.9 mm of track, C41.1 -> L5.1 0.9 mm); FB divider
+#: R63 / C58 / R64 upright west of U8 (FB node on the U8 side, +5V tops sensed at C43 pad 1, R64 GND top).
+BOOST_U8 = (126.5, 135.45)
+
+
+def _bl(dx: float, dy: float) -> tuple[float, float]:
+    return (round(BOOST_U8[0] + dx, 4), round(BOOST_U8[1] + dy, 4))
+
+
 POWER_BLOCK: dict[str, tuple[float, float, float, str]] = {
-    # relayout step (rev 3 reviews E-R1 / E-R2 / E-R3): U8 above its input capacitor, the two output capacitors upright
-    # between U8 and L5 (+5V pads up, GND pads down, BOOST_SW between their pads), feedback parts west of U8
-    "L5": (134.90, 132.40, 180, "boost inductor in the +x/-y corner, pad 2 (BOOST_SW) toward U8"),
-    "C43": (130.90, 132.40, 270, "boost output capacitor 2 upright beside L5: pad 1 (+5V) up, pad 2 (GND) down on the common F.Cu GND bar"),
-    "C57": (128.60, 132.40, 270, "boost output capacitor 1 upright beside C43: pad 1 (+5V) 0.95 mm from U8 pin 6, pad 2 (GND) on the F.Cu GND bar with U8 pin 4 (hot loop on the top layer)"),
-    "U8": (125.70, 131.50, 0, "boost converter: pins 4-6 (GND / SW / VOUT) toward C57 / L5, pins 1-3 away from them, pins 3 / 4 above the C41 pads"),
-    "C41": (125.15, 133.60, 0, "boost input capacitor directly below U8: pad 1 (VBAT) under pin 3 (VIN), pad 2 (GND) under pin 4 on the F.Cu GND bar"),
-    "U6": (134.05, 125.65, 270, "3.3 V LDO above L5, tab (+3V3) toward C45, body clear of the OpenLog outline"),
-    "C45": (127.65, 128.10, 180, "LDO output tantalum between the NAV bulk capacitor and the boost block, pad 1 (+3V3) toward the U6 tab"),
-    "R63": (123.00, 130.40, 0, "FB divider top resistor west of U8: pad 2 (BOOST_FB) 1.3 mm from U8 pin 1, pad 1 (+5V) sensed at C57 pad 1 by its own track"),
-    "R64": (122.08, 133.10, 270, "FB divider bottom resistor upright below R63: pad 1 (BOOST_FB) up, pad 2 (GND) down"),
-    "C58": (120.60, 133.10, 90, "feed-forward capacitor upright beside R64: pad 2 (BOOST_FB) up, level with R64 pad 1"),
+    "U8": (*_bl(0.0, 0.0), 0, "boost converter in the outline tab; pins 4-6 (GND / SW / VOUT) toward C57 / L5, FB / EN / VIN west"),
+    "C43": (*_bl(0.6, -2.15), 180, "boost output capacitor above U8: pad 1 (+5V) over pin 6 (0.6 mm), pad 2 (GND) 1.8 mm from pin 4, tied to it by the track between the SOT-563 pad rows"),
+    "C57": (*_bl(2.7, 1.3), 270, "boost output capacitor upright right of the SW leg: pad 1 (+5V) level with pin 6, pad 2 (GND) 1.8 mm from pin 4"),
+    "L5": (*_bl(-1.35, 3.3), 0, "boost inductor below U8 in the tab: pad 2 (SW) under the SW / GND column (1.875 mm from pin 5), pad 1 (VBAT) under the VIN side, open toward the tab bottom for the 2.0 mm battery track"),
+    "C41": (*_bl(-6.5, 3.3), 180, "boost input capacitor beside L5 pad 1 (pad 1 0.5 mm from it), GND pad outward with its own via"),
+    "R63": (*_bl(-2.65, -1.6), 270, "FB divider top resistor upright west of U8: pad 2 (BOOST_FB) level with pin 1, pad 1 (+5V) sensed at C43 pad 1 by its own track"),
+    "C58": (*_bl(-4.15, -1.6), 270, "feed-forward capacitor upright beside R63: pad 2 (BOOST_FB) on the FB row, pad 1 (+5V) beside R63 pad 1"),
+    "R64": (*_bl(-5.65, -1.6), 90, "FB divider bottom resistor upright beside C58: pad 1 (BOOST_FB) on the FB row, pad 2 (GND) up with its own via"),
     "U9": (117.80, 133.05, 0, "cut-off comparator in the edge strip under the NAV (BOOST_EN is low impedance)"),
     "C60": (115.00, 133.20, 90, "UVLO_SENSE filter capacitor beside U9 pin 3 (pad 1 down, level with pin 3)"),
     "R65": (113.50, 133.20, 90, "UVLO divider top resistor beside C60: pad 2 (UVLO_SENSE) up toward R67"),
@@ -826,13 +848,18 @@ POWER_BLOCK: dict[str, tuple[float, float, float, str]] = {
     # targets moved with U8; a greedy re-run would move them and every part placed after them)
     "R68": (131.90, 120.50, 0, "BOOST_EN pull-down at its delivered rev 3 spot (first free spot found from the former U8 pin 2 position)"),
     "C44": (95.90, 131.90, 90, "LDO input capacitor at its delivered rev 3 spot"),
-    "C42": (72.60, 69.30, 90, "second input capacitor at the switch-lead header J15, delivered rev 3 spot (no 1206 spot is left in the boost corner)"),
+    "C42": (72.80, 69.30, 90, "second input capacitor at the switch-lead header J15 (redesign2: +0.20 mm in x so the 2.0 mm VBAT_LOGIC_RAW track enters Q10 pad 3, redesign/battery_path study A)"),
+    "U6": (134.05, 125.65, 270, "3.3 V LDO above L5, tab (+3V3) toward C45, body clear of the OpenLog outline"),
+    "C45": (127.65, 128.10, 180, "LDO output tantalum between the NAV bulk capacitor and the boost block, pad 1 (+3V3) toward the U6 tab"),
 }
 #: power parts placed greedily right after the keep pass, in this order (targets: TARGET_HINT)
 POWER_AUTO: list[str] = []
 #: greedy rev 2c parts the power block displaced, at explicit spots (how = "moved")
 MOVED: dict[str, tuple[float, float, float, str]] = {
     "D1": (129.70, 125.50, 90, "NAV status LED moved 7 mm from its rev 2c spot (now C58) into the slot between C3 and U6: reachable, not under a module"),
+    # redesign2: the Q3 pull-up keeps its delivered rev 3 spot (greedy would now take a spot in the tab beside C41, where
+    # the battery track and the input capacitor need the room)
+    "R46": (127.50, 118.10, 90, "Q3 pull-up at its delivered rev 3 spot (greedy result of the delivered board)"),
 }
 #: greedy parts that must not go back to their rev 2c spot (the power block needs the room): NAV status LED D1
 #: (spot taken by C58) and the Q3 pull-up R46 (spot taken by R67; Q3 itself is an unpopulated option)
@@ -840,6 +867,8 @@ KEEP_EXCLUDE: set[str] = {"D1", "R46"}
 #: option B spots of the programming headers (ref -> x, y, rot, reason); empty = no legal set found (see
 #: out/reports/programming_access.json) -> option B cannot be built and the spec must stay on option A
 PROG_B: dict[str, tuple[float, float, float, str]] = {}
+#: anchors the user allowed to move (2026-11-12, "옮겨도 됨"): ref -> exact (dx, dy) in mm against the rev 2c placement
+USER_APPROVED_ANCHOR_MOVES: dict[str, tuple[float, float]] = {"J26": (0.0, 0.55), "J22": (0.0, 0.55), "J19": (0.0, 0.55)}
 #: rev 2c placement the keep pass reads (archived, never rewritten)
 KEEP_FROM = common.ROOT / "archive" / "rev2c_pololu_1s" / "kicad" / "placement.json"
 
@@ -918,7 +947,7 @@ def checks(pl: Placer) -> dict:
         bad = [r for r in under if r in ACCESS or pl.height(r) > b["max_h"]]
         x0, y0, x1, y1 = b["rect"]
         bodies.append({**b, "rect": [round(v, 3) for v in b["rect"]], "parts_under": under, "too_tall_or_access_under": bad,
-                       "inside_outline": x0 >= BX0 - 0.01 and x1 <= BX1 + 0.01 and y0 >= BY0 - 0.01 and y1 <= BY1 + 0.01,
+                       "inside_outline": outline.rect_inside((x0, y0, x1, y1), -0.01),
                        "over_tie_band": x0 < TIE_X1 and x1 > TIE_X0})
     out["module_bodies"] = bodies
     area = {TOP: 0.0, BOT: 0.0}
@@ -926,7 +955,9 @@ def checks(pl: Placer) -> dict:
         c = cy[r]
         area[pl.placed[r]["side"]] += (c.x1 - c.x0) * (c.y1 - c.y0)
     out["courtyard_bbox_area_mm2"] = {k: round(v, 1) for k, v in area.items()}
-    out["board_area_minus_tie_band_mm2"] = round((BX1 - BX0) * (BY1 - BY0) - (TIE_X1 - TIE_X0) * (BY1 - BY0), 1)
+    # outline adaptation: main rectangle (corner arcs ignored, as before) + the tab area (scripts/outline.py)
+    out["board_area_minus_tie_band_mm2"] = round((BX1 - BX0) * (BY1 - BY0) + outline.describe()["tab_area_mm2"]
+                                                 - (TIE_X1 - TIE_X0) * (BY1 - BY0), 1)
     out["courtyard_occupancy_percent"] = round(100.0 * area[TOP] / out["board_area_minus_tie_band_mm2"], 1)
     out["rev3"] = rev3_report(pl, cy)
     return out
@@ -984,7 +1015,16 @@ def rev3_report(pl: Placer, cy: dict[str, Rect]) -> dict:
     old = old_all["placements"]
     opt_b = common.prog_headers(pl.spec) == "B"
     fixed = sorted([r for r, p in old.items() if p["how"] in ("anchor", "cluster", "esp") and not (opt_b and r in common.IN_BAND)], key=common_key)
-    moved = [r for r in fixed if r in pl.placed and any(pl.placed[r][k] != old[r][k] for k in ("x", "y", "rot", "side"))]
+    # user decision 2026-11-12 ("옮겨도 됨"): the REFERENCE spot of exactly these anchors is the rev 2c spot plus the
+    # approved offset (same rotation / side). Every other part is compared with its rev 2c spot exactly as before; these
+    # three now fail unless they sit exactly at the new spot (also if they stayed at the rev 2c spot).
+    ref = {r: ({**old[r], "x": round(old[r]["x"] + USER_APPROVED_ANCHOR_MOVES[r][0], 4),
+                "y": round(old[r]["y"] + USER_APPROVED_ANCHOR_MOVES[r][1], 4)} if r in USER_APPROVED_ANCHOR_MOVES else old[r])
+           for r in old}
+    moved = [r for r in fixed if r in pl.placed and any(
+        (round(pl.placed[r][k], 4) if r in USER_APPROVED_ANCHOR_MOVES and k in ("x", "y") else pl.placed[r][k]) != ref[r][k]
+        for k in ("x", "y", "rot", "side"))]
+    approved = {r: list(USER_APPROVED_ANCHOR_MOVES[r]) for r in USER_APPROVED_ANCHOR_MOVES if r in fixed and r not in moved}
     how = {}
     for r in refs:
         how[pl.placed[r]["how"]] = how.get(pl.placed[r]["how"], 0) + 1
@@ -993,6 +1033,8 @@ def rev3_report(pl: Placer, cy: dict[str, Rect]) -> dict:
         "removed_refs": sorted([r for r in old if r not in pl.placed], key=common_key),
         "new_refs": sorted([r for r in pl.placed if r not in old], key=common_key),
         "fixed_parts_compared": len(fixed), "fixed_parts_moved": moved,
+        "fixed_parts_at_user_decided_spot": approved,
+        "user_decided_reference_offsets_mm": {r: list(d) for r, d in USER_APPROVED_ANCHOR_MOVES.items()},
         "crystals_unchanged": {r: pl.placed[r] == {**pl.placed[r], **{k: old[r][k] for k in ("x", "y", "rot", "side")}}
                                for r in refs if r.startswith("Y") and r in old},
         "how_counts": dict(sorted(how.items())),
@@ -1115,7 +1157,7 @@ def main() -> int:
     pl.run()
     chk = checks(pl)
     data = {
-        "frame": "KiCad coordinates (mm, y down); board outline x 62..138, y 65..135; spec (x, y) = (X - 100, 100 - Y)",
+        "frame": "KiCad coordinates (mm, y down); board outline x 62..138, y 65..135 plus the tab x %.1f..%.1f to y %.1f (scripts/outline.py); spec (x, y) = (X - 100, 100 - Y)" % (outline.TAB_X0, outline.TAB_X1, outline.TAB_Y1),
         "generator": "scripts/place.py rev 3 (deterministic: anchored floorplan + MCU clusters + power block + rev 2c keep pass + greedy fill, polygon courtyards)",
         "prog_headers_option": common.prog_headers(spec),
         "spec_sha256": common.sha256_file(common.SPEC_PATH),

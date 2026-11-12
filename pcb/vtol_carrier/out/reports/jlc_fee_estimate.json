@@ -50,7 +50,7 @@
    "tht_joints_per_board": 0,
    "tht_hand_soldering": 0.0,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 34.85,
+   "components_tier1": 34.86,
    "components_with_loss_and_minimum": 39.16,
    "sum_E": 126.43,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
@@ -107,7 +107,7 @@
    "tht_joints_per_board": 0,
    "tht_hand_soldering": 0.0,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 34.85,
+   "components_tier1": 34.86,
    "components_with_loss_and_minimum": 39.16,
    "sum_E": 82.58
   },
@@ -124,7 +124,7 @@
    "tht_joints_per_board": 0,
    "tht_hand_soldering": 0.0,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 34.85,
+   "components_tier1": 34.86,
    "components_with_loss_and_minimum": 39.16,
    "sum_E": 126.43,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
@@ -143,9 +143,9 @@
    "tht_joints_per_board": 0,
    "tht_hand_soldering": 0.0,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 62.02,
-   "components_with_loss_and_minimum": 71.31,
-   "sum_E": 117.08
+   "components_tier1": 62.06,
+   "components_with_loss_and_minimum": 71.35,
+   "sum_E": 117.12
   },
   {
    "pair": "with_mcu",
@@ -160,11 +160,11 @@
    "tht_joints_per_board": 0,
    "tht_hand_soldering": 0.0,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 62.02,
-   "components_with_loss_and_minimum": 71.31,
-   "sum_E": 159.39,
+   "components_tier1": 62.06,
+   "components_with_loss_and_minimum": 71.35,
+   "sum_E": 159.43,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 191.24
+   "sum_E_with_standard_only_fees": 191.28
   },
   {
    "pair": "with_mcu",
@@ -179,9 +179,9 @@
    "tht_joints_per_board": 0,
    "tht_hand_soldering": 0.0,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 155.06,
-   "components_with_loss_and_minimum": 142.2,
-   "sum_E": 190.74
+   "components_tier1": 155.14,
+   "components_with_loss_and_minimum": 142.28,
+   "sum_E": 190.82
   },
   {
    "pair": "with_mcu",
@@ -196,11 +196,11 @@
    "tht_joints_per_board": 0,
    "tht_hand_soldering": 0.0,
    "confirm_parts_placement": 0.45,
-   "components_tier1": 155.06,
-   "components_with_loss_and_minimum": 142.2,
-   "sum_E": 233.05,
+   "components_tier1": 155.14,
+   "components_with_loss_and_minimum": 142.28,
+   "sum_E": 233.13,
    "standard_only_fees_applicability_NOT_VERIFIED": 31.85,
-   "sum_E_with_standard_only_fees": 264.9
+   "sum_E_with_standard_only_fees": 264.98
   }
  ],
  "standard_only_fees": {

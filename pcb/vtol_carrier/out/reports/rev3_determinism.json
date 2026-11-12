@@ -13,10 +13,10 @@
  "problems": [],
  "files": 13,
  "sha256_on_disk_before": {
-  "spec/carrier_spec.json": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
-  "spec/SPEC_ko.md": "4ed84c1fb83803cbef6540554a7aaabb07441eacf289ca8888eb4792ee508cb2",
+  "spec/carrier_spec.json": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
+  "spec/SPEC_ko.md": "d1d9d0c0e67d6b01f1e2376428ba980d1b8a70a73946e340660f02965cc204db",
   "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
-  "kicad/schematic_manifest.json": "14723be09b1540232beba37a9bda8a708cfca17de1c97a59a5e53e25fb35b2a0",
+  "kicad/schematic_manifest.json": "d3e914fa3ffd9c71ca9896f6a0aee29fe56c375667cb3f88de0fdf790bf1d6ab",
   "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
   "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
   "kicad/fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",
@@ -28,10 +28,10 @@
   "kicad/vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1"
  },
  "sha256_after_build_1": {
-  "spec/carrier_spec.json": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
-  "spec/SPEC_ko.md": "4ed84c1fb83803cbef6540554a7aaabb07441eacf289ca8888eb4792ee508cb2",
+  "spec/carrier_spec.json": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
+  "spec/SPEC_ko.md": "d1d9d0c0e67d6b01f1e2376428ba980d1b8a70a73946e340660f02965cc204db",
   "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
-  "kicad/schematic_manifest.json": "14723be09b1540232beba37a9bda8a708cfca17de1c97a59a5e53e25fb35b2a0",
+  "kicad/schematic_manifest.json": "d3e914fa3ffd9c71ca9896f6a0aee29fe56c375667cb3f88de0fdf790bf1d6ab",
   "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
   "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
   "kicad/fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",
@@ -43,10 +43,10 @@
   "kicad/vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1"
  },
  "sha256_after_build_2": {
-  "spec/carrier_spec.json": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
-  "spec/SPEC_ko.md": "4ed84c1fb83803cbef6540554a7aaabb07441eacf289ca8888eb4792ee508cb2",
+  "spec/carrier_spec.json": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
+  "spec/SPEC_ko.md": "d1d9d0c0e67d6b01f1e2376428ba980d1b8a70a73946e340660f02965cc204db",
   "kicad/ir/vtol_carrier.ir.json": "42c7e8f982bcc05e485164c24198da3a1482a4872fefe96d58f23131f777c7fe",
-  "kicad/schematic_manifest.json": "14723be09b1540232beba37a9bda8a708cfca17de1c97a59a5e53e25fb35b2a0",
+  "kicad/schematic_manifest.json": "d3e914fa3ffd9c71ca9896f6a0aee29fe56c375667cb3f88de0fdf790bf1d6ab",
   "kicad/vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
   "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
   "kicad/fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",

@@ -793,8 +793,19 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("- MCU, 센서 모듈, ESP-12F 모듈, 스루홀 커넥터를 뺀 모든 실장 부품(모두 SMT)을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 "
       f"(재고 근거: `{root}/spec/parts_sources.json`).")
     A("- 부품마다 `fit` (누가 붙이는가) 값을 가집니다. JLC BOM / CPL은 이 값에서만 만들어집니다.")
-    A("- MCU 4개의 핀 256개가 가는 네트, 기판 외곽 76 x 70 mm, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. "
-      f"rev 2c 자료는 `{root}/archive/rev2c_pololu_1s/` 에 보관했습니다.")
+    om = spec["board"]["outline_mm"]
+    tab = om.get("tab")
+    if tab:
+        # redesign2 (user request 2026-11-12): the 76 x 70 main rectangle is unchanged, a tab on the -y edge is added
+        A(f"- MCU 4개의 핀 256개가 가는 네트, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. "
+          f"기판 본체 {om['size'][0]:g} x {om['size'][1]:g} mm 사각형과 그 변도 그대로이고, 2026-11-12 사용자 요청(\"{tab['user_request_verbatim']}\")으로 "
+          f"-y 변(차체 -y 쪽)에 승압 회로를 올리는 탭을 붙였습니다: x {tab['x'][0]:g}..{tab['x'][1]:g}, y {tab['y'][0]:g}..{tab['y'][1]:g} mm "
+          f"(차체 좌표), 넓이 {tab['area_mm2']:g} mm2, 외접 크기 {om['bbox_size'][0]:g} x {om['bbox_size'][1]:g} mm. "
+          "이것은 계획 불변조건 (b) '외곽 76 x 70 mm 그대로'에서 벗어난 사용자 결정입니다. "
+          f"rev 2c 자료는 `{root}/archive/rev2c_pololu_1s/` 에 보관했습니다.")
+    else:
+        A("- MCU 4개의 핀 256개가 가는 네트, 기판 외곽 76 x 70 mm, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. "
+          f"rev 2c 자료는 `{root}/archive/rev2c_pololu_1s/` 에 보관했습니다.")
     A("")
     A("## 2. 누가 무엇을 붙이는가")
     A("")

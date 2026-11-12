@@ -483,39 +483,38 @@
  },
  "gnd": {
   "copper_layers": 4,
-  "gnd_vias": 197,
+  "gnd_vias": 185,
   "gnd_fill_polygons": {
-   "F.Cu": 63,
-   "B.Cu": 53,
-   "In1.Cu": 2
+   "F.Cu": 57,
+   "B.Cu": 50,
+   "In1.Cu": 1
   },
   "gnd_fill_area_mm2": {
-   "F.Cu": 1965.6,
-   "B.Cu": 2409.5,
-   "In1.Cu": 4479.8
+   "F.Cu": 1928.0,
+   "B.Cu": 2390.3,
+   "In1.Cu": 4570.7
   },
-  "plus5v_in2_fill_area_mm2": 4216.7,
+  "plus5v_in2_fill_area_mm2": 4319.6,
   "plus5v_in2_fill_polygons": 5,
-  "gnd_track_mm": 117.9,
+  "gnd_track_mm": 121.6,
   "gnd_track_widths": {
-   "0.3": 91,
-   "0.25": 12,
-   "0.2": 27,
-   "0.4": 5,
-   "0.15": 2,
-   "1.0": 1
+   "0.3": 92,
+   "0.25": 16,
+   "0.2": 12,
+   "0.4": 3,
+   "0.5": 1
   },
   "track_length_over_adjacent_plane_pct": {
-   "F.Cu": 89.6,
+   "F.Cu": 89.8,
    "B.Cu": 86.9
   },
   "track_mm_per_layer": {
-   "F.Cu": 2127.8,
-   "B.Cu": 1945.4
+   "F.Cu": 2165.5,
+   "B.Cu": 2002.2
   },
   "nlink_pct_on_F_over_In1_GND": {
    "NLINK_SS": 35.5,
-   "NLINK_SCK": 32.0,
+   "NLINK_SCK": 48.3,
    "NLINK_MOSI": 17.9,
    "NLINK_MISO": 23.9
   }
@@ -541,29 +540,28 @@
   },
   "+5V": {
    "length_by_width_mm": {
-    "0.2": 2.3,
-    "0.25": 3.0,
-    "0.35": 3.9,
-    "0.4": 2.2,
-    "0.5": 52.6,
-    "1.0": 3.4
+    "0.2": 9.1,
+    "0.3": 14.5,
+    "0.4": 3.7,
+    "0.5": 34.3
    },
    "vias": {
-    "0.6/0.3": 41
+    "0.6/0.3": 42
    },
-   "track_mm": 67.4
+   "track_mm": 61.6
   },
   "+3V3": {
    "length_by_width_mm": {
+    "0.2": 19.4,
     "0.375": 7.1,
     "0.4": 3.9,
     "0.45": 16.6,
-    "0.5": 320.3
+    "0.5": 301.8
    },
    "vias": {
     "0.6/0.3": 13
    },
-   "track_mm": 347.9
+   "track_mm": 348.8
   },
   "VBAT_LOGIC": {
    "length_by_width_mm": {
@@ -574,56 +572,51 @@
   },
   "VBAT_LOGIC_SW": {
    "length_by_width_mm": {
-    "0.35": 0.5,
-    "0.45": 1.0,
-    "0.7": 0.8,
-    "0.75": 0.9,
-    "0.8": 11.8,
-    "0.85": 8.9,
-    "0.9": 2.2,
-    "1.0": 17.6,
-    "1.5": 0.8,
-    "1.56": 6.8,
-    "2.0": 5.8,
-    "2.4": 77.2,
+    "0.3": 14.6,
+    "0.4": 1.7,
+    "0.5": 7.6,
+    "0.6": 1.2,
+    "0.8": 0.9,
+    "1.0": 7.1,
+    "2.0": 32.4,
+    "2.4": 56.6,
     "4.0": 44.5
    },
    "vias": {
-    "0.6/0.3": 5,
+    "0.6/0.3": 3,
     "0.8/0.4": 3
    },
-   "track_mm": 178.9
+   "track_mm": 166.6
   },
   "VBAT_LOGIC_RAW": {
    "length_by_width_mm": {
-    "1.0": 1.1,
-    "2.0": 7.0
+    "2.0": 7.8
    },
    "vias": {},
-   "track_mm": 8.1
+   "track_mm": 7.8
   },
   "BOOST_SW": {
    "length_by_width_mm": {
-    "0.35": 6.6
+    "0.35": 3.0
    },
    "vias": {},
-   "track_mm": 6.6
+   "track_mm": 3.0
   }
  },
  "hole_to_hole": {
-  "min_drill_edge_mm_different_nets": 0.536,
+  "min_drill_edge_mm_different_nets": 0.538,
   "pair": [
    [
-    106.8026,
-    101.7011,
+    75.4396,
+    129.3357,
     0.15,
-    "NLINK_SCK"
+    "GNS_LED"
    ],
    [
-    107.3349,
-    102.3452,
+    75.4338,
+    128.4974,
     0.15,
-    "NLINK_MISO"
+    "GNS_LED_A"
    ]
   ],
   "rule_mm": 0.5
@@ -631,12 +624,12 @@
  "silk": {
   "board_texts": {
    "F.Silkscreen": 10,
-   "B.Silkscreen": 24,
+   "B.Silkscreen": 22,
    "User.Drawings": 9
   },
   "reference_layers": {
-   "F.Fab": 165,
-   "F.Silkscreen": 9
+   "F.Fab": 160,
+   "F.Silkscreen": 14
   }
  },
  "u6_cap_distance_mm": {
@@ -662,20 +655,20 @@
  },
  "min_track_width_mm": {
   "VBAT_LOGIC_RAW": {
-   "min_mm": 1.0,
-   "segments": 3
+   "min_mm": 2.0,
+   "segments": 2
   },
   "VBAT_LOGIC": {
    "min_mm": 2.0,
    "segments": 6
   },
   "VBAT_LOGIC_SW": {
-   "min_mm": 0.35,
-   "segments": 30
+   "min_mm": 0.3,
+   "segments": 28
   },
   "BOOST_SW": {
    "min_mm": 0.35,
-   "segments": 3
+   "segments": 4
   },
   "SERVO_5V": {
    "min_mm": 1.25,
@@ -687,11 +680,11 @@
   },
   "+5V": {
    "min_mm": 0.2,
-   "segments": 79
+   "segments": 73
   },
   "+3V3": {
-   "min_mm": 0.375,
-   "segments": 232
+   "min_mm": 0.2,
+   "segments": 239
   },
   "GPS_VCC": {
    "min_mm": 0.5,
@@ -926,7 +919,7 @@
   "items": []
  },
  "silk_over_bodies": {
-  "front_texts": 19,
+  "front_texts": 24,
   "over_bodies": [],
   "ok": true
  },
@@ -946,7 +939,7 @@
   "Q10.3": {
    "net": "VBAT_LOGIC_RAW",
    "tracks_attached_mm": [
-    1.0
+    2.0
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
@@ -975,8 +968,9 @@
   "L5.1": {
    "net": "VBAT_LOGIC_SW",
    "tracks_attached_mm": [
-    0.9,
-    1.5
+    0.3,
+    0.8,
+    2.0
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
@@ -990,13 +984,14 @@
   "U8.3": {
    "net": "VBAT_LOGIC_SW",
    "tracks_attached_mm": [
-    0.35
+    0.3
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
   "U8.4": {
    "net": "GND",
    "tracks_attached_mm": [
+    0.25,
     0.3
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
@@ -1011,37 +1006,38 @@
   "U8.6": {
    "net": "+5V",
    "tracks_attached_mm": [
-    0.35
+    0.3,
+    0.3
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
   "C57.1": {
    "net": "+5V",
    "tracks_attached_mm": [
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    1.0
+    0.3,
+    0.5
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
   "C43.1": {
    "net": "+5V",
    "tracks_attached_mm": [
+    0.2,
+    0.3,
+    0.4,
+    0.4,
     0.5,
     0.5,
-    1.0
+    0.5,
+    0.5,
+    0.5
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
   "C41.1": {
    "net": "VBAT_LOGIC_SW",
    "tracks_attached_mm": [
-    0.45,
-    1.0
+    0.8
    ],
    "zone_connection": "inherited (THT thermal / SMD solid)"
   },
@@ -1082,18 +1078,18 @@
  },
  "power_narrow_outside_pad_entry": {
   "VBAT_LOGIC_SW": {
-   "segments": 10,
-   "length_mm": 26.14,
-   "min_mm": 0.35
+   "segments": 13,
+   "length_mm": 26.04,
+   "min_mm": 0.3
   },
   "+3V3": {
-   "segments": 12,
-   "length_mm": 27.51,
-   "min_mm": 0.375
+   "segments": 59,
+   "length_mm": 46.79,
+   "min_mm": 0.2
   },
   "+5V": {
-   "segments": 12,
-   "length_mm": 10.74,
+   "segments": 22,
+   "length_mm": 26.38,
    "min_mm": 0.2
   },
   "SERVO_5V": {
@@ -1321,6 +1317,113 @@
     ]
    }
   ],
-  "note": "vehicle x / y (spec frame); add these boxes to the CAD carrier envelope (the CAD carries a bare 76 x 70 x 15 box)"
+  "note": "vehicle x / y (spec frame); add these boxes to the CAD carrier envelope (the CAD carries a bare 76 x 70 x 15 box; the outline now has a tab on the vehicle -y edge, scripts/outline.py - the CAD must add it)"
+ },
+ "board_fit": {
+  "label": "M (outline: scripts/outline.py; bore / joint zone / screw z: kicad/work/cad_envelope.json; vent holes and the screw proxy as the Fit stage modelled them, screw length A / NOT_VERIFIED)",
+  "outline": {
+   "main_rect_kicad_mm": [
+    62.0,
+    65.0,
+    138.0,
+    135.0
+   ],
+   "corner_radius_mm": 1.0,
+   "tab_kicad_mm": {
+    "x": [
+     117.3,
+     132.0
+    ],
+    "y": [
+     135.0,
+     142.2
+    ],
+    "outer_corner_radius_mm": 1.0,
+    "inner_fillet_radius_mm": 1.0,
+    "edge_cuts_material_x": [
+     116.3,
+     133.0
+    ]
+   },
+   "bbox_kicad_mm": [
+    62.0,
+    65.0,
+    138.0,
+    142.2
+   ],
+   "area_mm2": 5425.0,
+   "tab_area_mm2": 105.8,
+   "fit_envelope": {
+    "x_min": 106.0,
+    "x_max": 134.0,
+    "y_edge_max_r1": 143.74
+   },
+   "source": "scripts/outline.py (redesign2 Layout stage)"
+  },
+  "bore_r": 56.99999999999999,
+  "outline_r_max": 52.56,
+  "gap_to_bore_mm": 4.44,
+  "motor_joint_zone_gap_mm": 21.869,
+  "vent_hole_gaps_mm": {
+   "90": 1.0,
+   "270": 1.0
+  },
+  "tab_to_vent_270_mm": 13.05,
+  "joint_screws": {
+   "45": {
+    "plan_gap_outline_mm": -0.186,
+    "screw_tip_over_the_board": false
+   },
+   "135": {
+    "plan_gap_outline_mm": -0.186,
+    "screw_tip_over_the_board": false
+   },
+   "225": {
+    "plan_gap_outline_mm": -0.186,
+    "screw_tip_over_the_board": false
+   },
+   "315": {
+    "plan_gap_outline_mm": -0.186,
+    "screw_tip_over_the_board": false
+   }
+  },
+  "screw_z_gap_board_top_mm": 1.3,
+  "parts_within_plan_gap_of_the_315_screw": [],
+  "information_parts_within_plan_gap_of_the_other_screws_unchanged_corners": [
+   {
+    "screw_deg": 45,
+    "ref": "Q9",
+    "plan_gap_courtyard_mm": 1.985
+   },
+   {
+    "screw_deg": 135,
+    "ref": "J14",
+    "plan_gap_courtyard_mm": -1.393
+   },
+   {
+    "screw_deg": 225,
+    "ref": "J7",
+    "plan_gap_courtyard_mm": -1.393
+   }
+  ],
+  "parts_in_the_tab": [
+   "C41",
+   "C57",
+   "C58",
+   "L5",
+   "R63",
+   "R64",
+   "U8"
+  ],
+  "parts_in_the_tab_above_limit": [],
+  "rules": {
+   "bore_gap_min_mm": 2.0,
+   "tab_vent_gap_min_mm": 2.0,
+   "screw_plan_gap_mm": 2.0,
+   "screw_z_gap_min_mm": 1.0,
+   "height_limit_mm": 13.4
+  },
+  "problems": [],
+  "ok": true
  }
 }

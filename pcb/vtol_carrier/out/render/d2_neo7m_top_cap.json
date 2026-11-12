@@ -4,10 +4,10 @@
  "board_label": "rev 3 기판 (render_completed.kicad_pcb)",
  "truth": "illustration: positions F (vehicle CAD) / A (module, lead); nothing here is a fit check",
  "board_file": "render_completed.kicad_pcb",
- "board_sha256": "29533057550d627978a8e3304565f9cf72147597b91b1baf6ebe0f53cb69e949",
+ "board_sha256": "f4e18b21d291703ba3c70218c3b8b3e43714897e4a75f8cd171cf065ffb6c0ab",
  "board_centre_kicad": [
   100.0,
-  100.0
+  103.6
  ],
  "map": "x_v = Xk - cx, y_v = cy - Yk, z_v = lp_board_top_z + height above the board top",
  "lp_board_top_z": 328.7,
@@ -35,33 +35,33 @@
  },
  "j7_plug_lead_end_vehicle": [
   -33.02,
-  -16.075,
+  -12.475,
   341.0
  ],
  "lead_route_points": [
   [
    -33.02,
-   -16.075,
+   -12.475,
    341.0
   ],
   [
    -33.02,
-   -11.075,
+   -7.475,
    341.3
   ],
   [
    -40.02,
-   -8.075,
+   -4.475,
    344.0
   ],
   [
    -45.02,
-   -14.075,
+   -10.475,
    350.0
   ],
   [
    -42.02,
-   -24.075,
+   -20.475,
    361.0
   ],
   [
@@ -101,7 +101,7 @@
   ]
  ],
  "lead_len_drawn_mm": {
-  "v": 177.2,
+  "v": 178.4,
   "label": "E along the illustrative route (A)"
  },
  "lead_len_vehicle_cad_mm": {

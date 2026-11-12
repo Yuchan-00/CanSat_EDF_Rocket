@@ -29,6 +29,8 @@ from pathlib import Path
 import pcbnew
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import outline as OL  # noqa: E402  (redesign2: the outline with the tab)
 MM = 1e-6
 OX0, OY0, OX1, OY1 = 62.0, 65.0, 138.0, 135.0  # outline centre lines (spec board 76 x 70 mm, centre 100 / 100)
 SIDES = ("-x", "+y", "+x", "-y")  # spec frame: +y = KiCad up (y 65), -y = KiCad down (y 135)
@@ -49,7 +51,9 @@ def bbox_of(items) -> list[float] | None:
 
 
 def side_dist(bb: list[float]) -> dict[str, float]:
-    return {"-x": bb[0] - OX0, "+y": bb[1] - OY0, "+x": OX1 - bb[2], "-y": OY1 - bb[3]}
+    # outline adaptation (redesign2): '-y' = distance to the y-max side of the real outline (scripts/outline.py: the
+    # y 135 line beside the tab exactly as before, every tab segment otherwise)
+    return {"-x": bb[0] - OX0, "+y": bb[1] - OY0, "+x": OX1 - bb[2], "-y": OL.minus_y_distance(tuple(bb))}
 
 
 def main() -> int:
@@ -172,7 +176,7 @@ def main() -> int:
     summary = {
         "board": board_rel, "board_sha256": hashlib.sha256(board_path.read_bytes()).hexdigest(),
         "tool": "pcbnew " + pcbnew.GetBuildVersion(), "label": "M (bounding boxes measured on the board file)",
-        "outline_centre_lines": [OX0, OY0, OX1, OY1], "edge_cuts_bbox_incl_line_width": outline,
+        "outline_centre_lines": [OX0, OY0, OX1, OY1], "edge_cuts_bbox_incl_line_width": outline, "outline": OL.describe(),
         "footprints": len(rows),
         "bodies_under_2p5": sorted([[r["ref"], r["body_to_edge_mm"], r["body_nearest_edge"], r["fit"]] for r in rows if r["body_under_2p5"]], key=lambda v: v[1]),
         "bodies_under_0p3": sorted([[r["ref"], r["body_to_edge_mm"], r["body_nearest_edge"], r["fit"]] for r in rows if r["body_under_0p3"]], key=lambda v: v[1]),
@@ -180,9 +184,13 @@ def main() -> int:
         "bodies_under_2p5_by_fit": under_by_fit,
         "jlc_placed_bodies": jlc_closest,
         "copper_to_edge_mm": {"label": "M (zone fills refilled in memory, tracks, vias, pads; distance to the straight "
-                                       "outline lines, corner arcs not modelled)", "min_per_side": cu_min, "per_layer": cu},
+                                       "outline lines, corner arcs not modelled; -y side: the y 135 line beside the tab, the tab segments exactly)", "min_per_side": cu_min, "per_layer": cu},
         "per_side": per_side, "rail_pairs": score,
-        "rail_sides_for_standard_order": {"pair": best, "label": "E (chosen from this table: fewest JLC-fitted bodies under 2.5 mm at an edge without a rail)"},
+        "rail_sides_for_standard_order": {"pair": best, "label": "E (chosen from this table: fewest JLC-fitted bodies under 2.5 mm at an edge without a rail)",
+                                          "outline_note": "redesign2: the '-y' side carries the tab, so a rail there cannot be "
+                                                          "attached by V-cut along one straight line; it needs routed tabs / "
+                                                          "mouse bites (JLC acceptance and price NOT_VERIFIED). Economic "
+                                                          "PCBA needs no rails."},
         "jlc_acceptance": "NOT_VERIFIED (only JLC's DFM result and quote after the upload decide)",
         "csv": "out/edge_distance.csv", "csv_sha256": hashlib.sha256(out_csv.read_bytes()).hexdigest(),
     }

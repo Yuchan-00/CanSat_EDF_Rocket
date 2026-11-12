@@ -50,6 +50,9 @@ from pathlib import Path
 
 import pcbnew
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import outline as OL  # noqa: E402  (redesign2: the outline with the tab)
+
 ROOT = Path(__file__).resolve().parent.parent
 #: CARRIER_KICAD_DIR: run on a scratch copy (experiments); default = the design folder
 import os  # noqa: E402
@@ -80,6 +83,11 @@ SEED_DIR = Path(os.environ["CARRIER_SEED_DIR"]) if os.environ.get("CARRIER_SEED_
     ROOT / "archive" / "rev2c_pololu_1s" / "kicad" / "work"
 #: geometry keys of the copper that was locked before any routing (pre-routes + fan-out): never deleted by a clean-up
 FIXED_KEYS: set = set()
+#: redesign2 route stage: geometry keys of the copper of the UNROUTED board (build_pcb pre-routes: battery path, boost
+#: block, ESP). widen_power never touches them. M (attempt a1): widen_power grew the U8.3 VIN tap 0.3 -> 0.95 mm and
+#: other block / battery taps, which changed the pre-routes and (with a router BOOST_EN track on F.Cu in the tab) cut
+#: C41.2 off the F.Cu GND piece of U8.4 (hot_loop_top_gnd / input_cap_vin FAIL)
+PREROUTE_KEYS: set = set()
 STITCH_PITCH_MM = 2.5
 
 
@@ -219,13 +227,28 @@ def export_dsn(board, dsn: Path, keep_bplane: bool = False, allow_in2: bool = Fa
     # the edges (+ 0.13 mm clearance = 0.33 mm) and 1.3 mm squares in the rounded corners, on every copper layer
     cu = ["F.Cu", "B.Cu"] if board.GetCopperLayerCount() == 2 else ["F.Cu", "In1.Cu", "In2.Cu", "B.Cu"]
     # relayout step (review J2): 0.3 mm strips (+ 0.13 mm = 0.43 mm) along the two rail edges y 65 / y 135
-    rects = [(62000, 65000, 138000, 65300), (62000, 134700, 138000, 135000), (62000, 65000, 62200, 135000),
-             (137800, 65000, 138000, 135000), (62000, 65000, 63300, 66300), (136700, 65000, 138000, 66300),
-             (62000, 133700, 63300, 135000), (136700, 133700, 138000, 135000)]
+    # redesign2: the y 135 strip stops at the tab fillets; the tab gets the same 0.3 mm strips on its sides / bottom,
+    # 1.3 mm squares in its rounded corners and squares over the two fillets (scripts/outline.py)
+    tx0, tx1, ty1 = round(OL.TAB_X0 * 1000), round(OL.TAB_X1 * 1000), round(OL.TAB_Y1 * 1000)
+    ri = round(OL.TAB_R_IN * 1000)
+    rects = [(62000, 65000, 138000, 65300), (62000, 134700, tx0 - ri, 135000), (tx1 + ri, 134700, 138000, 135000),
+             (62000, 65000, 62200, 135000), (137800, 65000, 138000, 135000), (62000, 65000, 63300, 66300),
+             (136700, 65000, 138000, 66300), (62000, 133700, 63300, 135000), (136700, 133700, 138000, 135000),
+             (tx0, 135000, tx0 + 300, ty1), (tx1 - 300, 135000, tx1, ty1), (tx0, ty1 - 300, tx1, ty1),
+             (tx0, ty1 - 1300, tx0 + 1300, ty1), (tx1 - 1300, ty1 - 1300, tx1, ty1),
+             (tx0 - ri, 134700, tx0 + 300, 135000 + ri + 300), (tx1 - 300, 134700, tx1 + ri, 135000 + ri + 300)]
     kos = ""
     for lay in cu:
         for x0, y0, x1, y1 in rects:
             kos += (f'\n    (keepout "" (polygon {lay} 0  {x0} {-y0}  {x1} {-y0}  {x1} {-y1}  {x0} {-y1}  {x0} {-y0}))')
+    # redesign2 route stage: the boost block in the tab is wired completely by build_pcb (pre-routes, own vias) and its
+    # F.Cu GND pour must stay ONE piece (hot_loop_top_gnd / input_cap_vin). M (attempt a1): Freerouting ran BOOST_EN on
+    # F.Cu along y 135.41 through the tab and split C41.2 off. Freerouting gets no F.Cu wiring / vias in the tab
+    # (Edge.Cuts material x TAB_X0 - r .. TAB_X1 + r, y 135 .. tab bottom); B.Cu stays open. Only a DSN keep-out: no
+    # board rule changes, and the fixed pre-route copper inside it is untouched
+    tk = (tx0 - ri, 135000, tx1 + ri, ty1)
+    kos += (f'\n    (keepout "" (polygon F.Cu 0  {tk[0]} {-tk[1]}  {tk[2]} {-tk[1]}  {tk[2]} {-tk[3]}  {tk[0]} {-tk[3]}  '
+            f'{tk[0]} {-tk[1]}))')
     k = re.search(r'\n\s*\(via "Via\[0-\d\]_', stripped).start()
     stripped = stripped[:k] + kos + stripped[k:]
     dsn.write_text(stripped, encoding="utf-8", newline="\n")
@@ -542,7 +565,7 @@ def add_stitching_vias(board) -> list[list[float]]:
     r_test = 0.3 + 0.05
     ring = [(0.0, 0.0)] + [(r_test * math.cos(k * math.pi / 4), r_test * math.sin(k * math.pi / 4)) for k in range(8)]
     y = 65.0 + 1.25
-    while y < 135.0 - 1.0:
+    while y < OL.TAB_Y1 - 1.0:
         x = 62.0 + 1.25
         while x < 138.0 - 1.0:
             pts = [pcbnew.VECTOR2I(pcbnew.FromMM(x + dx), pcbnew.FromMM(y + dy)) for dx, dy in ring]
@@ -677,7 +700,8 @@ def widen_power(board) -> dict:
     rule_areas = [z.Outline() for z in board.Zones() if z.GetIsRuleArea()]
     out = {"widened": [], "kept": []}
     cand = sorted((t for t in tracks if t.GetClass() == "PCB_TRACK" and t.GetNetname() in POWER_CLASS_W
-                   and pcbnew.ToMM(t.GetWidth()) < POWER_CLASS_W[t.GetNetname()] - 1e-6),
+                   and pcbnew.ToMM(t.GetWidth()) < POWER_CLASS_W[t.GetNetname()] - 1e-6
+                   and _geo_key(t) not in PREROUTE_KEYS),  # redesign2: pre-routes keep their designed width
                   key=lambda t: (t.GetNetname(), t.GetLayer(), t.GetStart().x, t.GetStart().y, t.GetEnd().x, t.GetEnd().y))
     for t in cand:
         net, lay, w0 = t.GetNetname(), t.GetLayer(), pcbnew.ToMM(t.GetWidth())
@@ -687,8 +711,9 @@ def widen_power(board) -> dict:
         w = POWER_CLASS_W[net]
         while w > w0 + 1e-6:
             half = w / 2
-            if (min(ax, bx) - half < 62.0 + EDGE_CLR_MM or max(ax, bx) + half > 138.0 - EDGE_CLR_MM
-                    or min(ay, by) - half < 65.0 + RAIL_EDGE_CLR_MM or max(ay, by) + half > 135.0 - RAIL_EDGE_CLR_MM):
+            box_ = (min(ax, bx) - half, min(ay, by) - half, max(ax, bx) + half, max(ay, by) + half)
+            if (box_[0] < 62.0 + EDGE_CLR_MM or box_[2] > 138.0 - EDGE_CLR_MM
+                    or box_[1] < 65.0 + RAIL_EDGE_CLR_MM or OL.minus_y_distance(box_) < RAIL_EDGE_CLR_MM):
                 w = round(w - 0.05, 3)
                 continue
             seg = pcbnew.SHAPE_SEGMENT(a, b, pcbnew.FromMM(w))
@@ -803,7 +828,7 @@ def ripup_step(board) -> dict:
 def remove_dangling_tracks(board) -> list[dict]:
     """rev 2c (rev-2b review PF-m5): delete the track stubs kicad-cli DRC reports as 'track_dangling' (Freerouting
     leftovers that end nowhere), up to 3 rounds (a removed stub can expose the next one). Only tracks flagged by DRC
-    are deleted, never a via."""
+    are deleted; redesign2: plus routed vias flagged 'via_dangling', never a pre-route / fan-out via."""
     cli = KICAD_CLI
     rep = WORK / "drc_dangling.json"
     removed = []
@@ -813,9 +838,13 @@ def remove_dangling_tracks(board) -> list[dict]:
                        capture_output=True, text=True, encoding="utf-8", errors="replace")
         d = json.loads(rep.read_text(encoding="utf-8"))
         by_uuid = {t.m_Uuid.AsString(): t for t in board.GetTracks() if t.GetClass() == "PCB_TRACK"}
+        # redesign2 route stage: also the routed vias DRC reports as 'via_dangling' (connected on one layer only, so
+        # they join nothing). M (attempt a2): two such vias (ESP_RXD_SH, NLINK_MOSI) were left after the rip-up and
+        # the stub removal - 2 DRC warnings. Never a pre-route / fan-out via (FIXED_KEYS: e.g. the BOOST_EN stub via)
+        by_uuid.update({t.m_Uuid.AsString(): t for t in board.GetTracks() if t.GetClass() == "PCB_VIA"})
         hit = []
         for v in d.get("violations", []):
-            if v.get("type") != "track_dangling":
+            if v.get("type") not in ("track_dangling", "via_dangling"):
                 continue
             for it in v.get("items", []):
                 t = by_uuid.get(it.get("uuid"))
@@ -1094,6 +1123,7 @@ def main() -> int:
     shutil.copyfile(src, BOARD)
     board = pcbnew.LoadBoard(str(BOARD))
     PRE_DRAWING_IDS.update(d.m_Uuid.AsString() for d in board.GetDrawings())
+    PREROUTE_KEYS.update(_geo_key(t) for t in board.GetTracks())  # redesign2: the build_pcb pre-routes
     seed_ids("start")
     final_ses = WORK / "vtol_carrier.ses"
     replay_path = WORK / "ses_replay.json"

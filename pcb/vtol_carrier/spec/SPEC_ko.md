@@ -13,7 +13,7 @@
 - **스루홀 커넥터 12개도 2026-11-12 사용자 결정으로 JLC가 아니라 사용자가 사서 납땜합니다** (J2/J5, J8/J9/J10/J11/J12, J14, J15/J17, J16, J18; fit user). JLC 주문은 SMT 부품만 실장하고 손납땜은 없습니다. 풋프린트·네트·위치와 풋프린트의 실크 윤곽은 그대로입니다. (같은 날 검증 지적으로 아랫면 실크 이름표 가운데 핀 줄과 나란히 적힌 것의 핀 글자 순서만 아랫면에서 본 패드 순서로 고쳤습니다: 주문 안내서 7장.)
 - MCU, 센서 모듈, ESP-12F 모듈, 스루홀 커넥터를 뺀 모든 실장 부품(모두 SMT)을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 (재고 근거: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/parts_sources.json`).
 - 부품마다 `fit` (누가 붙이는가) 값을 가집니다. JLC BOM / CPL은 이 값에서만 만들어집니다.
-- MCU 4개의 핀 256개가 가는 네트, 기판 외곽 76 x 70 mm, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. rev 2c 자료는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/` 에 보관했습니다.
+- MCU 4개의 핀 256개가 가는 네트, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. 기판 본체 76 x 70 mm 사각형과 그 변도 그대로이고, 2026-11-12 사용자 요청("보드의 사이즈를 조정하는 방법은 없어?")으로 -y 변(차체 -y 쪽)에 승압 회로를 올리는 탭을 붙였습니다: x 17.3..32, y -42.2..-35 mm (차체 좌표), 넓이 105.8 mm2, 외접 크기 76 x 77.2 mm. 이것은 계획 불변조건 (b) '외곽 76 x 70 mm 그대로'에서 벗어난 사용자 결정입니다. rev 2c 자료는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/` 에 보관했습니다.
 
 ## 2. 누가 무엇을 붙이는가
 

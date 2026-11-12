@@ -1,19 +1,21 @@
 {
  "tool": "scripts/jlc_gate.py",
  "mode": "online: every code fetched in this run",
- "started_at": "2026-11-12T02:54:37+09:00",
+ "started_at": "2026-11-12T22:27:21+09:00",
  "rule_I7": "min(stockCount, canPresaleNumber) >= max(20 x qty_per_board + lossNumber, leastNumber); isBuyComponent == '1'; noBuyReason empty; assemblyMode smtWeld / manualWeld; plus MPN, library type and assembly mode equal to the spec",
  "boards_for_I7": 20,
  "thin_threshold": 1000,
- "spec_sha256": "c8309c9c27361d6942632f6b7bb05b1a440803705052c8aa752ce66d39226f8c",
+ "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
  "plan_sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
- "cache_dir": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254",
+ "cache_dir": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227",
  "access": "read-only GET of https://cart.jlcpcb.com/shoppingCart/smtGood/getComponentDetail?componentCode=<code>, no login / cookie / cart, >= 2.5 s between requests; nothing was ordered",
  "status": "PASS",
  "main_pair_lines": 33,
  "main_pair_lines_pass": 33,
  "failures": [],
- "thin_lines": [],
+ "thin_lines": [
+  "C20345924 (U9) available 637"
+ ],
  "with_mcu_extra_lines": [
   {
    "jlc_code": "C6510",
@@ -27,13 +29,13 @@
    "verdict": "PASS",
    "reasons": [],
    "mpn": "ATMEGA128A-AU",
-   "stock": 3750,
-   "can_presale": 3637,
-   "available": 3637,
+   "stock": 3600,
+   "can_presale": 3483,
+   "available": 3483,
    "need_20_boards": 80,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:16+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C6510.json"
+   "fetched_at": "2026-11-12T22:28:59+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C6510.json"
   }
  ],
  "with_mcu_status": "PASS",
@@ -64,15 +66,15 @@
    "mpn": "CL05B104KO5NNNC",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 31290450,
-   "can_presale": 23278882,
-   "available": 23278882,
+   "stock": 33090351,
+   "can_presale": 25150424,
+   "available": 25150424,
    "need_20_boards": 275,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:38+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C1525.json",
-   "evidence_sha256": "4ec55b00a4ea0543ce4bfdcbf7bd64e70d4c1cf47d44d5d6d8705675f9f3fc1e"
+   "fetched_at": "2026-11-12T22:27:22+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C1525.json",
+   "evidence_sha256": "736e84a3393fea59298bbce67d019480a90b3a9ae9d0e16caeb3b38909c9767b"
   },
   {
    "line": 2,
@@ -94,15 +96,15 @@
    "mpn": "CL21A106KAYNNNE",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 8837705,
-   "can_presale": 7025503,
-   "available": 7025503,
+   "stock": 8494851,
+   "can_presale": 6687366,
+   "available": 6687366,
    "need_20_boards": 150,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:41+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C15850.json",
-   "evidence_sha256": "3df01033547f7797bffbdc458de0221baf3ecc62ee802e9e8c2091b38b05cfbb"
+   "fetched_at": "2026-11-12T22:27:25+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C15850.json",
+   "evidence_sha256": "fd7412b8edc5c1b8cfabe8eacde4be8a923f2f1bd715aed41ea244a16412ebef"
   },
   {
    "line": 3,
@@ -133,15 +135,15 @@
    "mpn": "CC0603KRX7R9BB104",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 37443762,
-   "can_presale": 27091127,
-   "available": 27091127,
+   "stock": 35994907,
+   "can_presale": 18133494,
+   "available": 18133494,
    "need_20_boards": 335,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:45+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C14663.json",
-   "evidence_sha256": "431b2781cde8bd28eb33acc37eb2a5d92bcbdb3b02a64c5e8551a3246b73ffa9"
+   "fetched_at": "2026-11-12T22:27:28+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C14663.json",
+   "evidence_sha256": "087f98381caba28730542e2e10c982027c16c7334cd6d33b01f0f1fdb7f6b434"
   },
   {
    "line": 4,
@@ -164,15 +166,15 @@
    "mpn": "0402CG270J500NT",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 356570,
-   "can_presale": 256336,
-   "available": 256336,
+   "stock": 334668,
+   "can_presale": 211869,
+   "available": 211869,
    "need_20_boards": 170,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:48+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C1557.json",
-   "evidence_sha256": "6751874ddb62883c4843c0c9abab0f2299554d85150f14f55edd7e61a01b13f1"
+   "fetched_at": "2026-11-12T22:27:31+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C1557.json",
+   "evidence_sha256": "ef1dbb531c1bee68fc47c19d5c57a0792d0087c397e18fe3f1e653d2aa252262"
   },
   {
    "line": 5,
@@ -191,15 +193,15 @@
    "mpn": "CL31A226KAHNNNE",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 2542096,
-   "can_presale": 2134189,
-   "available": 2134189,
+   "stock": 2508575,
+   "can_presale": 2098112,
+   "available": 2098112,
    "need_20_boards": 84,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:51+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C12891.json",
-   "evidence_sha256": "149594db1301acc45d32d02ee2c517fb3887b981b702d674aa8071d3532df800"
+   "fetched_at": "2026-11-12T22:27:34+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C12891.json",
+   "evidence_sha256": "0aa0367adbad5c11e3e4fd89a4fe886749a3ba7c8d0ce47c45c638e6894bed6f"
   },
   {
    "line": 6,
@@ -215,15 +217,15 @@
    "mpn": "TAJA226K010RNJ",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 402725,
-   "can_presale": 394270,
-   "available": 394270,
+   "stock": 392274,
+   "can_presale": 383834,
+   "available": 383834,
    "need_20_boards": 22,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:54+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C11366.json",
-   "evidence_sha256": "6a87e88edbde1f2bf2033a58daf3ec12cf3bf04da296ef0e92d29c90ce57ef67"
+   "fetched_at": "2026-11-12T22:27:36+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C11366.json",
+   "evidence_sha256": "c3a3dcea05ae497419fba9e204af1fdd830baf5cb85b00d7bfc5589407dce25a"
   },
   {
    "line": 7,
@@ -239,15 +241,15 @@
    "mpn": "RVT220UF10V67RV0037",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 192187,
-   "can_presale": 184038,
-   "available": 184038,
+   "stock": 165791,
+   "can_presale": 157948,
+   "available": 157948,
    "need_20_boards": 23,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:56+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C2833309.json",
-   "evidence_sha256": "5069a9e7ad78626f448dc51516d4b492424f1c023b282f91dae6a6fb75ece246"
+   "fetched_at": "2026-11-12T22:27:39+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C2833309.json",
+   "evidence_sha256": "261746f205859b342a5c1e1a901ed9345ce5e8ad121f929c7b79e8aa9042e716"
   },
   {
    "line": 8,
@@ -263,15 +265,15 @@
    "mpn": "TAJB107M010RNJ",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 92859,
-   "can_presale": 89429,
-   "available": 89429,
+   "stock": 80572,
+   "can_presale": 77161,
+   "available": 77161,
    "need_20_boards": 20,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:54:59+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C7196.json",
-   "evidence_sha256": "85968638f19dc9ed3c14829d363d81519c77dc50344d249c83a48694c278ec44"
+   "fetched_at": "2026-11-12T22:27:42+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C7196.json",
+   "evidence_sha256": "e0472d3ef6ad62c456daeea7a9acbd2c71eaa51fb62f1c02b9fb5a20b29e222f"
   },
   {
    "line": 9,
@@ -287,15 +289,15 @@
    "mpn": "CL10B102KB8NNNC",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 6028388,
-   "can_presale": 4761177,
-   "available": 4761177,
+   "stock": 5913500,
+   "can_presale": 4646965,
+   "available": 4646965,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:02+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C1588.json",
-   "evidence_sha256": "c6ea5880fe659105ba07672ad6f7385a637c70533ef95fe8a18fa83930826c08"
+   "fetched_at": "2026-11-12T22:27:45+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C1588.json",
+   "evidence_sha256": "b1450123024d7fc9d055bddcf4077143e5a485eb528250272aa21b37b5332479"
   },
   {
    "line": 10,
@@ -314,15 +316,15 @@
    "mpn": "KT-0603R",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 6099637,
-   "can_presale": 5433162,
-   "available": 5433162,
+   "stock": 5989495,
+   "can_presale": 5319807,
+   "available": 5319807,
    "need_20_boards": 90,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:05+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C2286.json",
-   "evidence_sha256": "0ef2e1ca8a94e0e12c07d264a8afd5042a3e2227613e8a83f33191a3e3a5d7f7"
+   "fetched_at": "2026-11-12T22:27:48+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C2286.json",
+   "evidence_sha256": "f2a191ba8a152ee1952f6742782d5520ef5de578f7584a5a1aa6e6e86930a978"
   },
   {
    "line": 11,
@@ -338,15 +340,15 @@
    "mpn": "B5819W SL",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 380746,
-   "can_presale": 251603,
-   "available": 251603,
+   "stock": 372350,
+   "can_presale": 242611,
+   "available": 242611,
    "need_20_boards": 28,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:08+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C8598.json",
-   "evidence_sha256": "923b6116969e1e7bbb89595ee167519d6438ac44a896f345ac4c8b5da8669cb8"
+   "fetched_at": "2026-11-12T22:27:51+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C8598.json",
+   "evidence_sha256": "f1662920d141c1d4dfe228602f33bf1edfb9aca6b300c5c53c43bee90c673a1e"
   },
   {
    "line": 12,
@@ -362,15 +364,15 @@
    "mpn": "BM04B-GHS-TBT(LF)(SN)",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 30380,
-   "can_presale": 29346,
-   "available": 29346,
+   "stock": 5114,
+   "can_presale": 5130,
+   "available": 5114,
    "need_20_boards": 20,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:11+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C161692.json",
-   "evidence_sha256": "e2972acba6592c96ff1ffae43e3b563d4ae45124befe210ba8ea5bca4e8ce36b"
+   "fetched_at": "2026-11-12T22:27:54+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C161692.json",
+   "evidence_sha256": "a6f59650fd1b06496d04ad22b92912ec49f5c16370f94d3e2436fae355d54712"
   },
   {
    "line": 13,
@@ -389,15 +391,15 @@
    "mpn": "SDFL2012S100KTF",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 188688,
-   "can_presale": 164517,
-   "available": 164517,
+   "stock": 178236,
+   "can_presale": 153844,
+   "available": 153844,
    "need_20_boards": 88,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:14+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C1046.json",
-   "evidence_sha256": "5634812dd791af93b9154134134c1326b7708890cfdc37cfb8300c00a38d01fc"
+   "fetched_at": "2026-11-12T22:27:57+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C1046.json",
+   "evidence_sha256": "c66182eb26e5c9487a7a892c9401414bce462ce7963cd3baf0e48a7326375774"
   },
   {
    "line": 14,
@@ -419,9 +421,9 @@
    "need_20_boards": 22,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:17+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C53426685.json",
-   "evidence_sha256": "f6e61bf92755d53df419515ed2bfb8a28122b7b69da095abb7c437f62898adb4"
+   "fetched_at": "2026-11-12T22:28:00+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C53426685.json",
+   "evidence_sha256": "9ba905d328661d4b980db14ecb704f2c84c1c6fc0c5f2c7774e3c52b5ecc683d"
   },
   {
    "line": 15,
@@ -444,15 +446,15 @@
    "mpn": "BSS138-7-F",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 399441,
-   "can_presale": 398438,
-   "available": 398438,
+   "stock": 399106,
+   "can_presale": 398112,
+   "available": 398112,
    "need_20_boards": 165,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:20+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C40912.json",
-   "evidence_sha256": "f262965b60756787f58c003f7d104529b37c7c7ec655adab09a4f83788a9dcc1"
+   "fetched_at": "2026-11-12T22:28:03+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C40912.json",
+   "evidence_sha256": "678927a0fb8c6b1502cd3509164a5cb7ce9612e413057c46218c76560166ae3e"
   },
   {
    "line": 16,
@@ -468,15 +470,15 @@
    "mpn": "MMBT3904(RANGE:100-300)",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 4224848,
-   "can_presale": 4106874,
-   "available": 4106874,
+   "stock": 4181070,
+   "can_presale": 4062939,
+   "available": 4062939,
    "need_20_boards": 25,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:23+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C20526.json",
-   "evidence_sha256": "d884021b161a5d2e24392b03ec5b29f59b48ba2813f55c96b86894c0371c3edd"
+   "fetched_at": "2026-11-12T22:28:06+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C20526.json",
+   "evidence_sha256": "6844b633f8df6a2947b9f81a49d782ba22ccb9e48b7606b170286270fc0954ab"
   },
   {
    "line": 17,
@@ -492,15 +494,15 @@
    "mpn": "AO3401A",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 1615248,
-   "can_presale": 1483000,
-   "available": 1483000,
+   "stock": 1637106,
+   "can_presale": 1504160,
+   "available": 1504160,
    "need_20_boards": 24,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:26+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C15127.json",
-   "evidence_sha256": "7d3d80d45e4dcae3ad40b8c4f633f63a696327a0c08b89ffb707e9e503c5c295"
+   "fetched_at": "2026-11-12T22:28:08+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C15127.json",
+   "evidence_sha256": "a0769b3dffb73c5f1c9de1ce7b0814abfa85a1a470d153a2369456df97cccb52"
   },
   {
    "line": 18,
@@ -548,15 +550,15 @@
    "mpn": "0603WAF1002T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 43542436,
-   "can_presale": 33106759,
-   "available": 33106759,
+   "stock": 42784947,
+   "can_presale": 32305019,
+   "available": 32305019,
    "need_20_boards": 670,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:29+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C25804.json",
-   "evidence_sha256": "868e7cfeb6078fe4102aef64516f539af0626a7c7813e543161e8ef136ca36ce"
+   "fetched_at": "2026-11-12T22:28:11+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C25804.json",
+   "evidence_sha256": "781639f77287fa11e0afe9c3682044e7fb23a3a8daab542db346b9518c965efc"
   },
   {
    "line": 19,
@@ -580,15 +582,15 @@
    "mpn": "0603WAF1001T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 26001668,
-   "can_presale": 19359411,
-   "available": 19359411,
+   "stock": 28860909,
+   "can_presale": 22205615,
+   "available": 22205615,
    "need_20_boards": 190,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:32+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C21190.json",
-   "evidence_sha256": "d575491d9a715f152ca6ea3d4952083c75ccc68ae0ad6d65792a01fe9a20418f"
+   "fetched_at": "2026-11-12T22:28:14+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C21190.json",
+   "evidence_sha256": "36612ae1793067f02885dc9529535092934091d8840795fcdb3cba671285349a"
   },
   {
    "line": 20,
@@ -608,15 +610,15 @@
    "mpn": "0603WAF4702T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 2915121,
-   "can_presale": 2250449,
-   "available": 2250449,
+   "stock": 2852718,
+   "can_presale": 2183394,
+   "available": 2183394,
    "need_20_boards": 110,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:35+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C25819.json",
-   "evidence_sha256": "fa67c87db6a00e603fbaa482f16874b82671a19f035dbadcde2f21992458be8d"
+   "fetched_at": "2026-11-12T22:28:18+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C25819.json",
+   "evidence_sha256": "ae899aef8f1400f261a051b902797e243da305e8c85930eb422f38a5f75fe03d"
   },
   {
    "line": 21,
@@ -636,15 +638,15 @@
    "mpn": "0603WAF2200T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 2566010,
-   "can_presale": 2146675,
-   "available": 2146675,
+   "stock": 2530366,
+   "can_presale": 2104210,
+   "available": 2104210,
    "need_20_boards": 110,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:38+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C22962.json",
-   "evidence_sha256": "7e04faa2aeab0adb27257a7b085d3d2a4a9f088064c0d4c9136560b1c288369e"
+   "fetched_at": "2026-11-12T22:28:20+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C22962.json",
+   "evidence_sha256": "7a125efb1ba5e64dbcc93e3263bd28919dc900002ec1a93e23b4407bf9dc27d7"
   },
   {
    "line": 22,
@@ -664,15 +666,15 @@
    "mpn": "0603WAF4701T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 14885639,
-   "can_presale": 11646351,
-   "available": 11646351,
+   "stock": 14648440,
+   "can_presale": 11406678,
+   "available": 11406678,
    "need_20_boards": 110,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:41+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C23162.json",
-   "evidence_sha256": "783b72c13fb36cb75b1fe1176e4d55db8f320d94d56eec30cea13c6ce81691e0"
+   "fetched_at": "2026-11-12T22:28:23+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C23162.json",
+   "evidence_sha256": "d1320918639d7eb4d6f2c95c972ec7fadb85ca7cf5914e78ef2696df939a4b89"
   },
   {
    "line": 23,
@@ -688,15 +690,15 @@
    "mpn": "0603WAF1003T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 15126650,
-   "can_presale": 12762997,
-   "available": 12762997,
+   "stock": 15039164,
+   "can_presale": 12675232,
+   "available": 12675232,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:44+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C25803.json",
-   "evidence_sha256": "7b700ea372e6ec42319c2a21e3534f4a4b348f86ec683cd494bb41cd73e53148"
+   "fetched_at": "2026-11-12T22:28:26+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C25803.json",
+   "evidence_sha256": "b1d743820db8238584d64f8a6ef171ad6160debd5890ff9219fbdbe1be9f0fb1"
   },
   {
    "line": 24,
@@ -712,15 +714,15 @@
    "mpn": "0603WAF1503T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 991117,
-   "can_presale": 857153,
-   "available": 857153,
+   "stock": 976626,
+   "can_presale": 843356,
+   "available": 843356,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:47+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C22807.json",
-   "evidence_sha256": "5a2d1670d81089d536bd52d5757d9c073a4b61acd6490aea94ebdc3a6f08ec16"
+   "fetched_at": "2026-11-12T22:28:29+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C22807.json",
+   "evidence_sha256": "65943e70aa0cfd45df1126269902bdeccf185d902f2c2f5052d470187558e399"
   },
   {
    "line": 25,
@@ -736,15 +738,15 @@
    "mpn": "0603WAF2002T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 5067073,
-   "can_presale": 4109442,
-   "available": 4109442,
+   "stock": 4962489,
+   "can_presale": 4000658,
+   "available": 4000658,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:50+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C4184.json",
-   "evidence_sha256": "a34f824875fb79266631dbdb9cf3c823f24f126fca7a6f3d316515caf57f847d"
+   "fetched_at": "2026-11-12T22:28:32+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C4184.json",
+   "evidence_sha256": "9b0cce268ae40ffd82319ccd419ec6f8adedf2b348b999623cd17a3c7e69797f"
   },
   {
    "line": 26,
@@ -760,15 +762,15 @@
    "mpn": "0603WAF4703T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 882947,
-   "can_presale": 722334,
-   "available": 722334,
+   "stock": 864871,
+   "can_presale": 701480,
+   "available": 701480,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:53+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C23178.json",
-   "evidence_sha256": "dadc8e7d8b8ccd2105db53aa6cf806526dd7a2aebeb0ed6615b1543705ef73e1"
+   "fetched_at": "2026-11-12T22:28:35+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C23178.json",
+   "evidence_sha256": "1211eab86f872495bc5a6a30f5c1c1b15d18b105f2405534903dfc1ce1e9518f"
   },
   {
    "line": 27,
@@ -784,15 +786,15 @@
    "mpn": "0603WAF2703T5E",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 219391,
-   "can_presale": 173613,
-   "available": 173613,
+   "stock": 217236,
+   "can_presale": 171998,
+   "available": 171998,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:56+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C22965.json",
-   "evidence_sha256": "418cd19c8ea9b99dfb850fabd7e892930c5cb33b66d2963f3afb3e996b072d9f"
+   "fetched_at": "2026-11-12T22:28:38+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C22965.json",
+   "evidence_sha256": "c28b474840af45ba5e9467b59c95821e3a9af8abb28d66112aeda0b7d7b026b0"
   },
   {
    "line": 28,
@@ -808,15 +810,15 @@
    "mpn": "0603WAF3304T5E",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 222271,
-   "can_presale": 188309,
-   "available": 188309,
+   "stock": 220291,
+   "can_presale": 180949,
+   "available": 180949,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:55:59+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C26096.json",
-   "evidence_sha256": "781281d302d75c8754ab501d4d49543ed71a621daab16742d8520f288d1b45d4"
+   "fetched_at": "2026-11-12T22:28:41+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C26096.json",
+   "evidence_sha256": "23319b6a24b99f03e756121636c321a4da0dff55772b4f90479483adca5bfd2c"
   },
   {
    "line": 29,
@@ -832,15 +834,15 @@
    "mpn": "0603WAF1004T5E",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 3954485,
-   "can_presale": 3164834,
-   "available": 3164834,
+   "stock": 3881904,
+   "can_presale": 3091180,
+   "available": 3091180,
    "need_20_boards": 30,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:56:02+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C22935.json",
-   "evidence_sha256": "de1a4c64827bc47d582cd049ee8eb55a9c07ebe2ae2f28243aaaa41ddfe8a97e"
+   "fetched_at": "2026-11-12T22:28:44+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C22935.json",
+   "evidence_sha256": "083313ce715e66d60dacd5aa5699f8cfc3194c93ea1e4c584af32456826acd1a"
   },
   {
    "line": 30,
@@ -856,15 +858,15 @@
    "mpn": "AMS1117-3.3",
    "library_type": "Basic",
    "assembly_mode": "smtWeld",
-   "stock": 1500476,
-   "can_presale": 1366059,
-   "available": 1366059,
+   "stock": 1475095,
+   "can_presale": 1340244,
+   "available": 1340244,
    "need_20_boards": 20,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:56:05+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C6186.json",
-   "evidence_sha256": "3c8ad6de4ffcdd100e11a290a26598002b966ec41e8c98b45a4ddf767aaaa23b"
+   "fetched_at": "2026-11-12T22:28:47+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C6186.json",
+   "evidence_sha256": "5360d3ff3c96fec2d275586d35e7bbe79131b3ee5bcd274bc7dd546c6df9cbc0"
   },
   {
    "line": 32,
@@ -880,15 +882,15 @@
    "mpn": "TPS61023DRLR",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 6640,
-   "can_presale": 5787,
-   "available": 5787,
+   "stock": 5533,
+   "can_presale": 4773,
+   "available": 4773,
    "need_20_boards": 21,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:56:08+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C919459.json",
-   "evidence_sha256": "f17de6857770e8084b8006b382d533aea744c0ba5fa2e1bddf850d15bb4c40ba"
+   "fetched_at": "2026-11-12T22:28:50+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C919459.json",
+   "evidence_sha256": "1c4c340a85c6a2a0f01317626e32e8a5a6d93b888231eabd6ccbb52eb5d931f0"
   },
   {
    "line": 33,
@@ -904,15 +906,15 @@
    "mpn": "TLV3012BIDBVR",
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
-   "stock": 1512,
-   "can_presale": 1076,
-   "available": 1076,
+   "stock": 1074,
+   "can_presale": 637,
+   "available": 637,
    "need_20_boards": 20,
-   "thin_stock": false,
+   "thin_stock": true,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:56:11+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C20345924.json",
-   "evidence_sha256": "93ceb203116ac4760963d5c8f5d1d62e16e9df87363571f9c7c1ebe957bee1af"
+   "fetched_at": "2026-11-12T22:28:53+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C20345924.json",
+   "evidence_sha256": "13e5f2b053bd860bb0069a8e5a9be65e5c0c6e703fbe140141afd98e361fee37"
   },
   {
    "line": 34,
@@ -932,14 +934,14 @@
    "library_type": "Extended",
    "assembly_mode": "smtWeld",
    "stock": 21867,
-   "can_presale": 21728,
-   "available": 21728,
+   "can_presale": 21729,
+   "available": 21729,
    "need_20_boards": 84,
    "thin_stock": false,
    "component_product_type": 0,
-   "fetched_at": "2026-11-12T02:56:13+09:00",
-   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T0254/C70562.json",
-   "evidence_sha256": "7a945374bb1a6363283327563058c3a31df0846a96d8bb38d9e3f017288c3627"
+   "fetched_at": "2026-11-12T22:28:56+09:00",
+   "evidence_file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/gate_20261112T2227/C70562.json",
+   "evidence_sha256": "b74d88340a7f1e83a5e4723c600f77aff80ca9d3030e48eb099f43124d9eaade"
   }
  ],
  "alternates_and_options": [
@@ -956,7 +958,7 @@
    "available": 985,
    "need_20_boards": 40,
    "thin_stock": true,
-   "fetched_at": "2026-11-12T02:56:19+09:00"
+   "fetched_at": "2026-11-12T22:29:02+09:00"
   },
   {
    "group": "alternate",
@@ -966,12 +968,12 @@
    "reasons": [],
    "mpn": "PM2.54-1x6PWZ-H8.5",
    "qty_per_board": 2,
-   "stock": 961,
-   "can_presale": 595,
-   "available": 595,
+   "stock": 931,
+   "can_presale": 565,
+   "available": 565,
    "need_20_boards": 40,
    "thin_stock": true,
-   "fetched_at": "2026-11-12T02:56:22+09:00"
+   "fetched_at": "2026-11-12T22:29:05+09:00"
   },
   {
    "group": "alternate",
@@ -981,12 +983,12 @@
    "reasons": [],
    "mpn": "FXL0420-1R0-M",
    "qty_per_board": 1,
-   "stock": 107455,
-   "can_presale": 106450,
-   "available": 106450,
+   "stock": 107132,
+   "can_presale": 106152,
+   "available": 106152,
    "need_20_boards": 24,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:25+09:00"
+   "fetched_at": "2026-11-12T22:29:07+09:00"
   },
   {
    "group": "alternate",
@@ -996,12 +998,12 @@
    "reasons": [],
    "mpn": "GH1.25-4PLT",
    "qty_per_board": 1,
-   "stock": 1879,
-   "can_presale": 1843,
-   "available": 1843,
+   "stock": 1736,
+   "can_presale": 1700,
+   "available": 1700,
    "need_20_boards": 20,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:28+09:00"
+   "fetched_at": "2026-11-12T22:29:10+09:00"
   },
   {
    "group": "alternate",
@@ -1011,12 +1013,12 @@
    "reasons": [],
    "mpn": "GH1.25-4PLTPZ",
    "qty_per_board": 1,
-   "stock": 56712,
-   "can_presale": 55686,
-   "available": 55686,
+   "stock": 56717,
+   "can_presale": 55688,
+   "available": 55688,
    "need_20_boards": 24,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:31+09:00"
+   "fetched_at": "2026-11-12T22:29:13+09:00"
   },
   {
    "group": "alternate",
@@ -1026,12 +1028,12 @@
    "reasons": [],
    "mpn": "TPS61023DRLT",
    "qty_per_board": 1,
-   "stock": 500,
-   "can_presale": 481,
-   "available": 481,
+   "stock": 494,
+   "can_presale": 476,
+   "available": 476,
    "need_20_boards": 20,
    "thin_stock": true,
-   "fetched_at": "2026-11-12T02:56:34+09:00"
+   "fetched_at": "2026-11-12T22:29:16+09:00"
   },
   {
    "group": "alternate",
@@ -1041,12 +1043,12 @@
    "reasons": [],
    "mpn": "HX PZ2.54-1x3P WT",
    "qty_per_board": 5,
-   "stock": 20481,
-   "can_presale": 20065,
-   "available": 20065,
+   "stock": 20455,
+   "can_presale": 20002,
+   "available": 20002,
    "need_20_boards": 104,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:37+09:00"
+   "fetched_at": "2026-11-12T22:29:19+09:00"
   },
   {
    "group": "alternate",
@@ -1057,11 +1059,11 @@
    "mpn": "HX PZ2.54-1x2P WT",
    "qty_per_board": 1,
    "stock": 18726,
-   "can_presale": 18299,
-   "available": 18299,
+   "can_presale": 18300,
+   "available": 18300,
    "need_20_boards": 25,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:40+09:00"
+   "fetched_at": "2026-11-12T22:29:22+09:00"
   },
   {
    "group": "alternate",
@@ -1071,12 +1073,12 @@
    "reasons": [],
    "mpn": "HX PZ2.54-1x4P WT",
    "qty_per_board": 1,
-   "stock": 13962,
-   "can_presale": 13010,
-   "available": 13010,
+   "stock": 13957,
+   "can_presale": 13022,
+   "available": 13022,
    "need_20_boards": 22,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:43+09:00"
+   "fetched_at": "2026-11-12T22:29:25+09:00"
   },
   {
    "group": "alternate",
@@ -1086,12 +1088,12 @@
    "reasons": [],
    "mpn": "B2B-PH-SM4-TB(LF)(SN)",
    "qty_per_board": 2,
-   "stock": 71676,
-   "can_presale": 46920,
-   "available": 46920,
+   "stock": 69644,
+   "can_presale": 44798,
+   "available": 44798,
    "need_20_boards": 40,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:46+09:00"
+   "fetched_at": "2026-11-12T22:29:28+09:00"
   },
   {
    "group": "option",
@@ -1101,12 +1103,12 @@
    "reasons": [],
    "mpn": "HX PZ2.54-2x3P TP",
    "qty_per_board": 5,
-   "stock": 35837,
-   "can_presale": 33088,
-   "available": 33088,
+   "stock": 35317,
+   "can_presale": 32479,
+   "available": 32479,
    "need_20_boards": 100,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:49+09:00"
+   "fetched_at": "2026-11-12T22:29:31+09:00"
   },
   {
    "group": "option",
@@ -1116,12 +1118,12 @@
    "reasons": [],
    "mpn": "HX PZ2.54-1x2P ZZ",
    "qty_per_board": 3,
-   "stock": 195740,
-   "can_presale": 190395,
-   "available": 190395,
+   "stock": 194378,
+   "can_presale": 189645,
+   "available": 189645,
    "need_20_boards": 62,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:51+09:00"
+   "fetched_at": "2026-11-12T22:29:34+09:00"
   },
   {
    "group": "option",
@@ -1131,12 +1133,12 @@
    "reasons": [],
    "mpn": "HX PZ2.54-1x2P TP-YQ",
    "qty_per_board": 3,
-   "stock": 46572,
-   "can_presale": 46114,
-   "available": 46114,
+   "stock": 46434,
+   "can_presale": 45977,
+   "available": 45977,
    "need_20_boards": 66,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:54+09:00"
+   "fetched_at": "2026-11-12T22:29:37+09:00"
   },
   {
    "group": "option",
@@ -1146,12 +1148,12 @@
    "reasons": [],
    "mpn": "TAJA226M010RNJ",
    "qty_per_board": 1,
-   "stock": 2264,
-   "can_presale": 1923,
-   "available": 1923,
+   "stock": 2247,
+   "can_presale": 1907,
+   "available": 1907,
    "need_20_boards": 22,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:56:57+09:00"
+   "fetched_at": "2026-11-12T22:29:40+09:00"
   },
   {
    "group": "option",
@@ -1166,7 +1168,7 @@
    "available": 1980,
    "need_20_boards": 100,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:57:01+09:00"
+   "fetched_at": "2026-11-12T22:29:43+09:00"
   },
   {
    "group": "option",
@@ -1181,7 +1183,7 @@
    "available": 1750,
    "need_20_boards": 20,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:57:03+09:00"
+   "fetched_at": "2026-11-12T22:29:46+09:00"
   },
   {
    "group": "option",
@@ -1196,7 +1198,7 @@
    "available": 1898,
    "need_20_boards": 20,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:57:06+09:00"
+   "fetched_at": "2026-11-12T22:29:49+09:00"
   },
   {
    "group": "option",
@@ -1211,7 +1213,7 @@
    "available": 985,
    "need_20_boards": 40,
    "thin_stock": true,
-   "fetched_at": "2026-11-12T02:56:19+09:00"
+   "fetched_at": "2026-11-12T22:29:02+09:00"
   },
   {
    "group": "option",
@@ -1221,12 +1223,12 @@
    "reasons": [],
    "mpn": "BSS138",
    "qty_per_board": 8,
-   "stock": 683687,
-   "can_presale": 558609,
-   "available": 558609,
+   "stock": 680338,
+   "can_presale": 556199,
+   "available": 556199,
    "need_20_boards": 165,
    "thin_stock": false,
-   "fetched_at": "2026-11-12T02:57:09+09:00"
+   "fetched_at": "2026-11-12T22:29:52+09:00"
   }
  ],
  "fetch_log": [

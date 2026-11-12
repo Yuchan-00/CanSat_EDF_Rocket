@@ -422,8 +422,11 @@ def main() -> int:
             side_mm = {"left": round(cx - body[0], 2), "right": round(body[2] - cx, 2)}
         big = max(side_mm, key=lambda k: (side_mm[k], k))
         small = min(side_mm, key=lambda k: (side_mm[k], k))
+        # outline adaptation (redesign2): 'down' = distance to the y-max side of the real outline (y 135 line beside
+        # the tab, every tab segment otherwise; scripts/outline.py) instead of the bounding box that now ends at the tab
+        import outline as OL  # noqa: E402
         edge_gap = {"left": round(body[0] - ex0, 2), "right": round(ex1 - body[2], 2),
-                    "up": round(body[1] - ey0, 2), "down": round(ey1 - body[3], 2)}
+                    "up": round(body[1] - ey0, 2), "down": round(OL.minus_y_distance(tuple(body)), 2)}
         near_edge = min(edge_gap, key=lambda k: (edge_gap[k], k))
         shapes = sorted({shape_name.get(p.GetShape(), str(p.GetShape())) for p in pads if p is not p1})
         silk = [g for g in f["fp"].GraphicalItems() if g.GetLayer() == pcbnew.F_SilkS and g.GetClass() != "PCB_TEXT"]

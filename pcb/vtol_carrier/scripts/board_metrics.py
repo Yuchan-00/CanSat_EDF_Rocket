@@ -38,6 +38,8 @@ from pathlib import Path
 import pcbnew
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import outline as OL  # noqa: E402  (redesign2: the outline with the tab)
 import os  # noqa: E402
 
 #: CARRIER_BOARD / CARRIER_METRICS_OUT: measure a scratch copy (experiments); default = the design board
@@ -552,6 +554,107 @@ def power_narrow(board) -> dict:
 
 
 #: module top above the board top (A: header spacer + module + parts; rev-2b review MF2-12 estimates, measure)
+#: redesign2 Layout stage - board fit against the airframe with the outline tab (added checks; numbers of the Fit stage,
+#: redesign2/fit/tab_clearance.py on cad/layout.py Layout(load_params('vtol')), M there): vent holes d 8 at r 40, 90 /
+#: 270 deg; joint screws: d 3.2 proxy along the radial axis at joint_screw_z, tip at r 49.5 (the longest screw the CAD's
+#: 7.5 mm screw room tolerates - screw length NOT_VERIFIED); rules: bore gap >= 2.0 (task), motor joint zone >= its
+#: min_clear, tab to the vent hole >= 2.0, within 2.0 mm in plan of a screw: no part, and bare board >= 1.0 mm in z
+VENT = {"r": 40.0, "d": 8.0, "thetas_deg": (90.0, 270.0)}
+SCREW = {"d": 3.2, "tip_r": 49.5}
+FIT_RULES = {"bore_gap_min_mm": 2.0, "tab_vent_gap_min_mm": 2.0, "screw_plan_gap_mm": 2.0, "screw_z_gap_min_mm": 1.0,
+             "height_limit_mm": 13.4}
+
+
+def _seg_pt(p, a, b):
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    L2 = dx * dx + dy * dy
+    t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / L2))
+    return math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy)
+
+
+def _seg_box(a, b, box, step=0.01):
+    x0, x1, y0, y1 = box
+    n = int(math.hypot(b[0] - a[0], b[1] - a[1]) / step) + 1
+    best = 1e9
+    for i in range(n + 1):
+        x, y = a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n
+        best = min(best, math.hypot(max(x0 - x, 0.0, x - x1), max(y0 - y, 0.0, y - y1)))
+    return best
+
+
+def board_fit(fps, pdata: dict, cad: dict) -> dict:
+    """The outline (scripts/outline.py, vehicle frame) against the bore, the motor-lead joint zone, the vent holes and
+    the joint screws; parts against the screws (plan) and the height limit inside the tab. ok = every rule met."""
+    R = cad["spigot_bore_r"]
+    poly = [(x - CX, CY - y) for x, y in OL.polygon(64)]
+    edges = list(zip(poly, poly[1:] + poly[:1]))
+    r_max = max(math.hypot(x, y) for x, y in poly)
+    jz = cad["motor_joint_zone"]
+    jz_gap = min(math.hypot(max(jz["u"][0] - x, 0.0, x - jz["u"][1]), max(-jz["half_width"] - y, 0.0, y - jz["half_width"])) for x, y in poly)
+    vents = {}
+    for th in VENT["thetas_deg"]:
+        c = (VENT["r"] * math.cos(math.radians(th)), VENT["r"] * math.sin(math.radians(th)))
+        vents[str(int(th))] = round(min(_seg_pt(c, a, b) for a, b in edges) - VENT["d"] / 2, 3)
+    tab_pts = []
+    for p in OL.MINUS_Y_PRIMITIVES:
+        if p["kind"] == "line" and abs(p["a"][1] - OL.MAIN_Y1) < 1e-9 and abs(p["b"][1] - OL.MAIN_Y1) < 1e-9:
+            continue
+        pts = [p["a"], p["b"]] if p["kind"] == "line" else OL._arc_points(p, 32)
+        if p["kind"] == "line":
+            n = int(math.hypot(p["b"][0] - p["a"][0], p["b"][1] - p["a"][1]) / 0.01) + 1
+            pts = [(p["a"][0] + (p["b"][0] - p["a"][0]) * i / n, p["a"][1] + (p["b"][1] - p["a"][1]) * i / n) for i in range(n + 1)]
+        tab_pts += [(x - CX, CY - y) for x, y in pts]
+    tab_vent = round(min(math.hypot(x, y + VENT["r"]) for x, y in tab_pts) - VENT["d"] / 2, 3)
+    z_gap = round(cad["joint_screw_z"] - SCREW["d"] / 2 - cad["board_top_z"], 3)
+    screws, parts_near = {}, []
+    for th in cad["joint_thetas_deg"]:
+        c, s_ = math.cos(math.radians(th)), math.sin(math.radians(th))
+        a, b = (SCREW["tip_r"] * c, SCREW["tip_r"] * s_), (R * c, R * s_)
+        over = OL.inside(a[0] + CX, CY - a[1])
+        g = -SCREW["d"] / 2 if over else min(_seg_pt(q, a, b) for q in poly) - SCREW["d"] / 2
+        screws[str(int(th))] = {"plan_gap_outline_mm": round(g, 3), "screw_tip_over_the_board": over}
+        for ref, fp in fps.items():
+            bb = fp.GetCourtyard(pcbnew.F_CrtYd).BBox()
+            if bb.GetWidth() == 0:
+                bb = fp.GetBoundingBox(False)
+            box = (mm(bb.GetLeft()) - CX, mm(bb.GetRight()) - CX, CY - mm(bb.GetBottom()), CY - mm(bb.GetTop()))
+            if math.hypot((box[0] + box[1]) / 2 - (a[0] + b[0]) / 2, (box[2] + box[3]) / 2 - (a[1] + b[1]) / 2) > 25:
+                continue
+            d = _seg_box(a, b, box) - SCREW["d"] / 2
+            if d < FIT_RULES["screw_plan_gap_mm"]:
+                parts_near.append({"screw_deg": int(th), "ref": ref, "plan_gap_courtyard_mm": round(d, 3)})
+    heights = pdata.get("part_heights_mm", {})
+    tab_parts = sorted(r for r, fp in fps.items() if mm(fp.GetCourtyard(pcbnew.F_CrtYd).BBox().GetBottom()) > OL.MAIN_Y1)
+    tab_tall = [r for r in tab_parts if heights.get(r, 99.0) > FIT_RULES["height_limit_mm"]]
+    bad = []
+    if R - r_max < FIT_RULES["bore_gap_min_mm"]:
+        bad.append(f"bore gap {R - r_max:.3f} mm")
+    if jz_gap < jz["min_clear"]:
+        bad.append(f"motor-lead joint zone {jz_gap:.3f} mm")
+    if min(vents.values()) < 0:
+        bad.append(f"vent hole covered {vents}")
+    if tab_vent < FIT_RULES["tab_vent_gap_min_mm"]:
+        bad.append(f"tab to the 270 deg vent hole {tab_vent} mm")
+    # the part-free zone of the Fit stage belongs to the 315 deg screw beside the tab; the other three screws sit at
+    # corners the tab does not change - their (unchanged) neighbours are reported, not judged here
+    near_315 = [r for r in parts_near if r["screw_deg"] == 315]
+    if near_315:
+        bad.append(f"parts within {FIT_RULES['screw_plan_gap_mm']} mm in plan of the 315 deg joint screw: {near_315}")
+    if any(v["plan_gap_outline_mm"] < FIT_RULES["screw_plan_gap_mm"] for v in screws.values()) and z_gap < FIT_RULES["screw_z_gap_min_mm"]:
+        bad.append(f"bare board under a screw with a z gap of {z_gap} mm")
+    if tab_tall:
+        bad.append(f"parts in the tab above {FIT_RULES['height_limit_mm']} mm: {tab_tall}")
+    return {"label": "M (outline: scripts/outline.py; bore / joint zone / screw z: kicad/work/cad_envelope.json; vent holes and the "
+                     "screw proxy as the Fit stage modelled them, screw length A / NOT_VERIFIED)",
+            "outline": OL.describe(), "bore_r": R, "outline_r_max": round(r_max, 3), "gap_to_bore_mm": round(R - r_max, 3),
+            "motor_joint_zone_gap_mm": round(jz_gap, 3), "vent_hole_gaps_mm": vents, "tab_to_vent_270_mm": tab_vent,
+            "joint_screws": screws, "screw_z_gap_board_top_mm": z_gap,
+            "parts_within_plan_gap_of_the_315_screw": [r for r in parts_near if r["screw_deg"] == 315],
+            "information_parts_within_plan_gap_of_the_other_screws_unchanged_corners": [r for r in parts_near if r["screw_deg"] != 315],
+            "parts_in_the_tab": tab_parts, "parts_in_the_tab_above_limit": tab_tall, "rules": FIT_RULES,
+            "problems": bad, "ok": not bad}
+
+
 MODULE_TOP_A = {"J1": 5.3, "J2": 5.9, "J5": 5.9}  # rev 3: no J6
 
 
@@ -571,7 +674,8 @@ def cad_round_envelopes(pdata: dict, plugs: list[dict], cad: dict) -> dict:
         out.append({"what": b["name"], "x": [round(x0 - CX, 2), round(x1 - CX, 2)], "y": [round(CY - y1, 2), round(CY - y0, 2)],
                     "z_above_board_top": [0.0, MODULE_TOP_A.get(b["ref"])]})
     return {"board_top_z_vehicle": cad.get("board_top_z"), "boxes": out,
-            "note": "vehicle x / y (spec frame); add these boxes to the CAD carrier envelope (the CAD carries a bare 76 x 70 x 15 box)"}
+            "note": "vehicle x / y (spec frame); add these boxes to the CAD carrier envelope (the CAD carries a bare 76 x 70 x 15 box; "
+                    "the outline now has a tab on the vehicle -y edge, scripts/outline.py - the CAD must add it)"}
 
 
 def min_widths(board, nets) -> dict:
@@ -610,13 +714,16 @@ def main() -> int:
         "power_narrow_outside_pad_entry": power_narrow(board),
     }
     res["cad_round_envelopes"] = cad_round_envelopes(pdata, res["plug_fit"], cad)
+    res["board_fit"] = board_fit(fps, pdata, cad)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(res, indent=1) + "\n", encoding="utf-8", newline="\n")
     brief = {k: v for k, v in res.items() if k not in ("cluster_paths", "plug_fit")}
     brief["cluster_paths_max_mm"] = max((r["copper_path_mm"] or 99) for r in cp)
     brief["plug_fit"] = [{k: r[k] for k in ("ref", "gap_to_bore", "ok") if k in r} | {"jz": r.get("gap_to_motor_joint_zone")} for r in res["plug_fit"]]
     print(json.dumps(brief, indent=1))
-    return 0
+    print("board_fit:", json.dumps({k: v for k, v in res["board_fit"].items() if k != "outline"}))
+    # redesign2: the board-fit rules of the outline tab are a check (exit 1 when one fails); everything else is reported
+    return 0 if res["board_fit"]["ok"] else 1
 
 
 if __name__ == "__main__":

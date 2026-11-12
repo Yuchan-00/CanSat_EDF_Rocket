@@ -347,6 +347,11 @@ def step_and_docs() -> dict:
     r = run([K, "pcb", "export", "step", "--subst-models", "--no-dnp", "--force", "-o", str(step), str(PCB)], allow_fail=True)
     out["step"] = {"path": step.as_posix(), "exit": r.returncode, "exists": step.exists(),
                    "missing_models": sorted(set(re.findall(r"Could not add 3D model for (\w+)", r.stdout + r.stderr)))}
+    if r.returncode == 0 and step.exists():
+        # redesign2 fix stage (export only, no gate logic): kicad-cli writes the STEP entities in a different order
+        # on every run; step_canon renumbers them by content and proves the result is the same graph
+        import step_canon
+        out["step"]["canonical_numbering"] = step_canon.canonicalise_file(step)
     sdir = OUT / "schematic"
     if sdir.exists():
         shutil.rmtree(sdir)

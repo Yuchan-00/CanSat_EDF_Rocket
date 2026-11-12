@@ -158,6 +158,18 @@ MUST_BE_RAW_PREFIX = ("out/gerber/", "out/gerber_with_mcu/")
 MUST_BE_RAW_SUFFIX = (".kicad_sch",)
 
 
+def repo_dir() -> Path:
+    """The checkout whose params.json / cad files the chain reads: <repo>/pcb/vtol_carrier as before, or (redesign2,
+    scratch copy of the board folder without a checkout around it) the folder named by $CARRIER_PROJ."""
+    return Path(os.environ["CARRIER_PROJ"]) if os.environ.get("CARRIER_PROJ") else ROOT.parents[1]
+
+
+def folder_tokens(dst: Path, croot: Path) -> list[tuple[bytes, bytes]]:
+    """Renaming pairs clone -> this folder: the clone's board folder -> this board folder first, then the clone root ->
+    the checkout. In the repository layout (ROOT = repo/pcb/vtol_carrier) this is the same as path_tokens(dst, repo)."""
+    return path_tokens(croot, ROOT) + path_tokens(dst, repo_dir())
+
+
 def path_tokens(a: Path, b: Path) -> list[tuple[bytes, bytes]]:
     """Every spelling of folder ``a`` paired with the same spelling of folder ``b``: forward slashes (JSON, Markdown),
     backslashes, doubled backslashes (kicad-cli netlist)."""
@@ -173,7 +185,7 @@ def clone(dst: Path) -> tuple[Path, dict]:
     The kicad-cli netlists are dropped (CLONE_DROP) and reported."""
     import shutil
 
-    repo = ROOT.parents[1]
+    repo = repo_dir()
     if dst.exists() and any(dst.iterdir()):
         if not (dst / CLONE_MARK).is_file():
             raise SystemExit(f"--cross-folder: {dst} is not empty and was not made by determinism.py")
@@ -214,7 +226,7 @@ def cross_folder(dst: Path, here: dict[str, dict]) -> dict:
       differing                    anything else
     PASS = nothing differing AND every board, schematic sheet, gerber, zip, BOM and CPL is in the first class."""
     croot, adapted = clone(dst)
-    repo = ROOT.parents[1]
+    repo = repo_dir()
     t0 = time.time()
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     make = [sys.executable, "-B", "-X", "utf8", str(croot / "scripts" / "make_all.py")]
@@ -228,7 +240,7 @@ def cross_folder(dst: Path, here: dict[str, dict]) -> dict:
     spec_here = (ROOT / "spec" / "carrier_spec.json").read_bytes()
     spec_there = (croot / "spec" / "carrier_spec.json").read_bytes()
     back = spec_there
-    for a, b in path_tokens(dst, repo):
+    for a, b in folder_tokens(dst, croot):
         back = back.replace(a, b)
     gate = croot / "out" / "jlc_gate_report.json"
     adapted["spec_step_exit"] = pre.returncode
@@ -248,13 +260,13 @@ def cross_folder(dst: Path, here: dict[str, dict]) -> dict:
                  "build": {"exit": r.returncode, "minutes": round((time.time() - t0) / 60, 1),
                            "failed_checks": log["failed_checks"], "stopped_at": log.get("stopped_at"),
                            "steps": [(s["step"], s["exit"], s["seconds"]) for s in log["steps"]]},
-                 "renaming_rule": f"every spelling of '{dst.as_posix()}' -> '{repo.as_posix()}'; sha256 of a differing "
+                 "renaming_rule": f"every spelling of '{croot.as_posix()}' -> '{ROOT.as_posix()}', then of '{dst.as_posix()}' -> '{repo.as_posix()}'; sha256 of a differing "
                                   "file of the set -> this folder's sha256 of that file"}
     if r.returncode not in (0, 2):
         out.update(result="FAIL", why=f"the build in the second folder stopped (exit {r.returncode}, step {log.get('stopped_at')})",
                    stdout_tail=(r.stdout or "")[-800:])
         return out
-    tokens = path_tokens(dst, repo)
+    tokens = folder_tokens(dst, croot)
     raw = {}
     not_rebuilt, missing = [], []
     for rel in sorted(here["deterministic"]):

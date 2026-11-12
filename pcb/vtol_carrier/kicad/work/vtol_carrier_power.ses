@@ -7,6 +7,7 @@
       (place R48 754000 -781000 front 90)
       (place R57 953000 -1063000 front 90)
       (place R18 768000 -954000 front 90)
+      (place R64 1208500 -1338500 front 90)
       (place R46 1275000 -1181000 front 90)
       (place R53 960000 -1003000 front 90)
       (place R45 1251000 -1057000 front 90)
@@ -34,7 +35,7 @@
       (place R61 754000 -1172000 front 90)
       (place R55 953000 -1033000 front 90)
       (place R50 1038000 -877000 front 90)
-      (place R63 1230000 -1304000 front 0)
+      (place R63 1238500 -1338500 front 270)
       (place R28 1202000 -863000 front 0)
       (place R24 782000 -919000 front 0)
       (place R14 707000 -752000 front 0)
@@ -67,7 +68,6 @@
       (place R41 1189000 -878000 front 0)
       (place R29 1260000 -1023000 front 0)
       (place R40 1061000 -837000 front 0)
-      (place R64 1220800 -1331000 front 270)
     )
     (component "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
       (place J15 647000 -734500 front 0)
@@ -110,7 +110,6 @@
       (place C55 769000 -777000 front 90)
       (place C60 1150000 -1332000 front 90)
       (place C13 1086000 -866900 front 90)
-      (place C58 1206000 -1331000 front 90)
       (place C49 1143000 -853000 front 0)
       (place C32 906000 -1167000 front 0)
       (place C21 828000 -940000 front 0)
@@ -120,20 +119,21 @@
       (place C48 1230000 -1034000 front 0)
       (place C5 1109000 -1304000 front 0)
       (place C46 1116000 -883000 front 0)
+      (place C58 1223500 -1338500 front 270)
     )
     (component "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical"
       (place J14 652000 -688500 front 0)
     )
     (component "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-      (place J26 1000000 -1124000 front 0)
+      (place J26 1000000 -1129500 front 0)
       (place J25 1000000 -976500 front 0)
       (place J24 1000000 -829000 front 0)
     )
     (component "Capacitor_SMD:C_1206_3216Metric"
-      (place C42 726000 -693000 front 90)
-      (place C43 1309000 -1324000 front 270)
-      (place C57 1286000 -1324000 front 270)
-      (place C41 1251500 -1336000 front 0)
+      (place C42 728000 -693000 front 90)
+      (place C43 1271000 -1333000 front 180)
+      (place C41 1200000 -1387500 front 180)
+      (place C57 1292000 -1367500 front 270)
     )
     (component "Package_TO_SOT_SMD:SOT-23"
       (place Q10 709000 -725000 front 90)
@@ -189,15 +189,15 @@
     (component "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical"
       (place J3 987000 -742500 front 0)
       (place J20 987000 -890000 front 0)
-      (place J22 987000 -1185000 front 0)
-      (place J19 987000 -1271500 front 0)
+      (place J22 987000 -1190500 front 0)
+      (place J19 987000 -1277000 front 0)
       (place J21 987000 -1037500 front 0)
     )
     (component "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical"
       (place J1 1049000 -1151000 front 0)
     )
     (component "Package_TO_SOT_SMD:SOT-563"
-      (place U8 1257000 -1315000 front 0)
+      (place U8 1265000 -1354500 front 0)
     )
     (component "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm"
       (place Y1 1282700 -1214000 front 180)
@@ -221,7 +221,7 @@
       (place U7 867500 -772000 front 0)
     )
     (component "Inductor_SMD:L_Changjiang_FXL0420"
-      (place L5 1349000 -1324000 front 180)
+      (place L5 1251500 -1387500 front 0)
     )
     (component "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A"
       (place C45 1276500 -1281000 front 180)
