@@ -1,4 +1,4 @@
-(pcb "C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\redesign2\T\kicad\work\vtol_carrier_servo.dsn"
+(pcb "C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\rev31\T\kicad\work\vtol_carrier_servo.dsn"
   (parser
     (string_quote ")
     (space_in_quoted_tokens on)
@@ -5994,6 +5994,8 @@
     (keepout "" (polygon F.Cu 0  75525 -100975  77275 -100975  77275 -102575  75525 -102575  75525 -100975))
     (keepout "" (polygon F.Cu 0  114575 -82925  116175 -82925  116175 -84675  114575 -84675  114575 -82925))
     (keepout "" (polygon F.Cu 0  116225 -82925  117825 -82925  117825 -84675  116225 -84675  116225 -82925))
+    (keepout "" (polygon F.Cu 0  128500 -66275  130100 -66275  130100 -68025  128500 -68025  128500 -66275))
+    (keepout "" (polygon F.Cu 0  130150 -66275  131750 -66275  131750 -68025  130150 -68025  130150 -66275))
     (keepout "" (polygon F.Cu 0  108575 -82025  110175 -82025  110175 -83775  108575 -83775  108575 -82025))
     (keepout "" (polygon F.Cu 0  76575 -91025  78175 -91025  78175 -92775  76575 -92775  76575 -91025))
     (keepout "" (polygon F.Cu 0  75525 -99625  77275 -99625  77275 -101225  75525 -101225  75525 -99625))
@@ -6199,6 +6201,7 @@
       (place R52 91600 -115100 front 0 (PN 10k))
       (place R41 118900 -87800 front 0 (PN 10k))
       (place R29 126000 -102300 front 0 (PN 10k))
+      (place R22 130125 -67150 front 0 (PN 220))
       (place R40 106100 -83700 front 0 (PN 10k))
     )
     (component "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical"
@@ -6230,6 +6233,9 @@
     )
     (component Capacitor_SMD:C_1206_3216Metric
       (place C42 72800 -69300 front 90 (PN "22u 10V"))
+    )
+    (component TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm
+      (place J13 127050 -66850 front 0 (PN "1-pin THT pad (release servo signal)"))
     )
     (component "Package_TO_SOT_SMD:SOT-23"
       (place Q10 70900 -72500 front 90 (PN "AO3401A (-30 V, -4 A, Vgs(th) -0.5..-1.3 V, Rds(on) <= 85 mOhm at Vgs -2.5 V: A)"))
@@ -6525,6 +6531,28 @@
       (outline (path signal 100  -1600 800  -1600 -800  1600 -800  1600 800  -1600 800))
       (pin RoundRect[T]Pad_1150.000000x1800.000000_250.951000_um_0.000000_0 1 -1475 0)
       (pin RoundRect[T]Pad_1150.000000x1800.000000_250.951000_um_0.000000_0 2 1475 0)
+    )
+    (image TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm
+      (outline (polygon signal 0  246.49 1477.13  486.254 1416.41  712.755 1317.06  919.817 1181.78
+            1101.78 1014.27  1253.7 819.082  1371.42 601.561  1451.73 367.63
+            1492.45 123.615  1495 0  1492.45 -123.614  1451.73 -367.629
+            1371.42 -601.56  1253.7 -819.081  1101.78 -1014.26  919.817 -1181.78
+            712.755 -1317.06  486.254 -1416.41  246.49 -1477.13  0 -1497.55
+            -246.491 -1477.13  -486.255 -1416.41  -712.756 -1317.06  -919.818 -1181.78
+            -1101.79 -1014.26  -1253.7 -819.081  -1371.42 -601.56  -1451.73 -367.629
+            -1492.44 -123.665  -1492.44 123.666  -1451.73 367.63  -1371.42 601.561
+            -1253.7 819.082  -1101.79 1014.27  -919.818 1181.78  -712.756 1317.06
+            -486.255 1416.41  -246.491 1477.13  0 1497.55))
+      (outline (path signal 120  1200 0  1180.72 -214.268  1123.48 -421.65  1030.14 -615.479
+            903.686 -789.526  748.188 -938.198  568.642 -1056.71  370.82 -1141.27
+            161.08 -1189.14  -53.838 -1198.79  -267.025 -1169.91  -471.63 -1103.43
+            -661.076 -1001.49  -829.275 -867.354  -970.82 -705.342  -1081.16 -520.66
+            -1156.76 -319.244  -1195.17 -107.567  -1195.17 107.567  -1156.76 319.244
+            -1081.16 520.66  -970.82 705.342  -829.275 867.354  -661.076 1001.49
+            -471.63 1103.43  -267.025 1169.91  -53.838 1198.79  161.08 1189.14
+            370.82 1141.27  568.642 1056.71  748.188 938.198  903.686 789.526
+            1030.14 615.479  1123.48 421.65  1180.72 214.268  1200 0))
+      (pin Round[A]Pad_2000.000000_um 1 0 0)
     )
     (image "Package_TO_SOT_SMD:SOT-23"
       (outline (polygon signal 0  895 -545  895 -1695  -895 -1695  -895 -1495  -1925 -1495
@@ -7483,6 +7511,13 @@
       (shape (circle In1.Cu 1700))
       (shape (circle In2.Cu 1700))
       (shape (circle B.Cu 1700))
+      (attach off)
+    )
+    (padstack Round[A]Pad_2000.000000_um
+      (shape (circle F.Cu 2000))
+      (shape (circle In1.Cu 2000))
+      (shape (circle In2.Cu 2000))
+      (shape (circle B.Cu 2000))
       (attach off)
     )
     (padstack Round[T]Pad_500.000000_um
@@ -8631,6 +8666,12 @@
     (net FCU_VBAT_ADC__3
       (pins R33-1)
     )
+    (net RELEASE_SIG__0
+      (pins J13-1)
+    )
+    (net RELEASE_SIG__1
+      (pins R22-2)
+    )
     (net ESP_GPIO15__0
       (pins R49-1)
     )
@@ -8964,8 +9005,11 @@
     (net ESC_PWM__2
       (pins R21-1)
     )
-    (net "unconnected-(U2-PE5-Pad7)__0"
+    (net RELEASE_PWM__0
       (pins U2-7)
+    )
+    (net RELEASE_PWM__1
+      (pins R22-1)
     )
     (net "unconnected-(U2-PE6-Pad8)__0"
       (pins U2-8)
@@ -9897,34 +9941,35 @@
         NAV_LED__0 NAV_LED__1 NAV_LED_A__0 NAV_LED_A__1 NAV_RESET__0 NAV_RESET__1 NAV_RESET__2 NAV_RESET__3
         NAV_RESET__4 NAV_XTAL1__0 NAV_XTAL1__1 NAV_XTAL1__2 NAV_XTAL2__0 NAV_XTAL2__1 NAV_XTAL2__2 NLINK_MISO__0
         NLINK_MISO__1 NLINK_MOSI__0 NLINK_MOSI__1 NLINK_SCK__0 NLINK_SCK__1 NLINK_SCK__2 NLINK_SCK__3 NLINK_SS__0
-        NLINK_SS__1 NLINK_SS__2 OPENLOG_RXI__0 OPENLOG_RXI__1 OPENLOG_RXI__2 UVLO_REF__0 UVLO_REF__1 UVLO_SENSE__0
-        UVLO_SENSE__1 UVLO_SENSE__2 UVLO_SENSE__3 UVLO_SENSE__4 VANE1_PWM__0 VANE1_PWM__1 VANE1_PWM__2 VANE1_SIG__0
-        VANE1_SIG__1 VANE2_PWM__0 VANE2_PWM__1 VANE2_PWM__2 VANE2_SIG__0 VANE2_SIG__1 VANE3_PWM__0 VANE3_PWM__1
-        VANE3_PWM__2 VANE3_SIG__0 VANE3_SIG__1 VANE4_PWM__0 VANE4_PWM__1 VANE4_PWM__2 VANE4_SIG__0 VANE4_SIG__1
-        VS_BUF_ISIGN__0 VS_BUF_ISIGN__1 VS_VBUFFER__0 VS_VBUFFER__1 VS_VIN__0 VS_VIN__1 VS_VTETHER__0 VS_VTETHER__1
-        "unconnected-(J1-Pin_5-Pad5)__0" "unconnected-(J1-Pin_6-Pad6)__0" "unconnected-(J5-Pin_1-Pad1)__0" "unconnected-(J5-Pin_3-Pad3)__0" "unconnected-(U1-PA0-Pad51)__0" "unconnected-(U1-PA1-Pad50)__0" "unconnected-(U1-PA2-Pad49)__0" "unconnected-(U1-PA3-Pad48)__0"
-        "unconnected-(U1-PA4-Pad47)__0" "unconnected-(U1-PA5-Pad46)__0" "unconnected-(U1-PA6-Pad45)__0" "unconnected-(U1-PA7-Pad44)__0" "unconnected-(U1-PB4-Pad14)__0" "unconnected-(U1-PB5-Pad15)__0" "unconnected-(U1-PB6-Pad16)__0" "unconnected-(U1-PB7-Pad17)__0"
-        "unconnected-(U1-PC0-Pad35)__0" "unconnected-(U1-PC2-Pad37)__0" "unconnected-(U1-PC3-Pad38)__0" "unconnected-(U1-PC4-Pad39)__0" "unconnected-(U1-PC5-Pad40)__0" "unconnected-(U1-PC6-Pad41)__0" "unconnected-(U1-PC7-Pad42)__0" "unconnected-(U1-PD4-Pad29)__0"
-        "unconnected-(U1-PD5-Pad30)__0" "unconnected-(U1-PD6-Pad31)__0" "unconnected-(U1-PD7-Pad32)__0" "unconnected-(U1-PE2-Pad4)__0" "unconnected-(U1-PE3-Pad5)__0" "unconnected-(U1-PE4-Pad6)__0" "unconnected-(U1-PE5-Pad7)__0" "unconnected-(U1-PE7-Pad9)__0"
-        "unconnected-(U1-PF0-Pad61)__0" "unconnected-(U1-PF1-Pad60)__0" "unconnected-(U1-PF2-Pad59)__0" "unconnected-(U1-PF3-Pad58)__0" "unconnected-(U1-PF4-Pad57)__0" "unconnected-(U1-PF5-Pad56)__0" "unconnected-(U1-PF6-Pad55)__0" "unconnected-(U1-PF7-Pad54)__0"
-        "unconnected-(U1-PG0-Pad33)__0" "unconnected-(U1-PG1-Pad34)__0" "unconnected-(U1-PG2-Pad43)__0" "unconnected-(U1-PG3-Pad18)__0" "unconnected-(U1-PG4-Pad19)__0" "unconnected-(U2-PA0-Pad51)__0" "unconnected-(U2-PA1-Pad50)__0" "unconnected-(U2-PA2-Pad49)__0"
-        "unconnected-(U2-PA3-Pad48)__0" "unconnected-(U2-PA4-Pad47)__0" "unconnected-(U2-PA5-Pad46)__0" "unconnected-(U2-PA6-Pad45)__0" "unconnected-(U2-PA7-Pad44)__0" "unconnected-(U2-PB4-Pad14)__0" "unconnected-(U2-PC4-Pad39)__0" "unconnected-(U2-PC5-Pad40)__0"
-        "unconnected-(U2-PC6-Pad41)__0" "unconnected-(U2-PC7-Pad42)__0" "unconnected-(U2-PD0-Pad25)__0" "unconnected-(U2-PD1-Pad26)__0" "unconnected-(U2-PD4-Pad29)__0" "unconnected-(U2-PD5-Pad30)__0" "unconnected-(U2-PD6-Pad31)__0" "unconnected-(U2-PD7-Pad32)__0"
-        "unconnected-(U2-PE2-Pad4)__0" "unconnected-(U2-PE5-Pad7)__0" "unconnected-(U2-PE6-Pad8)__0" "unconnected-(U2-PE7-Pad9)__0" "unconnected-(U2-PF4-Pad57)__0" "unconnected-(U2-PF5-Pad56)__0" "unconnected-(U2-PF6-Pad55)__0" "unconnected-(U2-PF7-Pad54)__0"
-        "unconnected-(U2-PG0-Pad33)__0" "unconnected-(U2-PG1-Pad34)__0" "unconnected-(U2-PG2-Pad43)__0" "unconnected-(U2-PG3-Pad18)__0" "unconnected-(U2-PG4-Pad19)__0" "unconnected-(U3-PA0-Pad51)__0" "unconnected-(U3-PA1-Pad50)__0" "unconnected-(U3-PA2-Pad49)__0"
-        "unconnected-(U3-PA3-Pad48)__0" "unconnected-(U3-PA4-Pad47)__0" "unconnected-(U3-PA5-Pad46)__0" "unconnected-(U3-PA6-Pad45)__0" "unconnected-(U3-PA7-Pad44)__0" "unconnected-(U3-PB0-Pad10)__0" "unconnected-(U3-PB2-Pad12)__0" "unconnected-(U3-PB3-Pad13)__0"
-        "unconnected-(U3-PB4-Pad14)__0" "unconnected-(U3-PB5-Pad15)__0" "unconnected-(U3-PB6-Pad16)__0" "unconnected-(U3-PB7-Pad17)__0" "unconnected-(U3-PC1-Pad36)__0" "unconnected-(U3-PC2-Pad37)__0" "unconnected-(U3-PC3-Pad38)__0" "unconnected-(U3-PC4-Pad39)__0"
-        "unconnected-(U3-PC5-Pad40)__0" "unconnected-(U3-PC7-Pad42)__0" "unconnected-(U3-PD0-Pad25)__0" "unconnected-(U3-PD1-Pad26)__0" "unconnected-(U3-PD4-Pad29)__0" "unconnected-(U3-PD5-Pad30)__0" "unconnected-(U3-PD6-Pad31)__0" "unconnected-(U3-PD7-Pad32)__0"
-        "unconnected-(U3-PE2-Pad4)__0" "unconnected-(U3-PE3-Pad5)__0" "unconnected-(U3-PE4-Pad6)__0" "unconnected-(U3-PE5-Pad7)__0" "unconnected-(U3-PE6-Pad8)__0" "unconnected-(U3-PE7-Pad9)__0" "unconnected-(U3-PF0-Pad61)__0" "unconnected-(U3-PF1-Pad60)__0"
-        "unconnected-(U3-PF2-Pad59)__0" "unconnected-(U3-PF3-Pad58)__0" "unconnected-(U3-PF4-Pad57)__0" "unconnected-(U3-PF5-Pad56)__0" "unconnected-(U3-PF6-Pad55)__0" "unconnected-(U3-PF7-Pad54)__0" "unconnected-(U3-PG0-Pad33)__0" "unconnected-(U3-PG1-Pad34)__0"
-        "unconnected-(U3-PG2-Pad43)__0" "unconnected-(U3-PG3-Pad18)__0" "unconnected-(U3-PG4-Pad19)__0" "unconnected-(U4-PA0-Pad51)__0" "unconnected-(U4-PA1-Pad50)__0" "unconnected-(U4-PA2-Pad49)__0" "unconnected-(U4-PA3-Pad48)__0" "unconnected-(U4-PA4-Pad47)__0"
-        "unconnected-(U4-PA5-Pad46)__0" "unconnected-(U4-PA6-Pad45)__0" "unconnected-(U4-PA7-Pad44)__0" "unconnected-(U4-PB0-Pad10)__0" "unconnected-(U4-PB2-Pad12)__0" "unconnected-(U4-PB3-Pad13)__0" "unconnected-(U4-PB4-Pad14)__0" "unconnected-(U4-PB5-Pad15)__0"
-        "unconnected-(U4-PB6-Pad16)__0" "unconnected-(U4-PB7-Pad17)__0" "unconnected-(U4-PC1-Pad36)__0" "unconnected-(U4-PC2-Pad37)__0" "unconnected-(U4-PC3-Pad38)__0" "unconnected-(U4-PC4-Pad39)__0" "unconnected-(U4-PC5-Pad40)__0" "unconnected-(U4-PC6-Pad41)__0"
-        "unconnected-(U4-PC7-Pad42)__0" "unconnected-(U4-PD0-Pad25)__0" "unconnected-(U4-PD1-Pad26)__0" "unconnected-(U4-PD4-Pad29)__0" "unconnected-(U4-PD5-Pad30)__0" "unconnected-(U4-PD6-Pad31)__0" "unconnected-(U4-PD7-Pad32)__0" "unconnected-(U4-PE2-Pad4)__0"
-        "unconnected-(U4-PE3-Pad5)__0" "unconnected-(U4-PE4-Pad6)__0" "unconnected-(U4-PE5-Pad7)__0" "unconnected-(U4-PE6-Pad8)__0" "unconnected-(U4-PE7-Pad9)__0" "unconnected-(U4-PF0-Pad61)__0" "unconnected-(U4-PF1-Pad60)__0" "unconnected-(U4-PF2-Pad59)__0"
-        "unconnected-(U4-PF3-Pad58)__0" "unconnected-(U4-PF4-Pad57)__0" "unconnected-(U4-PF5-Pad56)__0" "unconnected-(U4-PF6-Pad55)__0" "unconnected-(U4-PF7-Pad54)__0" "unconnected-(U4-PG0-Pad33)__0" "unconnected-(U4-PG1-Pad34)__0" "unconnected-(U4-PG2-Pad43)__0"
-        "unconnected-(U4-PG3-Pad18)__0" "unconnected-(U4-PG4-Pad19)__0" "unconnected-(U7-ADC-Pad2)__0" "unconnected-(U7-CS0-Pad9)__0" "unconnected-(U7-GPIO10-Pad12)__0" "unconnected-(U7-GPIO12-Pad6)__0" "unconnected-(U7-GPIO13-Pad7)__0" "unconnected-(U7-GPIO14-Pad5)__0"
-        "unconnected-(U7-GPIO16-Pad4)__0" "unconnected-(U7-GPIO4-Pad19)__0" "unconnected-(U7-GPIO5-Pad20)__0" "unconnected-(U7-GPIO9-Pad11)__0" "unconnected-(U7-MISO-Pad10)__0" "unconnected-(U7-MOSI-Pad13)__0" "unconnected-(U7-SCLK-Pad14)__0"
+        NLINK_SS__1 NLINK_SS__2 OPENLOG_RXI__0 OPENLOG_RXI__1 OPENLOG_RXI__2 RELEASE_PWM__0 RELEASE_PWM__1 RELEASE_SIG__0
+        RELEASE_SIG__1 UVLO_REF__0 UVLO_REF__1 UVLO_SENSE__0 UVLO_SENSE__1 UVLO_SENSE__2 UVLO_SENSE__3 UVLO_SENSE__4
+        VANE1_PWM__0 VANE1_PWM__1 VANE1_PWM__2 VANE1_SIG__0 VANE1_SIG__1 VANE2_PWM__0 VANE2_PWM__1 VANE2_PWM__2
+        VANE2_SIG__0 VANE2_SIG__1 VANE3_PWM__0 VANE3_PWM__1 VANE3_PWM__2 VANE3_SIG__0 VANE3_SIG__1 VANE4_PWM__0
+        VANE4_PWM__1 VANE4_PWM__2 VANE4_SIG__0 VANE4_SIG__1 VS_BUF_ISIGN__0 VS_BUF_ISIGN__1 VS_VBUFFER__0 VS_VBUFFER__1
+        VS_VIN__0 VS_VIN__1 VS_VTETHER__0 VS_VTETHER__1 "unconnected-(J1-Pin_5-Pad5)__0" "unconnected-(J1-Pin_6-Pad6)__0" "unconnected-(J5-Pin_1-Pad1)__0" "unconnected-(J5-Pin_3-Pad3)__0"
+        "unconnected-(U1-PA0-Pad51)__0" "unconnected-(U1-PA1-Pad50)__0" "unconnected-(U1-PA2-Pad49)__0" "unconnected-(U1-PA3-Pad48)__0" "unconnected-(U1-PA4-Pad47)__0" "unconnected-(U1-PA5-Pad46)__0" "unconnected-(U1-PA6-Pad45)__0" "unconnected-(U1-PA7-Pad44)__0"
+        "unconnected-(U1-PB4-Pad14)__0" "unconnected-(U1-PB5-Pad15)__0" "unconnected-(U1-PB6-Pad16)__0" "unconnected-(U1-PB7-Pad17)__0" "unconnected-(U1-PC0-Pad35)__0" "unconnected-(U1-PC2-Pad37)__0" "unconnected-(U1-PC3-Pad38)__0" "unconnected-(U1-PC4-Pad39)__0"
+        "unconnected-(U1-PC5-Pad40)__0" "unconnected-(U1-PC6-Pad41)__0" "unconnected-(U1-PC7-Pad42)__0" "unconnected-(U1-PD4-Pad29)__0" "unconnected-(U1-PD5-Pad30)__0" "unconnected-(U1-PD6-Pad31)__0" "unconnected-(U1-PD7-Pad32)__0" "unconnected-(U1-PE2-Pad4)__0"
+        "unconnected-(U1-PE3-Pad5)__0" "unconnected-(U1-PE4-Pad6)__0" "unconnected-(U1-PE5-Pad7)__0" "unconnected-(U1-PE7-Pad9)__0" "unconnected-(U1-PF0-Pad61)__0" "unconnected-(U1-PF1-Pad60)__0" "unconnected-(U1-PF2-Pad59)__0" "unconnected-(U1-PF3-Pad58)__0"
+        "unconnected-(U1-PF4-Pad57)__0" "unconnected-(U1-PF5-Pad56)__0" "unconnected-(U1-PF6-Pad55)__0" "unconnected-(U1-PF7-Pad54)__0" "unconnected-(U1-PG0-Pad33)__0" "unconnected-(U1-PG1-Pad34)__0" "unconnected-(U1-PG2-Pad43)__0" "unconnected-(U1-PG3-Pad18)__0"
+        "unconnected-(U1-PG4-Pad19)__0" "unconnected-(U2-PA0-Pad51)__0" "unconnected-(U2-PA1-Pad50)__0" "unconnected-(U2-PA2-Pad49)__0" "unconnected-(U2-PA3-Pad48)__0" "unconnected-(U2-PA4-Pad47)__0" "unconnected-(U2-PA5-Pad46)__0" "unconnected-(U2-PA6-Pad45)__0"
+        "unconnected-(U2-PA7-Pad44)__0" "unconnected-(U2-PB4-Pad14)__0" "unconnected-(U2-PC4-Pad39)__0" "unconnected-(U2-PC5-Pad40)__0" "unconnected-(U2-PC6-Pad41)__0" "unconnected-(U2-PC7-Pad42)__0" "unconnected-(U2-PD0-Pad25)__0" "unconnected-(U2-PD1-Pad26)__0"
+        "unconnected-(U2-PD4-Pad29)__0" "unconnected-(U2-PD5-Pad30)__0" "unconnected-(U2-PD6-Pad31)__0" "unconnected-(U2-PD7-Pad32)__0" "unconnected-(U2-PE2-Pad4)__0" "unconnected-(U2-PE6-Pad8)__0" "unconnected-(U2-PE7-Pad9)__0" "unconnected-(U2-PF4-Pad57)__0"
+        "unconnected-(U2-PF5-Pad56)__0" "unconnected-(U2-PF6-Pad55)__0" "unconnected-(U2-PF7-Pad54)__0" "unconnected-(U2-PG0-Pad33)__0" "unconnected-(U2-PG1-Pad34)__0" "unconnected-(U2-PG2-Pad43)__0" "unconnected-(U2-PG3-Pad18)__0" "unconnected-(U2-PG4-Pad19)__0"
+        "unconnected-(U3-PA0-Pad51)__0" "unconnected-(U3-PA1-Pad50)__0" "unconnected-(U3-PA2-Pad49)__0" "unconnected-(U3-PA3-Pad48)__0" "unconnected-(U3-PA4-Pad47)__0" "unconnected-(U3-PA5-Pad46)__0" "unconnected-(U3-PA6-Pad45)__0" "unconnected-(U3-PA7-Pad44)__0"
+        "unconnected-(U3-PB0-Pad10)__0" "unconnected-(U3-PB2-Pad12)__0" "unconnected-(U3-PB3-Pad13)__0" "unconnected-(U3-PB4-Pad14)__0" "unconnected-(U3-PB5-Pad15)__0" "unconnected-(U3-PB6-Pad16)__0" "unconnected-(U3-PB7-Pad17)__0" "unconnected-(U3-PC1-Pad36)__0"
+        "unconnected-(U3-PC2-Pad37)__0" "unconnected-(U3-PC3-Pad38)__0" "unconnected-(U3-PC4-Pad39)__0" "unconnected-(U3-PC5-Pad40)__0" "unconnected-(U3-PC7-Pad42)__0" "unconnected-(U3-PD0-Pad25)__0" "unconnected-(U3-PD1-Pad26)__0" "unconnected-(U3-PD4-Pad29)__0"
+        "unconnected-(U3-PD5-Pad30)__0" "unconnected-(U3-PD6-Pad31)__0" "unconnected-(U3-PD7-Pad32)__0" "unconnected-(U3-PE2-Pad4)__0" "unconnected-(U3-PE3-Pad5)__0" "unconnected-(U3-PE4-Pad6)__0" "unconnected-(U3-PE5-Pad7)__0" "unconnected-(U3-PE6-Pad8)__0"
+        "unconnected-(U3-PE7-Pad9)__0" "unconnected-(U3-PF0-Pad61)__0" "unconnected-(U3-PF1-Pad60)__0" "unconnected-(U3-PF2-Pad59)__0" "unconnected-(U3-PF3-Pad58)__0" "unconnected-(U3-PF4-Pad57)__0" "unconnected-(U3-PF5-Pad56)__0" "unconnected-(U3-PF6-Pad55)__0"
+        "unconnected-(U3-PF7-Pad54)__0" "unconnected-(U3-PG0-Pad33)__0" "unconnected-(U3-PG1-Pad34)__0" "unconnected-(U3-PG2-Pad43)__0" "unconnected-(U3-PG3-Pad18)__0" "unconnected-(U3-PG4-Pad19)__0" "unconnected-(U4-PA0-Pad51)__0" "unconnected-(U4-PA1-Pad50)__0"
+        "unconnected-(U4-PA2-Pad49)__0" "unconnected-(U4-PA3-Pad48)__0" "unconnected-(U4-PA4-Pad47)__0" "unconnected-(U4-PA5-Pad46)__0" "unconnected-(U4-PA6-Pad45)__0" "unconnected-(U4-PA7-Pad44)__0" "unconnected-(U4-PB0-Pad10)__0" "unconnected-(U4-PB2-Pad12)__0"
+        "unconnected-(U4-PB3-Pad13)__0" "unconnected-(U4-PB4-Pad14)__0" "unconnected-(U4-PB5-Pad15)__0" "unconnected-(U4-PB6-Pad16)__0" "unconnected-(U4-PB7-Pad17)__0" "unconnected-(U4-PC1-Pad36)__0" "unconnected-(U4-PC2-Pad37)__0" "unconnected-(U4-PC3-Pad38)__0"
+        "unconnected-(U4-PC4-Pad39)__0" "unconnected-(U4-PC5-Pad40)__0" "unconnected-(U4-PC6-Pad41)__0" "unconnected-(U4-PC7-Pad42)__0" "unconnected-(U4-PD0-Pad25)__0" "unconnected-(U4-PD1-Pad26)__0" "unconnected-(U4-PD4-Pad29)__0" "unconnected-(U4-PD5-Pad30)__0"
+        "unconnected-(U4-PD6-Pad31)__0" "unconnected-(U4-PD7-Pad32)__0" "unconnected-(U4-PE2-Pad4)__0" "unconnected-(U4-PE3-Pad5)__0" "unconnected-(U4-PE4-Pad6)__0" "unconnected-(U4-PE5-Pad7)__0" "unconnected-(U4-PE6-Pad8)__0" "unconnected-(U4-PE7-Pad9)__0"
+        "unconnected-(U4-PF0-Pad61)__0" "unconnected-(U4-PF1-Pad60)__0" "unconnected-(U4-PF2-Pad59)__0" "unconnected-(U4-PF3-Pad58)__0" "unconnected-(U4-PF4-Pad57)__0" "unconnected-(U4-PF5-Pad56)__0" "unconnected-(U4-PF6-Pad55)__0" "unconnected-(U4-PF7-Pad54)__0"
+        "unconnected-(U4-PG0-Pad33)__0" "unconnected-(U4-PG1-Pad34)__0" "unconnected-(U4-PG2-Pad43)__0" "unconnected-(U4-PG3-Pad18)__0" "unconnected-(U4-PG4-Pad19)__0" "unconnected-(U7-ADC-Pad2)__0" "unconnected-(U7-CS0-Pad9)__0" "unconnected-(U7-GPIO10-Pad12)__0"
+        "unconnected-(U7-GPIO12-Pad6)__0" "unconnected-(U7-GPIO13-Pad7)__0" "unconnected-(U7-GPIO14-Pad5)__0" "unconnected-(U7-GPIO16-Pad4)__0" "unconnected-(U7-GPIO4-Pad19)__0" "unconnected-(U7-GPIO5-Pad20)__0" "unconnected-(U7-GPIO9-Pad11)__0" "unconnected-(U7-MISO-Pad10)__0"
+        "unconnected-(U7-MOSI-Pad13)__0" "unconnected-(U7-SCLK-Pad14)__0"
       (circuit
   (use_layer F.Cu B.Cu)
         (use_via "Via[0-3]_600:300_um")

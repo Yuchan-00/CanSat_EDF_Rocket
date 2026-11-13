@@ -2,16 +2,16 @@
  "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_export_files.json",
  "result": "PASS",
  "tool": "scripts/rev3_checks.py export-files",
- "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
+ "spec_sha256": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
  "problems": [],
  "pairs": {
   "main": {
    "bom": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv",
    "cpl": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv",
-   "bom_sha256": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
-   "cpl_sha256": "e250211c7c3fd33bfca4a13f0637a20403897f236246ed04be8737636ac75607",
+   "bom_sha256": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+   "cpl_sha256": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
    "bom_lines": 33,
-   "cpl_rows": 144,
+   "cpl_rows": 145,
    "bom_header_exact": true,
    "cpl_header_exact": true,
    "utf8_bom_prefix": true,
@@ -19,12 +19,12 @@
    "codes_not_C_number": [],
    "fit_set_check": {
     "with_mcu": false,
-    "expected": 144,
-    "bom_count": 144,
+    "expected": 145,
+    "bom_count": 145,
     "bom_missing": [],
     "bom_extra": [],
     "bom_duplicates": [],
-    "cpl_count": 144,
+    "cpl_count": 145,
     "cpl_missing": [],
     "cpl_extra": [],
     "cpl_duplicates": [],
@@ -42,10 +42,10 @@
   "with_mcu": {
    "bom": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv",
    "cpl": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv",
-   "bom_sha256": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
-   "cpl_sha256": "ca865157515e163f27a1da2fef17e71fe4fae593b5e8081de9ae4081172fafaf",
+   "bom_sha256": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+   "cpl_sha256": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
    "bom_lines": 34,
-   "cpl_rows": 148,
+   "cpl_rows": 149,
    "bom_header_exact": true,
    "cpl_header_exact": true,
    "utf8_bom_prefix": true,
@@ -53,12 +53,12 @@
    "codes_not_C_number": [],
    "fit_set_check": {
     "with_mcu": true,
-    "expected": 148,
-    "bom_count": 148,
+    "expected": 149,
+    "bom_count": 149,
     "bom_missing": [],
     "bom_extra": [],
     "bom_duplicates": [],
-    "cpl_count": 148,
+    "cpl_count": 149,
     "cpl_missing": [],
     "cpl_extra": [],
     "cpl_duplicates": [],
@@ -81,8 +81,8 @@
   }
  },
  "silk_marks": {
-  "board_sha256_of_report": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d",
-  "board_sha256_now": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d",
+  "board_sha256_of_report": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
+  "board_sha256_now": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
   "required": [
    "C45",
    "C47",
@@ -149,6 +149,7 @@
     "J10",
     "J11",
     "J12",
+    "J13",
     "J14",
     "J15",
     "J16",
@@ -181,6 +182,7 @@
     "J10",
     "J11",
     "J12",
+    "J13",
     "J14",
     "J15",
     "J16",
@@ -212,8 +214,8 @@
     "U4": 64,
     "U7": 22
    },
-   "pads_with_paste_left": 320,
-   "gerber_flashes": 320
+   "pads_with_paste_left": 322,
+   "gerber_flashes": 322
   },
   "with_mcu": {
    "refs_without_paste_in_the_report": [
@@ -226,6 +228,7 @@
     "J10",
     "J11",
     "J12",
+    "J13",
     "J14",
     "J15",
     "J16",
@@ -254,6 +257,7 @@
     "J10",
     "J11",
     "J12",
+    "J13",
     "J14",
     "J15",
     "J16",
@@ -277,8 +281,8 @@
     "R47": 2,
     "U7": 22
    },
-   "pads_with_paste_left": 576,
-   "gerber_flashes": 576
+   "pads_with_paste_left": 578,
+   "gerber_flashes": 578
   }
  },
  "gerber_zips": {
@@ -302,8 +306,8 @@
    "vtol_carrier-F_Paste.gtp"
   ],
   "f_paste_flashes": [
-   320,
-   576
+   322,
+   578
   ],
   "copper_files": [
    "vtol_carrier-B_Cu.gbl",

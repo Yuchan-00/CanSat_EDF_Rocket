@@ -1,7 +1,7 @@
 {
  "schema": "vtol_carrier.programming_access/1",
  "decision": "D6",
- "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
+ "spec_sha256": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
  "spec_option": "A",
  "need": {
   "2x3": 5,
@@ -261,8 +261,8 @@
  },
  "cases": {
   "final": {
-   "parts_on_board": 166,
-   "free_area_for_a_header_courtyard_mm2": 495.5,
+   "parts_on_board": 168,
+   "free_area_for_a_header_courtyard_mm2": 481.3,
    "courtyard_area_of_the_greedy_parts_mm2": 562.5,
    "families": {
     "smd": {
@@ -468,8 +468,8 @@
    }
   },
   "fixed_only": {
-   "parts_on_board": 68,
-   "free_area_for_a_header_courtyard_mm2": 888.3,
+   "parts_on_board": 70,
+   "free_area_for_a_header_courtyard_mm2": 874.1,
    "courtyard_area_of_the_greedy_parts_mm2": 562.5,
    "families": {
     "smd": {
@@ -510,22 +510,10 @@
        "need": 3,
        "per_rotation": {
         "0": {
-         "legal_origins_courtyard_only": 218,
-         "legal_origins": 218,
-         "upper_bound_fit_at_once": 1,
-         "upper_bound_courtyard_only": 1,
-         "origin_runs_y_x0_x1": [
-          [
-           68.3,
-           128.9,
-           134.3
-          ],
-          [
-           68.35,
-           128.9,
-           134.3
-          ]
-         ]
+         "legal_origins_courtyard_only": 0,
+         "legal_origins": 0,
+         "upper_bound_fit_at_once": 0,
+         "upper_bound_courtyard_only": 0
         },
         "90": {
          "legal_origins_courtyard_only": 0,
@@ -534,22 +522,10 @@
          "upper_bound_courtyard_only": 0
         },
         "180": {
-         "legal_origins_courtyard_only": 218,
-         "legal_origins": 218,
-         "upper_bound_fit_at_once": 1,
-         "upper_bound_courtyard_only": 1,
-         "origin_runs_y_x0_x1": [
-          [
-           68.3,
-           128.9,
-           134.3
-          ],
-          [
-           68.35,
-           128.9,
-           134.3
-          ]
-         ]
+         "legal_origins_courtyard_only": 0,
+         "legal_origins": 0,
+         "upper_bound_fit_at_once": 0,
+         "upper_bound_courtyard_only": 0
         },
         "270": {
          "legal_origins_courtyard_only": 0,
@@ -558,51 +534,38 @@
          "upper_bound_courtyard_only": 0
         }
        },
-       "legal_origins_total": 436,
-       "upper_bound_fit_at_once": 1,
-       "upper_bound_courtyard_only": 1
+       "legal_origins_total": 0,
+       "upper_bound_fit_at_once": 0,
+       "upper_bound_courtyard_only": 0
       }
      },
      "greedy_packings": [
       {
        "order": "top_left",
        "placed_2x3": 0,
-       "placed_1x2": 1
+       "placed_1x2": 0
       },
       {
        "order": "bottom_right",
        "placed_2x3": 0,
-       "placed_1x2": 1
+       "placed_1x2": 0
       },
       {
        "order": "left_top",
        "placed_2x3": 0,
-       "placed_1x2": 1
+       "placed_1x2": 0
       },
       {
        "order": "right_bottom",
        "placed_2x3": 0,
-       "placed_1x2": 1
+       "placed_1x2": 0
       }
      ],
      "best_greedy_packing": {
       "order": "top_left",
       "placed_2x3": 0,
-      "placed_1x2": 1,
-      "headers": [
-       {
-        "kind": "1x2",
-        "rot": 0,
-        "x": 128.9,
-        "y": 68.3,
-        "courtyard_kicad": [
-         125.45,
-         65.25,
-         132.35,
-         71.35
-        ]
-       }
-      ]
+      "placed_1x2": 0,
+      "headers": []
      },
      "all_eight_fit_in_greedy_packing": false,
      "impossible_by_upper_bound": true,
@@ -621,10 +584,10 @@
          "upper_bound_courtyard_only": 0
         },
         "90": {
-         "legal_origins_courtyard_only": 74,
+         "legal_origins_courtyard_only": 0,
          "legal_origins": 0,
          "upper_bound_fit_at_once": 0,
-         "upper_bound_courtyard_only": 1
+         "upper_bound_courtyard_only": 0
         },
         "180": {
          "legal_origins_courtyard_only": 0,
@@ -633,28 +596,28 @@
          "upper_bound_courtyard_only": 0
         },
         "270": {
-         "legal_origins_courtyard_only": 74,
+         "legal_origins_courtyard_only": 0,
          "legal_origins": 0,
          "upper_bound_fit_at_once": 0,
-         "upper_bound_courtyard_only": 1
+         "upper_bound_courtyard_only": 0
         }
        },
        "legal_origins_total": 0,
        "upper_bound_fit_at_once": 0,
-       "upper_bound_courtyard_only": 1
+       "upper_bound_courtyard_only": 0
       },
       "1x2": {
        "need": 3,
        "per_rotation": {
         "0": {
-         "legal_origins_courtyard_only": 671,
-         "legal_origins": 671,
-         "upper_bound_fit_at_once": 6,
-         "upper_bound_courtyard_only": 6,
+         "legal_origins_courtyard_only": 547,
+         "legal_origins": 547,
+         "upper_bound_fit_at_once": 4,
+         "upper_bound_courtyard_only": 4,
          "origin_runs_y_x0_x1": [
           [
            67.05,
-           127.25,
+           133.45,
            135.95
           ],
           [
@@ -860,271 +823,11 @@
          ]
         },
         "90": {
-         "legal_origins_courtyard_only": 12923,
-         "legal_origins": 12923,
-         "upper_bound_fit_at_once": 15,
-         "upper_bound_courtyard_only": 15,
+         "legal_origins_courtyard_only": 6475,
+         "legal_origins": 6475,
+         "upper_bound_fit_at_once": 12,
+         "upper_bound_courtyard_only": 12,
          "origin_runs_y_x0_x1": [
-          [
-           67.05,
-           127.25,
-           133.4
-          ],
-          [
-           67.1,
-           127.25,
-           133.4
-          ],
-          [
-           67.15,
-           127.25,
-           133.4
-          ],
-          [
-           67.2,
-           127.25,
-           133.4
-          ],
-          [
-           67.25,
-           127.25,
-           133.4
-          ],
-          [
-           67.3,
-           127.25,
-           133.4
-          ],
-          [
-           67.35,
-           127.25,
-           133.4
-          ],
-          [
-           67.4,
-           127.25,
-           133.4
-          ],
-          [
-           67.45,
-           127.25,
-           133.4
-          ],
-          [
-           67.5,
-           127.25,
-           133.4
-          ],
-          [
-           67.55,
-           127.25,
-           133.4
-          ],
-          [
-           67.6,
-           127.25,
-           133.4
-          ],
-          [
-           67.65,
-           127.25,
-           133.4
-          ],
-          [
-           67.7,
-           127.25,
-           133.4
-          ],
-          [
-           67.75,
-           127.25,
-           133.4
-          ],
-          [
-           67.8,
-           127.25,
-           133.4
-          ],
-          [
-           67.85,
-           127.25,
-           133.4
-          ],
-          [
-           67.9,
-           127.25,
-           133.4
-          ],
-          [
-           67.95,
-           127.25,
-           133.4
-          ],
-          [
-           68.0,
-           127.25,
-           133.4
-          ],
-          [
-           68.05,
-           127.25,
-           133.4
-          ],
-          [
-           68.1,
-           127.25,
-           133.4
-          ],
-          [
-           68.15,
-           127.25,
-           133.4
-          ],
-          [
-           68.2,
-           127.25,
-           133.4
-          ],
-          [
-           68.25,
-           127.25,
-           133.4
-          ],
-          [
-           68.3,
-           127.25,
-           133.4
-          ],
-          [
-           68.35,
-           127.25,
-           133.4
-          ],
-          [
-           68.4,
-           127.25,
-           133.4
-          ],
-          [
-           68.45,
-           127.25,
-           133.4
-          ],
-          [
-           68.5,
-           127.25,
-           133.4
-          ],
-          [
-           68.55,
-           127.25,
-           133.4
-          ],
-          [
-           68.6,
-           127.25,
-           133.4
-          ],
-          [
-           68.65,
-           127.25,
-           133.4
-          ],
-          [
-           68.7,
-           127.25,
-           133.4
-          ],
-          [
-           68.75,
-           127.25,
-           133.4
-          ],
-          [
-           68.8,
-           127.25,
-           133.4
-          ],
-          [
-           68.85,
-           127.25,
-           133.4
-          ],
-          [
-           68.9,
-           127.25,
-           133.4
-          ],
-          [
-           68.95,
-           127.25,
-           133.4
-          ],
-          [
-           69.0,
-           127.25,
-           133.4
-          ],
-          [
-           69.05,
-           127.25,
-           133.4
-          ],
-          [
-           69.1,
-           127.25,
-           133.4
-          ],
-          [
-           69.15,
-           127.25,
-           133.4
-          ],
-          [
-           69.2,
-           127.25,
-           133.4
-          ],
-          [
-           69.25,
-           127.25,
-           133.4
-          ],
-          [
-           69.3,
-           127.25,
-           133.4
-          ],
-          [
-           69.35,
-           127.25,
-           133.4
-          ],
-          [
-           69.4,
-           127.25,
-           133.4
-          ],
-          [
-           69.45,
-           127.25,
-           133.4
-          ],
-          [
-           69.5,
-           127.25,
-           133.4
-          ],
-          [
-           69.55,
-           127.25,
-           133.4
-          ],
-          [
-           69.6,
-           127.25,
-           133.4
-          ],
           [
            74.2,
            70.95,
@@ -1983,14 +1686,14 @@
          ]
         },
         "180": {
-         "legal_origins_courtyard_only": 671,
-         "legal_origins": 671,
-         "upper_bound_fit_at_once": 6,
-         "upper_bound_courtyard_only": 6,
+         "legal_origins_courtyard_only": 547,
+         "legal_origins": 547,
+         "upper_bound_fit_at_once": 4,
+         "upper_bound_courtyard_only": 4,
          "origin_runs_y_x0_x1": [
           [
            69.6,
-           127.25,
+           133.45,
            135.95
           ],
           [
@@ -2196,271 +1899,11 @@
          ]
         },
         "270": {
-         "legal_origins_courtyard_only": 12923,
-         "legal_origins": 12923,
-         "upper_bound_fit_at_once": 15,
-         "upper_bound_courtyard_only": 15,
+         "legal_origins_courtyard_only": 6475,
+         "legal_origins": 6475,
+         "upper_bound_fit_at_once": 12,
+         "upper_bound_courtyard_only": 12,
          "origin_runs_y_x0_x1": [
-          [
-           67.05,
-           129.8,
-           135.95
-          ],
-          [
-           67.1,
-           129.8,
-           135.95
-          ],
-          [
-           67.15,
-           129.8,
-           135.95
-          ],
-          [
-           67.2,
-           129.8,
-           135.95
-          ],
-          [
-           67.25,
-           129.8,
-           135.95
-          ],
-          [
-           67.3,
-           129.8,
-           135.95
-          ],
-          [
-           67.35,
-           129.8,
-           135.95
-          ],
-          [
-           67.4,
-           129.8,
-           135.95
-          ],
-          [
-           67.45,
-           129.8,
-           135.95
-          ],
-          [
-           67.5,
-           129.8,
-           135.95
-          ],
-          [
-           67.55,
-           129.8,
-           135.95
-          ],
-          [
-           67.6,
-           129.8,
-           135.95
-          ],
-          [
-           67.65,
-           129.8,
-           135.95
-          ],
-          [
-           67.7,
-           129.8,
-           135.95
-          ],
-          [
-           67.75,
-           129.8,
-           135.95
-          ],
-          [
-           67.8,
-           129.8,
-           135.95
-          ],
-          [
-           67.85,
-           129.8,
-           135.95
-          ],
-          [
-           67.9,
-           129.8,
-           135.95
-          ],
-          [
-           67.95,
-           129.8,
-           135.95
-          ],
-          [
-           68.0,
-           129.8,
-           135.95
-          ],
-          [
-           68.05,
-           129.8,
-           135.95
-          ],
-          [
-           68.1,
-           129.8,
-           135.95
-          ],
-          [
-           68.15,
-           129.8,
-           135.95
-          ],
-          [
-           68.2,
-           129.8,
-           135.95
-          ],
-          [
-           68.25,
-           129.8,
-           135.95
-          ],
-          [
-           68.3,
-           129.8,
-           135.95
-          ],
-          [
-           68.35,
-           129.8,
-           135.95
-          ],
-          [
-           68.4,
-           129.8,
-           135.95
-          ],
-          [
-           68.45,
-           129.8,
-           135.95
-          ],
-          [
-           68.5,
-           129.8,
-           135.95
-          ],
-          [
-           68.55,
-           129.8,
-           135.95
-          ],
-          [
-           68.6,
-           129.8,
-           135.95
-          ],
-          [
-           68.65,
-           129.8,
-           135.95
-          ],
-          [
-           68.7,
-           129.8,
-           135.95
-          ],
-          [
-           68.75,
-           129.8,
-           135.95
-          ],
-          [
-           68.8,
-           129.8,
-           135.95
-          ],
-          [
-           68.85,
-           129.8,
-           135.95
-          ],
-          [
-           68.9,
-           129.8,
-           135.95
-          ],
-          [
-           68.95,
-           129.8,
-           135.95
-          ],
-          [
-           69.0,
-           129.8,
-           135.95
-          ],
-          [
-           69.05,
-           129.8,
-           135.95
-          ],
-          [
-           69.1,
-           129.8,
-           135.95
-          ],
-          [
-           69.15,
-           129.8,
-           135.95
-          ],
-          [
-           69.2,
-           129.8,
-           135.95
-          ],
-          [
-           69.25,
-           129.8,
-           135.95
-          ],
-          [
-           69.3,
-           129.8,
-           135.95
-          ],
-          [
-           69.35,
-           129.8,
-           135.95
-          ],
-          [
-           69.4,
-           129.8,
-           135.95
-          ],
-          [
-           69.45,
-           129.8,
-           135.95
-          ],
-          [
-           69.5,
-           129.8,
-           135.95
-          ],
-          [
-           69.55,
-           129.8,
-           135.95
-          ],
-          [
-           69.6,
-           129.8,
-           135.95
-          ],
           [
            74.2,
            73.5,
@@ -3319,9 +2762,9 @@
          ]
         }
        },
-       "legal_origins_total": 27188,
-       "upper_bound_fit_at_once": 21,
-       "upper_bound_courtyard_only": 21
+       "legal_origins_total": 14044,
+       "upper_bound_fit_at_once": 16,
+       "upper_bound_courtyard_only": 16
       }
      },
      "greedy_packings": [
@@ -3354,37 +2797,37 @@
        {
         "kind": "1x2",
         "rot": 0,
-        "x": 127.25,
+        "x": 133.45,
         "y": 67.05,
         "courtyard_kicad": [
-         125.45,
+         131.65,
          65.25,
-         129.05,
+         135.25,
          71.4
         ]
        },
        {
         "kind": "1x2",
-        "rot": 0,
-        "x": 130.85,
-        "y": 67.05,
+        "rot": 90,
+        "x": 70.95,
+        "y": 74.2,
         "courtyard_kicad": [
-         129.05,
-         65.25,
-         132.65,
-         71.4
+         69.15,
+         72.4,
+         75.3,
+         76.0
         ]
        },
        {
         "kind": "1x2",
-        "rot": 0,
-        "x": 134.45,
-        "y": 67.05,
+        "rot": 90,
+        "x": 83.05,
+        "y": 92.1,
         "courtyard_kicad": [
-         132.65,
-         65.25,
-         136.25,
-         71.4
+         81.25,
+         90.3,
+         87.4,
+         93.9
         ]
        }
       ]
@@ -3397,8 +2840,8 @@
    }
   },
   "fixed_without_power_block": {
-   "parts_on_board": 49,
-   "free_area_for_a_header_courtyard_mm2": 1018.1,
+   "parts_on_board": 51,
+   "free_area_for_a_header_courtyard_mm2": 1004.0,
    "courtyard_area_of_the_greedy_parts_mm2": 562.5,
    "families": {
     "smd": {
@@ -3439,21 +2882,11 @@
        "need": 3,
        "per_rotation": {
         "0": {
-         "legal_origins_courtyard_only": 2663,
-         "legal_origins": 2663,
-         "upper_bound_fit_at_once": 4,
-         "upper_bound_courtyard_only": 4,
+         "legal_origins_courtyard_only": 2445,
+         "legal_origins": 2445,
+         "upper_bound_fit_at_once": 2,
+         "upper_bound_courtyard_only": 2,
          "origin_runs_y_x0_x1": [
-          [
-           68.3,
-           128.9,
-           134.3
-          ],
-          [
-           68.35,
-           128.9,
-           134.3
-          ],
           [
            138.05,
            121.0,
@@ -3670,21 +3103,11 @@
          ]
         },
         "180": {
-         "legal_origins_courtyard_only": 2663,
-         "legal_origins": 2663,
-         "upper_bound_fit_at_once": 4,
-         "upper_bound_courtyard_only": 4,
+         "legal_origins_courtyard_only": 2445,
+         "legal_origins": 2445,
+         "upper_bound_fit_at_once": 2,
+         "upper_bound_courtyard_only": 2,
          "origin_runs_y_x0_x1": [
-          [
-           68.3,
-           128.9,
-           134.3
-          ],
-          [
-           68.35,
-           128.9,
-           134.3
-          ],
           [
            138.05,
            121.0,
@@ -3901,9 +3324,9 @@
          ]
         }
        },
-       "legal_origins_total": 5962,
-       "upper_bound_fit_at_once": 7,
-       "upper_bound_courtyard_only": 7
+       "legal_origins_total": 5526,
+       "upper_bound_fit_at_once": 5,
+       "upper_bound_courtyard_only": 5
       }
      },
      "greedy_packings": [
@@ -3915,7 +3338,7 @@
       {
        "order": "bottom_right",
        "placed_2x3": 0,
-       "placed_1x2": 3
+       "placed_1x2": 2
       },
       {
        "order": "left_top",
@@ -3933,18 +3356,6 @@
       "placed_2x3": 0,
       "placed_1x2": 3,
       "headers": [
-       {
-        "kind": "1x2",
-        "rot": 0,
-        "x": 128.9,
-        "y": 68.3,
-        "courtyard_kicad": [
-         125.45,
-         65.25,
-         132.35,
-         71.35
-        ]
-       },
        {
         "kind": "1x2",
         "rot": 90,
@@ -3968,6 +3379,18 @@
          124.45,
          141.1
         ]
+       },
+       {
+        "kind": "1x2",
+        "rot": 0,
+        "x": 127.9,
+        "y": 138.05,
+        "courtyard_kicad": [
+         124.45,
+         135.0,
+         131.35,
+         141.1
+        ]
        }
       ]
      },
@@ -3988,10 +3411,10 @@
          "upper_bound_courtyard_only": 0
         },
         "90": {
-         "legal_origins_courtyard_only": 1784,
+         "legal_origins_courtyard_only": 1710,
          "legal_origins": 1025,
          "upper_bound_fit_at_once": 1,
-         "upper_bound_courtyard_only": 3,
+         "upper_bound_courtyard_only": 1,
          "origin_runs_y_x0_x1": [
           [
            139.35,
@@ -4087,10 +3510,10 @@
          "upper_bound_courtyard_only": 0
         },
         "270": {
-         "legal_origins_courtyard_only": 1784,
+         "legal_origins_courtyard_only": 1710,
          "legal_origins": 1025,
          "upper_bound_fit_at_once": 1,
-         "upper_bound_courtyard_only": 3,
+         "upper_bound_courtyard_only": 1,
          "origin_runs_y_x0_x1": [
           [
            136.8,
@@ -4182,16 +3605,16 @@
        },
        "legal_origins_total": 2050,
        "upper_bound_fit_at_once": 1,
-       "upper_bound_courtyard_only": 3
+       "upper_bound_courtyard_only": 1
       },
       "1x2": {
        "need": 3,
        "per_rotation": {
         "0": {
-         "legal_origins_courtyard_only": 7150,
-         "legal_origins": 7150,
-         "upper_bound_fit_at_once": 15,
-         "upper_bound_courtyard_only": 15,
+         "legal_origins_courtyard_only": 7026,
+         "legal_origins": 7026,
+         "upper_bound_fit_at_once": 13,
+         "upper_bound_courtyard_only": 13,
          "origin_runs_y_x0_x1": [
           [
            67.05,
@@ -4200,7 +3623,7 @@
           ],
           [
            67.05,
-           127.25,
+           133.45,
            135.95
           ],
           [
@@ -5291,16 +4714,16 @@
          ]
         },
         "90": {
-         "legal_origins_courtyard_only": 29270,
-         "legal_origins": 29270,
-         "upper_bound_fit_at_once": 24,
-         "upper_bound_courtyard_only": 24
+         "legal_origins_courtyard_only": 22822,
+         "legal_origins": 22822,
+         "upper_bound_fit_at_once": 21,
+         "upper_bound_courtyard_only": 21
         },
         "180": {
-         "legal_origins_courtyard_only": 7150,
-         "legal_origins": 7150,
-         "upper_bound_fit_at_once": 15,
-         "upper_bound_courtyard_only": 15,
+         "legal_origins_courtyard_only": 7026,
+         "legal_origins": 7026,
+         "upper_bound_fit_at_once": 13,
+         "upper_bound_courtyard_only": 13,
          "origin_runs_y_x0_x1": [
           [
            69.6,
@@ -5309,7 +4732,7 @@
           ],
           [
            69.6,
-           127.25,
+           133.45,
            135.95
           ],
           [
@@ -6400,15 +5823,15 @@
          ]
         },
         "270": {
-         "legal_origins_courtyard_only": 29270,
-         "legal_origins": 29270,
-         "upper_bound_fit_at_once": 24,
-         "upper_bound_courtyard_only": 24
+         "legal_origins_courtyard_only": 22822,
+         "legal_origins": 22822,
+         "upper_bound_fit_at_once": 21,
+         "upper_bound_courtyard_only": 21
         }
        },
-       "legal_origins_total": 72840,
-       "upper_bound_fit_at_once": 39,
-       "upper_bound_courtyard_only": 39
+       "legal_origins_total": 59696,
+       "upper_bound_fit_at_once": 34,
+       "upper_bound_courtyard_only": 34
       }
      },
      "greedy_packings": [
@@ -6465,25 +5888,25 @@
        {
         "kind": "1x2",
         "rot": 0,
-        "x": 127.25,
+        "x": 133.45,
         "y": 67.05,
         "courtyard_kicad": [
-         125.45,
+         131.65,
          65.25,
-         129.05,
+         135.25,
          71.4
         ]
        },
        {
         "kind": "1x2",
         "rot": 0,
-        "x": 130.85,
-        "y": 67.05,
+        "x": 70.95,
+        "y": 73.2,
         "courtyard_kicad": [
-         129.05,
-         65.25,
-         132.65,
-         71.4
+         69.15,
+         71.4,
+         72.75,
+         77.55
         ]
        }
       ]
@@ -6502,18 +5925,18 @@
    "final_2x3_legal_origins": 0,
    "final_1x2_legal_origins": 0,
    "fixed_only_2x3_upper_bound": 0,
-   "fixed_only_1x2_upper_bound": 1,
+   "fixed_only_1x2_upper_bound": 0,
    "fixed_only_best_greedy": [
     0,
-    1
+    0
    ],
    "impossible_even_with_every_greedy_part_removed": true,
    "impossible_even_without_the_plug_body_rule": true,
    "fixed_only_2x3_upper_bound_courtyard_only": 0,
-   "fixed_only_1x2_upper_bound_courtyard_only": 1,
+   "fixed_only_1x2_upper_bound_courtyard_only": 0,
    "area_needed_headers_plus_greedy_parts_mm2": 1192.9,
-   "area_free_with_fixed_parts_only_mm2": 888.3,
-   "area_shortfall_mm2": 304.6,
+   "area_free_with_fixed_parts_only_mm2": 874.1,
+   "area_shortfall_mm2": 318.8,
    "without_power_block_2x3_upper_bound": 0,
    "without_power_block_2x3_upper_bound_courtyard_only": 0,
    "without_power_block_best_greedy": [
@@ -6527,20 +5950,20 @@
    "final_2x3_legal_origins": 0,
    "final_1x2_legal_origins": 0,
    "fixed_only_2x3_upper_bound": 0,
-   "fixed_only_1x2_upper_bound": 21,
+   "fixed_only_1x2_upper_bound": 16,
    "fixed_only_best_greedy": [
     0,
     3
    ],
    "impossible_even_with_every_greedy_part_removed": true,
    "impossible_even_without_the_plug_body_rule": true,
-   "fixed_only_2x3_upper_bound_courtyard_only": 1,
-   "fixed_only_1x2_upper_bound_courtyard_only": 21,
+   "fixed_only_2x3_upper_bound_courtyard_only": 0,
+   "fixed_only_1x2_upper_bound_courtyard_only": 16,
    "area_needed_headers_plus_greedy_parts_mm2": 889.7,
-   "area_free_with_fixed_parts_only_mm2": 888.3,
-   "area_shortfall_mm2": 1.4,
+   "area_free_with_fixed_parts_only_mm2": 874.1,
+   "area_shortfall_mm2": 15.6,
    "without_power_block_2x3_upper_bound": 1,
-   "without_power_block_2x3_upper_bound_courtyard_only": 3,
+   "without_power_block_2x3_upper_bound_courtyard_only": 1,
    "without_power_block_best_greedy": [
     1,
     3
@@ -7608,6 +7031,16 @@
     "how": "anchor",
     "height_mm": 3.0
    },
+   "J13": {
+    "rect": [
+     125.521,
+     65.321,
+     128.579,
+     68.379
+    ],
+    "how": "anchor",
+    "height_mm": 8.6
+   },
    "J14": {
     "rect": [
      62.25,
@@ -8096,6 +7529,16 @@
      84.53
     ],
     "how": "keep",
+    "height_mm": 0.55
+   },
+   "R22": {
+    "rect": [
+     128.645,
+     66.42,
+     131.605,
+     67.88
+    ],
+    "how": "anchor",
     "height_mm": 0.55
    },
    "R23": {

@@ -2507,10 +2507,6 @@
 		(uuid "c59ba064-6071-55a0-8e7d-b0ccaff05448")
 	)
 	(no_connect
-		(at 73.66 157.48)
-		(uuid "c2abf370-f459-5aee-9f0d-744ced49cab8")
-	)
-	(no_connect
 		(at 73.66 160.02)
 		(uuid "5dc0cfa7-3c1d-5507-89be-b9f6d5654ead")
 	)
@@ -3212,6 +3208,16 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 157.48) (xy 71.12 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ee55761-7bcf-5b2a-b267-06487ba87a5c")
+	)
+	(wire
+		(pts
 			(xy 104.14 111.76) (xy 106.68 111.76)
 		)
 		(stroke
@@ -3887,6 +3893,17 @@
 			(justify left)
 		)
 		(uuid "0e226a33-4250-5a79-822b-36c6ab3c2b22")
+	)
+	(global_label "RELEASE_PWM"
+		(shape passive)
+		(at 71.12 157.48 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "4366f3a5-3b5e-5b60-8231-6f395860b7af")
 	)
 	(global_label "VANE1_PWM"
 		(shape passive)

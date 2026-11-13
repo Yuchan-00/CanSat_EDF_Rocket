@@ -2,7 +2,7 @@
  "tool": "scripts/routing_checks.py (pcbnew 10.0.6)",
  "board": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
-  "sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d"
+  "sha256": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f"
  },
  "result": "PASS",
  "results": {
@@ -395,9 +395,9 @@
     }
    ],
    "fcu_gnd_piece": {
-    "U8.4": 288,
-    "C57.2": 288,
-    "C43.2": 288
+    "U8.4": 291,
+    "C57.2": 291,
+    "C43.2": 291
    },
    "output_cap_gnd_joined_to_U8.4_on_F.Cu": [
     "C57.2",
@@ -455,10 +455,10 @@
    "label": "M",
    "input_capacitor": "C41",
    "fcu_gnd_piece": {
-    "U8.4": 288,
-    "C57.2": 288,
-    "C43.2": 288,
-    "C41.2": 288
+    "U8.4": 291,
+    "C57.2": 291,
+    "C43.2": 291,
+    "C41.2": 291
    },
    "all_on_one_piece": true,
    "pads_with_own_via": {
@@ -496,7 +496,7 @@
       "C57.2": 0.5
      },
      "in_In1_fill": true,
-     "fcu_gnd_piece": 288
+     "fcu_gnd_piece": 291
     },
     {
      "at": [
@@ -508,7 +508,7 @@
       "U8.4": 0.675
      },
      "in_In1_fill": true,
-     "fcu_gnd_piece": 288
+     "fcu_gnd_piece": 291
     },
     {
      "at": [
@@ -520,7 +520,7 @@
       "C43.2": 0.6
      },
      "in_In1_fill": true,
-     "fcu_gnd_piece": 288
+     "fcu_gnd_piece": 291
     },
     {
      "at": [
@@ -532,7 +532,7 @@
       "C41.2": 0.65
      },
      "in_In1_fill": true,
-     "fcu_gnd_piece": 288
+     "fcu_gnd_piece": 291
     }
    ],
    "pad_edge_gap_mm": {
@@ -549,8 +549,8 @@
    "copper_path_to_U8.3_mm": 4.17,
    "vias_on_path": 0,
    "limit_mm": 5.0,
-   "gnd_pad_piece": 288,
-   "U8.4_piece": 288,
+   "gnd_pad_piece": 291,
+   "U8.4_piece": 291,
    "gnd_pad_on_the_U8.4_piece": true,
    "rows": [
     {
@@ -672,11 +672,11 @@
      },
      "via": {
       "min_mm": 0.95,
-      "item": "GND via (125.750, 66.250)"
+      "item": "GND via (103.250, 66.250)"
      },
      "pad": {
-      "min_mm": 1.15,
-      "item": "J2.1 +3V3"
+      "min_mm": 0.85,
+      "item": "J13.1 RELEASE_SIG"
      }
     },
     "y135 (bottom, rail)": {
@@ -728,7 +728,7 @@
      },
      "track": {
       "min_mm": 0.3584,
-      "item": "ESP_TXD0 F.Cu (62.458, 78.259)-(62.458, 69.363) w 0.200"
+      "item": "ESP_TXD0 F.Cu (62.458, 78.259)-(62.458, 69.397) w 0.200"
      },
      "via": {
       "min_mm": 0.95,
@@ -1013,6 +1013,13 @@
    "label": "M",
    "pads_compared": 256,
    "differences": [],
+   "declared_changes_by_plan_amendment": {
+    "U2.7": {
+     "from": "NC",
+     "to": "RELEASE_PWM",
+     "amendment": "rocket_release_output"
+    }
+   },
    "reference": {
     "file": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/scout/rev2c_mcu_pinmap.json",
     "sha256": "707c6ae0d43a4f3a6de085a6ec7c239d5eb2ec0c38ed35edaf8951bf0f7ceedc"
@@ -1291,6 +1298,35 @@
       "ok": true
      },
      {
+      "ref": "J13",
+      "text": "REL S",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
+      "glyphs_from_pin_1": "S",
+      "pad_1": {
+       "net": "RELEASE_SIG",
+       "at": [
+        127.05,
+        66.85
+       ]
+      },
+      "pad_last": {
+       "number": "1",
+       "net": "RELEASE_SIG",
+       "at": [
+        127.05,
+        66.85
+       ]
+      },
+      "reading_direction_top_view": [
+       -0.98,
+       -0.21
+      ],
+      "relation": "not a single pin row",
+      "glyph_order": "from pin 1",
+      "ok": true
+     },
+     {
       "ref": "J17",
       "text": "BUZ +-",
       "layer": "F.Silkscreen",
@@ -1414,9 +1450,9 @@
      },
      {
       "ref": "J16",
-      "text": "ARM SW AG",
-      "layer": "F.Silkscreen",
-      "mirrored": false,
+      "text": "ARM SW GA",
+      "layer": "B.Silkscreen",
+      "mirrored": true,
       "glyphs_from_pin_1": "AG",
       "pad_1": {
        "net": "ARM_SW_EXT",
@@ -1434,13 +1470,13 @@
        ]
       },
       "reading_direction_top_view": [
-       1.0,
-       -0.02
+       -1.0,
+       -0.03
       ],
       "relation": "along the pin row",
-      "glyph_order": "as the pads lie (pin 1 first)",
-      "first_glyph_is_pad": "1",
-      "last_glyph_is_pad": "2",
+      "glyph_order": "as the pads lie (last pin first)",
+      "first_glyph_is_pad": "2",
+      "last_glyph_is_pad": "1",
       "ok": true
      },
      {
@@ -1869,8 +1905,8 @@
      "extra_mark": "dot",
      "extra_mark_at": [
       [
-       129.1,
-       67.8
+       128.6,
+       68.8
       ]
      ],
      "ok": true
@@ -2020,7 +2056,7 @@
    ],
    "revision_text": [
     [
-     "rev 3",
+     "rev 3.1",
      "F.Silkscreen"
     ]
    ],

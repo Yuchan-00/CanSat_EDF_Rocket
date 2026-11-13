@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-12T22:46:53",
+    "date": "2026-11-13T21:08:30",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -32,6 +32,52 @@
     "schematic_parity": [],
     "source": "vtol_carrier.kicad_pcb",
     "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 2 [ESP_RXD_SH]의 Q4 위F.Cu",
+                    "pos": {
+                        "x": 88.2625,
+                        "y": 114.75
+                    },
+                    "uuid": "c0f1c03f-00eb-58aa-8670-ffe536b5b16f"
+                },
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R53 위F.Cu",
+                    "pos": {
+                        "x": 96.0,
+                        "y": 101.125
+                    },
+                    "uuid": "85037f96-f64f-5bef-8e11-95aac9f82200"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R53 위F.Cu",
+                    "pos": {
+                        "x": 96.0,
+                        "y": 101.125
+                    },
+                    "uuid": "85037f96-f64f-5bef-8e11-95aac9f82200"
+                },
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R54 위F.Cu",
+                    "pos": {
+                        "x": 103.8,
+                        "y": 85.525
+                    },
+                    "uuid": "f4d1b645-c70f-5b8e-b4dd-f477019235a1"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
         {
             "description": "Missing connection between items",
             "items": [
@@ -67,12 +113,12 @@
                     "uuid": "5497328e-0e0e-5426-a1b5-410132e402c0"
                 },
                 {
-                    "description": "배선 [+3V3] on F.Cu, 길이 0.3277 mm",
+                    "description": "배선 [+3V3] on F.Cu, 길이 3.2110 mm",
                     "pos": {
                         "x": 105.6574,
-                        "y": 87.5765
+                        "y": 90.7875
                     },
-                    "uuid": "34c4f7e6-277d-4c00-b92f-ddbb93465d57"
+                    "uuid": "e537363f-e508-44cd-a350-8bed81fa2023"
                 }
             ],
             "severity": "error",
@@ -105,52 +151,6 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "패드 17 [VANE3_PWM]의 U2 위F.Cu",
-                    "pos": {
-                        "x": 106.8,
-                        "y": 105.4125
-                    },
-                    "uuid": "ebe85931-3f3c-5dde-915d-a20e530e157b"
-                },
-                {
-                    "description": "배선 [VANE3_PWM] on F.Cu, 길이 1.0939 mm",
-                    "pos": {
-                        "x": 96.2,
-                        "y": 112.925
-                    },
-                    "uuid": "2865624e-9b35-4b9b-8e7b-d18127977121"
-                }
-            ],
-            "severity": "error",
-            "type": "unconnected_items"
-        },
-        {
-            "description": "Missing connection between items",
-            "items": [
-                {
-                    "description": "패드 1 [GNS_RESET]의 R7 위F.Cu",
-                    "pos": {
-                        "x": 93.075,
-                        "y": 117.1
-                    },
-                    "uuid": "44a0b657-a81e-52d0-af34-7dab1e7ad82b"
-                },
-                {
-                    "description": "패드 1 [GNS_RESET]의 C32 위F.Cu",
-                    "pos": {
-                        "x": 89.825,
-                        "y": 116.7
-                    },
-                    "uuid": "5e198ad8-6517-52d2-b954-dc31bfa4d35c"
-                }
-            ],
-            "severity": "error",
-            "type": "unconnected_items"
-        },
-        {
-            "description": "Missing connection between items",
-            "items": [
-                {
                     "description": "패드 2 [BOOST_EN]의 R67 위F.Cu",
                     "pos": {
                         "x": 114.725,
@@ -159,12 +159,12 @@
                     "uuid": "2ffe621c-b7a0-58e9-a20d-3894ea690110"
                 },
                 {
-                    "description": "패드 1 [BOOST_EN]의 U9 위F.Cu",
+                    "description": "배선 [BOOST_EN] on F.Cu, 길이 0.4638 mm",
                     "pos": {
                         "x": 116.6625,
                         "y": 132.1
                     },
-                    "uuid": "f7c01cdd-9caa-5e73-b315-5fe2dbba96fa"
+                    "uuid": "d45ec20c-4238-42fa-b15d-37284368498f"
                 }
             ],
             "severity": "error",
@@ -174,20 +174,20 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "배선 [COM_LED] on B.Cu, 길이 0.2539 mm",
-                    "pos": {
-                        "x": 82.644,
-                        "y": 122.472
-                    },
-                    "uuid": "79e35c2a-8a4b-4f29-9013-39b60a6943f7"
-                },
-                {
                     "description": "배선 [COM_LED] on F.Cu, 길이 0.0583 mm",
                     "pos": {
                         "x": 82.5857,
                         "y": 122.4718
                     },
                     "uuid": "2a24f852-6b30-404e-a5f6-90850fc50278"
+                },
+                {
+                    "description": "배선 [COM_LED] on B.Cu, 길이 0.2539 mm",
+                    "pos": {
+                        "x": 82.644,
+                        "y": 122.472
+                    },
+                    "uuid": "79e35c2a-8a4b-4f29-9013-39b60a6943f7"
                 }
             ],
             "severity": "error",

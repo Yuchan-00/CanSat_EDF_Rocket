@@ -1,4 +1,4 @@
-(pcb "C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\redesign2\T\kicad\work\vtol_carrier_complete.dsn"
+(pcb "C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\rev31\T\kicad\work\vtol_carrier_complete.dsn"
   (parser
     (string_quote ")
     (space_in_quoted_tokens on)
@@ -416,6 +416,7 @@
       (place R52 91600 -115100 front 0 (PN 10k))
       (place R41 118900 -87800 front 0 (PN 10k))
       (place R29 126000 -102300 front 0 (PN 10k))
+      (place R22 130125 -67150 front 0 (PN 220))
       (place R40 106100 -83700 front 0 (PN 10k))
     )
     (component "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical"
@@ -447,6 +448,9 @@
     )
     (component Capacitor_SMD:C_1206_3216Metric
       (place C42 72800 -69300 front 90 (PN "22u 10V"))
+    )
+    (component TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm
+      (place J13 127050 -66850 front 0 (PN "1-pin THT pad (release servo signal)"))
     )
     (component "Package_TO_SOT_SMD:SOT-23"
       (place Q10 70900 -72500 front 90 (PN "AO3401A (-30 V, -4 A, Vgs(th) -0.5..-1.3 V, Rds(on) <= 85 mOhm at Vgs -2.5 V: A)"))
@@ -742,6 +746,28 @@
       (outline (path signal 100  -1600 800  -1600 -800  1600 -800  1600 800  -1600 800))
       (pin RoundRect[T]Pad_1150.000000x1800.000000_250.951000_um_0.000000_0 1 -1475 0)
       (pin RoundRect[T]Pad_1150.000000x1800.000000_250.951000_um_0.000000_0 2 1475 0)
+    )
+    (image TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm
+      (outline (polygon signal 0  246.49 1477.13  486.254 1416.41  712.755 1317.06  919.817 1181.78
+            1101.78 1014.27  1253.7 819.082  1371.42 601.561  1451.73 367.63
+            1492.45 123.615  1495 0  1492.45 -123.614  1451.73 -367.629
+            1371.42 -601.56  1253.7 -819.081  1101.78 -1014.26  919.817 -1181.78
+            712.755 -1317.06  486.254 -1416.41  246.49 -1477.13  0 -1497.55
+            -246.491 -1477.13  -486.255 -1416.41  -712.756 -1317.06  -919.818 -1181.78
+            -1101.79 -1014.26  -1253.7 -819.081  -1371.42 -601.56  -1451.73 -367.629
+            -1492.44 -123.665  -1492.44 123.666  -1451.73 367.63  -1371.42 601.561
+            -1253.7 819.082  -1101.79 1014.27  -919.818 1181.78  -712.756 1317.06
+            -486.255 1416.41  -246.491 1477.13  0 1497.55))
+      (outline (path signal 120  1200 0  1180.72 -214.268  1123.48 -421.65  1030.14 -615.479
+            903.686 -789.526  748.188 -938.198  568.642 -1056.71  370.82 -1141.27
+            161.08 -1189.14  -53.838 -1198.79  -267.025 -1169.91  -471.63 -1103.43
+            -661.076 -1001.49  -829.275 -867.354  -970.82 -705.342  -1081.16 -520.66
+            -1156.76 -319.244  -1195.17 -107.567  -1195.17 107.567  -1156.76 319.244
+            -1081.16 520.66  -970.82 705.342  -829.275 867.354  -661.076 1001.49
+            -471.63 1103.43  -267.025 1169.91  -53.838 1198.79  161.08 1189.14
+            370.82 1141.27  568.642 1056.71  748.188 938.198  903.686 789.526
+            1030.14 615.479  1123.48 421.65  1180.72 214.268  1200 0))
+      (pin Round[A]Pad_2000.000000_um 1 0 0)
     )
     (image "Package_TO_SOT_SMD:SOT-23"
       (outline (polygon signal 0  895 -545  895 -1695  -895 -1695  -895 -1495  -1925 -1495
@@ -1702,6 +1728,13 @@
       (shape (circle B.Cu 1700))
       (attach off)
     )
+    (padstack Round[A]Pad_2000.000000_um
+      (shape (circle F.Cu 2000))
+      (shape (circle In1.Cu 2000))
+      (shape (circle In2.Cu 2000))
+      (shape (circle B.Cu 2000))
+      (attach off)
+    )
     (padstack Round[T]Pad_500.000000_um
       (shape (circle F.Cu 500))
       (attach off)
@@ -2154,6 +2187,9 @@
     (net FCU_VBAT_ADC
       (pins C49-1 R32-2 U2-61 R33-1)
     )
+    (net RELEASE_SIG
+      (pins J13-1 R22-2)
+    )
     (net ESP_GPIO15
       (pins R49-1 U7-16)
     )
@@ -2277,8 +2313,8 @@
     (net ESC_PWM
       (pins U2-6 R23-1 R21-1)
     )
-    (net "unconnected-(U2-PE5-Pad7)__0"
-      (pins U2-7)
+    (net RELEASE_PWM
+      (pins U2-7 R22-1)
     )
     (net "unconnected-(U2-PE6-Pad8)__0"
       (pins U2-8)
@@ -2962,31 +2998,32 @@
         GNS_RESET GNS_XTAL1 GNS_XTAL2 GPS_RXD_3V3 GPS_TXD_3V3 I2C_SCL_3V3 I2C_SCL_5V I2C_SDA_3V3
         I2C_SDA_5V ILINK_C2F IMU_INT_3V3 IMU_INT_5V LBAT_PFET_G NAV_AREF NAV_GLINK_TX NAV_ISP_MISO
         NAV_ISP_MOSI NAV_LED NAV_LED_A NAV_RESET NAV_XTAL1 NAV_XTAL2 NLINK_MISO NLINK_MOSI
-        NLINK_SCK NLINK_SS OPENLOG_RXI UVLO_REF UVLO_SENSE VANE1_PWM VANE1_SIG VANE2_PWM
-        VANE2_SIG VANE3_PWM VANE3_SIG VANE4_PWM VANE4_SIG VS_BUF_ISIGN VS_VBUFFER VS_VIN
-        VS_VTETHER "unconnected-(J1-Pin_5-Pad5)__0" "unconnected-(J1-Pin_6-Pad6)__0" "unconnected-(J5-Pin_1-Pad1)__0" "unconnected-(J5-Pin_3-Pad3)__0" "unconnected-(U1-PA0-Pad51)__0" "unconnected-(U1-PA1-Pad50)__0" "unconnected-(U1-PA2-Pad49)__0"
-        "unconnected-(U1-PA3-Pad48)__0" "unconnected-(U1-PA4-Pad47)__0" "unconnected-(U1-PA5-Pad46)__0" "unconnected-(U1-PA6-Pad45)__0" "unconnected-(U1-PA7-Pad44)__0" "unconnected-(U1-PB4-Pad14)__0" "unconnected-(U1-PB5-Pad15)__0" "unconnected-(U1-PB6-Pad16)__0"
-        "unconnected-(U1-PB7-Pad17)__0" "unconnected-(U1-PC0-Pad35)__0" "unconnected-(U1-PC2-Pad37)__0" "unconnected-(U1-PC3-Pad38)__0" "unconnected-(U1-PC4-Pad39)__0" "unconnected-(U1-PC5-Pad40)__0" "unconnected-(U1-PC6-Pad41)__0" "unconnected-(U1-PC7-Pad42)__0"
-        "unconnected-(U1-PD4-Pad29)__0" "unconnected-(U1-PD5-Pad30)__0" "unconnected-(U1-PD6-Pad31)__0" "unconnected-(U1-PD7-Pad32)__0" "unconnected-(U1-PE2-Pad4)__0" "unconnected-(U1-PE3-Pad5)__0" "unconnected-(U1-PE4-Pad6)__0" "unconnected-(U1-PE5-Pad7)__0"
-        "unconnected-(U1-PE7-Pad9)__0" "unconnected-(U1-PF0-Pad61)__0" "unconnected-(U1-PF1-Pad60)__0" "unconnected-(U1-PF2-Pad59)__0" "unconnected-(U1-PF3-Pad58)__0" "unconnected-(U1-PF4-Pad57)__0" "unconnected-(U1-PF5-Pad56)__0" "unconnected-(U1-PF6-Pad55)__0"
-        "unconnected-(U1-PF7-Pad54)__0" "unconnected-(U1-PG0-Pad33)__0" "unconnected-(U1-PG1-Pad34)__0" "unconnected-(U1-PG2-Pad43)__0" "unconnected-(U1-PG3-Pad18)__0" "unconnected-(U1-PG4-Pad19)__0" "unconnected-(U2-PA0-Pad51)__0" "unconnected-(U2-PA1-Pad50)__0"
-        "unconnected-(U2-PA2-Pad49)__0" "unconnected-(U2-PA3-Pad48)__0" "unconnected-(U2-PA4-Pad47)__0" "unconnected-(U2-PA5-Pad46)__0" "unconnected-(U2-PA6-Pad45)__0" "unconnected-(U2-PA7-Pad44)__0" "unconnected-(U2-PB4-Pad14)__0" "unconnected-(U2-PC4-Pad39)__0"
-        "unconnected-(U2-PC5-Pad40)__0" "unconnected-(U2-PC6-Pad41)__0" "unconnected-(U2-PC7-Pad42)__0" "unconnected-(U2-PD0-Pad25)__0" "unconnected-(U2-PD1-Pad26)__0" "unconnected-(U2-PD4-Pad29)__0" "unconnected-(U2-PD5-Pad30)__0" "unconnected-(U2-PD6-Pad31)__0"
-        "unconnected-(U2-PD7-Pad32)__0" "unconnected-(U2-PE2-Pad4)__0" "unconnected-(U2-PE5-Pad7)__0" "unconnected-(U2-PE6-Pad8)__0" "unconnected-(U2-PE7-Pad9)__0" "unconnected-(U2-PF4-Pad57)__0" "unconnected-(U2-PF5-Pad56)__0" "unconnected-(U2-PF6-Pad55)__0"
-        "unconnected-(U2-PF7-Pad54)__0" "unconnected-(U2-PG0-Pad33)__0" "unconnected-(U2-PG1-Pad34)__0" "unconnected-(U2-PG2-Pad43)__0" "unconnected-(U2-PG3-Pad18)__0" "unconnected-(U2-PG4-Pad19)__0" "unconnected-(U3-PA0-Pad51)__0" "unconnected-(U3-PA1-Pad50)__0"
-        "unconnected-(U3-PA2-Pad49)__0" "unconnected-(U3-PA3-Pad48)__0" "unconnected-(U3-PA4-Pad47)__0" "unconnected-(U3-PA5-Pad46)__0" "unconnected-(U3-PA6-Pad45)__0" "unconnected-(U3-PA7-Pad44)__0" "unconnected-(U3-PB0-Pad10)__0" "unconnected-(U3-PB2-Pad12)__0"
-        "unconnected-(U3-PB3-Pad13)__0" "unconnected-(U3-PB4-Pad14)__0" "unconnected-(U3-PB5-Pad15)__0" "unconnected-(U3-PB6-Pad16)__0" "unconnected-(U3-PB7-Pad17)__0" "unconnected-(U3-PC1-Pad36)__0" "unconnected-(U3-PC2-Pad37)__0" "unconnected-(U3-PC3-Pad38)__0"
-        "unconnected-(U3-PC4-Pad39)__0" "unconnected-(U3-PC5-Pad40)__0" "unconnected-(U3-PC7-Pad42)__0" "unconnected-(U3-PD0-Pad25)__0" "unconnected-(U3-PD1-Pad26)__0" "unconnected-(U3-PD4-Pad29)__0" "unconnected-(U3-PD5-Pad30)__0" "unconnected-(U3-PD6-Pad31)__0"
-        "unconnected-(U3-PD7-Pad32)__0" "unconnected-(U3-PE2-Pad4)__0" "unconnected-(U3-PE3-Pad5)__0" "unconnected-(U3-PE4-Pad6)__0" "unconnected-(U3-PE5-Pad7)__0" "unconnected-(U3-PE6-Pad8)__0" "unconnected-(U3-PE7-Pad9)__0" "unconnected-(U3-PF0-Pad61)__0"
-        "unconnected-(U3-PF1-Pad60)__0" "unconnected-(U3-PF2-Pad59)__0" "unconnected-(U3-PF3-Pad58)__0" "unconnected-(U3-PF4-Pad57)__0" "unconnected-(U3-PF5-Pad56)__0" "unconnected-(U3-PF6-Pad55)__0" "unconnected-(U3-PF7-Pad54)__0" "unconnected-(U3-PG0-Pad33)__0"
-        "unconnected-(U3-PG1-Pad34)__0" "unconnected-(U3-PG2-Pad43)__0" "unconnected-(U3-PG3-Pad18)__0" "unconnected-(U3-PG4-Pad19)__0" "unconnected-(U4-PA0-Pad51)__0" "unconnected-(U4-PA1-Pad50)__0" "unconnected-(U4-PA2-Pad49)__0" "unconnected-(U4-PA3-Pad48)__0"
-        "unconnected-(U4-PA4-Pad47)__0" "unconnected-(U4-PA5-Pad46)__0" "unconnected-(U4-PA6-Pad45)__0" "unconnected-(U4-PA7-Pad44)__0" "unconnected-(U4-PB0-Pad10)__0" "unconnected-(U4-PB2-Pad12)__0" "unconnected-(U4-PB3-Pad13)__0" "unconnected-(U4-PB4-Pad14)__0"
-        "unconnected-(U4-PB5-Pad15)__0" "unconnected-(U4-PB6-Pad16)__0" "unconnected-(U4-PB7-Pad17)__0" "unconnected-(U4-PC1-Pad36)__0" "unconnected-(U4-PC2-Pad37)__0" "unconnected-(U4-PC3-Pad38)__0" "unconnected-(U4-PC4-Pad39)__0" "unconnected-(U4-PC5-Pad40)__0"
-        "unconnected-(U4-PC6-Pad41)__0" "unconnected-(U4-PC7-Pad42)__0" "unconnected-(U4-PD0-Pad25)__0" "unconnected-(U4-PD1-Pad26)__0" "unconnected-(U4-PD4-Pad29)__0" "unconnected-(U4-PD5-Pad30)__0" "unconnected-(U4-PD6-Pad31)__0" "unconnected-(U4-PD7-Pad32)__0"
-        "unconnected-(U4-PE2-Pad4)__0" "unconnected-(U4-PE3-Pad5)__0" "unconnected-(U4-PE4-Pad6)__0" "unconnected-(U4-PE5-Pad7)__0" "unconnected-(U4-PE6-Pad8)__0" "unconnected-(U4-PE7-Pad9)__0" "unconnected-(U4-PF0-Pad61)__0" "unconnected-(U4-PF1-Pad60)__0"
-        "unconnected-(U4-PF2-Pad59)__0" "unconnected-(U4-PF3-Pad58)__0" "unconnected-(U4-PF4-Pad57)__0" "unconnected-(U4-PF5-Pad56)__0" "unconnected-(U4-PF6-Pad55)__0" "unconnected-(U4-PF7-Pad54)__0" "unconnected-(U4-PG0-Pad33)__0" "unconnected-(U4-PG1-Pad34)__0"
-        "unconnected-(U4-PG2-Pad43)__0" "unconnected-(U4-PG3-Pad18)__0" "unconnected-(U4-PG4-Pad19)__0" "unconnected-(U7-ADC-Pad2)__0" "unconnected-(U7-CS0-Pad9)__0" "unconnected-(U7-GPIO10-Pad12)__0" "unconnected-(U7-GPIO12-Pad6)__0" "unconnected-(U7-GPIO13-Pad7)__0"
-        "unconnected-(U7-GPIO14-Pad5)__0" "unconnected-(U7-GPIO16-Pad4)__0" "unconnected-(U7-GPIO4-Pad19)__0" "unconnected-(U7-GPIO5-Pad20)__0" "unconnected-(U7-GPIO9-Pad11)__0" "unconnected-(U7-MISO-Pad10)__0" "unconnected-(U7-MOSI-Pad13)__0" "unconnected-(U7-SCLK-Pad14)__0"
+        NLINK_SCK NLINK_SS OPENLOG_RXI RELEASE_PWM RELEASE_SIG UVLO_REF UVLO_SENSE VANE1_PWM
+        VANE1_SIG VANE2_PWM VANE2_SIG VANE3_PWM VANE3_SIG VANE4_PWM VANE4_SIG VS_BUF_ISIGN
+        VS_VBUFFER VS_VIN VS_VTETHER "unconnected-(J1-Pin_5-Pad5)__0" "unconnected-(J1-Pin_6-Pad6)__0" "unconnected-(J5-Pin_1-Pad1)__0" "unconnected-(J5-Pin_3-Pad3)__0" "unconnected-(U1-PA0-Pad51)__0"
+        "unconnected-(U1-PA1-Pad50)__0" "unconnected-(U1-PA2-Pad49)__0" "unconnected-(U1-PA3-Pad48)__0" "unconnected-(U1-PA4-Pad47)__0" "unconnected-(U1-PA5-Pad46)__0" "unconnected-(U1-PA6-Pad45)__0" "unconnected-(U1-PA7-Pad44)__0" "unconnected-(U1-PB4-Pad14)__0"
+        "unconnected-(U1-PB5-Pad15)__0" "unconnected-(U1-PB6-Pad16)__0" "unconnected-(U1-PB7-Pad17)__0" "unconnected-(U1-PC0-Pad35)__0" "unconnected-(U1-PC2-Pad37)__0" "unconnected-(U1-PC3-Pad38)__0" "unconnected-(U1-PC4-Pad39)__0" "unconnected-(U1-PC5-Pad40)__0"
+        "unconnected-(U1-PC6-Pad41)__0" "unconnected-(U1-PC7-Pad42)__0" "unconnected-(U1-PD4-Pad29)__0" "unconnected-(U1-PD5-Pad30)__0" "unconnected-(U1-PD6-Pad31)__0" "unconnected-(U1-PD7-Pad32)__0" "unconnected-(U1-PE2-Pad4)__0" "unconnected-(U1-PE3-Pad5)__0"
+        "unconnected-(U1-PE4-Pad6)__0" "unconnected-(U1-PE5-Pad7)__0" "unconnected-(U1-PE7-Pad9)__0" "unconnected-(U1-PF0-Pad61)__0" "unconnected-(U1-PF1-Pad60)__0" "unconnected-(U1-PF2-Pad59)__0" "unconnected-(U1-PF3-Pad58)__0" "unconnected-(U1-PF4-Pad57)__0"
+        "unconnected-(U1-PF5-Pad56)__0" "unconnected-(U1-PF6-Pad55)__0" "unconnected-(U1-PF7-Pad54)__0" "unconnected-(U1-PG0-Pad33)__0" "unconnected-(U1-PG1-Pad34)__0" "unconnected-(U1-PG2-Pad43)__0" "unconnected-(U1-PG3-Pad18)__0" "unconnected-(U1-PG4-Pad19)__0"
+        "unconnected-(U2-PA0-Pad51)__0" "unconnected-(U2-PA1-Pad50)__0" "unconnected-(U2-PA2-Pad49)__0" "unconnected-(U2-PA3-Pad48)__0" "unconnected-(U2-PA4-Pad47)__0" "unconnected-(U2-PA5-Pad46)__0" "unconnected-(U2-PA6-Pad45)__0" "unconnected-(U2-PA7-Pad44)__0"
+        "unconnected-(U2-PB4-Pad14)__0" "unconnected-(U2-PC4-Pad39)__0" "unconnected-(U2-PC5-Pad40)__0" "unconnected-(U2-PC6-Pad41)__0" "unconnected-(U2-PC7-Pad42)__0" "unconnected-(U2-PD0-Pad25)__0" "unconnected-(U2-PD1-Pad26)__0" "unconnected-(U2-PD4-Pad29)__0"
+        "unconnected-(U2-PD5-Pad30)__0" "unconnected-(U2-PD6-Pad31)__0" "unconnected-(U2-PD7-Pad32)__0" "unconnected-(U2-PE2-Pad4)__0" "unconnected-(U2-PE6-Pad8)__0" "unconnected-(U2-PE7-Pad9)__0" "unconnected-(U2-PF4-Pad57)__0" "unconnected-(U2-PF5-Pad56)__0"
+        "unconnected-(U2-PF6-Pad55)__0" "unconnected-(U2-PF7-Pad54)__0" "unconnected-(U2-PG0-Pad33)__0" "unconnected-(U2-PG1-Pad34)__0" "unconnected-(U2-PG2-Pad43)__0" "unconnected-(U2-PG3-Pad18)__0" "unconnected-(U2-PG4-Pad19)__0" "unconnected-(U3-PA0-Pad51)__0"
+        "unconnected-(U3-PA1-Pad50)__0" "unconnected-(U3-PA2-Pad49)__0" "unconnected-(U3-PA3-Pad48)__0" "unconnected-(U3-PA4-Pad47)__0" "unconnected-(U3-PA5-Pad46)__0" "unconnected-(U3-PA6-Pad45)__0" "unconnected-(U3-PA7-Pad44)__0" "unconnected-(U3-PB0-Pad10)__0"
+        "unconnected-(U3-PB2-Pad12)__0" "unconnected-(U3-PB3-Pad13)__0" "unconnected-(U3-PB4-Pad14)__0" "unconnected-(U3-PB5-Pad15)__0" "unconnected-(U3-PB6-Pad16)__0" "unconnected-(U3-PB7-Pad17)__0" "unconnected-(U3-PC1-Pad36)__0" "unconnected-(U3-PC2-Pad37)__0"
+        "unconnected-(U3-PC3-Pad38)__0" "unconnected-(U3-PC4-Pad39)__0" "unconnected-(U3-PC5-Pad40)__0" "unconnected-(U3-PC7-Pad42)__0" "unconnected-(U3-PD0-Pad25)__0" "unconnected-(U3-PD1-Pad26)__0" "unconnected-(U3-PD4-Pad29)__0" "unconnected-(U3-PD5-Pad30)__0"
+        "unconnected-(U3-PD6-Pad31)__0" "unconnected-(U3-PD7-Pad32)__0" "unconnected-(U3-PE2-Pad4)__0" "unconnected-(U3-PE3-Pad5)__0" "unconnected-(U3-PE4-Pad6)__0" "unconnected-(U3-PE5-Pad7)__0" "unconnected-(U3-PE6-Pad8)__0" "unconnected-(U3-PE7-Pad9)__0"
+        "unconnected-(U3-PF0-Pad61)__0" "unconnected-(U3-PF1-Pad60)__0" "unconnected-(U3-PF2-Pad59)__0" "unconnected-(U3-PF3-Pad58)__0" "unconnected-(U3-PF4-Pad57)__0" "unconnected-(U3-PF5-Pad56)__0" "unconnected-(U3-PF6-Pad55)__0" "unconnected-(U3-PF7-Pad54)__0"
+        "unconnected-(U3-PG0-Pad33)__0" "unconnected-(U3-PG1-Pad34)__0" "unconnected-(U3-PG2-Pad43)__0" "unconnected-(U3-PG3-Pad18)__0" "unconnected-(U3-PG4-Pad19)__0" "unconnected-(U4-PA0-Pad51)__0" "unconnected-(U4-PA1-Pad50)__0" "unconnected-(U4-PA2-Pad49)__0"
+        "unconnected-(U4-PA3-Pad48)__0" "unconnected-(U4-PA4-Pad47)__0" "unconnected-(U4-PA5-Pad46)__0" "unconnected-(U4-PA6-Pad45)__0" "unconnected-(U4-PA7-Pad44)__0" "unconnected-(U4-PB0-Pad10)__0" "unconnected-(U4-PB2-Pad12)__0" "unconnected-(U4-PB3-Pad13)__0"
+        "unconnected-(U4-PB4-Pad14)__0" "unconnected-(U4-PB5-Pad15)__0" "unconnected-(U4-PB6-Pad16)__0" "unconnected-(U4-PB7-Pad17)__0" "unconnected-(U4-PC1-Pad36)__0" "unconnected-(U4-PC2-Pad37)__0" "unconnected-(U4-PC3-Pad38)__0" "unconnected-(U4-PC4-Pad39)__0"
+        "unconnected-(U4-PC5-Pad40)__0" "unconnected-(U4-PC6-Pad41)__0" "unconnected-(U4-PC7-Pad42)__0" "unconnected-(U4-PD0-Pad25)__0" "unconnected-(U4-PD1-Pad26)__0" "unconnected-(U4-PD4-Pad29)__0" "unconnected-(U4-PD5-Pad30)__0" "unconnected-(U4-PD6-Pad31)__0"
+        "unconnected-(U4-PD7-Pad32)__0" "unconnected-(U4-PE2-Pad4)__0" "unconnected-(U4-PE3-Pad5)__0" "unconnected-(U4-PE4-Pad6)__0" "unconnected-(U4-PE5-Pad7)__0" "unconnected-(U4-PE6-Pad8)__0" "unconnected-(U4-PE7-Pad9)__0" "unconnected-(U4-PF0-Pad61)__0"
+        "unconnected-(U4-PF1-Pad60)__0" "unconnected-(U4-PF2-Pad59)__0" "unconnected-(U4-PF3-Pad58)__0" "unconnected-(U4-PF4-Pad57)__0" "unconnected-(U4-PF5-Pad56)__0" "unconnected-(U4-PF6-Pad55)__0" "unconnected-(U4-PF7-Pad54)__0" "unconnected-(U4-PG0-Pad33)__0"
+        "unconnected-(U4-PG1-Pad34)__0" "unconnected-(U4-PG2-Pad43)__0" "unconnected-(U4-PG3-Pad18)__0" "unconnected-(U4-PG4-Pad19)__0" "unconnected-(U7-ADC-Pad2)__0" "unconnected-(U7-CS0-Pad9)__0" "unconnected-(U7-GPIO10-Pad12)__0" "unconnected-(U7-GPIO12-Pad6)__0"
+        "unconnected-(U7-GPIO13-Pad7)__0" "unconnected-(U7-GPIO14-Pad5)__0" "unconnected-(U7-GPIO16-Pad4)__0" "unconnected-(U7-GPIO4-Pad19)__0" "unconnected-(U7-GPIO5-Pad20)__0" "unconnected-(U7-GPIO9-Pad11)__0" "unconnected-(U7-MISO-Pad10)__0" "unconnected-(U7-MOSI-Pad13)__0"
+        "unconnected-(U7-SCLK-Pad14)__0"
       (circuit
   (use_layer F.Cu B.Cu)
         (use_via "Via[0-3]_600:300_um")
@@ -3032,9 +3069,8 @@
     (wire (path F.Cu 200  118938 -133050  118938 -133050)(net UVLO_REF)(type fix))
     (wire (path F.Cu 200  118938 -134000  118938 -134000)(net UVLO_REF)(type fix))
     (wire (path F.Cu 200  83850 -118438  83850 -118438)(net GNS_ISP_SCK)(type fix))
-    (wire (path F.Cu 200  124262 -119000  124262 -119000)(net GLINK_G2N)(type fix))
     (wire (path F.Cu 200  90250 -118438  90250 -118438)(net GLINK_G2N)(type fix))
-    (wire (path F.Cu 200  112200 -128662  112200 -128662)(net NAV_ISP_MISO)(type fix))
+    (wire (path F.Cu 200  124262 -119000  124262 -119000)(net GLINK_G2N)(type fix))
     (wire (path F.Cu 200  111400 -128662  111400 -128662)(net NAV_ISP_MOSI)(type fix))
     (wire (path F.Cu 200  73500.2 -130362  73559.7 -130422)(net GNS_GPS_TX)(type fix))
     (wire (path F.Cu 200  73500 -130362  73500.2 -130362)(net GNS_GPS_TX)(type fix))
@@ -3044,32 +3080,35 @@
     (wire (path F.Cu 200  120462 -99750  120462 -99750)(net FCU_BUF_ISIGN)(type fix))
     (wire (path F.Cu 200  115600 -105412  115600 -105412)(net FCU_ILINK_TX)(type fix))
     (wire (path F.Cu 200  114800 -105412  114800 -105412)(net ILINK_C2F)(type fix))
-    (wire (path F.Cu 200  95797.6 -115074  96100.3 -115074)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  95426.5 -114703  95797.6 -115074)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  95426.5 -113698  95426.5 -114703)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  96200 -112925  95426.5 -113698)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  96335.7 -115074  97074.8 -115814)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  96100.3 -115074  96335.7 -115074)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  97074.8 -115814  97324.8 -116064)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  97527.5 -119873  97435.2 -119965)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  97527.5 -116266  97527.5 -119873)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  97324.8 -116064  97527.5 -116266)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  97435.2 -121386  97318.9 -121503)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  97435.2 -119965  97435.2 -121386)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  97318.9 -121736  98277 -122694)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  97318.9 -121503  97318.9 -121736)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  99804.9 -123702  99804.9 -125210)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  98797.1 -122694  99804.9 -123702)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 200  98277 -122694  98797.1 -122694)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  98951.8 -125210  97619.8 -126542)(net VANE3_PWM)(type fix))
-    (wire (path F.Cu 150  99804.9 -125210  98951.8 -125210)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  95797.7 -115074  96100.3 -115074)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  95426.6 -114703  95797.7 -115074)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  95426.6 -113698  95426.6 -114703)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  96200 -112925  95426.6 -113698)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  96372.9 -115074  96906 -115608)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  96100.3 -115074  96372.9 -115074)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  96906 -115608  97342.2 -116044)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  97563.6 -116265  97563.6 -116702)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  97342.2 -116044  97563.6 -116265)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  97619.8 -116759  97619.8 -116880)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  97563.6 -116702  97619.8 -116759)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  97456.9 -117043  97456.9 -119965)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  97619.8 -116880  97456.9 -117043)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  98415.7 -122835  99780.2 -122835)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  97456.9 -121877  98415.7 -122835)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  97456.9 -119965  97456.9 -121877)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  99780.2 -124319  99792.5 -124331)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  99780.2 -122835  99780.2 -124319)(net VANE3_PWM)(type fix))
     (wire (path F.Cu 200  96382.8 -126542  96100 -126825)(net VANE3_PWM)(type fix))
     (wire (path F.Cu 200  97619.8 -126542  96382.8 -126542)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 200  99792.5 -124331  99792.5 -125210)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  98951.8 -125210  97619.8 -126542)(net VANE3_PWM)(type fix))
+    (wire (path F.Cu 150  99792.5 -125210  98951.8 -125210)(net VANE3_PWM)(type fix))
     (wire (path F.Cu 200  105138 -101350  105138 -101350)(net NLINK_MISO)(type fix))
     (wire (path F.Cu 200  120200 -128662  120200 -128662)(net NLINK_MISO)(type fix))
     (wire (path F.Cu 200  119400 -128662  119400 -128662)(net NLINK_MOSI)(type fix))
     (wire (path F.Cu 200  105138 -98950  105138 -98950)(net NLINK_SS)(type fix))
     (wire (path F.Cu 200  117800 -128662  117800 -128662)(net NLINK_SS)(type fix))
+    (wire (path F.Cu 200  105138 -96550  105138 -96550)(net RELEASE_PWM)(type fix))
     (wire (path F.Cu 200  120462 -102150  120462 -102150)(net FCU_LED)(type fix))
     (wire (path F.Cu 200  116662 -134000  116662 -134000)(net UVLO_SENSE)(type fix))
     (wire (path F.Cu 200  74450 -132238  74450 -132238)(net GPS_RXD_3V3)(type fix))
@@ -3077,7 +3116,6 @@
     (wire (path F.Cu 200  124262 -118200  124262 -118200)(net NAV_GLINK_TX)(type fix))
     (wire (path F.Cu 200  105138 -93350  105138 -93350)(net FCU_LOG_TX)(type fix))
     (wire (path F.Cu 200  130062 -68750  130062 -68750)(net BUZ_B)(type fix))
-    (wire (path F.Cu 200  109662 -133850  109662 -133850)(net IMU_INT_3V3)(type fix))
     (wire (path F.Cu 200  81450 -133762  81450 -133762)(net GNS_LED)(type fix))
     (wire (path F.Cu 200  124262 -124600  124262 -124600)(net NAV_RESET)(type fix))
     (wire (path F.Cu 200  129700 -124712  129700 -124712)(net NAV_LED_A)(type fix))
@@ -3085,6 +3123,7 @@
     (wire (path F.Cu 200  122050 -107238  122050 -107238)(net I2C_SDA_3V3)(type fix))
     (wire (path F.Cu 200  116200 -128662  116200 -128662)(net IMU_INT_5V)(type fix))
     (wire (path F.Cu 200  111538 -132900  111538 -132900)(net IMU_INT_5V)(type fix))
+    (wire (path F.Cu 200  105138 -103750  105138 -103750)(net VANE2_PWM)(type fix))
     (wire (path F.Cu 200  82250 -111112  82250 -111112)(net COM_RESET)(type fix))
     (wire (path F.Cu 200  105138 -102950  105138 -102950)(net VANE1_PWM)(type fix))
     (wire (path F.Cu 200  115000 -107112  115000 -107112)(net FCU_LED_A)(type fix))
@@ -4838,130 +4877,96 @@
     (wire (path F.Cu 200  73500 -130362  73559.5 -130422  73559.7 -130422)(net GNS_GPS_TX)(type fix))
     (wire (path F.Cu 200  118938 -134000  118938 -134000)(net UVLO_REF)(type fix))
     (wire (path F.Cu 200  118938 -133050  118938 -133050)(net UVLO_REF)(type fix))
-    (wire (path F.Cu 200  119076 -119631  114560 -124148  114560 -124169)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  114047 -123301  114047 -123656  114560 -124169)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 200  92991.7 -116077  92868.6 -115954  89466.5 -115954  88262.5 -114750)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  104724 -118992  103732 -118992  101345 -116605  98190.6 -116605
-            97662.7 -116077  92991.7 -116077)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  105972 -119100  104832 -119100  104724 -118992)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  107251 -119760  106632 -119760  105972 -119100)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  107581 -119856  107348 -119856  107251 -119760)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  109802 -119675  109620 -119856  107581 -119856)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  114047 -123301  110421 -119675  109802 -119675)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  123332 -112657  123332 -115375  119076 -119631)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  123073 -112269  123332 -112528  123332 -112657)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  123111 -112231  123073 -112269)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  123240 -111906  123111 -112035  123111 -112231)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 120  123312 -111750  123240 -111823  123240 -111906)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  125703 -109425  123378 -111750  123312 -111750)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  129722 -104675  125703 -108693  125703 -109425)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 200  122681 -93184.1  122681 -96433  128274 -102026  128274 -103227
-            129722 -104675)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 200  124132 -86195.5  124026 -86195.5  122149 -88072.5  122149 -90332.9
-            122681 -90864.8  122681 -93184.1)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  122681 -93184.1  118332 -97532.5  115347 -97532.5)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 200  113075 -99940.9  115347 -97669.1  115347 -97532.5)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 150  113075 -99940.9  112910 -100106)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 200  112910 -100106  112073 -100106  111393 -99426)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  98973.4 -102505  97379.6 -102505  96721.9 -101847)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  101920 -100708  101920 -100799  100214 -102505  98973.4 -102505)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  101922 -100706  101920 -100708)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  102253 -100141  101922 -100472  101922 -100706)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  102256 -100141  102253 -100141)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  102489 -99514.5  102489 -99908.5  102256 -100141)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  102654 -99514.5  102489 -99514.5)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  108895 -99459.8  108826 -99391.4  102777 -99391.4  102654 -99514.5)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  108895 -99476.4  108895 -99459.8)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  109394 -99725.4  109144 -99725.4  108895 -99476.4)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  111393 -99426  109693 -99426  109394 -99725.4)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  118397 -80560  118275 -80682  113488 -80682)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  123946 -79977.5  123611 -80313  122905 -80313)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  124759 -81266.8  124759 -80790.3  123946 -79977.5)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 150  124132 -86195.5  125517 -84810.7  125517 -82024.4  124759 -81266.8)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  105260 -84014.7  104732 -84542.8  104732 -84882.4)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  108958 -81024.2  105968 -84014.7  105260 -84014.7)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  113035 -80730.5  109252 -80730.5  108958 -81024.2)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  113488 -80682  113440 -80730.5  113035 -80730.5)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 150  122905 -80415.7  118542 -80415.7  118397 -80560)(net ESP_RXD_SH)(type fix))
-    (wire (path B.Cu 200  122905 -80313  122905 -80415.7)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 200  96000 -101125  96721.9 -101847)(net ESP_RXD_SH)(type fix))
-    (wire (path F.Cu 200  104732 -84882.4  104443 -84882.4  103800 -85525)(net ESP_RXD_SH)(type fix))
     (wire (path F.Cu 200  115000 -107112  115000 -107112)(net FCU_LED_A)(type fix))
     (wire (path F.Cu 200  105138 -102950  105138 -102950)(net VANE1_PWM)(type fix))
-    (wire (path F.Cu 200  86655.1 -108283  85460.1 -109478  84769 -109478)(net COM_RESET)(type fix))
-    (wire (path F.Cu 150  87544.5 -108086  86852.1 -108086  86655.1 -108283)(net COM_RESET)(type fix))
-    (wire (path F.Cu 200  89067.7 -108572  88533.9 -108038  87592.3 -108038  87544.5 -108086)(net COM_RESET)(type fix))
-    (wire (path B.Cu 200  94805 -106882  94335.9 -106412  91227.4 -106412  89067.7 -108572)(net COM_RESET)(type fix))
-    (wire (path B.Cu 150  96523.9 -106922  94845.6 -106922  94805 -106882)(net COM_RESET)(type fix))
-    (wire (path B.Cu 200  97161 -106414  97032.6 -106414  96523.9 -106922)(net COM_RESET)(type fix))
-    (wire (path F.Cu 200  98700 -108830  97161 -107291  97161 -106414)(net COM_RESET)(type fix))
-    (wire (path F.Cu 200  103860 -112348  103860 -113389  103528 -113722)(net COM_RESET)(type fix))
-    (wire (path B.Cu 200  101347 -113215  101853 -113722  103528 -113722)(net COM_RESET)(type fix))
-    (wire (path F.Cu 200  103259 -111416  102574 -110730  102574 -107764)(net COM_RESET)(type fix))
-    (wire (path B.Cu 200  98700 -108830  99801.4 -107729  102538 -107729  102574 -107764)(net COM_RESET)(type fix))
-    (wire (path F.Cu 150  103860 -112348  103860 -112017  103259 -111416)(net COM_RESET)(type fix))
-    (wire (path F.Cu 200  92675 -113000  92675 -113079  94146.1 -114550  94769.6 -114550)(net COM_RESET)(type fix))
-    (wire (path B.Cu 200  98918.3 -112950  97318.5 -114550  94769.6 -114550)(net COM_RESET)(type fix))
-    (wire (path B.Cu 200  101082 -112950  101347 -113215)(net COM_RESET)(type fix))
-    (wire (path B.Cu 200  100000 -112950  98918.3 -112950)(net COM_RESET)(type fix))
+    (wire (path F.Cu 200  82960.3 -106185  82928 -106217  82928 -107004)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  85878.3 -107004  82928 -107004)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  91972.8 -107910  97780 -107910  98700 -108830)(net COM_RESET)(type fix))
+    (wire (path B.Cu 150  91343.9 -107590  91653 -107590  91972.8 -107910)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  91672.7 -106124  91574.4 -106124  90959 -106740  90959 -107205
+            91343.9 -107590)(net COM_RESET)(type fix))
+    (wire (path F.Cu 200  91612.1 -106185  91672.7 -106124)(net COM_RESET)(type fix))
+    (wire (path F.Cu 150  82960.3 -106185  91612.1 -106185)(net COM_RESET)(type fix))
+    (wire (path B.Cu 150  86043.5 -107254  85878.3 -107088  85878.3 -107004)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  86208.7 -107419  86043.5 -107254)(net COM_RESET)(type fix))
+    (wire (path B.Cu 150  86277.1 -107694  86208.7 -107626  86208.7 -107419)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  84769 -109478  86277.1 -107970  86277.1 -107694)(net COM_RESET)(type fix))
     (wire (path F.Cu 200  82250 -111112  82250 -110273  83568.8 -108954  84244.8 -108954
             84769 -109478)(net COM_RESET)(type fix))
+    (wire (path F.Cu 200  103669 -116297  103669 -110844  102901 -110076  102901 -108869)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  98700 -108830  99781.7 -107748  101780 -107748  102901 -108869)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  103669 -116297  101082 -113710  101082 -112950)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  98918.3 -112950  97316.9 -114551  94769.6 -114551)(net COM_RESET)(type fix))
+    (wire (path F.Cu 200  92675 -113000  92675 -113079  94147.7 -114551  94769.6 -114551)(net COM_RESET)(type fix))
+    (wire (path B.Cu 200  100000 -112950  98918.3 -112950)(net COM_RESET)(type fix))
     (wire (path B.Cu 200  100000 -112950  101082 -112950)(net COM_RESET)(type fix))
     (wire (path F.Cu 200  93125 -111500  92675 -111950  92675 -113000)(net COM_RESET)(type fix))
     (wire (path F.Cu 200  105138 -103750  105138 -103750)(net VANE2_PWM)(type fix))
     (wire (path F.Cu 200  111538 -132900  111538 -132900)(net IMU_INT_5V)(type fix))
     (wire (path F.Cu 200  116200 -128662  116200 -128662)(net IMU_INT_5V)(type fix))
+    (wire (path F.Cu 200  127050 -66850  127482 -66418.5  130218 -66418.5  130950 -67150)(net RELEASE_SIG)(type fix))
     (wire (path F.Cu 500  79850 -95787.5  79850 -95788)(net COM_AVCC)(type fix))
     (wire (path F.Cu 200  122050 -107238  122050 -107238)(net I2C_SDA_3V3)(type fix))
     (wire (path F.Cu 200  120200 -113338  120200 -113338)(net NAV_LED)(type fix))
     (wire (path F.Cu 200  129700 -124712  129700 -124712)(net NAV_LED_A)(type fix))
-    (wire (path B.Cu 200  121787 -112095  121787 -115410  117703 -119494)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  103926 -123789  101436 -126279  98083.2 -126279  97284.7 -127077
-            97284.7 -131365  98700 -132780)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  119881 -120840  121906 -122865  121906 -123475  123031 -124600)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 150  129390 -104017  128789 -104619  128789 -104916  124775 -108930)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  117703 -119494  118213 -120004)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  117300 -119091  117703 -119494)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 200  100000 -82900  100112 -82900  103248 -79763.4  103248 -73364.4
-            103052 -73168.3)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  103052 -73168.3  115392 -73168.3  119094 -76870.2)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 150  122117 -110666  121787 -110996  121787 -112095)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  123804 -109825  122963 -110666  122117 -110666)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 150  124666 -109095  124534 -109095  123804 -109825)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  124775 -108930  124775 -108986  124666 -109095)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  130600 -102935  130473 -102935  129390 -104017)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 200  129625 -89233  129625 -98210.8  130600 -99185.7  130600 -102935)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 150  129790 -87946.4  129790 -89068.1  129625 -89233)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 200  125272 -76664.6  125753 -77145.2  127647 -77145.2  130209 -79707.5
-            130209 -87527  129790 -87946.4)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  123873 -77104.6  124832 -77104.6  125272 -76664.6)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 150  119094 -76870.2  123639 -76870.2  123873 -77104.6)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 200  116090 -115490  116715 -116115  116715 -118186)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 200  116715 -118186  117203 -118674)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 150  118213 -120004  119049 -120840  119881 -120840)(net NAV_RESET)(type fix))
-    (wire (path B.Cu 150  117203 -118674  117203 -118994  117300 -119091)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 150  116074 -114725  116074 -115474  116090 -115490)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 200  109200 -113025  109200 -113241  110684 -114725  116074 -114725)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 200  108041 -114525  107938 -114628  107938 -115294  106016 -117216
-            106016 -123158  105349 -123825  103962 -123825  103926 -123789)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  124527 -112657  119376 -117807  119376 -118774)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  124560 -111823  124560 -112623  124527 -112657)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  124517 -111770  124517 -111780  124560 -111823)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  124305 -110385  124305 -111558  124517 -111770)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  130722 -104534  124871 -110385  124305 -110385)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 200  122933 -87230.4  122149 -88014.1  122149 -89941.2  130722 -98513.9
+            130722 -104534)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 150  124416 -85955  124208 -85955  122933 -87230.4)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 200  124496 -85981.1  124442 -85981.1  124416 -85955)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 150  125349 -81585.4  125517 -81753.2  125517 -84959.8  124496 -85981.1)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 200  124759 -81306.8  125038 -81585.4  125349 -81585.4)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  123142 -80248.1  123520 -80248.1  123603 -80165.5  124091 -80165.5
+            124759 -80833.8  124759 -81306.8  124759 -81306.8)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  122816 -80573.5  123142 -80248.1)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 120  122637 -80606.9  122783 -80606.9  122816 -80573.5)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  121923 -80880  122364 -80880  122637 -80606.9)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  114030 -80633.5  114276 -80880  121923 -80880)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 120  113802 -80682  113851 -80633.5  114030 -80633.5)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  103427 -82448.1  104309 -82448.1  105307 -81450  109386 -81450
+            110154 -80682  113802 -80682)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  102651 -82139.4  103119 -82139.4  103427 -82448.1)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  100000 -82900  101891 -82900  102651 -82139.4)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  119376 -118774  119161 -118989  119161 -120772  119502 -121113
+            120059 -121113  121906 -122960  121906 -123475  123031 -124600)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 200  108041 -114525  107938 -114628  107938 -115294  106002 -117230
+            106002 -121333  105972 -121363)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  101216 -122860  102740 -122860  104238 -121363  105972 -121363)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 200  116074 -114695  119376 -117998  119376 -118774)(net NAV_RESET)(type fix))
     (wire (path F.Cu 200  107869 -114216  107869 -113844  107700 -113675)(net NAV_RESET)(type fix))
     (wire (path F.Cu 150  108041 -114525  107869 -114354  107869 -114216)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  100593 -123050  101026 -123050  101216 -122860)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  100325 -123483  100593 -123215  100593 -123050)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  99780.2 -124777  99780.2 -124028  100325 -123483)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  96780.2 -127342  96780.2 -127086  97691.6 -126175  98382.1 -126175
+            99780.2 -124777)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 150  97287.9 -129329  97287.9 -127850  96780.2 -127342)(net NAV_RESET)(type fix))
+    (wire (path B.Cu 200  98700 -132780  97287.9 -131368  97287.9 -129329)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 150  115024 -114306  115685 -114306  116074 -114695)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 200  109200 -113025  109200 -113241  110334 -114374  114956 -114374
+            115024 -114306)(net NAV_RESET)(type fix))
     (wire (path F.Cu 200  124262 -124600  123031 -124600)(net NAV_RESET)(type fix))
-    (wire (path F.Cu 200  107700 -113675  108350 -113025  109200 -113025)(net NAV_RESET)(type fix))
+    (wire (path F.Cu 200  109200 -113025  108350 -113025  107700 -113675)(net NAV_RESET)(type fix))
     (wire (path F.Cu 200  81450 -133762  81450 -133762)(net GNS_LED)(type fix))
     (wire (path F.Cu 200  131938 -69700  131938 -69700)(net BUZ_N)(type fix))
     (wire (path F.Cu 200  109662 -133850  109662 -133850)(net IMU_INT_3V3)(type fix))
     (wire (path F.Cu 200  130062 -68750  130062 -68750)(net BUZ_B)(type fix))
-    (wire (path F.Cu 200  96200 -116025  96909.8 -116735  96909.8 -117240)(net NAV_GLINK_TX)(type fix))
-    (wire (path B.Cu 200  101522 -117804  97474.2 -117804  96909.8 -117240)(net NAV_GLINK_TX)(type fix))
-    (wire (path F.Cu 200  118622 -118494  118622 -118600  112843 -124380)(net NAV_GLINK_TX)(type fix))
-    (wire (path B.Cu 200  103816 -121502  103939 -121625  110088 -121625  112843 -124380)(net NAV_GLINK_TX)(type fix))
-    (wire (path F.Cu 150  118622 -118494  123968 -118494  124262 -118200)(net NAV_GLINK_TX)(type fix))
-    (wire (path F.Cu 200  103436 -119572  103436 -121123  103816 -121502)(net NAV_GLINK_TX)(type fix))
-    (wire (path B.Cu 200  102645 -118939  103279 -119572  103436 -119572)(net NAV_GLINK_TX)(type fix))
-    (wire (path B.Cu 150  102320 -118564  102320 -118614  102645 -118939)(net NAV_GLINK_TX)(type fix))
-    (wire (path B.Cu 200  102155 -118418  102174 -118418  102320 -118564)(net NAV_GLINK_TX)(type fix))
-    (wire (path B.Cu 150  101522 -117804  102136 -118418  102155 -118418)(net NAV_GLINK_TX)(type fix))
+    (wire (path F.Cu 200  120512 -119406  119968 -119949  119502 -119949  115116 -124335
+            115116 -124726)(net NAV_GLINK_TX)(type fix))
+    (wire (path B.Cu 200  115116 -124726  112449 -122059  107967 -122059  107172 -121264)(net NAV_GLINK_TX)(type fix))
+    (wire (path B.Cu 200  96927.2 -116752  97053.6 -116879  103910 -116879  104540 -116249
+            104803 -116249)(net NAV_GLINK_TX)(type fix))
+    (wire (path F.Cu 200  96200 -116025  96927.2 -116752)(net NAV_GLINK_TX)(type fix))
+    (wire (path F.Cu 150  123019 -117906  123968 -117906  124262 -118200)(net NAV_GLINK_TX)(type fix))
+    (wire (path B.Cu 200  120512 -119406  122012 -117906  123019 -117906)(net NAV_GLINK_TX)(type fix))
+    (wire (path F.Cu 200  106584 -118319  106584 -120676  107172 -121264)(net NAV_GLINK_TX)(type fix))
+    (wire (path B.Cu 200  105133 -116345  105239 -116345  106052 -117159  106052 -117787
+            106584 -118319)(net NAV_GLINK_TX)(type fix))
+    (wire (path B.Cu 150  104803 -116249  105036 -116249  105133 -116345)(net NAV_GLINK_TX)(type fix))
     (wire (path F.Cu 200  100116 -118383  100116 -118291  96200 -114375)(net GNS_GLINK_RX)(type fix))
     (wire (path F.Cu 150  100160 -120760  100160 -118427  100116 -118383)(net GNS_GLINK_RX)(type fix))
     (wire (path F.Cu 200  101240 -121590  100410 -120760  100160 -120760)(net GNS_GLINK_RX)(type fix))
@@ -4974,72 +4979,97 @@
     (wire (path F.Cu 200  74450 -132238  74450 -132238)(net GPS_RXD_3V3)(type fix))
     (wire (path F.Cu 200  116662 -134000  116662 -134000)(net UVLO_SENSE)(type fix))
     (wire (path F.Cu 200  120462 -102150  120462 -102150)(net FCU_LED)(type fix))
+    (wire (path F.Cu 200  129300 -67150  127275 -69175.1  127144 -69175.1)(net RELEASE_PWM)(type fix))
+    (wire (path B.Cu 200  127144 -69175.1  128074 -70105)(net RELEASE_PWM)(type fix))
+    (wire (path F.Cu 150  106824 -96844.3  105432 -96844.3  105138 -96550)(net RELEASE_PWM)(type fix))
+    (wire (path F.Cu 200  107543 -98478.8  106824 -97760.3  106824 -96844.3)(net RELEASE_PWM)(type fix))
+    (wire (path B.Cu 200  111393 -99426  110208 -98241.5  107780 -98241.5  107543 -98478.8)(net RELEASE_PWM)(type fix))
+    (wire (path F.Cu 200  115351 -97265.6  115351 -97604  112876 -100080  112047 -100080
+            111393 -99426)(net RELEASE_PWM)(type fix))
+    (wire (path B.Cu 200  123616 -90545.2  116896 -97265.6  115351 -97265.6)(net RELEASE_PWM)(type fix))
+    (wire (path F.Cu 150  131975 -90080.2  124081 -90080.2  123616 -90545.2)(net RELEASE_PWM)(type fix))
+    (wire (path F.Cu 200  132400 -85458  132289 -85569.5  132289 -89766.2  131975 -90080.2)(net RELEASE_PWM)(type fix))
+    (wire (path F.Cu 150  132143 -74508.1  132143 -85200.8  132400 -85458)(net RELEASE_PWM)(type fix))
+    (wire (path F.Cu 200  131638 -70847.1  132143 -71351.8  132143 -74508.1)(net RELEASE_PWM)(type fix))
+    (wire (path B.Cu 200  128403 -70270.2  131062 -70270.2  131638 -70847.1)(net RELEASE_PWM)(type fix))
+    (wire (path B.Cu 150  128074 -70105  128239 -70270.2  128403 -70270.2)(net RELEASE_PWM)(type fix))
     (wire (path F.Cu 200  117800 -128662  117800 -128662)(net NLINK_SS)(type fix))
     (wire (path F.Cu 200  105138 -98950  105138 -98950)(net NLINK_SS)(type fix))
-    (wire (path F.Cu 200  118600 -128662  118600 -129147  118084 -129662  111284 -129662
-            111213 -129734)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  105138 -99750  104643 -99750  103898 -99004.7  103898 -97630.7
-            103207 -97630.7  100158 -94582.1  100158 -92998.3  98700 -91540)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  123858 -93932.4  129604 -99679.2  129604 -103098  130597 -104091
-            130597 -106119)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 200  130597 -106119  130597 -113904  122693 -121808  121817 -121808
-            120446 -120437)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  116247 -124637  120446 -120437)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 200  105346 -126342  104326 -126342  101697 -128970  99970 -128970
-            98700 -130240)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 150  105815 -125974  105713 -125974  105346 -126342)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 200  105917 -125974  105815 -125974)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 150  106250 -125545  106250 -125642  105917 -125974)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 200  107502 -124271  107407 -124271  106250 -125428  106250 -125545)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  118600 -128662  118600 -129187  118141 -129646  112859 -129646
+            112615 -129890)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  111476 -98198.7  111174 -97897.1  106087 -97897.1  105907 -98076.3)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  127218 -103855  129339 -103855  129852 -104369)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  129852 -104369  123858 -110363  123858 -111270)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  113060 -98197.5  118234 -98197.5  120643 -100607  120643 -101449
+            121427 -102232  125595 -102232  127218 -103855)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  111476 -98198.7  113058 -98198.7  113060 -98197.5)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 150  103900 -99455.7  104843 -99455.7  105138 -99750)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 150  103649 -99455.7  103900 -99455.7)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  103900 -99455.7  103900 -97386.2)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  112615 -129890  112615 -125336  112111 -124832)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  108328 -124701  111980 -124701  112111 -124832)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  113002 -123941  112111 -124832)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 150  113340 -123602  113002 -123941)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  114534 -122597  113528 -123602  113340 -123602)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 150  114699 -122236  114534 -122401  114534 -122597)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  118218 -119662  115643 -122236  114699 -122236)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  123111 -112231  118631 -116711  118631 -119248  118218 -119662)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 150  123240 -111906  123111 -112035  123111 -112231)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 120  123312 -111750  123240 -111823  123240 -111906)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 150  123858 -111270  123378 -111750  123312 -111750)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 150  103900 -97386.2  105217 -97386.2  105907 -98076.3)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  98700 -130240  97618.1 -129158  97618.1 -126737  97848.6 -126507
+            102021 -126507  103985 -124542)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 120  105303 -124204  105303 -124121)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  105303 -124121  104462 -124121  104380 -124204)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 150  104380 -124204  104041 -124542  103985 -124542)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 100  105547 -124345  105444 -124345  105303 -124204)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  107502 -124271  105621 -124271  105547 -124345)(net NLINK_SCK)(type fix))
     (wire (path B.Cu 150  107833 -124175  107599 -124175  107502 -124271)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 200  110163 -124832  108490 -124832  107833 -124175)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  114140 -125137  110468 -125137  110163 -124832)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 150  116247 -124637  115746 -125137  114140 -125137)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 200  116540 -98124.3  119666 -98124.3  123858 -93932.4)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  111332 -97886  112274 -96943.4  115611 -96943.4  116540 -97873.2
-            116540 -98124.3)(net NLINK_SCK)(type fix))
-    (wire (path B.Cu 200  103898 -97630.7  111076 -97630.7  111332 -97886)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  104732 -131700  104542 -131510  99970 -131510  98700 -130240)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 150  105554 -131800  104832 -131800  104732 -131700)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  109230 -133006  109134 -133103  106857 -133103  105554 -131800)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 150  110404 -132855  109381 -132855  109230 -133006)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  110580 -132445  110404 -132621  110404 -132855)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 150  110936 -131952  110580 -132308  110580 -132445)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 200  110994 -129631  110936 -129688  110936 -131952)(net NLINK_SCK)(type fix))
-    (wire (path F.Cu 150  111213 -129734  111110 -129631  110994 -129631)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 200  108182 -124479  107878 -124175  107833 -124175)(net NLINK_SCK)(type fix))
+    (wire (path B.Cu 150  108328 -124701  108182 -124556  108182 -124479)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  102297 -96573.7  102297 -98103.8  103649 -99455.7)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 150  100135 -95160.2  100884 -95160.2  102297 -96573.7)(net NLINK_SCK)(type fix))
+    (wire (path F.Cu 200  98700 -91540  100135 -92975.3  100135 -95160.2)(net NLINK_SCK)(type fix))
     (wire (path F.Cu 200  119400 -128662  119400 -128662)(net NLINK_MOSI)(type fix))
     (wire (path F.Cu 200  120200 -128662  120200 -128662)(net NLINK_MISO)(type fix))
     (wire (path F.Cu 200  105138 -101350  105138 -101350)(net NLINK_MISO)(type fix))
     (wire (path F.Cu 200  114800 -105412  114800 -105412)(net ILINK_C2F)(type fix))
     (wire (path F.Cu 200  115600 -105412  115600 -105412)(net FCU_ILINK_TX)(type fix))
     (wire (path F.Cu 200  120462 -99750  120462 -99750)(net FCU_BUF_ISIGN)(type fix))
-    (wire (path F.Cu 200  74226.4 -68098.7  74226.4 -72525.9  75158.7 -73458.2)(net ESP_TXD0)(type fix))
-    (wire (path F.Cu 150  73931.2 -66532.3  73931.2 -67803.5  74226.4 -68098.7)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 200  74182.4 -68142.7  74182.4 -72481.9  75158.7 -73458.2)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 150  73931.2 -66532.3  73931.2 -67891.5  74182.4 -68142.7)(net ESP_TXD0)(type fix))
     (wire (path F.Cu 200  72788 -66391.3  73790.2 -66391.3  73931.2 -66532.3)(net ESP_TXD0)(type fix))
-    (wire (path F.Cu 150  63530.2 -67018.8  72160.5 -67018.8  72788 -66391.3)(net ESP_TXD0)(type fix))
-    (wire (path F.Cu 200  62767.4 -68820.8  62767.4 -67781.6  63530.2 -67018.8)(net ESP_TXD0)(type fix))
-    (wire (path F.Cu 150  62498.6 -69323.2  62498.6 -69089.6  62767.4 -68820.8)(net ESP_TXD0)(type fix))
-    (wire (path F.Cu 200  62458.4 -78259.4  62458.4 -69363.4  62498.6 -69323.2)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 150  64804.1 -67018.8  72160.5 -67018.8  72788 -66391.3)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 200  63897.1 -67724.2  64602.5 -67018.8  64804.1 -67018.8)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 150  62498.6 -69356.3  62498.6 -69122.7  63897.1 -67724.2)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 200  62458.4 -78259.4  62458.4 -69396.5  62498.6 -69356.3)(net ESP_TXD0)(type fix))
     (wire (path F.Cu 150  62498.6 -78452.8  62458.4 -78412.6  62458.4 -78259.4)(net ESP_TXD0)(type fix))
-    (wire (path F.Cu 200  75792 -97646.9  75704.1 -97734.8  72360.2 -97734.8  62498.6 -87873.2
-            62498.6 -78452.8)(net ESP_TXD0)(type fix))
-    (wire (path B.Cu 200  77380.2 -96988.7  77311.1 -96919.6  76519.3 -96919.6  75792 -97646.9)(net ESP_TXD0)(type fix))
-    (wire (path B.Cu 150  77448.6 -97507.2  77380.2 -97438.8  77380.2 -96988.7)(net ESP_TXD0)(type fix))
-    (wire (path B.Cu 200  78645.8 -98704.4  77448.6 -97507.2)(net ESP_TXD0)(type fix))
-    (wire (path B.Cu 150  78811 -99016.1  78645.8 -98850.9  78645.8 -98704.4)(net ESP_TXD0)(type fix))
-    (wire (path B.Cu 200  84340.5 -99089.7  78884.6 -99089.7  78811 -99016.1)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 200  65540.2 -82297.1  62498.6 -79255.5  62498.6 -78452.8)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 150  68395.1 -87491.3  68395.1 -85152  65540.2 -82297.1)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 200  68543.9 -87584.2  68488 -87584.2  68395.1 -87491.3)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 150  71719.8 -94302.4  71719.8 -90760.1  68543.9 -87584.2)(net ESP_TXD0)(type fix))
+    (wire (path F.Cu 200  78048 -94495.1  77272.1 -95271  72688.4 -95271  71719.8 -94302.4)(net ESP_TXD0)(type fix))
+    (wire (path B.Cu 200  78463 -94495.1  78048 -94495.1)(net ESP_TXD0)(type fix))
+    (wire (path B.Cu 150  82028.8 -96755  79768.9 -94495.1  78463 -94495.1)(net ESP_TXD0)(type fix))
+    (wire (path B.Cu 200  84340.5 -99089.7  84060.9 -99089.7  82028.8 -97057.6  82028.8 -96755)(net ESP_TXD0)(type fix))
     (wire (path B.Cu 150  84732.8 -98869.3  84512.4 -99089.7  84340.5 -99089.7)(net ESP_TXD0)(type fix))
     (wire (path B.Cu 200  91135.2 -95000.2  89547.1 -96588.3  87013.8 -96588.3  84732.8 -98869.3)(net ESP_TXD0)(type fix))
     (wire (path B.Cu 150  91437.2 -94835  91272 -95000.2  91135.2 -95000.2)(net ESP_TXD0)(type fix))
     (wire (path B.Cu 200  95950 -92015.2  94257 -92015.2  91437.2 -94835)(net ESP_TXD0)(type fix))
-    (wire (path F.Cu 200  96153 -117670  96253.7 -117670  96920.3 -118336  96920.3 -122350
-            98700 -124130)(net GNS_RESET)(type fix))
-    (wire (path F.Cu 200  93075 -117100  93563.4 -117100  94334.5 -117871)(net GNS_RESET)(type fix))
-    (wire (path B.Cu 200  83426.6 -123791  83765.8 -124130  98700 -124130)(net GNS_RESET)(type fix))
-    (wire (path F.Cu 150  95676.7 -117869  95876 -117670  96153 -117670)(net GNS_RESET)(type fix))
-    (wire (path F.Cu 120  95495.4 -117904  95642 -117904  95676.7 -117869)(net GNS_RESET)(type fix))
-    (wire (path F.Cu 200  94516.5 -117923  95476.2 -117923  95495.4 -117904)(net GNS_RESET)(type fix))
-    (wire (path F.Cu 150  94334.5 -117871  94464.7 -117871  94516.5 -117923)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 200  98700 -124130  96963.7 -122394  96963.7 -117869)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 200  92803.2 -116263  93075 -116534  93075 -117100)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 150  91738.7 -115806  92346.5 -115806  92803.2 -116263)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 200  91377.2 -115816  91387.1 -115806  91738.7 -115806)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 150  90957.3 -115986  91207.5 -115986  91377.2 -115816)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 200  89825 -116700  90242.9 -116700  90957.3 -115986)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 200  94227.3 -117770  93745.3 -117770  93075 -117100)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 150  94487.2 -117947  94310.8 -117770  94227.3 -117770)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 200  95300.2 -117868  94566.1 -117868  94487.2 -117947)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 150  95666.3 -117760  95558.7 -117868  95300.2 -117868)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 120  95847.6 -117726  95701 -117726  95666.3 -117760)(net GNS_RESET)(type fix))
+    (wire (path F.Cu 150  96963.7 -117869  95991.1 -117869  95847.6 -117726)(net GNS_RESET)(type fix))
+    (wire (path B.Cu 200  83426.6 -123791  98360.8 -123791  98700 -124130)(net GNS_RESET)(type fix))
     (wire (path F.Cu 200  78187.5 -122500  79513.1 -122500  80803.9 -123791  83426.6 -123791)(net GNS_RESET)(type fix))
     (wire (path F.Cu 200  130586 -119389  131075 -119878  131075 -120500)(net BOOST_EN)(type fix))
     (wire (path B.Cu 200  128087 -123599  128087 -121887  130586 -119389)(net BOOST_EN)(type fix))
@@ -5051,36 +5081,44 @@
             122723 -131172  123988 -129908  124733 -129908)(net BOOST_EN)(type fix))
     (wire (path B.Cu 200  124850 -135530  124850 -130025  124733 -129908)(net BOOST_EN)(type fix))
     (wire (path F.Cu 150  119587 -129734  119690 -129631  119806 -129631)(net BOOST_EN)(type fix))
-    (wire (path F.Cu 200  118450 -129851  118639 -129662  119516 -129662  119587 -129734)(net BOOST_EN)(type fix))
-    (wire (path F.Cu 150  118407 -129998  118450 -129955  118450 -129851)(net BOOST_EN)(type fix))
-    (wire (path F.Cu 200  116662 -132100  117158 -132100  118407 -130851  118407 -129998)(net BOOST_EN)(type fix))
+    (wire (path F.Cu 200  118470 -129847  118655 -129662  119516 -129662  119587 -129734)(net BOOST_EN)(type fix))
+    (wire (path F.Cu 150  118407 -129998  118470 -129935  118470 -129847)(net BOOST_EN)(type fix))
+    (wire (path F.Cu 200  116662 -132100  117126 -132100  118407 -130819  118407 -129998)(net BOOST_EN)(type fix))
     (wire (path F.Cu 200  87850 -111112  87850 -111112)(net COM_LINK_RX)(type fix))
     (wire (path F.Cu 200  124262 -119800  124262 -119800)(net I2C_SDA_5V)(type fix))
-    (wire (path B.Cu 200  77992.7 -114216  77955.4 -114179  77955.4 -114179)(net COM_LED)(type fix))
     (wire (path F.Cu 200  124262 -120600  124262 -120600)(net I2C_SCL_5V)(type fix))
     (wire (path F.Cu 200  73500 -130362  73500.2 -130362  73559.7 -130422)(net GNS_GPS_TX)(type fix))
-    (wire (path B.Cu 200  111203 -127432  111203 -129555  108813 -131945  108813 -131947)(net NAV_ISP_MOSI)(type fix))
-    (wire (path F.Cu 200  111203 -127432  111203 -128465  111400 -128662)(net NAV_ISP_MOSI)(type fix))
-    (wire (path B.Cu 120  108648 -131947  108813 -131947)(net NAV_ISP_MOSI)(type fix))
-    (wire (path B.Cu 200  101240 -130240  102782 -131782  105980 -131782  106145 -131947
-            108648 -131947)(net NAV_ISP_MOSI)(type fix))
-    (wire (path B.Cu 200  98700 -127700  98700 -128782)(net NAV_ISP_MISO)(type fix))
-    (wire (path F.Cu 200  112200 -128662  112200 -127973  112737 -127436)(net NAV_ISP_MISO)(type fix))
-    (wire (path B.Cu 200  110766 -130462  112737 -128491  112737 -127436)(net NAV_ISP_MISO)(type fix))
-    (wire (path B.Cu 150  108485 -132742  110766 -130462)(net NAV_ISP_MISO)(type fix))
-    (wire (path B.Cu 200  106428 -133114  106799 -132742  108485 -132742)(net NAV_ISP_MISO)(type fix))
-    (wire (path B.Cu 150  104684 -134391  105151 -134391  106428 -133114)(net NAV_ISP_MISO)(type fix))
-    (wire (path B.Cu 200  98700 -128782  98610 -128782  97616.4 -129775  97616.4 -130720
-            98406.3 -131510  101803 -131510  104684 -134391)(net NAV_ISP_MISO)(type fix))
-    (wire (path F.Cu 200  124262 -119000  118884 -119000  113684 -124201  113684 -124392)(net GLINK_G2N)(type fix))
-    (wire (path B.Cu 200  99781.7 -119050  99781.7 -119121  100814 -120154  103344 -120154
-            104468 -121278  110570 -121278  113684 -124392)(net GLINK_G2N)(type fix))
+    (wire (path F.Cu 200  111400 -128662  111400 -127711  111672 -127439)(net NAV_ISP_MOSI)(type fix))
+    (wire (path B.Cu 200  101240 -130240  102775 -131775  107274 -131775  107393 -131894
+            108817 -131894  111672 -129038  111672 -127439)(net NAV_ISP_MOSI)(type fix))
+    (wire (path F.Cu 200  111672 -126248  112268 -126844  112268 -128595  112200 -128662)(net NAV_ISP_MISO)(type fix))
+    (wire (path B.Cu 200  109639 -128353  109639 -128281  111672 -126248)(net NAV_ISP_MISO)(type fix))
+    (wire (path B.Cu 150  109309 -128587  109406 -128587  109639 -128353)(net NAV_ISP_MISO)(type fix))
+    (wire (path B.Cu 200  109144 -128752  109309 -128587)(net NAV_ISP_MISO)(type fix))
+    (wire (path B.Cu 150  109144 -129491  109144 -128752)(net NAV_ISP_MISO)(type fix))
+    (wire (path B.Cu 200  105210 -129122  106134 -129122  106984 -129973  108662 -129973
+            109144 -129491)(net NAV_ISP_MISO)(type fix))
+    (wire (path B.Cu 150  99487.3 -128780  99829.3 -129122  105210 -129122)(net NAV_ISP_MISO)(type fix))
+    (wire (path B.Cu 200  98700 -127700  99487.3 -128487  99487.3 -128780)(net NAV_ISP_MISO)(type fix))
+    (wire (path F.Cu 200  124262 -119000  124086 -118824  120271 -118824  119712 -119383
+            119148 -119383  118568 -118803  118568 -118319  118148 -117899
+            116974 -117899  113658 -121215  111615 -121215)(net GLINK_G2N)(type fix))
     (wire (path B.Cu 200  98700 -119050  99781.7 -119050)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 200  111772 -121026  111615 -121183  111615 -121215)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 200  103825 -119100  102693 -117968  100728 -117968  99781.7 -118915
+            99781.7 -119050)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 150  104998 -119031  104929 -119100  103825 -119100)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 200  107251 -119760  106632 -119760  105903 -119031  104998 -119031)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 150  108960 -119725  107285 -119725  107251 -119760)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 200  109913 -119675  109010 -119675  108960 -119725)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 150  110436 -119675  109913 -119675)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 100  110584 -119838  110584 -119823  110436 -119675)(net GLINK_G2N)(type fix))
+    (wire (path B.Cu 150  111772 -121026  110584 -119838)(net GLINK_G2N)(type fix))
     (wire (path B.Cu 200  98700 -119050  97618.3 -119050)(net GLINK_G2N)(type fix))
     (wire (path F.Cu 200  90250 -118438  90250 -120339  90526 -120615)(net GLINK_G2N)(type fix))
     (wire (path B.Cu 200  97618.3 -119050  97271.5 -119397  94194.3 -119397  94133.7 -119336
             91804.5 -119336  90526 -120615)(net GLINK_G2N)(type fix))
-    (wire (path B.Cu 200  84211.2 -120943  86180.6 -122912  97378 -122912  98700 -121590)(net GNS_ISP_SCK)(type fix))
+    (wire (path B.Cu 200  98700 -121590  97389.1 -122901  86169.5 -122901  84211.2 -120943)(net GNS_ISP_SCK)(type fix))
     (wire (path F.Cu 200  84211.2 -120943  83850 -120581  83850 -118438)(net GNS_ISP_SCK)(type fix))
     (wire (path F.Cu 200  118938 -134000  118938 -134000)(net UVLO_REF)(type fix))
     (wire (path F.Cu 200  118938 -133050  118938 -133050)(net UVLO_REF)(type fix))
@@ -5379,48 +5417,45 @@
     (via "Via[0-3]_600:300_um"  63478 -112798 (net COM_LED)(type fix))
     (via "Via[0-3]_600:300_um"  69450.5 -131718 (net COM_LED)(type fix))
     (via "Via[0-3]_600:300_um"  72712.8 -130933 (net COM_LED)(type fix))
-    (via "Via[0-3]_600:300_um"  92991.7 -116077 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  114560 -124169 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  119076 -119631 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  129722 -104675 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  111393 -99426 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  115347 -97532.5 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  122681 -93184.1 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  124759 -81266.8 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  104732 -84882.4 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  96721.9 -101847 (net ESP_RXD_SH)(type fix))
-    (via "Via[0-3]_600:300_um"  89067.7 -108572 (net COM_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  97161 -106414 (net COM_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  102574 -107764 (net COM_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  103528 -113722 (net COM_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  94769.6 -114550 (net COM_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  91672.7 -106124 (net COM_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  82928 -107004 (net COM_RESET)(type fix))
     (via "Via[0-3]_600:300_um"  84769 -109478 (net COM_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  101347 -113215 (net COM_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  130600 -102935 (net NAV_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  125272 -76664.6 (net NAV_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  103052 -73168.3 (net NAV_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  116715 -118186 (net NAV_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  103926 -123789 (net NAV_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  102901 -108869 (net COM_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  103669 -116297 (net COM_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  94769.6 -114551 (net COM_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  130722 -104534 (net NAV_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  124759 -81306.8 (net NAV_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  105972 -121363 (net NAV_RESET)(type fix))
+    (via "Via[0-3]_600:300_um"  119376 -118774 (net NAV_RESET)(type fix))
     (via "Via[0-3]_600:300_um"  123031 -124600 (net NAV_RESET)(type fix))
-    (via "Via[0-3]_600:300_um"  112843 -124380 (net NAV_GLINK_TX)(type fix))
-    (via "Via[0-3]_600:300_um"  103816 -121502 (net NAV_GLINK_TX)(type fix))
-    (via "Via[0-3]_600:300_um"  103436 -119572 (net NAV_GLINK_TX)(type fix))
-    (via "Via[0-3]_600:300_um"  96909.8 -117240 (net NAV_GLINK_TX)(type fix))
+    (via "Via[0-3]_600:300_um"  123019 -117906 (net NAV_GLINK_TX)(type fix))
+    (via "Via[0-3]_600:300_um"  120512 -119406 (net NAV_GLINK_TX)(type fix))
+    (via "Via[0-3]_600:300_um"  115116 -124726 (net NAV_GLINK_TX)(type fix))
+    (via "Via[0-3]_600:300_um"  107172 -121264 (net NAV_GLINK_TX)(type fix))
+    (via "Via[0-3]_600:300_um"  106584 -118319 (net NAV_GLINK_TX)(type fix))
+    (via "Via[0-3]_600:300_um"  96927.2 -116752 (net NAV_GLINK_TX)(type fix))
     (via "Via[0-3]_600:300_um"  92037 -119939 (net GNS_GLINK_RX)(type fix))
-    (via "Via[0-3]_600:300_um"  110163 -124832 (net NLINK_SCK)(type fix))
-    (via "Via[0-3]_600:300_um"  120446 -120437 (net NLINK_SCK)(type fix))
-    (via "Via[0-3]_600:300_um"  130597 -106119 (net NLINK_SCK)(type fix))
-    (via "Via[0-3]_600:300_um"  123858 -93932.4 (net NLINK_SCK)(type fix))
-    (via "Via[0-3]_600:300_um"  116540 -98124.3 (net NLINK_SCK)(type fix))
-    (via "Via[0-3]_600:300_um"  111332 -97886 (net NLINK_SCK)(type fix))
-    (via "Via[0-3]_600:300_um"  103898 -97630.7 (net NLINK_SCK)(type fix))
-    (via "Via[0-3]_600:300_um"  75792 -97646.9 (net ESP_TXD0)(type fix))
+    (via "Via[0-3]_600:300_um"  107543 -98478.8 (net RELEASE_PWM)(type fix))
+    (via "Via[0-3]_600:300_um"  111393 -99426 (net RELEASE_PWM)(type fix))
+    (via "Via[0-3]_600:300_um"  115351 -97265.6 (net RELEASE_PWM)(type fix))
+    (via "Via[0-3]_600:300_um"  123616 -90545.2 (net RELEASE_PWM)(type fix))
+    (via "Via[0-3]_600:300_um"  131638 -70847.1 (net RELEASE_PWM)(type fix))
+    (via "Via[0-3]_600:300_um"  127144 -69175.1 (net RELEASE_PWM)(type fix))
+    (via "Via[0-3]_600:300_um"  112111 -124832 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  118218 -119662 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  129852 -104369 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  127218 -103855 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  113060 -98197.5 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  111476 -98198.7 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  103900 -97386.2 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  112615 -129890 (net NLINK_SCK)(type fix))
+    (via "Via[0-3]_600:300_um"  78048 -94495.1 (net ESP_TXD0)(type fix))
     (via "Via[0-3]_600:300_um"  83426.6 -123791 (net GNS_RESET)(type fix))
     (via "Via[0-3]_600:300_um"  130586 -119389 (net BOOST_EN)(type fix))
     (via "Via[0-3]_600:300_um"  124733 -129908 (net BOOST_EN)(type fix))
-    (via "Via[0-3]_600:300_um"  111203 -127432 (net NAV_ISP_MOSI)(type fix))
-    (via "Via[0-3]_600:300_um"  112737 -127436 (net NAV_ISP_MISO)(type fix))
-    (via "Via[0-3]_600:300_um"  113684 -124392 (net GLINK_G2N)(type fix))
+    (via "Via[0-3]_600:300_um"  111672 -127439 (net NAV_ISP_MOSI)(type fix))
+    (via "Via[0-3]_600:300_um"  111672 -126248 (net NAV_ISP_MISO)(type fix))
+    (via "Via[0-3]_600:300_um"  111615 -121215 (net GLINK_G2N)(type fix))
     (via "Via[0-3]_600:300_um"  90526 -120615 (net GLINK_G2N)(type fix))
     (via "Via[0-3]_600:300_um"  84211.2 -120943 (net GNS_ISP_SCK)(type fix))
   )

@@ -1,7 +1,7 @@
-# VTOL 캐리어 PCB rev 3 - 전기 사양 요약
+# VTOL 캐리어 PCB rev 3.1 - 전기 사양 요약
 
 이 문서는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts/build_spec.py` 가 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json` 과 함께 자동으로 만든 것입니다. 손으로 고치지 말고 스크립트를 다시 돌리십시오.
-설계의 기준은 계획서 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/REV3_PLAN.md` (기계가 읽는 사본 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json`, 계획 날짜 2026-11-10) 이며, 사양이 계획과 부품 하나하나 같은지 스크립트가 비교합니다 (비교 175항목, 핀 689개, 차이 0건).
+설계의 기준은 계획서 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/REV3_PLAN.md` (기계가 읽는 사본 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json`, 계획 날짜 2026-11-10) 이며, 사양이 계획과 부품 하나하나 같은지 스크립트가 비교합니다 (비교 177항목, 핀 692개, 차이 0건).
 
 표시: F = 파일·데이터시트에서 읽음, M = 여기서 도구로 측정, E = 추정(계산), A = 가정. 근거가 없으면 NOT_VERIFIED.
 이 문서의 수치는 사양을 만드는 스크립트의 계산·대조 결과입니다. ERC / DRC 결과는 kicad-cli 보고서(`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/`)에만 있습니다.
@@ -13,20 +13,22 @@
 - **스루홀 커넥터 12개도 2026-11-12 사용자 결정으로 JLC가 아니라 사용자가 사서 납땜합니다** (J2/J5, J8/J9/J10/J11/J12, J14, J15/J17, J16, J18; fit user). JLC 주문은 SMT 부품만 실장하고 손납땜은 없습니다. 풋프린트·네트·위치와 풋프린트의 실크 윤곽은 그대로입니다. (같은 날 검증 지적으로 아랫면 실크 이름표 가운데 핀 줄과 나란히 적힌 것의 핀 글자 순서만 아랫면에서 본 패드 순서로 고쳤습니다: 주문 안내서 7장.)
 - MCU, 센서 모듈, ESP-12F 모듈, 스루홀 커넥터를 뺀 모든 실장 부품(모두 SMT)을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 (재고 근거: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/parts_sources.json`).
 - 부품마다 `fit` (누가 붙이는가) 값을 가집니다. JLC BOM / CPL은 이 값에서만 만들어집니다.
-- MCU 4개의 핀 256개가 가는 네트, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. 기판 본체 76 x 70 mm 사각형과 그 변도 그대로이고, 2026-11-12 사용자 요청("보드의 사이즈를 조정하는 방법은 없어?")으로 -y 변(차체 -y 쪽)에 승압 회로를 올리는 탭을 붙였습니다: x 17.3..32, y -42.2..-35 mm (차체 좌표), 넓이 105.8 mm2, 외접 크기 76 x 77.2 mm. 이것은 계획 불변조건 (b) '외곽 76 x 70 mm 그대로'에서 벗어난 사용자 결정입니다. rev 2c 자료는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/` 에 보관했습니다.
+- **rev 3.1 (2026-11-13, 사용자 결정 "캐리어 PCB를 로켓에도 씀")**: 같은 캐리어를 로켓에도 씁니다. 로켓은 FCU U2 PE5 / OC3C (핀 7; 펌웨어 src/hal/pwm.c:49, main.c:518 - 바꾸지 않음)로 CanSat 노즈 분리 서보를 움직이므로 분리 서보 출력을 되살렸습니다: PE5 -> R22 220 Ohm (JLC BOM 21줄 C22962에 합류) -> J13. J13은 +x / +y 모서리의 도금 스루홀 패드 1개(지름 2.0 mm, 구멍 1.0 mm)이고 붙일 부품이 없습니다: 로켓에서는 ESC와 J12 사이에 서보 Y 케이블을 끼우고, 그 분리 서보 쪽 가지의 신호선을 J13에 납땜합니다 (+ / -는 J12의 2 / 3번에서 Y 케이블로). VTOL에서는 비워 둡니다. 이 패드 말고 rev 3에서 바뀐 MCU 핀은 없습니다.
+- 사용자가 고른 B안(-x 변 서보 열에 직각 헤더 J13, J18을 1핀으로)은 배치할 수 없었습니다 (M): 서보 열은 위아래가 rev 3 배터리 선 미리 배선(F.Cu 2.0 mm VBAT_LOGIC, B.Cu 2.4 mm VBAT_LOGIC_SW)으로 막혀 있고, 헤더 5개 + 1핀 J18에는 45.06 mm가 필요한데 44.60 mm뿐입니다 (가장 좋은 자리에서도 양 끝이 0.13 mm 간격 규칙보다 0.23 mm 부족). 배터리 배선은 바꾸지 않는다는 조건이라 사용자가 정해 둔 대안 C안으로 했습니다. 그래서 J18은 rev 3 그대로(1x4)입니다.
+- MCU 4개의 핀 256개가 가는 네트(rev 3.1의 U2 PE5 하나만 예외), 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. 기판 본체 76 x 70 mm 사각형과 그 변도 그대로이고, 2026-11-12 사용자 요청("보드의 사이즈를 조정하는 방법은 없어?")으로 -y 변(차체 -y 쪽)에 승압 회로를 올리는 탭을 붙였습니다: x 17.3..32, y -42.2..-35 mm (차체 좌표), 넓이 105.8 mm2, 외접 크기 76 x 77.2 mm. 이것은 계획 불변조건 (b) '외곽 76 x 70 mm 그대로'에서 벗어난 사용자 결정입니다. rev 2c 자료는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/archive/rev2c_pololu_1s/` 에 보관했습니다.
 
 ## 2. 누가 무엇을 붙이는가
 
-부품 자리 174개 (네트 105개).
+부품 자리 176개 (네트 107개).
 
 | fit | 뜻 | 개수 | 부품 |
 |---|---|---|---|
-| jlc | JLC가 실장 (BOM / CPL에 들어감) | 144 | C1, C2, C3, C4, C5, C6 ... (목록은 carrier_spec.json 의 parts[].fit) |
+| jlc | JLC가 실장 (BOM / CPL에 들어감) | 145 | C1, C2, C3, C4, C5, C6 ... (목록은 carrier_spec.json 의 parts[].fit) |
 | jlc_optional | 기본은 사용자 납땜, with_mcu 파일 쌍에서만 JLC 실장 | 4 | U1, U2, U3, U4 |
 | user | 사용자가 납땜 | 14 | J1, J2, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, U7 |
-| none | 부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만) | 12 | J3, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47 |
+| none | 부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만) | 13 | J3, J13, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47 |
 
-JLC 실장 부품 144개, BOM 33줄 (SMT 33줄 + THT 0줄). MCU까지 JLC에 맡기는 with_mcu 쌍은 148개 / 34줄입니다.
+JLC 실장 부품 145개, BOM 33줄 (SMT 33줄 + THT 0줄). MCU까지 JLC에 맡기는 with_mcu 쌍은 149개 / 34줄입니다.
 
 ## 3. 5 V 전원부 (모두 E: 데이터시트 계산, 측정 아님)
 
@@ -60,7 +62,7 @@ JLC 실장 부품 144개, BOM 33줄 (SMT 33줄 + THT 0줄). MCU까지 JLC에 맡
 | 18 | 10k 1% | R1, R3, R5, R7, R11, R14, R23, R24, R25, R26, R27, R29, R31, R38, R40, R41, R43, R45, R46, R48, R49, R50, R51, R52, R53, R55, R56, R57, R58, R59, R60, R61, R62 | R_0603_1608Metric | C25804 | SMT | 33 |
 | 19 | 1k 1% | R2, R4, R6, R8, R12, R13, R28, R30, R54 | R_0603_1608Metric | C21190 | SMT | 9 |
 | 20 | 47k 1% | R15, R16, R32, R34, R36 | R_0603_1608Metric | C25819 | SMT | 5 |
-| 21 | 220R 1% | R17, R18, R19, R20, R21 | R_0603_1608Metric | C22962 | SMT | 5 |
+| 21 | 220R 1% | R17, R18, R19, R20, R21, R22 | R_0603_1608Metric | C22962 | SMT | 6 |
 | 22 | 4.7k 1% | R33, R35, R37, R42, R44 | R_0603_1608Metric | C23162 | SMT | 5 |
 | 23 | 100k 1% | R39 | R_0603_1608Metric | C25803 | SMT | 1 |
 | 24 | 150k 1% | R63 | R_0603_1608Metric | C22807 | SMT | 1 |
@@ -82,7 +84,7 @@ Footprint 칸은 KiCad 풋프린트 이름입니다 (주문용 BOM 파일의 Foo
 
 현재 설정: **A** (환경변수 `VTOL_PROG_HEADERS`, 기본 A).
 - A: J3, J19~J22 (2x3), J24~J26 (1x2) 은 rev 2c와 같은 자리의 빈 도금 구멍입니다. 프로그래밍하려면 사용자가 헤더를 납땜하거나 포고핀 어댑터를 씁니다 (포고핀 접촉은 NOT_VERIFIED).
-- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; BOM 35줄, JLC 실장 152개). 사용자의 승인이 있어야 적용합니다. 띠 밖에 자리가 있는지 배치 단계에서 찾은 결과는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/programming_access.json` 에 있습니다 (사양 문서는 배치 결과를 읽지 않습니다; 요약은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/README_ko.md`).
+- B: 같은 부품번호를 케이블타이 띠 밖에 JLC가 실장하는 SMD 헤더로 둡니다 (2x3: C32713283, 1x2: C41417359; BOM 35줄, JLC 실장 153개). 사용자의 승인이 있어야 적용합니다. 띠 밖에 자리가 있는지 배치 단계에서 찾은 결과는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/programming_access.json` 에 있습니다 (사양 문서는 배치 결과를 읽지 않습니다; 요약은 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/README_ko.md`).
 
 ## 6. 사용자가 붙이거나 꽂는 것
 

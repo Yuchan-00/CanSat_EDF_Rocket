@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-12T18:44:29",
+    "date": "2026-11-13T16:40:14",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -266,12 +266,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "패드 1 [+3V3]의 C54 위F.Cu",
+                    "description": "배선 [+3V3] on F.Cu, 길이 2.4000 mm",
                     "pos": {
                         "x": 76.75,
                         "y": 87.7
                     },
-                    "uuid": "6c0ffe1d-6df0-537e-a8c7-744dc6d6807a"
+                    "uuid": "2596d155-37ec-5604-a7eb-6140f8a6be72"
                 },
                 {
                     "description": "패드 1 [+3V3]의 C53 위F.Cu",
@@ -895,12 +895,12 @@
                     "uuid": "635c1859-835e-5f67-a524-66c5af925977"
                 },
                 {
-                    "description": "패드 1 [+5V]의 C25 위F.Cu",
+                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
                     "pos": {
-                        "x": 76.74,
+                        "x": 78.188,
                         "y": 123.3
                     },
-                    "uuid": "43342fb2-3eed-52d3-8375-ec49ef159ccc"
+                    "uuid": "f860d474-d7e9-5ad4-a1b8-75002c393457"
                 }
             ],
             "severity": "error",
@@ -933,12 +933,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "패드 1 [+5V]의 C25 위F.Cu",
+                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
                     "pos": {
-                        "x": 76.74,
+                        "x": 78.188,
                         "y": 123.3
                     },
-                    "uuid": "43342fb2-3eed-52d3-8375-ec49ef159ccc"
+                    "uuid": "f860d474-d7e9-5ad4-a1b8-75002c393457"
                 },
                 {
                     "description": "패드 1 [+5V]의 C27 위F.Cu",
@@ -1378,12 +1378,12 @@
                     "uuid": "9c1c6032-e038-5c0b-ba29-b515e46328f8"
                 },
                 {
-                    "description": "패드 1 [+5V]의 C2 위F.Cu",
+                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
                     "pos": {
-                        "x": 107.49,
+                        "x": 108.938,
                         "y": 117.4
                     },
-                    "uuid": "9b90eab7-4492-5060-88d5-717e5b0d8093"
+                    "uuid": "e5440b3c-8696-53e3-b2d1-474c6cd60526"
                 }
             ],
             "severity": "error",
@@ -1646,12 +1646,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
+                    "description": "패드 1 [+5V]의 C10 위F.Cu",
                     "pos": {
                         "x": 116.4,
-                        "y": 90.088
+                        "y": 88.64
                     },
-                    "uuid": "def51294-d7e3-5e15-9dea-dfcce82b48e7"
+                    "uuid": "bd56208f-74e5-58c3-b970-dcea562f5e5a"
                 },
                 {
                     "description": "패드 1 [+5V]의 L2 위F.Cu",
@@ -2229,12 +2229,12 @@
                     "uuid": "29636b43-8f55-5a38-b052-3fe652ff4703"
                 },
                 {
-                    "description": "패드 2 [GND]의 C54 위F.Cu",
+                    "description": "배선 [GND] on F.Cu, 길이 0.9500 mm",
                     "pos": {
                         "x": 76.75,
                         "y": 88.66
                     },
-                    "uuid": "881c0bfe-c40e-5e74-8401-c8a01ea8fdef"
+                    "uuid": "46d8afe2-8f1f-5b94-b063-21d492897aad"
                 }
             ],
             "severity": "error",
@@ -3816,12 +3816,12 @@
                     "uuid": "a0a06999-a479-5237-b36f-5d42787ab4fe"
                 },
                 {
-                    "description": "배선 [GND] on F.Cu, 길이 5.6750 mm",
+                    "description": "배선 [GND] on F.Cu, 길이 0.6250 mm",
                     "pos": {
                         "x": 119.95,
-                        "y": 133.85
+                        "y": 134.475
                     },
-                    "uuid": "8db91916-9e0a-5130-b441-0df65b9ccfc9"
+                    "uuid": "659ac7a0-7202-5b23-aa44-d6ead274ba61"
                 }
             ],
             "severity": "error",
@@ -4797,6 +4797,29 @@
             "description": "Missing connection between items",
             "items": [
                 {
+                    "description": "1의 PTH 패드[RELEASE_SIG]J13",
+                    "pos": {
+                        "x": 127.05,
+                        "y": 66.85
+                    },
+                    "uuid": "7f6b01fc-335d-5b97-821e-caf824302495"
+                },
+                {
+                    "description": "패드 2 [RELEASE_SIG]의 R22 위F.Cu",
+                    "pos": {
+                        "x": 130.95,
+                        "y": 67.15
+                    },
+                    "uuid": "69fe510c-ef72-5a37-bf62-da7e3fd9ccd8"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
                     "description": "패드 1 [ESP_GPIO15]의 R49 위F.Cu",
                     "pos": {
                         "x": 93.475,
@@ -4820,12 +4843,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "패드 1 [COM_AVCC]의 C20 위F.Cu",
+                    "description": "배선 [COM_AVCC] on F.Cu, 길이 1.4480 mm",
                     "pos": {
                         "x": 79.85,
-                        "y": 94.34
+                        "y": 95.788
                     },
-                    "uuid": "6b2f44d5-0093-5d41-b850-13bc166f17d7"
+                    "uuid": "17421a3e-f8ab-5dd3-ae88-1199c75a6528"
                 },
                 {
                     "description": "패드 2 [COM_AVCC]의 L3 위F.Cu",
@@ -6476,6 +6499,29 @@
             "description": "Missing connection between items",
             "items": [
                 {
+                    "description": "패드 7 [RELEASE_PWM]의 U2 위F.Cu",
+                    "pos": {
+                        "x": 105.1375,
+                        "y": 96.55
+                    },
+                    "uuid": "c6d69ba7-7390-5e8f-80ae-9e0e392384c0"
+                },
+                {
+                    "description": "패드 1 [RELEASE_PWM]의 R22 위F.Cu",
+                    "pos": {
+                        "x": 129.3,
+                        "y": 67.15
+                    },
+                    "uuid": "a94aa350-256a-5fd8-a7cb-9341506d6894"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
                     "description": "패드 1 [NLINK_SS]의 R11 위F.Cu",
                     "pos": {
                         "x": 104.575,
@@ -7235,12 +7281,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "패드 2 [BOOST_EN]의 U8 위F.Cu",
+                    "description": "배선 [BOOST_EN] on F.Cu, 길이 0.9409 mm",
                     "pos": {
                         "x": 125.7875,
                         "y": 135.45
                     },
-                    "uuid": "3ea35d56-8d51-5c9d-90bb-851c7e3901de"
+                    "uuid": "0a1f0c3d-091b-5eb8-a488-c914baf92328"
                 },
                 {
                     "description": "패드 1 [BOOST_EN]의 R68 위F.Cu",
@@ -7858,43 +7904,20 @@
             "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
             "items": [
                 {
-                    "description": "패드 4 [GND]의 U8 위F.Cu",
+                    "description": "배선 [NAV_XTAL1] on F.Cu, 길이 2.1800 mm",
                     "pos": {
-                        "x": 127.2125,
-                        "y": 135.95
+                        "x": 129.37,
+                        "y": 121.4
                     },
-                    "uuid": "917997d1-bcfa-567b-9cd3-8d616ed95783"
+                    "uuid": "59957256-d3e3-5931-b826-34882a84eb42"
                 },
                 {
-                    "description": "배선 [BOOST_SW] on F.Cu, 길이 0.6875 mm",
+                    "description": "패드 4 [GND]의 Y1 위F.Cu",
                     "pos": {
-                        "x": 127.2125,
-                        "y": 135.45
+                        "x": 129.37,
+                        "y": 122.25
                     },
-                    "uuid": "fd8e2213-5fd3-5f7c-82ff-b4f4cc66bf95"
-                }
-            ],
-            "severity": "error",
-            "type": "clearance"
-        },
-        {
-            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
-            "items": [
-                {
-                    "description": "배선 [+5V] on F.Cu, 길이 4.5250 mm",
-                    "pos": {
-                        "x": 123.85,
-                        "y": 131.25
-                    },
-                    "uuid": "2cf9bd43-b632-53f8-98b6-039f89d9fb6e"
-                },
-                {
-                    "description": "비아 [GND] on F.Cu - B.Cu",
-                    "pos": {
-                        "x": 125.625,
-                        "y": 131.8
-                    },
-                    "uuid": "bff7edab-a10b-59ab-8373-69befc0d14d0"
+                    "uuid": "bf5379b3-3ac6-59aa-a2f7-9ee393d0ded5"
                 }
             ],
             "severity": "error",
@@ -7924,6 +7947,75 @@
             "type": "clearance"
         },
         {
+            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
+            "items": [
+                {
+                    "description": "배선 [+5V] on F.Cu, 길이 4.5250 mm",
+                    "pos": {
+                        "x": 123.85,
+                        "y": 131.25
+                    },
+                    "uuid": "2cf9bd43-b632-53f8-98b6-039f89d9fb6e"
+                },
+                {
+                    "description": "비아 [GND] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 125.625,
+                        "y": 131.8
+                    },
+                    "uuid": "bff7edab-a10b-59ab-8373-69befc0d14d0"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1700 mm)",
+            "items": [
+                {
+                    "description": "6의 PTH 패드[GND]J21",
+                    "pos": {
+                        "x": 101.24,
+                        "y": 108.83
+                    },
+                    "uuid": "d1209d1b-701f-50ca-b1ca-e3862118d347"
+                },
+                {
+                    "description": "배선 [VBAT_LOGIC_SW] on B.Cu, 길이 6.8000 mm",
+                    "pos": {
+                        "x": 96.6,
+                        "y": 110.85
+                    },
+                    "uuid": "d4121447-1505-5913-b4b1-597c0f91d405"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
+            "items": [
+                {
+                    "description": "패드 4 [GND]의 U8 위F.Cu",
+                    "pos": {
+                        "x": 127.2125,
+                        "y": 135.95
+                    },
+                    "uuid": "917997d1-bcfa-567b-9cd3-8d616ed95783"
+                },
+                {
+                    "description": "배선 [BOOST_SW] on F.Cu, 길이 0.6875 mm",
+                    "pos": {
+                        "x": 127.2125,
+                        "y": 135.45
+                    },
+                    "uuid": "fd8e2213-5fd3-5f7c-82ff-b4f4cc66bf95"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
             "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1750 mm)",
             "items": [
                 {
@@ -7947,23 +8039,23 @@
             "type": "clearance"
         },
         {
-            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1700 mm)",
+            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1750 mm)",
             "items": [
                 {
-                    "description": "배선 [VBAT_LOGIC_SW] on B.Cu, 길이 6.8000 mm",
+                    "description": "배선 [VBAT_LOGIC] on F.Cu, 길이 1.9700 mm",
                     "pos": {
-                        "x": 96.6,
-                        "y": 110.85
+                        "x": 73.1,
+                        "y": 74.23
                     },
-                    "uuid": "d4121447-1505-5913-b4b1-597c0f91d405"
+                    "uuid": "599b21fe-c224-5f6f-ab00-4cc383d171d1"
                 },
                 {
-                    "description": "5의 PTH 패드[COM_RESET]J21",
+                    "description": "패드 2 [GND]의 R14 위F.Cu",
                     "pos": {
-                        "x": 98.7,
-                        "y": 108.83
+                        "x": 71.525,
+                        "y": 75.2
                     },
-                    "uuid": "ea31d256-ffec-5e8d-8345-9576405f8d9c"
+                    "uuid": "71d55606-daeb-58f0-9a4f-b53197b26a23"
                 }
             ],
             "severity": "error",
@@ -7979,29 +8071,6 @@
                         "y": 73.58
                     },
                     "uuid": "1c2ffe1b-5e0c-5cbf-9750-208b3b873c8b"
-                },
-                {
-                    "description": "패드 2 [GND]의 R14 위F.Cu",
-                    "pos": {
-                        "x": 71.525,
-                        "y": 75.2
-                    },
-                    "uuid": "71d55606-daeb-58f0-9a4f-b53197b26a23"
-                }
-            ],
-            "severity": "error",
-            "type": "clearance"
-        },
-        {
-            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1750 mm)",
-            "items": [
-                {
-                    "description": "배선 [VBAT_LOGIC] on F.Cu, 길이 1.9700 mm",
-                    "pos": {
-                        "x": 73.1,
-                        "y": 74.23
-                    },
-                    "uuid": "599b21fe-c224-5f6f-ab00-4cc383d171d1"
                 },
                 {
                     "description": "패드 2 [GND]의 R14 위F.Cu",
@@ -8050,12 +8119,12 @@
                     "uuid": "0008d9b1-0bb0-570d-85d9-cf7260788314"
                 },
                 {
-                    "description": "패드 4 [GND]의 Y4 위F.Cu",
+                    "description": "패드 3 [GNS_XTAL2]의 Y4 위F.Cu",
                     "pos": {
-                        "x": 73.08,
+                        "x": 75.28,
                         "y": 124.85
                     },
-                    "uuid": "9161ba10-8e36-5a46-9983-fefdf5f5ccd6"
+                    "uuid": "1932982c-2630-5970-aced-7ca151d4e2f8"
                 }
             ],
             "severity": "error",
@@ -8096,81 +8165,12 @@
                     "uuid": "19410ab6-ef3f-5d4f-bcf8-df6c0c4c8dec"
                 },
                 {
-                    "description": "패드 3 [COM_XTAL2]의 Y3 위F.Cu",
+                    "description": "패드 4 [GND]의 Y3 위F.Cu",
                     "pos": {
                         "x": 84.6,
-                        "y": 114.02
+                        "y": 116.22
                     },
-                    "uuid": "205a5961-7410-5d78-9ac0-99c0e59fd4e1"
-                }
-            ],
-            "severity": "error",
-            "type": "clearance"
-        },
-        {
-            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
-            "items": [
-                {
-                    "description": "패드 2 [GND]의 Y2 위F.Cu",
-                    "pos": {
-                        "x": 113.25,
-                        "y": 108.32
-                    },
-                    "uuid": "222629ba-633f-5b84-8d73-ab3c9fdee63f"
-                },
-                {
-                    "description": "배선 [FCU_XTAL1] on F.Cu, 길이 5.1080 mm",
-                    "pos": {
-                        "x": 112.4,
-                        "y": 105.412
-                    },
-                    "uuid": "72fdd7fc-1097-506b-9310-07a07df9be3e"
-                }
-            ],
-            "severity": "error",
-            "type": "clearance"
-        },
-        {
-            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
-            "items": [
-                {
-                    "description": "배선 [NAV_XTAL1] on F.Cu, 길이 2.1800 mm",
-                    "pos": {
-                        "x": 129.37,
-                        "y": 121.4
-                    },
-                    "uuid": "59957256-d3e3-5931-b826-34882a84eb42"
-                },
-                {
-                    "description": "패드 4 [GND]의 Y1 위F.Cu",
-                    "pos": {
-                        "x": 129.37,
-                        "y": 122.25
-                    },
-                    "uuid": "bf5379b3-3ac6-59aa-a2f7-9ee393d0ded5"
-                }
-            ],
-            "severity": "error",
-            "type": "clearance"
-        },
-        {
-            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
-            "items": [
-                {
-                    "description": "배선 [NAV_XTAL1] on F.Cu, 길이 5.1080 mm",
-                    "pos": {
-                        "x": 124.262,
-                        "y": 121.4
-                    },
-                    "uuid": "3793aa15-f849-5de9-b793-63f0be3e29df"
-                },
-                {
-                    "description": "패드 2 [GND]의 Y1 위F.Cu",
-                    "pos": {
-                        "x": 127.17,
-                        "y": 120.55
-                    },
-                    "uuid": "489b4473-0b17-5374-87bf-6545a97c0a27"
+                    "uuid": "1a364b51-79e8-5d10-8f43-e7a831006fde"
                 }
             ],
             "severity": "error",
@@ -8203,6 +8203,75 @@
             "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
             "items": [
                 {
+                    "description": "패드 3 [FCU_XTAL2]의 Y2 위F.Cu",
+                    "pos": {
+                        "x": 111.55,
+                        "y": 108.32
+                    },
+                    "uuid": "164a4005-339f-58fa-b37a-ca1a881415ab"
+                },
+                {
+                    "description": "배선 [FCU_XTAL1] on F.Cu, 길이 5.1080 mm",
+                    "pos": {
+                        "x": 112.4,
+                        "y": 105.412
+                    },
+                    "uuid": "72fdd7fc-1097-506b-9310-07a07df9be3e"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
+            "items": [
+                {
+                    "description": "배선 [NAV_XTAL1] on F.Cu, 길이 5.1080 mm",
+                    "pos": {
+                        "x": 124.262,
+                        "y": 121.4
+                    },
+                    "uuid": "3793aa15-f849-5de9-b793-63f0be3e29df"
+                },
+                {
+                    "description": "패드 2 [GND]의 Y1 위F.Cu",
+                    "pos": {
+                        "x": 127.17,
+                        "y": 120.55
+                    },
+                    "uuid": "489b4473-0b17-5374-87bf-6545a97c0a27"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
+            "items": [
+                {
+                    "description": "패드 2 [BOOST_EN]의 U8 위F.Cu",
+                    "pos": {
+                        "x": 125.7875,
+                        "y": 135.45
+                    },
+                    "uuid": "3ea35d56-8d51-5c9d-90bb-851c7e3901de"
+                },
+                {
+                    "description": "패드 3 [VBAT_LOGIC_SW]의 U8 위F.Cu",
+                    "pos": {
+                        "x": 125.7875,
+                        "y": 135.95
+                    },
+                    "uuid": "da6e8030-4192-5d24-a14a-734914c8a5ef"
+                }
+            ],
+            "severity": "error",
+            "type": "clearance"
+        },
+        {
+            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
+            "items": [
+                {
                     "description": "패드 2 [BOOST_EN]의 U8 위F.Cu",
                     "pos": {
                         "x": 125.7875,
@@ -8226,28 +8295,13 @@
             "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
             "items": [
                 {
-                    "description": "패드 3 [VBAT_LOGIC_SW]의 U8 위F.Cu",
+                    "description": "패드 5 [BOOST_SW]의 U8 위F.Cu",
                     "pos": {
-                        "x": 125.7875,
-                        "y": 135.95
-                    },
-                    "uuid": "da6e8030-4192-5d24-a14a-734914c8a5ef"
-                },
-                {
-                    "description": "패드 2 [BOOST_EN]의 U8 위F.Cu",
-                    "pos": {
-                        "x": 125.7875,
+                        "x": 127.2125,
                         "y": 135.45
                     },
-                    "uuid": "3ea35d56-8d51-5c9d-90bb-851c7e3901de"
-                }
-            ],
-            "severity": "error",
-            "type": "clearance"
-        },
-        {
-            "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
-            "items": [
+                    "uuid": "b5c6f37f-b66d-5b07-a1c3-afadb947159d"
+                },
                 {
                     "description": "패드 4 [GND]의 U8 위F.Cu",
                     "pos": {
@@ -8255,14 +8309,6 @@
                         "y": 135.95
                     },
                     "uuid": "917997d1-bcfa-567b-9cd3-8d616ed95783"
-                },
-                {
-                    "description": "패드 5 [BOOST_SW]의 U8 위F.Cu",
-                    "pos": {
-                        "x": 127.2125,
-                        "y": 135.45
-                    },
-                    "uuid": "b5c6f37f-b66d-5b07-a1c3-afadb947159d"
                 }
             ],
             "severity": "error",
@@ -8272,20 +8318,20 @@
             "description": "공간거리 위반 ( 공간거리 0.2000 mm; 실제값 0.1500 mm)",
             "items": [
                 {
-                    "description": "패드 6 [+5V]의 U8 위F.Cu",
-                    "pos": {
-                        "x": 127.2125,
-                        "y": 134.95
-                    },
-                    "uuid": "d4b0385d-35d5-5658-8f2b-75579fe45f27"
-                },
-                {
                     "description": "패드 5 [BOOST_SW]의 U8 위F.Cu",
                     "pos": {
                         "x": 127.2125,
                         "y": 135.45
                     },
                     "uuid": "b5c6f37f-b66d-5b07-a1c3-afadb947159d"
+                },
+                {
+                    "description": "패드 6 [+5V]의 U8 위F.Cu",
+                    "pos": {
+                        "x": 127.2125,
+                        "y": 134.95
+                    },
+                    "uuid": "d4b0385d-35d5-5658-8f2b-75579fe45f27"
                 }
             ],
             "severity": "error",

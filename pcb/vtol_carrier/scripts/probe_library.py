@@ -47,6 +47,7 @@ SYMBOLS = [
     "Device:D_Schottky",
     "Device:D_Zener",
     "Connector:AVR-ISP-6",
+    "Connector_Generic:Conn_01x01",  # rev 3.1: J13 release-signal pad
     "Connector_Generic:Conn_01x02",
     "Connector_Generic:Conn_01x03",
     "Connector_Generic:Conn_01x04",
@@ -90,6 +91,7 @@ FOOTPRINTS = [
     "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical",
     "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical",
     "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
+    "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm",  # rev 3.1: J13 release-signal pad
     "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
     "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
     "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal",

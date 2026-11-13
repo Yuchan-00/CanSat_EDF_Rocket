@@ -67,6 +67,7 @@
       (place R52 916000 -1151000 front 0)
       (place R41 1189000 -878000 front 0)
       (place R29 1260000 -1023000 front 0)
+      (place R22 1301250 -671500 front 0)
       (place R40 1061000 -837000 front 0)
     )
     (component "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
@@ -134,6 +135,9 @@
       (place C43 1271000 -1333000 front 180)
       (place C41 1200000 -1387500 front 180)
       (place C57 1292000 -1367500 front 270)
+    )
+    (component "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+      (place J13 1270500 -668500 front 0)
     )
     (component "Package_TO_SOT_SMD:SOT-23"
       (place Q10 709000 -725000 front 90)

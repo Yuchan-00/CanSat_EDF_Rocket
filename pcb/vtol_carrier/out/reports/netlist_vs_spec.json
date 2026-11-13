@@ -1,10 +1,10 @@
 {
  "tool": "kicad-cli sch export netlist + scripted comparison",
  "netlist": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
- "netlist_sha256_without_date_line": "c4475e142ba6d9947df43699bf7473368d18bb84d137abcfc04e98cca3943fe6",
- "components": 174,
- "spec_nets": 105,
- "netlist_named_nets": 105,
+ "netlist_sha256_without_date_line": "412017f811492e6379aa97e1979b6ce85a8e5e9a2f34c3b7201c7b1a01dc1067",
+ "components": 176,
+ "spec_nets": 107,
+ "netlist_named_nets": 107,
  "mismatched_nets": [],
  "extra_nets": [],
  "result": "PASS"

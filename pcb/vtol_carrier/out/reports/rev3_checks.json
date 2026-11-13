@@ -4,9 +4,9 @@
  "erc_and_netlist_made_from_the_files_of_the_determinism_run": true,
  "interpreter": "B:/Claude/.venv/Scripts/python.exe",
  "python": "3.12.10",
- "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
- "plan_sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
- "netlist_sha256": "17514efcaaca39a71040b37c6ee1dbf81a57ed64cc908f77ff164d330ad94966",
+ "spec_sha256": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
+ "plan_sha256": "d24d333521aace60e30cb743b1552b7ca569a4b6e3fe2ca40eb0a64a3f97557b",
+ "netlist_sha256": "e4b2ab19a59091dc9db7e4e290226a22301291931d1afa9efb563494e1671ae4",
  "checks": {
   "determinism": {
    "result": "PASS",
@@ -40,12 +40,12 @@
   "netlist-vs-spec": {
    "result": "PASS",
    "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_netlist_vs_spec.json",
-   "parts": 174,
-   "pins_compared": 689,
-   "pins_connected": 506,
-   "pins_no_connect": 183,
-   "spec_nets": 105,
-   "netlist_named_nets": 105,
+   "parts": 176,
+   "pins_compared": 692,
+   "pins_connected": 510,
+   "pins_no_connect": 182,
+   "spec_nets": 107,
+   "netlist_named_nets": 107,
    "differences": 0
   },
   "mcu-pinmap": {
@@ -76,6 +76,7 @@
     "J10",
     "J11",
     "J12",
+    "J13",
     "J14",
     "J15",
     "J16",
@@ -99,28 +100,28 @@
     "U7"
    ],
    "main_pair": {
-    "parts": 174,
+    "parts": 176,
     "fit_counts": {
-     "jlc": 144,
+     "jlc": 145,
      "jlc_optional": 4,
      "user": 14,
-     "none": 12
+     "none": 13
     },
-    "jlc_fitted_parts": 144,
+    "jlc_fitted_parts": 145,
     "bom_lines": 33,
     "bom_lines_smt": 33,
     "bom_lines_tht": 0,
     "with_mcu": false
    },
    "with_mcu_pair": {
-    "parts": 174,
+    "parts": 176,
     "fit_counts": {
-     "jlc": 144,
+     "jlc": 145,
      "jlc_optional": 4,
      "user": 14,
-     "none": 12
+     "none": 13
     },
-    "jlc_fitted_parts": 148,
+    "jlc_fitted_parts": 149,
     "bom_lines": 34,
     "bom_lines_smt": 34,
     "bom_lines_tht": 0,
@@ -131,12 +132,14 @@
    "result": "PASS",
    "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_nets.json",
    "named_nets_rev2c": 100,
-   "named_nets_rev3": 105,
+   "named_nets_rev3": 107,
    "nets_lost": [],
    "nets_added": [
     "BOOST_EN",
     "BOOST_FB",
     "BOOST_SW",
+    "RELEASE_PWM",
+    "RELEASE_SIG",
     "UVLO_REF",
     "UVLO_SENSE"
    ],
@@ -148,7 +151,9 @@
     "C58",
     "C59",
     "C60",
+    "J13",
     "L5",
+    "R22",
     "R63",
     "R64",
     "R65",
@@ -160,7 +165,8 @@
    ],
    "no_connects_removed": [
     "J6.4",
-    "J6.5"
+    "J6.5",
+    "U2.7"
    ],
    "no_connects_added": []
   }

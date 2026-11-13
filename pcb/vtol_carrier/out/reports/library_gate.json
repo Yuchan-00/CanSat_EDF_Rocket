@@ -7,10 +7,11 @@
   "meaning": "A = J3, J19..J22, J24..J26 are bare plated holes (rev 2c positions, fit none); B = the same refs as JLC-fitted SMD headers outside the tie band (fit jlc)",
   "switch": "environment VTOL_PROG_HEADERS (default A)"
  },
- "parts": 174,
+ "parts": 176,
  "symbols_used": [
   "Comparator:MCP65R41",
   "Connector:AVR-ISP-6",
+  "Connector_Generic:Conn_01x01",
   "Connector_Generic:Conn_01x02",
   "Connector_Generic:Conn_01x03",
   "Connector_Generic:Conn_01x04",
@@ -66,11 +67,12 @@
   "Package_TO_SOT_SMD:SOT-23-6",
   "Package_TO_SOT_SMD:SOT-563",
   "RF_Module:ESP-12E",
-  "Resistor_SMD:R_0603_1608Metric"
+  "Resistor_SMD:R_0603_1608Metric",
+  "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
  ],
- "symbols_used_count": 25,
- "footprints_used_count": 31,
- "used_pins_total": 689,
+ "symbols_used_count": 26,
+ "footprints_used_count": 32,
+ "used_pins_total": 692,
  "errors": [],
  "notes": [],
  "status": "PASS"

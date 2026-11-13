@@ -1,34 +1,34 @@
 {
  "freerouting_jar_sha256": "f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7",
- "unrouted_board_sha256": "c98f006706a035a8209fd8af5e6c3cdd49ea7408aa67779db86f82c6cb5eae2e",
+ "unrouted_board_sha256": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
  "stages": {
   "servo": {
-   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_servo.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_servo.ses -mp 20 -mt 5 --gui.enabled=false",
-   "seconds": 13.4,
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_servo.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_servo.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 14.5,
    "exit_code": 0,
-   "dsn_sha256": "8f6caf121042aa747a50cc5bc6cd8ed7c1b69c0ba70dfa27ec4571a2e65ebe98",
-   "ses_sha256": "fc9b315443bdba054ee810936342276c6570220ea143d2d6b07bed888d1edc76",
+   "dsn_sha256": "2cf04997f65a90080d82968a4d22c466fa723608d217e5562b45f9748c31efa1",
+   "ses_sha256": "2a1d54206e026daa896544dfb34e185fa3b840d719e20d7cb23ec40b54ca7683",
    "passes_unrouted": [
     [
      1,
      0
     ]
    ],
-   "stdout_tail": " 62 violations), using 2.13 CPU seconds and the job allocated 1.02 GB of memory so far.\n2026-11-12 18:44:48.933 INFO   [7B50CE\\9A1C69] Auto-routing stage completed: started with 0 unrouted nets, completed in 2.96 seconds, final score: 999.08 (0 unrouted and 62 violations), using 3.11 total CPU seconds, 1.67 GB total allocated, and 104.4 MB peak heap usage.\n2026-11-12 18:44:49.270 INFO   [7B50CE\\9A1C69] Optimization stage started on board 'c82371a5c893cfd07bb36e600fb16c92'. Baseline router score: 999.08, optimizer score: 818.74, incomplete connections: 0, clearance violations: 62.\n2026-11-12 18:44:49.962 INFO   [7B50CE\\9A1C69] Optimizer pass #1 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).\n2026-11-12 18:44:50.454 INFO   [7B50CE\\9A1C69] Optimizer pass #1: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.\n2026-11-12 18:44:51.135 INFO   [7B50CE\\9A1C69] Optimizer pass #2 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).\n2026-11-12 18:44:51.579 INFO   [7B50CE\\9A1C69] Optimizer pass #2: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.\n2026-11-12 18:44:51.579 INFO   [7B50CE\\9A1C69] Stopping optimizer because the improvement in this pass (0.0000%) is below the threshold (2.50%).\n2026-11-12 18:44:51.971 INFO   [7B50CE\\9A1C69] Optimization stage completed:. Baseline router score: 999.08, baseline optimizer score: 818.74, final router score: 999.08, final optimizer score: 818.74, completed in 2.51 seconds, using 2.47 total CPU seconds, 1.52 GB total allocated, and 139.8 MB peak heap usage.\n2026-11-12 18:44:52.046 INFO   [7B50CE\\9A1C69] Job '7B50CE\\9A1C69' finished with state: COMPLETED (elapsed: 7.19 seconds, finished at UTC: 2026-11-12T09:44:52.045507100Z).\n2026-11-12 18:44:52.082 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_servo.ses' (SES)...\n2026-11-12 18:44:52.084 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_servo.ses' (10602 bytes).\n",
+   "stdout_tail": "uted and 62 violations), using 2.25 CPU seconds and the job allocated 0.92 GB of memory so far.\n2026-11-13 16:40:34.882 INFO   [A50C30\\DE5B32] Auto-routing stage completed: started with 0 unrouted nets, completed in 3.37 seconds, final score: 999.08 (0 unrouted and 62 violations), using 3.23 total CPU seconds, 1.44 GB total allocated, and 117.7 MB peak heap usage.\n2026-11-13 16:40:35.240 INFO   [A50C30\\DE5B32] Optimization stage started on board '6ffc13fef8ea8d329c574fb83d568a60'. Baseline router score: 999.08, optimizer score: 818.74, incomplete connections: 0, clearance violations: 62.\n2026-11-13 16:40:35.971 INFO   [A50C30\\DE5B32] Optimizer pass #1 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).\n2026-11-13 16:40:36.430 INFO   [A50C30\\DE5B32] Optimizer pass #1: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.\n2026-11-13 16:40:37.177 INFO   [A50C30\\DE5B32] Optimizer pass #2 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).\n2026-11-13 16:40:37.612 INFO   [A50C30\\DE5B32] Optimizer pass #2: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.\n2026-11-13 16:40:37.612 INFO   [A50C30\\DE5B32] Stopping optimizer because the improvement in this pass (0.0000%) is below the threshold (2.50%).\n2026-11-13 16:40:37.974 INFO   [A50C30\\DE5B32] Optimization stage completed:. Baseline router score: 999.08, baseline optimizer score: 818.74, final router score: 999.08, final optimizer score: 818.74, completed in 2.56 seconds, using 2.55 total CPU seconds, 1.54 GB total allocated, and 205.7 MB peak heap usage.\n2026-11-13 16:40:38.041 INFO   [A50C30\\DE5B32] Job 'A50C30\\DE5B32' finished with state: COMPLETED (elapsed: 7.57 seconds, finished at UTC: 2026-11-13T07:40:38.040321900Z).\n2026-11-13 16:40:38.071 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_servo.ses' (SES)...\n2026-11-13 16:40:38.084 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_servo.ses' (10754 bytes).\n",
    "nets_routed_here": 2,
    "via": "Via[0-3]_1200:600_um",
    "b_cu_gnd_plane_in_dsn": false,
    "vias_shrunk": 0,
    "items_locked": 0,
-   "unconnected_after_import_and_fill": 33,
+   "unconnected_after_import_and_fill": 35,
    "ses": "vtol_carrier_servo.ses"
   },
   "power": {
-   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_power.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_power.ses -mp 20 -mt 5 --gui.enabled=false",
-   "seconds": 86.2,
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_power.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_power.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 87.7,
    "exit_code": 0,
-   "dsn_sha256": "2e114864f5afd2e47a5a60fd06f6ba79c5e757416974784a524ba4797de4f551",
-   "ses_sha256": "234943afa5848c20950b21e0660890fade57eb3764861518fd5fde05a356aae6",
+   "dsn_sha256": "924d65c848489d37076533c6b79b581d2d1aae8582e7acabbbf3c2b60daa4c87",
+   "ses_sha256": "1372a810bc233325ca666ff875d3f8b4d4caa12b4690585c05259990b8c84639",
    "passes_unrouted": [
     [
      1,
@@ -72,7 +72,7 @@
     ],
     [
      11,
-     12
+     13
     ],
     [
      12,
@@ -80,7 +80,7 @@
     ],
     [
      13,
-     13
+     12
     ],
     [
      14,
@@ -92,11 +92,11 @@
     ],
     [
      16,
-     13
+     12
     ],
     [
      17,
-     12
+     13
     ],
     [
      18,
@@ -104,290 +104,230 @@
     ],
     [
      19,
-     13
+     12
     ],
     [
      20,
      13
     ]
    ],
-   "stdout_tail": "sing 59.42 CPU seconds and the job allocated 34.67 GB of memory so far.\n2026-11-12 18:46:04.260 INFO   [D15CB7\\6C9639] Auto-routing pass #16 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.22 seconds with score 664.75 (13 unrouted and 122 violations), using 62.38 CPU seconds and the job allocated 36.72 GB of memory so far.\n2026-11-12 18:46:07.503 INFO   [D15CB7\\6C9639] Auto-routing pass #17 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.22 seconds with score 690.39 (12 unrouted and 122 violations), using 66.38 CPU seconds and the job allocated 39.37 GB of memory so far.\n2026-11-12 18:46:11.020 INFO   [D15CB7\\6C9639] Auto-routing pass #18 on board 'dadc2e16620ac69b84b8d7eb94848a9b' was completed in 3.28 seconds with score 664.75 (13 unrouted and 122 violations), using 69.36 CPU seconds and the job allocated 41.31 GB of memory so far.\n2026-11-12 18:46:14.260 INFO   [D15CB7\\6C9639] Auto-routing pass #19 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.22 seconds with score 664.75 (13 unrouted and 122 violations), using 72.36 CPU seconds and the job allocated 43.32 GB of memory so far.\n2026-11-12 18:46:17.596 INFO   [D15CB7\\6C9639] Auto-routing pass #20 on board '73d6d8f2429633ffd40d91523872dfa8' was completed in 3.31 seconds with score 664.75 (13 unrouted and 122 violations), using 76.31 CPU seconds and the job allocated 46.00 GB of memory so far.\n2026-11-12 18:46:18.649 INFO   [D15CB7\\6C9639] Auto-routing stage completed: started with 13 unrouted nets, completed in 78.31 seconds, final score: 690.39 (12 unrouted and 122 violations), using 77.31 total CPU seconds, 46.66 GB total allocated, and 283.2 MB peak heap usage.\n2026-11-12 18:46:18.821 INFO   [D15CB7\\6C9639] Skipping optimization stage: the board has 12 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-12 18:46:18.883 INFO   [D15CB7\\6C9639] Job 'D15CB7\\6C9639' finished with state: COMPLETED (elapsed: 1 minute 19.65 seconds, finished at UTC: 2026-11-12T09:46:18.882543700Z).\n2026-11-12 18:46:18.899 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_power.ses' (SES)...\n2026-11-12 18:46:18.901 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_power.ses' (10744 bytes).\n",
+   "stdout_tail": "ions), using 58.50 CPU seconds and the job allocated 34.58 GB of memory so far.\n2026-11-13 16:41:49.947 INFO   [C1BB1C\\A9740A] Auto-routing pass #16 on board 'c015d9d8cd01ffa387563412bc57cf28' was completed in 3.85 seconds with score 690.40 (12 unrouted and 122 violations), using 62.45 CPU seconds and the job allocated 36.81 GB of memory so far.\n2026-11-13 16:41:53.586 INFO   [C1BB1C\\A9740A] Auto-routing pass #17 on board 'dfe779618b5dda3701208e7b6c96e999' was completed in 3.44 seconds with score 664.76 (13 unrouted and 122 violations), using 65.38 CPU seconds and the job allocated 38.64 GB of memory so far.\n2026-11-13 16:41:57.094 INFO   [C1BB1C\\A9740A] Auto-routing pass #18 on board 'c015d9d8cd01ffa387563412bc57cf28' was completed in 3.49 seconds with score 664.76 (13 unrouted and 122 violations), using 69.30 CPU seconds and the job allocated 41.12 GB of memory so far.\n2026-11-13 16:42:00.478 INFO   [C1BB1C\\A9740A] Auto-routing pass #19 on board 'c015d9d8cd01ffa387563412bc57cf28' was completed in 3.36 seconds with score 690.40 (12 unrouted and 122 violations), using 72.27 CPU seconds and the job allocated 42.98 GB of memory so far.\n2026-11-13 16:42:04.111 INFO   [C1BB1C\\A9740A] Auto-routing pass #20 on board 'e38c3af44235d024e101ec65acc9b1b9' was completed in 3.44 seconds with score 664.76 (13 unrouted and 122 violations), using 76.23 CPU seconds and the job allocated 45.49 GB of memory so far.\n2026-11-13 16:42:05.142 INFO   [C1BB1C\\A9740A] Auto-routing stage completed: started with 13 unrouted nets, completed in 78.61 seconds, final score: 690.40 (12 unrouted and 122 violations), using 77.20 total CPU seconds, 46.16 GB total allocated, and 228.1 MB peak heap usage.\n2026-11-13 16:42:05.337 INFO   [C1BB1C\\A9740A] Skipping optimization stage: the board has 12 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-13 16:42:05.410 INFO   [C1BB1C\\A9740A] Job 'C1BB1C\\A9740A' finished with state: COMPLETED (elapsed: 1 minute 19.82 seconds, finished at UTC: 2026-11-13T07:42:05.409300900Z).\n2026-11-13 16:42:05.416 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_power.ses' (SES)...\n2026-11-13 16:42:05.418 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_power.ses' (10896 bytes).\n",
    "nets_routed_here": 6,
    "via": "Via[0-3]_600:300_um",
    "b_cu_gnd_plane_in_dsn": false,
    "vias_shrunk": 0,
    "items_locked": 1,
-   "unconnected_after_import_and_fill": 33,
+   "unconnected_after_import_and_fill": 35,
    "ses": "vtol_carrier_power.ses"
   },
   "signals": {
-   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_signals.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_signals.ses -mp 40 -mt 5 --gui.enabled=false",
-   "seconds": 882.6,
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_signals.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_signals.ses -mp 40 -mt 5 --gui.enabled=false",
+   "seconds": 552.3,
    "exit_code": 0,
-   "dsn_sha256": "99edc87706ba5970e2bcae4d9d4140916ae6cf4901b21eb1976c0103250d2037",
-   "ses_sha256": "55ef7ffde2d4172b8b9b6c1206f0d5d411d489d91338cb3d6fae98d6506c60cb",
+   "dsn_sha256": "3af539bb03a21b5ad1d7460d2e3231ce849e48db4e67cc386364f09ecd2df809",
+   "ses_sha256": "aea3603e876bb8618dd3d262843742d637fbfb6ddb90e09dbf07539367b85404",
    "passes_unrouted": [
     [
      1,
-     58
-    ],
-    [
-     2,
-     54
-    ],
-    [
-     3,
-     58
-    ],
-    [
-     4,
-     57
-    ],
-    [
-     5,
      60
     ],
     [
-     6,
-     57
-    ],
-    [
-     7,
-     59
-    ],
-    [
-     8,
-     54
-    ],
-    [
-     9,
-     57
-    ],
-    [
-     10,
-     55
-    ],
-    [
-     11,
-     55
-    ],
-    [
-     12,
-     54
-    ],
-    [
-     13,
-     55
-    ],
-    [
-     14,
-     54
-    ],
-    [
-     15,
-     54
-    ],
-    [
-     16,
-     53
-    ],
-    [
-     17,
-     53
-    ],
-    [
-     18,
-     54
-    ],
-    [
-     19,
-     53
-    ],
-    [
-     20,
-     52
-    ],
-    [
-     21,
-     52
-    ],
-    [
-     22,
-     52
-    ],
-    [
-     23,
-     54
-    ],
-    [
-     24,
-     50
-    ],
-    [
-     25,
-     51
-    ],
-    [
-     26,
-     49
-    ],
-    [
-     27,
-     48
-    ],
-    [
-     28,
-     48
-    ],
-    [
-     29,
-     49
-    ],
-    [
-     30,
-     50
-    ],
-    [
-     31,
-     50
-    ],
-    [
-     32,
-     48
-    ],
-    [
-     33,
-     49
-    ],
-    [
-     34,
-     50
-    ],
-    [
-     35,
-     50
-    ],
-    [
-     36,
-     48
-    ],
-    [
-     37,
-     49
-    ]
-   ],
-   "stdout_tail": "nrouted connection):\n    - U2-36  ->  via\n  Net 'FCU_LOG_TX' (1 unrouted connection):\n    - J20-1  ->  U2-3\n  Net 'COM_LED_A' (1 unrouted connection):\n    - R6-2  ->  D3-2\n  Net 'FCU_ISP_MOSI' (1 unrouted connection):\n    - J20-4  ->  U2-2\n  Net 'VANE4_PWM' (1 unrouted connection):\n    - U2-5  ->  via\n  Net 'ESC_PWM' (1 unrouted connection):\n    - U2-6  ->  via\n  Net 'NLINK_MOSI' (1 unrouted connection):\n    - via  ->  U2-12\n  Net 'VANE3_PWM' (2 unrouted connections):\n    - U2-17  ->  R19-1\n    - R26-1  ->  R19-1\n  Net 'FCU_XTAL2' (1 unrouted connection):\n    - U2-23  ->  Y2-3\n  Net 'FCU_XTAL1' (2 unrouted connections):\n    - Y2-1  ->  C14-1\n    - Y2-1  ->  U2-24\n  Net 'FCU_AREF' (1 unrouted connection):\n    - C13-1  ->  U2-62\n  Net 'BOOST_EN' (3 unrouted connections):\n    - U8-2  ->  via\n    - R67-2  ->  U9-1\n    - via  ->  U9-1\n  Net 'NAV_XTAL2' (1 unrouted connection):\n    - C7-1  ->  U1-23\n  Net 'NAV_AVCC' (2 unrouted connections):\n    - U1-64  ->  L1-2\n    - U1-64  ->  C4-1\n  Net 'I2C_SDA_5V' (1 unrouted connection):\n    - Q2-3  ->  R44-1\n  Net 'COM_XTAL2' (1 unrouted connection):\n    - U3-23  ->  Y3-3\n  Net 'COM_LED' (1 unrouted connection):\n    - via  ->  R6-1\n  Net 'GNS_XTAL1' (2 unrouted connections):\n    - Y4-1  ->  C30-1\n    - Y4-1  ->  U4-24\n  Net 'I2C_SCL_5V' (1 unrouted connection):\n    - Q1-3  ->  R42-1\n  Net 'NAV_AREF' (1 unrouted connection):\n    - via  ->  U1-62\n2026-11-12 19:01:01.405 INFO   [18FE1D\\E7BDB8] Auto-routing stage completed: started with 102 unrouted nets, completed in 875.11 seconds, final score: 704.90 (48 unrouted and 12 violations), using 863.05 total CPU seconds, 742.69 GB total allocated, and 518.1 MB peak heap usage.\n2026-11-12 19:01:01.573 INFO   [18FE1D\\E7BDB8] Skipping optimization stage: the board has 48 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-12 19:01:01.655 INFO   [18FE1D\\E7BDB8] Job '18FE1D\\E7BDB8' finished with state: COMPLETED (elapsed: 14 minutes 35.98 seconds, finished at UTC: 2026-11-12T10:01:01.653540500Z).\n2026-11-12 19:01:01.662 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_signals.ses' (SES)...\n2026-11-12 19:01:01.665 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_signals.ses' (48688 bytes).\n",
-   "nets_routed_here": 90,
-   "via": "all",
-   "b_cu_gnd_plane_in_dsn": false,
-   "vias_shrunk": 44,
-   "items_locked": 525,
-   "unconnected_after_import_and_fill": 7,
-   "ses": "vtol_carrier_signals.ses"
-  },
-  "gnd": {
-   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_gnd.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_gnd.ses -mp 20 -mt 5 --gui.enabled=false",
-   "seconds": 407.6,
-   "exit_code": 0,
-   "dsn_sha256": "62e7f38906b2e12b4a5e9b071954b504acd0fdd83d40018e7e74ac9465e39d3c",
-   "ses_sha256": "8f3fd595bdba99674fd43a871b0959f0144624a8b3c37520d535af3f7103c874",
-   "passes_unrouted": [
-    [
-     1,
-     95
-    ],
-    [
      2,
-     103
+     58
     ],
     [
      3,
-     99
+     58
     ],
     [
      4,
-     103
+     57
     ],
     [
      5,
-     99
+     54
     ],
     [
      6,
-     103
+     53
     ],
     [
      7,
-     99
+     51
     ],
     [
      8,
-     103
+     51
     ],
     [
      9,
-     99
+     53
     ],
     [
      10,
-     103
+     51
     ],
     [
      11,
-     99
+     50
     ],
     [
      12,
-     95
+     49
     ],
     [
      13,
-     102
+     50
     ],
     [
      14,
-     98
+     49
     ],
     [
      15,
-     102
+     50
     ],
     [
      16,
-     95
+     49
     ],
     [
      17,
-     102
+     50
     ],
     [
      18,
-     98
+     49
     ],
     [
      19,
-     102
+     50
     ],
     [
      20,
-     95
+     49
+    ],
+    [
+     21,
+     50
+    ],
+    [
+     22,
+     49
     ]
    ],
-   "stdout_tail": "conds and the job allocated 165.60 GB of memory so far.\n2026-11-12 19:06:41.772 INFO   [1E1F37\\D0F149] Auto-routing pass #16 on board '67bae53aa6b72ca8ca1fb8f1f8bb52e1' was completed in 0.00 seconds with score 670.43 (95 unrouted and 165 violations), using 326.97 CPU seconds and the job allocated 176.17 GB of memory so far.\n2026-11-12 19:06:57.957 INFO   [1E1F37\\D0F149] Auto-routing pass #17 on board '67bae53aa6b72ca8ca1fb8f1f8bb52e1' was completed in 16.15 seconds with score 646.56 (102 unrouted and 165 violations), using 343.83 CPU seconds and the job allocated 186.61 GB of memory so far.\n2026-11-12 19:07:15.171 INFO   [1E1F37\\D0F149] Auto-routing pass #18 on board 'de0c6a04501efaba54412b89fe9c21d4' was completed in 16.72 seconds with score 660.20 (98 unrouted and 165 violations), using 360.63 CPU seconds and the job allocated 197.05 GB of memory so far.\n2026-11-12 19:07:32.542 INFO   [1E1F37\\D0F149] Auto-routing pass #19 on board 'bfe49067f29ec5c2a6a76976658c3011' was completed in 16.89 seconds with score 646.56 (102 unrouted and 165 violations), using 377.36 CPU seconds and the job allocated 207.35 GB of memory so far.\n2026-11-12 19:07:49.984 INFO   [1E1F37\\D0F149] Auto-routing pass #20 on board '67bae53aa6b72ca8ca1fb8f1f8bb52e1' was completed in 0.00 seconds with score 670.43 (95 unrouted and 165 violations), using 395.19 CPU seconds and the job allocated 218.20 GB of memory so far.\n2026-11-12 19:07:51.415 INFO   [1E1F37\\D0F149] Auto-routing stage completed: started with 140 unrouted nets, completed in 400.26 seconds, final score: 670.43 (95 unrouted and 165 violations), using 396.16 total CPU seconds, 218.64 GB total allocated, and 488.1 MB peak heap usage.\n2026-11-12 19:07:51.910 INFO   [1E1F37\\D0F149] Skipping optimization stage: the board has 95 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-12 19:07:51.993 INFO   [1E1F37\\D0F149] Job '1E1F37\\D0F149' finished with state: COMPLETED (elapsed: 6 minutes 42.42 seconds, finished at UTC: 2026-11-12T10:07:51.993155300Z).\n2026-11-12 19:07:52.015 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_gnd.ses' (SES)...\n2026-11-12 19:07:52.017 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_gnd.ses' (18718 bytes).\n",
+   "stdout_tail": " ->  Y1-1\n  Net 'FCU_BUZ' (1 unrouted connection):\n    - U2-36  ->  via\n  Net 'FCU_LOG_TX' (1 unrouted connection):\n    - J20-1  ->  U2-3\n  Net 'COM_LED_A' (1 unrouted connection):\n    - R6-2  ->  D3-2\n  Net 'FCU_ISP_MOSI' (1 unrouted connection):\n    - J20-4  ->  U2-2\n  Net 'VANE4_PWM' (1 unrouted connection):\n    - U2-5  ->  via\n  Net 'ESC_PWM' (1 unrouted connection):\n    - U2-6  ->  via\n  Net 'NLINK_MOSI' (1 unrouted connection):\n    - via  ->  U2-12\n  Net 'VANE3_PWM' (2 unrouted connections):\n    - U2-17  ->  R19-1\n    - R19-1  ->  R26-1\n  Net 'FCU_XTAL2' (1 unrouted connection):\n    - U2-23  ->  Y2-3\n  Net 'FCU_XTAL1' (2 unrouted connections):\n    - Y2-1  ->  C14-1\n    - U2-24  ->  Y2-1\n  Net 'FCU_AREF' (1 unrouted connection):\n    - U2-62  ->  C13-1\n  Net 'BOOST_EN' (2 unrouted connections):\n    - via  ->  U8-2\n    - U9-1  ->  R67-2\n  Net 'NAV_XTAL2' (1 unrouted connection):\n    - U1-23  ->  Y1-3\n  Net 'NAV_AVCC' (2 unrouted connections):\n    - U1-64  ->  L1-2\n    - U1-64  ->  C4-1\n  Net 'I2C_SDA_5V' (1 unrouted connection):\n    - Q2-3  ->  R44-1\n  Net 'COM_XTAL2' (1 unrouted connection):\n    - U3-23  ->  Y3-3\n  Net 'COM_LED' (1 unrouted connection):\n    - via  ->  R6-1\n  Net 'GNS_XTAL1' (2 unrouted connections):\n    - Y4-1  ->  C30-1\n    - U4-24  ->  Y4-1\n  Net 'I2C_SCL_5V' (1 unrouted connection):\n    - Q1-3  ->  R42-1\n  Net 'NAV_AREF' (1 unrouted connection):\n    - via  ->  U1-62\n2026-11-13 16:51:19.108 INFO   [C5CDFF\\67F1BA] Auto-routing stage completed: started with 104 unrouted nets, completed in 543.96 seconds, final score: 701.51 (49 unrouted and 12 violations), using 535.20 total CPU seconds, 396.52 GB total allocated, and 441.5 MB peak heap usage.\n2026-11-13 16:51:19.239 INFO   [C5CDFF\\67F1BA] Skipping optimization stage: the board has 49 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-13 16:51:19.328 INFO   [C5CDFF\\67F1BA] Job 'C5CDFF\\67F1BA' finished with state: COMPLETED (elapsed: 9 minutes 4.80 seconds, finished at UTC: 2026-11-13T07:51:19.327661200Z).\n2026-11-13 16:51:19.375 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_signals.ses' (SES)...\n2026-11-13 16:51:19.377 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_signals.ses' (48178 bytes).\n",
+   "nets_routed_here": 92,
+   "via": "all",
+   "b_cu_gnd_plane_in_dsn": false,
+   "vias_shrunk": 41,
+   "items_locked": 519,
+   "unconnected_after_import_and_fill": 8,
+   "ses": "vtol_carrier_signals.ses"
+  },
+  "gnd": {
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_gnd.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_gnd.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 445.8,
+   "exit_code": 0,
+   "dsn_sha256": "9159710b3ea388c863018a3b450adea89fc5b3ddbd35718bcf06a689043f9808",
+   "ses_sha256": "6ee2fc22fe8a34448421560e4d2f6fb5a24ae1723102a98a41d60f72671861c7",
+   "passes_unrouted": [
+    [
+     1,
+     96
+    ],
+    [
+     2,
+     104
+    ],
+    [
+     3,
+     100
+    ],
+    [
+     4,
+     104
+    ],
+    [
+     5,
+     100
+    ],
+    [
+     6,
+     104
+    ],
+    [
+     7,
+     100
+    ],
+    [
+     8,
+     104
+    ],
+    [
+     9,
+     100
+    ],
+    [
+     10,
+     104
+    ],
+    [
+     11,
+     100
+    ],
+    [
+     12,
+     96
+    ],
+    [
+     13,
+     104
+    ],
+    [
+     14,
+     100
+    ],
+    [
+     15,
+     104
+    ],
+    [
+     16,
+     96
+    ],
+    [
+     17,
+     104
+    ],
+    [
+     18,
+     100
+    ],
+    [
+     19,
+     104
+    ],
+    [
+     20,
+     96
+    ]
+   ],
+   "stdout_tail": " CPU seconds and the job allocated 185.88 GB of memory so far.\n2026-11-13 16:57:24.917 INFO   [B6B010\\0EB8F7] Auto-routing pass #16 on board '7f6c32eaf073d06bfee38dea01eb8531' was completed in 0.00 seconds with score 668.71 (96 unrouted and 165 violations), using 352.75 CPU seconds and the job allocated 197.99 GB of memory so far.\n2026-11-13 16:57:43.805 INFO   [B6B010\\0EB8F7] Auto-routing pass #17 on board '7f6c32eaf073d06bfee38dea01eb8531' was completed in 18.84 seconds with score 641.57 (104 unrouted and 165 violations), using 371.56 CPU seconds and the job allocated 209.43 GB of memory so far.\n2026-11-13 16:58:03.540 INFO   [B6B010\\0EB8F7] Auto-routing pass #18 on board '51996217d7af49b760dde1a1aba31566' was completed in 19.69 seconds with score 655.14 (100 unrouted and 165 violations), using 390.41 CPU seconds and the job allocated 220.79 GB of memory so far.\n2026-11-13 16:58:22.822 INFO   [B6B010\\0EB8F7] Auto-routing pass #19 on board '3eb03b6353df32d87174e032b6ed6826' was completed in 19.24 seconds with score 641.57 (104 unrouted and 165 violations), using 410.22 CPU seconds and the job allocated 232.64 GB of memory so far.\n2026-11-13 16:58:43.053 INFO   [B6B010\\0EB8F7] Auto-routing pass #20 on board '7f6c32eaf073d06bfee38dea01eb8531' was completed in 0.00 seconds with score 668.71 (96 unrouted and 165 violations), using 430.02 CPU seconds and the job allocated 244.60 GB of memory so far.\n2026-11-13 16:58:45.061 INFO   [B6B010\\0EB8F7] Auto-routing stage completed: started with 141 unrouted nets, completed in 436.19 seconds, final score: 668.71 (96 unrouted and 165 violations), using 432.00 total CPU seconds, 245.19 GB total allocated, and 498.5 MB peak heap usage.\n2026-11-13 16:58:45.604 INFO   [B6B010\\0EB8F7] Skipping optimization stage: the board has 96 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-13 16:58:45.676 INFO   [B6B010\\0EB8F7] Job 'B6B010\\0EB8F7' finished with state: COMPLETED (elapsed: 7 minutes 18.37 seconds, finished at UTC: 2026-11-13T07:58:45.676079900Z).\n2026-11-13 16:58:45.691 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_gnd.ses' (SES)...\n2026-11-13 16:58:45.693 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_gnd.ses' (19101 bytes).\n",
    "nets_routed_here": 2,
    "via": "Via[0-3]_600:300_um",
    "b_cu_gnd_plane_in_dsn": true,
    "vias_shrunk": 0,
-   "items_locked": 71,
-   "unconnected_after_import_and_fill": 6,
+   "items_locked": 73,
+   "unconnected_after_import_and_fill": 7,
    "ses": "vtol_carrier_gnd.ses"
   },
   "complete": {
-   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_complete.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_complete.ses -mp 20 -mt 5 --gui.enabled=false",
-   "seconds": 494.0,
+   "command": "java -Dfile.encoding=UTF-8 -jar C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\B--Claude\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\tools_dl\\freerouting\\freerouting-2.5.0.jar -de C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_complete.dsn -do C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_complete.ses -mp 20 -mt 5 --gui.enabled=false",
+   "seconds": 538.7,
    "exit_code": 0,
-   "dsn_sha256": "37d4b73537781ae532e75d1134ed37146fb8786016eef1d1c84b1def774aff99",
-   "ses_sha256": "236ddba0160a075198e6151fb9ce87c5e9b3d3061366dc50dc4d6238398d17b2",
+   "dsn_sha256": "79108c3264a614b3f083af7097e2a72292afd7df40903e6a5e7fc74dabf1d028",
+   "ses_sha256": "36a7fed7d13a95d766772f44745bcf6bb7948cd316957bd2c06ec62915932006",
    "passes_unrouted": [
     [
      1,
@@ -439,15 +379,15 @@
     ],
     [
      13,
-     94
+     95
     ],
     [
      14,
-     91
+     92
     ],
     [
      15,
-     94
+     95
     ],
     [
      16,
@@ -455,27 +395,27 @@
     ],
     [
      17,
-     94
+     95
     ],
     [
      18,
-     91
+     92
     ],
     [
      19,
-     94
+     95
     ],
     [
      20,
      90
     ]
    ],
-   "stdout_tail": "nd the job allocated 191.31 GB of memory so far.\n2026-11-12 19:14:22.499 INFO   [4B3E51\\6449E3] Auto-routing pass #16 on board 'eff4c655c6465e8817b71324df848556' was completed in 0.00 seconds with score 687.26 (90 unrouted and 172 violations), using 379.22 CPU seconds and the job allocated 202.97 GB of memory so far.\n2026-11-12 19:14:50.370 INFO   [4B3E51\\6449E3] Auto-routing pass #17 on board 'eff4c655c6465e8817b71324df848556' was completed in 27.81 seconds with score 673.62 (94 unrouted and 172 violations), using 406.70 CPU seconds and the job allocated 214.61 GB of memory so far.\n2026-11-12 19:15:10.375 INFO   [4B3E51\\6449E3] Auto-routing pass #18 on board '73eacf771bd957365abfa6f32d706674' was completed in 19.94 seconds with score 683.85 (91 unrouted and 172 violations), using 426.55 CPU seconds and the job allocated 225.71 GB of memory so far.\n2026-11-12 19:15:38.759 INFO   [4B3E51\\6449E3] Auto-routing pass #19 on board '01da23b4681c7f52bd37ae977c2348ec' was completed in 28.33 seconds with score 673.62 (94 unrouted and 172 violations), using 454.08 CPU seconds and the job allocated 237.16 GB of memory so far.\n2026-11-12 19:16:02.176 INFO   [4B3E51\\6449E3] Auto-routing pass #20 on board 'eff4c655c6465e8817b71324df848556' was completed in 0.00 seconds with score 687.26 (90 unrouted and 172 violations), using 476.86 CPU seconds and the job allocated 248.54 GB of memory so far.\n2026-11-12 19:16:03.659 INFO   [4B3E51\\6449E3] Auto-routing stage completed: started with 131 unrouted nets, completed in 484.37 seconds, final score: 687.26 (90 unrouted and 172 violations), using 478.83 total CPU seconds, 249.35 GB total allocated, and 510.9 MB peak heap usage.\n2026-11-12 19:16:04.152 INFO   [4B3E51\\6449E3] Skipping optimization stage: the board has 90 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-12 19:16:04.230 INFO   [4B3E51\\6449E3] Job '4B3E51\\6449E3' finished with state: COMPLETED (elapsed: 8 minutes 6.42 seconds, finished at UTC: 2026-11-12T10:16:04.229847500Z).\n2026-11-12 19:16:04.273 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_complete.ses' (SES)...\n2026-11-12 19:16:04.275 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\redesign2\\T\\kicad\\work\\vtol_carrier_complete.ses' (16879 bytes).\n",
+   "stdout_tail": " seconds and the job allocated 202.26 GB of memory so far.\n2026-11-13 17:06:17.522 INFO   [8F4E6D\\D422B5] Auto-routing pass #16 on board '1bd5e4909290888469cc557eb30b7b7f' was completed in 0.00 seconds with score 688.84 (90 unrouted and 172 violations), using 437.69 CPU seconds and the job allocated 214.52 GB of memory so far.\n2026-11-13 17:06:38.841 INFO   [8F4E6D\\D422B5] Auto-routing pass #17 on board '1bd5e4909290888469cc557eb30b7b7f' was completed in 21.26 seconds with score 671.88 (95 unrouted and 172 violations), using 458.47 CPU seconds and the job allocated 225.94 GB of memory so far.\n2026-11-13 17:07:00.922 INFO   [8F4E6D\\D422B5] Auto-routing pass #18 on board '5647d21230dea1936700416e725cddc2' was completed in 22.03 seconds with score 682.06 (92 unrouted and 172 violations), using 480.16 CPU seconds and the job allocated 237.74 GB of memory so far.\n2026-11-13 17:07:22.912 INFO   [8F4E6D\\D422B5] Auto-routing pass #19 on board '8ebabe5e9a26278598f556d7952c1ce0' was completed in 21.40 seconds with score 671.88 (95 unrouted and 172 violations), using 501.92 CPU seconds and the job allocated 249.52 GB of memory so far.\n2026-11-13 17:07:45.844 INFO   [8F4E6D\\D422B5] Auto-routing pass #20 on board '1bd5e4909290888469cc557eb30b7b7f' was completed in 0.00 seconds with score 688.84 (90 unrouted and 172 violations), using 524.72 CPU seconds and the job allocated 261.69 GB of memory so far.\n2026-11-13 17:07:47.579 INFO   [8F4E6D\\D422B5] Auto-routing stage completed: started with 132 unrouted nets, completed in 532.01 seconds, final score: 688.84 (90 unrouted and 172 violations), using 526.70 total CPU seconds, 262.45 GB total allocated, and 547.5 MB peak heap usage.\n2026-11-13 17:07:48.156 INFO   [8F4E6D\\D422B5] Skipping optimization stage: the board has 90 unrouted connection(s) (optimizer only runs on completely routed boards).\n2026-11-13 17:07:48.244 INFO   [8F4E6D\\D422B5] Job '8F4E6D\\D422B5' finished with state: COMPLETED (elapsed: 8 minutes 54.27 seconds, finished at UTC: 2026-11-13T08:07:48.243736Z).\n2026-11-13 17:07:48.277 INFO   Saving output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_complete.ses' (SES)...\n2026-11-13 17:07:48.279 INFO   Successfully saved output file 'C:\\Users\\yc012\\AppData\\Local\\Temp\\claude\\133067549dd2ec4c\\bed4b475-b8b1-46b7-ab64-c3b11e27401e\\scratchpad\\pcb_rev3\\rev31\\T\\kicad\\work\\vtol_carrier_complete.ses' (20580 bytes).\n",
    "nets_routed_here": 0,
    "via": "all",
    "b_cu_gnd_plane_in_dsn": true,
-   "vias_shrunk": 0,
-   "items_locked": 45,
+   "vias_shrunk": 4,
+   "items_locked": 96,
    "unconnected_after_import_and_fill": 6,
    "ses": "vtol_carrier_complete.ses"
   }
@@ -559,7 +499,7 @@
     "vtol_carrier_complete.ses"
    ]
   ],
-  "nets_on_board": 105,
+  "nets_on_board": 107,
   "nets_with_identical_pads": 88,
   "changed_or_new_nets": [
    "+5V",
@@ -573,7 +513,9 @@
    "NAV_ISP_MISO",
    "NAV_ISP_MOSI",
    "NAV_RESET",
-   "NLINK_SCK"
+   "NLINK_SCK",
+   "RELEASE_PWM",
+   "RELEASE_SIG"
   ],
   "rounds": [
    {
@@ -594,13 +536,13 @@
    }
   ],
   "removed": {
-   "VANE3_PWM": "shorting_items",
    "NAV_GLINK_TX": "clearance",
+   "VANE3_PWM": "shorting_items",
    "ESP_RXD_SH": "shorting_items"
   },
   "nets_seeded": 85,
   "nets_removed_for_conflicts": 3,
-  "unconnected_after_seed_and_fill": 33,
+  "unconnected_after_seed_and_fill": 35,
   "ses_sha256": {
    "seed_servo.ses": "79a7533bfd76cb26a68758c1410f349539fd9501fe106e1c1c75cd6f2ddb6ad6",
    "seed_power.ses": "5698917f28acfab933205794b75ab0b857d394642ec50441c10f8422b28ebab7",
@@ -656,22 +598,12 @@
     "vtol_carrier_complete.ses"
    ]
   ],
-  "unrouted_board_sha256": "c98f006706a035a8209fd8af5e6c3cdd49ea7408aa67779db86f82c6cb5eae2e",
-  "unrouted_board_sha256_copper_finish_blanked": "f01fb42490e9b8bc6572a5b89be809081c028a8d7f3da7251a70521abf48ec3d"
+  "unrouted_board_sha256": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
+  "unrouted_board_sha256_copper_finish_blanked": "1dd690d6fb97afb459b1e9510a9b968bca2b8b626a5b61c5c882a1589bc81c0a"
  },
  "vias_shrunk_after_inflation": 0,
  "neckdowns_widened_to_0.127mm": [],
  "dangling_vias_removed": [
-  {
-   "net": "COM_RESET",
-   "x": 101.347,
-   "y": 113.215
-  },
-  {
-   "net": "COM_RESET",
-   "x": 84.769,
-   "y": 109.478
-  },
   {
    "net": "ESP_RXD0",
    "x": 102.84,
@@ -718,9 +650,9 @@
    "y": 122.472
   }
  ],
- "segments": 2437,
- "routed_vias": 328,
- "gnd_stitching_vias": 89,
+ "segments": 2483,
+ "routed_vias": 331,
+ "gnd_stitching_vias": 91,
  "tracks_narrowed_for_clearance": [],
  "power_tracks_widened": {
   "widened": [
@@ -1429,26 +1361,14 @@
    "width_mm": 0.2
   },
   {
-   "net": "GNS_RESET",
+   "net": "ESP_RXD_SH",
    "routed": false,
    "reason": "no legal path on the 0.1 mm grid"
   },
   {
-   "net": "VANE3_PWM",
-   "routed": true,
-   "from": [
-    106.8,
-    105.412
-   ],
-   "to": [
-    96.2,
-    112.925
-   ],
-   "segments": 49,
-   "vias": 4,
-   "length_mm": 27.87,
-   "search_window_mm": 5.0,
-   "width_mm": 0.2
+   "net": "ESP_RXD_SH",
+   "routed": false,
+   "reason": "no legal path on the 0.1 mm grid"
   },
   {
    "net": "+5V",
@@ -1475,18 +1395,26 @@
   "open_nets_in": [
    "+3V3",
    "+5V",
-   "GNS_RESET"
+   "ESP_RXD_SH"
   ],
   "not_ripable": [
    "+5V"
   ],
   "ripped": {
+   "FCU_LBAT_ADC": 1,
+   "FCU_LED": 1,
+   "FCU_VBUF_ADC": 1,
+   "NAV_RESET": 4,
+   "COM_ILINK_RX": 1,
+   "ESC_SIG": 1,
+   "ESP_RXD_SH": 2,
    "FCU_VBAT_ADC": 1,
-   "ESP_RXD_SH": 1
+   "COM_LINK_TX": 1,
+   "VANE3_SIG": 1
   },
   "solved_at_depth": {
-   "+3V3": 1,
-   "GNS_RESET": 1
+   "ESP_RXD_SH": 1,
+   "+3V3": 3
   },
   "wide_net_completions": [
    {
@@ -1499,25 +1427,427 @@
    },
    {
     "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 110,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 110,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 110,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
     "width_mm": 0.2,
-    "cells": 168
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 137,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 154,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 119,
+    "ripped": [
+     "ESP_RXD_SH",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 119,
+    "ripped": [
+     "ESP_RXD_SH",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 248,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_GPIO0",
+     "ESP_RXD0",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 146,
+    "ripped": [
+     "COM_LINK_TX",
+     "VANE3_SIG"
+    ]
    }
   ],
   "still_open": [],
-  "iterations_used": 38,
+  "iterations_used": 793,
   "converged": true,
   "open_nets_before": 3,
   "open_nets_after": 1,
   "applied": true,
   "dead_ends_pruned": {
-   "ESP_RXD_SH": 12,
-   "FCU_VBAT_ADC": 13
+   "COM_ILINK_RX": 3,
+   "COM_LINK_TX": 1,
+   "ESP_RXD_SH": 4,
+   "FCU_VBAT_ADC": 13,
+   "FCU_VBUF_ADC": 6,
+   "NAV_RESET": 20
   },
   "nets_changed": [
    "+3V3",
+   "COM_ILINK_RX",
+   "COM_LINK_TX",
    "ESP_RXD_SH",
+   "FCU_LBAT_ADC",
+   "FCU_LED",
    "FCU_VBAT_ADC",
-   "GNS_RESET"
+   "FCU_VBUF_ADC",
+   "NAV_RESET",
+   "VANE3_SIG"
   ]
  },
  "rail_edge_nudged": [
@@ -1637,13 +1967,13 @@
   }
  ],
  "duplicate_segments": {
-  "segments_before": 2669,
+  "segments_before": 2798,
   "exact_copies_removed": 133,
-  "nets": 37
+  "nets": 36
  },
  "ids_restamped": {
-  "tracks_and_vias": 2975,
-  "drawings_made_by_route": 46,
+  "tracks_and_vias": 3117,
+  "drawings_made_by_route": 47,
   "drawings_of_the_unrouted_board_kept": 29
  },
  "silk": {
@@ -1743,14 +2073,6 @@
     "pin_glyph_order": "along the row, as the pads lie (pin 1 first)"
    },
    {
-    "ref": "J16",
-    "text": "ARM SW AG",
-    "layer": "F.SilkS",
-    "height_mm": 0.8,
-    "distance_to_courtyard_mm": 0.0,
-    "pin_glyph_order": "along the row, as the pads lie (pin 1 first)"
-   },
-   {
     "ref": "J17",
     "text": "BUZ +-",
     "layer": "F.SilkS",
@@ -1799,6 +2121,14 @@
     "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
+    "ref": "J13",
+    "text": "REL S",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
+   },
+   {
     "ref": "J9",
     "text": "V2 S+-",
     "layer": "B.SilkS",
@@ -1825,6 +2155,14 @@
    {
     "ref": "J7",
     "text": "GPS G RX TX V",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "along the row, as the pads lie (last pin first)"
+   },
+   {
+    "ref": "J16",
+    "text": "ARM SW GA",
     "layer": "B.SilkS",
     "height_mm": 1.0,
     "distance_to_courtyard_mm": 0.0,
@@ -2134,10 +2472,10 @@
     "mark": "dot",
     "pad1_net": "BUZ_B",
     "at": [
-     129.1,
-     67.8
+     128.6,
+     68.8
     ],
-    "gap_to_pad1_mm": 0.375,
+    "gap_to_pad1_mm": 0.45,
     "library_mark": {
      "silk_graphics": 8,
      "pin1_triangle": true,
@@ -2337,12 +2675,12 @@
    }
   ],
   "revision_text": {
-   "text": "rev 3",
+   "text": "rev 3.1",
    "layer": "F.SilkS",
    "height_mm": 1.0,
    "at": [
-    76.0,
-    90.0
+    124.5,
+    131.0
    ],
    "outside_module_bodies_and_tie_band": true
   },
@@ -2380,7 +2718,7 @@
   ],
   "pin_label_sets": [],
   "pin_label_sets_missed": [],
-  "refs_on_silk": 14,
+  "refs_on_silk": 13,
   "refs_on_fab_only": [
    "C1",
    "C2",
@@ -2415,6 +2753,7 @@
    "C31",
    "C32",
    "C41",
+   "C43",
    "C44",
    "C45",
    "C46",
@@ -2423,7 +2762,6 @@
    "C50",
    "C51",
    "C52",
-   "C54",
    "C55",
    "C56",
    "C57",
@@ -2442,6 +2780,7 @@
    "J10",
    "J11",
    "J12",
+   "J13",
    "J14",
    "J15",
    "J17",
@@ -2488,6 +2827,7 @@
    "R19",
    "R20",
    "R21",
+   "R22",
    "R23",
    "R24",
    "R25",
@@ -2528,6 +2868,7 @@
    "R60",
    "R61",
    "R62",
+   "R63",
    "R64",
    "R65",
    "R66",
@@ -2544,5 +2885,5 @@
    "Y4"
   ]
  },
- "routed_board_sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d"
+ "routed_board_sha256": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f"
 }

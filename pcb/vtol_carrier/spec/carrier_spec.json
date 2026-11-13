@@ -10,7 +10,7 @@
  },
  "plan": {
   "file": "spec/rev3_plan.json",
-  "sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
+  "sha256": "d24d333521aace60e30cb743b1552b7ca569a4b6e3fe2ca40eb0a64a3f97557b",
   "text": "spec/REV3_PLAN.md",
   "check": "checks.plan_rev3"
  },
@@ -67,6 +67,18 @@
   "crystal load caps 22 pF -> 27 pF (CL 18 pF crystal, rev-2b independent review 2026-11-05 E-m2); ESP bulk 100 uF 6.3 V -> 10 V tantalum (rev-2b independent review 2026-11-05 E-m4)",
   "layout (scripts, not this spec): each MCU GND pin 22 / 53 / 63 gets its own locked GND via inside the TQFP pad ring (rev-2b independent review 2026-11-05 E-B2), stitching vias never in pads (PF-M3), J6 / J14 supply pads solid to the planes (PF-M1), silkscreen labels on F.SilkS beside each connector (PF-M2 / MF2-9), JLC CPL rotation offsets (PF-M5), power neck-downs widened where clearance allows (PF-M6)"
  ],
+ "rev_3_1_changes": {
+  "date": "2026-11-13",
+  "decision": "user: '캐리어 PCB를 로켓에도 씀' (the same carrier flies in the rocket too) and option 'B: 서보 열에 직각 헤더', with option C as the fallback if B cannot be placed with every rule held (plan amendment 'rocket_release_output', spec/rev3_plan.json)",
+  "option_b_result": "NOT PLACEABLE (M): a right-angle 1x3 J13 in the -x servo column with J8-J11 at the 8.62 mm pitch and J18 cut to one pin needs 45.06 mm between the locked 2.0 mm VBAT_LOGIC F.Cu battery pre-route (copper to y 78.0 under J15) and the locked 2.4 mm VBAT_LOGIC_SW B.Cu pre-route (from y 122.6); 44.60 mm are there - the best spot is 0.23 mm short of the 0.13 mm clearance at both ends (search of 801 spots, scratch rev31 layout/search_b.json). The battery pre-routes stay unchanged, so option C applies",
+  "changes": [
+   "release output restored for the rocket's CanSat nose-release servo: FCU U2 PE5 / OC3C (firmware src/hal/pwm.c:49, src/main.c:518 - unchanged) -> RELEASE_PWM -> R22 220 Ohm 0603 (JLC line 21, C22962, with R17-R21) -> RELEASE_SIG -> J13. rev 2c had removed the unpopulated header and left PE5 open",
+   "J13 = one plated THT pad (2.0 mm, drill 1.0 mm) in the +x / +y corner; no part to fit: in the rocket the user solders the signal wire of the release branch of a servo Y-lead (ESC <-> J12) into it; + / - come from J12 pins 2 / 3 through that Y-lead (off-board item)",
+   "J18 and every other part unchanged (the J18 cut to one pin belonged to option B only)",
+   "firmware / params not changed (the release pin stays PE5). In the VTOL the pad stays empty"
+  ],
+  "label": "F (user decisions, plan amendment) / M (option B search); the board numbers come from the place / route steps"
+ },
  "battery_spot_A_assumed": {
   "decision": "user decision 2026-11-05 '배터리는 A 위치(6S 팩 −x 면)로 해줘'",
   "pack_box_vehicle_mm": {
@@ -96,15 +108,15 @@
   "board": "ESP-12E antenna at the +y edge with its keep-out, facing a PLA wall, away from the 6S pack, ESC and motor leads; ESP bridge firmware / ESP-NOW protocol / ground station = firmware follow-up"
  },
  "summary": {
-  "parts": 174,
-  "parts_populated": 164,
+  "parts": 176,
+  "parts_populated": 166,
   "parts_dnp_or_optional": 10,
-  "nets": 105,
+  "nets": 107,
   "by_prefix": {
    "U": 8,
-   "J": 22,
+   "J": 23,
    "Q": 11,
-   "R": 65,
+   "R": 66,
    "C": 52,
    "L": 5,
    "Y": 4,
@@ -113,19 +125,19 @@
    "NT": 1
   },
   "fit_counts": {
-   "jlc": 144,
+   "jlc": 145,
    "jlc_optional": 4,
    "user": 14,
-   "none": 12
+   "none": 13
   },
-  "jlc_fitted_parts": 144,
+  "jlc_fitted_parts": 145,
   "jlc_bom_lines": {
    "total": 33,
    "smt": 33,
    "tht": 0
   },
   "with_mcu_pair": {
-   "jlc_fitted_parts": 148,
+   "jlc_fitted_parts": 149,
    "jlc_bom_lines": 34
   },
   "prog_headers": "A"
@@ -245,7 +257,7 @@
      "J10",
      "J11"
     ],
-    "why": "vane-servo leads enter the bay through the bulkhead servo hole at theta 180 deg (params.json servo_leads.gather_theta_deg / bulkhead_hole_r, line 763-768); right-angle headers facing -x. The top slot, whose mated plug would touch the intake spigot bore (r 57.17 > 57.0, E), carries no right-angle header (rev-1 independent review 2026-11-05 MF-2): the DNP release header J13 is removed (rev 2c, see removed_release_header) and the -x / +y corner takes the vertical J14 / J15"
+    "why": "vane-servo leads enter the bay through the bulkhead servo hole at theta 180 deg (params.json servo_leads.gather_theta_deg / bulkhead_hole_r, line 763-768); right-angle headers facing -x. The top slot, whose mated plug would touch the intake spigot bore (r 57.17 > 57.0, E), carries no right-angle header (rev-1 independent review 2026-11-05 MF-2): rev 2c removed the DNP release header from it and the -x / +y corner takes the vertical J14 / J15 (rev 3.1: the release output is the pad J13 in the +x / +y corner, see rev_3_1_changes)"
    },
    {
     "edge": "-x, y < -12",
@@ -303,6 +315,13 @@
      "U8 / L5 / U9 5 V boost converter block (+x / -y corner, no connector)"
     ],
     "why": "ISP / flashing only with the avionics module lifted off the intake (firmware/README.md:655-659); GY-521 near the board centre (vibration, CG), outside the tie band (A)"
+   },
+   {
+    "edge": "+x / +y corner (x > +25, y > +31), rev 3.1",
+    "connectors": [
+     "J13 (release servo signal pad)"
+    ],
+    "why": "rocket CanSat release servo (user 2026-11-13): its lead comes as the second branch of a servo Y-lead on the ESC lead J12 (same corner, + / - from J12 pins 2 / 3); the signal wire of that branch is soldered into J13. The -x servo column has no legal spot for a right-angle header with the rev 3 battery pre-routes (scratch rev31 NOTES_layout.txt)"
    }
   ]
  },
@@ -334,7 +353,7 @@
    "+5V -> 4 x ATmega128A VCC / AVCC (LC), GY-521 VCC, OpenLog VCC, buzzer, shifter HV pull-ups, U6 AMS1117-3.3 input",
    "+5V -> U6 AMS1117-3.3 -> +3V3 -> ESP-12F VCC (100 uF + 10 uF + 100 nF at the pin), BMP280 VCC, GPS VCC (JP1 default), BSS138 gates + LV pull-ups, ESP strap pull-ups",
    "VBAT_LOGIC_SW -> 47k / 47k -> FCU PF3 (logic battery monitor, populated)",
-   "ESC BEC 5 V / 7 A (J12 pin 2) -> SERVO_5V -> J8-J11 pin 2 - separate from +5V (firmware/README.md:212, 322-324; params.json electronics.esc line 943): servos are NOT on the logic battery",
+   "ESC BEC 5 V / 7 A (J12 pin 2) -> SERVO_5V -> J8-J11 pin 2 (+ the rocket release servo through a Y-lead on J12, rev 3.1) - separate from +5V (firmware/README.md:212, 322-324; params.json electronics.esc line 943): servos are NOT on the logic battery",
    "6S propulsion bus is only SENSED (J18 -> 47k / 4.7k dividers -> FCU PF0 / PF1 / PF2), never powers the logic"
   ],
   "input_range_V": {
@@ -613,7 +632,7 @@
   "single_tie_point": "NT1 net tie placed at J12 (ESC lead) pin 3. It is the ONLY connection between the logic battery's ground and the propulsion side. Reason: the ESC / servo PWM signals need a common reference (firmware/README.md:247, 323; firmware/atmega128_fc/src/board.h:84, 91, 107 'common ground')",
   "rules": [
    "J18 (power sense) has NO ground pin: the dividers return to logic GND and see the bus negative through NT1",
-   "servo return currents flow J8-J11 pin 3 -> GND_PWR -> J12 pin 3, never through the logic GND",
+   "servo return currents flow J8-J11 pin 3 -> GND_PWR -> J12 pin 3 (the rocket release servo returns through its Y-lead straight to the ESC lead, rev 3.1), never through the logic GND",
    "with the ESC lead unplugged the logic ground floats from the propulsion side - bench-safe",
    "measurement error: V_in sees the drop of the ESC's internal negative path (E: < 0.1 V at 100 A)"
   ]
@@ -2142,6 +2161,24 @@
    }
   },
   {
+   "refdes": "J13",
+   "role": "release servo signal pad (rocket: CanSat nose-release servo; + / - from a Y-lead on J12)",
+   "value": "1-pin THT pad (release servo signal)",
+   "symbol": "Connector_Generic:Conn_01x01",
+   "footprint": "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm",
+   "populate": true,
+   "fit": "none",
+   "label": "F",
+   "source": "params.json pins.release_servo PE5/OC3C (line 2153); firmware/atmega128_fc/src/board.h:28; firmware/atmega128_fc/src/hal/pwm.c:49 (PE5 output), src/main.c:518 (OUT_RELEASE); rev 3.1 user decision 2026-11-13 (option C)",
+   "block": "IO",
+   "note": "rev 3.1: no part to fit - in the rocket the user solders the signal wire of the release-servo branch of a servo Y-lead (ESC <-> J12) into this pad; the branch takes + / - from J12 pins 2 / 3 (SERVO_5V / GND_PWR). In the VTOL the pad stays empty (configs.vtol has no release servo; the firmware PWM on PE5 then drives only R22). Silkscreen 'REL S'",
+   "bom": {
+    "line": null,
+    "jlc_code": null,
+    "why": "no part to fit: bare plated holes, DNP option or copper-only feature"
+   }
+  },
+  {
    "refdes": "J14",
    "role": "logic battery input (1S Li-Po DTP105565P 3.7 V 4200 mAh ONLY, separate from the 6S)",
    "value": "Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",
@@ -3075,6 +3112,26 @@
   {
    "refdes": "R21",
    "role": "ESC signal series resistor (long lead, back-power limit)",
+   "value": "220",
+   "symbol": "Device:R",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "populate": true,
+   "fit": "jlc",
+   "label": "A",
+   "source": "A: 220 Ohm series on a ~0.5 m servo lead limits back-power into an unpowered servo / ESC",
+   "block": "IO",
+   "bom": {
+    "line": 21,
+    "jlc_code": "C22962",
+    "comment": "220R 1%",
+    "mpn": "0603WAF2200T5E",
+    "library_type": "Basic",
+    "assembly": "SMT"
+   }
+  },
+  {
+   "refdes": "R22",
+   "role": "RELEASE signal series resistor (long lead, back-power limit)",
    "value": "220",
    "symbol": "Device:R",
    "footprint": "Resistor_SMD:R_0603_1608Metric",
@@ -5412,6 +5469,27 @@
    ]
   },
   {
+   "name": "RELEASE_PWM",
+   "members": [
+    "R22.1",
+    "U2.PE5(7)"
+   ],
+   "sources": [
+    "params.json pins.release_servo PE5/OC3C (line 2153); firmware/atmega128_fc/src/board.h:28; firmware/atmega128_fc/src/hal/pwm.c:49 (PE5 output), src/main.c:518 (OUT_RELEASE); rev 3.1 user decision 2026-11-13 (option C)"
+   ],
+   "kind": "pwm"
+  },
+  {
+   "name": "RELEASE_SIG",
+   "members": [
+    "J13.1",
+    "R22.2"
+   ],
+   "sources": [
+    "derived: support / pull-up / series-resistor node (see the part entries)"
+   ]
+  },
+  {
    "name": "SERVO_5V",
    "members": [
     "C47.1",
@@ -5876,10 +5954,6 @@
   {
    "pin": "U2.PE2",
    "reason": "unused ATmega128A I/O (left open; firmware may enable its pull-up)"
-  },
-  {
-   "pin": "U2.PE5",
-   "reason": "release-servo PWM OC3C (params.json pins.release_servo line 2153; firmware/atmega128_fc/src/board.h:28; pwm.c:49 drives it): configs.vtol has no release servo -> output left open (rev 2c removed the unpopulated J13 header, rev-2b independent review 2026-11-05 PF-m6 / MF2-1)"
   },
   {
    "pin": "U2.PE6",
@@ -6353,9 +6427,9 @@
  "checks": {
   "tool": "scripts/build_spec.py (scripted netlist checks; not ERC / DRC)",
   "result": "PASS",
-  "pins_total": 689,
-  "pins_connected": 506,
-  "pins_no_connect": 183,
+  "pins_total": 692,
+  "pins_connected": 510,
+  "pins_no_connect": 182,
   "signal_paths": [
    {
     "path": "ilink FCU TXD1 -> COM RXD0",
@@ -6523,6 +6597,12 @@
     "path": "ESC PWM",
     "from": "U2.PE4 [ESC_PWM]",
     "to": "J12.1 [ESC_SIG]",
+    "ok": true
+   },
+   {
+    "path": "release servo PWM (rev 3.1)",
+    "from": "U2.PE5 [RELEASE_PWM]",
+    "to": "J13.1 [RELEASE_SIG]",
     "ok": true
    },
    {
@@ -6733,25 +6813,25 @@
   "plan_rev3": {
    "tool": "scripts/rev3_spec.py plan_check (run by scripts/build_spec.py)",
    "plan": "spec/rev3_plan.json",
-   "plan_sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
+   "plan_sha256": "d24d333521aace60e30cb743b1552b7ca569a4b6e3fe2ca40eb0a64a3f97557b",
    "result": "PASS",
-   "items_compared": 175,
+   "items_compared": 177,
    "plan_actions": {
-    "add": 13,
+    "add": 15,
     "keep": 140,
     "keep-dnp": 10,
     "remove": 1,
     "replace": 11
    },
-   "parts": 174,
-   "pins_compared": 689,
+   "parts": 176,
+   "pins_compared": 692,
    "fit_counts": {
-    "jlc": 144,
+    "jlc": 145,
     "jlc_optional": 4,
     "user": 14,
-    "none": 12
+    "none": 13
    },
-   "jlc_fitted_parts": 144,
+   "jlc_fitted_parts": 145,
    "jlc_bom_lines": {
     "total": 33,
     "smt": 33,
@@ -6759,12 +6839,12 @@
    },
    "plan_counts": {
     "fit": {
-     "jlc": 144,
+     "jlc": 145,
      "user": 14,
-     "none": 12,
+     "none": 13,
      "jlc_optional": 4
     },
-    "jlc_fitted_parts": 144,
+    "jlc_fitted_parts": 145,
     "jlc_bom_lines": {
      "total": 33,
      "smt": 33,
@@ -6818,6 +6898,22 @@
       "U9.5"
      ],
      "equal_to_plan": true
+    },
+    {
+     "name": "RELEASE_PWM",
+     "members": [
+      "R22.1",
+      "U2.7"
+     ],
+     "equal_to_plan": true
+    },
+    {
+     "name": "RELEASE_SIG",
+     "members": [
+      "J13.1",
+      "R22.2"
+     ],
+     "equal_to_plan": true
     }
    ],
    "compared_fields": [
@@ -6840,8 +6936,8 @@
    ]
   },
   "stale_text_scan": {
-   "what": "words that describe rev 2c (plug-in 5 V module, ESP-12E, J6, J13, 22 pF, 2 layers, 1.34 A) searched in every text outside the history sections",
-   "pattern": "Pololu|S9V11|ESP-12E|\\bJ6\\b|\\bJ13\\b|22 pF|\\b2 layers\\b|2-layer|two_layer|four_layer_fallback|1\\.34 A|1\\.3 A peak|boost module|5 V module|either layer|both layers|B\\.Cu mostly solid GND",
+   "what": "words that describe rev 2c (plug-in 5 V module, ESP-12E, J6, 22 pF, 2 layers, 1.34 A) searched in every text outside the history sections",
+   "pattern": "Pololu|S9V11|ESP-12E|\\bJ6\\b|22 pF|\\b2 layers\\b|2-layer|two_layer|four_layer_fallback|1\\.34 A|1\\.3 A peak|boost module|5 V module|either layer|both layers|B\\.Cu mostly solid GND",
    "not_scanned": [
     "changes_from_rev1",
     "rev_2c_changes",
@@ -6977,7 +7073,7 @@
   "electronics.gps names NEO-6M (GY-NEO6MV2, line 1006); the user's part is NEO-7M (MON-VER 00070000 -> UNKNOWN in gps_ubx.c:276-298)",
   "glink is wired direct in firmware/atmega128_fc/src/board.h:105; this spec adds a 1 kOhm series resistor (A) because one board has no glink connector to unplug for GNS programming",
   "programming: firmware/README.md:647-651 says 'unplug the nlink / ilink / glink connector'; one carrier has none -> reset-hold shunts J24 (NAV) / J25 (FCU) / J26 (COM, for ESP flashing)",
-  "release servo: configs.vtol removes it, but the firmware still drives PE5 (pwm.c:49, main.c:518) -> rev 2c removes the unpopulated J13 header and its series resistor (PE5 left open: a PWM output driving nothing); params / firmware not edited",
+  "release servo: configs.vtol removes it, but the firmware still drives PE5 (pwm.c:49, main.c:518); rev 2c had removed the unpopulated header and its series resistor (PE5 open). rev 3.1 (user 2026-11-13: the carrier also flies in the rocket, which releases the CanSat with this servo) restores the output: PE5 -> R22 220 Ohm -> J13, one plated pad for the servo's signal wire in the +x / +y corner; servo + / - from a Y-lead on J12 (option C - the right-angle header in the -x servo column has no legal spot with the battery pre-routes). In the VTOL the pad stays empty; params / firmware not edited",
   "OpenLog shifter channel was undefined (firmware/README.md:385-387) -> Q8 here",
   "GPS supply: params.json electronics.gps.power '3.3 V rail' vs NEO-7M boards that often take 3.3-5 V (A) -> JP1, 3.3 V default",
   "VTOL mass over target: task text says ~3.7 g, docs/v0.9_하드웨어_변경.md:438 says 1,653.6 g = 3.6 g over (cad/exports/cadquery_report_vtol.json totals 1653.7 g) - the doc / CAD value is used",
@@ -7494,10 +7590,11 @@
      "R18",
      "R19",
      "R20",
-     "R21"
+     "R21",
+     "R22"
     ],
     "dnp_refs": [],
-    "qty": 5
+    "qty": 6
    },
    {
     "line": 22,
@@ -7748,28 +7845,28 @@
   ],
   "counts": {
    "main": {
-    "parts": 174,
+    "parts": 176,
     "fit_counts": {
-     "jlc": 144,
+     "jlc": 145,
      "jlc_optional": 4,
      "user": 14,
-     "none": 12
+     "none": 13
     },
-    "jlc_fitted_parts": 144,
+    "jlc_fitted_parts": 145,
     "bom_lines": 33,
     "bom_lines_smt": 33,
     "bom_lines_tht": 0,
     "with_mcu": false
    },
    "with_mcu": {
-    "parts": 174,
+    "parts": 176,
     "fit_counts": {
-     "jlc": 144,
+     "jlc": 145,
      "jlc_optional": 4,
      "user": 14,
-     "none": 12
+     "none": 13
     },
-    "jlc_fitted_parts": 148,
+    "jlc_fitted_parts": 149,
     "bom_lines": 34,
     "bom_lines_smt": 34,
     "bom_lines_tht": 0,
@@ -7801,6 +7898,7 @@
    ],
    "none": [
     "J3",
+    "J13",
     "J19",
     "J20",
     "J21",
@@ -7960,6 +8058,7 @@
    "arm switch + 2-pin 2.54 mm Dupont lead (J16); buzzer + JST PH 2-pin lead (J17) - domestic shop",
    "only if headers are soldered for programming (D6 A): 5 x 2x3 and 3 x 1x2 2.54 mm pin headers + 3 shunts (domestic shop; LCSC C65114, C55629809, C100114); otherwise a 2x3 pogo-pin ISP adapter",
    "USBasp programmer; USB-serial adapter with 3.3 V logic for the ESP-12F; 3 mm foam tape and one cable tie",
+   "rocket only (rev 3.1, 2026-11-13): 1 x servo Y-lead (3-pin 2.54 mm / JR-Futaba type, domestic shop) between the ESC and J12 - its second branch feeds + / - of the CanSat release servo; the branch's signal wire is cut and soldered into the J13 pad (RELEASE_SIG). NOT_VERIFIED: never built",
    "JLC does not ship loose parts with a PCBA order: the C-numbers above are LCSC order codes. Stock and price of these loose items were not checked today: NOT_VERIFIED."
   ],
   "label": "F (plan + parts_sources.json); nothing is ordered by a tool - the user uploads and pays"
@@ -8480,10 +8579,92 @@
     },
     "fit_user_parts": 14
    }
+  },
+  {
+   "id": "rocket_release_output",
+   "date": "2026-11-13",
+   "by": "user decision (main session): option B, fallback option C applied because B has no legal spot; applied by <scratch>/pcb_rev3/rev31/amend_plan3.py",
+   "request_verbatim": [
+    "캐리어 PCB를 로켓에도 씀",
+    "B: 서보 열에 직각 헤더"
+   ],
+   "meaning": [
+    "rev 3.1: the carrier also flies in the rocket; FCU U2 PE5 / OC3C (firmware pwm.c:49, main.c:518, unchanged) drives the CanSat nose-release servo through R22 (220 Ohm, JLC line 21 C22962) to J13, one plated THT pad (RELEASE_SIG) in the +x / +y corner; servo + / - from a Y-lead on J12 (off-board)",
+    "option B (right-angle J13 in the -x servo column, J18 cut to one pin) was the user's choice but has no legal spot with the rev 3 battery pre-routes unchanged (0.23 mm short of the 0.13 mm clearance at both ends of the column, M) - option C is the user's stated fallback; J18 stays the rev 3 1x4 header",
+    "firmware / params unchanged (the release pin stays PE5); in the VTOL the pad stays empty"
+   ],
+   "plan_sha256_before": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
+   "changed": [
+    {
+     "path": "changes[J13]",
+     "from": null,
+     "to": "added (action add, 1-pin THT pad, fit none)"
+    },
+    {
+     "path": "changes[R22]",
+     "from": null,
+     "to": "added (action add, fit jlc, C22962)"
+    },
+    {
+     "path": "changes[U2].rev3.pins.7",
+     "from": "NC",
+     "to": "RELEASE_PWM"
+    },
+    {
+     "path": "bom_lines[line 21, C22962].designators / qty_per_board / need / need_20_boards",
+     "from": "R17-R21, 5, 110, 100",
+     "to": "R17-R22, 6, 130, 120"
+    },
+    {
+     "path": "new_nets",
+     "from": "5 nets",
+     "to": "+ RELEASE_PWM (R22.1, U2.7), RELEASE_SIG (J13.1, R22.2)"
+    },
+    {
+     "path": "removed_no_connects",
+     "from": "the two pins of the removed module header (rev 3)",
+     "to": "+ U2.7"
+    },
+    {
+     "path": "off_board_purchase[11]",
+     "from": null,
+     "to": "rocket only (rev 3.1, 2026-11-13): 1 x servo Y-lead (3-pin 2.54 mm / JR-Futaba type, domestic shop) between the ESC and J12 - its second branch feeds + / - of the CanSat release servo; the branch's signal wire is cut and soldered into the J13 pad (RELEASE_SIG). NOT_VERIFIED: never built"
+    }
+   ],
+   "mcu_pin_changes": {
+    "U2.7": {
+     "from": "NC",
+     "to": "RELEASE_PWM",
+     "why": "PE5 / OC3C drives the rocket release servo through R22 / J13 (rev 3.1)"
+    }
+   },
+   "option_b_evidence": "<scratch>/pcb_rev3/rev31/NOTES_layout.txt, <scratch>/pcb_rev3/rev31/layout/search_b.json, <scratch>/pcb_rev3/rev31/attempt_B/",
+   "not_rewritten": "every other text of this file is the plan as settled on 2026-11-10 (plus the two amendments of 2026-11-12) and may still say U2 PE5 open, 5 new nets or 144 parts. Where such a text disagrees with an amendment, the amendment holds.",
+   "counts_after": {
+    "jlc_bom_lines": 33,
+    "smt_lines": 33,
+    "tht_lines": 0,
+    "jlc_parts_per_board": 145,
+    "with_mcu_pair": {
+     "jlc_bom_lines": 34,
+     "jlc_parts_per_board": 149
+    },
+    "fit_user_parts": 14,
+    "fit_none_parts": 13,
+    "parts": 176,
+    "plan_actions": {
+     "add": 15,
+     "keep": 140,
+     "keep-dnp": 10,
+     "remove": 1,
+     "replace": 11
+    }
+   }
   }
  ],
  "open_risks": [
   "AMENDED 2026-11-12 (user decisions, plan key 'amendments'): U7 ESP-12F is fitted by the user (fit user), not by JLC: no BOM / CPL row, no paste aperture; footprint, nets, position and silkscreen unchanged; default order type: JLC Economic PCBA instead of Standard; PCB surface finish: lead-free HASL instead of ENIG; moisture bake: not ordered any more (reversible on the order page); all six THT lines (J2, J5; J8-J12; J14; J15, J17; J16; J18 = 12 parts) are bought and soldered by the user (fit user), not by JLC: no BOM / CPL row; footprints, nets, positions and silkscreen unchanged. The SMD connector J7 stays JLC-fitted. The JLC order is SMT only, without any hand-soldered part; moisture bake: not available for Economic PCBA on the order page, so it is not ordered; via covering: the order page selects 'Plugged' (free upgrade from Tented) with LeadFree HASL on this 4-layer board. The entries below are the plan's risk texts of 2026-11-10, copied unchanged: where they say Standard, rails, ENIG, baking, 'ESP-12F fitted by JLC' or 'JLC solders the 6 THT lines', the amendments hold. New with the amendments and NOT_VERIFIED: whether JLC finds room for its tooling holes on this board in an Economic order (or asks for edge rails), the reflow margin at 255 +-5 C for the parts rated 260 C, the hand soldering of the ESP-12F on lead-free HASL pads next to fitted parts, and the fit of the 12 user-bought through-hole connectors in their holes (the parts are the former BOM lines, bought loose).",
+  "AMENDED 2026-11-13 (plan amendment 'rocket_release_output', rev 3.1): rev 3.1: the carrier also flies in the rocket; FCU U2 PE5 / OC3C (firmware pwm.c:49, main.c:518, unchanged) drives the CanSat nose-release servo through R22 (220 Ohm, JLC line 21 C22962) to J13, one plated THT pad (RELEASE_SIG) in the +x / +y corner; servo + / - from a Y-lead on J12 (off-board); option B (right-angle J13 in the -x servo column, J18 cut to one pin) was the user's choice but has no legal spot with the rev 3 battery pre-routes unchanged (0.23 mm short of the 0.13 mm clearance at both ends of the column, M) - option C is the user's stated fallback; J18 stays the rev 3 1x4 header; firmware / params unchanged (the release pin stays PE5); in the VTOL the pad stays empty. NOT_VERIFIED: the rocket release servo on J13 / the Y-lead on J12 (never connected or driven) and the soldered signal wire in the J13 pad",
   "Nothing was built or measured: every power-block number is a datasheet calculation (E).",
   "JLC's acceptance of this board is NOT_VERIFIED: 27 part bodies are closer than 2.5 mm to the edge (U7 0.15 mm, J15 0.29 mm). Standard PCBA with rails is the plan's answer, but only JLC's DFM result and quote after the user's upload can confirm it. Nothing may be paid before that.",
   "'JLC solders the 6 THT lines' is NOT_VERIFIED until the quote shows it (review S2). The SMD fallback parts would need new footprints and the user's yes.",
@@ -8514,7 +8695,7 @@
   "Rev 2c documents contain inconsistencies that must not be copied: board.layers = 2 in the spec vs 4 delivered, '2 x 27 pF' vs 27 pF fitted, stale counts in SPEC_ko.md, 160 vs 152 populated, MANIFEST paths into the MAIN checkout, populate: true for the 8 unpopulated programming headers."
  ],
  "rev3_plan_extract": {
-  "label": "F: copied verbatim from spec/rev3_plan.json (sha256 c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd); texts may name rev 2c parts",
+  "label": "F: copied verbatim from spec/rev3_plan.json (sha256 d24d333521aace60e30cb743b1552b7ca569a4b6e3fe2ca40eb0a64a3f97557b); texts may name rev 2c parts",
   "interpretation": [
    "I1: U1..U4 ATmega128A-AU keep their footprints and are NOT in the main JLC BOM / CPL (user solders them); an optional second BOM / CPL pair that adds C6510 is produced.",
    "I2: sensors = GY-521 (J1), BMP280 TYE-BMP29 (J2), NEO-7M SZH-NT07 (lead to J7). The user fits them; the mating connectors on the carrier are JLC-assembled; the GY-521 is soldered into plated holes with its own pin strip.",

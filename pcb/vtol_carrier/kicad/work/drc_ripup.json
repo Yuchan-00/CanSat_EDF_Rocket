@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-12T22:47:22",
+    "date": "2026-11-13T21:09:49",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -32,6 +32,52 @@
     "schematic_parity": [],
     "source": "vtol_carrier.kicad_pcb",
     "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 2 [ESP_RXD_SH]의 Q4 위F.Cu",
+                    "pos": {
+                        "x": 88.2625,
+                        "y": 114.75
+                    },
+                    "uuid": "c0f1c03f-00eb-58aa-8670-ffe536b5b16f"
+                },
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R53 위F.Cu",
+                    "pos": {
+                        "x": 96.0,
+                        "y": 101.125
+                    },
+                    "uuid": "85037f96-f64f-5bef-8e11-95aac9f82200"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R53 위F.Cu",
+                    "pos": {
+                        "x": 96.0,
+                        "y": 101.125
+                    },
+                    "uuid": "85037f96-f64f-5bef-8e11-95aac9f82200"
+                },
+                {
+                    "description": "패드 1 [ESP_RXD_SH]의 R54 위F.Cu",
+                    "pos": {
+                        "x": 103.8,
+                        "y": 85.525
+                    },
+                    "uuid": "f4d1b645-c70f-5b8e-b4dd-f477019235a1"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
         {
             "description": "Missing connection between items",
             "items": [
@@ -67,12 +113,12 @@
                     "uuid": "5497328e-0e0e-5426-a1b5-410132e402c0"
                 },
                 {
-                    "description": "배선 [+3V3] on F.Cu, 길이 0.3277 mm",
+                    "description": "배선 [+3V3] on F.Cu, 길이 3.2110 mm",
                     "pos": {
                         "x": 105.6574,
-                        "y": 87.5765
+                        "y": 90.7875
                     },
-                    "uuid": "34c4f7e6-277d-4c00-b92f-ddbb93465d57"
+                    "uuid": "e537363f-e508-44cd-a350-8bed81fa2023"
                 }
             ],
             "severity": "error",
@@ -82,12 +128,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
+                    "description": "패드 1 [+5V]의 C25 위F.Cu",
                     "pos": {
-                        "x": 78.188,
+                        "x": 76.74,
                         "y": 123.3
                     },
-                    "uuid": "f860d474-d7e9-5ad4-a1b8-75002c393457"
+                    "uuid": "43342fb2-3eed-52d3-8375-ec49ef159ccc"
                 },
                 {
                     "description": "배선 [+5V] on F.Cu, 길이 0.9120 mm",
@@ -96,29 +142,6 @@
                         "y": 121.35
                     },
                     "uuid": "f35080d2-a48a-45df-9b61-71ad3198634f"
-                }
-            ],
-            "severity": "error",
-            "type": "unconnected_items"
-        },
-        {
-            "description": "Missing connection between items",
-            "items": [
-                {
-                    "description": "배선 [GNS_RESET] on F.Cu, 길이 0.4884 mm",
-                    "pos": {
-                        "x": 93.075,
-                        "y": 117.1
-                    },
-                    "uuid": "0ef247df-e9a6-4b01-803e-22e5b120a528"
-                },
-                {
-                    "description": "패드 1 [GNS_RESET]의 C32 위F.Cu",
-                    "pos": {
-                        "x": 89.825,
-                        "y": 116.7
-                    },
-                    "uuid": "5e198ad8-6517-52d2-b954-dc31bfa4d35c"
                 }
             ],
             "severity": "error",

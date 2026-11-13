@@ -5,7 +5,7 @@
  "boards": 20,
  "today": "2026-11-10",
  "plan": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/rev3_plan.json",
- "plan_sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
+ "plan_sha256": "d24d333521aace60e30cb743b1552b7ca569a4b6e3fe2ca40eb0a64a3f97557b",
  "endpoint": "https://cart.jlcpcb.com/shoppingCart/smtGood/getComponentDetail?componentCode=<code>",
  "access": "read-only GET, no login, no cookie, no cart, >= 2.5 s between requests; nothing was ordered",
  "cache_dirs": [
@@ -22,7 +22,7 @@
   "basic_lines": 21,
   "extended_preferred_lines": 2,
   "extended_lines": 10,
-  "parts_per_board": 144,
+  "parts_per_board": 145,
   "thin_stock_lines": []
  },
  "lines": [
@@ -815,12 +815,13 @@
     "R18",
     "R19",
     "R20",
-    "R21"
+    "R21",
+    "R22"
    ],
    "footprint": "Resistor_SMD:R_0603_1608Metric",
    "symbol": "Device:R",
    "jlc_code": "C22962",
-   "qty_per_board": 5,
+   "qty_per_board": 6,
    "mpn": "0603WAF2200T5E",
    "brand": "UNI-ROYAL(Uniroyal Elec)",
    "package": "0603",
@@ -833,7 +834,7 @@
    "available": 2284098,
    "loss_number": 10,
    "least_number": 20,
-   "need_20_boards": 110,
+   "need_20_boards": 130,
    "is_buy_component": "1",
    "no_buy_reason": null,
    "i7": "ORDERABLE",

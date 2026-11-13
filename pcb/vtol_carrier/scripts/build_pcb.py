@@ -126,12 +126,12 @@ def drawings(pdata: dict) -> list[list]:
     notes = ["rev 3: on-board 5 V boost (U8 / L5 / C57 / C43 / C41) in the outline tab on the -y edge, 3.3 V LDO U6 in the +x/-y corner (Pololu J6 removed)",
              "No parts on the bottom side (3 mm foam tape); the 5th ATmega128A is removed (user decision 2026-11-05)",
              "J3 ESP flash 2x3 footprint: unpopulated, top of the tie band beside the ESP-12F module (press a header in to flash)",
-             "J14 (1S) + J15 (power switch) in the -x/+y corner next to battery spot A; J13 release header removed (VTOL)"]
+             "J14 (1S) + J15 (power switch) in the -x/+y corner next to battery spot A; rev 3.1: J13 release-servo signal pad (rocket) in the +x/+y corner"]
     for i, t in enumerate(notes):
         out.append(S("gr_text", Q(t), S("at", 62.0, round(outline.TAB_Y1 + 2.4 + 1.1 * i, 2), 0), S("layer", Q("Dwgs.User")),
                      S("uuid", Q(ids.net_item_uuid(common.PROJECT_ID, "note_text", i))),
                      S("effects", S("font", S("size", 0.7, 0.7), S("thickness", 0.09)), S("justify", "left"))))
-    out.append(S("gr_text", Q("VTOL carrier rev 3 - NOT_VERIFIED: never built or powered"), S("at", 100.0, round(outline.TAB_Y1 + 1.2, 2), 0), S("layer", Q("Dwgs.User")),
+    out.append(S("gr_text", Q("VTOL carrier rev 3.1 - NOT_VERIFIED: never built or powered"), S("at", 100.0, round(outline.TAB_Y1 + 1.2, 2), 0), S("layer", Q("Dwgs.User")),
                  S("uuid", Q(ids.net_item_uuid(common.PROJECT_ID, "title_text"))),
                  S("effects", S("font", S("size", 0.8, 0.8), S("thickness", 0.1)))))
     return out

@@ -4882,6 +4882,58 @@
   },
   {
    "datasheet": null,
+   "description": "release servo signal pad (rocket: CanSat nose-release servo; + / - from a Y-lead on J12)",
+   "electrical": {},
+   "footprint": {
+    "library": "TestPoint",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\TestPoint.pretty\\TestPoint_THTPad_D2.0mm_Drill1.0mm.kicad_mod",
+    "name": "TestPoint_THTPad_D2.0mm_Drill1.0mm",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "Pin_1",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Connector_Generic:Conn_01x01 (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "user_requirement",
+    "note": "spec carrier_spec.json part J13: params.json pins.release_servo PE5/OC3C (line 2153); firmware/atmega128_fc/src/board.h:28; firmware/atmega128_fc/src/hal/pwm.c:49 (PE5 output), src/main.c:518 (OUT_RELEASE); rev 3.1 user decision 2026-11-13 (option C) (label F); block IO",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "J13",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Connector_Generic",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+    "name": "Conn_01x01",
+    "verified": true
+   },
+   "value": "1-pin THT pad (release servo signal)"
+  },
+  {
+   "datasheet": null,
    "description": "logic battery input (1S Li-Po DTP105565P 3.7 V 4200 mAh ONLY, separate from the 6S)",
    "electrical": {},
    "footprint": {
@@ -8602,6 +8654,73 @@
     "tool_version": null
    },
    "ref": "R21",
+   "serves_requirements": [],
+   "sourcing": [],
+   "spice": null,
+   "symbol": {
+    "library": "Device",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym",
+    "name": "R",
+    "verified": true
+   },
+   "value": "220"
+  },
+  {
+   "datasheet": null,
+   "description": "RELEASE signal series resistor (long lead, back-power limit)",
+   "electrical": {},
+   "footprint": {
+    "library": "Resistor_SMD",
+    "library_path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\Resistor_SMD.pretty\\R_0603_1608Metric.kicad_mod",
+    "name": "R_0603_1608Metric",
+    "verified": true
+   },
+   "manufacturer": null,
+   "mpn": null,
+   "package": null,
+   "pins": [
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "1",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    },
+    {
+     "electrical_type": "passive",
+     "name": "",
+     "number": "2",
+     "provenance": {
+      "created_at": "2026-11-05T00:00:00Z",
+      "derived_from": [],
+      "inputs": {},
+      "kind": "authoritative",
+      "note": "KiCad library symbol Device:R (C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Device.kicad_sym)",
+      "source": null,
+      "tool": null,
+      "tool_version": null
+     }
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "assumption",
+    "note": "spec carrier_spec.json part R22: A: 220 Ohm series on a ~0.5 m servo lead limits back-power into an unpowered servo / ESC (label A); block IO",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "ref": "R22",
    "serves_requirements": [],
    "sourcing": [],
    "spice": null,
@@ -12797,7 +12916,7 @@
      }
     },
     {
-     "electrical_type": "no_connect",
+     "electrical_type": "bidirectional",
      "name": "PE5",
      "number": "7",
      "provenance": {
@@ -20137,6 +20256,58 @@
     {
      "component_ref": "R41",
      "pin_number": "1"
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "derived",
+    "note": "derived: support / pull-up / series-resistor node (see the part entries)",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "serves_requirements": []
+  },
+  {
+   "kind": "signal",
+   "name": "RELEASE_PWM",
+   "net_class": "Default",
+   "pins": [
+    {
+     "component_ref": "R22",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "U2",
+     "pin_number": "7"
+    }
+   ],
+   "provenance": {
+    "created_at": "2026-11-05T00:00:00Z",
+    "derived_from": [],
+    "inputs": {},
+    "kind": "derived",
+    "note": "params.json pins.release_servo PE5/OC3C (line 2153); firmware/atmega128_fc/src/board.h:28; firmware/atmega128_fc/src/hal/pwm.c:49 (PE5 output), src/main.c:518 (OUT_RELEASE); rev 3.1 user decision 2026-11-13 (option C)",
+    "source": null,
+    "tool": null,
+    "tool_version": null
+   },
+   "serves_requirements": []
+  },
+  {
+   "kind": "signal",
+   "name": "RELEASE_SIG",
+   "net_class": "Default",
+   "pins": [
+    {
+     "component_ref": "J13",
+     "pin_number": "1"
+    },
+    {
+     "component_ref": "R22",
+     "pin_number": "2"
     }
    ],
    "provenance": {

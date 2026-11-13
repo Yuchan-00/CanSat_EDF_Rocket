@@ -4,14 +4,14 @@
  "tool": "kicad-cli netlist export + scripts/rev3_checks.py u8-u9",
  "netlist": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
-  "sha256": "17514efcaaca39a71040b37c6ee1dbf81a57ed64cc908f77ff164d330ad94966",
+  "sha256": "e4b2ab19a59091dc9db7e4e290226a22301291931d1afa9efb563494e1671ae4",
   "sha256_is": "of the file as it was when this check read it (it carries the export time; a later build step exports it again)",
-  "sha256_without_date_line": "c4475e142ba6d9947df43699bf7473368d18bb84d137abcfc04e98cca3943fe6",
+  "sha256_without_date_line": "412017f811492e6379aa97e1979b6ce85a8e5e9a2f34c3b7201c7b1a01dc1067",
   "tool": "Eeschema 10.0.6",
-  "export_date_in_file": "2026-11-12T22:46:43",
-  "components": 174,
-  "named_nets": 105,
-  "unconnected_single_pin_nets": 183
+  "export_date_in_file": "2026-11-13T21:08:21",
+  "components": 176,
+  "named_nets": 107,
+  "unconnected_single_pin_nets": 182
  },
  "statement": "ERC gives no evidence for U8 (generic connector symbol with passive pins). The pad -> net table below was transcribed from the datasheet pin tables (source lines cited, re-read by this script from the text extracts) and compared with the exported netlist and with the plan.",
  "function_to_net_source": "spec/rev3_plan.json power_block / new_nets (design intent)",

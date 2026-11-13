@@ -317,6 +317,13 @@ ANCHORS: dict[str, tuple[float, float, float, str]] = {
     "J12": (127.21, 73.17, 0, "edge +x, y > +14 mm: ESC lead, upper slot (rev-1 review MF-3)"),
     "NT1": (124.25, 78.25, 0, "single GND <-> GND_PWR tie right next to J12 pin 3 (spec grounding.single_tie_point)"),
     "J17": (133.30, 82.35, 0, "edge +x, y > +14 mm: buzzer lead JST-PH vertical below the ESC lead"),
+    # rev 3.1 (user decision 2026-11-13, option C - option B, a right-angle header in the -x servo column, has no legal
+    # spot with the rev 3 battery pre-routes: <scratch>/pcb_rev3/rev31/NOTES_layout.txt): the release-servo signal pad
+    # in the free strip of the +x / +y corner, above R31 and right of the arm-switch header J16, next to the ESC lead J12
+    # whose Y-lead feeds the servo + / - (courtyard circle r 1.5: x 125.55..128.55, y 65.35..68.35, touching J16 within
+    # the raster, 0.1 mm inside the 0.25 mm edge margin, 1.5 mm above R31). Its series resistor R22 sits right of it
+    # (EXTRA_ANCHORS) - the strip ends at the 45 deg joint screw zone
+    "J13": (127.05, 66.85, 0, "+x/+y corner: rocket release-servo signal pad (rev 3.1 option C), beside the ESC lead J12"),
 }
 
 #: unpopulated programming footprints in the cable-tie band, top to bottom (ESP rule area ends at y 72.4)
@@ -401,7 +408,8 @@ LOW_ZONES: list[tuple[tuple[float, float, float, float], float, str]] = [
     ((131.40, 131.40, 138.0, 139.09), -1.0, "315 deg joint screw part-free zone (Fit stage, tip r 49.5, A for the screw length)"),
 ]
 
-ACCESS = {"J15", "J5", "J2", "J1", "JP1", "J14", "J17", "J7", "J12", "J16", "C47", "D1", "D2", "D3", "D4"}  # LEDs stay visible
+ACCESS = {"J15", "J5", "J2", "J1", "JP1", "J14", "J17", "J7", "J12", "J16", "C47", "D1", "D2", "D3", "D4",
+          "J13"}  # LEDs stay visible; rev 3.1: the release-signal pad is soldered after delivery
 
 #: body height above the board per footprint (mm, A: typical package heights, not measured)
 FP_HEIGHT = {
@@ -421,6 +429,8 @@ FP_HEIGHT = {
     "PinHeader_1x08_P2.54mm_Vertical": 8.6, "PinSocket_1x06_P2.54mm_Horizontal": 5.9,
     "PinHeader_2x03_P2.54mm_Vertical": 8.6, "PinHeader_1x02_P2.54mm_Vertical": 8.6,
     "PinHeader_2x03_P2.54mm_Vertical_SMD": 8.6, "PinHeader_1x02_P2.54mm_Vertical_SMD_Pin1Right": 8.6,
+    # rev 3.1 J13 release-signal pad: the soldered servo signal wire (or one straight 2.54 mm pin), A
+    "TestPoint_THTPad_D2.0mm_Drill1.0mm": 8.6,
 }
 HEIGHT_LIMIT = 13.4  # mm above the board top (spec board.height_limit_top_mm)
 
@@ -891,6 +901,10 @@ EXTRA_ANCHORS: dict[str, tuple[float, float, float, str]] = {
     # GY-521 header along the -y edge, module body over the NAV (TQFP 1.2 mm < 2.0 mm clearance, A)
     "J1": (104.90, 115.10, 0, "GY-521 header vertical right of the tie band, module flat toward +x over the NAV"),
     # rev 3: the Pololu module header J6 is gone; the +x/-y corner carries POWER_BLOCK
+    # rev 3.1 (option C): the release series resistor beside its pad J13, in the 3.05 x 1.55 mm left between J13, Q9 and
+    # the 45 deg joint screw: courtyard x 128.6..131.65, y 66.375..67.925 (touching J13, 0.03 mm above Q9) keeps the
+    # 2.0 mm plan gap of the Fit stage rule to that screw (board_metrics: the greedy spot x 130.2 / y 66.8 gave 1.834 mm)
+    "R22": (130.125, 67.15, 0, "release series resistor beside its pad J13 (rev 3.1), >= 2.0 mm in plan from the 45 deg joint screw"),
 }
 
 

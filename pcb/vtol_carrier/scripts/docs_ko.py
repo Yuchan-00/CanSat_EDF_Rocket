@@ -111,6 +111,91 @@ FIT_KO ={"jlc": "JLC가 실장 (주문 BOM / CPL에 들어감)", "jlc_optional":
           "user": "사용자가 납땜", "none": "부품 없음 (빈 도금 구멍 / 미실장 / 구리 패턴만)"}
 
 
+def net_copper(pcb_text: str, net: str) -> dict:
+    """rev 3.1: routed copper of one net read from the board file text (top-level segment / arc / via blocks):
+    length in mm (arcs by their three points), copper layers, via count."""
+    length, layers, vias = 0.0, set(), 0
+    num = r"(-?\d+(?:\.\d+)?)"
+    for blk in re.split(r"\n\t\(", pcb_text):
+        if not blk.startswith(("segment", "arc", "via")) or f'(net "{net}")' not in blk:
+            continue
+        if blk.startswith("via"):
+            vias += 1
+            continue
+        pts = {k: tuple(map(float, re.search(rf"\({k} {num} {num}\)", blk).groups())) for k in
+               (("start", "mid", "end") if blk.startswith("arc") else ("start", "end"))}
+        layers.add(re.search(r'\(layer "([^"]+)"\)', blk).group(1))
+        if "mid" not in pts:
+            length += math.dist(pts["start"], pts["end"])
+            continue
+        (ax, ay), (bx, by), (cx, cy) = pts["start"], pts["mid"], pts["end"]
+        d = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by))
+        ux = ((ax * ax + ay * ay) * (by - cy) + (bx * bx + by * by) * (cy - ay) + (cx * cx + cy * cy) * (ay - by)) / d
+        uy = ((ax * ax + ay * ay) * (cx - bx) + (bx * bx + by * by) * (ax - cx) + (cx * cx + cy * cy) * (bx - ax)) / d
+        r_ = math.dist((ux, uy), (ax, ay))
+        ang = lambda p_: math.atan2(p_[1] - uy, p_[0] - ux)  # noqa: E731
+        a0, a1, am = ang((ax, ay)), ang((cx, cy)), ang((bx, by))
+        sweep = (a1 - a0) % (2 * math.pi)
+        if (am - a0) % (2 * math.pi) > sweep:
+            sweep = 2 * math.pi - sweep
+        length += r_ * sweep
+    return {"length_mm": round(length, 2), "layers": sorted(layers), "vias": vias}
+
+
+def copper_gap_to_box(pcb_text: str, nets: set[str], box: list[float]) -> tuple[float, int]:
+    """rev 3.1: smallest copper-edge gap (mm) from the straight segments / vias of `nets` whose width-grown bounding box
+    touches the axis-aligned `box` (x0, y0, x1, y1) - the same items board_metrics' bounding-box test lists - to that box.
+    A value <= 0 means real copper inside the box. Returns (gap, number of items measured); arcs on these nets are refused."""
+    x0, y0, x1, y1 = box
+    num = r"(-?\d+(?:\.\d+)?)"
+
+    def pt_box(px: float, py: float) -> float:
+        return math.hypot(max(x0 - px, 0.0, px - x1), max(y0 - py, 0.0, py - y1))
+
+    def seg_box(a: tuple, b: tuple) -> float:
+        if any(x0 <= p_[0] <= x1 and y0 <= p_[1] <= y1 for p_ in (a, b)):
+            return 0.0
+        best = min(pt_box(*a), pt_box(*b))
+        (ax, ay), (bx, by) = a, b
+        dx, dy = bx - ax, by - ay
+        L2 = dx * dx + dy * dy
+        for cx, cy in ((x0, y0), (x1, y0), (x1, y1), (x0, y1)):
+            t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((cx - ax) * dx + (cy - ay) * dy) / L2))
+            best = min(best, math.hypot(ax + t * dx - cx, ay + t * dy - cy))
+        for ex, ey, fx, fy in ((x0, y0, x1, y0), (x1, y0, x1, y1), (x1, y1, x0, y1), (x0, y1, x0, y0)):
+            d1 = (bx - ax) * (ey - ay) - (by - ay) * (ex - ax)
+            d2 = (bx - ax) * (fy - ay) - (by - ay) * (fx - ax)
+            d3 = (fx - ex) * (ay - ey) - (fy - ey) * (ax - ex)
+            d4 = (fx - ex) * (by - ey) - (fy - ey) * (bx - ex)
+            if d1 * d2 < 0 and d3 * d4 < 0:
+                return 0.0
+        return best
+
+    gap, n = math.inf, 0
+    for blk in re.split(r"\n\t\(", pcb_text):
+        if not blk.startswith(("segment", "arc", "via")):
+            continue
+        m_ = re.search(r'\(net "([^"]+)"\)', blk)
+        if not m_ or m_.group(1) not in nets:
+            continue
+        if blk.startswith("arc"):
+            raise SystemExit(f"docs_ko: copper_gap_to_box does not measure arcs (net {m_.group(1)})")
+        if blk.startswith("via"):
+            (px, py), r_ = map(float, re.search(rf"\(at {num} {num}\)", blk).groups()), \
+                float(re.search(rf"\(size {num}\)", blk).group(1)) / 2
+            lo, hi = (px - r_, py - r_), (px + r_, py + r_)
+            g_ = pt_box(px, py) - r_
+        else:
+            a = tuple(map(float, re.search(rf"\(start {num} {num}\)", blk).groups()))
+            b = tuple(map(float, re.search(rf"\(end {num} {num}\)", blk).groups()))
+            r_ = float(re.search(rf"\(width {num}\)", blk).group(1)) / 2
+            lo, hi = (min(a[0], b[0]) - r_, min(a[1], b[1]) - r_), (max(a[0], b[0]) + r_, max(a[1], b[1]) + r_)
+            g_ = seg_box(a, b) - r_
+        if hi[0] > x0 and lo[0] < x1 and hi[1] > y0 and lo[1] < y1:
+            gap, n = min(gap, g_), n + 1
+    return round(gap, 3), n
+
+
 def load(rel: str) -> dict:
     return json.loads((ROOT / rel).read_text(encoding="utf-8"))
 
@@ -282,8 +367,11 @@ def gather() -> tuple[Facts, dict]:
           f"{man['netlist_vs_spec']['spec_nets']})", M + " netlist_vs_spec", "M")
     F.put("보드=IR", f"{man['board_vs_ir']['result']} (핀 {man['board_vs_ir']['pins_found_on_board']} / "
           f"{man['board_vs_ir']['ir_pins']})", M + " board_vs_ir", "M")
-    F.put("MCU 핀맵", f"{pin['result']} (핀 {pin['pins_compared']}, 차이 {len(pin['differences'])})",
-          "out/reports/rev3_mcu_pinmap.json", "M")
+    decl = pin.get("declared_changes_by_plan_amendment") or {}
+    F.put("MCU 핀맵", f"{pin['result']} (핀 {pin['pins_compared']}, 차이 {len(pin['differences'])}"
+          + (", 계획 수정으로 선언한 변경: " + ", ".join(f"{k} {v['from']} → {v['to']}" for k, v in sorted(decl.items()))
+             if decl else "") + ")",
+          "out/reports/rev3_mcu_pinmap.json (result, pins_compared, differences, declared_changes_by_plan_amendment)", "M")
     F.put("U8/U9 패드표", u89["result"], "out/reports/rev3_u8_u9_pads.json", "M (표는 데이터시트에서 옮김, F)")
     F.put("주문 파일 검사", ef["result"], "out/reports/rev3_export_files.json", "M")
     F.put("주문 파일 재현", ed["result"], "out/reports/rev3_export_determinism.json", "M")
@@ -1014,6 +1102,81 @@ def gather() -> tuple[Facts, dict]:
         F.put(f"메모 글자 수 {name}", remarks[name]["length"], "scripts/docs_ko.py order_remarks (생성한 메모 문장의 글자 수)", "M")
         F.put(f"메모 글자 수 {name} + Standard 문장", remarks[name]["length_with_standard_sentence"],
               "scripts/docs_ko.py order_remarks (Standard 대안 문장을 덧붙였을 때)", "M")
+    # ---- rev 3.1 (2026-11-13, plan amendment 'rocket_release_output', option C): release-servo output for the rocket
+    am31 = [a_ for a_ in plan.get("amendments", []) if a_.get("id") == "rocket_release_output"]
+    r31 = spec.get("rev_3_1_changes")
+    if len(am31) != 1 or not r31:
+        raise SystemExit("docs_ko: rev 3.1 needs the plan amendment 'rocket_release_output' and spec rev_3_1_changes")
+    am31 = am31[0]
+    AM = "spec/rev3_plan.json amendments[rocket_release_output]"
+    F.put("rev 3.1 날짜", am31["date"], AM + ".date", "F")
+    F.put("rev 3.1 요청 원문", " / ".join(f"\"{t_}\"" for t_ in am31["request_verbatim"]), AM + ".request_verbatim",
+          "F (사용자 결정 그대로)")
+    ob = r31["option_b_result"]
+    ob_nums = ("45.06 mm", "44.60 mm", "0.23 mm", "0.13 mm", "801", "8.62 mm", "2.0 mm", "2.4 mm")
+    if not ob.startswith("NOT PLACEABLE") or any(n_ not in ob for n_ in ob_nums):
+        raise SystemExit("docs_ko: spec rev_3_1_changes.option_b_result does not carry the option B numbers this text uses")
+    F.put("B안 결과 (rev 3.1)",
+          "rev 3 배터리 선을 바꾸지 않는다는 조건에서는 놓을 수 없음: -x 서보 열에 직각 1x3 J13을 J8~J11과 같은 8.62 mm 간격으로 넣고 "
+          "J18을 1핀으로 줄이면, 배터리 선 두 개(윗면 2.0 mm VBAT_LOGIC, 아랫면 2.4 mm VBAT_LOGIC_SW) 사이에 45.06 mm가 필요한데 "
+          "44.60 mm뿐입니다. 801곳을 찾아본 가장 좋은 자리도 열의 양 끝에서 0.13 mm 간격 규칙보다 0.23 mm 모자랐습니다. "
+          "배터리 선을 바꾸지 않는다는 조건은 사용자 결정도 검사 기준도 아니고 (검사는 배터리 경로 폭 2.0 mm 이상, 0.035 Ohm 이하만 요구), "
+          "rev 3.1 작업이 rev 3 재설계 때 build_pcb.py에 깔아 둔 미리 그린 배선을 건드리지 않으려고 스스로 둔 것입니다",
+          "spec/carrier_spec.json rev_3_1_changes.option_b_result", "M (배치 검색과 kicad-cli DRC, 2026-11-13)")
+    pl31 = placement["placements"]
+    if pl31["J13"]["side"] != "top" or pl31["R22"]["side"] != "top":
+        raise SystemExit("docs_ko: J13 / R22 are not top-side parts in kicad/placement.json")
+    F.put("J13 자리", f"KiCad ({pl31['J13']['x']:g}, {pl31['J13']['y']:g}) mm, J12(ESC) 옆 +x / +y 모서리",
+          "kicad/placement.json placements.J13 (x, y, why)", "M")
+    F.put("R22 자리", f"KiCad ({pl31['R22']['x']:g}, {pl31['R22']['y']:g}) mm", "kicad/placement.json placements.R22", "M")
+    r22_rows = [r_ for r_ in bom if "R22" in r_["Designator"].split(",")]
+    if len(r22_rows) != 1:
+        raise SystemExit("docs_ko: R22 is not on exactly one line of out/jlcpcb_bom.csv")
+    r22b = r22_rows[0]
+    F.put("R22 BOM 줄", f"{r22b['Comment']}, {compact_refs(r22b['Designator'].split(','))} "
+          f"({len(r22b['Designator'].split(','))}개), {r22b[next(k_ for k_ in r22b if k_.startswith('JLCPCB Part'))]}",
+          "out/jlcpcb_bom.csv (R22가 든 줄)", "M")
+    rel_dec = decl.get("U2.7")
+    if not rel_dec or rel_dec.get("to") != "RELEASE_PWM":
+        raise SystemExit("docs_ko: rev3_mcu_pinmap.json does not declare U2.7 -> RELEASE_PWM")
+    F.put("분리 서보 MCU 핀", f"U2.7 (PE5 / OC3C): {rel_dec['from']} → {rel_dec['to']}",
+          "out/reports/rev3_mcu_pinmap.json declared_changes_by_plan_amendment", "M")
+    for net_ in ("RELEASE_PWM", "RELEASE_SIG"):
+        nc_ = net_copper(pcb_text, net_)
+        if nc_["length_mm"] <= 0:
+            raise SystemExit(f"docs_ko: no routed copper on {net_} in kicad/vtol_carrier.kicad_pcb")
+        F.put(f"{net_} 배선", f"{nc_['length_mm']:g} mm ({' / '.join(nc_['layers'])}), 비아 {nc_['vias']}개",
+              "kicad/vtol_carrier.kicad_pcb (그 네트의 segment / arc / via)", "M")
+    yl = [r_ for r_ in prow if r_["group"] == "g"]
+    if len(yl) != 1:
+        raise SystemExit("docs_ko: purchase list has no single rocket-only row (group g)")
+    F.put("로켓 Y자 리드", f"{yl[0]['item_ko']} {yl[0]['qty_2']}개 (로켓에 넣는 보드용)",
+          "scripts/purchase_list.py (g) 묶음 = spec/rev3_plan.json off_board_purchase", "F (계획)")
+    F.put("rev 3 장바구니 항목", "Y24", "작업 지시 2026-11-13 (주 세션이 전한 장바구니 상태; 이 단계는 장바구니를 열지 않음)",
+          "F (지시) - 이 단계에서 확인 안 함")
+    F.put("그 전 장바구니 항목", "Y23, Y20",
+          "B:/0)AI_Cad/CanSat_v0.9/08_PCB/README.md (2026-11-12 재설계 납품 때 적은 장바구니 상태: 둘 다 옛 거버)",
+          "F (문서) - 장바구니를 열지 않아 어느 항목에 무엇이 들었는지 확인 안 함")
+    bme = load("out/reports/board_metrics.json")["esp12f"]
+    drc_ = load("out/reports/drc.json")
+    n_drc = len(drc_.get("violations", [])) + len(drc_.get("unconnected_items", []))
+    if bme["ok"]:
+        F.put("ESP 안테나 구역 검사 (esp12f_ok)", "true", "out/reports/board_metrics.json esp12f.ok", "M")
+    else:
+        if bme["pour_area_inside_rule_area_mm2"] != 0 or any(not s_.startswith("PCB_TRACK ") for s_ in
+                                                             bme["copper_items_inside_rule_area"]):
+            raise SystemExit("docs_ko: esp12f_ok false is not only a track bounding-box listing - not explained here")
+        nets_ = {s_.split()[1] for s_ in bme["copper_items_inside_rule_area"]}
+        gap_, n_ = copper_gap_to_box(pcb_text, nets_, bme["rule_area_kicad"])
+        if gap_ <= 0 or n_ == 0 or n_drc != 0:
+            raise SystemExit("docs_ko: esp12f_ok false with real copper in the antenna box or DRC findings")
+        F.put("ESP 안테나 구역 검사 (esp12f_ok)",
+              f"false - 겉상자 검사의 거짓 경보: board_metrics.py는 선의 겉상자(bounding box)가 안테나 금지 상자 "
+              f"{tuple(bme['rule_area_kicad'])}에 닿으면 적는데, 적힌 것({', '.join(bme['copper_items_inside_rule_area'])})은 "
+              f"대각선 선이라 실제 구리는 상자 밖에 있습니다 (그 네트 구리에서 상자까지 가장 가까운 거리 {gap_:g} mm, 잰 선·비아 {n_}개). "
+              f"KiCad 규칙 영역 ESP12E_antenna_keepout (네 층 모두 선·비아·면 금지)을 넣은 DRC는 위반 {n_drc}개입니다. "
+              "이 값은 출고 판정에 들어가지 않으며, 기준(board_metrics.py)은 바꾸지 않았습니다 (rev 3에서는 true)",
+              "out/reports/board_metrics.json esp12f; kicad/vtol_carrier.kicad_pcb (선분 거리); out/reports/drc.json", "M")
     ctx = {"spec": spec, "plan": plan, "man": man, "gate": gate, "fees": fees, "offb": offb, "code": code,
            "parts": parts, "alt": alt, "s17": plan17_facts(F), "edge": edge, "op": op, "op_rows": ctx_op_rows,
            "remarks": remarks, "quotes": quotes, "QK": QK, "QID": QID, "tht_table": tht_table, "prow": prow,
@@ -1110,6 +1273,8 @@ def change_table(F: Facts, ctx: dict) -> list[str]:
             continue
         tag = c.get("tag", "")
         tko = next((k for pre, k in TAG_KO if tag.startswith(pre)), tag)
+        if not tag and "rocket_release_output" in c.get("reason", ""):   # rev 3.1 rows carry no plan tag
+            tko = "rev 3.1 사용자 결정: 로켓 분리 서보 출력 (2026-11-13)"
         r2 = c.get("rev2c") or {}
         r3 = c.get("rev3") or {}
         old = f"{r2.get('value', '-')} / {r2.get('part_number', '-')}" if r2 else "-"
@@ -1135,10 +1300,29 @@ def readme(F: Facts, ctx: dict) -> str:
     spec, man = ctx["spec"], ctx["man"]
     L: list[str] = []
     A = L.append
-    A("# VTOL 아비오닉스 캐리어 PCB rev 3 (JLC가 실장해서 보내는 판)")
+    A("# VTOL 아비오닉스 캐리어 PCB rev 3.1 (JLC가 실장해서 보내는 판)")
     A("")
     A("**이 보드는 아직 만들거나 전원을 넣어 본 적이 없습니다 (NOT_VERIFIED).** 아래의 PASS는 모두 도구(kicad-cli ERC/DRC, 스크립트)의 "
       "결과이며 보드가 동작한다는 뜻이 아닙니다. JLC가 이 파일을 받아 주는지도 업로드 후 JLC의 DFM 결과와 견적을 봐야 압니다.")
+    A("")
+    A(f"**{F.v('rev 3.1 날짜')} rev 3.1 - 로켓용 분리 서보 출력 (사용자 결정: {F.v('rev 3.1 요청 원문')}):** 같은 캐리어를 로켓에도 씁니다. "
+      f"로켓은 CanSat 앞부분을 놓아 주는 분리 서보를 FCU U2의 PE5 / OC3C 핀으로 움직이는데 (펌웨어 src/hal/pwm.c:49, main.c:518 - 바꾸지 않음), "
+      f"rev 3에서는 이 핀이 비어 있었습니다. 지금은 {F.v('분리 서보 MCU 핀')} → R22 (220 Ohm 0603, JLC가 실장; BOM 줄 {F.v('R22 BOM 줄')}) → "
+      f"RELEASE_SIG → J13 입니다. **J13은 부품이 아니라 도금 구멍 패드 하나**({F.v('J13 자리')})이고, 로켓에서는 사용자가 서보 Y자 리드의 "
+      "신호선을 여기에 납땜합니다. 서보의 + / - 는 그 Y자 리드가 ESC 리드 J12의 2번(SERVO_5V) / 3번(GND_PWR)에서 받습니다. VTOL에서는 J13을 비워 둡니다.")
+    A("")
+    A(f"사용자가 고른 것은 B안(-x 서보 열에 직각 1x3 헤더 J13, J18을 VIN 1핀으로 줄임)이었지만, B안은 {F.v('B안 결과 (rev 3.1)')} (M). "
+      "검사 규칙을 느슨하게 하지 않고, 사용자가 정해 둔 대안인 C안(구석의 1핀 패드 + R22, 서보 전원은 J12의 Y자 리드)으로 만들었습니다. "
+      "**그래서 J18은 rev 3 그대로 1x4 (VIN / VTET / VBUF / ISGN) 이고, 테더·하이브리드용 입력과 그 분압 부품도 그대로 남아 있습니다** "
+      "(B안에서만 필요했던 변경이라 하지 않았음; 테더·하이브리드 빌드에서 잃는 것은 없음). B안의 새 헤더(C32713262)와 1핀 J18용 부품도 사지 않습니다. "
+      "**B안이 안 된 것은 배터리 선을 그대로 둔 조건 때문입니다.** B안을 꼭 원하면 그 배터리 선 구간을 다시 그리는 설계 변경을 사용자가 정해야 합니다. "
+      "예를 들어 아랫면 VBAT_LOGIC_SW 띠를 2.4 → 2.0 mm로 줄이면 약 0.4 mm가 생기고 배터리 경로 저항은 약 0.0310 → 0.0313 Ohm (기준 0.035 Ohm)으로 "
+      "추정되지만, 모자란 0.46 mm를 다 채우지 못해 J15 쪽 윗면 띠도 옮겨야 할 수 있습니다 (E, 2026-11-13 검증 단계의 추정; 만들거나 배선·검사해 보지 않음 - "
+      "NOT_VERIFIED).")
+    A("")
+    A(f"**JLC 장바구니의 {F.v('rev 3 장바구니 항목')}는 rev 3 거버입니다. 결제하지 마십시오.** 그보다 옛 거버가 든 {F.v('그 전 장바구니 항목')}도 "
+      "결제하지 마십시오 (08_PCB README에 적힌 상태). 장바구니는 이 작업에서 열지 않았으므로 어느 항목에 어느 거버가 들었는지는 결제 전에 직접 확인하십시오. "
+      "rev 3.1 거버(이 폴더의 새 파일)의 JLC 견적과 DFM 결과는 올려 보기 전까지 NOT_VERIFIED입니다.")
     A("")
     A(f"**{F.v('변경 날짜')} 변경 (사용자 요청: \"{F.v('변경 요청 원문 1')}\", \"{F.v('변경 요청 원문 2')}\"):** "
       f"(1) Wi-Fi 모듈 ESP-12F (U7)는 JLC가 아니라 사용자가 직접 납땜합니다 "
@@ -1173,7 +1357,7 @@ def readme(F: Facts, ctx: dict) -> str:
       "위치 확인과 결제는 사용자가 합니다 (주문 안내서 0장과 3장).")
     A("")
     A(f"**배선 규칙 {F.v('배선 규칙 PASS 수')} / {F.v('배선 규칙 수')} PASS** (FAIL: {F.v('배선 규칙 FAIL')}; 재설계 전 보드: {F.v('재설계 전 배선 규칙')}). "
-      "규칙과 기준값은 바꾸지 않았습니다. 바꾼 검사 코드는 새 외곽에 맞춘 부분, 추가한 검사, 사용자가 승인한 구멍 이동, 그리고 결정성 검사의 폴더 이름 바꾸기뿐입니다 "
+      "규칙과 기준값은 바꾸지 않았습니다. 바꾼 검사 코드는 새 외곽에 맞춘 부분, 추가한 검사, 사용자가 승인한 구멍 이동, 결정성 검사의 폴더 이름 바꾸기, 그리고 rev 3.1의 선언된 MCU 핀 하나(U2.7)와 새 부품 J13 / R22 항목뿐입니다 "
       "(목록은 3장 끝). 지금 보드에서 잰 값:")
     A("")
     A(f"- 배터리 전원 경로 (J14 → Q10 → J15 → L5): 구리 저항 {F.v('배터리 경로 저항 20C')} (20 C, E; 목표 {F.v('배터리 경로 목표')}), "
@@ -1279,7 +1463,19 @@ def readme(F: Facts, ctx: dict) -> str:
       f"J18 {F.v('참고 코드 J18')}, 배터리 J14 {F.v('참고 코드 J14')}, 스위치·부저 J15 / J17 {F.v('참고 코드 J15')}. "
       f"JLC BOM에는 없습니다 (J2: {F.v('코드 J2')}). 탄탈 C45 ({F.v('코드 C45')}, JLC 실장)와 헤더·소켓 번호 일부는 재고나 도면 근거로 "
       "바꿨고 D3 / D12에서 rev 2c 번호로 되돌릴 수 있습니다.")
-    A(f"- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 ({F.v('MCU 핀맵')}), 본체 76 x 70 mm 사각형과 그 변, 커넥터·MCU·크리스털·모듈 소켓·ESP "
+    A(f"- **rev 3.1 ({F.v('rev 3.1 날짜')}, 사용자 결정 {F.v('rev 3.1 요청 원문')}) - 로켓용 분리 서보 출력:** 부품 두 자리를 더했습니다. "
+      f"R22 (220 Ohm, 서보 신호선 R17~R21과 같은 JLC 줄 → {F.v('R22 BOM 줄')}; 자리 {F.v('R22 자리')}) 와 J13 (도금 구멍 패드 1개, 부품 없음, "
+      f"{F.v('J13 자리')}). 새 네트 두 개: RELEASE_PWM (U2.7 → R22.1; 배선 {F.v('RELEASE_PWM 배선')}), RELEASE_SIG (R22.2 → J13; 배선 "
+      f"{F.v('RELEASE_SIG 배선')}). MCU 핀은 하나만 바뀌었습니다: {F.v('분리 서보 MCU 핀')} (계획 수정 rocket_release_output에 선언). "
+      "그 밖의 rev 3 부품은 자리·방향이 모두 그대로이고, 잠가 둔 미리 그린 배선(배터리 경로, 승압부 등)도 하나도 바뀌지 않았습니다 (rev 3.1 배치·배선 "
+      "단계에서 rev 3 보드와 비교, M). 새 배선 때문에 주변 네트 몇 개의 "
+      "자동 배선이 바뀌었습니다 (Freerouting을 새로 돌림; 세션 파일로 재현). J18은 그대로 1x4입니다 (B안이 안 되어 줄이지 않음).")
+    A(f"- **rev 3.1 ESP 안테나 구역 표시:** {F.v('ESP 안테나 구역 검사 (esp12f_ok)')}.")
+    A("- **rev 3.1에서 바꾼 검사 코드 (규칙·기준값은 그대로):** MCU 핀맵 검사(routing_checks.py, rev3_checks.py)는 계획 수정에 선언된 핀(U2.7 NC → "
+      "RELEASE_PWM)만 새 값과 비교하고, 그 핀의 옛 값도 rev 2c 기준과 같아야 합니다. 나머지 핀은 예전과 똑같이 비교합니다. 네트 검사는 새 네트에 "
+      "기존 부품 핀이 들어갈 때 계획에 적힌 핀(U2.7)과 정확히 같아야 합니다. place.py에는 새 패드의 높이 값과 J13 / R22 자리만 더했습니다. "
+      "rev3_spec.py의 계획 대조는 추가 부품 수와 계획 수정 목록을 J13 / R22를 넣은 새 값으로 비교합니다.")
+    A(f"- **그대로인 것:** MCU 4개의 핀 256개가 가는 네트 (rev 3.1의 U2.7 하나만 빼고; {F.v('MCU 핀맵')}), 본체 76 x 70 mm 사각형과 그 변, 커넥터·MCU·크리스털·모듈 소켓·ESP "
       f"위치와 방향 (고정 부품 {F.v('고정 부품 비교')}; 프로그래밍 구멍 3개는 아래 재설계에서 사용자 승인으로 옮김), 설계 규칙 "
       f"({F.v('규칙 파일')}), 크리스털 배선 ({F.v('XTAL1 최악')}).")
     A(f"- **{F.v('변경 날짜')} 재설계 - 외곽에 탭 추가** (사용자 요청 {F.v('재설계 요청 원문')}): 지금 부품(U8 TPS61023, L5 FXL0420, 22 uF 1206 커패시터)으로 "
@@ -1290,7 +1486,7 @@ def readme(F: Facts, ctx: dict) -> str:
       "저전압 차단(U9 주변), LDO U6, 그 밖의 부품 자리는 그대로입니다.")
     A(f"- **프로그래밍 구멍 3개 이동 (사용자 승인 \"{REDESIGN_REQUESTS[2]}\"):** {F.v('옮긴 프로그래밍 구멍')}. 케이블타이 띠를 건너는 배터리 선이 2.0 mm 폭으로 "
       "지나갈 틈을 만들기 위해서입니다. 배치 검사(place.py)는 이 세 부품만 'rev 2c 자리 + 이 거리'와 정확히 같은지 봅니다 (다른 고정 부품은 rev 2c 자리 그대로인지 봄). "
-      "외곽 맞춤과 추가한 검사 말고, 설계 판정에 쓰이는 검사 코드에서 사용자 결정 때문에 바꾼 곳은 이것 하나입니다.")
+      "외곽 맞춤과 추가한 검사 말고, 설계 판정에 쓰이는 검사 코드에서 사용자 결정 때문에 바꾼 곳은 이것과 rev 3.1의 선언된 MCU 핀 하나(아래)뿐입니다.")
     A(f"- **C42 이동:** {F.v('C42 이동')} - 2.0 mm 배터리 선이 Q10 3번 패드로 들어가게.")
     A(f"- **배터리 전원 경로:** 선은 모든 구간 {F.v('배터리 경로 최소 폭')} 이상 (1장의 숫자). 다만 L5 입력 패드 앞의 비아 두 개({F.v('L5 입력 비아')})는 "
       "선이 아니라서 폭 검사 대상이 아니고, 도금 단면이 2.0 mm 선보다 작습니다 (1장 '목적과 다른 점').")
@@ -1321,6 +1517,8 @@ def readme(F: Facts, ctx: dict) -> str:
       "OpenLog (모듈에 직각 6핀 헤더를 납땜한 뒤 직접 단 소켓 J5에 꽂음), NEO-7M (케이블로 J7).")
     A(f"- 부품 없이 비워 둔 자리: 프로그래밍 단자 J3, J19~J22 (2x3), J24~J26 (1x2) - 현재 선택 {F.v('프로그래밍 헤더 선택')}안 (빈 도금 구멍). "
       f"JLC가 헤더를 띠 밖에 실장하는 B안은 배치 검색 결과 {F.v('B안 결론')} ({F.v('B안 2x3 자리')}).")
+    A(f"- rev 3.1의 J13 ({F.v('J13 자리')}): 부품이 없는 도금 구멍 패드입니다. 로켓에 넣는 보드에서만 사용자가 서보 Y자 리드의 신호선을 납땜하고, "
+      "VTOL에서는 비워 둡니다. R22는 JLC가 실장합니다.")
     A(f"- MCU·센서 말고 사용자가 해야 하는 일(ESP-12F와 스루홀 커넥터 납땜, 다리 자르기, 프로그래밍 단자 등)은 {p('out/ORDER_ko.md')} 8장에, "
       f"납땜 순서·커넥터 방향·받은 뒤 전원 시험은 7장에, 따로 살 부품은 {p('out/' + KO_NAME)} 에 모았습니다.")
     A("")
@@ -1370,6 +1568,14 @@ def readme(F: Facts, ctx: dict) -> str:
         f"지금 파일(외접 {F.v('외접 크기')})의 견적, 메모 검토 뒤 금액, "
         "배송비와 세금은 NOT_VERIFIED입니다.",
         "GPS 케이블이 기체 안에서 지나갈 길은 설계되지 않았습니다 (그림은 예시).",
+        f"rev 3.1 분리 서보 출력: 분리 서보, Y자 리드({F.v('로켓 Y자 리드')}), J13에 납땜한 신호선은 만들거나 움직여 본 적이 없습니다. "
+        "분리 서보가 J12의 SERVO_5V(ESC의 BEC 출력)에서 전원을 받을 때 BEC의 전류 여유, 긴 신호선과 R22 220 Ohm으로 서보가 제대로 반응하는지, J13 패드에 "
+        "직접 납땜한 선의 기계적 강도(진동, 당김)는 NOT_VERIFIED입니다.",
+        "rev 3.1 거버의 JLC 수락과 값: 새 거버(J13 / R22 추가, 배선 일부 변경)는 JLC에 올려 본 적이 없습니다. 견적, DFM 결과, R22가 21번 줄에 "
+        f"들어간 BOM / CPL 매칭은 NOT_VERIFIED입니다. 장바구니의 {F.v('rev 3 장바구니 항목')}는 rev 3 거버이므로 결제하면 안 됩니다.",
+        "로켓 안 분리 서보 선의 길: J13은 +x / +y 모서리라 선이 분리 서보와 같은 +x 쪽으로 나가 전자 트레이 판을 건너지 않는다는 것은 상자 모델로만 "
+        "본 것입니다 (A). 탑재부 칸막이와 COM 보드 돌기를 지나는 길, 45도 조인트 나사 몸통과의 간격은 모델에 없어 NOT_VERIFIED입니다.",
+        "B안(서보 열 직각 헤더)을 배터리 선을 다시 그려서 넣을 수 있는지: 추정(E)만 있고 배치·배선·검사해 보지 않았습니다 (NOT_VERIFIED).",
     ]:
         A(f"- {t}")
     A("")
@@ -1459,7 +1665,7 @@ def order(F: Facts, ctx: dict) -> str:
     gate, alt = ctx["gate"], ctx["alt"]
     L: list[str] = []
     A = L.append
-    A("# JLCPCB 주문 안내서 - VTOL 캐리어 PCB rev 3")
+    A("# JLCPCB 주문 안내서 - VTOL 캐리어 PCB rev 3.1")
     A("")
     A("이 안내서는 PCB 실장 주문(PCBA)을 처음 하는 사람도 따라 할 수 있게 썼습니다. **이 문서를 만든 스크립트는 아무것도 업로드하거나 주문하지 않습니다. "
       "이 보드는 한 번도 만들어진 적이 없습니다.** 업로드, 확인, 결제는 모두 사용자가 JLCPCB 사이트에서 직접 합니다 "
@@ -1514,7 +1720,8 @@ def order(F: Facts, ctx: dict) -> str:
     A(f"- SW 패드 간격 여유 {F.v('SW 간격 여유')} (부품 자리가 맞닿은 배치로 정해짐).")
     A("- 미리 그린 배선(승압부와 배터리 경로의 갈래)은 자동 넓히기에서 빠져 설계한 폭 그대로입니다 (재설계 전 흐름은 넓혔음).")
     A("- 배치 검사 place.py는 J26 / J22 / J19만 'rev 2c 자리 + 사용자가 승인한 이동'과 비교합니다. 외곽 맞춤과 추가한 검사 말고 사용자 결정 때문에 "
-      "바꾼 판정 검사 코드는 이것 하나입니다. 그 밖에 바꾼 검사 스크립트: determinism.py의 폴더 이름 바꾸기 규칙 (비교 종류·PASS 규칙은 그대로). "
+      "바꾼 판정 검사 코드는 이것과, rev 3.1 사용자 결정에 따른 MCU 핀맵·네트 검사의 선언된 핀 하나(U2.7 → RELEASE_PWM)뿐입니다. "
+      "그 밖에 바꾼 검사 스크립트: determinism.py의 폴더 이름 바꾸기 규칙 (비교 종류·PASS 규칙은 그대로), place.py의 새 부품 J13 / R22 항목. "
       "전체 목록은 README 3장.")
     A(f"- 입력 커패시터 C41은 L5 입력 패드 옆에 있고 U8 VIN 핀 옆에는 커패시터가 없습니다. 내층 귀환 거리: {F.v('내층 귀환 거리')}.")
     A(f"- 출력 커패시터 C43의 GND: {F.v('C43 GND 선')} (넓은 GND 구리가 아님; U8 발열 NOT_VERIFIED).")
@@ -1533,6 +1740,20 @@ def order(F: Facts, ctx: dict) -> str:
       "탭 부품 C41 / L5 / C57의 몸체는 가장자리에서 2.5 mm보다 가깝습니다 (README 1장 표) - JLC DFM 결과를 보십시오.")
     A(f"- 알려진 작은 항목 (M, 검사 대상 아님): U9 바이패스 C59의 GND 비아 - {F.v('C59 GND 비아')}; L5 입력 패드 4 mm 안의 배터리 네트 비아 - "
       f"{F.v('L5 입력 비아')}. {F.v('L5 입력 비아 단면')}")
+    A("")
+    A(f"### D. rev 3.1 ({F.v('rev 3.1 날짜')}): 로켓용 분리 서보 출력 (사용자 결정 {F.v('rev 3.1 요청 원문')})")
+    A("")
+    A(f"- **장바구니의 {F.v('rev 3 장바구니 항목')}는 rev 3 거버입니다. 결제하지 마십시오.** 그보다 옛 {F.v('그 전 장바구니 항목')}도 결제하지 마십시오 "
+      "(장바구니는 이 작업에서 열지 않음 - 결제 전에 항목별 거버를 직접 확인). rev 3.1 주문은 이 폴더의 새 파일 3개(1장)를 새로 올려야 합니다. "
+      "새 거버의 견적과 DFM 결과는 올려 보기 전까지 NOT_VERIFIED이고, 4장의 견적은 모두 그 전 거버의 것입니다.")
+    A(f"- 바뀐 것: R22 (220 Ohm, JLC 실장) 추가 → BOM 줄 {F.v('R22 BOM 줄')}. BOM 줄 수는 그대로 {F.v('main bom_lines')}줄이고 CPL에 R22 한 줄이 늘었습니다. "
+      f"J13은 부품 없는 도금 구멍 패드라 BOM / CPL에 없습니다 ({F.v('J13 자리')}). MCU 핀 변경: {F.v('분리 서보 MCU 핀')}.")
+    A(f"- 사용자가 고른 B안(서보 열의 직각 헤더, J18을 VIN 1핀으로)은 {F.v('B안 결과 (rev 3.1)')} (M). 그래서 사용자가 정해 둔 C안으로 만들었고, "
+      "**J18은 rev 3 그대로 1x4**입니다 (테더·하이브리드용 VTET / VBUF / ISGN 입력과 분압 부품도 그대로 - 잃는 것 없음). "
+      "B안용 새 헤더(C32713262 1x3)나 1핀 헤더는 사지 않습니다. B안은 배터리 선 구간을 다시 그리면 될 수도 있지만 그것은 사용자가 정할 설계 변경입니다 "
+      "(README 맨 위 참고; E, NOT_VERIFIED).")
+    A(f"- 로켓에 넣는 보드에만 따로 살 것: {F.v('로켓 Y자 리드')} (6장 (g) 묶음). 신호선을 J13에 납땜합니다 (7장 11번).")
+    A("- 펌웨어와 params는 바꾸지 않았습니다 (분리 핀은 계속 PE5). 분리 서보 동작, Y자 리드, 납땜한 신호선은 NOT_VERIFIED입니다.")
     A("")
     A("- 아래 1~9장은 주문 절차입니다 (Economic PCBA로 SMT 부품만 실장, 무연 HASL; ESP-12F와 스루홀 커넥터는 사용자가 사서 납땜).")
     A("")
@@ -1931,6 +2152,9 @@ def order(F: Facts, ctx: dict) -> str:
     A("11. 커넥터 연결: 배터리 J14, 스위치 J15, GPS J7, 서보 J8~J11 / ESC J12, 아밍 J16, 부저 J17. 장착은 rev 2c와 같이 3 mm 폼테이프 + 케이블타이 1개 "
       "(x -3..+3 mm 띠). **장착 전에 띠를 다시 비우십시오:** 프로그래밍 헤더를 띠 구멍에 납땜했다면 떼거나 잘라 내야 케이블타이와 폼테이프가 "
       "제자리에 앉습니다 (뒷면으로 나온 다리도 1.5 mm 규칙). 비행용 보드는 포고핀 어댑터로만 굽는 것이 가장 간단합니다.")
+    A(f"   로켓에 넣는 보드만 (rev 3.1): ESC 리드와 J12 사이에 서보 Y자 리드를 끼우고, 분리 서보로 가는 갈래의 신호선을 잘라 J13 패드({F.v('J13 자리')}, "
+      "실크 'REL')에 납땜합니다. 서보의 + / - 는 그 갈래가 J12의 2번 / 3번에서 받습니다. 선은 당겨지지 않게 묶어 두십시오 (납땜부 강도 NOT_VERIFIED). "
+      "VTOL에서는 J13을 비워 둡니다.")
     A("")
     A("## 8. MCU·센서 말고 사용자가 해야 하는 일 (숨기지 않고 모음)")
     A("")

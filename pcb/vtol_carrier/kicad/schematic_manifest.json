@@ -1,6 +1,6 @@
 {
- "ir_content_hash": "sha256:ed99ffb5af0416ccfee220d2b85e5492d40eb00a284f524e5765ad832671e2fa",
- "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
+ "ir_content_hash": "sha256:d5f4cddc94a4d2b3026a8e27b8535f53897640134e4dcc4ab8effe87145bab3f",
+ "spec_sha256": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
  "power_flags": [
   "+5V",
   "COM_AVCC",
@@ -15,10 +15,10 @@
   "vtol_carrier.kicad_pro": "bc65f75c7aa35a7fbc2b10e1336d4e73a58e92b7bb33ee858a716e20277e2d36",
   "power.kicad_sch": "e36be8f042bf1ffa8c0c02937bb3e261f7a4df9e893a9c33a98195c921455326",
   "nav.kicad_sch": "f53cdba94d5f3b9ba0809433bedc9e370a21e0c22ff8876b7a811ec8e2663915",
-  "fcu.kicad_sch": "e5d4749380a14d7342a5af8d3a93a160ffc98ea1129d4aad5a6acce0a8cb9647",
+  "fcu.kicad_sch": "d279f2a3633db657223b2779f950415fe0c8bb82551b2dbb23683de7784a37c7",
   "com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
   "gns.kicad_sch": "b82c957e69f98ead5408eb6eab73c54999fdfb08b6e579a50424e496ecea8236",
   "level_shift.kicad_sch": "80917e3cf8e8f68bde7ce11550ec714492f2b798c002bb9423c942cf292b5dd0",
-  "io.kicad_sch": "7a4d5cd3b7c1cb5c71ddcca46196d8339a7968c7f039a00caf8c6ce6b78d9f0b"
+  "io.kicad_sch": "17d16293f0730fc9aba10ea797c1d086a363eee177ff097f33537ab1a4f8ed5d"
  }
 }

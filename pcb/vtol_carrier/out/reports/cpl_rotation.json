@@ -2,9 +2,9 @@
  "tool": "scripts/cpl_rotation.py (pcbnew 10.0.6)",
  "board": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
-  "sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d"
+  "sha256": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f"
  },
- "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
+ "spec_sha256": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
  "assumption_A": "JLC's 0 deg of a part = its EasyEDA footprint at 0 deg and JLC places the EasyEDA footprint origin at Mid X / Mid Y; rotation positive = counter-clockwise seen from the top (F jlc_rules.md:66). Confirmed only by JLC's placement preview / production file.",
  "status_meaning": {
   "EE_FIT": "theta measured from JLC's EasyEDA footprint record (every pad matched by pin function within 0.35 mm, polarity cross-check passed); still NOT confirmed by JLC's preview",
@@ -12,8 +12,8 @@
  },
  "problems": [],
  "summary": {
-  "rows": 148,
-  "main_pair_rows": 144,
+  "rows": 149,
+  "main_pair_rows": 145,
   "orientation_critical_rows": 30,
   "orientation_critical_ee_fit": [
    "D1",
@@ -49,7 +49,7 @@
    "C52",
    "U9"
   ],
-  "non_polar_ee_fit": 118,
+  "non_polar_ee_fit": 119,
   "non_polar_not_verified": [],
   "rows_with_mid_offset_over_0.05mm": [
    "J7 0.275"
@@ -11248,6 +11248,124 @@
      "n": "2",
      "x": 117.025,
      "y": 83.8
+    }
+   ],
+   "pad1_offset_mm": 0.072,
+   "mid_offset_from_kicad_origin_mm": 0.0,
+   "status": "EE_FIT",
+   "notes": []
+  },
+  "R22": {
+   "designator": "R22",
+   "jlc_code": "C22962",
+   "footprint": "R_0603_1608Metric",
+   "pair": "main",
+   "kind": "non-polar 2-pad",
+   "kicad_rotation": 0.0,
+   "kicad_origin_mm": [
+    130.125,
+    67.15
+   ],
+   "pin_function_rows": [
+    [
+     "2",
+     "2",
+     "2",
+     "",
+     "not informative"
+    ],
+    [
+     "1",
+     "1",
+     "1",
+     "",
+     "not informative"
+    ]
+   ],
+   "easyeda_package": "R0603",
+   "easyeda_record": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/jlc_cache/easyeda_C22962.json",
+   "easyeda_fetched_at": "2026-11-11T16:24:46+09:00",
+   "theta_fit": [
+    {
+     "theta_ccw": 0,
+     "worst_pad_centre_error_mm": 0.072,
+     "pads_matched": 2
+    },
+    {
+     "theta_ccw": 90,
+     "worst_pad_centre_error_mm": 1.117,
+     "pads_matched": 2
+    },
+    {
+     "theta_ccw": 180,
+     "worst_pad_centre_error_mm": 1.578,
+     "pads_matched": 2
+    },
+    {
+     "theta_ccw": 270,
+     "worst_pad_centre_error_mm": 1.117,
+     "pads_matched": 2
+    }
+   ],
+   "pin_names_compared": 0,
+   "pin_name_mismatches": [],
+   "theta_ccw": 0,
+   "correction_deg": 0,
+   "cpl_rotation": 0.0,
+   "mid_board_mm": [
+    130.125,
+    67.15
+   ],
+   "source": "EasyEDA footprint record (JLC library) easyeda_C22962.json fetched 2026-11-11T16:24:46+09:00; pad fit 0.072 mm",
+   "ee_pads_board": [
+    {
+     "n": "2",
+     "x": 130.878,
+     "y": 67.15
+    },
+    {
+     "n": "1",
+     "x": 129.372,
+     "y": 67.15
+    }
+   ],
+   "ee_outline_board": [
+    [
+     129.325,
+     66.75
+    ],
+    [
+     130.925,
+     66.75
+    ],
+    [
+     130.925,
+     67.55
+    ],
+    [
+     129.325,
+     67.55
+    ]
+   ],
+   "body_side_check": "body centred on the pads (EasyEDA 0.00 mm, KiCad 0.00 mm, <= 0.3 mm): no side to compare",
+   "third_party_tables": {
+    "fabrication_toolkit": null,
+    "matthewlai_rev2c": null
+   },
+   "kicad_pad1_board": [
+    129.3,
+    67.15
+   ],
+   "kicad_pads_board": [
+    {
+     "n": "1",
+     "x": 129.3,
+     "y": 67.15
+    },
+    {
+     "n": "2",
+     "x": 130.95,
+     "y": 67.15
     }
    ],
    "pad1_offset_mm": 0.072,

@@ -66,6 +66,7 @@ J9,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,
 J10,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,30.31,64.83,31.97
 J11,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.71,-x,9.95,-x,True,False,False,0.71,38.93,64.83,23.35
 J12,"1x3 2.54 mm right-angle header (S, +, -)",PinHeader_1x03_P2.54mm_Horizontal,user,True,top,True,fab,0.7,+x,7.32,+y,True,False,False,64.84,6.85,0.7,55.43
+J13,1-pin THT pad (release servo signal),TestPoint_THTPad_D2.0mm_Drill1.0mm,none,True,top,True,courtyard,0.325,+y,0.85,+y,True,False,False,63.525,0.325,9.425,66.77
 J14,"Molex SPOX 5267-02A 2.50 mm 2-pin vertical (mates the pack's 5264-type housing, A)",Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical,user,True,top,True,fab,0.7,-x,2.35,-x,True,False,False,0.7,0.7,67.8,64.3
 J15,JST-PH 2.0 2-pin vertical: lead to an external logic power switch,JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,user,True,top,True,fab,0.29,-x,2.1,-x,True,True,False,0.29,6.29,69.3,58.7
 J16,1x2 right-angle header,PinHeader_1x02_P2.54mm_Horizontal,user,True,top,True,fab,0.7,+y,9.94,+y,True,False,False,57.8,0.7,13.02,58.942
@@ -115,6 +116,7 @@ R18,220,R_0603_1608Metric,jlc,True,top,False,fab,14.337,-x,14.325,-x,False,False
 R19,220,R_0603_1608Metric,jlc,True,top,False,fab,22.05,-y,21.675,-y,False,False,False,33.737,46.25,41.338,22.05
 R20,220,R_0603_1608Metric,jlc,True,top,False,fab,13.938,-x,13.925,-x,False,False,False,13.938,36.75,61.138,31.55
 R21,220,R_0603_1608Metric,jlc,True,top,False,fab,18.337,+y,18.325,+y,False,False,False,53.35,18.337,20.95,50.737
+R22,220,R_0603_1608Metric,jlc,True,top,False,fab,1.688,+y,1.675,+y,True,False,False,67.275,1.688,7.025,67.417
 R23,10k,R_0603_1608Metric,jlc,True,top,False,fab,17.438,+y,17.425,+y,False,False,False,47.35,17.438,26.95,51.638
 R24,10k,R_0603_1608Metric,jlc,True,top,False,fab,15.35,-x,14.975,-x,False,False,False,15.35,26.438,58.95,42.638
 R25,10k,R_0603_1608Metric,jlc,True,top,False,fab,13.938,-x,13.925,-x,False,False,False,13.938,33.75,61.138,34.55

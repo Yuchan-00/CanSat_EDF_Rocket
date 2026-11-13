@@ -1,4 +1,4 @@
-# JLCPCB 주문 안내서 - VTOL 캐리어 PCB rev 3
+# JLCPCB 주문 안내서 - VTOL 캐리어 PCB rev 3.1
 
 이 안내서는 PCB 실장 주문(PCBA)을 처음 하는 사람도 따라 할 수 있게 썼습니다. **이 문서를 만든 스크립트는 아무것도 업로드하거나 주문하지 않습니다. 이 보드는 한 번도 만들어진 적이 없습니다.** 업로드, 확인, 결제는 모두 사용자가 JLCPCB 사이트에서 직접 합니다 (2026-11-12에 사용자의 브라우저에서 이전 빌드의 파일을 주문 화면에 올려 견적까지 본 기록이 2장과 4장에 있습니다. 그 기록에 주문이나 결제는 없습니다).
 
@@ -35,7 +35,7 @@
 - 출력 커패시터 C57의 GND는 윗면에서 L5 둘레·아래의 GND 면(구리 채움)으로만 U8 GND 핀과 이어집니다 (SW 선이 사이에 있어 선을 그을 수 없음). 자동 배선이 이 면을 끊지 않도록 Freerouting 입력에만 탭 위 윗면 배선 금지 영역을 두었습니다.
 - SW 패드 간격 여유 0.124 mm (부품 자리가 맞닿은 배치로 정해짐).
 - 미리 그린 배선(승압부와 배터리 경로의 갈래)은 자동 넓히기에서 빠져 설계한 폭 그대로입니다 (재설계 전 흐름은 넓혔음).
-- 배치 검사 place.py는 J26 / J22 / J19만 'rev 2c 자리 + 사용자가 승인한 이동'과 비교합니다. 외곽 맞춤과 추가한 검사 말고 사용자 결정 때문에 바꾼 판정 검사 코드는 이것 하나입니다. 그 밖에 바꾼 검사 스크립트: determinism.py의 폴더 이름 바꾸기 규칙 (비교 종류·PASS 규칙은 그대로). 전체 목록은 README 3장.
+- 배치 검사 place.py는 J26 / J22 / J19만 'rev 2c 자리 + 사용자가 승인한 이동'과 비교합니다. 외곽 맞춤과 추가한 검사 말고 사용자 결정 때문에 바꾼 판정 검사 코드는 이것과, rev 3.1 사용자 결정에 따른 MCU 핀맵·네트 검사의 선언된 핀 하나(U2.7 → RELEASE_PWM)뿐입니다. 그 밖에 바꾼 검사 스크립트: determinism.py의 폴더 이름 바꾸기 규칙 (비교 종류·PASS 규칙은 그대로), place.py의 새 부품 J13 / R22 항목. 전체 목록은 README 3장.
 - 입력 커패시터 C41은 L5 입력 패드 옆에 있고 U8 VIN 핀 옆에는 커패시터가 없습니다. 내층 귀환 거리: C43.2 GND 비아 → U8.4 GND 비아 5.15 mm; C57.2 GND 비아 → U8.4 GND 비아 4.02 mm; C41.2 GND 비아 → U8.4 GND 비아 8.33 mm (비아 중심 사이 직선, In1 GND 면 위).
 - 출력 커패시터 C43의 GND: C43 GND 패드에서 U8 GND 핀까지 윗면 GND 선 폭 0.2 mm 0.358 mm, 폭 0.25 mm 3.1 mm (비아 연결선 제외; SOT-563 패드 두 줄 사이를 지나는 가는 선; 패드마다 0.3 mm GND 비아 하나씩) (넓은 GND 구리가 아님; U8 발열 NOT_VERIFIED).
 - 배터리 경로의 L5 입력 비아: 드릴 0.4 mm 이상 비아 2개의 도금 구리 단면은 합쳐서 약 0.045 mm2 로, 폭 2.0 mm 1 oz 배선의 0.07 mm2 보다 작습니다 (도금 18 um 가정, E). 폭 검사는 선만 잽니다.
@@ -51,6 +51,14 @@
 - 탭 안쪽 모서리 r 1.0 mm를 JLC의 라우터 날이 만들 수 있는지는 근거 문서가 없어 NOT_VERIFIED입니다 (업로드 미리보기에서 확인). 탭 부품 C41 / L5 / C57의 몸체는 가장자리에서 2.5 mm보다 가깝습니다 (README 1장 표) - JLC DFM 결과를 보십시오.
 - 알려진 작은 항목 (M, 검사 대상 아님): U9 바이패스 C59의 GND 비아 - 패드 1.5 mm 안에 자기 GND 비아 있음; L5 입력 패드 4 mm 안의 배터리 네트 비아 - 드릴 0.4 mm 2개. 드릴 0.4 mm 이상 비아 2개의 도금 구리 단면은 합쳐서 약 0.045 mm2 로, 폭 2.0 mm 1 oz 배선의 0.07 mm2 보다 작습니다 (도금 18 um 가정, E).
 
+### D. rev 3.1 (2026-11-13): 로켓용 분리 서보 출력 (사용자 결정 "캐리어 PCB를 로켓에도 씀" / "B: 서보 열에 직각 헤더")
+
+- **장바구니의 Y24는 rev 3 거버입니다. 결제하지 마십시오.** 그보다 옛 Y23, Y20도 결제하지 마십시오 (장바구니는 이 작업에서 열지 않음 - 결제 전에 항목별 거버를 직접 확인). rev 3.1 주문은 이 폴더의 새 파일 3개(1장)를 새로 올려야 합니다. 새 거버의 견적과 DFM 결과는 올려 보기 전까지 NOT_VERIFIED이고, 4장의 견적은 모두 그 전 거버의 것입니다.
+- 바뀐 것: R22 (220 Ohm, JLC 실장) 추가 → BOM 줄 220R 1%, R17-R22 (6개), C22962. BOM 줄 수는 그대로 33줄이고 CPL에 R22 한 줄이 늘었습니다. J13은 부품 없는 도금 구멍 패드라 BOM / CPL에 없습니다 (KiCad (127.05, 66.85) mm, J12(ESC) 옆 +x / +y 모서리). MCU 핀 변경: U2.7 (PE5 / OC3C): NC → RELEASE_PWM.
+- 사용자가 고른 B안(서보 열의 직각 헤더, J18을 VIN 1핀으로)은 rev 3 배터리 선을 바꾸지 않는다는 조건에서는 놓을 수 없음: -x 서보 열에 직각 1x3 J13을 J8~J11과 같은 8.62 mm 간격으로 넣고 J18을 1핀으로 줄이면, 배터리 선 두 개(윗면 2.0 mm VBAT_LOGIC, 아랫면 2.4 mm VBAT_LOGIC_SW) 사이에 45.06 mm가 필요한데 44.60 mm뿐입니다. 801곳을 찾아본 가장 좋은 자리도 열의 양 끝에서 0.13 mm 간격 규칙보다 0.23 mm 모자랐습니다. 배터리 선을 바꾸지 않는다는 조건은 사용자 결정도 검사 기준도 아니고 (검사는 배터리 경로 폭 2.0 mm 이상, 0.035 Ohm 이하만 요구), rev 3.1 작업이 rev 3 재설계 때 build_pcb.py에 깔아 둔 미리 그린 배선을 건드리지 않으려고 스스로 둔 것입니다 (M). 그래서 사용자가 정해 둔 C안으로 만들었고, **J18은 rev 3 그대로 1x4**입니다 (테더·하이브리드용 VTET / VBUF / ISGN 입력과 분압 부품도 그대로 - 잃는 것 없음). B안용 새 헤더(C32713262 1x3)나 1핀 헤더는 사지 않습니다. B안은 배터리 선 구간을 다시 그리면 될 수도 있지만 그것은 사용자가 정할 설계 변경입니다 (README 맨 위 참고; E, NOT_VERIFIED).
+- 로켓에 넣는 보드에만 따로 살 것: 서보 Y자 리드선 3핀 2.54 mm (JR / 후타바형) 1개 (로켓에 넣는 보드용) (6장 (g) 묶음). 신호선을 J13에 납땜합니다 (7장 11번).
+- 펌웨어와 params는 바꾸지 않았습니다 (분리 핀은 계속 PE5). 분리 서보 동작, Y자 리드, 납땜한 신호선은 NOT_VERIFIED입니다.
+
 - 아래 1~9장은 주문 절차입니다 (Economic PCBA로 SMT 부품만 실장, 무연 HASL; ESP-12F와 스루홀 커넥터는 사용자가 사서 납땜).
 
 ## 1. 올릴 파일 3개
@@ -61,20 +69,20 @@
 
 | 순서 | 파일 | 어디에 올리나 | sha256 앞부분 |
 |---|---|---|---|
-| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` | PCB 주문 첫 화면 'Add gerber file' | a32e6cffc9ff2c0f... |
-| 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv` | PCB Assembly 단계 'BOM file' | 6dff9dbcbcc55720... |
-| 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv` | PCB Assembly 단계 'CPL file' (Pick and Place) | e250211c7c3fd33b... |
+| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip` | PCB 주문 첫 화면 'Add gerber file' | 6a1e22caf6ce1ae4... |
+| 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom.csv` | PCB Assembly 단계 'BOM file' | 2f4827ad0b5fe97c... |
+| 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl.csv` | PCB Assembly 단계 'CPL file' (Pick and Place) | 9cf2527f4505e309... |
 
 다른 선택 (MCU 4개는 JLC가 실장, 결정 D4의 권장안; ESP-12F와 스루홀 커넥터는 이 묶음에서도 사용자가 납땜): 아래 3개를 **한 묶음으로** 올립니다.
 
 | 순서 | 파일 | sha256 앞부분 |
 |---|---|---|
-| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip` | 8b4b5635dd9386bc... |
-| 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv` | 43aea871c5965ec2... |
-| 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv` | ca865157515e163f... |
+| 1 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip` | b9246444b0348e2a... |
+| 2 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_bom_with_mcu.csv` | a00f1407a2825cd1... |
+| 3 | `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlcpcb_cpl_with_mcu.csv` | fa780830e806c36c... |
 
-- **두 묶음을 섞지 마십시오.** 두 zip은 F.Paste(솔더 페이스트) 층만 다릅니다: 기본 zip은 U1~U4 패드에 페이스트 구멍이 없고 (페이스트 패드 320개), with_mcu zip은 있습니다 (576개). **두 zip 모두 ESP-12F(U7) 패드에는 페이스트 구멍이 없습니다** (U7 패드 22개 중 기본 22개, with_mcu 22개를 뺌, M): 사용자가 납땜할 패드는 무연 HASL 코팅만 된 채로 옵니다. 페이스트를 뺀 자리: 기본 J1, J2, J3, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U1, U2, U3, U4, U7; with_mcu J1, J2, J3, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U7 (JLC가 부품을 달지 않는 자리; 스루홀 커넥터 자리는 원래 페이스트 패드가 없는 도금 구멍입니다).
-- 기본 BOM: 33줄 (SMT 33줄, 스루홀 0줄), 부품 144개, CPL 144행. with_mcu: 34줄 (스루홀 0줄), 부품 148개, CPL 148행.
+- **두 묶음을 섞지 마십시오.** 두 zip은 F.Paste(솔더 페이스트) 층만 다릅니다: 기본 zip은 U1~U4 패드에 페이스트 구멍이 없고 (페이스트 패드 322개), with_mcu zip은 있습니다 (578개). **두 zip 모두 ESP-12F(U7) 패드에는 페이스트 구멍이 없습니다** (U7 패드 22개 중 기본 22개, with_mcu 22개를 뺌, M): 사용자가 납땜할 패드는 무연 HASL 코팅만 된 채로 옵니다. 페이스트를 뺀 자리: 기본 J1, J2, J3, J5, J8, J9, J10, J11, J12, J13, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U1, U2, U3, U4, U7; with_mcu J1, J2, J3, J5, J8, J9, J10, J11, J12, J13, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U7 (JLC가 부품을 달지 않는 자리; 스루홀 커넥터 자리는 원래 페이스트 패드가 없는 도금 구멍입니다).
+- 기본 BOM: 33줄 (SMT 33줄, 스루홀 0줄), 부품 145개, CPL 145행. with_mcu: 34줄 (스루홀 0줄), 부품 149개, CPL 149행.
 - 기본 BOM에 MCU(U1~U4)가 들어 있는지: 없음. ESP-12F(U7): BOM에 없음. 스루홀 커넥터 J2 / J5: BOM에 없음, J8~J12: BOM에 없음, J14: BOM에 없음, J15 / J17: BOM에 없음 (두 BOM 모두). 센서 자리 J1과 프로그래밍 단자도 들어 있지 않습니다 (모두 사용자 몫).
 - 파일 형식: 2026-11-12 01:30-02:06 KST의 주문 화면은 이 변경 전 빌드의 BOM / CPL을 CSV 그대로 받아들였고 부품 40줄을 인식하고 40줄을 확정했습니다 (M, 주문 화면 2026-11-12). 지금 파일은 같은 형식에서 ESP-12F와 스루홀 커넥터 줄이 빠진 것이지만, **지금 파일을 올려 모든 줄이 매칭되는 것을 볼 때까지는 NOT_VERIFIED입니다.**
 - 두 거버 zip 모두 기판 아랫면 실크(B.SilkS, 아랫면에서 볼 때 바로 읽히도록 좌우 반전)에 깃 저장소 주소와 연락용 이메일 주소 두 줄이 들어 있습니다 (글자 높이 1.2 mm, 선 굵기 0.2 mm, 검사 PASS); 거버 미리보기의 그 면에서 두 줄이 끊기지 않고 보이는지 확인하십시오 (JLC 인쇄 품질은 NOT_VERIFIED).
@@ -100,7 +108,7 @@
 | Outer Copper Weight | 1 oz | D16 (JLC 기본 4층 적층) |
 | Inner Copper Weight | 0.5 oz | D16 (JLC 기본 4층 적층) |
 | Via Covering | Plugged | D16. 선택지: Tented, Untented, Plugged, Epoxy Filled & Capped (the list on the page is longer). 화면에서 본 것: 이 4층 기판에서 LeadFree HASL을 고르면 Tented가 막히고 Plugged(0 USD)가 선택됨 (말풍선 'The Via Tented option is upgraded to Via Plugged for free'). 화면이 정한 대로 둠 (M) |
-| Min via hole size/diameter | 0.3mm/(0.4/0.45mm) | 화면에 보인 값. 보드의 비아(지름/드릴): 0.6/0.3 mm 436개, 0.8/0.4 mm 3개 (M) |
+| Min via hole size/diameter | 0.3mm/(0.4/0.45mm) | 화면에 보인 값. 보드의 비아(지름/드릴): 0.6/0.3 mm 449개, 0.8/0.4 mm 3개 (M) |
 | Board Outline Tolerance | ±0.2mm | 화면에 보인 값 |
 | Confirm Production file | No | 화면에 보인 값 |
 | Mark on PCB | Remove Mark | 화면에 보인 값 그대로 둠 (D16: 기본값) |
@@ -128,8 +136,8 @@
 
 ### Economic으로 주문하면 달라지는 것 (D9)
 
-- **레일 대신 툴링 홀 (NOT_VERIFIED):** Standard는 JLC가 기판에 공정 레일을 붙이고 툴링 홀과 기준점을 레일에 둡니다 (화면 문구: 'The board size is modified to be 76mm*80mm due to adding two 5mm edge rails on the shorter sides', M). Economic에는 레일이 없어 JLC가 기판 안에서 툴링 홀 자리를 찾아야 합니다 ('Tooling holes: Added by JLCPCB'). 이 기판은 윗면 부품 자리 점유율이 86.7 % 이고 (M), 부품 자리 31곳이 기판 끝에서 2.5 mm 안에 있습니다 (M). 설계에는 툴링 홀이 없습니다. 계획 단계에서 rev 2c 보드의 네 모서리를 찾아봤을 때 한 모서리에는 빈자리가 없었고, 계획은 JLC가 구리가 있는 곳에 구멍을 낼 수도 있다고 적었습니다 (계획 16장 D10, F). **JLC가 구멍 자리를 찾는지, 구리(내층 면 포함)를 건드리지 않는지, 아니면 레일을 요구하는지는 주문 뒤 JLC의 검토로만 알 수 있습니다.** JLC가 구멍 위치를 묻거나 레일을 요구하면 멈추고 아래 Standard 대안을 검토하십시오.
-- **가장자리 거리 (JLC가 실장하는 SMT 부품 144개만 다시 계산, M):** 기판 끝에서 가장 가까운 몸체는 R60 0.537 mm 이고, 가까운 순서로 R60 0.537 mm, U6 0.55 mm, U9 0.589 mm, J7 0.805 mm, C60 0.95 mm 입니다. Economic 권장 거리 0.3 mm (계획 10장, F)보다 가까운 JLC 실장 몸체: 없음 (패드: 없음). 0.3 mm보다 가까운 자리(U7 0.15 mm, J15 0.29 mm)는 모두 사용자가 납땜하는 부품이라 JLC 실장과 무관합니다. 2.5 mm 안에 있는 JLC 실장 몸체는 12개입니다 (with_mcu 13개). JLC가 받아 주는지는 DFM 결과로만 압니다 (NOT_VERIFIED).
+- **레일 대신 툴링 홀 (NOT_VERIFIED):** Standard는 JLC가 기판에 공정 레일을 붙이고 툴링 홀과 기준점을 레일에 둡니다 (화면 문구: 'The board size is modified to be 76mm*80mm due to adding two 5mm edge rails on the shorter sides', M). Economic에는 레일이 없어 JLC가 기판 안에서 툴링 홀 자리를 찾아야 합니다 ('Tooling holes: Added by JLCPCB'). 이 기판은 윗면 부품 자리 점유율이 86.9 % 이고 (M), 부품 자리 33곳이 기판 끝에서 2.5 mm 안에 있습니다 (M). 설계에는 툴링 홀이 없습니다. 계획 단계에서 rev 2c 보드의 네 모서리를 찾아봤을 때 한 모서리에는 빈자리가 없었고, 계획은 JLC가 구리가 있는 곳에 구멍을 낼 수도 있다고 적었습니다 (계획 16장 D10, F). **JLC가 구멍 자리를 찾는지, 구리(내층 면 포함)를 건드리지 않는지, 아니면 레일을 요구하는지는 주문 뒤 JLC의 검토로만 알 수 있습니다.** JLC가 구멍 위치를 묻거나 레일을 요구하면 멈추고 아래 Standard 대안을 검토하십시오.
+- **가장자리 거리 (JLC가 실장하는 SMT 부품 145개만 다시 계산, M):** 기판 끝에서 가장 가까운 몸체는 R60 0.537 mm 이고, 가까운 순서로 R60 0.537 mm, U6 0.55 mm, U9 0.589 mm, J7 0.805 mm, C60 0.95 mm 입니다. Economic 권장 거리 0.3 mm (계획 10장, F)보다 가까운 JLC 실장 몸체: 없음 (패드: 없음). 0.3 mm보다 가까운 자리(U7 0.15 mm, J15 0.29 mm)는 모두 사용자가 납땜하는 부품이라 JLC 실장과 무관합니다. 2.5 mm 안에 있는 JLC 실장 몸체는 13개입니다 (with_mcu 14개). JLC가 받아 주는지는 DFM 결과로만 압니다 (NOT_VERIFIED).
 - **리플로 온도:** Economic은 최고 255±5 C, Standard는 240±5 C 입니다 (계획 10장, F). 데이터시트 정격이 Economic 최악값과 같아 **여유가 없는('한계') 부품**: C2833309 (C47, 정격 260 C), C2286 (D1/D2/D3/D4, 정격 260 C), C53426685 (L5, 정격 260 C) (F). 전해 커패시터 C47의 데이터시트는 리플로는 한 번만 (두 번은 사이에 30분을 둘 때만) 허용합니다 (F): 한 면 실장이라 JLC 공정은 한 번이지만, 받은 뒤 열풍기로 주변을 다시 달구는 재작업은 피하십시오. 문서에서 리플로 정격을 찾지 못한 부품 번호는 31개입니다 (NOT_VERIFIED).
 - **부품 종류:** 2026-11-12 01:30-02:06 KST의 화면에서 PCBA Type을 Economic으로 두었을 때 ESP-12F를 뺀 39줄이 모두 받아들여졌고 'Standard only' 안내는 없었습니다 (M, 이전 업로드 기준). 지금 BOM 33줄은 그중 SMT 줄입니다 (Extended 10종). 지금 파일로 매칭되는지는 올려 봐야 압니다 (NOT_VERIFIED).
 - **베이킹 (D14):** 주문하지 않습니다. 주문 화면에서 Economic PCB Assembly는 Bake Components를 고를 수 없습니다 (M). 습기에 민감한 ESP-12F는 이제 사용자가 납땜하고, JLC가 실장하는 것 중에는 LED (C2286)가 남습니다. with_mcu 묶음이면 ATmega128A (C6510)도 습기 민감 등급 MSL 3 (F: JLC 부품 기록) 입니다. 베이킹이 꼭 필요하다고 보면 Standard 대안을 검토하십시오.
@@ -144,16 +152,16 @@ PCBA Type을 Standard로 바꾸고, Tooling holes 칸 대신 나오는 'Edge Rai
 If edge rails are needed: routed tabs / mouse bites please, no V-cut (one long edge has a tab; copper is 0.4 mm from both long edges).
 ```
 
-메모 문장 (기본 묶음, Assembly remark 칸에 그대로 복사; 321자 / 한도 500자, Standard 문장을 덧붙이면 456자):
+메모 문장 (기본 묶음, Assembly remark 칸에 그대로 복사; 312자 / 한도 500자, Standard 문장을 덧붙이면 447자):
 
 ```
-SMT assembly only, top side. Please fit NO through-hole part and do NO hand soldering: every through-hole connector is bought and soldered by the customer. NOT assembled on purpose (no BOM/CPL rows) - please leave these footprints empty and add no parts: U1-U4, U7, J1-J3, J5, J8-J12, J14-J22, J24-J26, JP1, NT1, Q3, R47.
+SMT assembly only, top side. Please fit NO through-hole part and do NO hand soldering: every through-hole connector is bought and soldered by the customer. NOT assembled on purpose (no BOM/CPL rows) - please leave these footprints empty and add no parts: U1-U4, U7, J1-J3, J5, J8-J22, J24-J26, JP1, NT1, Q3, R47.
 ```
 
-with_mcu 묶음의 메모 (359자, Standard 문장을 덧붙이면 494자):
+with_mcu 묶음의 메모 (350자, Standard 문장을 덧붙이면 485자):
 
 ```
-SMT assembly only, top side. Please fit NO through-hole part and do NO hand soldering: every through-hole connector is bought and soldered by the customer. U1-U4 (in this BOM/CPL) are to be assembled. NOT assembled on purpose (no BOM/CPL rows) - please leave these footprints empty and add no parts: U7, J1-J3, J5, J8-J12, J14-J22, J24-J26, JP1, NT1, Q3, R47.
+SMT assembly only, top side. Please fit NO through-hole part and do NO hand soldering: every through-hole connector is bought and soldered by the customer. U1-U4 (in this BOM/CPL) are to be assembled. NOT assembled on purpose (no BOM/CPL rows) - please leave these footprints empty and add no parts: U7, J1-J3, J5, J8-J22, J24-J26, JP1, NT1, Q3, R47.
 ```
 
 - 메모가 말하는 것: (1) 윗면 SMT 실장만 할 것, (2) 스루홀 부품은 하나도 달지 말고 손납땜도 하지 말 것 (스루홀 커넥터는 고객이 사서 납땜), (3) 일부러 비워 둔 자리 목록 - 그 자리에 부품을 달지 말 것. 목록은 사양 파일에서 JLC가 실장하지 않는 자리를 모두 읽어 만든 것입니다. 스크립트는 메모가 500자를 넘으면 문서를 만들지 않고 멈춥니다.
@@ -161,7 +169,7 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 
 ## 3. 결제하기 전에 확인할 것 (하나라도 다르면 멈추고 결제하지 마십시오)
 
-1. 주문 당일, 업로드 직전에 재고를 다시 확인합니다: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts` 에서 `B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py` (인터넷, 읽기만, 약 2~3분). 결과 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_gate_report.json` 의 status가 PASS여야 합니다. 마지막 확인: 2026-11-12T22:27:21+09:00 PASS (33/33줄), with_mcu PASS.
+1. 주문 당일, 업로드 직전에 재고를 다시 확인합니다: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/scripts` 에서 `B:/Claude/.venv/Scripts/python.exe -X utf8 -B jlc_gate.py` (인터넷, 읽기만, 약 2~3분). 결과 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_gate_report.json` 의 status가 PASS여야 합니다. 마지막 확인: 2026-11-13T20:26:50+09:00 PASS (33/33줄), with_mcu PASS.
 2. BOM 매칭 화면: 기본 묶음이면 33줄 모두, with_mcu면 34줄 모두 부품이 매칭되어야 합니다. '부품 없음', '다른 부품 추천', '재고 부족', 'Economic에서는 쓸 수 없음' 이 하나라도 있으면 멈춥니다 (대체는 5장 표 1의 정해진 대체 부품만, 그것도 다시 확인 후). **목록에 ESP-12F (C82891)나 스루홀 커넥터(C22436147 (J2/J5), C32713262 (J8~J12), C5364642 (J14), C131337 (J15/J17), C32713261 (J16), C32713263 (J18))가 보이면 옛 파일을 올린 것이니 멈춥니다.**
 3. 견적에 손납땜 줄(Hand-soldering labor fee)과 수작업 조립 줄(Manual Assembly)이 **없어야** 합니다. 있으면 스루홀 부품이 실장 목록에 들어간 것이니 멈춥니다. 스루홀을 뺀 Economic 견적에는 두 줄이 없었고, 넣은 견적에는 3.61 USD와 1.35 USD로 있었습니다 (M).
 4. 부품 위치 미리보기(Confirm Parts Placement)를 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/cpl_rotation_check.png` 그림과 하나씩 비교합니다. 특히 극성: 탄탈 C45 / C52, 전해 C47 (거꾸로면 화재 위험), 그리고 회전이 확인 안 된 C45, C47, C52, U9. U8 / U9 / J7의 1번 핀 방향. **U7 (ESP-12F), U1~U4, 스루홀 커넥터 자리(J2, J5, J8~J12, J14~J18)는 비어 있어야 합니다.** 회전 근거는 `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/cpl_rotation_table.csv` 의 status 칸에 있습니다. 미리보기 화면에는 'The preview for reference only. Check final part placement at DFM Analysis in Order History in 4-6 hours after placing the order.' 라고 적혀 있습니다 (M): **최종 위치는 주문 뒤 4~6시간 후 Order History의 DFM Analysis에서 다시 확인합니다.** 2026-11-12 01:30-02:06 KST의 미리보기(이 변경 전 파일, 낮은 확대, 눈으로 봄)에서는 C45 / C47 / C52의 '+' 표시가 기판 실크의 '+' 와 같은 쪽에, U8의 1번 핀 점이 실크 표시 자리에 있었습니다 (M). U9 는 그 확대로 구분하지 못했습니다 (NOT_VERIFIED). JLC 풋프린트와 1번 핀 번호가 반대로 매겨진 부품(지금 CPL 기준): 없음 - 그런 부품이었던 J8~J12, J14, J16은 이제 CPL에 없습니다.
@@ -199,36 +207,36 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 - 넷째 열의 PCBA 항목을 더하면 125.36 이고 화면의 합은 125.37이었습니다 (차이는 화면 반올림).
 - 스루홀 6줄을 JLC에 맡길 때와의 차이: Economic 기준 합계 6.33 USD (M, 첫 열과 둘째 열의 차). 같은 커넥터를 LCSC에서 2장 분 사면 약 4.56 USD 입니다 (E, 배송비 제외; 2026-11-12T02:50:37+09:00 ~ 02:51:09+09:00의 LCSC 기록). 이번 주문에서는 사용자가 사서 납땜하는 쪽으로 정했습니다.
 - 표면처리: 무연 HASL의 추가 요금은 5.10 USD 이었습니다 (M; ENIG는 넷째 열의 PCB 칸).
-- 수수료 표로 계산한 추정(E)과 비교: 지금 BOM의 Economic PCBA 추정은 65.11 USD (Extended 10종 수수료 30.70 USD 포함; 스루홀 줄이 없어 손납땜 수수료는 0)이고, 화면의 PCBA 합은 63.72 USD입니다. 추정표는 질소 리플로 줄을 모르고 부품값 계산 방식이 달라 차이가 납니다. 전체 추정표: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_fee_estimate.csv` (E, 참고용).
+- 수수료 표로 계산한 추정(E)과 비교: 지금 BOM의 Economic PCBA 추정은 65.13 USD (Extended 10종 수수료 30.70 USD 포함; 스루홀 줄이 없어 손납땜 수수료는 0)이고, 화면의 PCBA 합은 63.72 USD입니다. 추정표는 질소 리플로 줄을 모르고 부품값 계산 방식이 달라 차이가 납니다. 전체 추정표: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/jlc_fee_estimate.csv` (E, 참고용).
 - **빠진 것 / 바뀔 수 있는 것:** 배송비, 세금, 메모 검토('Quote after review') 뒤의 금액 변동, 주문일의 부품 단가. 실제 금액은 결제 직전 화면의 견적뿐입니다.
 - Economic은 베이킹을 고를 수 없습니다 (2장). Standard에서 베이킹을 넣으면 7.94 USD가 더해집니다 (M).
 
 ## 5. 재고가 적은 줄과 대체 부품
 
-- 얇은 재고(기준 1000개 미만): C20345924 (U9) available 637.
-- 지켜볼 줄 (2000개 미만): C53426685 (L5) 1065개, 필요 22, C919459 (U8) 4773개, 필요 21, 재고가 계획 때 31489개에서 5533개로 절반 넘게 줄어듦, C20345924 (U9) 637개, 필요 20.
+- 얇은 재고(기준 1000개 미만): C20345924 (U9) available 597.
+- 지켜볼 줄 (2000개 미만): C8598 (D6) 184940개, 필요 28, 재고가 계획 때 725265개에서 361060개로 절반 넘게 줄어듦, C53426685 (L5) 1058개, 필요 22, C919459 (U8) 4431개, 필요 21, 재고가 계획 때 31489개에서 5278개로 절반 넘게 줄어듦, C20345924 (U9) 597개, 필요 20.
 - 대체는 계획에 적힌 순서대로만 씁니다. 다른 부품으로 바꾸는 것은 설계 변경이라 다시 검사하고 사용자가 정해야 합니다.
 
 **표 1. JLC가 실장하는 부품의 대체 부품** (이 파일 그대로, BOM 줄의 부품 번호만 바꿈). 'PASS'는 주문 가능 여부(재고)만 뜻합니다.
 
 | 원래 부품 | 대체 부품 (주문 가능 수량, 판정) | 풋프린트 호환 | 계획 메모 (spec/rev3_plan.json) |
 |---|---|---|---|
-| L5 (C53426685) | C167203 FXL0420-1R0-M (106152개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same series and land pattern, Isat 5.6 A (first plan's part), stock 107845 |
-| U8 (C919459) | C1852149 TPS61023DRLT (476개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same MPN, other reel; stock 550 (thin) |
-| J7 (C161692) | C52037397 GH1.25-4PLT (1700개, PASS); C2829262 GH1.25-4PLTPZ (55688개, PASS) | **NOT_VERIFIED** - 쓰기 전에 제조사 도면과 KiCad 풋프린트를 대조해야 함 | other makers' GH 1.25 mm 4P vertical; footprint check required before use |
+| L5 (C53426685) | C167203 FXL0420-1R0-M (129406개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same series and land pattern, Isat 5.6 A (first plan's part), stock 107845 |
+| U8 (C919459) | C1852149 TPS61023DRLT (464개, PASS) | 같은 패키지 (F, 계획 메모); 미리보기로 확인 | same MPN, other reel; stock 550 (thin) |
+| J7 (C161692) | C52037397 GH1.25-4PLT (1679개, PASS); C2829262 GH1.25-4PLTPZ (55682개, PASS) | **NOT_VERIFIED** - 쓰기 전에 제조사 도면과 KiCad 풋프린트를 대조해야 함 | other makers' GH 1.25 mm 4P vertical; footprint check required before use |
 | U9 (C20345924) | 없음 - 같은 사양의 두 번째 부품이 없습니다. 재고가 없으면 주문을 미룹니다 (계획 7장, F) | - | - |
 
 **표 2. 사용자가 사는 스루홀 부품의 대체 부품** (JLC 주문과 무관; 구하기 어려울 때의 계획 순서. 수량은 JLC 조립 창고의 것이고 LCSC 소매 재고가 아닙니다).
 
 | 원래 부품 | 대체 부품 (JLC 창고 수량, 판정) | 풋프린트 호환 | 계획 메모 |
 |---|---|---|---|
-| J2, J5 (C22436147) | C55629861 SH-PM254R-1x6P-H85 (985개, PASS); C54876735 PM2.54-1x6PWZ-H8.5 (565개, PASS) | **NOT_VERIFIED** - 사기 전에 제조사 도면과 KiCad 풋프린트를 대조해야 함 | same KiCad footprint assumed for both (no datasheet for C55629861: NOT_VERIFIED); C55629861 tails 3.2 mm -> protrusion about 1.6 mm, flush-cut |
+| J2, J5 (C22436147) | C55629861 SH-PM254R-1x6P-H85 (985개, PASS); C54876735 PM2.54-1x6PWZ-H8.5 (560개, PASS) | **NOT_VERIFIED** - 사기 전에 제조사 도면과 KiCad 풋프린트를 대조해야 함 | same KiCad footprint assumed for both (no datasheet for C55629861: NOT_VERIFIED); C55629861 tails 3.2 mm -> protrusion about 1.6 mm, flush-cut |
 
 - 계획에는 'JLC가 스루홀 손납땜을 거절할 때'를 위한 SMD 예비안(J8..J12, J16, J18 (THT right-angle headers) if JLC refuses hand soldering; J15, J17 (C131337))이 있었습니다. 이제 JLC가 스루홀을 달지 않으므로 이번 주문과 무관하고, 새 풋프린트가 필요한 부품이라 이 파일로는 어차피 쓸 수 없습니다.
 
 ## 6. 따로 사야 하는 것 (JLC는 낱개 부품을 보내주지 않습니다)
 
-목록 27줄. 읽기 쉬운 전체 목록(비고, LCSC 재고·가격 포함): `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/따로_살_부품_ko.md`; 같은 내용의 CSV: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/off_board_purchase.csv`. (a) 묶음 = JLC BOM에서 빠져 이번에 사용자가 사게 된 ESP-12F와 스루홀 커넥터 6종 (보드당 커넥터 12개). (a) 묶음을 LCSC에서 2장 분 사면 약 10.39 USD (E; 단가는 2026-11-12T02:50:37+09:00 ~ 02:51:09+09:00의 LCSC 기록 M, 최소 주문 수량 반영, 배송비 제외; 그 시각에 재고가 모자란 것: 없음). LCSC 말고는 재고와 가격을 확인하지 않았습니다 (NOT_VERIFIED).
+목록 28줄. 읽기 쉬운 전체 목록(비고, LCSC 재고·가격 포함): `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/따로_살_부품_ko.md`; 같은 내용의 CSV: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/off_board_purchase.csv`. (a) 묶음 = JLC BOM에서 빠져 이번에 사용자가 사게 된 ESP-12F와 스루홀 커넥터 6종 (보드당 커넥터 12개). (a) 묶음을 LCSC에서 2장 분 사면 약 10.39 USD (E; 단가는 2026-11-12T02:50:37+09:00 ~ 02:51:09+09:00의 LCSC 기록 M, 최소 주문 수량 반영, 배송비 제외; 그 시각에 재고가 모자란 것: 없음). LCSC 말고는 재고와 가격을 확인하지 않았습니다 (NOT_VERIFIED).
 
 | 묶음 | 품목 | 부품 번호 | 보드당 | 2장 분 | 어디에 | 구입처 (제안) |
 |---|---|---|---|---|---|---|
@@ -259,6 +267,7 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | (e) 프로그래밍 헤더와 도구 | 납땜 도구: 가는 인두 팁, 플럭스, 실납, 니퍼(다리 절단용), 멀티미터 (없을 때만) | - | - | 1 set | MCU, ESP-12F, 커넥터 12개 납땜, 다리 자르기, 전원 넣기 전 확인 | 국내 쇼핑몰 |
 | (f) 장착 재료 | 3 mm 폼테이프 | - | 1 | 2 | 기판 아랫면 (스루홀 다리를 자른 뒤) | 국내 쇼핑몰 |
 | (f) 장착 재료 | 케이블타이 | - | 1 | 2 | 케이블타이 띠 (x -3..+3 mm)를 가로질러 | 국내 쇼핑몰 |
+| (g) 로켓에 쓸 때만 (rev 3.1): 분리 서보 출력 | 서보 Y자 리드선 3핀 2.54 mm (JR / 후타바형) | - | 1 (rocket board) | 1 | ESC와 J12 사이; 두 번째 갈래가 분리 서보의 + / - 를 주고, 그 갈래의 신호선은 잘라서 J13 패드(RELEASE_SIG)에 납땜 | 국내 쇼핑몰 |
 
 ## 7. 보드를 받은 뒤 할 일 (계획 15장 순서 + ESP-12F와 스루홀 커넥터 납땜)
 
@@ -309,10 +318,11 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 
    - 다 달았으면 3번의 다리 규칙대로 뒷면 다리를 모두 재고 자릅니다. 폼테이프는 그 뒤에 붙입니다.
    - J3 굽기 헤더와 다른 프로그래밍 헤더를 직접 납땜한다면 이 단계 뒤에 답니다 (D6).
-8. **모듈 장착:** 각 모듈에 인쇄된 핀 순서를 보드 실크와 먼저 비교합니다. 보드 실크 이름표 읽는 법 (M, 검사 PASS): 핀 줄과 나란히 적힌 이름표는 그 면에서 본 패드 순서대로 적혀 있습니다 (J8 윗면 'V1 S+-', J17 윗면 'BUZ +-', J14 아랫면 '1S BAT -+', J7 아랫면 'GPS G RX TX V', J16 윗면 'ARM SW AG', J2 아랫면 'BMP280 3V 3V SDA SCL G 3V'; 아랫면 것은 아랫면에서 볼 때의 순서라서 윗면에서 보면 좌우가 반대입니다). 핀 줄과 직각으로 적혔거나 두 줄짜리 헤더 옆에 적힌 이름표(J1, J3, J5, J9~J12, J18)는 1번 핀(네모난 패드)부터의 순서입니다. GY-521은 자기 1x8 핀으로 J1에 납땜 (8곳), 받침 2.54 mm (A) (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2a_gy521_J1.png`); BMP280은 직접 단 소켓 J2에 꽂음 (헤더 직각이 아니면 직각 핀을 먼저 납땜, `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2b_bmp280_J2.png`); OpenLog는 직각 6핀 헤더를 납땜한 뒤 microSD 쪽이 위로 오게 직접 단 소켓 J5에 꽂음 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2c_openlog_J5.png`); NEO-7M은 윗뚜껑에 두고 JST-GH 케이블을 J7에 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e3_gps_lead_J7.png`). 받은 상태와 완성 상태 비교: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e1_delivered_vs_completed.png`, 전체 안내: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e4_overview_callouts.png`. OpenLog는 먼저 아랫면(ATmega328 쪽) 높이를 재고 끼워 보십시오: 아랫면 부품이 1.2 mm라고 보는 보수적 경우(A) 꽂는 길에서 C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end') 이 겹칩니다.
+8. **모듈 장착:** 각 모듈에 인쇄된 핀 순서를 보드 실크와 먼저 비교합니다. 보드 실크 이름표 읽는 법 (M, 검사 PASS): 핀 줄과 나란히 적힌 이름표는 그 면에서 본 패드 순서대로 적혀 있습니다 (J8 윗면 'V1 S+-', J17 윗면 'BUZ +-', J14 아랫면 '1S BAT -+', J7 아랫면 'GPS G RX TX V', J16 아랫면 'ARM SW GA', J2 아랫면 'BMP280 3V 3V SDA SCL G 3V'; 아랫면 것은 아랫면에서 볼 때의 순서라서 윗면에서 보면 좌우가 반대입니다). 핀 줄과 직각으로 적혔거나 두 줄짜리 헤더 옆에 적힌 이름표(J1, J3, J5, J9~J13, J18)는 1번 핀(네모난 패드)부터의 순서입니다. GY-521은 자기 1x8 핀으로 J1에 납땜 (8곳), 받침 2.54 mm (A) (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2a_gy521_J1.png`); BMP280은 직접 단 소켓 J2에 꽂음 (헤더 직각이 아니면 직각 핀을 먼저 납땜, `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2b_bmp280_J2.png`); OpenLog는 직각 6핀 헤더를 납땜한 뒤 microSD 쪽이 위로 오게 직접 단 소켓 J5에 꽂음 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e2c_openlog_J5.png`); NEO-7M은 윗뚜껑에 두고 JST-GH 케이블을 J7에 (`B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e3_gps_lead_J7.png`). 받은 상태와 완성 상태 비교: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e1_delivered_vs_completed.png`, 전체 안내: `B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/render/e4_overview_callouts.png`. OpenLog는 먼저 아랫면(ATmega328 쪽) 높이를 재고 끼워 보십시오: 아랫면 부품이 1.2 mm라고 보는 보수적 경우(A) 꽂는 길에서 C3 -0.05 mm (J5_openlog 'insertion stroke beyond the plugged PCB end'), U6 -0.5 mm (J5_openlog 'insertion stroke beyond the plugged PCB end') 이 겹칩니다.
 9. **프로그래밍 (전원은 한 가지만):** 로직 배터리(3.73 V 넘게 충전) 또는 J14에 4.0 V 벤치 전원으로 보드를 켜고, USBasp의 타깃 전원 점퍼는 **빼 둡니다** (5 V를 두 곳에서 넣지 않기). 단자는 D6 선택대로 (헤더 납땜 + 점퍼, 또는 포고핀 어댑터). ESP-12F는 J3로 3.3 V 신호로만 굽습니다.
 10. 첫 Wi-Fi 송신 때 +5V와 +3V3의 최저값을 기록합니다.
 11. 커넥터 연결: 배터리 J14, 스위치 J15, GPS J7, 서보 J8~J11 / ESC J12, 아밍 J16, 부저 J17. 장착은 rev 2c와 같이 3 mm 폼테이프 + 케이블타이 1개 (x -3..+3 mm 띠). **장착 전에 띠를 다시 비우십시오:** 프로그래밍 헤더를 띠 구멍에 납땜했다면 떼거나 잘라 내야 케이블타이와 폼테이프가 제자리에 앉습니다 (뒷면으로 나온 다리도 1.5 mm 규칙). 비행용 보드는 포고핀 어댑터로만 굽는 것이 가장 간단합니다.
+   로켓에 넣는 보드만 (rev 3.1): ESC 리드와 J12 사이에 서보 Y자 리드를 끼우고, 분리 서보로 가는 갈래의 신호선을 잘라 J13 패드(KiCad (127.05, 66.85) mm, J12(ESC) 옆 +x / +y 모서리, 실크 'REL')에 납땜합니다. 서보의 + / - 는 그 갈래가 J12의 2번 / 3번에서 받습니다. 선은 당겨지지 않게 묶어 두십시오 (납땜부 강도 NOT_VERIFIED). VTOL에서는 J13을 비워 둡니다.
 
 ## 8. MCU·센서 말고 사용자가 해야 하는 일 (숨기지 않고 모음)
 
@@ -359,7 +369,7 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 
 ## 10. 변경 범위 표 (rev 2c 대비, 부품마다 이유 분류)
 
-계획 3장의 표를 계획 파일에서 읽고, rev 3 부품 번호를 주문 BOM 파일과 대조했습니다 (교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140). 그대로인 부품은 표에서 뺐습니다. '누가 붙임'이 user인 줄의 rev 3 번호 칸은 '-' 입니다 (JLC BOM에 없음; 참고 부품 번호는 6장).
+계획 3장의 표를 계획 파일에서 읽고, rev 3 부품 번호를 주문 BOM 파일과 대조했습니다 (교체 11, 추가 15, 삭제 1, 그대로 (부품 없음) 10, 그대로 140). 그대로인 부품은 표에서 뺐습니다. '누가 붙임'이 user인 줄의 rev 3 번호 칸은 '-' 입니다 (JLC BOM에 없음; 참고 부품 번호는 6장).
 
 | Ref | 변경 | rev 2c | rev 3 | 누가 붙임 | 분류 (태그) | BOM 파일과 대조 |
 |---|---|---|---|---|---|---|
@@ -373,6 +383,7 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | J10 | 교체 | 1x3 2.54 mm right-angle header (S, +, -) / C55629817 | 1x3 2.54 mm right-angle header (S, +, -) / - | user | 선택: 재고·도면 근거 (D3 / D12에서 rev 2c 번호로 되돌릴 수 있음) | BOM에 없음 (맞음) |
 | J11 | 교체 | 1x3 2.54 mm right-angle header (S, +, -) / C55629817 | 1x3 2.54 mm right-angle header (S, +, -) / - | user | 선택: 재고·도면 근거 (D3 / D12에서 rev 2c 번호로 되돌릴 수 있음) | BOM에 없음 (맞음) |
 | J12 | 교체 | 1x3 2.54 mm right-angle header (S, +, -) / C55629817 | 1x3 2.54 mm right-angle header (S, +, -) / - | user | 선택: 재고·도면 근거 (D3 / D12에서 rev 2c 번호로 되돌릴 수 있음) | BOM에 없음 (맞음) |
+| J13 | 추가 | - | 1-pin THT pad (release servo signal) / - | none | user decision 2026-11-13 (rev 3.1, option C as the user's fallback) | BOM에 없음 (맞음) |
 | J16 | 교체 | 1x2 right-angle header / C55629816 | 1x2 right-angle header / - | user | 선택: 재고·도면 근거 (D3 / D12에서 rev 2c 번호로 되돌릴 수 있음) | BOM에 없음 (맞음) |
 | J18 | 교체 | 1x4 right-angle header / C55629818 | 1x4 right-angle header / - | user | 선택: 재고·도면 근거 (D3 / D12에서 rev 2c 번호로 되돌릴 수 있음) | BOM에 없음 (맞음) |
 | J19 | 그대로 (부품 없음) | AVR ISP 2x3 (USBasp) / C65114 | AVR ISP 2x3 (USBasp) / - | none | 변경 없음: 부품 없는 자리 (rev 2c와 같음) | BOM에 없음 (맞음) |
@@ -383,6 +394,7 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | J25 | 그대로 (부품 없음) | 2-pin header + shunt / C55629809 | 2-pin header + shunt / - | none | 변경 없음: 부품 없는 자리 (rev 2c와 같음) | BOM에 없음 (맞음) |
 | J26 | 그대로 (부품 없음) | 2-pin header + shunt / C55629809 | 2-pin header + shunt / - | none | 변경 없음: 부품 없는 자리 (rev 2c와 같음) | BOM에 없음 (맞음) |
 | Q3 | 그대로 (부품 없음) | BSS138 / C40912 | BSS138 / - | none | 변경 없음: 부품 없는 자리 (rev 2c와 같음) | BOM에 없음 (맞음) |
+| R22 | 추가 | - | 220 / C22962 | JLC | user decision 2026-11-13 (rev 3.1) | 일치 |
 | R47 | 그대로 (부품 없음) | 10k / C25804 | 10k / - | none | 변경 없음: 부품 없는 자리 (rev 2c와 같음) | BOM에 없음 (맞음) |
 | U7 | 교체 | ESP-12E (ESP8266EX + 4 MB SPI flash, PCB antenna) / C89297 | ESP-12F (ESP8266MOD, 4 MB flash, PCB antenna) / - | user | 조달: JLC 주문 방식·재고 때문에 (핀 호환 부품) | BOM에 없음 (맞음) |
 | U8 | 추가 | - | TPS61023DRLR / C919459 | JLC | 필수: 요청(모든 부품을 JLC가 실장) 때문에 | 일치 |
@@ -440,33 +452,42 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | 다른 조인트 나사 옆 부품 | 45도 나사 - Q9 1.985 mm, 135도 나사 - J14 -1.393 mm, 225도 나사 - J7 -1.393 mm | out/reports/board_metrics.json board_fit.information_parts_within_plan_gap_of_the_other_screws_unchanged_corners (나사 끝 r 49.5 mm 가정 A, 음수 = 평면에서 겹침) | M (나사 길이 A) |
 | C59 GND 비아 | 패드 1.5 mm 안에 자기 GND 비아 있음 | out/reports/routing_rules.json information.C59.2_gnd | M |
 | L5 입력 비아 | 드릴 0.4 mm 2개 | out/reports/routing_rules.json information.L5.1_battery_vias (L5 입력 패드에서 4 mm 안의 VBAT_LOGIC_SW 비아) | M |
+| rev 3.1 날짜 | 2026-11-13 | spec/rev3_plan.json amendments[rocket_release_output].date | F |
+| rev 3.1 요청 원문 | "캐리어 PCB를 로켓에도 씀" / "B: 서보 열에 직각 헤더" | spec/rev3_plan.json amendments[rocket_release_output].request_verbatim | F (사용자 결정 그대로) |
+| rev 3 장바구니 항목 | Y24 | 작업 지시 2026-11-13 (주 세션이 전한 장바구니 상태; 이 단계는 장바구니를 열지 않음) | F (지시) - 이 단계에서 확인 안 함 |
+| 그 전 장바구니 항목 | Y23, Y20 | B:/0)AI_Cad/CanSat_v0.9/08_PCB/README.md (2026-11-12 재설계 납품 때 적은 장바구니 상태: 둘 다 옛 거버) | F (문서) - 장바구니를 열지 않아 어느 항목에 무엇이 들었는지 확인 안 함 |
+| R22 BOM 줄 | 220R 1%, R17-R22 (6개), C22962 | out/jlcpcb_bom.csv (R22가 든 줄) | M |
+| main bom_lines | 33 | out/manifest.json bom_cpl.pairs.main | M |
+| J13 자리 | KiCad (127.05, 66.85) mm, J12(ESC) 옆 +x / +y 모서리 | kicad/placement.json placements.J13 (x, y, why) | M |
+| 분리 서보 MCU 핀 | U2.7 (PE5 / OC3C): NC → RELEASE_PWM | out/reports/rev3_mcu_pinmap.json declared_changes_by_plan_amendment | M |
+| B안 결과 (rev 3.1) | rev 3 배터리 선을 바꾸지 않는다는 조건에서는 놓을 수 없음: -x 서보 열에 직각 1x3 J13을 J8~J11과 같은 8.62 mm 간격으로 넣고 J18을 1핀으로 줄이면, 배터리 선 두 개(윗면 2.0 mm VBAT_LOGIC, 아랫면 2.4 mm VBAT_LOGIC_SW) 사이에 45.06 mm가 필요한데 44.60 mm뿐입니다. 801곳을 찾아본 가장 좋은 자리도 열의 양 끝에서 0.13 mm 간격 규칙보다 0.23 mm 모자랐습니다. 배터리 선을 바꾸지 않는다는 조건은 사용자 결정도 검사 기준도 아니고 (검사는 배터리 경로 폭 2.0 mm 이상, 0.035 Ohm 이하만 요구), rev 3.1 작업이 rev 3 재설계 때 build_pcb.py에 깔아 둔 미리 그린 배선을 건드리지 않으려고 스스로 둔 것입니다 | spec/carrier_spec.json rev_3_1_changes.option_b_result | M (배치 검색과 kicad-cli DRC, 2026-11-13) |
+| 로켓 Y자 리드 | 서보 Y자 리드선 3핀 2.54 mm (JR / 후타바형) 1개 (로켓에 넣는 보드용) | scripts/purchase_list.py (g) 묶음 = spec/rev3_plan.json off_board_purchase | F (계획) |
 | 변경 날짜 | 2026-11-12 | spec/rev3_plan.json amendments | F (사용자 결정) |
 | 변경 요청 원문 1 | 아, esp도 내가 직접 실장할거야. 그럼 이코노믹으로 진행하고 pcb의 코팅도 무연으로 해줘 | spec/rev3_plan.json amendments[0].request_verbatim | F (사용자 요청 그대로) |
 | 변경 요청 원문 2 | 이코노믹으로 스루홀 제외하고 어떤 부품을 따로 구매해야하는건지 리스트를 정리해줘 | spec/rev3_plan.json amendments[1].request_verbatim | F (사용자 요청 그대로) |
 | 스루홀 부품 수 | 12 | out/fit_checks.json user_soldered_tht.summary.parts | M |
 | 스루홀 목록 | J2, J5, J8~J12, J14~J18 | spec/carrier_spec.json parts[].fit == user (스루홀 커넥터) | M |
-| zip main sha256 | a32e6cffc9ff2c0f... | out/manifest.json fab.sets | M |
-| jlcpcb_bom.csv sha256 | 6dff9dbcbcc55720... | out/manifest.json sha256 | M |
-| jlcpcb_cpl.csv sha256 | e250211c7c3fd33b... | out/manifest.json sha256 | M |
-| zip with_mcu sha256 | 8b4b5635dd9386bc... | out/manifest.json fab.sets | M |
-| jlcpcb_bom_with_mcu.csv sha256 | 43aea871c5965ec2... | out/manifest.json sha256 | M |
-| jlcpcb_cpl_with_mcu.csv sha256 | ca865157515e163f... | out/manifest.json sha256 | M |
-| F.Paste 패드 main | 320 | out/manifest.json fab.sets | M |
-| F.Paste 패드 with_mcu | 576 | out/manifest.json fab.sets | M |
+| zip main sha256 | 6a1e22caf6ce1ae4... | out/manifest.json fab.sets | M |
+| jlcpcb_bom.csv sha256 | 2f4827ad0b5fe97c... | out/manifest.json sha256 | M |
+| jlcpcb_cpl.csv sha256 | 9cf2527f4505e309... | out/manifest.json sha256 | M |
+| zip with_mcu sha256 | b9246444b0348e2a... | out/manifest.json fab.sets | M |
+| jlcpcb_bom_with_mcu.csv sha256 | a00f1407a2825cd1... | out/manifest.json sha256 | M |
+| jlcpcb_cpl_with_mcu.csv sha256 | fa780830e806c36c... | out/manifest.json sha256 | M |
+| F.Paste 패드 main | 322 | out/manifest.json fab.sets | M |
+| F.Paste 패드 with_mcu | 578 | out/manifest.json fab.sets | M |
 | ESP 패드 수 | 22 | out/fit_checks.json user_soldered_smd.U7 pads | M |
 | ESP 페이스트 뺀 패드 main | 22 | out/reports/gerber_check.json paste_variant.main.pads_changed_per_ref.U7 | M |
 | ESP 페이스트 뺀 패드 with_mcu | 22 | out/reports/gerber_check.json paste_variant.with_mcu.pads_changed_per_ref.U7 | M |
-| 페이스트 없는 자리 main | J1, J2, J3, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U1, U2, U3, U4, U7 | out/reports/gerber_check.json paste_variant.main | M |
-| 페이스트 없는 자리 with_mcu | J1, J2, J3, J5, J8, J9, J10, J11, J12, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U7 | out/reports/gerber_check.json paste_variant.with_mcu | M |
-| main bom_lines | 33 | out/manifest.json bom_cpl.pairs.main | M |
+| 페이스트 없는 자리 main | J1, J2, J3, J5, J8, J9, J10, J11, J12, J13, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U1, U2, U3, U4, U7 | out/reports/gerber_check.json paste_variant.main | M |
+| 페이스트 없는 자리 with_mcu | J1, J2, J3, J5, J8, J9, J10, J11, J12, J13, J14, J15, J16, J17, J18, J19, J20, J21, J22, J24, J25, J26, JP1, NT1, Q3, R47, U7 | out/reports/gerber_check.json paste_variant.with_mcu | M |
 | main bom_lines_smt | 33 | out/manifest.json bom_cpl.pairs.main | M |
 | main bom_lines_tht | 0 | out/manifest.json bom_cpl.pairs.main | M |
-| main parts | 144 | out/manifest.json bom_cpl.pairs.main | M |
-| main cpl_rows | 144 | out/manifest.json bom_cpl.pairs.main | M |
+| main parts | 145 | out/manifest.json bom_cpl.pairs.main | M |
+| main cpl_rows | 145 | out/manifest.json bom_cpl.pairs.main | M |
 | with_mcu bom_lines | 34 | out/manifest.json bom_cpl.pairs.with_mcu | M |
 | with_mcu bom_lines_tht | 0 | out/manifest.json bom_cpl.pairs.with_mcu | M |
-| with_mcu parts | 148 | out/manifest.json bom_cpl.pairs.with_mcu | M |
-| with_mcu cpl_rows | 148 | out/manifest.json bom_cpl.pairs.with_mcu | M |
+| with_mcu parts | 149 | out/manifest.json bom_cpl.pairs.with_mcu | M |
+| with_mcu cpl_rows | 149 | out/manifest.json bom_cpl.pairs.with_mcu | M |
 | U1-U4 기본 BOM | 없음 | out/jlcpcb_bom.csv | M |
 | 코드 U7 | BOM에 없음 | out/jlcpcb_bom.csv | M |
 | 코드 J2 | BOM에 없음 | out/jlcpcb_bom.csv | M |
@@ -488,7 +509,7 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | 두께 | 1.6 mm | spec/carrier_spec.json | F |
 | gbrjob 표면처리 | HAL lead-free | out/gerber/vtol_carrier-job.gbrjob GeneralSpecs.Finish | M |
 | 화면 Via 말풍선 | 'The Via Tented option is upgraded to Via Plugged for free' | spec/jlc_order_page_20261112.json pcb_fields[Via Covering].tooltip | M (주문 화면 2026-11-12) |
-| 비아 크기별 | 0.6/0.3 mm 436개, 0.8/0.4 mm 3개 | kicad/vtol_carrier.kicad_pcb (지름/드릴) | M |
+| 비아 크기별 | 0.6/0.3 mm 449개, 0.8/0.4 mm 3개 | kicad/vtol_carrier.kicad_pcb (지름/드릴) | M |
 | 툴링 홀(H) 부품 | 0 | spec/carrier_spec.json summary.by_prefix | M |
 | 위치 확인 창 안내 | 'confirm within 72 hours, otherwise automatically confirmed' | spec/jlc_order_page_20261112.json pcba_fields[Confirm Parts Placement].dialog_text | M (주문 화면 2026-11-12) |
 | 베이킹 요금 | 7.94 USD | spec/jlc_order_page_20261112.json pcba_advanced_fields[Bake Components].fee_usd | M (주문 화면 2026-11-12) |
@@ -529,15 +550,15 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | 화면 Function test | 고를 수 없음 (Economic에는 없는 항목) | spec/jlc_order_page_20261112.json pcba_advanced_fields | M (주문 화면 2026-11-12): 항목 이름·선택지; 넣을 값은 이 주문의 선택 |
 | 품목 설명 | 'DIY Hobby Circuit Board - HS Code 902300' | spec/jlc_order_page_20261112.json product_description | M (주문 화면 2026-11-12) |
 | 화면 Standard 레일 문구 | 'The board size is modified to be 76mm*80mm due to adding two 5mm edge rails on the shorter sides' | spec/jlc_order_page_20261112.json pcba_fields[Tooling holes].standard_page_text | M (주문 화면 2026-11-12) |
-| 부품 자리 점유율 | 86.7 % | kicad/placement.json placement_checks.courtyard_occupancy_percent (윗면 부품 자리 면적 / 케이블타이 띠를 뺀 기판 면적) | M |
-| 가장자리 2.5 mm 안 몸체 | 31 | out/reports/edge_distance.json | M |
+| 부품 자리 점유율 | 86.9 % | kicad/placement.json placement_checks.courtyard_occupancy_percent (윗면 부품 자리 면적 / 케이블타이 띠를 뺀 기판 면적) | M |
+| 가장자리 2.5 mm 안 몸체 | 33 | out/reports/edge_distance.json | M |
 | JLC 실장 가장 가까운 몸체 | R60 0.537 mm | out/reports/edge_distance.json jlc_placed_bodies.default_order closest[0] | M |
 | JLC 실장 가까운 몸체 | R60 0.537 mm, U6 0.55 mm, U9 0.589 mm, J7 0.805 mm, C60 0.95 mm | out/reports/edge_distance.json jlc_placed_bodies.default_order closest | M |
 | JLC 실장 몸체 0.3 mm 안 | 없음 | out/reports/edge_distance.json jlc_placed_bodies.default_order bodies_under_0p3 | M |
 | JLC 실장 패드 0.3 mm 안 | 없음 | out/reports/edge_distance.json jlc_placed_bodies.default_order pads_under_0p3 | M |
 | JLC 미실장 몸체 0.3 mm 안 | U7 0.15 mm, J15 0.29 mm | out/reports/edge_distance.json bodies_under_0p3 (fit != jlc) | M |
-| 가장자리 2.5 mm 안 JLC 실장 | 12 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
-| 가장자리 2.5 mm 안 with_mcu | 13 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
+| 가장자리 2.5 mm 안 JLC 실장 | 13 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
+| 가장자리 2.5 mm 안 with_mcu | 14 | out/reports/edge_distance.json bodies_under_2p5_by_fit | M |
 | 리플로 Economic | 255±5 C | out/fit_checks.json reflow_rating.oven_C | F (계획 10장) |
 | 리플로 Standard | 240±5 C | out/fit_checks.json reflow_rating.oven_C | F (계획 10장) |
 | 리플로 한계 부품 | C2833309 (C47, 정격 260 C), C2286 (D1/D2/D3/D4, 정격 260 C), C53426685 (L5, 정격 260 C) | out/fit_checks.json reflow_rating.rows (Economic: AT THE LIMIT) | F (데이터시트) |
@@ -552,11 +573,11 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | 견적 standard_no_tht PCBA | 111.64 | spec/jlc_order_page_20261112.json quotes_usd[standard_no_tht] pcba | M (주문 화면 2026-11-12) |
 | 견적 standard_no_tht 합계 | 124.84 | spec/jlc_order_page_20261112.json quotes_usd[standard_no_tht] total_without_shipping | M (주문 화면 2026-11-12) |
 | Standard 추가 값 | 48.02 USD | spec/jlc_order_page_20261112.json quotes_usd (standard_no_tht 합계 - economic_no_tht 합계) | M (주문 화면 2026-11-12) 값의 차 |
-| 메모 글자 수 main | 321 | scripts/docs_ko.py order_remarks (생성한 메모 문장의 글자 수) | M |
-| 메모 글자 수 main + Standard 문장 | 456 | scripts/docs_ko.py order_remarks (Standard 대안 문장을 덧붙였을 때) | M |
-| 메모 글자 수 with_mcu | 359 | scripts/docs_ko.py order_remarks (생성한 메모 문장의 글자 수) | M |
-| 메모 글자 수 with_mcu + Standard 문장 | 494 | scripts/docs_ko.py order_remarks (Standard 대안 문장을 덧붙였을 때) | M |
-| JLC 확인 시각 | 2026-11-12T22:27:21+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
+| 메모 글자 수 main | 312 | scripts/docs_ko.py order_remarks (생성한 메모 문장의 글자 수) | M |
+| 메모 글자 수 main + Standard 문장 | 447 | scripts/docs_ko.py order_remarks (Standard 대안 문장을 덧붙였을 때) | M |
+| 메모 글자 수 with_mcu | 350 | scripts/docs_ko.py order_remarks (생성한 메모 문장의 글자 수) | M |
+| 메모 글자 수 with_mcu + Standard 문장 | 485 | scripts/docs_ko.py order_remarks (Standard 대안 문장을 덧붙였을 때) | M |
+| JLC 확인 시각 | 2026-11-13T20:26:50+09:00 | out/jlc_gate_report.json | M (그 시각의 재고) |
 | JLC 확인 결과 | PASS (33/33줄), with_mcu PASS | out/jlc_gate_report.json | M |
 | ESP 참고 부품 | C82891 | spec/rev3_plan.json bom_lines_now_bought_by_the_user (U7) | F |
 | 스루홀 참고 번호 | C22436147 (J2/J5), C32713262 (J8~J12), C5364642 (J14), C131337 (J15/J17), C32713261 (J16), C32713263 (J18) | spec/rev3_plan.json bom_lines_now_bought_by_the_user | F |
@@ -630,16 +651,16 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | LCSC 커넥터 값 | 4.56 USD | spec/lcsc_snapshot_20261112.json, scripts/purchase_list.py group_a_cost | E (단가는 M, 그 시각 기준) |
 | LCSC 기록 시각 | 2026-11-12T02:50:37+09:00 ~ 02:51:09+09:00 | spec/lcsc_snapshot_20261112.json records[].fetched_at | M |
 | 견적 표면처리 추가 | 5.10 USD | spec/jlc_order_page_20261112.json quotes_usd[economic_no_tht].pcb_parts.surface_finish | M (주문 화면 2026-11-12) |
-| 추정 Economic 합 | 65.11 USD | out/jlc_fee_estimate.csv (main, Economic, 2장) sum_E | E |
+| 추정 Economic 합 | 65.13 USD | out/jlc_fee_estimate.csv (main, Economic, 2장) sum_E | E |
 | 추정 Economic 피더 | 30.70 USD | out/jlc_fee_estimate.csv (main, Economic, 2장) feeder_loading | E |
 | 얇은 재고 기준 | 1000개 | out/jlc_gate_report.json | F (계획 I7) |
-| 얇은 재고 줄 | C20345924 (U9) available 637 | out/jlc_gate_report.json | M |
-| 재고 주의 줄 | C53426685 (L5) 1065개, 필요 22, C919459 (U8) 4773개, 필요 21, 재고가 계획 때 31489개에서 5533개로 절반 넘게 줄어듦, C20345924 (U9) 637개, 필요 20 | out/jlc_gate_report.json lines (available < 2000, 또는 stock < 계획 spec/rev3_plan.json bom_lines.stock 의 절반) | M |
-| 대체 L5 (C53426685) | C167203 FXL0420-1R0-M (106152개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 대체 U8 (C919459) | C1852149 TPS61023DRLT (476개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 대체 J7 (C161692) | C52037397 GH1.25-4PLT (1700개, PASS); C2829262 GH1.25-4PLTPZ (55688개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 대체 J2, J5 (C22436147) | C55629861 SH-PM254R-1x6P-H85 (985개, PASS); C54876735 PM2.54-1x6PWZ-H8.5 (565개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
-| 따로 살 품목 수 | 27 | out/off_board_purchase.csv | M |
+| 얇은 재고 줄 | C20345924 (U9) available 597 | out/jlc_gate_report.json | M |
+| 재고 주의 줄 | C8598 (D6) 184940개, 필요 28, 재고가 계획 때 725265개에서 361060개로 절반 넘게 줄어듦, C53426685 (L5) 1058개, 필요 22, C919459 (U8) 4431개, 필요 21, 재고가 계획 때 31489개에서 5278개로 절반 넘게 줄어듦, C20345924 (U9) 597개, 필요 20 | out/jlc_gate_report.json lines (available < 2000, 또는 stock < 계획 spec/rev3_plan.json bom_lines.stock 의 절반) | M |
+| 대체 L5 (C53426685) | C167203 FXL0420-1R0-M (129406개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 대체 U8 (C919459) | C1852149 TPS61023DRLT (464개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 대체 J7 (C161692) | C52037397 GH1.25-4PLT (1679개, PASS); C2829262 GH1.25-4PLTPZ (55682개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 대체 J2, J5 (C22436147) | C55629861 SH-PM254R-1x6P-H85 (985개, PASS); C54876735 PM2.54-1x6PWZ-H8.5 (560개, PASS) | out/jlc_gate_report.json alternates_and_options | M |
+| 따로 살 품목 수 | 28 | out/off_board_purchase.csv | M |
 | 스루홀 종류 수 | 6 | spec/rev3_plan.json bom_lines_now_bought_by_the_user (THT) | F |
 | LCSC (a) 묶음 값 | 10.39 USD | spec/lcsc_snapshot_20261112.json 의 단가 x (최소 주문 수량을 지킨) 수량, scripts/purchase_list.py group_a_cost | E (단가는 M, 그 시각 기준) |
 | LCSC 재고 부족 | 없음 | spec/lcsc_snapshot_20261112.json records[].stock | M (그 시각 기준) |
@@ -735,8 +756,8 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | 커넥터 J18 몸체 | 직각형: 몸체가 핀 줄에서 왼쪽으로 10.09 mm 뻗음 (반대쪽 0.37 mm) → 왼쪽을 보게 눕힘 | out/fit_checks.json user_soldered_tht.per_ref.J18.body_outline_from_the_pin_row_mm | M |
 | 커넥터 J18 가까운 변 | 왼쪽 변에서 0.73 mm | out/fit_checks.json user_soldered_tht.per_ref.J18.body_to_that_edge_mm | M |
 | 커넥터 J18 높이 | 3 mm | out/fit_checks.json user_soldered_tht.per_ref.J18.height_mm | A |
-| 핀 줄과 나란한 라벨 | J8 윗면 'V1 S+-', J17 윗면 'BUZ +-', J14 아랫면 '1S BAT -+', J7 아랫면 'GPS G RX TX V', J16 윗면 'ARM SW AG', J2 아랫면 'BMP280 3V 3V SDA SCL G 3V' | out/reports/routing_rules.json silkscreen.pin_order_labels.labels (relation = along the pin row) | M |
-| 1번 핀부터 적은 라벨 | J1, J3, J5, J9~J12, J18 | out/reports/routing_rules.json silkscreen.pin_order_labels.labels (relation = across the pin row / not a single pin row) | M |
+| 핀 줄과 나란한 라벨 | J8 윗면 'V1 S+-', J17 윗면 'BUZ +-', J14 아랫면 '1S BAT -+', J7 아랫면 'GPS G RX TX V', J16 아랫면 'ARM SW GA', J2 아랫면 'BMP280 3V 3V SDA SCL G 3V' | out/reports/routing_rules.json silkscreen.pin_order_labels.labels (relation = along the pin row) | M |
+| 1번 핀부터 적은 라벨 | J1, J3, J5, J9~J13, J18 | out/reports/routing_rules.json silkscreen.pin_order_labels.labels (relation = across the pin row / not a single pin row) | M |
 | J1 납땜점 | 8 | out/fit_checks.json user_soldered_tht.summary.other_user_soldered_holes | M |
 | GY-521 받침 높이 | 2.54 mm | spec/module_dimensions.json gy521.support_h | A |
 | BMP280 헤더 종류 | 직각 | spec/module_dimensions.json bmp280.header_type | A |
@@ -757,4 +778,4 @@ SMT assembly only, top side. Please fit NO through-hole part and do NO hand sold
 | 코드 Q1 | C40912 | out/jlcpcb_bom.csv | M |
 | 분압 저항 | R15 47k 1%, R16 47k 1% | spec/carrier_spec.json | M |
 | fit user | 14 | spec/carrier_spec.json | M |
-| 변경 행 | 교체 11, 추가 13, 삭제 1, 그대로 (부품 없음) 10, 그대로 140 | spec/rev3_plan.json changes | F (계획) |
+| 변경 행 | 교체 11, 추가 15, 삭제 1, 그대로 (부품 없음) 10, 그대로 140 | spec/rev3_plan.json changes | F (계획) |

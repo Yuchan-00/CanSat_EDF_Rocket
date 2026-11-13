@@ -44,12 +44,12 @@
     "vtol_carrier_complete.ses"
    ]
   ],
-  "unrouted_board_sha256": "c98f006706a035a8209fd8af5e6c3cdd49ea7408aa67779db86f82c6cb5eae2e",
-  "unrouted_board_sha256_copper_finish_blanked": "f01fb42490e9b8bc6572a5b89be809081c028a8d7f3da7251a70521abf48ec3d"
+  "unrouted_board_sha256": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
+  "unrouted_board_sha256_copper_finish_blanked": "1dd690d6fb97afb459b1e9510a9b968bca2b8b626a5b61c5c882a1589bc81c0a"
  },
  "unrouted_board_guard": {
-  "recorded_sha256": "c98f006706a035a8209fd8af5e6c3cdd49ea7408aa67779db86f82c6cb5eae2e",
-  "this_sha256": "c98f006706a035a8209fd8af5e6c3cdd49ea7408aa67779db86f82c6cb5eae2e",
+  "recorded_sha256": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
+  "this_sha256": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
   "accepted": "byte-identical to the recorded unrouted board"
  },
  "ses_sha256": {
@@ -58,11 +58,11 @@
   "seed_signals.ses": "4ac16588c925cf2dc8789055e6d4bbce6986469ba75559be2857ac15abefbffa",
   "seed_gnd.ses": "ffe96d8806fb58be5133bae5af32b61cafc8358c1f8a87d35d8afb13036a4db4",
   "seed_complete.ses": "86b7e956704708424660fa6c578a6b4cd1dae0c108cdd41f190e817c77148bf3",
-  "vtol_carrier_servo.ses": "fc9b315443bdba054ee810936342276c6570220ea143d2d6b07bed888d1edc76",
-  "vtol_carrier_power.ses": "234943afa5848c20950b21e0660890fade57eb3764861518fd5fde05a356aae6",
-  "vtol_carrier_signals.ses": "55ef7ffde2d4172b8b9b6c1206f0d5d411d489d91338cb3d6fae98d6506c60cb",
-  "vtol_carrier_gnd.ses": "8f3fd595bdba99674fd43a871b0959f0144624a8b3c37520d535af3f7103c874",
-  "vtol_carrier_complete.ses": "236ddba0160a075198e6151fb9ce87c5e9b3d3061366dc50dc4d6238398d17b2"
+  "vtol_carrier_servo.ses": "2a1d54206e026daa896544dfb34e185fa3b840d719e20d7cb23ec40b54ca7683",
+  "vtol_carrier_power.ses": "1372a810bc233325ca666ff875d3f8b4d4caa12b4690585c05259990b8c84639",
+  "vtol_carrier_signals.ses": "aea3603e876bb8618dd3d262843742d637fbfb6ddb90e09dbf07539367b85404",
+  "vtol_carrier_gnd.ses": "6ee2fc22fe8a34448421560e4d2f6fb5a24ae1723102a98a41d60f72671861c7",
+  "vtol_carrier_complete.ses": "36a7fed7d13a95d766772f44745bcf6bb7948cd316957bd2c06ec62915932006"
  },
  "fanout": {
   "tool": "scripts/fanout.py",
@@ -111,16 +111,6 @@
  "neckdowns_widened_to_0.127mm": [],
  "dangling_vias_removed": [
   {
-   "net": "COM_RESET",
-   "x": 101.347,
-   "y": 113.215
-  },
-  {
-   "net": "COM_RESET",
-   "x": 84.769,
-   "y": 109.478
-  },
-  {
    "net": "ESP_RXD0",
    "x": 102.84,
    "y": 82.915
@@ -166,9 +156,9 @@
    "y": 122.472
   }
  ],
- "segments": 2437,
- "routed_vias": 328,
- "gnd_stitching_vias": 89,
+ "segments": 2483,
+ "routed_vias": 331,
+ "gnd_stitching_vias": 91,
  "tracks_narrowed_for_clearance": [],
  "power_tracks_widened": {
   "widened": [
@@ -877,26 +867,14 @@
    "width_mm": 0.2
   },
   {
-   "net": "GNS_RESET",
+   "net": "ESP_RXD_SH",
    "routed": false,
    "reason": "no legal path on the 0.1 mm grid"
   },
   {
-   "net": "VANE3_PWM",
-   "routed": true,
-   "from": [
-    106.8,
-    105.412
-   ],
-   "to": [
-    96.2,
-    112.925
-   ],
-   "segments": 49,
-   "vias": 4,
-   "length_mm": 27.87,
-   "search_window_mm": 5.0,
-   "width_mm": 0.2
+   "net": "ESP_RXD_SH",
+   "routed": false,
+   "reason": "no legal path on the 0.1 mm grid"
   },
   {
    "net": "+5V",
@@ -923,18 +901,26 @@
   "open_nets_in": [
    "+3V3",
    "+5V",
-   "GNS_RESET"
+   "ESP_RXD_SH"
   ],
   "not_ripable": [
    "+5V"
   ],
   "ripped": {
+   "FCU_LBAT_ADC": 1,
+   "FCU_LED": 1,
+   "FCU_VBUF_ADC": 1,
+   "NAV_RESET": 4,
+   "COM_ILINK_RX": 1,
+   "ESC_SIG": 1,
+   "ESP_RXD_SH": 2,
    "FCU_VBAT_ADC": 1,
-   "ESP_RXD_SH": 1
+   "COM_LINK_TX": 1,
+   "VANE3_SIG": 1
   },
   "solved_at_depth": {
-   "+3V3": 1,
-   "GNS_RESET": 1
+   "ESP_RXD_SH": 1,
+   "+3V3": 3
   },
   "wide_net_completions": [
    {
@@ -947,25 +933,427 @@
    },
    {
     "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 110,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 110,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 110,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 146,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
     "width_mm": 0.2,
-    "cells": 168
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 137,
+    "ripped": [
+     "ESC_PWM",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 150,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 154,
+    "ripped": [
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 119,
+    "ripped": [
+     "ESP_RXD_SH",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 119,
+    "ripped": [
+     "ESP_RXD_SH",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 248,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_GPIO0",
+     "ESP_RXD0",
+     "FCU_LOG_TX",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.3,
+    "cells": 148,
+    "ripped": [
+     "ESC_PWM",
+     "ESP_RXD_SH",
+     "FCU_VBAT_ADC",
+     "FCU_VBUF_ADC",
+     "FCU_VTET_ADC",
+     "NAV_RESET"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.2,
+    "cells": 249,
+    "ripped": [
+     "FCU_VBAT_ADC",
+     "FCU_VTET_ADC",
+     "OPENLOG_RXI"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 87,
+    "ripped": [
+     "FCU_VBAT_ADC"
+    ]
+   },
+   {
+    "net": "+3V3",
+    "width_mm": 0.5,
+    "cells": 146,
+    "ripped": [
+     "COM_LINK_TX",
+     "VANE3_SIG"
+    ]
    }
   ],
   "still_open": [],
-  "iterations_used": 38,
+  "iterations_used": 793,
   "converged": true,
   "open_nets_before": 3,
   "open_nets_after": 1,
   "applied": true,
   "dead_ends_pruned": {
-   "ESP_RXD_SH": 12,
-   "FCU_VBAT_ADC": 13
+   "COM_ILINK_RX": 3,
+   "COM_LINK_TX": 1,
+   "ESP_RXD_SH": 4,
+   "FCU_VBAT_ADC": 13,
+   "FCU_VBUF_ADC": 6,
+   "NAV_RESET": 20
   },
   "nets_changed": [
    "+3V3",
+   "COM_ILINK_RX",
+   "COM_LINK_TX",
    "ESP_RXD_SH",
+   "FCU_LBAT_ADC",
+   "FCU_LED",
    "FCU_VBAT_ADC",
-   "GNS_RESET"
+   "FCU_VBUF_ADC",
+   "NAV_RESET",
+   "VANE3_SIG"
   ]
  },
  "rail_edge_nudged": [
@@ -1085,13 +1473,13 @@
   }
  ],
  "duplicate_segments": {
-  "segments_before": 2669,
+  "segments_before": 2798,
   "exact_copies_removed": 133,
-  "nets": 37
+  "nets": 36
  },
  "ids_restamped": {
-  "tracks_and_vias": 2975,
-  "drawings_made_by_route": 46,
+  "tracks_and_vias": 3117,
+  "drawings_made_by_route": 47,
   "drawings_of_the_unrouted_board_kept": 29
  },
  "silk": {
@@ -1191,14 +1579,6 @@
     "pin_glyph_order": "along the row, as the pads lie (pin 1 first)"
    },
    {
-    "ref": "J16",
-    "text": "ARM SW AG",
-    "layer": "F.SilkS",
-    "height_mm": 0.8,
-    "distance_to_courtyard_mm": 0.0,
-    "pin_glyph_order": "along the row, as the pads lie (pin 1 first)"
-   },
-   {
     "ref": "J17",
     "text": "BUZ +-",
     "layer": "F.SilkS",
@@ -1247,6 +1627,14 @@
     "pin_glyph_order": "from pin 1 (text not along a single pin row)"
    },
    {
+    "ref": "J13",
+    "text": "REL S",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "from pin 1 (text not along a single pin row)"
+   },
+   {
     "ref": "J9",
     "text": "V2 S+-",
     "layer": "B.SilkS",
@@ -1273,6 +1661,14 @@
    {
     "ref": "J7",
     "text": "GPS G RX TX V",
+    "layer": "B.SilkS",
+    "height_mm": 1.0,
+    "distance_to_courtyard_mm": 0.0,
+    "pin_glyph_order": "along the row, as the pads lie (last pin first)"
+   },
+   {
+    "ref": "J16",
+    "text": "ARM SW GA",
     "layer": "B.SilkS",
     "height_mm": 1.0,
     "distance_to_courtyard_mm": 0.0,
@@ -1582,10 +1978,10 @@
     "mark": "dot",
     "pad1_net": "BUZ_B",
     "at": [
-     129.1,
-     67.8
+     128.6,
+     68.8
     ],
-    "gap_to_pad1_mm": 0.375,
+    "gap_to_pad1_mm": 0.45,
     "library_mark": {
      "silk_graphics": 8,
      "pin1_triangle": true,
@@ -1785,12 +2181,12 @@
    }
   ],
   "revision_text": {
-   "text": "rev 3",
+   "text": "rev 3.1",
    "layer": "F.SilkS",
    "height_mm": 1.0,
    "at": [
-    76.0,
-    90.0
+    124.5,
+    131.0
    ],
    "outside_module_bodies_and_tie_band": true
   },
@@ -1828,7 +2224,7 @@
   ],
   "pin_label_sets": [],
   "pin_label_sets_missed": [],
-  "refs_on_silk": 14,
+  "refs_on_silk": 13,
   "refs_on_fab_only": [
    "C1",
    "C2",
@@ -1863,6 +2259,7 @@
    "C31",
    "C32",
    "C41",
+   "C43",
    "C44",
    "C45",
    "C46",
@@ -1871,7 +2268,6 @@
    "C50",
    "C51",
    "C52",
-   "C54",
    "C55",
    "C56",
    "C57",
@@ -1890,6 +2286,7 @@
    "J10",
    "J11",
    "J12",
+   "J13",
    "J14",
    "J15",
    "J17",
@@ -1936,6 +2333,7 @@
    "R19",
    "R20",
    "R21",
+   "R22",
    "R23",
    "R24",
    "R25",
@@ -1976,6 +2374,7 @@
    "R60",
    "R61",
    "R62",
+   "R63",
    "R64",
    "R65",
    "R66",
@@ -1992,5 +2391,5 @@
    "Y4"
   ]
  },
- "routed_board_sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d"
+ "routed_board_sha256": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f"
 }

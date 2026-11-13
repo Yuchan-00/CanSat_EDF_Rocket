@@ -684,6 +684,18 @@
     ]
    ]
   },
+  "Connector_Generic:Conn_01x01": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
+   "footprint_property": "",
+   "pins": [
+    [
+     "1",
+     "Pin_1",
+     "passive",
+     1
+    ]
+   ]
+  },
   "Connector_Generic:Conn_01x02": {
    "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols\\Connector_Generic.kicad_sym",
    "footprint_property": "",
@@ -1794,6 +1806,19 @@
    },
    "attributes": [
     "through_hole"
+   ]
+  },
+  "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm": {
+   "path": "C:\\Users\\yc012\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\footprints\\TestPoint.pretty\\TestPoint_THTPad_D2.0mm_Drill1.0mm.kicad_mod",
+   "pads": [
+    "1"
+   ],
+   "pad_types": {
+    "1": "thru_hole"
+   },
+   "attributes": [
+    "exclude_from_bom",
+    "exclude_from_pos_files"
    ]
   },
   "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal": {

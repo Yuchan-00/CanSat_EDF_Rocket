@@ -3,17 +3,17 @@
  "result": "PASS",
  "tool": "scripts/rev3_checks.py fit (fitsets.py on spec/carrier_spec.json)",
  "spec": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json",
- "spec_sha256": "ab4a8bd6f53e2beee9f73e8638a582c700aaacc376c3e9064887b3a46124d2d7",
- "plan_sha256": "c5b2ec8a5fe386b3bd3517f7fb66f95e846d0535fa7a26831959867fb8089dbd",
+ "spec_sha256": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
+ "plan_sha256": "d24d333521aace60e30cb743b1552b7ca569a4b6e3fe2ca40eb0a64a3f97557b",
  "prog_headers": "A",
  "problems": [],
  "fit_differences_vs_plan": [],
  "bom_line_differences_vs_plan": [],
  "fit_x_populate": {
-  "jlc/populated": 144,
+  "jlc/populated": 145,
   "jlc_optional/populated": 4,
   "none/not populated": 10,
-  "none/populated": 2,
+  "none/populated": 3,
   "user/populated": 14
  },
  "main_pair": {
@@ -113,6 +113,7 @@
     "R19",
     "R20",
     "R21",
+    "R22",
     "R23",
     "R24",
     "R25",
@@ -190,6 +191,7 @@
    ],
    "none": [
     "J3",
+    "J13",
     "J19",
     "J20",
     "J21",
@@ -204,14 +206,14 @@
    ]
   },
   "summary": {
-   "parts": 174,
+   "parts": 176,
    "fit_counts": {
-    "jlc": 144,
+    "jlc": 145,
     "jlc_optional": 4,
     "user": 14,
-    "none": 12
+    "none": 13
    },
-   "jlc_fitted_parts": 144,
+   "jlc_fitted_parts": 145,
    "bom_lines": 33,
    "bom_lines_smt": 33,
    "bom_lines_tht": 0,
@@ -609,9 +611,10 @@
      "R18",
      "R19",
      "R20",
-     "R21"
+     "R21",
+     "R22"
     ],
-    "qty": 5,
+    "qty": 6,
     "assembly": "SMT",
     "mpn": "0603WAF2200T5E",
     "library_type": "Basic"
@@ -885,6 +888,7 @@
    "R19",
    "R20",
    "R21",
+   "R22",
    "R23",
    "R24",
    "R25",
@@ -941,14 +945,14 @@
  },
  "with_mcu_pair": {
   "summary": {
-   "parts": 174,
+   "parts": 176,
    "fit_counts": {
-    "jlc": 144,
+    "jlc": 145,
     "jlc_optional": 4,
     "user": 14,
-    "none": 12
+    "none": 13
    },
-   "jlc_fitted_parts": 148,
+   "jlc_fitted_parts": 149,
    "bom_lines": 34,
    "bom_lines_smt": 34,
    "bom_lines_tht": 0,
@@ -1047,6 +1051,7 @@
    "R19",
    "R20",
    "R21",
+   "R22",
    "R23",
    "R24",
    "R25",
@@ -1142,6 +1147,7 @@
   "J10",
   "J11",
   "J12",
+  "J13",
   "J14",
   "J15",
   "J16",
@@ -1166,14 +1172,14 @@
  ],
  "netlist": {
   "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
-  "sha256": "17514efcaaca39a71040b37c6ee1dbf81a57ed64cc908f77ff164d330ad94966",
+  "sha256": "e4b2ab19a59091dc9db7e4e290226a22301291931d1afa9efb563494e1671ae4",
   "sha256_is": "of the file as it was when this check read it (it carries the export time; a later build step exports it again)",
-  "sha256_without_date_line": "c4475e142ba6d9947df43699bf7473368d18bb84d137abcfc04e98cca3943fe6",
+  "sha256_without_date_line": "412017f811492e6379aa97e1979b6ce85a8e5e9a2f34c3b7201c7b1a01dc1067",
   "tool": "Eeschema 10.0.6",
-  "export_date_in_file": "2026-11-12T22:46:43",
-  "components": 174,
-  "named_nets": 105,
-  "unconnected_single_pin_nets": 183,
+  "export_date_in_file": "2026-11-13T21:08:21",
+  "components": 176,
+  "named_nets": 107,
+  "unconnected_single_pin_nets": 182,
   "only_in_spec": [],
   "only_in_netlist": [],
   "dnp_in_netlist": [

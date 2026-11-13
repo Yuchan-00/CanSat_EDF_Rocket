@@ -1004,7 +1004,11 @@ def check_mcu(fps) -> dict:
     if not Path(path).is_file():
         return {"result": NOT_VERIFIED, "label": "M", "reason": f"no reference pin map at {path}"}
     ref = json.loads(Path(path).read_text(encoding="utf-8"))
-    diffs, n = [], 0
+    # rev 3.1: pins a plan amendment changes on purpose (U2.7 -> RELEASE_PWM) are compared with the declared net
+    declared_problems: list[str] = []
+    declared = RC.declared_mcu_pin_changes()
+    ref = RC.apply_declared(ref, declared, declared_problems)
+    diffs, n = [{"declared_change_problem": p} for p in declared_problems], 0
     for u in ("U1", "U2", "U3", "U4"):
         have = {}
         for p in fps[u].Pads():
@@ -1015,6 +1019,7 @@ def check_mcu(fps) -> dict:
             if have.get(pin) != ref.get(u, {}).get(pin):
                 diffs.append({"pad": f"{u}.{pin}", "rev2c": ref.get(u, {}).get(pin), "board": have.get(pin)})
     return {"result": PASS if n == 256 and not diffs else FAIL, "label": "M", "pads_compared": n, "differences": diffs,
+            "declared_changes_by_plan_amendment": declared,
             "reference": {"file": str(path).replace("\\", "/"), "sha256": sha256_file(Path(path))}}
 
 

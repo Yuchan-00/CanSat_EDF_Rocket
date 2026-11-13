@@ -31,7 +31,11 @@ GROUPS = (
     ("d", "battery, switches, buzzer and their leads", "배터리, 스위치, 부저와 그 리드선"),
     ("e", "programming headers and tools", "프로그래밍 헤더와 도구"),
     ("f", "mounting material", "장착 재료"),
+    ("g", "rocket only (rev 3.1): release-servo output", "로켓에 쓸 때만 (rev 3.1): 분리 서보 출력"),
 )
+
+#: rev 3.1 (plan amendment 'rocket_release_output', 2026-11-13): the plan's off_board_purchase entry this row stands for
+ROCKET_PREFIX = "rocket only (rev 3.1"
 
 #: fixed wording of the six THT lines (LCSC code -> texts); the designators are checked against the plan line
 THT_TEXT = {
@@ -257,6 +261,27 @@ def build(spec: dict, plan: dict, fit: dict) -> list[dict]:
         "기판 아랫면 (스루홀 다리를 자른 뒤)", "domestic shop", "국내 쇼핑몰", "", "REV3_PLAN 9 / 15")
     add("f", "cable tie", "케이블타이", 1, BOARDS, "across the tie band x -3..+3 mm", "케이블타이 띠 (x -3..+3 mm)를 가로질러",
         "domestic shop", "국내 쇼핑몰", "", "REV3_PLAN 9 / 15")
+
+    # ---- (g) rocket only (rev 3.1): the Y-lead of the release servo. The row exists only while the plan lists it and
+    # the spec has J13 as an unfitted pad on RELEASE_SIG and J12 carries SERVO_5V / GND_PWR on pins 2 / 3.
+    rk = [t for t in plan.get("off_board_purchase", []) if isinstance(t, str) and t.startswith(ROCKET_PREFIX)]
+    if len(rk) != 1:
+        raise RuntimeError(f"purchase list: {len(rk)} plan off_board_purchase entries start with {ROCKET_PREFIX!r}, want 1")
+    pin_net = {(m[0], m[1]): n["name"] for n in spec["nets"] for m in
+               ([x.split(".", 1) for x in n.get("members", []) if isinstance(x, str)])}
+    if parts.get("J13", {}).get("fit") != "none" or pin_net.get(("J13", "1")) != "RELEASE_SIG" \
+            or pin_net.get(("J12", "2")) != "SERVO_5V" or pin_net.get(("J12", "3")) != "GND_PWR":
+        raise RuntimeError("purchase list: the Y-lead row needs J13 (fit none) on RELEASE_SIG and J12.2 / J12.3 on "
+                           "SERVO_5V / GND_PWR in the spec")
+    add("g", "servo Y-lead, 3-pin 2.54 mm (JR / Futaba type)", "서보 Y자 리드선 3핀 2.54 mm (JR / 후타바형)",
+        "1 (rocket board)", 1,
+        "between the ESC and J12; the second branch feeds + / - of the CanSat release servo, its signal wire is cut "
+        "and soldered into the J13 pad (RELEASE_SIG)",
+        "ESC와 J12 사이; 두 번째 갈래가 분리 서보의 + / - 를 주고, 그 갈래의 신호선은 잘라서 J13 패드(RELEASE_SIG)에 납땜",
+        "domestic shop", "국내 쇼핑몰",
+        "로켓에 넣는 보드에만 필요합니다 (VTOL에서는 J13을 비워 둠). 신호선을 J13에 납땜하고, 서보 +는 J12 2번(SERVO_5V), "
+        "-는 J12 3번(GND_PWR)에서 Y자 리드로 받습니다. 만들어 본 적 없음 (NOT_VERIFIED).",
+        "spec/rev3_plan.json off_board_purchase (plan amendment rocket_release_output, 2026-11-13); spec J13 / J12 nets")
     return rows
 
 
@@ -287,7 +312,7 @@ def write_ko(rows: list[dict], path: Path, ctx: dict) -> None:
     cost = group_a_cost(rows)
     L: list[str] = []
     A = L.append
-    A("# 따로 사야 하는 부품 목록 - VTOL 캐리어 PCB rev 3")
+    A("# 따로 사야 하는 부품 목록 - VTOL 캐리어 PCB rev 3.1")
     A("")
     A(f"{ctx['date']} 사용자 요청 \"{ctx['request']}\" 에 따라 정리한 목록입니다. "
       "**JLCPCB 주문은 Economic PCBA로 SMT 부품만 실장합니다. 스루홀(구멍에 꽂는) 부품과 ESP-12F, MCU, 센서 모듈은 "
@@ -331,9 +356,16 @@ def write_ko(rows: list[dict], path: Path, ctx: dict) -> None:
             A("- 소켓 J2 / J5 (C22436147)를 구하기 어려우면 계획의 대체 순서는 C55629861, 그다음 C54876735입니다 "
               "(같은 풋프린트에 맞는지는 NOT_VERIFIED; C55629861은 다리가 더 길어 반드시 잘라야 함).")
             A("")
+        if g == "g":
+            A("- rev 3.1 (2026-11-13 사용자 결정 '캐리어 PCB를 로켓에도 씀'): 로켓의 CanSat 분리 서보 신호는 FCU PE5 → R22(JLC 실장) → J13 패드로 나옵니다. "
+              "J13은 부품 없는 도금 구멍이라 살 부품이 없고, 위 Y자 리드의 신호선을 직접 납땜합니다. "
+              "사용자가 처음 고른 B안(서보 열의 직각 1x3 헤더, J18을 1핀으로)은 rev 3 배터리 선을 그대로 둔 채로는 자리가 없어 만들지 않았으므로 "
+              "그 헤더와 1핀 헤더는 사지 않습니다 (배터리 선을 다시 그리는 것은 사용자가 정할 설계 변경, README 참고). "
+              "J18은 rev 3 그대로 1x4 헤더입니다 ((a) 묶음).")
+            A("")
     A("## 이 목록에 없는 것")
     A("")
-    A("- 서보, ESC, 6S 주 배터리와 그 배선은 기체 부품이라 이 목록에 넣지 않았습니다.")
+    A("- 서보(로켓의 분리 서보 포함), ESC, 6S 주 배터리와 그 배선은 기체 부품이라 이 목록에 넣지 않았습니다.")
     A("- 저항, 커패시터, IC 등 SMT 부품은 모두 JLC가 실장하므로 따로 사지 않습니다.")
     A("")
     A("## 숫자의 출처")

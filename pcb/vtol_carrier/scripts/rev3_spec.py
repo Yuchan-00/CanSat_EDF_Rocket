@@ -58,6 +58,8 @@ DATASHEET_PINS = {
 PROG_REFS = ("J3", "J19", "J20", "J21", "J22", "J24", "J25", "J26")
 #: ids of the plan amendments of 2026-11-12, in order (scratch impl/esp_user/amend_plan.py, amend_plan2.py)
 AMENDMENT_IDS = ("esp_by_user_economic_hasl", "tht_by_user")
+#: rev 3.1 amendment of 2026-11-13 (release output for the rocket, option C; <scratch>/pcb_rev3/rev31/amend_plan3.py)
+AMENDMENT_IDS_REV31 = ("rocket_release_output",)
 MCU_CODE = "C6510"
 #: option B (D6) BOM lines: programming headers fitted by JLC. Footprint choice and pad numbering:
 #: <scratch>/impl/foundation/optb_pads.json (EasyEDA record vs the on-disk KiCad footprint, F; drawing NOT_VERIFIED)
@@ -302,7 +304,8 @@ def plan_check(parts: list[dict], nets: list[dict], ncl: list[dict], prog: str, 
 
     # counts (plan sections 3 / 6): 175 items, 174 parts, fit sets, BOM lines
     actions = dict(sorted(Counter(c["action"] for c in PLAN["changes"]).items()))
-    want_actions = {"add": 13, "keep": 140, "keep-dnp": 10, "remove": 1, "replace": 11}
+    # rev 3.1 amendment (2026-11-13): J13 and R22 are two more "add" items (rev 2c had neither)
+    want_actions = {"add": 15, "keep": 140, "keep-dnp": 10, "remove": 1, "replace": 11}
     if actions != want_actions:
         diffs.append(f"plan actions {actions} != {want_actions}")
     summ = fitsets.summary(parts)
@@ -322,11 +325,12 @@ def plan_check(parts: list[dict], nets: list[dict], ncl: list[dict], prog: str, 
             diff("counts", name, have, want, count_why)
     # plan amendments of 2026-11-12 (user decisions, plan key 'amendments'): U7 ESP-12F and the 12 THT connectors are
     # fitted by the user, so the JLC BOM lost its lines 31 and 35-40 - before them the plan gave 157 parts / 40 lines
-    # (34 SMT + 6 THT)
-    if (want_parts, want_lines) != (144, {"total": 33, "smt": 33, "tht": 0}):
-        diffs.append(f"plan BOM {want_parts} parts / {want_lines} != 144 parts / 33 lines (33 SMT + 0 THT)")
-    if [a.get("id") for a in PLAN.get("amendments", [])] != list(AMENDMENT_IDS):
-        diffs.append(f"plan amendments {[a.get('id') for a in PLAN.get('amendments', [])]} != {list(AMENDMENT_IDS)}")
+    # (34 SMT + 6 THT); the rev 3.1 amendment adds R22 to line 21 (145 parts, still 33 lines)
+    if (want_parts, want_lines) != (145, {"total": 33, "smt": 33, "tht": 0}):
+        diffs.append(f"plan BOM {want_parts} parts / {want_lines} != 145 parts / 33 lines (33 SMT + 0 THT)")
+    if [a.get("id") for a in PLAN.get("amendments", [])] != list(AMENDMENT_IDS + AMENDMENT_IDS_REV31):
+        diffs.append(f"plan amendments {[a.get('id') for a in PLAN.get('amendments', [])]} != "
+                     f"{list(AMENDMENT_IDS + AMENDMENT_IDS_REV31)}")
     gone = sorted((r for b in PLAN.get("bom_lines_now_bought_by_the_user", []) for r in b["designators"]),
                   key=fitsets.natural)
     user_now = sorted((p["refdes"] for p in parts if p["fit"] == "user" and jlc_code_for(p)), key=fitsets.natural)
@@ -393,7 +397,8 @@ def plan_check(parts: list[dict], nets: list[dict], ncl: list[dict], prog: str, 
 HISTORY_KEYS = ("changes_from_rev1", "rev_2c_changes", "radio_decision_2026_11_05", "removed_5th_mcu",
                 "battery_spot_A_assumed", "rev3_plan_extract", "checks")
 #: words that describe rev 2c; outside HISTORY_KEYS they may appear only inside one of ALLOWED_PHRASES
-STALE = re.compile(r"Pololu|S9V11|ESP-12E|\bJ6\b|\bJ13\b|22 pF|\b2 layers\b|2-layer|two_layer|four_layer_fallback|"
+#: rev 3.1: J13 (release-signal pad) is a part again and left the stale list
+STALE = re.compile(r"Pololu|S9V11|ESP-12E|\bJ6\b|22 pF|\b2 layers\b|2-layer|two_layer|four_layer_fallback|"
                    r"1\.34 A|1\.3 A peak|boost module|5 V module|either layer|both layers|B\.Cu mostly solid GND")
 ALLOWED_PHRASES = (
     "RF_Module:ESP-12E", "ESP-12E.kicad_mod", "same 22 pins as ESP-12E", "'ESP-12E 직접 납땜'",
@@ -528,7 +533,6 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
     put(("power", "tree", 2),
         "+5V -> U6 AMS1117-3.3 -> +3V3 -> ESP-12F VCC (100 uF + 10 uF + 100 nF at the pin), BMP280 VCC, GPS VCC (JP1 "
         "default), BSS138 gates + LV pull-ups, ESP strap pull-ups", "ESP-12E VCC")
-    put(("power", "tree", 4), swap("J8-J11 (+ J13 DNP) pin 2", "J8-J11 pin 2"), "J13 DNP")
     le = ("power", "load_estimate")
     put(le + ("rail_3V3_mA",), lambda old: {
         "ESP-12F (Wi-Fi associated, UART bridge: ~80 avg, A; TX bursts up to 500 mA, F plan power_block."
@@ -675,7 +679,10 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
         "the amendments and NOT_VERIFIED: whether JLC finds room for its tooling holes on this board in an Economic "
         "order (or asks for edge rails), the reflow margin at 255 +-5 C for the parts rated 260 C, the hand soldering "
         "of the ESP-12F on lead-free HASL pads next to fitted parts, and the fit of the 12 user-bought through-hole "
-        "connectors in their holes (the parts are the former BOM lines, bought loose)."] + list(PLAN["open_risks"])
+        "connectors in their holes (the parts are the former BOM lines, bought loose)."] + [
+        f"AMENDED {a['date']} (plan amendment '{a['id']}', rev 3.1): " + "; ".join(a["meaning"]) + ". NOT_VERIFIED: "
+        "the rocket release servo on J13 / the Y-lead on J12 (never connected or driven) and the soldered signal "
+        "wire in the J13 pad" for a in PLAN.get("amendments", []) if a.get("id") in AMENDMENT_IDS_REV31] + list(PLAN["open_risks"])
     spec["rev3_plan_extract"] = {
         "label": f"F: copied verbatim from {plan3} (sha256 {PLAN_SHA256}); texts may name rev 2c parts",
         "interpretation": PLAN["interpretation"], "invariants": PLAN["invariants"], "power_block": pb,
@@ -692,7 +699,7 @@ def apply_rev3_text(spec: dict, prog: str, errors: list[str]) -> None:
         if key not in HISTORY_KEYS:
             _stale(val, key, left)
     spec["checks"]["stale_text_scan"] = {
-        "what": "words that describe rev 2c (plug-in 5 V module, ESP-12E, J6, J13, 22 pF, 2 layers, 1.34 A) searched in "
+        "what": "words that describe rev 2c (plug-in 5 V module, ESP-12E, J6, 22 pF, 2 layers, 1.34 A) searched in "
                 "every text outside the history sections",
         "pattern": STALE.pattern, "not_scanned": list(HISTORY_KEYS), "allowed_phrases": list(ALLOWED_PHRASES),
         "leftovers": left, "result": "PASS" if not left else "FAIL"}
@@ -765,7 +772,8 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
         raise SystemExit("rev3_spec.write_spec_ko: user-fitted THT parts differ from the plan's former THT BOM lines")
     L: list[str] = []
     A = L.append
-    A("# VTOL 캐리어 PCB rev 3 - 전기 사양 요약")
+    A("# VTOL 캐리어 PCB rev 3" + (".1" if any(a.get("id") in AMENDMENT_IDS_REV31 for a in PLAN.get("amendments", []))
+                                  else "") + " - 전기 사양 요약")
     A("")
     A(f"이 문서는 `{root}/scripts/build_spec.py` 가 `{root}/spec/carrier_spec.json` 과 함께 자동으로 만든 것입니다. "
       "손으로 고치지 말고 스크립트를 다시 돌리십시오.")
@@ -793,11 +801,24 @@ def write_spec_ko(spec: dict, path: Path, board_dir: Path) -> None:
     A("- MCU, 센서 모듈, ESP-12F 모듈, 스루홀 커넥터를 뺀 모든 실장 부품(모두 SMT)을 JLCPCB 조립 라이브러리의 주문 가능한 부품으로 정했습니다 "
       f"(재고 근거: `{root}/spec/parts_sources.json`).")
     A("- 부품마다 `fit` (누가 붙이는가) 값을 가집니다. JLC BOM / CPL은 이 값에서만 만들어집니다.")
+    r31 = [a for a in PLAN.get("amendments", []) if a.get("id") in AMENDMENT_IDS_REV31]
+    if r31:
+        # rev 3.1 (plan amendment 2026-11-13, option C): one MCU pin changed on purpose, one pad + one resistor added
+        A(f"- **rev 3.1 ({r31[0]['date']}, 사용자 결정 \"{r31[0]['request_verbatim'][0]}\")**: 같은 캐리어를 로켓에도 씁니다. "
+          "로켓은 FCU U2 PE5 / OC3C (핀 7; 펌웨어 src/hal/pwm.c:49, main.c:518 - 바꾸지 않음)로 CanSat 노즈 분리 서보를 "
+          "움직이므로 분리 서보 출력을 되살렸습니다: PE5 -> R22 220 Ohm (JLC BOM 21줄 C22962에 합류) -> J13. "
+          "J13은 +x / +y 모서리의 도금 스루홀 패드 1개(지름 2.0 mm, 구멍 1.0 mm)이고 붙일 부품이 없습니다: 로켓에서는 "
+          "ESC와 J12 사이에 서보 Y 케이블을 끼우고, 그 분리 서보 쪽 가지의 신호선을 J13에 납땜합니다 (+ / -는 J12의 "
+          "2 / 3번에서 Y 케이블로). VTOL에서는 비워 둡니다. 이 패드 말고 rev 3에서 바뀐 MCU 핀은 없습니다.")
+        A("- 사용자가 고른 B안(-x 변 서보 열에 직각 헤더 J13, J18을 1핀으로)은 배치할 수 없었습니다 (M): 서보 열은 위아래가 "
+          "rev 3 배터리 선 미리 배선(F.Cu 2.0 mm VBAT_LOGIC, B.Cu 2.4 mm VBAT_LOGIC_SW)으로 막혀 있고, 헤더 5개 + 1핀 J18에는 "
+          "45.06 mm가 필요한데 44.60 mm뿐입니다 (가장 좋은 자리에서도 양 끝이 0.13 mm 간격 규칙보다 0.23 mm 부족). 배터리 "
+          "배선은 바꾸지 않는다는 조건이라 사용자가 정해 둔 대안 C안으로 했습니다. 그래서 J18은 rev 3 그대로(1x4)입니다.")
     om = spec["board"]["outline_mm"]
     tab = om.get("tab")
     if tab:
         # redesign2 (user request 2026-11-12): the 76 x 70 main rectangle is unchanged, a tab on the -y edge is added
-        A(f"- MCU 4개의 핀 256개가 가는 네트, 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. "
+        A(f"- MCU 4개의 핀 256개가 가는 네트(rev 3.1의 U2 PE5 하나만 예외), 커넥터·MCU·크리스털·모듈 소켓·ESP 위치는 rev 2c 그대로입니다. "
           f"기판 본체 {om['size'][0]:g} x {om['size'][1]:g} mm 사각형과 그 변도 그대로이고, 2026-11-12 사용자 요청(\"{tab['user_request_verbatim']}\")으로 "
           f"-y 변(차체 -y 쪽)에 승압 회로를 올리는 탭을 붙였습니다: x {tab['x'][0]:g}..{tab['x'][1]:g}, y {tab['y'][0]:g}..{tab['y'][1]:g} mm "
           f"(차체 좌표), 넓이 {tab['area_mm2']:g} mm2, 외접 크기 {om['bbox_size'][0]:g} x {om['bbox_size'][1]:g} mm. "

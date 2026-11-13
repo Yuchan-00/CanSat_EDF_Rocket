@@ -1,8 +1,8 @@
 {
  "schema": "vtol_carrier.fit_checks/1",
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d",
- "placement_sha256": "e2a63ad84e365a52f00d7041b04b7080152c6a5919fc36bc7d5f620ecb5dadf8",
+ "board_sha256": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
+ "placement_sha256": "e3220c117d98c587b65f108b136acf3f755665649634c16d5776dcd7718cfd0a",
  "module_dimensions_sha256": "40d59de412501d88cf2bad976145d006efe22f416afe23d556c44c15ac6a17dd",
  "tool": "pcbnew 10.0.6",
  "labels": "positions M (board file); part heights A (kicad/placement.json part_heights_mm); module dimensions F / A as tagged; no hardware measurement",
@@ -1681,6 +1681,19 @@
     "result": "nominal inside, 0.1 mm over at the upper tolerance: the user checks and cuts"
    },
    {
+    "ref": "J13",
+    "footprint": "TestPoint_THTPad_D2.0mm_Drill1.0mm",
+    "fit": "none",
+    "jlc_code": null,
+    "plated_holes": 1,
+    "drill_mm": [
+     1.0
+    ],
+    "under_board_nominal_mm": 0.0,
+    "result": "no part fitted: bare plated holes, nothing protrudes",
+    "label": "M"
+   },
+   {
     "ref": "J14",
     "footprint": "Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
     "fit": "user",
@@ -2232,7 +2245,8 @@
      "R18",
      "R19",
      "R20",
-     "R21"
+     "R21",
+     "R22"
     ],
     "comment": "220R 1%",
     "assembly": "SMT",
@@ -2448,7 +2462,7 @@
   ],
   "gate_report": {
    "file": "out/jlc_gate_report.json",
-   "started_at": "2026-11-12T22:27:21+09:00"
+   "started_at": "2026-11-13T20:26:50+09:00"
   }
  },
  "connector_drawings": {

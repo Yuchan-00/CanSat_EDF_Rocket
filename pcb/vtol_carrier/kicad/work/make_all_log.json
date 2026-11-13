@@ -10,7 +10,7 @@
   "KPY": "C:/Users/yc012/AppData/Local/Programs/KiCad/10.0/bin/python.exe",
   "MPY": "B:/0)AI_Cad/CanSat_EDF_Rocket/.venv/Scripts/python.exe"
  },
- "started": "2026-11-12T22:57:25+0900",
+ "started": "2026-11-13T21:25:34+0900",
  "steps": [
   {
    "step": "docs",
@@ -23,7 +23,7 @@
     "docs_ko.py"
    ],
    "exit": 0,
-   "seconds": 0.2
+   "seconds": 0.3
   },
   {
    "step": "manifest",
@@ -36,10 +36,10 @@
     "make_manifest.py"
    ],
    "exit": 0,
-   "seconds": 0.8
+   "seconds": 1.0
   }
  ],
  "failed_checks": [],
- "finished": "2026-11-12T22:57:26+0900",
+ "finished": "2026-11-13T21:25:35+0900",
  "exit": 0
 }

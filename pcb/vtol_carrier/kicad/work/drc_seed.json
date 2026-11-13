@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-12T18:44:40",
+    "date": "2026-11-13T16:40:25",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -88,7 +88,7 @@
                         "x": 85.5333,
                         "y": 111.6098
                     },
-                    "uuid": "dbd6f64d-5459-4c4d-b734-628326d3e325"
+                    "uuid": "9545fc16-e429-430f-bf17-7cfa21649605"
                 },
                 {
                     "description": "패드 1 [+3V3]의 Q4 위F.Cu",
@@ -111,7 +111,7 @@
                         "x": 105.6574,
                         "y": 90.7875
                     },
-                    "uuid": "ed0a5d8b-2cc5-4b99-9f16-26b730b79840"
+                    "uuid": "1d71cb03-3552-48a0-992b-4f0d1884ee47"
                 },
                 {
                     "description": "패드 1 [+3V3]의 Q8 위F.Cu",
@@ -137,12 +137,12 @@
                     "uuid": "f35080d2-a48a-45df-9b61-71ad3198634f"
                 },
                 {
-                    "description": "패드 1 [+5V]의 C25 위F.Cu",
+                    "description": "배선 [+5V] on F.Cu, 길이 1.4480 mm",
                     "pos": {
-                        "x": 76.74,
+                        "x": 78.188,
                         "y": 123.3
                     },
-                    "uuid": "43342fb2-3eed-52d3-8375-ec49ef159ccc"
+                    "uuid": "f860d474-d7e9-5ad4-a1b8-75002c393457"
                 }
             ],
             "severity": "error",
@@ -235,6 +235,29 @@
                         "y": 108.83
                     },
                     "uuid": "ea31d256-ffec-5e8d-8345-9576405f8d9c"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[RELEASE_SIG]J13",
+                    "pos": {
+                        "x": 127.05,
+                        "y": 66.85
+                    },
+                    "uuid": "7f6b01fc-335d-5b97-821e-caf824302495"
+                },
+                {
+                    "description": "패드 2 [RELEASE_SIG]의 R22 위F.Cu",
+                    "pos": {
+                        "x": 130.95,
+                        "y": 67.15
+                    },
+                    "uuid": "69fe510c-ef72-5a37-bf62-da7e3fd9ccd8"
                 }
             ],
             "severity": "error",
@@ -405,6 +428,29 @@
             "description": "Missing connection between items",
             "items": [
                 {
+                    "description": "패드 7 [RELEASE_PWM]의 U2 위F.Cu",
+                    "pos": {
+                        "x": 105.1375,
+                        "y": 96.55
+                    },
+                    "uuid": "c6d69ba7-7390-5e8f-80ae-9e0e392384c0"
+                },
+                {
+                    "description": "패드 1 [RELEASE_PWM]의 R22 위F.Cu",
+                    "pos": {
+                        "x": 129.3,
+                        "y": 67.15
+                    },
+                    "uuid": "a94aa350-256a-5fd8-a7cb-9341506d6894"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
                     "description": "3의 PTH 패드[NLINK_SCK]J19",
                     "pos": {
                         "x": 98.7,
@@ -525,15 +571,15 @@
                         "x": 98.1863,
                         "y": 83.9884
                     },
-                    "uuid": "14798791-8ed4-47cf-8c2f-e5e2ec28ec4c"
+                    "uuid": "d0c78b82-52d1-45de-91e6-e820eb02ec4f"
                 },
                 {
-                    "description": "비아 [ESP_TXD0] on F.Cu - B.Cu",
+                    "description": "배선 [ESP_TXD0] on F.Cu, 길이 1.2223 mm",
                     "pos": {
                         "x": 95.95,
-                        "y": 92.0152
+                        "y": 93.2375
                     },
-                    "uuid": "2d642dac-19bf-4421-a93b-01e4f1760a04"
+                    "uuid": "ab71aba3-4752-43fa-8db8-51a8aeaeec68"
                 }
             ],
             "severity": "error",
@@ -643,12 +689,12 @@
                     "uuid": "f7c01cdd-9caa-5e73-b315-5fe2dbba96fa"
                 },
                 {
-                    "description": "비아 [BOOST_EN] on F.Cu - B.Cu",
+                    "description": "배선 [BOOST_EN] on F.Cu, 길이 0.9409 mm",
                     "pos": {
-                        "x": 124.85,
-                        "y": 135.53
+                        "x": 125.7875,
+                        "y": 135.45
                     },
-                    "uuid": "031a3b22-a14f-52c4-b804-3cca1463115a"
+                    "uuid": "0a1f0c3d-091b-5eb8-a488-c914baf92328"
                 }
             ],
             "severity": "error",
@@ -803,7 +849,7 @@
                         "x": 102.84,
                         "y": 82.915
                     },
-                    "uuid": "be16a433-3989-4fae-8806-385d5a013304"
+                    "uuid": "efe754fe-fc0d-4212-b510-3b086252b762"
                 }
             ],
             "severity": "warning",
@@ -818,7 +864,7 @@
                         "x": 96.0951,
                         "y": 85.5467
                     },
-                    "uuid": "1fd15881-62aa-4a54-9aad-aa6410a196ac"
+                    "uuid": "cd734fd4-cfc9-40ba-a7f3-53d954a36f5b"
                 }
             ],
             "severity": "warning",
@@ -833,7 +879,7 @@
                         "x": 128.3368,
                         "y": 119.5658
                     },
-                    "uuid": "920cc310-be5b-460f-8ce8-ef3652a28a62"
+                    "uuid": "551773a9-9639-4c96-8531-b4d8e559a438"
                 }
             ],
             "severity": "warning",
@@ -848,7 +894,7 @@
                         "x": 114.3003,
                         "y": 103.5629
                     },
-                    "uuid": "884dc86f-a3ec-460b-b7ef-c429f66081c8"
+                    "uuid": "543363a1-c1be-45a6-9b32-997acc760ee9"
                 }
             ],
             "severity": "warning",
@@ -863,7 +909,7 @@
                         "x": 102.0479,
                         "y": 73.1683
                     },
-                    "uuid": "880a140b-11d3-4d2f-b1b1-35d06231df2c"
+                    "uuid": "a2517ecf-16ae-4db6-9a5c-be7395fd6b8b"
                 }
             ],
             "severity": "warning",
@@ -878,7 +924,7 @@
                         "x": 95.95,
                         "y": 92.0152
                     },
-                    "uuid": "2d642dac-19bf-4421-a93b-01e4f1760a04"
+                    "uuid": "ca01b235-1683-46f1-a3c0-2f91ac20eeb9"
                 }
             ],
             "severity": "warning",
@@ -908,7 +954,7 @@
                         "x": 102.5971,
                         "y": 79.5154
                     },
-                    "uuid": "b7eb17c8-e531-4291-8409-dfd5e6c5ea33"
+                    "uuid": "873bc18e-e4ce-4cc3-903d-624bb9b29804"
                 }
             ],
             "severity": "warning",
@@ -923,7 +969,7 @@
                         "x": 102.9206,
                         "y": 89.1196
                     },
-                    "uuid": "d2f3b7cc-5000-4fa2-9214-12d706749a1a"
+                    "uuid": "d67ad3d0-1cf8-430d-b026-6c600340927e"
                 }
             ],
             "severity": "warning",
@@ -938,7 +984,7 @@
                         "x": 90.7637,
                         "y": 107.9472
                     },
-                    "uuid": "c9a7a26d-2319-463e-b9d8-11ef06a2c25a"
+                    "uuid": "ab906cb8-009f-42d6-8369-a23bd578451d"
                 }
             ],
             "severity": "warning",
@@ -953,7 +999,7 @@
                         "x": 75.0951,
                         "y": 110.0912
                     },
-                    "uuid": "cf2b1ffd-39f3-4e47-bb05-ce79b6c778af"
+                    "uuid": "40078c45-95ae-4613-9eeb-16bf30c29ed5"
                 }
             ],
             "severity": "warning",

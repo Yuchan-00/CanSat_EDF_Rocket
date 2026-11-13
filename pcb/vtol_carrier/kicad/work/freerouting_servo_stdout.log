@@ -1,65 +1,65 @@
-2026-11-12 18:44:42.001 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
-2026-11-12 18:44:42.292 INFO   Hardware: 16 CPU cores, 488 CPU score, 4026 MB RAM
-2026-11-12 18:44:42.292 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
-2026-11-12 18:44:42.294 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
-2026-11-12 18:44:43.337 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
-2026-11-12 18:44:43.425 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-12 18:44:43.425 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-12 18:44:43.579 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.606 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.618 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.619 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.621 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.655 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.658 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.856 INFO   [7B50CE\9A1C69] Loading board file 'vtol_carrier_servo.dsn'...
-2026-11-12 18:44:43.899 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-12 18:44:43.899 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-12 18:44:43.953 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.972 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.981 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.982 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:43.984 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.005 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.008 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.757 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-12 18:44:44.757 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
-2026-11-12 18:44:44.787 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.801 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.810 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.811 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.812 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.832 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.834 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
-2026-11-12 18:44:44.854 INFO   [7B50CE\9A1C69] Job '7B50CE\9A1C69' started at 2026-11-12T09:44:44.854175900Z.
-2026-11-12 18:44:45.711 WARN   Design Warning: Board has 62 pre-existing clearance violation(s) in the loaded design (before routing):
+2026-11-13 16:40:27.644 INFO   Freerouting v2.5.0 (build-date: 2026-10-05)
+2026-11-13 16:40:27.950 INFO   Hardware: 16 CPU cores, 452 CPU score, 4026 MB RAM
+2026-11-13 16:40:27.952 WARN   Deprecated settings path '-mp / --router.max_passes'; use '--router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-13 16:40:27.955 WARN   GUI is disabled and you don't have a console available, so the only feedback from Freerouting is in the log.
+2026-11-13 16:40:29.018 WARN   Deprecated settings path 'router.max_passes'; use 'router.autorouter.max_passes' instead. The old path will be removed in a future release.
+2026-11-13 16:40:29.083 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-13 16:40:29.083 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-13 16:40:29.232 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.252 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.269 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.270 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.272 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.295 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.297 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.536 INFO   [A50C30\DE5B32] Loading board file 'vtol_carrier_servo.dsn'...
+2026-11-13 16:40:29.564 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-13 16:40:29.565 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-13 16:40:29.594 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.614 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.623 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.625 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.626 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.646 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:29.648 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.349 WARN   Layer 'In1.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-13 16:40:30.349 WARN   Layer 'In2.Cu' is declared as a power layer but no plane is defined for it. It will be treated as a signal layer.
+2026-11-13 16:40:30.387 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.402 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.412 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.413 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.416 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.452 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.454 WARN   Keepout zone 'null' was skipped because its geometry is degenerate (e.g. zero-area polygon). This is likely a DSN export issue in your EDA tool. The board will be routed without this keepout constraint.
+2026-11-13 16:40:30.475 INFO   [A50C30\DE5B32] Job 'A50C30\DE5B32' started at 2026-11-13T07:40:30.474353200Z.
+2026-11-13 16:40:31.222 WARN   Design Warning: Board has 62 pre-existing clearance violation(s) in the loaded design (before routing):
   - 62 unfixable violation(s) (cannot be resolved by Freerouting):
       * 62 fixed trace/via clearance violations (first 5 shown):
-          - FixedTrace#8158 [net SERVO_5V] <-> ObstacleArea#3628
-          - FixedTrace#8158 [net SERVO_5V] <-> ObstacleArea#3627
-          - FixedTrace#8158 [net SERVO_5V] <-> ObstacleArea#3626
-          - FixedTrace#8158 [net SERVO_5V] <-> ObstacleArea#3624
-          - FixedTrace#8158 [net SERVO_5V] <-> ObstacleArea#3622
+          - FixedTrace#8169 [net SERVO_5V] <-> ObstacleArea#3628
+          - FixedTrace#8169 [net SERVO_5V] <-> ObstacleArea#3627
+          - FixedTrace#8169 [net SERVO_5V] <-> ObstacleArea#3626
+          - FixedTrace#8169 [net SERVO_5V] <-> ObstacleArea#3624
+          - FixedTrace#8169 [net SERVO_5V] <-> ObstacleArea#3622
           ... and 57 more
   - 0 potentially fixable violations
 Notice: Freerouting does not modify component placement, board outlines, or fixed items.
 Resolving these 62 unfixable violation(s) is the responsibility of the board author in their EDA tool (e.g. KiCad).
-2026-11-12 18:44:45.789 INFO   [7B50CE\9A1C69] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
-2026-11-12 18:44:46.142 INFO   [7B50CE\9A1C69] Fanout stage started on board 'c82371a5c893cfd07bb36e600fb16c92' with 0 of 608 SMD pins needing fanout (608 already connected, 0 netless).
-2026-11-12 18:44:47.058 INFO   [7B50CE\9A1C69] Fanout pass #1 on board 'c82371a5c893cfd07bb36e600fb16c92' completed in 0.60 seconds with 0 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
-2026-11-12 18:44:47.120 INFO   [7B50CE\9A1C69] Fanout stage completed: started with 608 total SMD pins, completed in 0.82 seconds, escaped pins: 2/608 (0.3%), using 0.98 total CPU seconds, 0.43 GB total allocated, and 150.5 MB peak heap usage.
-2026-11-12 18:44:47.788 INFO   [7B50CE\9A1C69] Auto-routing stage started on board 'c82371a5c893cfd07bb36e600fb16c92' with baseline score 999.08 for 0 unrouted items.
-2026-11-12 18:44:48.343 INFO   [7B50CE\9A1C69] Auto-routing pass #1 on board 'c82371a5c893cfd07bb36e600fb16c92' was completed in 0.26 seconds with score 999.08 (0 unrouted and 62 violations), using 2.13 CPU seconds and the job allocated 1.02 GB of memory so far.
-2026-11-12 18:44:48.933 INFO   [7B50CE\9A1C69] Auto-routing stage completed: started with 0 unrouted nets, completed in 2.96 seconds, final score: 999.08 (0 unrouted and 62 violations), using 3.11 total CPU seconds, 1.67 GB total allocated, and 104.4 MB peak heap usage.
-2026-11-12 18:44:49.270 INFO   [7B50CE\9A1C69] Optimization stage started on board 'c82371a5c893cfd07bb36e600fb16c92'. Baseline router score: 999.08, optimizer score: 818.74, incomplete connections: 0, clearance violations: 62.
-2026-11-12 18:44:49.962 INFO   [7B50CE\9A1C69] Optimizer pass #1 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).
-2026-11-12 18:44:50.454 INFO   [7B50CE\9A1C69] Optimizer pass #1: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.
-2026-11-12 18:44:51.135 INFO   [7B50CE\9A1C69] Optimizer pass #2 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).
-2026-11-12 18:44:51.579 INFO   [7B50CE\9A1C69] Optimizer pass #2: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.
-2026-11-12 18:44:51.579 INFO   [7B50CE\9A1C69] Stopping optimizer because the improvement in this pass (0.0000%) is below the threshold (2.50%).
-2026-11-12 18:44:51.971 INFO   [7B50CE\9A1C69] Optimization stage completed:. Baseline router score: 999.08, baseline optimizer score: 818.74, final router score: 999.08, final optimizer score: 818.74, completed in 2.51 seconds, using 2.47 total CPU seconds, 1.52 GB total allocated, and 139.8 MB peak heap usage.
-2026-11-12 18:44:52.046 INFO   [7B50CE\9A1C69] Job '7B50CE\9A1C69' finished with state: COMPLETED (elapsed: 7.19 seconds, finished at UTC: 2026-11-12T09:44:52.045507100Z).
-2026-11-12 18:44:52.082 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\redesign2\T\kicad\work\vtol_carrier_servo.ses' (SES)...
-2026-11-12 18:44:52.084 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\redesign2\T\kicad\work\vtol_carrier_servo.ses' (10602 bytes).
+2026-11-13 16:40:31.313 INFO   [A50C30\DE5B32] Pipeline thread limits: autorouter pass is single-threaded, optimizer.max_threads=15.
+2026-11-13 16:40:31.749 INFO   [A50C30\DE5B32] Fanout stage started on board '6ffc13fef8ea8d329c574fb83d568a60' with 0 of 610 SMD pins needing fanout (610 already connected, 0 netless).
+2026-11-13 16:40:32.729 INFO   [A50C30\DE5B32] Fanout pass #1 on board '6ffc13fef8ea8d329c574fb83d568a60' completed in 0.62 seconds with 0 SMD pins fanouted, 0 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-11-13 16:40:32.800 INFO   [A50C30\DE5B32] Fanout stage completed: started with 610 total SMD pins, completed in 0.85 seconds, escaped pins: 2/610 (0.3%), using 1.13 total CPU seconds, 0.43 GB total allocated, and 142.0 MB peak heap usage.
+2026-11-13 16:40:33.667 INFO   [A50C30\DE5B32] Auto-routing stage started on board '6ffc13fef8ea8d329c574fb83d568a60' with baseline score 999.08 for 0 unrouted items.
+2026-11-13 16:40:34.282 INFO   [A50C30\DE5B32] Auto-routing pass #1 on board '6ffc13fef8ea8d329c574fb83d568a60' was completed in 0.30 seconds with score 999.08 (0 unrouted and 62 violations), using 2.25 CPU seconds and the job allocated 0.92 GB of memory so far.
+2026-11-13 16:40:34.882 INFO   [A50C30\DE5B32] Auto-routing stage completed: started with 0 unrouted nets, completed in 3.37 seconds, final score: 999.08 (0 unrouted and 62 violations), using 3.23 total CPU seconds, 1.44 GB total allocated, and 117.7 MB peak heap usage.
+2026-11-13 16:40:35.240 INFO   [A50C30\DE5B32] Optimization stage started on board '6ffc13fef8ea8d329c574fb83d568a60'. Baseline router score: 999.08, optimizer score: 818.74, incomplete connections: 0, clearance violations: 62.
+2026-11-13 16:40:35.971 INFO   [A50C30\DE5B32] Optimizer pass #1 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).
+2026-11-13 16:40:36.430 INFO   [A50C30\DE5B32] Optimizer pass #1: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.
+2026-11-13 16:40:37.177 INFO   [A50C30\DE5B32] Optimizer pass #2 candidate rejected: OPTIMIZER_SCORE_NOT_IMPROVED. Restoring incumbent (optimizer score 818.74, incomplete connections: 0, clearance violations: 62).
+2026-11-13 16:40:37.612 INFO   [A50C30\DE5B32] Optimizer pass #2: optimizer score 818.74 -> 818.74 (UNCHANGED, 0.0000%), router score: 999.08, incomplete connections: 0, clearance violations: 62.
+2026-11-13 16:40:37.612 INFO   [A50C30\DE5B32] Stopping optimizer because the improvement in this pass (0.0000%) is below the threshold (2.50%).
+2026-11-13 16:40:37.974 INFO   [A50C30\DE5B32] Optimization stage completed:. Baseline router score: 999.08, baseline optimizer score: 818.74, final router score: 999.08, final optimizer score: 818.74, completed in 2.56 seconds, using 2.55 total CPU seconds, 1.54 GB total allocated, and 205.7 MB peak heap usage.
+2026-11-13 16:40:38.041 INFO   [A50C30\DE5B32] Job 'A50C30\DE5B32' finished with state: COMPLETED (elapsed: 7.57 seconds, finished at UTC: 2026-11-13T07:40:38.040321900Z).
+2026-11-13 16:40:38.071 INFO   Saving output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\rev31\T\kicad\work\vtol_carrier_servo.ses' (SES)...
+2026-11-13 16:40:38.084 INFO   Successfully saved output file 'C:\Users\yc012\AppData\Local\Temp\claude\133067549dd2ec4c\bed4b475-b8b1-46b7-ab64-c3b11e27401e\scratchpad\pcb_rev3\rev31\T\kicad\work\vtol_carrier_servo.ses' (10754 bytes).
 
 --- stderr ---

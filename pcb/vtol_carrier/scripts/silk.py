@@ -44,7 +44,7 @@ MAX_D = 3.0
 
 #: connector / jumper / module names (sources: spec parts / nets)
 LABELS: dict[str, str] = {
-    "J8": "V1", "J9": "V2", "J10": "V3", "J11": "V4",
+    "J8": "V1", "J9": "V2", "J10": "V3", "J11": "V4", "J13": "REL",  # rev 3.1: rocket release servo
     "J12": "ESC", "J17": "BUZ", "J14": "1S BAT", "J18": "6S NO GND",
     "J7": "GPS", "J15": "PWR SW", "J16": "ARM SW", "J24": "NAV RST", "J25": "FCU RST", "J26": "COM RST",
     "J19": "ISP NAV", "J20": "ISP FCU", "J21": "ISP COM", "J22": "ISP GNS",
@@ -52,12 +52,12 @@ LABELS: dict[str, str] = {
     "JP1": "GPS 3V3|5V", "U7": "ESP-12F",
 }
 #: placement priority of the names (front space is scarce: the off-board leads that are plugged in blind first)
-PRIORITY = ("J14", "J15", "J18", "J12", "J8", "J9", "J10", "J11", "J7", "J16", "J17", "JP1", "J3")
+PRIORITY = ("J14", "J15", "J18", "J12", "J13", "J8", "J9", "J10", "J11", "J7", "J16", "J17", "JP1", "J3")  # rev 3.1: + J13
 #: connectors whose name carries the pin order (off-board leads + the ESP flash header)
 #: rev 3: + the three sensor module sockets (the user checks the module's printed pin order against the board)
-PIN_LABELLED = ("J8", "J9", "J10", "J11", "J12", "J17", "J14", "J18", "J7", "J16", "J3", "J1", "J2", "J5")
+PIN_LABELLED = ("J8", "J9", "J10", "J11", "J12", "J13", "J17", "J14", "J18", "J7", "J16", "J3", "J1", "J2", "J5")  # rev 3.1: + J13
 #: rev 3 (plan section 12): board revision text, F.SilkS
-REV_TEXT = "rev 3"
+REV_TEXT = "rev 3.1"  # rev 3.1 (2026-11-13): release-servo signal pad J13 (option C); J18 unchanged
 #: rev 3: reference designators that must be readable on F.SilkS (the boost block) - placed before all others
 REFS_FIRST = ("L5", "U8", "U9")
 #: rev 3: polarity / pin-1 marks added on F.SilkS beside pad 1, outside every part body (the library marks stay):

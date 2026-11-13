@@ -11,49 +11,49 @@
   "vtol_carrier_gerber_with_mcu.zip"
  ],
  "sha256_out": {
-  "jlcpcb_bom.csv": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
-  "jlcpcb_cpl.csv": "e250211c7c3fd33bfca4a13f0637a20403897f236246ed04be8737636ac75607",
-  "jlcpcb_bom_with_mcu.csv": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
-  "jlcpcb_cpl_with_mcu.csv": "ca865157515e163f27a1da2fef17e71fe4fae593b5e8081de9ae4081172fafaf",
-  "vtol_carrier_gerber.zip": "a32e6cffc9ff2c0f3005e57b4ed644e0cb4d741d0b7d004930654356d8d8c873",
-  "vtol_carrier_gerber_with_mcu.zip": "8b4b5635dd9386bce2ee2ac95415f048891cdb040e62230f1e69bb8d29030ba9"
+  "jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+  "jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+  "jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+  "jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+  "vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+  "vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c"
  },
  "runs": [
   {
    "run": 1,
    "exit": 0,
    "sha256": {
-    "jlcpcb_bom.csv": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
-    "jlcpcb_cpl.csv": "e250211c7c3fd33bfca4a13f0637a20403897f236246ed04be8737636ac75607",
-    "jlcpcb_bom_with_mcu.csv": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
-    "jlcpcb_cpl_with_mcu.csv": "ca865157515e163f27a1da2fef17e71fe4fae593b5e8081de9ae4081172fafaf",
-    "vtol_carrier_gerber.zip": "a32e6cffc9ff2c0f3005e57b4ed644e0cb4d741d0b7d004930654356d8d8c873",
-    "vtol_carrier_gerber_with_mcu.zip": "8b4b5635dd9386bce2ee2ac95415f048891cdb040e62230f1e69bb8d29030ba9"
+    "jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+    "jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+    "jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+    "jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+    "vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+    "vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c"
    }
   },
   {
    "run": 2,
    "exit": 0,
    "sha256": {
-    "jlcpcb_bom.csv": "6dff9dbcbcc5572001bb8b315c77f157715f3f1fe0e540876b08edb5c79f7432",
-    "jlcpcb_cpl.csv": "e250211c7c3fd33bfca4a13f0637a20403897f236246ed04be8737636ac75607",
-    "jlcpcb_bom_with_mcu.csv": "43aea871c5965ec2f9f430470decd0b4f24fa83b48bbb67502b0a686aa609efa",
-    "jlcpcb_cpl_with_mcu.csv": "ca865157515e163f27a1da2fef17e71fe4fae593b5e8081de9ae4081172fafaf",
-    "vtol_carrier_gerber.zip": "a32e6cffc9ff2c0f3005e57b4ed644e0cb4d741d0b7d004930654356d8d8c873",
-    "vtol_carrier_gerber_with_mcu.zip": "8b4b5635dd9386bce2ee2ac95415f048891cdb040e62230f1e69bb8d29030ba9"
+    "jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+    "jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+    "jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+    "jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+    "vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+    "vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c"
    }
   }
  ],
  "cpl_rotation_outputs": {
   "before": {
-   "out/cpl_rotation_table.csv": "005207c53fad7c039e62aa0c849ee32a5752126349f94122eed2ed7910572d4d",
-   "out/reports/cpl_rotation.json": "19a6aeabc2b413a2dc67412bcfa7abe1297789fa83acca0df632266d78b4cc30",
-   "out/cpl_rotation_check.png": "696aa2c593d80d5b015930936b0214f3f3df6f1bf0f73636b3b2994246696305"
+   "out/cpl_rotation_table.csv": "9486a629e9ea79beedd710aed65ddcf72b1713f37ef291b237b8c11f08481d4c",
+   "out/reports/cpl_rotation.json": "ca4d84ee5d899d6c812c3807fa499cf4aa032e99bff21aa738930b6484dde6d0",
+   "out/cpl_rotation_check.png": "3df4b5056a4d8c2e75fee9835c36a2eace3bdb91b01bfc6040236277f9e5e2b6"
   },
   "after": {
-   "out/cpl_rotation_table.csv": "005207c53fad7c039e62aa0c849ee32a5752126349f94122eed2ed7910572d4d",
-   "out/reports/cpl_rotation.json": "19a6aeabc2b413a2dc67412bcfa7abe1297789fa83acca0df632266d78b4cc30",
-   "out/cpl_rotation_check.png": "696aa2c593d80d5b015930936b0214f3f3df6f1bf0f73636b3b2994246696305"
+   "out/cpl_rotation_table.csv": "9486a629e9ea79beedd710aed65ddcf72b1713f37ef291b237b8c11f08481d4c",
+   "out/reports/cpl_rotation.json": "ca4d84ee5d899d6c812c3807fa499cf4aa032e99bff21aa738930b6484dde6d0",
+   "out/cpl_rotation_check.png": "3df4b5056a4d8c2e75fee9835c36a2eace3bdb91b01bfc6040236277f9e5e2b6"
   }
  },
  "problems": [],

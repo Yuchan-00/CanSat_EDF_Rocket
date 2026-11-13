@@ -4,7 +4,7 @@
  "sets": {
   "main": {
    "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip",
-   "zip_sha256": "a32e6cffc9ff2c0f3005e57b4ed644e0cb4d741d0b7d004930654356d8d8c873",
+   "zip_sha256": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
    "files": [
     "vtol_carrier-B_Cu.gbl",
     "vtol_carrier-B_Mask.gbs",
@@ -28,11 +28,11 @@
     "status": "PASS",
     "message": "1 drill file(s)"
    },
-   "f_paste_flashes": 320
+   "f_paste_flashes": 322
   },
   "with_mcu": {
    "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip",
-   "zip_sha256": "8b4b5635dd9386bce2ee2ac95415f048891cdb040e62230f1e69bb8d29030ba9",
+   "zip_sha256": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c",
    "files": [
     "vtol_carrier-B_Cu.gbl",
     "vtol_carrier-B_Mask.gbs",
@@ -56,7 +56,7 @@
     "status": "PASS",
     "message": "1 drill file(s)"
    },
-   "f_paste_flashes": 576
+   "f_paste_flashes": 578
   }
  },
  "paste_variant": {
@@ -77,6 +77,7 @@
     "J10",
     "J11",
     "J12",
+    "J13",
     "J14",
     "J15",
     "J16",
@@ -109,8 +110,8 @@
     "U4": 64,
     "U7": 22
    },
-   "pads_with_paste_before": 603,
-   "pads_with_paste_after": 320,
+   "pads_with_paste_before": 605,
+   "pads_with_paste_after": 322,
    "paste_pads_left_on_parts_not_fitted_by_jlc": 0
   },
   "with_mcu": {
@@ -129,6 +130,7 @@
     "J10",
     "J11",
     "J12",
+    "J13",
     "J14",
     "J15",
     "J16",
@@ -153,8 +155,8 @@
     "R47": 2,
     "U7": 22
    },
-   "pads_with_paste_before": 603,
-   "pads_with_paste_after": 576,
+   "pads_with_paste_before": 605,
+   "pads_with_paste_after": 578,
    "paste_pads_left_on_parts_not_fitted_by_jlc": 0
   }
  },

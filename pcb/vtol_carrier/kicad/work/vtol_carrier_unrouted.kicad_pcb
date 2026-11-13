@@ -3828,6 +3828,110 @@
 			)
 		)
 	)
+	(footprint "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(layer "F.Cu")
+		(uuid "1b634ad2-17e7-563f-a04b-07574801ef26")
+		(at 127.05 66.85)
+		(descr "THT pad as test Point, diameter 2.0mm, hole diameter 1.0mm")
+		(tags "test point THT pad")
+		(property "Reference" "J13"
+			(at 0 -1.998 0)
+			(layer "F.Fab")
+			(uuid "a73eaec4-885d-576d-bd27-a3694406a1fb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "1-pin THT pad (release servo signal)"
+			(at 0 2.05 0)
+			(layer "F.Fab")
+			(uuid "7f054013-cebd-520f-9b77-88cc63e2c3eb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "440f8499-c548-542b-9cbf-bff4a1ded62f")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "release servo signal pad (rocket: CanSat nose-release servo; + / - from a Y-lead on J12)"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c38f5a76-03fc-5098-8e3d-4376ed432e67")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/0209128e-ee74-570c-84de-a42991172ca6/8cab51bc-6d6b-529d-96f0-edfc20d207ed")
+		(sheetname "/IO_connectors/")
+		(sheetfile "io.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 1.2)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "cbae887a-6278-5c03-b16e-b9b2979ba6c6")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.5 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "6d87487d-a97c-5bc1-9d5c-17b075aac9f7")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -2 0)
+			(layer "F.Fab")
+			(uuid "bfefd29e-437c-5ca1-9909-aaa7451ae9fb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" thru_hole circle
+			(at 0 0)
+			(size 2 2)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "RELEASE_SIG")
+			(pintype "passive")
+			(uuid "7f6b01fc-335d-5b97-821e-caf824302495")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "1d1f041e-ae6f-5b1c-9f4a-8a331686c214")
@@ -13660,8 +13764,8 @@
 			(size 1.475 0.55)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "unconnected-(U2-PE5-Pad7)")
-			(pintype "bidirectional+no_connect")
+			(net "RELEASE_PWM")
+			(pintype "bidirectional")
 			(uuid "c6d69ba7-7390-5e8f-80ae-9e0e392384c0")
 		)
 		(pad "8" smd roundrect
@@ -37779,6 +37883,157 @@
 			)
 		)
 	)
+	(footprint "Resistor_SMD:R_0603_1608Metric"
+		(layer "F.Cu")
+		(uuid "f0c9da4c-b29d-5f8d-8522-726f0733be02")
+		(at 130.125 67.15)
+		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "resistor")
+		(property "Reference" "R22"
+			(at 0 -1.43 0)
+			(layer "F.Fab")
+			(uuid "1546ef3b-6e9f-5fb7-ad22-45155af086d9")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "220"
+			(at 0 1.43 0)
+			(layer "F.Fab")
+			(uuid "9fe79af8-1104-5796-a387-87ee91f7841e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f3b5d6ab-2abd-5d98-9ffd-ddb206c06e9f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "RELEASE signal series resistor (long lead, back-power limit)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "41191a49-8c0b-5e44-8506-8ac48f069f12")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "bd5394f1-413d-5a1e-98b4-cf66a2191dbf")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/0209128e-ee74-570c-84de-a42991172ca6/22aac0ee-43c2-5d0e-a382-764e7fcf1c11")
+		(sheetname "/IO_connectors/")
+		(sheetfile "io.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.237258 -0.5225)
+			(end 0.237258 -0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "fbb08c7b-c555-5ded-aef2-7ae5640e8298")
+		)
+		(fp_line
+			(start -0.237258 0.5225)
+			(end 0.237258 0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "bdc4f862-103e-5433-8d75-469359a3c82a")
+		)
+		(fp_rect
+			(start -1.48 -0.73)
+			(end 1.48 0.73)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "408784e1-a2e2-53d0-9a50-40e2729940e0")
+		)
+		(fp_rect
+			(start -0.8 -0.4125)
+			(end 0.8 0.4125)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "879cf92b-554a-5f43-9051-ee3a367f7575")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "81c53bd1-15ea-5c68-8e79-109844705638")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -0.825 0)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "RELEASE_PWM")
+			(pintype "passive")
+			(uuid "a94aa350-256a-5fd8-a7cb-9341506d6894")
+		)
+		(pad "2" smd roundrect
+			(at 0.825 0)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "RELEASE_SIG")
+			(pintype "passive")
+			(uuid "69fe510c-ef72-5a37-bf62-da7e3fd9ccd8")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
 	(footprint "Package_TO_SOT_SMD:SOT-23"
 		(layer "F.Cu")
 		(uuid "f10e31ed-c4e0-5e83-8ec5-34e9c5d109ce")
@@ -40607,7 +40862,7 @@
 			(justify left)
 		)
 	)
-	(gr_text "J14 (1S) + J15 (power switch) in the -x/+y corner next to battery spot A; J13 release header removed (VTOL)"
+	(gr_text "J14 (1S) + J15 (power switch) in the -x/+y corner next to battery spot A; rev 3.1: J13 release-servo signal pad (rocket) in the +x/+y corner"
 		(at 62 147.9 0)
 		(layer "Dwgs.User")
 		(uuid "36dfe8d9-c952-5e3a-a6b8-fbe0ac18e255")
@@ -40619,7 +40874,7 @@
 			(justify left)
 		)
 	)
-	(gr_text "VTOL carrier rev 3 - NOT_VERIFIED: never built or powered"
+	(gr_text "VTOL carrier rev 3.1 - NOT_VERIFIED: never built or powered"
 		(at 100 143.4 0)
 		(layer "Dwgs.User")
 		(uuid "648bdee6-822f-573a-be31-9308f0a4680a")

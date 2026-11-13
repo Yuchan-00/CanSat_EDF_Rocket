@@ -92,8 +92,9 @@ MCP65R41_AS_TLV3012 = {("", "output"): "OUT", ("V-", "power_in"): "V-", ("+", "i
 #: U7 (ESP-12F) and the 12 through-hole connectors joined the list with the plan amendments of 2026-11-12: the user
 #: buys and solders them (JLC fits SMT parts only)
 THT_BY_USER = ("J2", "J5", "J8", "J9", "J10", "J11", "J12", "J14", "J15", "J16", "J17", "J18")
+#: rev 3.1 (plan amendment 'rocket_release_output' 2026-11-13): J13, the release-servo signal pad (no part, fit none)
 NOT_JLC_OPTION_A = ("U1", "U2", "U3", "U4", "U7", "J1", "J3", "J19", "J20", "J21", "J22", "J24", "J25", "J26", "Q3",
-                    "R47", "JP1", "NT1") + THT_BY_USER
+                    "R47", "JP1", "NT1", "J13") + THT_BY_USER
 
 
 # ------------------------------------------------------------------------------------------------- small helpers
@@ -392,6 +393,29 @@ def mcu_pins(table: dict[str, dict[str, str]]) -> dict[str, dict[str, str]]:
     return {u: dict(sorted(table.get(u, {}).items(), key=lambda kv: natural(kv[0]))) for u in MCUS}
 
 
+def declared_mcu_pin_changes() -> dict[str, dict[str, str]]:
+    """MCU pins whose net a plan amendment changes on purpose ({'U2.7': {'from': 'NC', 'to': 'RELEASE_PWM'}}; rev 3.1
+    amendment 'rocket_release_output'). The pin-map checks compare exactly these pins with the declared new net (and
+    the rev 2c reference must hold the declared old one); every other pin keeps its rev 2c net."""
+    out: dict[str, dict[str, str]] = {}
+    for a in load_json(PLAN).get("amendments", []):
+        for pin, chg in (a.get("mcu_pin_changes") or {}).items():
+            out[pin] = {"from": chg["from"], "to": chg["to"], "amendment": a.get("id")}
+    return out
+
+
+def apply_declared(reference: dict[str, dict[str, str]], declared: dict, problems: list[str]) -> dict:
+    """Copy of the rev 2c reference with the declared pins set to their new net (old value checked)."""
+    ref = {u: dict(t) for u, t in reference.items()}
+    for pin, chg in declared.items():
+        u, _, num = pin.partition(".")
+        if ref.get(u, {}).get(num) != chg["from"]:
+            problems.append(f"declared MCU pin change {pin}: reference has {ref.get(u, {}).get(num)!r}, the amendment "
+                            f"says {chg['from']!r}")
+        ref.setdefault(u, {})[num] = chg["to"]
+    return ref
+
+
 def check_mcu_pinmap() -> dict:
     nl = load_netlist()
     if nl is None:
@@ -425,6 +449,8 @@ def check_mcu_pinmap() -> dict:
     diffs = []
     compared = 0
     per_chip = {}
+    declared = declared_mcu_pin_changes()  # rev 3.1: U2.7 -> RELEASE_PWM
+    reference = apply_declared(reference, declared, problems)
     for u in MCUS:
         want, have = reference.get(u, {}), got[u]
         if sorted(have, key=natural) != [str(i) for i in range(1, 65)]:
@@ -441,6 +467,7 @@ def check_mcu_pinmap() -> dict:
         "result": PASS if not diffs and not problems else FAIL,
         "tool": "kicad-cli netlist export + scripts/rev3_checks.py mcu-pinmap", "netlist": nl.evidence(),
         "reference": ref_source, "reference_cross_check": cross, "pins_compared": compared,
+        "declared_changes_by_plan_amendment": declared,
         "differences": diffs, "per_chip": per_chip, "problems": problems})
 
 
@@ -727,10 +754,14 @@ def check_nets() -> dict:
                         "unexpected": bad_gone + bad_came})
         if bad_gone or bad_came:
             problems.append(f"net {name}: unexpected member change {bad_gone + bad_came}")
+    # rev 3.1 (plan amendment 'rocket_release_output'): a new net may contain exactly the existing-part pins its plan
+    # entry declares under members_of_existing_parts (RELEASE_PWM: U2.7, the former no-connect PE5) - nothing else
+    declared_existing = {n["name"]: sorted(n.get("members_of_existing_parts", []), key=natural) for n in plan["new_nets"]}
     for name in gained:
-        outside = [f"{r}.{p}" for r, p in b[name] if r not in added_refs]
-        if outside:
-            problems.append(f"new net {name} has members of existing parts: {outside}")
+        outside = sorted((f"{r}.{p}" for r, p in b[name] if r not in added_refs), key=natural)
+        if outside != declared_existing.get(name, []):
+            problems.append(f"new net {name} has members of existing parts: {outside} (plan declares "
+                            f"{declared_existing.get(name, [])})")
     ta, tb = old.pin_table(), nl.pin_table()
     nc_a = {f"{r}.{p}" for r, t in ta.items() for p, v in t.items() if v == "NC"}
     nc_b = {f"{r}.{p}" for r, t in tb.items() for p, v in t.items() if v == "NC"}

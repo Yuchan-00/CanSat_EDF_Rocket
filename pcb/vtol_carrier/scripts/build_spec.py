@@ -162,6 +162,8 @@ H2V = ("Connector_Generic:Conn_01x02",
 H2H = ("Connector_Generic:Conn_01x02", "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal")
 H3H = ("Connector_Generic:Conn_01x03", "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal")
 H4H = ("Connector_Generic:Conn_01x04", "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal")
+#: rev 3.1 (2026-11-13): one plated THT pad (release-servo signal wire, option C)
+PAD1 = ("Connector_Generic:Conn_01x01", "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm")
 H6V = ("Connector_Generic:Conn_01x06", "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical")
 H8V = ("Connector_Generic:Conn_01x08", "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical")
 S6H = ("Connector_Generic:Conn_01x06", "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
@@ -581,13 +583,25 @@ def build() -> None:
         net(f"{name}_SIG", f"{j}.1")
         net("SERVO_5V", f"{j}.2")
         net("GND_PWR", f"{j}.3")
-    # rev 2c: the unpopulated release-servo header J13 and its DNP 220 Ohm series resistor are removed (configs.vtol has
-    # no release servo; the user removed the unpopulated 5th MCU for the same reason, 2026-11-05). Their refdes stay
-    # gaps so every later refdes is unchanged; U2 PE5 (OC3C, still driven by the firmware) is left open.
-    _next("R")
-    nc("U2.PE5", f"release-servo PWM OC3C ({P} pins.release_servo line 2153; {BH}:28; pwm.c:49 drives it): configs.vtol "
-                 "has no release servo -> output left open (rev 2c removed the unpopulated J13 header, "
-                 f"{REV2} PF-m6 / MF2-1)")
+    # rev 2c removed the unpopulated release header J13 and its DNP 220 Ohm series resistor and kept both refdes as gaps
+    # (U2 PE5 open, rev-2b review PF-m6 / MF2-1). rev 3.1 (user 2026-11-13 "캐리어 PCB를 로켓에도 씀"): the same carrier
+    # flies in the rocket, whose CanSat nose-release servo the FCU drives on PE5 / OC3C -> the gaps are filled again.
+    # The user's option B (right-angle J13 in the -x servo column) has no legal spot with the rev 3 battery pre-routes
+    # unchanged (<scratch>/pcb_rev3/rev31/NOTES_layout.txt), so the user's fallback option C: J13 = one plated pad for the
+    # servo's signal wire in the +x / +y corner, servo + / - from a Y-lead on J12 (ESC lead pins 2 / 3).
+    rel_src = (f"{P} pins.release_servo PE5/OC3C (line 2153); {BH}:28; firmware/atmega128_fc/src/hal/pwm.c:49 (PE5 "
+               "output), src/main.c:518 (OUT_RELEASE); rev 3.1 user decision 2026-11-13 (option C)")
+    part("J13", "J", PAD1, "1-pin THT pad (release servo signal)",
+         "release servo signal pad (rocket: CanSat nose-release servo; + / - from a Y-lead on J12)", rel_src, True,
+         "F", block="IO", fit="none",
+         note="rev 3.1: no part to fit - in the rocket the user solders the signal wire of the release-servo branch of a "
+              "servo Y-lead (ESC <-> J12) into this pad; the branch takes + / - from J12 pins 2 / 3 (SERVO_5V / "
+              "GND_PWR). In the VTOL the pad stays empty (configs.vtol has no release servo; the firmware PWM on PE5 "
+              "then drives only R22). Silkscreen 'REL S'")
+    net("RELEASE_PWM", "U2.PE5", source=rel_src, kind="pwm")
+    r("220", "RELEASE_PWM", "RELEASE_SIG", "RELEASE signal series resistor (long lead, back-power limit)",
+      "A: 220 Ohm series on a ~0.5 m servo lead limits back-power into an unpowered servo / ESC", True, block="IO")
+    net("RELEASE_SIG", "J13.1")
     r("10k", "ESC_PWM", "GND", "ESC signal pull-down (motor off while the FCU boots / resets)",
       f"{RM}:316 (10 kOhm pull-down on the ESC signal)", True, "F", block="IO")
     for name in ("VANE1", "VANE2", "VANE3", "VANE4"):
@@ -855,7 +869,7 @@ PATHS = [  # (description, from member, to member)
     ("I2C SDA NAV -> GY-521", "U1.PD1", "J1.4"), ("I2C SDA NAV -> BMP280", "U1.PD1", "J2.4"),
     ("IMU INT -> NAV PE6 (optional)", "J1.8", "U1.PE6"),
     ("vane 1 PWM", "U2.PB5", "J8.1"), ("vane 2 PWM", "U2.PB6", "J9.1"), ("vane 3 PWM", "U2.PB7", "J10.1"),
-    ("vane 4 PWM", "U2.PE3", "J11.1"), ("ESC PWM", "U2.PE4", "J12.1"),
+    ("vane 4 PWM", "U2.PE3", "J11.1"), ("ESC PWM", "U2.PE4", "J12.1"), ("release servo PWM (rev 3.1)", "U2.PE5", "J13.1"),
     ("V_in sense -> PF0", "J18.1", "U2.PF0"), ("V_tether sense -> PF1", "J18.2", "U2.PF1"),
     ("V_buffer sense -> PF2", "J18.3", "U2.PF2"), ("buffer-current sign -> PC3", "J18.4", "U2.PC3"),
     ("arm switch -> PC2", "J16.1", "U2.PC2"), ("buzzer PC1 -> NPN base", "U2.PC1", "Q9.B"),
@@ -1169,8 +1183,9 @@ def narrative(spots: dict) -> dict:
                  "why": f"vane-servo leads enter the bay through the bulkhead servo hole at theta 180 deg "
                         f"({P} servo_leads.gather_theta_deg / bulkhead_hole_r, line 763-768); right-angle headers facing "
                         f"-x. The top slot, whose mated plug would touch the intake spigot bore (r 57.17 > 57.0, E), "
-                        f"carries no right-angle header ({REV} MF-2): the DNP release header J13 is removed (rev 2c, "
-                        f"see removed_release_header) and the -x / +y corner takes the vertical J14 / J15"},
+                        f"carries no right-angle header ({REV} MF-2): rev 2c removed the DNP release header from it and "
+                        f"the -x / +y corner takes the vertical J14 / J15 (rev 3.1: the release output is the pad J13 in "
+                        f"the +x / +y corner, see rev_3_1_changes)"},
                 {"edge": "-x, y < -12", "connectors": ["J18 (6S sense)"],
                  "why": f"power-sense lead: 6S pack on the tray's -x face ({CADR} parts.battery x -37.4..13.6), tether / "
                         f"hybrid kit boxes on the -x side ({P} power.tether_kit_ASSUMED.boxes line 1912) - A"},
@@ -1204,6 +1219,11 @@ def narrative(spots: dict) -> dict:
                                                           "J2 BMP280", "J6 5 V module (Pololu, flat)"],
                  "why": f"ISP / flashing only with the avionics module lifted off the intake ({RM}:655-659); GY-521 near "
                         "the board centre (vibration, CG), outside the tie band (A)"},
+                {"edge": "+x / +y corner (x > +25, y > +31), rev 3.1", "connectors": ["J13 (release servo signal pad)"],
+                 "why": "rocket CanSat release servo (user 2026-11-13): its lead comes as the second branch of a servo "
+                        "Y-lead on the ESC lead J12 (same corner, + / - from J12 pins 2 / 3); the signal wire of that "
+                        "branch is soldered into J13. The -x servo column has no legal spot for a right-angle header with "
+                        "the rev 3 battery pre-routes (scratch rev31 NOTES_layout.txt)"},
             ],
         },
         "power": {
@@ -1229,7 +1249,8 @@ def narrative(spots: dict) -> dict:
                 "+5V -> U6 AMS1117-3.3 -> +3V3 -> ESP-12E VCC (100 uF + 10 uF + 100 nF at the pin), BMP280 VCC, GPS VCC "
                 "(JP1 default), BSS138 gates + LV pull-ups, ESP strap pull-ups",
                 "VBAT_LOGIC_SW -> 47k / 47k -> FCU PF3 (logic battery monitor, populated)",
-                f"ESC BEC 5 V / 7 A (J12 pin 2) -> SERVO_5V -> J8-J11 (+ J13 DNP) pin 2 - separate from +5V ({RM}:212, "
+                f"ESC BEC 5 V / 7 A (J12 pin 2) -> SERVO_5V -> J8-J11 pin 2 (+ the rocket release servo through a Y-lead "
+                f"on J12, rev 3.1) - separate from +5V ({RM}:212, "
                 f"322-324; {P} electronics.esc line 943): servos are NOT on the logic battery",
                 "6S propulsion bus is only SENSED (J18 -> 47k / 4.7k dividers -> FCU PF0 / PF1 / PF2), never powers the "
                 "logic"],
@@ -1344,7 +1365,8 @@ def narrative(spots: dict) -> dict:
                                 f"common reference ({RM}:247, 323; {BH}:84, 91, 107 'common ground')",
             "rules": ["J18 (power sense) has NO ground pin: the dividers return to logic GND and see the bus negative "
                       "through NT1",
-                      "servo return currents flow J8-J13 pin 3 -> GND_PWR -> J12 pin 3, never through the logic GND",
+                      "servo return currents flow J8-J11 pin 3 -> GND_PWR -> J12 pin 3 (the rocket release servo returns "
+                      "through its Y-lead straight to the ESC lead, rev 3.1), never through the logic GND",
                       "with the ESC lead unplugged the logic ground floats from the propulsion side - bench-safe",
                       "measurement error: V_in sees the drop of the ESC's internal negative path (E: < 0.1 V at 100 A)"],
         },
@@ -1601,9 +1623,12 @@ def conflicts() -> list[str]:
         "connector to unplug for GNS programming",
         f"programming: {RM}:647-651 says 'unplug the nlink / ilink / glink connector'; one carrier has none -> reset-hold "
         "shunts J24 (NAV) / J25 (FCU) / J26 (COM, for ESP flashing)",
-        "release servo: configs.vtol removes it, but the firmware still drives PE5 (pwm.c:49, main.c:518) -> rev 2c "
-        "removes the unpopulated J13 header and its series resistor (PE5 left open: a PWM output driving nothing); "
-        "params / firmware not edited",
+        "release servo: configs.vtol removes it, but the firmware still drives PE5 (pwm.c:49, main.c:518); rev 2c had "
+        "removed the unpopulated header and its series resistor (PE5 open). rev 3.1 (user 2026-11-13: the carrier also "
+        "flies in the rocket, which releases the CanSat with this servo) restores the output: PE5 -> R22 220 Ohm -> "
+        "J13, one plated pad for the servo's signal wire in the +x / +y corner; servo + / - from a Y-lead on J12 "
+        "(option C - the right-angle header in the -x servo column has no legal spot with the battery pre-routes). In "
+        "the VTOL the pad stays empty; params / firmware not edited",
         f"OpenLog shifter channel was undefined ({RM}:385-387) -> Q8 here",
         f"GPS supply: {P} electronics.gps.power '3.3 V rail' vs NEO-7M boards that often take 3.3-5 V (A) -> JP1, 3.3 V default",
         f"VTOL mass over target: task text says ~3.7 g, {HW}:438 says 1,653.6 g = 3.6 g over ({CADR} totals 1653.7 g) - "
@@ -1751,6 +1776,29 @@ def main() -> int:
             f"planes (PF-M1), silkscreen labels on F.SilkS beside each connector (PF-M2 / MF2-9), JLC CPL rotation "
             f"offsets (PF-M5), power neck-downs widened where clearance allows (PF-M6)",
         ],
+        "rev_3_1_changes": {
+            "date": "2026-11-13",
+            "decision": "user: '캐리어 PCB를 로켓에도 씀' (the same carrier flies in the rocket too) and option 'B: 서보 열에 "
+                        "직각 헤더', with option C as the fallback if B cannot be placed with every rule held (plan "
+                        "amendment 'rocket_release_output', spec/rev3_plan.json)",
+            "option_b_result": "NOT PLACEABLE (M): a right-angle 1x3 J13 in the -x servo column with J8-J11 at the 8.62 mm "
+                               "pitch and J18 cut to one pin needs 45.06 mm between the locked 2.0 mm VBAT_LOGIC F.Cu "
+                               "battery pre-route (copper to y 78.0 under J15) and the locked 2.4 mm VBAT_LOGIC_SW B.Cu "
+                               "pre-route (from y 122.6); 44.60 mm are there - the best spot is 0.23 mm short of the "
+                               "0.13 mm clearance at both ends (search of 801 spots, scratch rev31 layout/search_b.json). "
+                               "The battery pre-routes stay unchanged, so option C applies",
+            "changes": [
+                "release output restored for the rocket's CanSat nose-release servo: FCU U2 PE5 / OC3C (firmware "
+                "src/hal/pwm.c:49, src/main.c:518 - unchanged) -> RELEASE_PWM -> R22 220 Ohm 0603 (JLC line 21, C22962, "
+                "with R17-R21) -> RELEASE_SIG -> J13. rev 2c had removed the unpopulated header and left PE5 open",
+                "J13 = one plated THT pad (2.0 mm, drill 1.0 mm) in the +x / +y corner; no part to fit: in the rocket the "
+                "user solders the signal wire of the release branch of a servo Y-lead (ESC <-> J12) into it; + / - come "
+                "from J12 pins 2 / 3 through that Y-lead (off-board item)",
+                "J18 and every other part unchanged (the J18 cut to one pin belonged to option B only)",
+                "firmware / params not changed (the release pin stays PE5). In the VTOL the pad stays empty"],
+            "label": "F (user decisions, plan amendment) / M (option B search); the board numbers come from the place / "
+                     "route steps",
+        },
         "battery_spot_A_assumed": {
             "decision": f"{USER5} '배터리는 A 위치(6S 팩 −x 면)로 해줘'",
             "pack_box_vehicle_mm": {"x": [-48.4, -37.9], "y": [-27.75, 27.75], "z": [346.1, 413.1]},

@@ -1,6 +1,6 @@
 {
  "board": "kicad/vtol_carrier.kicad_pcb",
- "board_sha256": "bbd15b37c6c3a418045b0ba28f09a82fd97eaf345bd29fedf819e555f2ba383d",
+ "board_sha256": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
  "tool": "pcbnew 10.0.6",
  "label": "M (bounding boxes measured on the board file)",
  "outline_centre_lines": [
@@ -54,7 +54,7 @@
   },
   "source": "scripts/outline.py (redesign2 Layout stage)"
  },
- "footprints": 174,
+ "footprints": 176,
  "bodies_under_2p5": [
   [
    "U7",
@@ -67,6 +67,12 @@
    0.29,
    "-x",
    "user"
+  ],
+  [
+   "J13",
+   0.325,
+   "+y",
+   "none"
   ],
   [
    "R60",
@@ -213,6 +219,12 @@
    "jlc"
   ],
   [
+   "R22",
+   1.688,
+   "+y",
+   "jlc"
+  ],
+  [
    "U4",
    1.85,
    "-y",
@@ -259,9 +271,9 @@
  ],
  "pads_under_0p3": [],
  "bodies_under_2p5_by_fit": {
-  "jlc": 12,
-  "with_mcu_jlc_plus_jlc_optional": 13,
-  "not_fitted_by_jlc_in_default_order": 19,
+  "jlc": 13,
+  "with_mcu_jlc_plus_jlc_optional": 14,
+  "not_fitted_by_jlc_in_default_order": 20,
   "refs_by_fit": {
    "jlc": [
     "C41",
@@ -271,6 +283,7 @@
     "D6",
     "J7",
     "L5",
+    "R22",
     "R59",
     "R60",
     "R65",
@@ -297,6 +310,7 @@
     "U7"
    ],
    "none": [
+    "J13",
     "J19",
     "JP1",
     "Q3",
@@ -335,7 +349,7 @@
    ],
    "bodies_under_0p3": [],
    "pads_under_0p3": [],
-   "bodies_under_2p5": 12
+   "bodies_under_2p5": 13
   },
   "with_mcu_order": {
    "closest": [
@@ -367,7 +381,7 @@
    ],
    "bodies_under_0p3": [],
    "pads_under_0p3": [],
-   "bodies_under_2p5": 13
+   "bodies_under_2p5": 14
   }
  },
  "copper_to_edge_mm": {
@@ -466,9 +480,14 @@
    "overhanging": []
   },
   "+y": {
-   "jlc_fitted_bodies_under_2p5": [],
-   "count": 0,
-   "min_mm": null,
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "R22",
+     1.688
+    ]
+   ],
+   "count": 1,
+   "min_mm": 1.688,
    "overhanging": []
   },
   "+x": {
@@ -547,13 +566,14 @@
     "C60",
     "J7",
     "L5",
+    "R22",
     "R59",
     "R60",
     "R65",
     "U4",
     "U9"
    ],
-   "count_without_rail": 11,
+   "count_without_rail": 12,
    "min_distance_at_rail_edges_mm": 0.55,
    "overhang_at_rail_edges": []
   },
@@ -575,5 +595,5 @@
  },
  "jlc_acceptance": "NOT_VERIFIED (only JLC's DFM result and quote after the upload decide)",
  "csv": "out/edge_distance.csv",
- "csv_sha256": "3f68298f3b1b97c228333ce1f40491e57efa6b4f6f7d36756973df1333d4e2be"
+ "csv_sha256": "19a8abec8874bc30a5b6db54f650f315b2638fcf35ee26c13d3ce5d7a2fbb9e3"
 }
