@@ -336,7 +336,7 @@ def make_report(L: Layout, parts: dict[str, rg.Part], warnings: list[str] | None
 
     zmin = min(entries[n]["bbox_mm"][0][2] for n in vehicle if parts[n].kind != "lumped")
     zmax = max(entries[n]["bbox_mm"][1][2] for n in vehicle if parts[n].kind != "lumped")
-    if getattr(L, "has_logic_power", False) and "logic_switch" not in parts:
+    if getattr(L, "has_logic_power", False) and "logic_switch" not in parts and not getattr(L, "lp_rocket", False):
         # review fix (2026-11-05, F1): the height is geometry - the logic switch lever (the battery build's top) counts
         # whatever logic_power.in_flight_mass_model is (the mass switch keeps it out of the masses only)
         zmax = max(zmax, rg.logic_switch(L).BoundingBox().zmax)
@@ -401,6 +401,17 @@ def make_report(L: Layout, parts: dict[str, rg.Part], warnings: list[str] | None
         extra["gps"] = gps_extra(L, parts, entries, totals)
     if getattr(L, "has_gns", False):
         extra["gns"] = gns_extra(L, parts, entries, totals)
+    if not getattr(L, "vtol", False) and getattr(L, "fcu_part", "") == "carrier":
+        # rocket-carrier round (2026-11-14): the carrier PCB rev 3.1 at the FCU spot, its envelope and clearances (Layout)
+        extra["carrier"] = {"box_mm": [list(L.fcu_x), list(L.fcu_y), list(L.fcu_z)], "mass_g": L.fcu_mass_g,
+                            "envelope_boxes_mm": {k: [list(a) for a in b] for k, b in L.carrier_boxes.items()},
+                            "release_pad_xyz_mm": list(L.carrier_release_pad) if L.carrier_release_pad else None,
+                            "vent_tie_pairs_deg": [list(t) for t in L.fcu_tie_pairs],
+                            "clearance_mm": dict(L.fcu_clearance),
+                            "limits_mm": {k: v for k, v in L.fcu_limits.items()},
+                            "worst_envelope_box": dict(L.carrier_box_worst),
+                            "gps_lead_end": getattr(L, "gps_lead_end", None),
+                            "release_lead_clearance_mm": dict(getattr(L, "rl_clearance", {}) or {})}
     # v0.9: mass model summary, direct-drive and motor-lead numbers
     printed_names = [n for n in vehicle if parts[n].kind == "printed"]
     extra["mass_model"] = {
@@ -511,7 +522,9 @@ def make_report(L: Layout, parts: dict[str, rg.Part], warnings: list[str] | None
         out["config"] = L.config
         out["power_source"] = L.power_source
         extra["vtol"] = vtol_extra(L, parts, entries, totals)
-    if getattr(L, "has_logic_power", False):     # 2026-11-05 logic power (battery build): pending-mass record
+    if getattr(L, "lp_rocket", False):     # rocket-carrier round (2026-11-14): the logic power flies (no pending record)
+        extra["logic_power"] = rocket_logic_power_extra(L, parts, entries, totals)
+    elif getattr(L, "has_logic_power", False):     # 2026-11-05 logic power (battery build): pending-mass record
         extra["logic_power"] = logic_power_extra(L, parts, entries, totals, table)
         # the printed solid of a part whose mass entry is measured on another solid (make_v09_print_files slices the STL)
         extra["printed_solid_volume_override_mm3"] = {
@@ -554,6 +567,30 @@ def collar_record(L: Layout) -> dict:
                           "arc_k_per_mm2": L.lp_col_section["arc_k_per_mm2"]},
             "clearance_mm": {k: v for k, v in L.lp_clearance.items() if "collar" in k or "lever sweep" in k
                              or "finger tip" in k or "finger path" in k or "nut driver" in k}}
+
+
+def rocket_logic_power_extra(L: Layout, parts: dict[str, rg.Part], entries: dict[str, dict], totals: dict) -> dict:
+    """rocket-carrier round (2026-11-14, params logic_power switch_mount 'tube_wall', in_flight_mass_model true by default -
+    user decision pending): the logic pack, the wall switch, its lead and the retention are report parts (they fly); this
+    record names them, their masses / COMs, the vehicle WITHOUT them (for comparison) and the Layout lead / switch data.
+    The arm switch and its lead stay inside electronics.misc; the release lead is reported (Layout.rl_*), not added."""
+    names = sorted(rg.logic_power_parts(L))
+    inn = [n for n in names if n in entries]
+    m_lp = sum(entries[n]["mass_g"] for n in inn)
+    tm, tc = totals["mass_g"], totals["com_mm"]
+    wo_m = tm - m_lp
+    wo_c = [(tm * tc[i] - sum(entries[n]["mass_g"] * entries[n]["com_mm"][i] for n in inn)) / wo_m for i in range(3)]
+    return {"in_flight_mass_model": bool(L.logic_in_flight), "switch_mount": "tube_wall",
+            "parts_in_report": inn, "parts_g": {n: entries[n]["mass_g"] for n in inn}, "total_g": m_lp,
+            "without_logic_power": {"mass_g": wo_m, "com_mm": wo_c},
+            "wall_switches": {k: {"theta_deg": w["theta"], "z_mm": w["z"], "hole_d": w["hole_d"], "connector": w["connector"]}
+                              for k, w in L.lp_wall_sw.items()},
+            "leads_mm": {"switch -> J15 (route + slack)": L.lp_switch_lead_len_mm, "arm switch -> J16 (route + slack)":
+                         L.lp_arm_lead_len_mm, "pack -> J14 (route + slack, the pack's own lead)": L.lp_pack_lead_len_mm},
+            "arm_lead_mass_g_inside_misc": L.lp_arm_lead_mass_g,
+            "release_lead": ({"route_mm": L.rl_route_mm, "length_mm": L.rl_len_mm, "mass_g_E": L.rl_mass_g,
+                              "in_mass_model": L.rl_in_mass_model, "com_mm": list(L.rl_com)}
+                             if getattr(L, "has_release_lead", False) else None)}
 
 
 def logic_power_extra(L: Layout, parts: dict[str, rg.Part], entries: dict[str, dict], totals: dict, table: dict) -> dict:
@@ -891,7 +928,7 @@ def build(preset: str | None, export: bool = True, verbose: bool = True,
     report["extra"]["total_time_s"] = time.time() - t0
     if write_report:
         write_json(report, paths["report"])
-        if "logic_power" in report["extra"]:
+        if "logic_power" in report["extra"] and not getattr(L, "lp_rocket", False):
             write_logic_pending(report, paths["logic_pending_json"], paths["logic_pending_md"])
     if verbose:
         t = report["totals"]

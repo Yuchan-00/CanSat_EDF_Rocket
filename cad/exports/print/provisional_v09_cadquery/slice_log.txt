@@ -15,3 +15,12 @@ latch_arm: D_small_keep (5 walls, 5 top / 5 bottom layers, 15 % gyroid), [10.2, 
 gps_pod_lid: B_shell (3 walls, 4 top / 4 bottom layers, 15 % gyroid), [68.6, 64.7, 13.0], part 5.56 g (solid 5.52 g), filament 5.58 g, 0 h 12 min, support none [1 s]
 launch_pad: E_ground_equipment (3 walls, 4 top / 4 bottom layers, 15 % gyroid), [190.0, 190.0, 114.0], part 141.20 g (solid 356.80 g), filament 169.03 g, 5 h 13 min, support normal(auto) [10 s]
 **합계 (수량 반영)**: 47 h 29 min, 필라멘트 1475 g, 부품 1083 g (발사대 제외 기체 부품 942 g)
+
+--- partial run (--parts intake_module,avionics_module,avionics_tray,payload_module) ---
+v0.9 provisional slices 2026-11-14 12:20 - Bambu Studio CLI C:\Program Files\Bambu Studio\bambu-studio.exe
+params.json sha256 f5e6089e234f2f833a26c31345b055b43eb66edb21bf4f838c4cc721143ccffc, preset BUDGET_90mm_6S, filament density 1.31
+intake_module: A_load_path (4 walls, 4 top / 4 bottom layers, 15 % gyroid), [131.7, 120.0, 172.9], part 130.33 g (solid 137.10 g), filament 209.65 g, 4 h 54 min, support normal(auto), window support check PASS [61 s]
+avionics_module: B_shell (3 walls, 4 top / 4 bottom layers, 15 % gyroid), [120.0, 120.0, 200.0], part 122.94 g (solid 125.88 g), filament 302.79 g, 16 h 51 min, support none; 2 filaments: avionics_logo 0.90 g, 576 swaps, purge 135.8 g, tower 44.6 g, +14 h 24 min vs one colour [143 s]
+avionics_tray: C_flat_plate (3 walls, 4 top / 4 bottom layers, 15 % gyroid), [160.0, 100.0, 2.0], part 36.38 g (solid 40.98 g), filament 36.44 g, 0 h 48 min, support none [1 s]
+payload_module: B_shell (3 walls, 4 top / 4 bottom layers, 15 % gyroid), [193.8, 120.0, 198.4], part 170.62 g (solid 187.97 g), filament 270.29 g, 6 h 10 min, support normal(auto) [34 s]
+**합계 (수량 반영)**: 47 h 18 min, 필라멘트 1473 g, 부품 1082 g (발사대 제외 기체 부품 941 g)

@@ -1,14 +1,14 @@
 {
   "generator": "cadquery",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
+  "params_sha256": "f907c459e287d26b034c44738e875d716c9b5177655477e9cd89d616a2fa1f41",
   "tolerance_mm3": 1.0,
-  "runtime_s": 172.50902223587036,
+  "runtime_s": 314.4272961616516,
   "summary": {
-    "PASS": 27,
+    "PASS": 29,
     "WARN": 5,
     "FAIL": 0,
-    "N/A": 6
+    "N/A": 5
   },
   "checks": [
     {
@@ -247,12 +247,8 @@
         "battery x tray": 0.0,
         "esc x tube": 0.0,
         "esc x tray": 0.0,
-        "nav x tube": 0.0,
-        "nav x tray": 0.0,
         "misc_electronics x tube": 0.0,
         "misc_electronics x tray": 0.0,
-        "gns x tube": 0.0,
-        "gns x tray": 0.0,
         "tray x tube": 0.0,
         "tray_x": [
           24.0,
@@ -585,8 +581,6 @@
           "tie anchor wall above / below its tunnel ((h - tunnel_h)/2)": 1.2000000000000002,
           "coupler socket jaw beside the arm slot (flange_d/2 - slot half width)": 3.225,
           "coupler socket jaw at the horn arm tips": 1.3042156108742273,
-          "COM boss wall beside its blind hole ((boss_d-hole_d)/2)": 2.25,
-          "payload bulkhead skin over the COM blind hole (boss_h+bulkhead_t-hole_depth)": 1.2000000000000455,
           "sleeve tooth between two keyways (min, at the bore)": 6.4185374362276,
           "spigot ring outside the keyway (spigot_od/2 - keyway corner r)": 0.9652882370354803,
           "lip-pocket wall beside the wire channel (wire_ch_r0 - lip_pocket_id/2)": 1.2000000000000028,
@@ -604,9 +598,7 @@
           "GPS boss hole -> boss inner faces": 1.65,
           "GPS corner chamfer -> cavity (outside the boss)": 2.4041630560342653,
           "GPS lid screw hole -> corner chamfer": 1.2041630560342653,
-          "GPS lid post wall": 1.65,
-          "GNS boss wall around the hole (diamond face)": 1.9319805153394638,
-          "GNS hole end -> tube outer surface (skin, hole's outer edge)": 1.512182202476879
+          "GPS lid post wall": 1.65
         },
         "min_feature": 1.2
       }
@@ -627,23 +619,23 @@
       "id": "C12",
       "title": "thrust-to-weight at nominal thrust (>=1.30 PASS, 1.15-1.30 WARN)",
       "status": "WARN",
-      "measured": "T/W = 1.189 (30.3 N / 2599 g)",
-      "detail": "printed 942 g of 2599 g",
+      "measured": "T/W = 1.187 (30.3 N / 2603 g)",
+      "detail": "printed 941 g of 2603 g",
       "values": {
-        "tw": 1.1888223593429248,
-        "mass_g": 2599.2108709226136
+        "tw": 1.187180639582738,
+        "mass_g": 2602.8052488171065
       }
     },
     {
       "id": "C13",
       "title": "CG >= 250 mm above the vane hinge; Barrowman CP (nose+fins) below CG (>=1.0 cal PASS, >=0.5 WARN)",
       "status": "WARN",
-      "measured": "CG z 386.5 (hinge+349.5 mm); CP z 315.4; static margin 0.59 cal",
+      "measured": "CG z 383.1 (hinge+346.1 mm); CP z 315.4; static margin 0.56 cal",
       "detail": "nose Cn 2.00 @z786, fins Cn 3.64 @z57 (coast config = full vehicle)",
       "values": {
-        "z_cg": 386.5260402257128,
-        "cg_above_hinge": 349.5260402257128,
-        "margin_cal": 0.5924590420089122,
+        "z_cg": 383.1449926852912,
+        "cg_above_hinge": 346.1449926852912,
+        "margin_cal": 0.5642836458387321,
         "cn_nose": 2.0,
         "z_cp_nose": 786.3,
         "cn_fins": 3.6440607084312395,
@@ -660,7 +652,7 @@
       "title": "every placeholder lies inside its module zone and clears the structure",
       "status": "PASS",
       "measured": "max outside-zone 0.000 mm^3 (), max  x structure 0.000 mm^3 ()",
-      "detail": "zones: bore cylinder of the module (EDF: body_r over housing (tabs: motor)..lip; servos/arms/pushrods: footprint radius over the module; CanSat: payload envelope; chute: nose inner void); edf_unit: out 0.00,  x struct 0.00; battery: out 0.00,  x struct 0.00; esc: out 0.00,  x struct 0.00; nav: out 0.00,  x struct 0.00; misc_electronics: out 0.00,  x struct 0.00; fcu: out 0.00,  x struct 0.00; com: out 0.00,  x struct 0.00; gns: out 0.00,  x struct 0.00; radio_log: out 0.00,  x struct 0.00; gps: out 0.00,  x struct 0.00; gps_ground_plane: out 0.00,  x struct 0.00; servo_vane_1: out 0.00,  x struct 0.00; servo_horn_1: out 0.00,  x struct 0.00; servo_vane_2: out 0.00,  x struct 0.00; servo_horn_2: out 0.00,  x struct 0.00; servo_vane_3: out 0.00,  x struct 0.00; servo_horn_3: out 0.00,  x struct 0.00; servo_vane_4: out 0.00,  x struct 0.00; servo_horn_4: out 0.00,  x struct 0.00; hinge_bushing_1: out 0.00,  x struct 0.00; hinge_bushing_2: out 0.00,  x struct 0.00; hinge_bushing_3: out 0.00,  x struct 0.00; hinge_bushing_4: out 0.00,  x struct 0.00; servo_release: out 0.00,  x struct 0.00; cansat_payload: out 0.00,  x struct 0.00; spring: out 0.00,  x struct 0.00; chute_pack: out 0.00,  x struct 0.00",
+      "detail": "zones: bore cylinder of the module (EDF: body_r over housing (tabs: motor)..lip; servos/arms/pushrods: footprint radius over the module; CanSat: payload envelope; chute: nose inner void); edf_unit: out 0.00,  x struct 0.00; battery: out 0.00,  x struct 0.00; esc: out 0.00,  x struct 0.00; misc_electronics: out 0.00,  x struct 0.00; carrier: out 0.00,  x struct 0.00; gps: out 0.00,  x struct 0.00; gps_ground_plane: out 0.00,  x struct 0.00; servo_vane_1: out 0.00,  x struct 0.00; servo_horn_1: out 0.00,  x struct 0.00; servo_vane_2: out 0.00,  x struct 0.00; servo_horn_2: out 0.00,  x struct 0.00; servo_vane_3: out 0.00,  x struct 0.00; servo_horn_3: out 0.00,  x struct 0.00; servo_vane_4: out 0.00,  x struct 0.00; servo_horn_4: out 0.00,  x struct 0.00; hinge_bushing_1: out 0.00,  x struct 0.00; hinge_bushing_2: out 0.00,  x struct 0.00; hinge_bushing_3: out 0.00,  x struct 0.00; hinge_bushing_4: out 0.00,  x struct 0.00; servo_release: out 0.00,  x struct 0.00; cansat_payload: out 0.00,  x struct 0.00; spring: out 0.00,  x struct 0.00; chute_pack: out 0.00,  x struct 0.00",
       "values": {
         "worst_outside": [
           0.0,
@@ -704,11 +696,11 @@
       "id": "C17",
       "title": "all presets build without exceptions",
       "status": "PASS",
-      "measured": "BUDGET_90mm_6S: ok (56 parts); KAIST_90mm_12S: ok (48 parts, 2.2 s)",
+      "measured": "BUDGET_90mm_6S: ok (56 parts); KAIST_90mm_12S: ok (48 parts, 3.5 s)",
       "detail": "",
       "values": {
         "BUDGET_90mm_6S": "ok (56 parts)",
-        "KAIST_90mm_12S": "ok (48 parts, 2.2 s)"
+        "KAIST_90mm_12S": "ok (48 parts, 3.5 s)"
       }
     },
     {
@@ -1210,29 +1202,11 @@
     {
       "id": "C22",
       "title": "(v0.6) COM board under the payload bulkhead: inside the spigot bore, clear of tray / battery / ESC / NAV / misc / rails; seated on 4 solid bosses with clear blind holes",
-      "status": "PASS",
-      "measured": "clearance avionics_tray 2.00, battery 5.00, esc 67.01, nav 7.07, misc_electronics 122.00 (>= 2); rails 23.22/23.22 (>= 2); avionics_module 21.64 (>= 1), radial to spigot ID 21.64; seat: com x payload 0.000 mm^3, lowest payload material over the board z 529.900 vs board top 529.900; bosses: ring fill min 1.0000 (>= 0.95), hole probe max 0.0000 mm^3 (< 0.01), floor fill min 1.0000; bulkhead hole columns max 0.0000 mm^3",
-      "detail": "board x -25..25 y -25..25 z 514.90..529.90; bosses Ø7 x 3 at +-22, blind Ø2.5 x 3.8 (end z 533.70, skin 1.20); probes inset 0.05 mm; (+22,+22) ring 1.0000 hole 0.0000 floor 1.0000; (+22,-22) ring 1.0000 hole 0.0000 floor 1.0000; (-22,+22) ring 1.0000 hole 0.0000 floor 1.0000; (-22,-22) ring 1.0000 hole 0.0000 floor 1.0000; bulkhead holes Ø6 r 40 at 45, 135, 225, 315 deg, columns from the board bottom up; Layout box clearances: spigot bore (radial) 21.64, avionics_tray 2.00, battery 5.00, esc 67.01, nav 7.07, misc_electronics 122.00, fcu 164.00, gns 11.93, gns boss 1 25.50, gns boss 2 25.50, gns boss 3 55.01, gns boss 4 55.01, rail x27.2 y+1 23.25, rail x22.8 y+1 23.22, rail x27.2 y-1 23.25, rail x22.8 y-1 23.22, bulkhead holes (boss edge, plan) 2.39, bulkhead holes (board footprint, plan) 1.64, spring-seat boss (plan, other face) 12.61",
+      "status": "N/A",
+      "measured": "not applicable: params carry no electronics.com / payload_module.com_mount - the carrier PCB (C25) holds it (rocket-carrier round 2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체')",
+      "detail": "",
       "values": {
-        "below": {
-          "avionics_tray": 2.0,
-          "battery": 5.0,
-          "esc": 67.00746227100382,
-          "nav": 7.0710678118654755,
-          "misc_electronics": 122.0
-        },
-        "rails": {
-          "+y": 23.220672675192667,
-          "-y": 23.220672675192667
-        },
-        "avionics_module": 21.64466094067261,
-        "bore_radial": 21.644660940672615,
-        "seat_volume": 0.0,
-        "seat_z": 529.9,
-        "ring_fill_min": 1.0,
-        "hole_probe_max": 0.0,
-        "floor_fill_min": 1.0,
-        "bulkhead_hole_columns_max": 0.0
+        "applicable": false
       }
     },
     {
@@ -1262,11 +1236,11 @@
         },
         "deck_seat_void": 0.0,
         "sleeve_void": 0.0,
-        "lead_mass_g": 26.770925232780154,
+        "lead_mass_g": 26.77092523278015,
         "lead_com_mm": [
           -19.136773652260644,
-          -1.4455706086372357,
-          209.19808212130212
+          -1.445570608637236,
+          209.19808212130218
         ],
         "leg_e_band_gap_mm": 2.580793831589197,
         "route_len_mm": [
@@ -1286,103 +1260,87 @@
     {
       "id": "C24",
       "title": "(v0.6.2) radio/log box under the payload bulkhead: inside the spigot bore, clear of COM board / bosses / tray / battery / ESC / NAV / misc / rails / joint screws, hanging from the bulkhead, bulkhead holes open",
-      "status": "PASS",
-      "measured": "clearance avionics_tray 10.30, battery 14.84, esc 71.87, nav 15.68, misc_electronics 125.40, com 5.00, rails +y 78.54, rails -y 7.09, payload below the bulkhead 6.60, joint screw axes 9.01 (>= 2); avionics_module 4.80 (>= 1), radial to spigot ID 4.80; seat: radio_log x payload 0.000 mm^3, lowest payload material over the box z 532.900 vs box top 532.900 (Layout 532.900); bulkhead hole columns max 0.0000 mm^3",
-      "detail": "box x -15.00..15.00 y -50.00..-30.00 z 517.90..532.90 (20 g, centre r 40 at -90 deg); joint-screw proxies Ø3.2 from the axis to body_r at 182.5, 340.4, 525.4; probes inset 0.05 mm; Layout box clearances: spigot bore (radial) 4.80, COM board 5.00, COM bosses (plan) 7.13, joint screw axes (Ø joint_hole_outer_d) 9.01, avionics_tray 10.30, battery 14.84, esc 71.87, nav 15.68, misc_electronics 125.40, fcu 167.07, gns 22.70, gns boss 1 36.07, gns boss 2 59.54, gns boss 3 62.78, gns boss 4 78.65, rail x27.2 y+1 79.04, rail x22.8 y+1 78.54, rail x27.2 y-1 11.38, rail x22.8 y-1 7.09, bulkhead holes (footprint, plan) 10.39",
+      "status": "N/A",
+      "measured": "not applicable: params carry no electronics.radio_log - the carrier PCB (C25) holds it (rocket-carrier round 2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체')",
+      "detail": "",
       "values": {
-        "clearance": {
-          "avionics_tray": 10.295630140987,
-          "battery": 14.84082207965583,
-          "esc": 71.8679344353238,
-          "nav": 15.684387141358123,
-          "misc_electronics": 125.39936203984452,
-          "com": 5.0,
-          "rails +y": 78.54115885164691,
-          "rails -y": 7.088018058667741,
-          "payload below the bulkhead": 6.598467455447243,
-          "joint screw axes": 9.006601717798203
-        },
-        "avionics_module": 4.798467455447242,
-        "bore_radial": 4.798467455447245,
-        "seat_volume": 0.0,
-        "seat_z": 532.9,
-        "bulkhead_hole_columns_max": 0.0,
-        "min_clear": 2.0
+        "applicable": false
       }
     },
     {
       "id": "C25",
-      "title": "(v0.6.3) FCU board on the intake bulkhead: inside the spigot bore, clear of tray / stops / rails / ESC / misc / rising lead bundles, seated on the foam tape, lead holes uncovered, a cable-tie pair of vent holes open",
+      "title": "(v0.9 CAD-2 / rocket-carrier) carrier PCB rev 3.1 on the intake bulkhead (the FCU rules, + tab / plug / module boxes): inside the spigot bore, clear of tray / stops / rails / ESC / misc / rising lead bundles, seated on the foam tape, lead holes uncovered, a cable-tie pair of vent holes open",
       "status": "PASS",
-      "measured": "clearance avionics_tray 2.00, battery 50.00, esc 12.04, nav 107.00, misc_electronics 12.00, rails + tray stop +y 23.22, rails + tray stop -y 23.22, motor-lead bundle (C20 leg E) 19.60, servo-lead bundle (C23 leg E) 26.70 (>= 2); avionics_module 23.22, intake spigot 21.64 (>= 1), radial to spigot ID 21.64; seat: fcu x intake 0.000 mm^3, bulkhead top under the board z 332.900 (Layout 332.900), foam gap 3.000 (foam_t 3), bulkhead under the footprint 0.8743 solid (>= 0.5; Layout 0.8743); lead-hole columns motor-lead hole 0.0000, servo-lead hole 0.0000 mm^3; vent holes reachable 45, 135, 225, 315 deg, tie runs across the board 45/225, 135/315; cable hole covered by the board",
-      "detail": "board x -25.00..25.00 y -25.00..25.00 z 335.90..350.90 (20 g) on 3 mm foam on the intake bulkhead (top z 332.90); rising bundles = C20 / C23 leg E footprints from the bulkhead up to the tray bottom z 352.90; probes inset 0.05 mm; vent holes Ø8 at r 40: 45 deg x intake 0.0000 x fcu 0.0000; 135 deg x intake 0.0000 x fcu 0.0000; 225 deg x intake 0.0000 x fcu 0.0000; 315 deg x intake 0.0000 x fcu 0.0000; cable hole Ø20: board over it 4634.3 mm^3, open through the bulkhead 0.0000 mm^3 of material; Layout box clearances: intake spigot bore (radial) 21.64, avionics_tray 2.00, battery 50.00, esc 12.04, nav 107.00, misc_electronics 12.00, gns 107.96, gns boss 1 152.07, gns boss 2 152.07, gns boss 3 108.91, gns boss 4 108.91, rail x27.2 y+1 23.25, rail x22.8 y+1 23.22, rail x27.2 y-1 23.25, rail x22.8 y-1 23.22, tray stop +y 23.22, tray stop -y 23.22, motor-lead hole (plan) 16.00, servo-lead hole (plan) 25.00, vent hole 45 deg (plan) 0.64, vent hole 135 deg (plan) 0.64, vent hole 225 deg (plan) 0.64, vent hole 315 deg (plan) 0.64, joint screw room in the spigot bore (radial) 21.64",
+      "measured": "clearance avionics_tray 2.00, battery 50.00, esc 12.00, misc_electronics 12.00, rails + tray stop +y 13.22, rails + tray stop -y 13.22, motor-lead bundle (C20 leg E) 6.60, servo-lead bundle (C23 leg E) 13.70 (>= 2); avionics_module 7.14, intake spigot 5.34 (>= 1), radial to spigot ID 5.34; seat: fcu x intake 0.000 mm^3, bulkhead top under the board z 332.900 (Layout 332.900), foam gap 3.000 (foam_t 3), bulkhead under the footprint 0.9409 solid (>= 0.5; Layout 0.9409); lead-hole columns motor-lead hole 0.0000, servo-lead hole 0.0000 mm^3; vent holes reachable 90, 270 deg, tie runs across the board 90/270; cable hole covered by the board; envelope boxes (tab / plugs / modules, solids): avionics_tray 2.00, battery 52.84, esc 14.40, misc_electronics 15.93, logic_pack 52.40, motor-lead bundle (C20 leg E) 7.00, servo-lead bundle (C23 leg E) 5.96, rails + tray stop +y 11.99, rails + tray stop -y 6.02, avionics_module 5.06, intake spigot 3.26, radial to spigot ID 3.26, overlap intake / avionics (mm^3) 0.00 (ok)",
+      "detail": "board x -38.00..38.00 y -35.00..35.00 z 335.90..350.90 (39.4 g) on 3 mm foam on the intake bulkhead (top z 332.90); rising bundles = C20 / C23 leg E footprints from the bulkhead up to the tray bottom z 352.90; probes inset 0.05 mm; vent holes Ø8 at r 40: 90 deg x intake 0.0000 x fcu 0.0000; 270 deg x intake 0.0000 x fcu 0.0000; cable hole Ø20: board over it 4634.3 mm^3, open through the bulkhead 0.0000 mm^3 of material; Layout box clearances: intake spigot bore (radial) 5.34, avionics_tray 2.00, battery 50.00, esc 12.00, misc_electronics 12.00, rail x27.2 y+1 13.22, rail x22.8 y+1 13.22, rail x27.2 y-1 13.22, rail x22.8 y-1 13.22, tray stop +y 13.22, tray stop -y 13.22, motor-lead hole (plan) 3.00, servo-lead hole (plan) 12.00, vent hole 90 deg (plan) 1.00, vent hole 270 deg (plan) 1.00, joint screw room in the spigot bore (radial) 7.50, carrier envelope boxes -> intake spigot bore (radial) 3.26, carrier envelope boxes -> avionics_tray 2.00, carrier envelope boxes -> battery 52.84, carrier envelope boxes -> esc 14.40, carrier envelope boxes -> misc_electronics 15.93, carrier envelope boxes -> rail x27.2 y+1 12.06, carrier envelope boxes -> rail x22.8 y+1 11.99, carrier envelope boxes -> rail x27.2 y-1 6.02, carrier envelope boxes -> rail x22.8 y-1 6.02, carrier envelope boxes -> tray stop +y 11.99, carrier envelope boxes -> tray stop -y 6.02, carrier envelope boxes -> motor-lead hole (plan) 3.40, carrier envelope boxes -> servo-lead hole (plan) 4.26, carrier envelope boxes -> vent hole 90 deg (plan) 13.91, carrier envelope boxes -> vent hole 270 deg (plan) 2.50, carrier envelope boxes -> motor-lead joint zone 4.40",
       "values": {
         "clearance": {
           "avionics_tray": 2.0,
           "battery": 50.0,
-          "esc": 12.041594578792296,
-          "nav": 107.00467279516349,
+          "esc": 12.0,
           "misc_electronics": 12.0,
-          "rails + tray stop +y": 23.220672675192667,
-          "rails + tray stop -y": 23.220672675192667,
-          "motor-lead bundle (C20 leg E)": 19.6,
-          "servo-lead bundle (C23 leg E)": 26.700000000000003
+          "rails + tray stop +y": 13.220672675192667,
+          "rails + tray stop -y": 13.220672675192667,
+          "motor-lead bundle (C20 leg E)": 6.600000000000001,
+          "servo-lead bundle (C23 leg E)": 13.700000000000003
         },
-        "avionics_module": 23.220672675192667,
-        "intake_spigot": 21.64466094067261,
-        "bore_radial": 21.644660940672615,
+        "avionics_module": 7.137634587642033,
+        "intake_spigot": 5.3376345876420315,
+        "bore_radial": 5.337634587642036,
         "seat_volume": 0.0,
         "seat_z": 332.9,
         "foam_gap": 3.0,
-        "seat_fill": 0.8743362938564083,
+        "seat_fill": 0.94094750651147,
         "lead_hole_columns": {
           "motor-lead hole": 0.0,
           "servo-lead hole": 0.0
         },
         "vent_holes": {
-          "45": {
+          "90": {
             "intake": 0.0,
             "fcu": 0.0
           },
-          "135": {
-            "intake": 0.0,
-            "fcu": 0.0
-          },
-          "225": {
-            "intake": 0.0,
-            "fcu": 0.0
-          },
-          "315": {
+          "270": {
             "intake": 0.0,
             "fcu": 0.0
           }
         },
         "vent_reachable": [
-          45.0,
-          135.0,
-          225.0,
-          315.0
+          90.0,
+          270.0
         ],
         "tie_pairs": [
           [
-            45.0,
-            225.0
-          ],
-          [
-            135.0,
-            315.0
+            90.0,
+            270.0
           ]
         ],
         "cable_hole_covered": true,
-        "min_clear": 2.0
+        "min_clear": 2.0,
+        "envelope_boxes": {
+          "avionics_tray": 2.0,
+          "battery": 52.840667104040214,
+          "esc": 14.399999999999977,
+          "misc_electronics": 15.929096019548608,
+          "logic_pack": 52.39999999999998,
+          "motor-lead bundle (C20 leg E)": 7.0,
+          "servo-lead bundle (C23 leg E)": 5.960000000000001,
+          "rails + tray stop +y": 11.992036198840124,
+          "rails + tray stop -y": 6.020672675192664,
+          "avionics_module": 5.062316760023974,
+          "intake spigot": 3.26231676002397,
+          "radial to spigot ID": 3.262316760023971,
+          "overlap intake / avionics (mm^3)": 0.0
+        },
+        "envelope_ok": true
       }
     },
     {
       "id": "C26",
       "title": "(v0.8) GPS pod: under the nose edge, lid seated with the air gap, open sky over the patch, stack clear in the cavity, blind lid-screw holes, raceway through to the pocket, entry hole open, bore clear",
       "status": "PASS",
-      "measured": "nose edge ok; lid seat ok; antenna ok; stack ok; bosses ok; raceway ok; entry hole ok; latch / release servo ok; lid top z 700.300 (limit 700.300), patch -> lid 3.000 (air gap 3), stack -> pod 1.000 (>= 1); antenna lever arm from the CG (-86.1, -17.4, 307.6) mm, |r| 319.9 mm",
-      "detail": "measured: pod top z 699.1000, lid top z 700.3000, lid x nose 0.0000, payload x nose 0.0000, lid x payload 0.0000, pod material under the lid, top z 699.1000, lowest lid post z (max over posts) 687.3000, lowest lid post z (min over posts) 687.3000, patch -> lid (BRep) 3.0000, payload over the patch 0.0000, nose over the patch 0.0000, lid over the patch / footprint x t 1.0000, gps x payload 0.0000, plate x payload 0.0000, gps x lid 0.0000, plate x lid 0.0000, gps -> pod (BRep) 2.8991, plate -> pod (BRep) 1.0000, boss hole clear (max mm^3) 0.0000, boss ring fill (min) 1.0000, boss hole floor fill (min) 1.0000, raceway cable probe x payload 0.0000, raceway wall void (mm^3) 0.0000, raceway mouth in the cavity x payload 0.0000, payload bore over the pod x payload 0.0000, entry hole probe x avionics 0.0000, entry hole wall ring fill 0.9929, latch arm x lid 0.0000, release servo x lid 0.0000; probes inset 0.05 mm; noise sources from the phase centre (target >= 100 mm, reported only): release servo (MG90S) 155, COM board 175, LoRa / log box 176, GNS board 189, battery 193, LoRa antenna (100 mm ASSUMED, -y wall) 199, NAV board 216, ESC (box) 270, logic UBEC (misc box) 314, FCU board 348, motor leads (bulkhead hole -> ESC) 349, EDF motor 577; lead 4.44 g (287 mm incl. slack)",
+      "measured": "nose edge ok; lid seat ok; antenna ok; stack ok; bosses ok; raceway ok; entry hole ok; latch / release servo ok; lead end at carrier J7 ok; lid top z 700.300 (limit 700.300), patch -> lid 3.000 (air gap 3), stack -> pod 1.000 (>= 1); antenna lever arm from the CG (-84.9, -17.8, 311.0) mm, |r| 322.8 mm",
+      "detail": "measured: pod top z 699.1000, lid top z 700.3000, lid x nose 0.0000, payload x nose 0.0000, lid x payload 0.0000, pod material under the lid, top z 699.1000, lowest lid post z (max over posts) 687.3000, lowest lid post z (min over posts) 687.3000, patch -> lid (BRep) 3.0000, payload over the patch 0.0000, nose over the patch 0.0000, lid over the patch / footprint x t 1.0000, gps x payload 0.0000, plate x payload 0.0000, gps x lid 0.0000, plate x lid 0.0000, gps -> pod (BRep) 2.8991, plate -> pod (BRep) 1.0000, boss hole clear (max mm^3) 0.0000, boss ring fill (min) 1.0000, boss hole floor fill (min) 1.0000, raceway cable probe x payload 0.0000, raceway wall void (mm^3) 0.0000, raceway mouth in the cavity x payload 0.0000, payload bore over the pod x payload 0.0000, entry hole probe x avionics 0.0000, entry hole wall ring fill 0.9929, latch arm x lid 0.0000, release servo x lid 0.0000, J7 route overlap (max mm^3) 0.0000, J7 route bay clearance min (Layout) 1.0000; probes inset 0.05 mm; noise sources from the phase centre (target >= 100 mm, reported only): release servo (MG90S) 155, battery 193, ESC (box) 270, logic UBEC (misc box) 314, carrier PCB (ESP-12F, 4 x 16 MHz) 346, motor leads (bulkhead hole -> ESC) 349, EDF motor 577; lead 5.35 g (470 mm incl. slack)",
       "values": {
         "ok": {
           "nose edge": true,
@@ -1392,7 +1350,8 @@
           "bosses": true,
           "raceway": true,
           "entry hole": true,
-          "latch / release servo": true
+          "latch / release servo": true,
+          "lead end at carrier J7": true
         },
         "measured": {
           "pod top z": 699.0999999999999,
@@ -1423,7 +1382,9 @@
           "entry hole probe x avionics": 0.0,
           "entry hole wall ring fill": 0.9928718618406707,
           "latch arm x lid": 0.0,
-          "release servo x lid": 0.0
+          "release servo x lid": 0.0,
+          "J7 route overlap (max mm^3)": 0.0,
+          "J7 route bay clearance min (Layout)": 0.9999999999999887
         },
         "antenna_xyz_mm": [
           -84.12069366310728,
@@ -1431,86 +1392,31 @@
           694.0999999999999
         ],
         "lever_arm_from_cg_mm": [
-          -86.07005693136651,
-          -17.386502598498232,
-          307.5739597742871
+          -84.8693635759176,
+          -17.781666928682892,
+          310.9550073147087
         ],
         "noise_mm": {
           "ESC (box)": 269.70540812680025,
           "logic UBEC (misc box)": 313.8259018176593,
-          "NAV board": 216.3261592430372,
           "battery": 192.85372268336104,
           "EDF motor": 577.0412863935367,
-          "COM board": 174.51904314202204,
-          "LoRa / log box": 175.81238541549658,
-          "LoRa antenna (100 mm ASSUMED, -y wall)": 198.8985338211608,
-          "FCU board": 348.2549302152188,
-          "GNS board": 188.80866435641025,
+          "carrier PCB (ESP-12F, 4 x 16 MHz)": 346.2850825316709,
           "motor leads (bulkhead hole -> ESC)": 349.4849296757752,
           "release servo (MG90S)": 154.55970529216208
         },
-        "lead_mass_g": 4.437382737694367,
+        "lead_mass_g": 5.347880930974078,
         "applicable": true
       }
     },
     {
       "id": "C27",
       "title": "(v0.8.1) GNS board on the -x tube wall: clear of tray / placeholders / COM / radio box / rails, seated on four 45-deg diamond bosses, blind tap holes, GPS and glink leads clear",
-      "status": "PASS",
-      "measured": "clearances ok; seat ok; bosses ok; leads ok; clearance avionics_tray 59.00, battery 8.00, esc 61.90, nav 61.00, misc_electronics 76.23, com 11.93, radio_log 22.70, fcu 107.96, rails +y 61.36, rails -y 61.36 (>= 2), radial 2.90; seat area 142.37 mm^2 (1.0000 of design); leads GPS lead (bay leg) max 0.000 mm^3 (avionics_module), glink lead max 0.000 mm^3 (avionics_module); ESC 61.9 mm (target 100 where possible; best on this wall 61.9)",
-      "detail": "measured: gns x avionics_module 0.0000, bore radial (board corners) 2.8983, boss tip area behind the back face (mm^2) 142.3650, boss tip area / design 1.0000, avionics material in front of the back face 0.0000, board -> avionics_module (BRep, on the boss tips) 0.0000, hole clear (max mm^3) 0.0000, hole ring fill (min) 1.0000, beyond the hole end fill (min) 1.0000, boss underside vs 45 deg design (max |dz|) 0.0500; board x -50.00..-35.00 y -25.00..25.00 z 458.40..508.40 (26.6 g: 25 ASSUMED + 1.6 screws); bosses diamond hd 4.5 at (v, z) (+22.0, 505.4), (-22.0, 505.4), (+22.0, 461.4), (-22.0, 461.4); holes 2.5 mm u 50..53.8; probes inset 0.05 mm; distances (reported only): battery 8, LoRa antenna (100 mm ASSUMED, -y wall) 47, NAV board 61, ESC (box) 62, logic UBEC (misc box) 76, motor leads (bulkhead hole -> ESC) 113, GPS antenna phase centre 189; GPS lead 207 mm route, glink 137 mm route (1.99 g estimate inside the board mass)",
+      "status": "N/A",
+      "measured": "not applicable: params carry no electronics.gns - the carrier PCB (C25) holds it (rocket-carrier round 2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체')",
+      "detail": "",
       "values": {
-        "ok": {
-          "clearances": true,
-          "seat": true,
-          "bosses": true,
-          "leads": true
-        },
-        "measured": {
-          "gns x avionics_module": 0.0,
-          "bore radial (board corners)": 2.8983005625052556,
-          "boss tip area behind the back face (mm^2)": 142.36504591507347,
-          "boss tip area / design": 1.000000000000068,
-          "avionics material in front of the back face": 0.0,
-          "board -> avionics_module (BRep, on the boss tips)": 0.0,
-          "hole clear (max mm^3)": 0.0,
-          "hole ring fill (min)": 1.0,
-          "beyond the hole end fill (min)": 1.0,
-          "boss underside vs 45 deg design (max |dz|)": 0.05000000000006821
-        },
-        "clearance": {
-          "avionics_tray": 59.0,
-          "battery": 8.0,
-          "esc": 61.897092015699734,
-          "nav": 61.0,
-          "misc_electronics": 76.23155514614666,
-          "com": 11.926860441876563,
-          "radio_log": 22.699118925632334,
-          "fcu": 107.96411440844592,
-          "rails +y": 61.36317820556917,
-          "rails -y": 61.36317820556917
-        },
-        "lead_hits": {
-          "GPS lead (bay leg)": [
-            0.0,
-            "avionics_module"
-          ],
-          "glink lead": [
-            0.0,
-            "avionics_module"
-          ]
-        },
-        "distance_mm": {
-          "ESC (box)": 61.897092015699734,
-          "logic UBEC (misc box)": 76.23155514614666,
-          "battery": 8.0,
-          "NAV board": 61.0,
-          "GPS antenna phase centre": 188.80866435641025,
-          "LoRa antenna (100 mm ASSUMED, -y wall)": 46.622312254970794,
-          "motor leads (bulkhead hole -> ESC)": 113.31923931972011
-        },
-        "min_clear": 2.0,
-        "applicable": true
+        "applicable": false
       }
     },
     {
@@ -1552,8 +1458,8 @@
       "id": "C29",
       "title": "(v0.9) 5.5 mm bullets single file: straight up through the intake + bulkhead hole, up the groove with the cover on, joint zone in the avionics bay; (fix round) the leads move interior -> groove through the lip-pocket slit, plenum leads tied off the EDF throat; (2026-10-29 photo round) leads from the motor's front ring behind a stator vane, under the housing rim, up the lead notch",
       "status": "WARN",
-      "measured": "straight up through the intake x intake max 0.0000 mm^3; groove (cover on) max 0.0000 mm^3; joint zone x (avionics / intake) 0.000 mm^3, gap to the avionics module 2.88 mm (>= 1), min gap to the bay 7.00 mm (esc, >= 2); lip slit: bare-lead probe x intake 0.0000 mm^3, lip-pocket wall ring 98.3 % material (< 100 %: open); plenum: leads 3.00 mm outside the EDF throat (>= 3), 3 tie anchors, max free span 31.4 mm (<= 40), tunnels x intake 0.0000 mm^3, anchor wall fill 1.000; CLOCK MOUNT lead passage (every generosity-box corner x e in {-8.04, +0.00, +8.04} deg, c29_clock_grid_2990dd7db61cf248.json): 864 grown envelopes x module max 0.0000 mm^3 (S35 ribbon12x5_turned od4.3 R15 gap2 inset0 early1 e+8.04), x intake max 0.0000; 432 drop-in sweeps x module max 0.0000; 1008 raw envelope x EDF tests max 0.0000 (TE inset 0 / 3, hub ends at the TE - A; protrusion 30 / 36; nominal + 3 hover seats); negative controls (must collide) e + 6 deg 3325, wall + 3 mm 725, drop-in e + 6 4729 mm^3; hovering tab -> leads min 0.55 mm (>= 0.5); clearances vane_1 d=+0 59.0, vane_1 d=+25 59.7, vane_1 d=-25 59.7, vane_coupler_1 62.6, servo_horn_1 65.1, servo_vane_1 47.9, fin_1 plate 15.6, intake module 4.0 mm; jet free span without the RTV bond 27.4 mm (<= 40 ASSUMED); exit azimuth not an input (coverage C34); WARN: bond gap TE inset 3 + rim gap 2 = 5 mm > bond_gap_max_ASSUMED 3.6 (the optional RTV bond of the bundle to the stator TE needs a thicker RTV bead or a shim there; the limit is not raised)",
-      "detail": "bullet O8 + 2 x 1 = O10 x 22 (ASSUMED) beside 2 leads O4.3; pass (i) at r 47.10 Z 153.0..354.9; pass (ii) at r 63.45 Z 175.0..202.5; joint zone 42.0..54.5 x -12.5..12.5 x 334.9..378.9; lead route 289 mm + slack -> 349 mm per lead, 52.1 g (ASSUMED g/m and bullets); gaps avionics_tray 16.00, battery 28.43, esc 7.00, nav 79.01, misc_electronics 18.00, com 137.06, radio_log 142.68, fcu 17.00, gns 110.68",
+      "measured": "straight up through the intake x intake max 0.0000 mm^3; groove (cover on) max 0.0000 mm^3; joint zone x (avionics / intake) 0.000 mm^3, gap to the avionics module 2.88 mm (>= 1), min gap to the bay 4.00 mm (carrier, >= 2); lip slit: bare-lead probe x intake 0.0000 mm^3, lip-pocket wall ring 98.3 % material (< 100 %: open); plenum: leads 3.00 mm outside the EDF throat (>= 3), 3 tie anchors, max free span 31.4 mm (<= 40), tunnels x intake 0.0000 mm^3, anchor wall fill 1.000; CLOCK MOUNT lead passage (every generosity-box corner x e in {-8.04, +0.00, +8.04} deg, c29_clock_grid_7f8339f2d95947ed.json): 864 grown envelopes x module max 0.0000 mm^3 (S35 ribbon12x5_turned od4.3 R15 gap2 inset0 early1 e+8.04), x intake max 0.0000; 432 drop-in sweeps x module max 0.0000; 1008 raw envelope x EDF tests max 0.0000 (TE inset 0 / 3, hub ends at the TE - A; protrusion 30 / 36; nominal + 3 hover seats); negative controls (must collide) e + 6 deg 3325, wall + 3 mm 725, drop-in e + 6 4729 mm^3; hovering tab -> leads min 0.55 mm (>= 0.5); clearances vane_1 d=+0 59.0, vane_1 d=+25 59.7, vane_1 d=-25 59.7, vane_coupler_1 62.6, servo_horn_1 65.1, servo_vane_1 47.9, fin_1 plate 15.6, intake module 4.0 mm; jet free span without the RTV bond 27.4 mm (<= 40 ASSUMED); exit azimuth not an input (coverage C34); WARN: bond gap TE inset 3 + rim gap 2 = 5 mm > bond_gap_max_ASSUMED 3.6 (the optional RTV bond of the bundle to the stator TE needs a thicker RTV bead or a shim there; the limit is not raised)",
+      "detail": "bullet O8 + 2 x 1 = O10 x 22 (ASSUMED) beside 2 leads O4.3; pass (i) at r 47.10 Z 153.0..354.9; pass (ii) at r 63.45 Z 175.0..202.5; joint zone 42.0..54.5 x -12.5..12.5 x 334.9..378.9; lead route 289 mm + slack -> 349 mm per lead, 52.1 g (ASSUMED g/m and bullets); gaps avionics_tray 16.00, battery 28.43, esc 7.00, misc_electronics 18.00, carrier 4.00",
       "values": {
         "interior_pass": {
           "bullet": 0.0,
@@ -1580,12 +1486,8 @@
           "avionics_tray": 16.0,
           "battery": 28.42534080710379,
           "esc": 7.0,
-          "nav": 79.00632886041473,
           "misc_electronics": 18.0,
-          "com": 137.05838172107534,
-          "radio_log": 142.67533073380275,
-          "fcu": 17.0,
-          "gns": 110.67632989939628
+          "carrier": 4.0
         },
         "route_mm": 288.5234071459562,
         "lead_mm": 348.5234071459562,
@@ -1614,7 +1516,7 @@
         ],
         "lower_route": {},
         "clock_grid": {
-          "fingerprint": "2990dd7db61cf24832c301f0bf19f4a7e3e4a043246a7f316aa9cddf3f73db0b",
+          "fingerprint": "7f8339f2d95947ede41432a9c9753784855bb91d2085454ecefa942871c47a51",
           "E_design_deg": 8.04001677203659,
           "e_values_deg": [
             -8.04001677203659,
@@ -1655,33 +1557,33 @@
             "fin_1 plate": 15.600000000000009,
             "intake module": 4.0
           },
-          "runtime_s": 629.0150046348572,
-          "from_cache": "c29_clock_grid_2990dd7db61cf248.json"
+          "runtime_s": 705.9084153175354,
+          "from_cache": "c29_clock_grid_7f8339f2d95947ed.json"
         }
       }
     },
     {
       "id": "C33",
       "title": "(fix round) lateral CG (+ lead drag in the jet, E): standing vane trim in a hover <= 5 % of the pitch authority (WARN <= 10 %), worst end of the Cd band",
-      "status": "WARN",
-      "measured": "CG (+1.95, -0.49) mm -> 2.01 mm off the axis; trim 5.4 % of the hover pitch authority 1.459 N m (1.08 of 20 deg); with the motor-lead drag in the jet (E, Cd 1: D 0.843 N at u 32.5 mm, worst azimuth -8.04 deg of -8.04..+8.04) trim 5.4 % (Cd 0.8-1.2: 5.0-5.7 %; CG alone 3.6 %; status from the worst end 5.7 %)",
-      "detail": "W 25.49 N, q_exit 2595 Pa at hover, vane force 2.087 N each, lever 349.5 mm (CG z 386.5 - hinge 37)",
+      "status": "PASS",
+      "measured": "CG (+0.75, -0.10) mm -> 0.76 mm off the axis; trim 3.2 % of the hover pitch authority 1.447 N m (0.65 of 20 deg); with the motor-lead drag in the jet (E, Cd 1: D 0.845 N at u 32.5 mm, worst azimuth -7.64 deg of -8.04..+8.04) trim 3.2 % (Cd 0.8-1.2: 2.9-3.6 %; CG alone 1.4 %; status from the worst end 3.6 %)",
+      "detail": "W 25.52 N, q_exit 2599 Pa at hover, vane force 2.090 N each, lever 346.1 mm (CG z 383.1 - hinge 37)",
       "values": {
         "cg_xy_mm": [
-          1.949363268259227,
-          -0.4939028118290835
+          0.7486699128103307,
+          -0.09873848164442488
         ],
-        "offset_mm": 2.0109592584562646,
-        "trim_fraction": 0.053848202693245625,
-        "trim_deg": 1.0769640538649126,
-        "authority_Nm": 1.4590284902853963,
-        "trim_fraction_cg_only": 0.03629438895127672,
+        "offset_mm": 0.7551529157097088,
+        "trim_fraction": 0.03229247211799005,
+        "trim_deg": 0.645849442359801,
+        "authority_Nm": 1.4469130983019858,
+        "trim_fraction_cg_only": 0.013762350175514073,
         "trim_fraction_cd_band": [
-          0.05033305982814638,
-          0.057364730796386466
+          0.02858644568939477,
+          0.035998498936553824
         ],
-        "trim_fraction_status": 0.057364730796386466,
-        "lead_drag_N": 0.8434275110852747,
+        "trim_fraction_status": 0.035998498936553824,
+        "lead_drag_N": 0.8445938640100666,
         "lead_drag": {
           "cd_ASSUMED": 1.0,
           "cd_band_ASSUMED": [
@@ -1699,7 +1601,7 @@
             8.04001677203659
           ]
         },
-        "worst_azimuth_deg": -8.04001677203659
+        "worst_azimuth_deg": -7.638015933434762
       }
     },
     {
@@ -2377,7 +2279,7 @@
       "title": "(livery) YUCHAN inlay: zone and 3 mm clearance, strokes / gaps / islands, depth, union = plain module",
       "status": "PASS",
       "measured": "2 copies at 67, 293 deg; footprint + 3 mm outside the wall material: 67 deg 0.0000 mm^3, 293 deg 0.0000 mm^3; nearest void of the skin band (BRep, no volume tolerance) 67 deg 3.051, 293 deg 3.051 mm (>= 3); nearest feature 3.05 mm; stroke 2.20 (>= 1.6), white gap 1.84 (>= 1.2), smallest island 8.46 mm^2 (>= 3.0); depth 0.42 (measured 0.420) <= line 0.42, white behind 0.78 >= 0.78; white + inlay - plain +0.0000 mm^3, white x inlay 0.0000, inlay outer area -0.020 %",
-      "detail": "distances (BRep, inlay -> feature) joint screw hole (lower skirt) 13.73, vent slot 5.93, GPS entry hole 98.53, part lower end (z_avionics_bottom) 3.05, visible skin upper end (spigot step) 60.93, joint screw axis (on the skin) 15.66; inlay 680.99 mm^3, white body 96839.97, plain 97520.96; logo cad/livery/yuchan_logo_polygons.json (polygons_s_z_cad, sha256 8d550d1df560), 10 islands / copy, area 810.8 mm^2; per layer (information, layer 0.2 mm): 578 layers with orange, chords < one line 4 (min 0.116 mm at print z 72.5), white gaps < one line 3 (min 0.148 mm) - single-layer specks / bridged wedge tips expected there",
+      "detail": "distances (BRep, inlay -> feature) joint screw hole (lower skirt) 13.73, vent slot 5.93, GPS entry hole 98.53, part lower end (z_avionics_bottom) 3.05, visible skin upper end (spigot step) 60.93, joint screw axis (on the skin) 15.66; inlay 680.99 mm^3, white body 96090.63, plain 96771.62; logo cad/livery/yuchan_logo_polygons.json (polygons_s_z_cad, sha256 8d550d1df560), 10 islands / copy, area 810.8 mm^2; per layer (information, layer 0.2 mm): 578 layers with orange, chords < one line 4 (min 0.116 mm at print z 72.5), white gaps < one line 3 (min 0.148 mm) - single-layer specks / bridged wedge tips expected there",
       "values": {
         "copies_deg": [
           67.0,
@@ -2386,12 +2288,12 @@
         "logo_file": "cad/livery/yuchan_logo_polygons.json",
         "logo_file_sha256": "8d550d1df5603c6f92b69c52e08d544a423aa4c7abb107edabc278af527ca8c1",
         "union": {
-          "plain_mm3": 97520.96259248802,
-          "white_mm3": 96839.96972373564,
+          "plain_mm3": 96771.62267392108,
+          "white_mm3": 96090.62980515159,
           "inlay_mm3": 680.992877057407,
-          "white_plus_inlay_minus_plain_mm3": 8.305025403387845e-06,
+          "white_plus_inlay_minus_plain_mm3": 8.287912351079285e-06,
           "white_x_inlay_mm3": 0.0,
-          "plain_x_inlay_minus_inlay_mm3": -4.7407411329913884e-11
+          "plain_x_inlay_minus_inlay_mm3": -4.638422979041934e-11
         },
         "outer_area": {
           "inlay_outer_faces_mm2": 1621.359254567975,
@@ -2437,7 +2339,7 @@
         },
         "clearance_void_band": {
           "sector_half_width_deg": 13.523162334508793,
-          "n_voids_67": 3,
+          "n_voids_67": 4,
           "67": {
             "min_mm": 3.0505999999999744,
             "void_z_mm": [
@@ -2487,51 +2389,403 @@
     {
       "id": "C37",
       "title": "(2026-11-05) logic 1S pack at spot A: 6S pack, tube wall, bay solids, >= 2 mm to the servo bundle / GPS lead / carrier plugs / switch lead (MF2-10), strap retention",
-      "status": "N/A",
-      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
-      "detail": "",
+      "status": "PASS",
+      "measured": "pack x -38.0..-27.5 y -27.75..27.75 z 400.9..467.9; 6S gap 0.50 mm (strapped, no overlap 0.0000 mm^3); tube wall 11.75 (>= 1); GPS lead (route, OD) 15.36, logic_switch 17.44, switch lead 0 19.19, misc_electronics 32.50 mm (>= 2 leads / plugs, >= 2 bay solids)",
+      "detail": "strap: lower 6S strap z 415.9..435.9 inside the pack, slots y +-40.00 > pack +-27.75; tie z 457.9; touchdown 16.5 N (E) -> >= 16.5 N strap + tie normal force (mu 0.5, A); the lengthened strap wraps 0 of the 6S pack's -x corners (the 1S pack lies between them); bands vs leads in plan (E, reported): switch lead vs strap outside +3.97, pack lead vs strap outside +1.52, switch lead vs tie outside +4.27, pack lead vs tie outside +1.82 mm (inside: negative = the band holds the lead; outside: negative = the lead lies over the band); J18 -> 6S sense lead route not modelled (6S lead exit ASSUMED unknown)",
       "values": {
-        "applicable": false
+        "clearance_mm": {
+          "6S pack (gap, strapped)": 0.5,
+          "propulsion_module": 210.91723342724086,
+          "intake_module": 53.9251924980817,
+          "avionics_module": 11.746174438203216,
+          "avionics_logo": 51.682982620263815,
+          "avionics_tray": 51.5,
+          "payload_module": 51.36119755158264,
+          "piston": 81.0,
+          "nose_cone": 233.6953842375426,
+          "vane_1": 356.6072629658571,
+          "vane_2": 355.3537666234233,
+          "vane_3": 354.29999999999995,
+          "vane_4": 355.3537666234233,
+          "vane_coupler_1": 367.81715566297333,
+          "vane_coupler_2": 360.4743696391242,
+          "vane_coupler_3": 358.63827180043126,
+          "vane_coupler_4": 360.4743696391242,
+          "servo_cover_1": 341.7585587809031,
+          "servo_cover_2": 334.52122129993484,
+          "servo_cover_3": 333.5824673150554,
+          "servo_cover_4": 335.9255088557581,
+          "wire_cover": 214.14957973341905,
+          "latch_arm": 253.55571521648554,
+          "gps_pod_lid": 220.2764727544694,
+          "launch_pad": 397.26390472833043,
+          "edf_unit": 198.89999999999998,
+          "esc": 53.5,
+          "misc_electronics": 32.5,
+          "carrier": 50.0,
+          "gps": 210.77281917751327,
+          "gps_ground_plane": 219.34482899030922,
+          "servo_vane_1": 356.3241115894348,
+          "servo_vane_2": 345.6533632123373,
+          "servo_vane_3": 343.8351676312357,
+          "servo_vane_4": 345.6533632123373,
+          "servo_release": 227.0204750334697,
+          "servo_horn_1": 371.6377940952723,
+          "servo_horn_2": 363.17192791053606,
+          "servo_horn_3": 361.2799468556205,
+          "servo_horn_4": 363.17192791053606,
+          "hinge_bushing_1": 368.11011939364016,
+          "hinge_bushing_2": 362.3484467102929,
+          "hinge_bushing_3": 360.9678794574387,
+          "hinge_bushing_4": 362.3484467102929,
+          "cansat_payload": 83.39999999999998,
+          "spring": 67.4184692795676,
+          "chute_pack": 262.4,
+          "logic_switch": 17.442471129211473,
+          "motor-lead bundle (C20 leg E)": 86.61645340234152,
+          "servo-lead bundle (C23 leg E)": 49.91683082888977,
+          "GPS lead (route, OD)": 15.36315420153339,
+          "J7 plug": 54.401125907466266,
+          "J8 plug": 60.39999999999998,
+          "J9 plug": 60.39999999999998,
+          "J10 plug": 60.39999999999998,
+          "J11 plug": 60.39999999999998,
+          "J12 plug": 84.2598510561228,
+          "J14 plug": 52.41051898235694,
+          "J15 plug": 52.39999999999998,
+          "J16 plug": 76.74298404414567,
+          "J17 plug": 78.39525559624127,
+          "J18 plug": 60.39999999999998,
+          "switch lead 0": 19.189082930079163,
+          "switch lead 1": 46.5,
+          "switch lead 2": 46.5
+        },
+        "limits_mm": {
+          "propulsion_module": 2.0,
+          "intake_module": 2.0,
+          "avionics_module": 1.0,
+          "avionics_logo": 2.0,
+          "avionics_tray": 2.0,
+          "payload_module": 2.0,
+          "piston": 2.0,
+          "nose_cone": 2.0,
+          "vane_1": 2.0,
+          "vane_2": 2.0,
+          "vane_3": 2.0,
+          "vane_4": 2.0,
+          "vane_coupler_1": 2.0,
+          "vane_coupler_2": 2.0,
+          "vane_coupler_3": 2.0,
+          "vane_coupler_4": 2.0,
+          "servo_cover_1": 2.0,
+          "servo_cover_2": 2.0,
+          "servo_cover_3": 2.0,
+          "servo_cover_4": 2.0,
+          "wire_cover": 2.0,
+          "latch_arm": 2.0,
+          "gps_pod_lid": 2.0,
+          "launch_pad": 2.0,
+          "edf_unit": 2.0,
+          "esc": 2.0,
+          "misc_electronics": 2.0,
+          "carrier": 2.0,
+          "gps": 2.0,
+          "gps_ground_plane": 2.0,
+          "servo_vane_1": 2.0,
+          "servo_vane_2": 2.0,
+          "servo_vane_3": 2.0,
+          "servo_vane_4": 2.0,
+          "servo_release": 2.0,
+          "servo_horn_1": 2.0,
+          "servo_horn_2": 2.0,
+          "servo_horn_3": 2.0,
+          "servo_horn_4": 2.0,
+          "hinge_bushing_1": 2.0,
+          "hinge_bushing_2": 2.0,
+          "hinge_bushing_3": 2.0,
+          "hinge_bushing_4": 2.0,
+          "cansat_payload": 2.0,
+          "spring": 2.0,
+          "chute_pack": 2.0,
+          "logic_switch": 2.0,
+          "motor-lead bundle (C20 leg E)": 2.0,
+          "servo-lead bundle (C23 leg E)": 2.0,
+          "GPS lead (route, OD)": 2.0,
+          "J7 plug": 2.0,
+          "J8 plug": 2.0,
+          "J9 plug": 2.0,
+          "J10 plug": 2.0,
+          "J11 plug": 2.0,
+          "J12 plug": 2.0,
+          "J14 plug": 2.0,
+          "J15 plug": 2.0,
+          "J16 plug": 2.0,
+          "J17 plug": 2.0,
+          "J18 plug": 2.0,
+          "switch lead 0": 2.0,
+          "switch lead 1": 2.0,
+          "switch lead 2": 2.0
+        },
+        "overlap_6S_mm3": 0.0,
+        "strap_z_mm": [
+          415.9,
+          435.9
+        ],
+        "tie_z_mm": 457.9,
+        "retention_E": {
+          "touchdown_load_N": 16.475172,
+          "friction_mu_ASSUMED": 0.5,
+          "normal_force_needed_N (2 faces)": 16.475172
+        },
+        "band_leads_E": {
+          "switch lead vs strap": {
+            "inside_loop": false,
+            "centre_to_band_mm": 6.968765989535745,
+            "band_gap_mm": 3.968765989535745
+          },
+          "pack lead vs strap": {
+            "inside_loop": false,
+            "centre_to_band_mm": 4.5169126624277345,
+            "band_gap_mm": 1.5169126624277345
+          },
+          "switch lead vs tie": {
+            "inside_loop": false,
+            "centre_to_band_mm": 6.968765989535745,
+            "band_gap_mm": 4.268765989535745
+          },
+          "pack lead vs tie": {
+            "inside_loop": false,
+            "centre_to_band_mm": 4.5169126624277345,
+            "band_gap_mm": 1.8169126624277343
+          }
+        },
+        "strap_wraps_6S_corners": []
       }
     },
     {
       "id": "C38",
-      "title": "(2026-11-05) logic power switch through the top cap: hole open, switch vs cap / ribs / ring, everything below the plate incl. the cap joint screws (M3 length limit), nut bearing, plate strength rule, lead keep-outs to J15 / J14, cap removal",
-      "status": "N/A",
-      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
-      "detail": "",
+      "title": "(rocket-carrier) arm / logic power switches through the avionics-tube wall: holes open, nut seat solid, no overlap with the tube, >= 2 mm to the bay solids and each other",
+      "status": "PASS",
+      "measured": "arm theta 82 deg z 365 Ø6.2 (J16); logic theta 106 deg z 395 Ø6.2 (J15); arm hole probe x avionics 0.0000, arm nut seat ring fill 0.9784, arm switch x avionics 0.0000, logic hole probe x avionics 0.0000, logic nut seat ring fill 0.9784, logic switch x avionics 0.0000; nearest arm -> avionics_logo 3.43, arm -> carrier 9.87, arm -> intake_module 10.60, arm -> avionics_tray 12.78, logic -> logic_pack 17.44 mm (>= 2)",
+      "detail": "Layout (E): arm hole off the livery logo at 67 deg 0.00 (>= 0), arm hole off the livery logo at 293 deg 0.00 (>= 0), logic hole off the livery logo at 67 deg 0.00 (>= 0), logic hole off the livery logo at 293 deg 0.00 (>= 0), arm switch nut bearing on the wall (flats - hole) / 2 0.90 (>= 0.8), logic switch nut bearing on the wall (flats - hole) / 2 0.90 (>= 0.8), arm switch nut / body / lugs -> bore (radial, inside the wall) 2.04 (>= 0), logic switch nut / body / lugs -> bore (radial, inside the wall) 2.04 (>= 0), arm switch -> rail x22.8 y+1 9.09 (>= 2), arm switch -> carrier 9.87 (>= 2); nut seat sagitta on the curved bore 0.18 mm (A); DEFAULT position (user decision pending); NOT_VERIFIED: the levers vs the launch pad / handling",
       "values": {
-        "applicable": false
+        "probe_mm3": {
+          "arm hole probe x avionics": 0.0,
+          "arm nut seat ring fill": 0.9784273538499539,
+          "arm switch x avionics": 0.0,
+          "logic hole probe x avionics": 0.0,
+          "logic nut seat ring fill": 0.9784273538364414,
+          "logic switch x avionics": 0.0
+        },
+        "clearance_mm": {
+          "arm -> intake_module": 10.602696087763247,
+          "arm -> avionics_logo": 3.429052473235753,
+          "arm -> avionics_tray": 12.775538230518041,
+          "arm -> battery": 37.53946598483015,
+          "arm -> esc": 27.205083514264903,
+          "arm -> misc_electronics": 18.816695485609905,
+          "arm -> carrier": 9.867986847877102,
+          "arm -> logic_pack": 44.710797872594036,
+          "logic -> avionics_logo": 26.765646739528563,
+          "logic -> avionics_tray": 32.58818429551389,
+          "logic -> battery": 21.699271913720267,
+          "logic -> esc": 41.44578872300917,
+          "logic -> misc_electronics": 24.3420541181925,
+          "logic -> logic_pack": 17.442471129211473,
+          "arm -> logic switch": 20.421290258659344
+        },
+        "layout_mm": {
+          "arm switch nut bearing on the wall (flats - hole) / 2": 0.8999999999999999,
+          "arm switch nut / body / lugs -> bore (radial, inside the wall)": 2.0390906302421854,
+          "arm switch -> avionics_tray": 12.158975713445297,
+          "arm switch -> battery": 37.53946598483015,
+          "arm switch -> esc": 26.76236853550124,
+          "arm switch -> misc_electronics": 18.816695485609905,
+          "arm switch -> carrier": 9.867986847877102,
+          "arm switch -> rail x27.2 y+1": 13.486468670280223,
+          "arm switch -> rail x22.8 y+1": 9.086468670280224,
+          "arm switch -> rail x27.2 y-1": 88.68574148895608,
+          "arm switch -> rail x22.8 y-1": 87.94743156398212,
+          "arm switch -> logic pack": 44.495796666578435,
+          "arm switch -> carrier tab": 74.81736366522227,
+          "arm switch -> carrier J7": 74.8886881602935,
+          "arm switch -> carrier J8": 42.48959984364624,
+          "arm switch -> carrier J9": 46.5844128979329,
+          "arm switch -> carrier J10": 51.80210184169183,
+          "arm switch -> carrier J11": 57.83957801876607,
+          "arm switch -> carrier J12": 30.644197176466893,
+          "arm switch -> carrier J14": 34.10294000623301,
+          "arm switch -> carrier J15": 36.67452083072354,
+          "arm switch -> carrier J16": 19.745502649665358,
+          "arm switch -> carrier J17": 30.956377834847682,
+          "arm switch -> carrier J18": 64.52267239450663,
+          "arm switch -> carrier GY-521": 54.967072448213955,
+          "arm switch -> carrier BMP280": 23.311557672508382,
+          "arm switch -> carrier OpenLog": 43.60966471357315,
+          "arm switch -> carrier envelope": 9.867986847877102,
+          "logic switch nut bearing on the wall (flats - hole) / 2": 0.8999999999999999,
+          "logic switch nut / body / lugs -> bore (radial, inside the wall)": 2.0390906302421854,
+          "logic switch -> avionics_tray": 32.588184295513884,
+          "logic switch -> battery": 21.699271913720267,
+          "logic switch -> esc": 40.558110098804306,
+          "logic switch -> misc_electronics": 22.94248868686739,
+          "logic switch -> carrier": 38.59593551991301,
+          "logic switch -> rail x27.2 y+1": 34.883719111543215,
+          "logic switch -> rail x22.8 y+1": 30.497505426715204,
+          "logic switch -> rail x27.2 y-1": 94.07018747861446,
+          "logic switch -> rail x22.8 y-1": 92.53336776785524,
+          "logic switch -> logic pack": 16.428899752374996,
+          "logic switch -> carrier tab": 87.75972568284092,
+          "logic switch -> carrier J7": 81.08995509394971,
+          "logic switch -> carrier J8": 53.99675715984382,
+          "logic switch -> carrier J9": 57.947456688873515,
+          "logic switch -> carrier J10": 62.269829571267486,
+          "logic switch -> carrier J11": 67.42228424608979,
+          "logic switch -> carrier J12": 64.48351889307601,
+          "logic switch -> carrier J14": 42.1497243263865,
+          "logic switch -> carrier J15": 44.17419813279138,
+          "logic switch -> carrier J16": 56.019422054931674,
+          "logic switch -> carrier J17": 60.38703636541151,
+          "logic switch -> carrier J18": 73.27924354848821,
+          "logic switch -> carrier GY-521": 71.6942102610575,
+          "logic switch -> carrier BMP280": 50.98566145504422,
+          "logic switch -> carrier OpenLog": 67.69745801008051,
+          "logic switch -> carrier envelope": 38.59593551991301,
+          "arm switch -> logic switch": 20.387509243103587,
+          "arm hole -> logic hole (skin)": 32.93636009735344,
+          "arm hole -> rail-rib roots (skin arc)": 9.808458901417277,
+          "arm hole -> vent slots (skin)": 96.63398930768666,
+          "arm hole -> joint screw holes (skin)": 41.19593110153465,
+          "arm hole -> intake spigot top (inner nut over the spigot, z)": 12.5,
+          "arm hole -> avionics spigot shoulder (z)": 148.5999999999999,
+          "arm hole off the livery logo at 67 deg": 0.0,
+          "arm hole off the livery logo at 293 deg": 0.0,
+          "arm finger circle (Ø 20) -> other switch nut (skin)": 24.536360097353445,
+          "logic hole -> arm hole (skin)": 32.93636009735344,
+          "logic hole -> rail-rib roots (skin arc)": 34.94120013013562,
+          "logic hole -> vent slots (skin)": 65.63181159890578,
+          "logic hole -> joint screw holes (skin)": 57.7773534982576,
+          "logic hole -> intake spigot top (inner nut over the spigot, z)": 42.5,
+          "logic hole -> avionics spigot shoulder (z)": 118.59999999999991,
+          "logic hole off the livery logo at 67 deg": 0.0,
+          "logic hole off the livery logo at 293 deg": 0.0,
+          "logic finger circle (Ø 20) -> other switch nut (skin)": 24.536360097353445
+        }
       }
     },
     {
       "id": "C39",
-      "title": "(2026-11-05) logic power switch reachable from outside (vehicle closed): finger circle free, inside the body edge, below the eye bolt when fitted, lever vs the vehicle top (WARN if it is the top; with the switch collar: the lever envelope under its rim / inside its rim hull / clear of it, else FAIL); tip-over / catch line / GPS sky reported",
-      "status": "N/A",
-      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
-      "detail": "",
+      "title": "(rocket-carrier) wall-switch levers reachable from outside: lever clear of every solid, finger circles clear",
+      "status": "PASS",
+      "measured": "levers clear of every solid; arm finger circle (Ø 20) -> other switch nut (skin) 24.54, logic finger circle (Ø 20) -> other switch nut (skin) 24.54; lever tips arm 15.0 mm, logic 15.0 mm over the body radius (A)",
+      "detail": "NOT_VERIFIED: launch-pad / handling contact, drag / asymmetry of two 15 mm levers, accidental switching in flight",
       "values": {
-        "applicable": false
+        "lever_hits": {
+          "arm lever overlaps": {},
+          "logic lever overlaps": {}
+        },
+        "finger": {
+          "arm finger circle (Ø 20) -> other switch nut (skin)": 24.536360097353445,
+          "logic finger circle (Ø 20) -> other switch nut (skin)": 24.536360097353445
+        },
+        "protrusion_mm": {
+          "arm": 15.0,
+          "logic": 15.0
+        }
       }
     },
     {
       "id": "C40",
-      "title": "(2026-11-05) logic power mass switch honoured (in_flight_mass_model) + pending full-mass numbers (mass, CG, lateral offset, C33 trim)",
+      "title": "(rocket-carrier) logic power mass switch honoured (in_flight_mass_model) + its mass / CG effect",
+      "status": "PASS",
+      "measured": "in_flight_mass_model true (DEFAULT, user decision pending): parts ['logic_pack', 'logic_retention', 'logic_switch', 'logic_switch_lead'] 91.17 g; vehicle 2602.81 g CG (+0.75, -0.10, 383.1); without the logic power 2511.64 g, CG z shift +1.77 mm",
+      "detail": "arm switch + lead inside electronics.misc (1.02 g lead E); release lead reported only (C42)",
+      "values": {
+        "in_flight_mass_model": true,
+        "parts_in_report": [
+          "logic_pack",
+          "logic_retention",
+          "logic_switch",
+          "logic_switch_lead"
+        ],
+        "logic_mass_g": 91.16643633486811,
+        "without": {
+          "mass_g": 2511.6388124822383,
+          "com_mm": [
+            1.9325525128545653,
+            -0.20038959389748576,
+            381.3736302966493
+          ]
+        }
+      }
+    },
+    {
+      "id": "C41",
+      "title": "(2026-11-05) logic switch protective collar (top cap)",
       "status": "N/A",
-      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
+      "measured": "not applicable: the rocket has no top cap - its logic switch is in the avionics-tube wall (no collar; C38 / C39), rocket-carrier round 2026-11-14",
       "detail": "",
       "values": {
         "applicable": false
       }
     },
     {
-      "id": "C41",
-      "title": "(2026-11-05 switch collar) protective collar printed with the top cap: FDM wall, bore / notches open, finger reaches and flips the lever both ways, GPS sky shading, rim side load (E), keep-outs",
-      "status": "N/A",
-      "measured": "not applicable: the logic-battery carrier is a VTOL part (configs.vtol.logic_power)",
-      "detail": "",
+      "id": "C42",
+      "title": "(rocket-carrier) CanSat release lead pod -> J13 pad and the avionics-tube wall holes (entry hole open, route clear, ligaments)",
+      "status": "WARN",
+      "measured": "entry hole theta 12 z 511.9 Ø5: probe 0.0000 mm^3, ring 0.993 solid; bay route overlaps 0.000 mm^3, external run 0.000 mm^3; ends on J13 (27.05, 33.15, 337.50); route 384 mm + slack = 444 mm, 3.66 g (E, reported, not in the mass model)",
+      "detail": "the lead's exit from the release pod is NOT modelled: it must pass the pod floor (2 mm) and 16.5 mm of the pod's lower gusset on its line - add a lead slot / hole to the pod (CAD follow-up; the four-board rocket had the same unmodelled exit); Layout (E) nearest: lead (bay) -> bore (radial) 1.00 (>= 1), entry hole off the livery logo at 67 deg 0.00 (>= 0), entry hole off the livery logo at 293 deg 0.00 (>= 0), lead (bay) -> carrier 0.50 (>= 0), lead (bay) -> carrier J16 0.61 (>= 0), lead (bay) -> joint screw axes 0.86 (>= 0); switch-hole rules: arm hole off the livery logo at 67 deg 0.00, arm hole off the livery logo at 293 deg 0.00, logic hole off the livery logo at 67 deg 0.00, logic hole off the livery logo at 293 deg 0.00; external run vs latch lug arc 6.1 mm; NOT_VERIFIED: pod-floor exit, taped external run, inline connector at the avionics / payload joint, Y-lead on J12",
       "values": {
-        "applicable": false
+        "probe": {
+          "entry hole probe x avionics": 0.0,
+          "entry hole wall ring fill": 0.992871861828625,
+          "pod gusset on the lead line below the floor (mm)": 16.450000000000045
+        },
+        "overlap_bay_mm3": {},
+        "overlap_external_mm3": {},
+        "layout_mm": {
+          "lead (bay) -> avionics_tray": 1.9565310721728983,
+          "lead (bay) -> battery": 14.153689192751207,
+          "lead (bay) -> esc": 13.65,
+          "lead (bay) -> misc_electronics": 12.753859126566391,
+          "lead (bay) -> carrier": 0.5,
+          "lead (bay) -> rail x27.2 y+1": 13.601832543351609,
+          "lead (bay) -> rail x22.8 y+1": 14.480430603971236,
+          "lead (bay) -> rail x27.2 y-1": 64.17433955910862,
+          "lead (bay) -> rail x22.8 y-1": 66.09387785763333,
+          "lead (bay) -> carrier tab": 66.65,
+          "lead (bay) -> carrier J7": 81.02061863558707,
+          "lead (bay) -> carrier J8": 57.85247678067024,
+          "lead (bay) -> carrier J9": 60.06105993239557,
+          "lead (bay) -> carrier J10": 63.34921356500787,
+          "lead (bay) -> carrier J11": 67.56291117524658,
+          "lead (bay) -> carrier J12": 4.673993396371447,
+          "lead (bay) -> carrier J14": 54.86,
+          "lead (bay) -> carrier J15": 56.52328928973262,
+          "lead (bay) -> carrier J16": 0.6099999999999994,
+          "lead (bay) -> carrier J17": 11.907757812989777,
+          "lead (bay) -> carrier J18": 72.5874955711151,
+          "lead (bay) -> carrier GY-521": 45.57094751542611,
+          "lead (bay) -> carrier BMP280": 12.023420425321397,
+          "lead (bay) -> carrier OpenLog": 31.199999999999996,
+          "lead (bay) -> arm switch": 19.03402024270491,
+          "lead (bay) -> logic switch": 37.062649224079856,
+          "lead (bay) -> logic pack": 55.755218102807014,
+          "lead (bay) -> bore (radial)": 1.0,
+          "lead (bay) -> joint screw axes": 0.8621265533535936,
+          "lead (bay) -> GPS lead (bay)": 85.97085005795309,
+          "entry hole -> avionics spigot shoulder (z)": 2.2999999999999545,
+          "entry hole -> joint screw holes (skin)": 33.00083735620818,
+          "entry hole -> vent slots (skin)": 44.63273668077616,
+          "entry hole -> rail-rib roots (skin arc)": 47.94601731886018,
+          "entry hole -> GPS entry hole (skin)": 183.49555921538757,
+          "entry hole off the livery logo at 67 deg": 0.0,
+          "entry hole off the livery logo at 293 deg": 0.0,
+          "external run below the nose-separation edge (z)": 23.0
+        },
+        "route_mm": 384.1534067244263,
+        "length_mm": 444.1534067244263,
+        "mass_g_E": 3.664920440346558
       }
     },
     {

@@ -5,15 +5,11 @@
     "kind": "CadQuery twin STL (cad/exports/cadquery/stl) - NOT the Fusion 360 path",
     "why": "make_print_files.py makes print files only from a Fusion run of the current params.json and script; the v0.9 Fusion GUI run has not been made",
     "replaced_by": "python tools/make_print_files.py after the Fusion run (then delete this folder)",
-    "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
+    "params_sha256": "f5e6089e234f2f833a26c31345b055b43eb66edb21bf4f838c4cc721143ccffc",
     "preset": "BUDGET_90mm_6S",
     "stl_sha256": {
       "propulsion_module": "4f8b7f39600f8556b1d49b5e117c107a070605ced2d356141132953bb2d45f88",
-      "intake_module": "b51180cf75882265d9e7dcce0d3af1513154291c58867ea03446d3d95bc2503a",
-      "avionics_module": "48c0eef7d4ec0ada0b12cc7c6b3191af6afcb9cabc4a0c094c70d83452955ec0",
       "avionics_logo": "dfa66903e5485ad1549f9a45c87d4d59d4f223ef10f78dd9a2ddcbbe0cdcdc7a",
-      "avionics_tray": "c60bbce83fe8683a4b0219d8b3dcc4cfb38b077733239a4e2c3795742fab29ba",
-      "payload_module": "4363003e5db06dae12cfb9c8dff562bd30a59b2c170e0e72d37f0c9e6a750f57",
       "piston": "a97311649628d24cfda2b8e8d09de9ce525e8cbf8255cf57ffdaca4974fc3e72",
       "nose_cone": "16de74cd0762da488aaad549c0761000f1f520abe35a21bdb7799726c7a1f725",
       "vane": "1f1a4adf3782fce0a463ad763032e27f9713e5319ebce4cddd92eecdd9a26063",
@@ -22,7 +18,11 @@
       "wire_cover": "6f9fd56244cccb3c21cc3a16b70ea522ff7412a4d43404da9b6333b6a8c241a3",
       "latch_arm": "34ad3b377b5e97859129c45e949f31cb9900a41ecb9cad22e47c07a606217683",
       "gps_pod_lid": "87b37de27caeae4dcc577deda3c1cfbe8c62f94f5bc61042df06e037d6bfc31f",
-      "launch_pad": "09d5be050819e2e04de5b6d3d07de1440dede4d83573c4ebc505551f6d0ae7bc"
+      "launch_pad": "09d5be050819e2e04de5b6d3d07de1440dede4d83573c4ebc505551f6d0ae7bc",
+      "intake_module": "9c10c34d22a8915379d90989cc6083ccfb7de833940d6d35d86b064ed4f227a0",
+      "avionics_module": "8c644a9f601ce1625e12ce11b4db59d0b8d1ee22bc7a8fab553a184cfb7e6f73",
+      "avionics_tray": "ba74b578ecefca72ea69c87571faac0fc04891d894d2e5d8dd485e66a426bb8d",
+      "payload_module": "e78965accce151ce5a9fef679fcddc9655e224a98eff70ad91796f8d3886209e"
     }
   },
   "machine": "Bambu Lab P2S 0.4 nozzle",
@@ -118,9 +118,9 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 17682.560546875,
-      "filament_mm": 66446.9,
-      "filament_g": 209.36881676334414,
+      "time_s": 17613.830078125,
+      "filament_mm": 66535.41,
+      "filament_g": 209.64770462676177,
       "settings_in_gcode": {
         "enable_support": "1",
         "filament_density": "1.31",
@@ -130,7 +130,7 @@
         "support_type": "normal(auto)",
         "wall_loops": "4"
       },
-      "support_time_s": 5907.019714355469,
+      "support_time_s": 5895.297302246094,
       "window_support_without_blockers": {
         "status": "FAIL",
         "reason": "support inside the window openings: window 45 deg 16923.6 mm at design z [210.25, 326.6]; window 135 deg 12782.2 mm at design z [210.25, 326.6]; window 225 deg 16468 mm at design z [210.25, 326.6]; window 315 deg 12796 mm at design z [210.25, 326.6]",
@@ -198,7 +198,7 @@
             100.0,
             100.0
           ],
-          "ring_samples": 6338,
+          "ring_samples": 6326,
           "ring_fit_centre_xy": [
             100.0,
             100.0
@@ -209,16 +209,16 @@
           "ring_fit_rms": 0.0041,
           "wall_samples_in_openings_mid_window": 0,
           "wall_samples_per_strut_mid_window": [
-            82405,
+            82370,
             82477,
-            75466,
-            82018
+            75393,
+            82077
           ],
           "strut_faces": [
             {
               "face_theta_deg": 8.594,
-              "samples": 1745,
-              "wall_offset_error_mm": -0.0
+              "samples": 1744,
+              "wall_offset_error_mm": 0.0001
             },
             {
               "face_theta_deg": 81.406,
@@ -248,11 +248,11 @@
             {
               "face_theta_deg": 278.594,
               "samples": 1311,
-              "wall_offset_error_mm": -0.0
+              "wall_offset_error_mm": -0.0001
             },
             {
               "face_theta_deg": 351.406,
-              "samples": 1312,
+              "samples": 1311,
               "wall_offset_error_mm": -0.0003
             }
           ],
@@ -299,28 +299,28 @@
             "ceiling_overhang_path_mm": 159.2
           }
         ],
-        "support_path_mm_whole_part": 612752.7,
+        "support_path_mm_whole_part": 613483.3,
         "max_bridge_length_in_gcode": "10",
         "bridge_no_support_in_gcode": "0"
       },
-      "part_g": 130.1470355458596,
-      "removed_g": 79.22175389897502,
+      "part_g": 130.33368888155474,
+      "removed_g": 79.31398915140991,
       "feature_g": {
-        "Support": 72.22040365367577,
-        "Inner wall": 69.47269549766378,
-        "Outer wall": 31.499472360005054,
-        "Internal solid infill": 16.198820033308465,
-        "Bridge": 7.288900174808909,
-        "Support interface": 5.234453461071823,
-        "Top surface": 3.5109605896065417,
-        "Support transition": 1.728913303335145,
-        "Sparse infill": 1.5446690029586883,
-        "Overhang wall": 0.41298638664405735,
-        "Floating vertical shell": 0.2185315009069052,
-        "Skirt": 0.03798348089228522
+        "Support": 72.2450031008778,
+        "Inner wall": 69.33330538365571,
+        "Outer wall": 31.45477096171164,
+        "Internal solid infill": 16.43967611224156,
+        "Bridge": 7.40608645401653,
+        "Support interface": 5.285531658248199,
+        "Top surface": 3.541955520642446,
+        "Support transition": 1.7454710059192151,
+        "Sparse infill": 1.5550734013629597,
+        "Overhang wall": 0.3905896840760564,
+        "Floating vertical shell": 0.2122313638897436,
+        "Skirt": 0.03798338636470753
       },
-      "part_z_centroid_plate_mm": 87.56179385052143,
-      "part_z_centroid_design_mm": 260.33820004596294,
+      "part_z_centroid_plate_mm": 87.4593653412163,
+      "part_z_centroid_design_mm": 260.44062855526806,
       "print_file": "intake_module.3mf",
       "print_file_stl": "intake_module.stl"
     },
@@ -346,9 +346,9 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 60828.3876953125,
-      "filament_mm": 39244.55,
-      "filament_g": 303.74,
+      "time_s": 60634.66015625,
+      "filament_mm": 38934.02,
+      "filament_g": 302.78999999999996,
       "settings_in_gcode": {
         "enable_support": "0",
         "filament_density": "1.31",
@@ -359,28 +359,28 @@
         "wall_loops": "3"
       },
       "support_time_s": 0.0,
-      "part_g": 123.9174975215769,
-      "removed_g": 178.9200918069583,
+      "part_g": 122.94084548925677,
+      "removed_g": 178.94674383927838,
       "feature_g": {
-        "Outer wall": 72.46996137430092,
-        "Inner wall": 50.41071394023765,
-        "Top surface": 0.26550953289120877,
-        "Internal solid infill": 0.250827982160206,
-        "Overhang wall": 0.1778012061525219,
-        "Bridge": 0.03807060380973514,
-        "Skirt": 0.03690548839615561,
+        "Outer wall": 72.22797049179503,
+        "Inner wall": 49.91465003836252,
+        "Top surface": 0.25009284118840536,
+        "Overhang wall": 0.1749814170004368,
+        "Internal solid infill": 0.044051867798110614,
+        "Skirt": 0.036905425377770466,
+        "Bridge": 0.02266374297501276,
         "Sparse infill": 0.003813273993747891,
         "Floating vertical shell": 0.002805799070585009
       },
-      "part_z_centroid_plate_mm": 102.06956793519629,
-      "part_z_centroid_design_mm": 434.96956183168066,
+      "part_z_centroid_plate_mm": 101.75269565971178,
+      "part_z_centroid_design_mm": 434.65268955619615,
       "two_colour": true,
       "filament_g_by_colour": {
-        "#FFFFFF": 228.11,
+        "#FFFFFF": 227.16,
         "#F99963": 75.63
       },
       "part_g_by_tool": {
-        "0": 122.43052185012112,
+        "0": 121.48711245707753,
         "1": 0.9024106714648034
       },
       "purge_g_by_tool": {
@@ -409,7 +409,7 @@
         "Prime tower|T1": 18.13214383535851,
         "_e_only|T1": 4.986014631929062
       },
-      "prep_time_s": 448.0107421875,
+      "prep_time_s": 447.97265625,
       "prime_tower_xy_mm": [
         20.0,
         205.0
@@ -435,7 +435,7 @@
         "detect_thin_wall": "1"
       },
       "part_path_mm_by_tool": {
-        "0": 1208727.065481591,
+        "0": 1199423.1399412276,
         "1": 8148.913123143586
       },
       "part_layers_by_tool": {
@@ -460,28 +460,28 @@
       "runs": {
         "two_colour": {
           "ok": true,
-          "main_predication_s": 12676.16796875,
-          "total_predication_s": 61276.3984375,
+          "main_predication_s": 12482.4140625,
+          "total_predication_s": 61082.6328125,
           "filament_change_times": 576,
           "feature_type_times_s": {
-            "Bridge": 6.157353401184082,
+            "Bridge": 3.206143856048584,
             "Custom": 397.8536376953125,
             "Flush": 41898.07421875,
-            "Gap infill": 1822.3243408203125,
-            "Inner wall": 831.8987426757812,
-            "Internal solid infill": 23.513978958129883,
-            "Outer wall": 4764.46142578125,
-            "Overhang wall": 125.09051513671875,
-            "Prime tower": 6279.8701171875,
+            "Gap infill": 1807.077880859375,
+            "Inner wall": 776.63134765625,
+            "Internal solid infill": 6.161884307861328,
+            "Outer wall": 4714.86181640625,
+            "Overhang wall": 126.20203399658203,
+            "Prime tower": 6279.8603515625,
             "Sparse infill": 0.593492329120636,
-            "Top surface": 44.25127029418945,
-            "Travel": 5023.990234375,
-            "Undefined": 5022.4208984375
+            "Top surface": 42.689945220947266,
+            "Travel": 4969.857421875,
+            "Undefined": 4968.2880859375
           },
           "slice_info_used": {
             "1": {
-              "used_m": 72.39,
-              "used_g": 228.11
+              "used_m": 72.09,
+              "used_g": 227.16
             },
             "2": {
               "used_m": 24.0,
@@ -505,13 +505,13 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 12.1,
+          "cli_wall_s": 17.2,
           "part_g_by_tool": {
-            "0": 122.43052185012112,
+            "0": 121.48711245707753,
             "1": 0.9024106714648034
           },
           "part_path_mm_by_tool": {
-            "0": 1208727.065481591,
+            "0": 1199423.1399412276,
             "1": 8148.913123143586
           },
           "part_layers_by_tool": {
@@ -542,27 +542,27 @@
             "1": 56.592042458897986
           },
           "other_g_by_tool": {
-            "0": 15.609653998088149,
+            "0": 14.913931026191719,
             "1": 4.986014631929063
           },
           "feature_g_by_tool": {
-            "Bridge|T0": 0.034622867958966366,
+            "Bridge|T0": 0.020820455209796387,
             "Floating vertical shell|T0": 0.0026676942795603354,
-            "Gap infill|T0": 34.704285695970015,
-            "Inner wall|T0": 10.56172131353759,
-            "Internal solid infill|T0": 0.14848558904371328,
-            "Outer wall|T0": 76.59213356321978,
+            "Gap infill|T0": 34.69464029099769,
+            "Inner wall|T0": 10.024642967005875,
+            "Internal solid infill|T0": 0.03861738282836426,
+            "Outer wall|T0": 76.32988050536626,
             "Outer wall|T1": 0.9024106714648034,
-            "Overhang wall|T0": 0.13535488926170444,
+            "Overhang wall|T0": 0.13626203891573152,
             "Prime tower|T0": 26.448040800187087,
             "Prime tower|T1": 18.13214383535851,
             "Sparse infill|T0": 0.003333199935784869,
-            "Top surface|T0": 0.24791703691402223,
-            "_e_only|T0": 15.609653998088145,
+            "Top surface|T0": 0.23624792253846277,
+            "_e_only|T0": 14.913931026191722,
             "_e_only|T1": 4.986014631929062
           },
           "part_z_centroid_plate_mm_by_tool": {
-            "0": 102.23080093088213,
+            "0": 101.9174261602856,
             "1": 75.47402481179924
           },
           "changes": 576,
@@ -578,32 +578,32 @@
             20.0,
             205.0
           ],
-          "time_s": 60828.3876953125
+          "time_s": 60634.66015625
         },
         "two_colour_cli_default_flush": {
           "ok": true,
-          "main_predication_s": 12676.234375,
-          "total_predication_s": 65338.59375,
+          "main_predication_s": 12483.97265625,
+          "total_predication_s": 65146.3203125,
           "filament_change_times": 576,
           "feature_type_times_s": {
-            "Bridge": 6.157353401184082,
+            "Bridge": 3.206143856048584,
             "Custom": 397.8536376953125,
             "Flush": 45960.203125,
-            "Gap infill": 1822.3243408203125,
-            "Inner wall": 831.8987426757812,
-            "Internal solid infill": 23.513978958129883,
-            "Outer wall": 4764.46142578125,
-            "Overhang wall": 125.09051513671875,
-            "Prime tower": 6279.8701171875,
+            "Gap infill": 1807.077880859375,
+            "Inner wall": 776.63134765625,
+            "Internal solid infill": 6.161884307861328,
+            "Outer wall": 4714.86181640625,
+            "Overhang wall": 126.20203399658203,
+            "Prime tower": 6279.8603515625,
             "Sparse infill": 0.593492329120636,
-            "Top surface": 44.25127029418945,
-            "Travel": 5023.990234375,
-            "Undefined": 5022.4208984375
+            "Top surface": 42.689945220947266,
+            "Travel": 4970.86572265625,
+            "Undefined": 4969.29638671875
           },
           "slice_info_used": {
             "1": {
-              "used_m": 80.78,
-              "used_g": 254.52
+              "used_m": 80.48,
+              "used_g": 253.57
             },
             "2": {
               "used_m": 39.57,
@@ -627,13 +627,13 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 13.1,
+          "cli_wall_s": 20.3,
           "part_g_by_tool": {
-            "0": 122.43052185012112,
+            "0": 121.48711245707753,
             "1": 0.9024106714648034
           },
           "part_path_mm_by_tool": {
-            "0": 1208727.065481591,
+            "0": 1199423.1399412276,
             "1": 8148.913123143586
           },
           "part_layers_by_tool": {
@@ -664,27 +664,27 @@
             "1": 105.63842480872515
           },
           "other_g_by_tool": {
-            "0": 15.609653998088149,
+            "0": 14.913931026191719,
             "1": 4.986014631929063
           },
           "feature_g_by_tool": {
-            "Bridge|T0": 0.034622867958966366,
+            "Bridge|T0": 0.020820455209796387,
             "Floating vertical shell|T0": 0.0026676942795603354,
-            "Gap infill|T0": 34.704285695970015,
-            "Inner wall|T0": 10.56172131353759,
-            "Internal solid infill|T0": 0.14848558904371328,
-            "Outer wall|T0": 76.59213356321978,
+            "Gap infill|T0": 34.69464029099769,
+            "Inner wall|T0": 10.024642967005875,
+            "Internal solid infill|T0": 0.03861738282836426,
+            "Outer wall|T0": 76.32988050536626,
             "Outer wall|T1": 0.9024106714648034,
-            "Overhang wall|T0": 0.13535488926170444,
+            "Overhang wall|T0": 0.13626203891573152,
             "Prime tower|T0": 26.448040800187087,
             "Prime tower|T1": 18.13214383535851,
             "Sparse infill|T0": 0.003333199935784869,
-            "Top surface|T0": 0.24791703691402223,
-            "_e_only|T0": 15.609653998088145,
+            "Top surface|T0": 0.23624792253846277,
+            "_e_only|T0": 14.913931026191722,
             "_e_only|T1": 4.986014631929062
           },
           "part_z_centroid_plate_mm_by_tool": {
-            "0": 102.23080093088213,
+            "0": 101.9174261602856,
             "1": 75.47402481179924
           },
           "changes": 576,
@@ -700,31 +700,31 @@
             20.0,
             205.0
           ],
-          "time_s": 64890.5830078125
+          "time_s": 64698.34765625
         },
         "single_colour_control": {
           "ok": true,
-          "main_predication_s": 9067.8564453125,
-          "total_predication_s": 9515.8671875,
+          "main_predication_s": 8775.21484375,
+          "total_predication_s": 9223.1875,
           "filament_change_times": 0,
           "feature_type_times_s": {
-            "Bridge": 6.212539196014404,
-            "Custom": 397.580078125,
+            "Bridge": 3.261624574661255,
+            "Custom": 397.54144287109375,
             "Flush": 26.0,
-            "Gap infill": 1798.837646484375,
-            "Inner wall": 837.8754272460938,
-            "Internal solid infill": 23.39749526977539,
-            "Outer wall": 4421.37060546875,
-            "Overhang wall": 125.0556640625,
-            "Sparse infill": 0.5423502326011658,
-            "Top surface": 44.29274368286133,
-            "Travel": 1831.01220703125,
-            "Undefined": 1829.4432373046875
+            "Gap infill": 1780.0216064453125,
+            "Inner wall": 767.6195678710938,
+            "Internal solid infill": 6.002024173736572,
+            "Outer wall": 4364.68505859375,
+            "Overhang wall": 126.16731262207031,
+            "Sparse infill": 0.5743807554244995,
+            "Top surface": 42.73709487915039,
+            "Travel": 1704.063232421875,
+            "Undefined": 1702.4942626953125
           },
           "slice_info_used": {
             "1": {
-              "used_m": 39.13,
-              "used_g": 123.3
+              "used_m": 38.83,
+              "used_g": 122.36
             }
           },
           "flush_volumes_matrix": [
@@ -744,12 +744,12 @@
           "wall_generator": "classic",
           "wall_loops": "3",
           "detect_thin_wall": "1",
-          "cli_wall_s": 14.4,
+          "cli_wall_s": 15.1,
           "part_g_by_tool": {
-            "0": 123.30228242715461
+            "0": 122.35879586809908
           },
           "part_path_mm_by_tool": {
-            "0": 1217117.282465555
+            "0": 1207811.917731129
           },
           "part_layers_by_tool": {
             "0": {
@@ -767,22 +767,22 @@
             "0": 0.0
           },
           "other_g_by_tool": {
-            "0": 11.266426894544765
+            "0": 9.959425586832069
           },
           "feature_g_by_tool": {
-            "Bridge|T0": 0.03435233003157923,
+            "Bridge|T0": 0.02055010633756465,
             "Floating vertical shell|T0": 0.0026584620861379695,
-            "Gap infill|T0": 35.68829383287736,
-            "Inner wall|T0": 10.627429606933466,
-            "Internal solid infill|T0": 0.14911139311730243,
-            "Outer wall|T0": 76.41386898288125,
-            "Overhang wall|T0": 0.13531717275820093,
+            "Gap infill|T0": 35.67861521721627,
+            "Inner wall|T0": 10.09034558874721,
+            "Internal solid infill|T0": 0.03924318690195338,
+            "Outer wall|T0": 76.15157720023042,
+            "Overhang wall|T0": 0.13622454297657596,
             "Sparse infill|T0": 0.003333168426592301,
-            "Top surface|T0": 0.2479174780427182,
-            "_e_only|T0": 11.26642689454476
+            "Top surface|T0": 0.23624839517635132,
+            "_e_only|T0": 9.95942558683206
           },
           "part_z_centroid_plate_mm_by_tool": {
-            "0": 102.04070719053496
+            "0": 101.7281175417427
           },
           "changes": 0,
           "change_z_range_mm": null,
@@ -791,7 +791,7 @@
             20.0,
             205.0
           ],
-          "time_s": 9067.8564453125
+          "time_s": 8775.21484375
         }
       },
       "inlay_print_check": {
@@ -820,42 +820,42 @@
       },
       "added_vs_single_colour": {
         "flush_150_210": {
-          "time_s": 51760.53125,
+          "time_s": 51859.4453125,
           "purge_g": 135.82088375205979,
           "prime_tower_g": 44.58018463554559,
-          "filament_g": 180.44,
+          "filament_g": 180.42999999999995,
           "swaps": 576
         },
         "flush_280_cli_default": {
-          "time_s": 55822.7265625,
+          "time_s": 55923.1328125,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
-          "filament_g": 255.89,
+          "filament_g": 255.88,
           "swaps": 576
         }
       },
       "single_colour_control": {
-        "time_s": 9067.8564453125,
-        "filament_g": 123.3,
-        "part_g": 123.30228242715461
+        "time_s": 8775.21484375,
+        "filament_g": 122.36,
+        "part_g": 122.35879586809908
       },
       "single_colour_slice": {
-        "time_s": 10477.9404296875,
-        "filament_g": 123.65640831867096,
-        "part_g": 123.61950371267493,
+        "time_s": 10211.14453125,
+        "filament_g": 122.677953361863,
+        "part_g": 122.64102947224272,
         "note": "the white body (with the pocket) sliced alone, pipeline settings (slice_one) - information; the table grams are mass_basis (reviewfix F3)"
       },
       "mass_basis": {
-        "pipeline_plain_module_g": 124.78925809861039,
-        "resolved_white_g": 122.43052185012112,
+        "pipeline_plain_module_g": 123.81252890027832,
+        "resolved_white_g": 121.48711245707753,
         "resolved_orange_g": 0.9024106714648034,
-        "resolved_single_colour_control_g": 123.30228242715461,
-        "livery_delta_resolved_g": 0.030650094431322827,
-        "module_total_g": 124.81990819304171,
-        "avionics_module_g": 123.9174975215769,
+        "resolved_single_colour_control_g": 122.35879586809908,
+        "livery_delta_resolved_g": 0.03072726044325691,
+        "module_total_g": 123.84325616072158,
+        "avionics_module_g": 122.94084548925677,
         "inlay_g": 0.9024106714648034,
         "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
-        "pipeline_plain_module_time_s": 10485.73828125
+        "pipeline_plain_module_time_s": 10034.97265625
       },
       "inlay_part_g": 0.9024106714648034,
       "inlay_part_z_centroid_design_mm": 408.37401870828364,
@@ -890,9 +890,9 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 2943.930908203125,
-      "filament_mm": 11555.61,
-      "filament_g": 36.410794072841135,
+      "time_s": 2886.343994140625,
+      "filament_mm": 11563.38,
+      "filament_g": 36.43527671546631,
       "settings_in_gcode": {
         "enable_support": "0",
         "filament_density": "1.31",
@@ -903,20 +903,20 @@
         "wall_loops": "3"
       },
       "support_time_s": 0.0,
-      "part_g": 36.36039540291242,
+      "part_g": 36.38487814006547,
       "removed_g": 0.05040582251617809,
       "feature_g": {
-        "Internal solid infill": 19.469686530786813,
-        "Bridge": 5.4515883485274195,
-        "Top surface": 4.058685041558601,
-        "Bottom surface": 3.8941809037248865,
-        "Inner wall": 1.4873744517082779,
-        "Sparse infill": 1.11978814819419,
-        "Outer wall": 0.797421726736975,
-        "Floating vertical shell": 0.0816702516761128,
+        "Internal solid infill": 19.57684494644121,
+        "Bridge": 5.474855429521674,
+        "Top surface": 4.069840650622901,
+        "Bottom surface": 3.915549051719898,
+        "Inner wall": 1.3924980987523377,
+        "Sparse infill": 1.122389799206133,
+        "Outer wall": 0.7573924484988297,
+        "Floating vertical shell": 0.07550771530289474,
         "Skirt": 0.05040582251617809
       },
-      "part_z_centroid_plate_mm": 1.012967668490748,
+      "part_z_centroid_plate_mm": 1.0129697946713916,
       "part_z_centroid_design_mm": null,
       "print_file": "avionics_tray.3mf",
       "print_file_stl": "avionics_tray.stl"
@@ -944,9 +944,9 @@
         "top_shell_thickness": "0"
       },
       "ok": true,
-      "time_s": 22520.466796875,
-      "filament_mm": 86109.01,
-      "filament_g": 271.3225377912734,
+      "time_s": 22172.962890625,
+      "filament_mm": 85782.82,
+      "filament_g": 270.29473943890434,
       "settings_in_gcode": {
         "enable_support": "1",
         "filament_density": "1.31",
@@ -956,25 +956,25 @@
         "support_type": "normal(auto)",
         "wall_loops": "3"
       },
-      "support_time_s": 7444.348693847656,
-      "part_g": 171.137756927699,
-      "removed_g": 100.18475392320549,
+      "support_time_s": 7387.087341308594,
+      "part_g": 170.6207162535164,
+      "removed_g": 99.67400440590967,
       "feature_g": {
-        "Support": 91.72049283727078,
-        "Outer wall": 80.91305411174267,
-        "Inner wall": 61.05778694498801,
-        "Internal solid infill": 15.080433949655268,
-        "Bridge": 7.043490103783157,
-        "Support interface": 6.3150589830319515,
-        "Sparse infill": 3.436119892400899,
+        "Support": 91.37095187984886,
+        "Outer wall": 80.74263311471248,
+        "Inner wall": 60.69355703217544,
+        "Internal solid infill": 15.144041903292985,
+        "Bridge": 7.056440854566425,
+        "Support interface": 6.200177821825024,
+        "Sparse infill": 3.429807876418133,
         "Top surface": 3.2894293505488315,
-        "Support transition": 2.1102822003165467,
-        "Overhang wall": 0.21244411395796076,
-        "Floating vertical shell": 0.10499846050399549,
+        "Support transition": 2.063954801649573,
+        "Overhang wall": 0.17791347340564045,
+        "Floating vertical shell": 0.08689264827068537,
         "Skirt": 0.038919902586207714
       },
-      "part_z_centroid_plate_mm": 94.67967207214501,
-      "part_z_centroid_design_mm": 612.5796964862075,
+      "part_z_centroid_plate_mm": 94.92560947167141,
+      "part_z_centroid_design_mm": 612.8256338857339,
       "print_file": "payload_module.3mf",
       "print_file_stl": "payload_module.stl"
     },
@@ -1487,15 +1487,15 @@
     }
   },
   "totals": {
-    "time_s": 170942.12255096436,
-    "filament_g": 1474.7030155730945,
-    "part_g": 1083.0952219451,
-    "vehicle_part_g": 941.8990863776808,
+    "time_s": 170274.57372283936,
+    "filament_g": 1473.0285877267681,
+    "part_g": 1081.8126653114455,
+    "vehicle_part_g": 940.6165297440263,
     "filament_g_by_colour": {
       "Ivory White": {
         "hex": "#FFFFFF",
         "code": "11100",
-        "filament_g": 1230.039588853681,
+        "filament_g": 1228.3651610073548,
         "parts": [
           "propulsion_module",
           "intake_module",
@@ -1511,7 +1511,7 @@
           "latch_arm",
           "gps_pod_lid"
         ],
-        "with_spare_g": 1353.043547739049,
+        "with_spare_g": 1351.2016771080903,
         "rolls_1kg": 2
       },
       "Mandarin Orange": {

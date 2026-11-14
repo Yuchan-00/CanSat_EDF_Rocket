@@ -62,6 +62,8 @@ GROUPS = {
     "spring_piston_hardware_balance": "hardware",
     "gps": "avionics", "gps_ground_plane": "avionics", "gps_lead": "avionics",   # v0.8 GPS pod contents
     "gns": "avionics",                                                           # v0.8.1 GNS board (ATmega128A #4)
+    "carrier": "avionics",                                    # rocket-carrier round (2026-11-14): the carrier PCB rev 3.1
+    "logic_pack": "power", "logic_switch": "avionics", "logic_switch_lead": "avionics", "logic_retention": "hardware",
 }
 
 

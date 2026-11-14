@@ -542,7 +542,9 @@ class Layout:
         self.has_battery = self.power_source != "tether"
         # v0.9 logic-power round (user decisions 2026-11-05): the carrier's 1S logic pack + top-cap switch, battery build
         # only (logic_power.applies_to_power_sources); set in _top_cap / _logic_power
-        lpw = p.get("logic_power") if self.vtol else None
+        # rocket-carrier round (2026-11-14): the rocket carries the carrier too, with its logic pack (logic_power,
+        # switch_mount 'tube_wall'; _logic_power_rocket)
+        lpw = p.get("logic_power") if (self.vtol or p["electronics"].get("carrier")) else None
         self.has_logic_power = bool(lpw) and self.power_source in (lpw.get("applies_to_power_sources") or [])
         self.logic_in_flight = bool(lpw.get("in_flight_mass_model")) if self.has_logic_power else False
         self.has_lp_collar = False       # switch-collar round (2026-11-05): set by _logic_power (logic_power.collar)
@@ -1282,7 +1284,9 @@ class Layout:
         # the route (``_fcu``), because the bulkhead servo hole is part of the route.
         # v0.9 CAD-2: in the VTOL configuration the one avionics carrier PCB (electronics.carrier) takes this spot and every
         # FCU clearance rule; its report part is "carrier" (fcu_part / fcu_mass_g name the part for every consumer)
-        self.fcu_key = "carrier" if self.vtol else "fcu"
+        # rocket-carrier round (2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체'): the carrier PCB takes the
+        # FCU spot whenever params carry electronics.carrier (both configurations)
+        self.fcu_key = "carrier" if p["electronics"].get("carrier") else "fcu"
         self.fcu_part = self.fcu_key
         self.has_fcu = bool(p["electronics"].get(self.fcu_key))
         self.fcu_clearance: dict[str, float] = {}
@@ -1297,6 +1301,24 @@ class Layout:
             self.fcu_y = (-uw / 2, uw / 2)
             self.fcu_z = (self.z_intake_bulkhead_top + self.fcu_foam_t, self.z_intake_bulkhead_top + self.fcu_foam_t + uh)
             self.fcu_center = (0.0, 0.0, 0.5 * (self.fcu_z[0] + self.fcu_z[1]))
+            # rocket-carrier round (2026-11-14): the carrier rev 3.1 envelope beyond the 76 x 70 x 15 box - the outline
+            # tab (full envelope height) and the mated plug / module boxes (z above the board's top face), from
+            # electronics.carrier.envelope (PCB board_metrics cad_round_envelopes, ASSUMED plug sizes); J13 is a pad
+            self.carrier_boxes: dict[str, tuple] = {}
+            self.carrier_release_pad = None
+            env = fe.get("envelope") if self.fcu_key == "carrier" else None
+            if env:
+                self.carrier_board_top_z = self.fcu_z[0] + float(fe["board_t"])
+                if env.get("tab"):
+                    self.carrier_boxes["tab"] = (tuple(env["tab"]["x"]), tuple(env["tab"]["y"]), self.fcu_z)
+                for nm, b in (env.get("boxes") or {}).items():
+                    self.carrier_boxes[nm] = (tuple(b["x"]), tuple(b["y"]), (self.carrier_board_top_z + b["z"][0],
+                                                                             self.carrier_board_top_z + b["z"][1]))
+                    if self.carrier_boxes[nm][2][1] > self.fcu_z[1] + 1e-9:
+                        raise ValueError(f"carrier envelope box {nm} rises over the carrier envelope top")
+                rp = env.get("release_pad")
+                if rp:
+                    self.carrier_release_pad = (float(rp["x"]), float(rp["y"]), self.carrier_board_top_z)
 
         # ---------------- v0.6 vane-servo lead route (SPEC 3.8 / 5.1, tabs only) ----------------
         # needs the propulsion, intake and avionics stations above; KAIST (lip_clamp) keeps no route
@@ -1312,6 +1334,14 @@ class Layout:
         self.has_motor_leads = bool(self.tabs and p.get("motor_leads"))
         if self.has_motor_leads:
             self._motor_leads(p)
+        if getattr(self, "carrier_boxes", None) and getattr(self, "ml_joint_box", None):
+            # rocket-carrier round: the carrier tab / plug / module boxes keep the motor-lead joint zone's limit too
+            g_, nm_ = min((_box_gap(self.ml_joint_box, bx), nm) for nm, bx in self.carrier_boxes.items())
+            self.fcu_clearance["carrier envelope boxes -> motor-lead joint zone"] = g_
+            self.fcu_limits["carrier envelope boxes -> motor-lead joint zone"] = self.ml_joint_min_clear
+            self.carrier_box_worst["motor-lead joint zone"] = nm_
+            if g_ < self.ml_joint_min_clear - 1e-9:
+                raise ValueError(f"carrier {nm_} is {g_:.2f} mm from the motor-lead joint zone (< {self.ml_joint_min_clear:g})")
 
         # ---------------- payload module ----------------
         # v0.9 CAD-2: rocket configuration only - the VTOL stack ends with the top cap on the avionics module
@@ -1460,13 +1490,26 @@ class Layout:
             self._gps_pod(p)
         if self.has_gns:      # v0.8.1: the glink lead GNS -> NAV, the GNS distances (needs the GPS lead / COM / radio box)
             self._gns_leads(p)
+        # rocket-carrier round (2026-11-14): the avionics-tube wall switches + the logic pack (rocket: no top cap), the
+        # CanSat release-servo lead to the carrier's J13 pad
+        self.has_wall_switches = bool(am.get("wall_switches")) and not self.vtol and getattr(self, "fcu_part", "") == "carrier"
+        self.lp_rocket = False
+        if self.has_logic_power and not self.vtol:
+            if not self.has_wall_switches:
+                raise ValueError("logic_power in the rocket needs avionics_module.wall_switches (no top cap) and the carrier")
+            self._logic_power_rocket(p)
+        cr_ = (p["electronics"].get("carrier") or {}) if not self.vtol else {}
+        self.has_release_lead = bool(cr_.get("release_lead")) and bool(am.get("release_entry")) \
+            and getattr(self, "carrier_release_pad", None) is not None
+        if self.has_release_lead:
+            self._release_lead(p)
 
         # ---------------- nose ----------------
         if self.vtol:
             # v0.9 CAD-2 VTOL: top cap on the avionics spigot (GPS, tether hardpoint, gland, arming switch)
             self._top_cap(p)
             self.vehicle_h = self.z_cap_top - self.z_exit
-            if self.has_logic_power:     # 2026-11-05: 1S logic pack at spot A, top-cap switch, leads (battery build)
+            if self.has_logic_power and not getattr(self, "lp_rocket", False):   # 2026-11-05: spot A, top-cap switch
                 self._logic_power(p)
         else:
             self.z_nose_skirt_bottom = self.z_payload_spigot_bottom
@@ -2547,6 +2590,376 @@ class Layout:
         # tether / hybrid builds and, while in_flight_mass_model is false, the flight-mass model use that geometry
         # (switch-collar round: that geometry is the cap without the hole AND without the collar)
         self.slicer_variants = {"top_cap": "no_logic_switch_hole"}
+
+    def wall_xyz(self, theta: float, r: float, t: float, z: float) -> tuple[float, float, float]:
+        """rocket-carrier round: (radial r, tangential t, z) at theta -> vehicle (x, y, z)."""
+        c, s = math.cos(math.radians(theta)), math.sin(math.radians(theta))
+        return (r * c - t * s, r * s + t * c, z)
+
+    def _wall_box(self, theta: float, r: tuple, t: tuple, z: tuple) -> tuple:
+        """Axis-aligned box round a (radial r0..r1, tangential t0..t1, z) block at theta (exact at multiples of 90 deg,
+        conservative elsewhere)."""
+        pts = [self.wall_xyz(theta, r_, t_, 0.0) for r_ in r for t_ in t]
+        return ((min(q[0] for q in pts), max(q[0] for q in pts)), (min(q[1] for q in pts), max(q[1] for q in pts)), tuple(z))
+
+    def _logic_power_rocket(self, p: dict) -> None:
+        """rocket-carrier round (2026-11-14, user decisions 2026-11-13; params ``logic_power`` switch_mount 'tube_wall',
+        ``avionics_module.wall_switches``): the rocket has no top cap, so the carrier's arming switch (J16) and logic power
+        switch (J15) go through the avionics-tube wall; the 1S logic pack stands at spot A on the 6S pack's -x face (the
+        VTOL rule, ``lp_pack_*``); leads switch -> J15, arm switch -> J16 (right-angle plug, lead end along +y), pack top
+        -> J14 (``lp_*_lead_polyline``, keep-out Ø ``lp_wire_od``).  Each wall switch = inner nut Ø nut_d on the bore
+        face, body (tangential x axial x radial depth) and solder lugs inward (``lp_wall_sw[name]['boxes']``), lever
+        outside.  Clearances ``lp_clearance`` / ``lp_limits`` (raised when short; C37 / C38 / C39 / C42 re-measure):
+        pack as in the VTOL (6S pack >= 0, bore >= PLACEHOLDER_BORE_CLEAR_MM, bay boxes >= min_clear_to_tray, carrier
+        plugs / GPS lead >= min_to_leads_plugs); switch nut / body / lugs inside the bore (corner r <= bore r), >= min_clear
+        _to_tray to every bay box, the logic pack, the carrier envelope and the other switch; nut bearing (flats - hole) / 2
+        >= nut_min_bearing_w; wall ligaments (hole edge -> other hole / rail-rib zone / vent slots / joint holes / module
+        ends) >= wall_switches.min_ligament; holes off the livery logo; finger circles on the skin clear of the other
+        lever's nut; the leads vs the bay boxes (>= 0), the bore (>= 1 mm) and the pack (>= min_to_leads_plugs)."""
+        lp, mf = p["logic_power"], p["printer"]["min_feature"]
+        ws = p["avionics_module"]["wall_switches"]
+        mc = float(p["payload_module"]["com_mount"]["min_clear_to_tray"])
+        mlp = float(lp["clearance"]["min_to_leads_plugs"])
+        cl: dict[str, float] = {}
+        lim: dict[str, float] = {}
+        self.lp_rocket = True
+        # ---- pack at spot A (the VTOL rule) ----
+        pk = lp["pack"]
+        dx, dy, dz = pk["dims_xyz"]
+        x1 = self.battery_x[0] - pk["gap_to_flight_pack"]
+        z0 = self.battery_z[0] + pk["z0_from_flight_pack_bottom"]
+        self.lp_pack_x, self.lp_pack_y, self.lp_pack_z = (x1 - dx, x1), (-dy / 2, dy / 2), (z0, z0 + dz)
+        self.lp_pack_mass_g = float(pk["mass_g"])
+        self.lp_pack_center = (0.5 * (x1 - dx + x1), 0.0, z0 + dz / 2)
+        pack = (self.lp_pack_x, self.lp_pack_y, self.lp_pack_z)
+        self.lp_board_top_z = self.carrier_board_top_z
+        self.lp_plugs = {nm: bx for nm, bx in self.carrier_boxes.items() if nm.startswith("J")}
+        bay = self.avionics_bay_boxes()
+        k = "pack -> 6S pack (strapped against its -x face)"
+        cl[k], lim[k] = bay["battery"][0][0] - self.lp_pack_x[1], 0.0
+        k = "pack -> bore (radial)"
+        cl[k] = self.body_id / 2 - max(math.hypot(x, y) for x in self.lp_pack_x for y in self.lp_pack_y)
+        lim[k] = PLACEHOLDER_BORE_CLEAR_MM
+        if self.z_intake_spigot_top > self.lp_pack_z[0]:
+            raise ValueError("logic pack reaches down into the intake spigot (its bore is the tighter one)")
+        for nm, bx in bay.items():
+            if nm != "battery":
+                cl[f"pack -> {nm}"], lim[f"pack -> {nm}"] = _box_gap(pack, bx), mc
+        for nm, bx in self.carrier_boxes.items():
+            cl[f"pack -> carrier {nm}"], lim[f"pack -> carrier {nm}"] = _box_gap(pack, bx), mlp
+        gl = self.gps_lead_polyline
+        k = "pack -> GPS lead (centre line - OD/2)"
+        cl[k] = (min(_box_segment_dist(pack, a, b) for a, b in zip(gl[:-1], gl[1:]))
+                 - 0.5 * float(lp["clearance"]["gps_lead_od_ASSUMED"]))
+        lim[k] = mlp
+        # retention (the VTOL rule): the 6S pack's lower strap wraps both packs, one tie below the pack top
+        rt = lp["retention"]
+        sw_w = float(p["avionics_module"]["strap_slot_w"])
+        zs = self.battery_z[0] + 25.0
+        self.lp_strap_z = (zs - sw_w / 2, zs + sw_w / 2)
+        self.lp_strap_slot_y = self.tray_w / 2 - 10.0
+        self.lp_tie_z = self.lp_pack_z[1] - float(rt["tie_z_below_pack_top"])
+        self.lp_strap_wraps_pack = (self.lp_pack_z[0] <= self.lp_strap_z[0] and self.lp_strap_z[1] <= self.lp_pack_z[1]
+                                    and self.lp_strap_slot_y > self.lp_pack_y[1])
+        if not self.lp_strap_wraps_pack:
+            raise ValueError("logic pack: the 6S pack's lower strap does not wrap it (strap band / slot span)")
+        self.lp_retention_mass_g = float(rt["strap_tie_mass_g_ASSUMED"])
+        self.lp_retention_com = (self.lp_pack_x[0], 0.0, 0.5 * (zs + self.lp_tie_z))
+        f_n = self.lp_pack_mass_g * 1e-3 * 9.80665 * float(rt["touchdown_g_ASSUMED"])
+        self.lp_retention_E = {"touchdown_load_N": f_n, "friction_mu_ASSUMED": float(rt["friction_mu_ASSUMED"]),
+                               "normal_force_needed_N (2 faces)": f_n / (2.0 * float(rt["friction_mu_ASSUMED"]))}
+        # ---- wall switches ----
+        r_i, r_o = self.body_id / 2, self.body_r
+        inner_nut_h = 2.0              # as configs.vtol.logic_power.switch.inner_nut_h_ASSUMED
+        self.lp_wall_sw: dict[str, dict] = {}
+        for nm in ("arm", "logic"):
+            s = ws[nm]
+            th, zc, hd = float(s["theta_deg"]), float(s["z"]), float(s["hole_d"])
+            bt, ba, br = s["body_xyz_ASSUMED"]
+            nut_d, nut_af = float(s["nut_d_ASSUMED"]), float(s["nut_af_ASSUMED"])
+            sag = r_i - math.sqrt(r_i * r_i - (nut_d / 2) ** 2)      # the flat nut bears on the curved bore at its rim
+            r_nut = (r_i - sag - inner_nut_h, r_i - sag)
+            r_body = (r_nut[0] - br, r_nut[0])
+            r_lug = (r_body[0] - float(s["lugs_h_ASSUMED"]), r_body[0])
+            boxes = {"inner nut": self._wall_box(th, r_nut, (-nut_d / 2, nut_d / 2), (zc - nut_d / 2, zc + nut_d / 2)),
+                     "body": self._wall_box(th, r_body, (-bt / 2, bt / 2), (zc - ba / 2, zc + ba / 2)),
+                     "lugs": self._wall_box(th, r_lug, (-bt / 2 + 1.0, bt / 2 - 1.0), (zc - ba / 2 + 1.5, zc + ba / 2 - 1.5))}
+            self.lp_wall_sw[nm] = {"theta": th, "z": zc, "hole_d": hd, "connector": s["connector"], "boxes": boxes,
+                                   "lever_r": (r_o, r_o + float(s["lever_out_ASSUMED"])), "nut_d": nut_d,
+                                   "r_nut": r_nut, "r_body": r_body, "r_lug": r_lug, "body_t": bt, "body_a": ba,
+                                   "lug_t": bt - 2.0, "lug_a": ba - 3.0,
+                                   "lug_end": self.wall_xyz(th, r_lug[0], 0.0, zc),
+                                   "nut_seat_sagitta_A": r_i - math.sqrt(r_i * r_i - (nut_d / 2) ** 2)}
+            k = f"{nm} switch nut bearing on the wall (flats - hole) / 2"
+            cl[k], lim[k] = 0.5 * (nut_af - hd), float(s["nut_min_bearing_w_ASSUMED"])
+            k = f"{nm} switch nut / body / lugs -> bore (radial, inside the wall)"
+            # exact in the switch's own (radial, tangential) frame - the axis-aligned boxes are conservative off 90 deg
+            cl[k] = r_i - max(math.hypot(r_body[1], bt / 2), math.hypot(r_lug[1], bt / 2 - 1.0))
+            lim[k] = 0.0
+            for bn, bx in bay.items():
+                k = f"{nm} switch -> {bn}"
+                cl[k], lim[k] = min(_box_gap(bb, bx) for bb in boxes.values()), mc
+            k = f"{nm} switch -> logic pack"
+            cl[k], lim[k] = min(_box_gap(bb, pack) for bb in boxes.values()), mc
+            for bn, bx in self.carrier_boxes.items():
+                k = f"{nm} switch -> carrier {bn}"
+                cl[k], lim[k] = min(_box_gap(bb, bx) for bb in boxes.values()), mc
+            k = f"{nm} switch -> carrier envelope"
+            cl[k], lim[k] = min(_box_gap(bb, (self.fcu_x, self.fcu_y, self.fcu_z)) for bb in boxes.values()), mc
+        a_, b_ = self.lp_wall_sw["arm"], self.lp_wall_sw["logic"]
+        k = "arm switch -> logic switch"
+        cl[k], lim[k] = min(_box_gap(x_, y_) for x_ in a_["boxes"].values() for y_ in b_["boxes"].values()), mc
+        # wall ligaments (hole edge -> features of the tube wall), along the skin (arc at body_r / z)
+        lig = float(ws["min_ligament"])
+        def arc(t1: float, t2: float) -> float:
+            d = abs((t1 - t2 + 180.0) % 360.0 - 180.0)
+            return math.radians(d) * r_o
+        rib_th = [math.degrees(math.atan2(sy * self.rail_y, self.tray_x + sx * (self.rail_gap / 2 + self.rail_w)))
+                  for sy in (1.0, -1.0) for sx in (1.0, -1.0)]
+        rib_half = math.degrees(math.atan2(self.rail_w, r_i))     # the rib's root on the wall (A: rail_w wide)
+        for nm, w_ in self.lp_wall_sw.items():
+            th, zc, hr = w_["theta"], w_["z"], w_["hole_d"] / 2
+            other = b_ if nm == "arm" else a_
+            k = f"{nm} hole -> {'logic' if nm == 'arm' else 'arm'} hole (skin)"
+            cl[k] = math.hypot(arc(th, other["theta"]), zc - other["z"]) - hr - other["hole_d"] / 2
+            lim[k] = lig
+            if self.z_rail_bottom - hr <= zc <= self.z_rail_top + hr:
+                k = f"{nm} hole -> rail-rib roots (skin arc)"
+                cl[k], lim[k] = min(arc(th, t) for t in rib_th) - math.radians(rib_half) * r_o - hr, lig
+            vs = [(t, self.z_vent_slot_bottom, self.z_vent_slot_bottom + self.vent_slot_h) for t in self.vent_slot_thetas]
+            if vs:
+                k = f"{nm} hole -> vent slots (skin)"
+                cl[k] = min(math.hypot(max(arc(th, t) - self.vent_slot_w / 2, 0.0), max(z0_ - zc, zc - z1_, 0.0))
+                            for t, z0_, z1_ in vs) - hr
+                lim[k] = lig
+            jz = [self.z_avionics_bottom + self.joint_screw_dz, self.z_avionics_spigot_bottom + self.joint_screw_dz]
+            jd = float(p["body"]["joint_hole_outer_d"])
+            k = f"{nm} hole -> joint screw holes (skin)"
+            cl[k] = min(math.hypot(arc(th, t), zc - z_) for t in self.joint_thetas for z_ in jz) - hr - jd / 2
+            lim[k] = lig
+            k = f"{nm} hole -> intake spigot top (inner nut over the spigot, z)"
+            cl[k], lim[k] = (zc - w_["nut_d"] / 2) - self.z_intake_spigot_top, mc
+            k = f"{nm} hole -> avionics spigot shoulder (z)"
+            cl[k], lim[k] = (self.z_avionics_spigot_bottom - self.body_wall) - (zc + hr), lig
+            for lt, (t0, t1, lz0, lz1) in (getattr(self, "livery_sector", None) or {}).items():
+                half = math.degrees(hr / r_o)
+                inside = (t0 - half <= th <= t1 + half or t0 - half <= th - 360.0 <= t1 + half
+                          or t0 - half <= th + 360.0 <= t1 + half) and (lz0 - hr <= zc <= lz1 + hr)
+                k = f"{nm} hole off the livery logo at {lt:g} deg"
+                cl[k], lim[k] = (0.0 if not inside else -1.0), 0.0
+            # finger circle round the lever on the skin vs the other switch's nut / lever
+            fr = 0.5 * float(ws["finger_clear_d_ASSUMED"])
+            k = f"{nm} finger circle (Ø {2 * fr:g}) -> other switch nut (skin)"
+            cl[k] = math.hypot(arc(th, other["theta"]), zc - other["z"]) - fr - other["nut_d"] / 2
+            lim[k] = 0.0
+        # ---- leads ----
+        ld = lp["leads"]
+        self.lp_wire_od = float(ld["wire_od_ASSUMED"])
+        rw = self.lp_wire_od / 2
+        z_drop = self.fcu_z[1] + rw + 0.5
+        def plug_top(nm: str) -> tuple:
+            b = self.lp_plugs[nm]
+            return (0.5 * (b[0][0] + b[0][1]), 0.5 * (b[1][0] + b[1][1]), b[2][1])
+        j15, j14 = plug_top("J15"), plug_top("J14")
+        l0 = b_["lug_end"]
+        self.lp_switch_lead_polyline = [l0, (l0[0], l0[1], z_drop), (j15[0], j15[1], z_drop), j15]
+        j16 = self.lp_plugs["J16"]
+        # the vertical leg down to J16's lead end runs under the tray bottom: keep it 0.5 mm off the tray's -x face
+        x16 = min(0.5 * (j16[0][0] + j16[0][1]), self.tray_x - self.tray_t / 2 - rw - 0.5)
+        if x16 < j16[0][0] + rw:
+            raise ValueError("logic power (rocket): no room for the arm lead between J16's -x end and the tray")
+        j16_end = (x16, j16[1][1] + rw, 0.5 * (j16[2][0] + j16[2][1]))
+        a0 = a_["lug_end"]
+        self.lp_arm_lead_polyline = [a0, (a0[0], a0[1], z_drop), (j16_end[0], j16_end[1], z_drop), j16_end]
+        pl_ = ld["pack_to_J14"]
+        ex = pk["lead_exit_ASSUMED"]
+        xc = self.lp_pack_center[0]
+        zt = self.lp_pack_z[1] + float(pl_["over_pack_top"])
+        vx, vy = float(pl_["vertical_x"]), float(pl_["vertical_y"])
+        self.lp_pack_lead_polyline = [(xc, float(ex["y"]), self.lp_pack_z[1]), (xc, float(ex["y"]), zt), (vx, vy, zt),
+                                      (vx, vy, z_drop), j14]
+        def route_len(pts: list) -> float:
+            return sum(math.dist(a, b) for a, b in zip(pts[:-1], pts[1:]))
+        def route_com(pts: list) -> tuple:
+            n_ = route_len(pts)
+            return tuple(sum(0.5 * (a[i] + b[i]) * math.dist(a, b) for a, b in zip(pts[:-1], pts[1:])) / n_ for i in range(3))
+        sl = ld["switch_to_J15"]
+        self.lp_switch_lead_route_mm = route_len(self.lp_switch_lead_polyline)
+        self.lp_switch_lead_len_mm = self.lp_switch_lead_route_mm + float(sl["slack_mm"])
+        self.lp_switch_lead_mass_g = (self.lp_switch_lead_len_mm * 1e-3 * float(sl["mass_g_per_m_ASSUMED"])
+                                      + float(sl["connector_g_ASSUMED"]))
+        self.lp_switch_lead_com = route_com(self.lp_switch_lead_polyline)
+        al = ws["arm"]["lead"]
+        self.lp_arm_lead_len_mm = route_len(self.lp_arm_lead_polyline) + float(al["slack_mm"])
+        self.lp_arm_lead_mass_g = self.lp_arm_lead_len_mm * 1e-3 * float(al["mass_g_per_m_ASSUMED"]) + float(al["connector_g_ASSUMED"])
+        self.lp_pack_lead_route_mm = route_len(self.lp_pack_lead_polyline)
+        self.lp_pack_lead_len_mm = self.lp_pack_lead_route_mm + float(pl_["slack_mm"])
+        carrier = (self.fcu_x, self.fcu_y, self.fcu_z)
+        leads = {"switch lead": self.lp_switch_lead_polyline, "arm lead": self.lp_arm_lead_polyline,
+                 "pack lead": self.lp_pack_lead_polyline}
+        own = {"switch lead": "J15", "arm lead": "J16", "pack lead": "J14"}
+        for lead, pts in leads.items():
+            segs = list(zip(pts[:-1], pts[1:]))
+            above = segs[:-1]                       # the last segment enters its plug inside the carrier envelope
+            k = f"{lead} -> bore (radial)"
+            cl[k] = self.body_id / 2 - max(math.hypot(q[0], q[1]) for q in pts) - rw
+            lim[k] = PLACEHOLDER_BORE_CLEAR_MM
+            for nm, bx in bay.items():
+                if nm == self.fcu_part:
+                    continue
+                k = f"{lead} -> {nm}"
+                cl[k], lim[k] = min(_box_segment_dist(bx, a, b) for a, b in segs) - rw, 0.0
+            k = f"{lead} -> carrier (above its envelope)"
+            cl[k], lim[k] = min(_box_segment_dist(carrier, a, b) for a, b in above) - rw, 0.0
+            for nm, bx in self.carrier_boxes.items():
+                if nm != own[lead]:
+                    k = f"{lead} -> carrier {nm}"
+                    cl[k], lim[k] = min(_box_segment_dist(bx, a, b) for a, b in segs) - rw, 0.0
+            for sn, w_ in self.lp_wall_sw.items():
+                if (lead, sn) in (("switch lead", "logic"), ("arm lead", "arm")):
+                    continue                        # its own switch (the lead leaves the lugs)
+                k = f"{lead} -> {sn} switch"
+                cl[k], lim[k] = min(_box_segment_dist(bb, a, b) for bb in w_["boxes"].values() for a, b in segs) - rw, 0.0
+        for lead in ("switch lead", "arm lead"):
+            pts = leads[lead]
+            k = f"{lead} -> logic pack"
+            cl[k], lim[k] = min(_box_segment_dist(pack, a, b) for a, b in zip(pts[:-1], pts[1:])) - rw, mlp
+        k = "pack lead -> logic pack (its own lead, beside it)"
+        cl[k] = min(_box_segment_dist(pack, a, b) for a, b in zip(self.lp_pack_lead_polyline[1:-1],
+                                                                   self.lp_pack_lead_polyline[2:])) - rw
+        lim[k] = 0.0
+        # switch mass at the logic switch body centre (the lever / nut outside: lumped in)
+        bb = b_["boxes"]["body"]
+        self.lp_sw_mass_g = float(lp["switch"]["mass_g_ASSUMED"])
+        self.lp_sw_center = (0.5 * (bb[0][0] + bb[0][1]), 0.5 * (bb[1][0] + bb[1][1]), 0.5 * (bb[2][0] + bb[2][1]))
+        # strap / tie loops in plan vs the pack lead (information, as the VTOL)
+        bx6 = bay["battery"]
+        corners = [(x, y) for x in self.lp_pack_x for y in self.lp_pack_y] + [(x, y) for x in bx6[0] for y in bx6[1]]
+        self.lp_strap_loop = _convex_hull_2d(corners + [(self.tray_x, s_ * self.lp_strap_slot_y) for s_ in (1.0, -1.0)])
+        y_tie = float(self.tray_hole_y[1]) if getattr(self, "tray_hole_y", None) else self.lp_strap_slot_y
+        self.lp_tie_loop = _convex_hull_2d(corners + [(self.tray_x, s_ * y_tie) for s_ in (1.0, -1.0)])
+        self.lp_strap_wraps_flight_pack_corners = [c for c in ((bx6[0][0], bx6[1][0]), (bx6[0][0], bx6[1][1]))
+                                                   if c in self.lp_strap_loop]
+        t_band = {"strap": float(rt["strap_t_ASSUMED"]), "tie": float(rt["tie_t_ASSUMED"])}
+        self.lp_band_leads = {}
+        for band, poly in (("strap", self.lp_strap_loop), ("tie", self.lp_tie_loop)):
+            for lead, xy in {"switch lead": (l0[0], l0[1]), "pack lead": (vx, vy)}.items():
+                sd_ = _signed_dist_convex_2d(poly, xy)
+                inside = sd_ < 0.0
+                self.lp_band_leads[f"{lead} vs {band}"] = {"inside_loop": inside, "centre_to_band_mm": abs(sd_),
+                                                           "band_gap_mm": (-sd_ - rw) if inside else (sd_ - t_band[band] - rw)}
+        self.lp_clearance, self.lp_limits = cl, lim
+        for k_, v_ in cl.items():
+            if v_ < lim[k_] - 1e-9:
+                raise ValueError(f"logic power (rocket): {k_} {v_:.2f} mm < {lim[k_]:g}")
+
+    def _release_lead(self, p: dict) -> None:
+        """rocket-carrier round (2026-11-14): the CanSat release-servo lead (``electronics.carrier.release_lead``) from the
+        release pod (servo bottom at release_servo_axis_r / release_pod_theta) out through the pod floor, down the payload /
+        avionics skin at r body_r + od/2 + skin_offset, in through ``avionics_module.release_entry`` (radial hole at the
+        GPS entry hole's height), across the bay at that height, straight down beside the tray's +x face (drop_gap_to_tray)
+        to just over the carrier envelope and onto the J13 pad (rev 3.1).  Route / length / mass E (mass reported, not in
+        the model: release_lead.in_mass_model).  Clearances ``rl_clearance`` / ``rl_limits`` (raised when short; C42):
+        the bay segments vs every bay box / carrier plug box / wall switch (>= 0; the carrier envelope without the last
+        segment), the bore (>= PLACEHOLDER_BORE_CLEAR_MM), the joint-screw axes (>= 0, less the hole radius); the entry
+        hole vs the avionics spigot shoulder / joint holes / vent slots / rail ribs / the GPS entry / the livery (>= min
+        ligament); the external run stays under the nose-separation edge."""
+        rl, re_ = p["electronics"]["carrier"]["release_lead"], p["avionics_module"]["release_entry"]
+        mf = float(p["printer"]["min_feature"])
+        cl: dict[str, float] = {}
+        lim: dict[str, float] = {}
+        od = float(rl["wire_od_ASSUMED"])
+        rw = od / 2
+        self.rl_od = od
+        th = float(re_["theta_deg"])
+        self.rl_entry_theta, self.rl_entry_d = th, float(re_["d"])
+        self.rl_entry_z = self.z_avionics_spigot_bottom - float(re_["z_below_payload_skirt"])
+        if self.rl_entry_d < od:
+            raise ValueError("avionics_module.release_entry.d is smaller than the release lead")
+        r_skin = self.body_r + rw + float(rl["skin_offset"])
+        rr = self.body_id / 2 - rw - 1.0
+        px, py, pz = self.carrier_release_pad
+        x_v = self.tray_x + self.tray_t / 2 + float(rl["drop_gap_to_tray"]) + rw
+        z_drop = self.fcu_z[1] + rw + 0.5
+        pts = [self.wall_xyz(self.release_pod_theta, self.release_servo_axis_r, 0.0, self.release_servo_bottom_z),
+               self.wall_xyz(th, r_skin, 0.0, self.release_pod_z0),
+               self.wall_xyz(th, r_skin, 0.0, self.rl_entry_z),
+               self.wall_xyz(th, rr, 0.0, self.rl_entry_z),
+               (x_v, py, self.rl_entry_z), (x_v, py, z_drop), (px, py, pz)]
+        self.release_lead_polyline = pts
+        self.rl_bay_start = 3
+        segs = list(zip(pts[:-1], pts[1:]))
+        bay_segs = segs[self.rl_bay_start:]
+        self.rl_route_mm = sum(math.dist(a, b) for a, b in segs)
+        self.rl_len_mm = self.rl_route_mm + float(rl["slack_mm"])
+        self.rl_mass_g = self.rl_len_mm * 1e-3 * float(rl["mass_g_per_m_ASSUMED"]) + float(rl["inline_connector_g_ASSUMED"])
+        self.rl_com = tuple(sum(0.5 * (a[i] + b[i]) * math.dist(a, b) for a, b in segs) / self.rl_route_mm for i in range(3))
+        self.rl_in_mass_model = bool(rl.get("in_mass_model"))
+        bay = self.avionics_bay_boxes()
+        for nm, bx in bay.items():
+            sg = bay_segs[:-1] if nm == self.fcu_part else bay_segs
+            k = f"lead (bay) -> {nm}"
+            cl[k], lim[k] = min(_box_segment_dist(bx, a, b) for a, b in sg) - rw, 0.0
+        for nm, bx in self.carrier_boxes.items():
+            k = f"lead (bay) -> carrier {nm}"
+            cl[k], lim[k] = min(_box_segment_dist(bx, a, b) for a, b in bay_segs) - rw, 0.0
+        for sn, w_ in (getattr(self, "lp_wall_sw", None) or {}).items():
+            k = f"lead (bay) -> {sn} switch"
+            cl[k], lim[k] = min(_box_segment_dist(bb, a, b) for bb in w_["boxes"].values() for a, b in bay_segs) - rw, 0.0
+        if getattr(self, "lp_rocket", False):
+            k = "lead (bay) -> logic pack"
+            cl[k], lim[k] = min(_box_segment_dist((self.lp_pack_x, self.lp_pack_y, self.lp_pack_z), a, b)
+                                for a, b in bay_segs) - rw, 0.0
+        k = "lead (bay) -> bore (radial)"
+        cl[k], lim[k] = self.body_id / 2 - max(math.hypot(q[0], q[1]) for q in pts[self.rl_bay_start:]) - rw, PLACEHOLDER_BORE_CLEAR_MM
+        k = "lead (bay) -> joint screw axes"
+        cl[k] = (min(_seg_seg_dist(a, b, ja, jb) for a, b in bay_segs for _, ja, jb in self.joint_screw_axes())
+                 - rw - float(p["body"]["joint_hole_outer_d"]) / 2)
+        lim[k] = 0.0
+        if getattr(self, "has_gps_pod", False):
+            gl = self.gps_lead_polyline[self.gps_lead_bay_start:]
+            k = "lead (bay) -> GPS lead (bay)"
+            cl[k] = min(_seg_seg_dist(a, b, c, d) for a, b in bay_segs for c, d in zip(gl[:-1], gl[1:])) - rw \
+                - 0.5 * float(p["payload_module"]["gps_pod"]["lead"]["bundle_d_ASSUMED"])
+            lim[k] = 0.0
+        # entry hole in the avionics tube wall
+        def arc(t1: float, t2: float) -> float:
+            return math.radians(abs((t1 - t2 + 180.0) % 360.0 - 180.0)) * self.body_r
+        hr = self.rl_entry_d / 2
+        k = "entry hole -> avionics spigot shoulder (z)"
+        cl[k], lim[k] = (self.z_avionics_spigot_bottom - self.body_wall) - (self.rl_entry_z + hr), mf
+        jz = [self.z_avionics_bottom + self.joint_screw_dz, self.z_avionics_spigot_bottom + self.joint_screw_dz]
+        jd = float(p["body"]["joint_hole_outer_d"])
+        k = "entry hole -> joint screw holes (skin)"
+        cl[k] = min(math.hypot(arc(th, t), self.rl_entry_z - z_) for t in self.joint_thetas for z_ in jz) - hr - jd / 2
+        lim[k] = mf
+        if self.vent_slot_thetas:
+            k = "entry hole -> vent slots (skin)"
+            z0_, z1_ = self.z_vent_slot_bottom, self.z_vent_slot_bottom + self.vent_slot_h
+            cl[k] = min(math.hypot(max(arc(th, t) - self.vent_slot_w / 2, 0.0),
+                                   max(z0_ - self.rl_entry_z, self.rl_entry_z - z1_, 0.0)) for t in self.vent_slot_thetas) - hr
+            lim[k] = mf
+        rib_th = [math.degrees(math.atan2(sy * self.rail_y, self.tray_x + sx * (self.rail_gap / 2 + self.rail_w)))
+                  for sy in (1.0, -1.0) for sx in (1.0, -1.0)]
+        k = "entry hole -> rail-rib roots (skin arc)"
+        cl[k], lim[k] = min(arc(th, t) for t in rib_th) - self.rail_w - hr, mf
+        if getattr(self, "has_gps_pod", False):
+            k = "entry hole -> GPS entry hole (skin)"
+            cl[k], lim[k] = math.hypot(arc(th, self.gps_entry_theta), self.rl_entry_z - self.gps_entry_z) - hr - self.gps_entry_d / 2, mf
+        for lt, (t0, t1, lz0, lz1) in (getattr(self, "livery_sector", None) or {}).items():
+            half = math.degrees(hr / self.body_r)
+            inside = (t0 - half <= th <= t1 + half) and (lz0 - hr <= self.rl_entry_z <= lz1 + hr)
+            k = f"entry hole off the livery logo at {lt:g} deg"
+            cl[k], lim[k] = (0.0 if not inside else -1.0), 0.0
+        # the external run: below the nose-separation edge; the latch lug sector (reported)
+        k = "external run below the nose-separation edge (z)"
+        cl[k], lim[k] = self.z_payload_spigot_bottom - max(q[2] for q in pts), 0.0
+        self.rl_latch_lug_arc_mm = arc(th, float(p["payload_module"]["latch_lug_theta_deg"])) \
+            - 0.5 * float(p["payload_module"]["latch_lug_w"]) - rw
+        self.rl_clearance, self.rl_limits = cl, lim
+        for k_, v_ in cl.items():
+            if v_ < lim[k_] - 1e-9:
+                raise ValueError(f"release lead: {k_} {v_:.2f} mm < {lim[k_]:g}")
 
     def _logic_collar(self, p: dict, cl: dict, lim: dict, tops_xy: dict, r_eye: float) -> None:
         """Switch-collar round (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘';
@@ -4574,6 +4987,17 @@ class Layout:
             u_mid = 0.5 * (self.gns_u_front + self.gns_u_back)
             pts.append(self.gns_xyz(u_mid, float(p["avionics_module"]["gns_mount"]["gps_header_v"]), self.gns_z[1] + bd / 2))
             self.gps_lead_bay_start = len(pod_pts) - 1           # index of the first point inside the bay
+        elif not self.has_nav and getattr(self, "carrier_boxes", {}).get("J7"):
+            # rocket-carrier round (2026-11-14): no NAV / GNS board - from the entry hole straight down the wall to just over
+            # the carrier envelope, across to over J7 (the carrier's GPS plug) and down into its top (E)
+            pts = [self.gps_xyz(*q) for q in pod_pts]
+            j7 = self.carrier_boxes["J7"]
+            jx, jy = 0.5 * (j7[0][0] + j7[0][1]), 0.5 * (j7[1][0] + j7[1][1])
+            z_over = self.fcu_z[1] + bd / 2 + 1.0
+            x_w, y_w, _ = pts[-1]
+            pts += [(x_w, y_w, z_over), (jx, jy, z_over), (jx, jy, j7[2][1])]
+            self.gps_lead_bay_start = len(pod_pts) - 1
+            self.gps_lead_end = "carrier J7"
         else:
             # v0.8: along the wall over the tray top, across at bay_cross_y, down to the NAV top
             pod_pts.append((rr, 0.0, z_route))
@@ -4597,8 +5021,14 @@ class Layout:
         if self.has_radio_log:
             bay_boxes["radio/log box"] = (self.radio_log_x, self.radio_log_y, self.radio_log_z)
         bay_segs = segs[self.gps_lead_bay_start:]
+        to_j7 = getattr(self, "gps_lead_end", "") == "carrier J7"
+        if to_j7:     # the carrier's other plug / module boxes (the last segment plugs into J7)
+            for nm, bx in self.carrier_boxes.items():
+                if nm != "J7":
+                    bay_boxes[f"carrier {nm}"] = bx
         for nm, bx in bay_boxes.items():
-            cl[f"lead (bay) -> {nm}"] = min(_box_segment_dist(bx, a, b) for a, b in bay_segs) - bd / 2
+            sg = bay_segs[:-1] if (to_j7 and nm == self.fcu_part) else bay_segs   # the last segment enters J7 in the envelope
+            cl[f"lead (bay) -> {nm}"] = min(_box_segment_dist(bx, a, b) for a, b in sg) - bd / 2
         cl["lead (bay) -> joint screw axes"] = (min(_seg_seg_dist(a, b, ja, jb) for a, b in bay_segs
                                                     for _, ja, jb in self.joint_screw_axes())
                                                 - bd / 2 - p["body"]["joint_hole_outer_d"] / 2)
@@ -4635,7 +5065,7 @@ class Layout:
         e_ = p["edf"]
         noise = {"ESC (box)": _box_point_dist((self.esc_x, self.esc_y, self.esc_z), a),
                  "logic UBEC (misc box)": _box_point_dist((self.misc_x, self.misc_y, self.misc_z), a),
-                 "NAV board": _box_point_dist((self.nav_x, self.nav_y, self.nav_z), a),
+                 **({"NAV board": _box_point_dist((self.nav_x, self.nav_y, self.nav_z), a)} if self.has_nav else {}),
                  "battery": _box_point_dist((self.battery_x, self.battery_y, self.battery_z), a),
                  "EDF motor": _box_point_dist(((-e_["motor_d"] / 2, e_["motor_d"] / 2), (-e_["motor_d"] / 2, e_["motor_d"] / 2),
                                                (self.z_edf_housing_bottom - e_.get("motor_protrusion_rear", 0.0),
@@ -4649,7 +5079,8 @@ class Layout:
             noise["LoRa antenna (100 mm ASSUMED, -y wall)"] = _pt_seg_dist_3d(a, (0.0, ya, self.radio_log_z[0]),
                                                                                (0.0, ya, self.radio_log_z[0] - 100.0))
         if self.has_fcu:
-            noise["FCU board"] = _box_point_dist((self.fcu_x, self.fcu_y, self.fcu_z), a)
+            noise["carrier PCB (ESP-12F, 4 x 16 MHz)" if self.fcu_part == "carrier" else "FCU board"] = \
+                _box_point_dist((self.fcu_x, self.fcu_y, self.fcu_z), a)
         if self.has_gns:      # v0.8.1: the GNS board (16 MHz crystal: harmonics 1568 / 1584 MHz)
             noise["GNS board"] = _box_point_dist((self.gns_x, self.gns_y, self.gns_z), a)
         if self.tabs:
@@ -5057,6 +5488,36 @@ class Layout:
             self.fcu_joint_screw_room = min(r_bore - r_exit(th) for th in self.joint_thetas)
             cl["joint screw room in the spigot bore (radial)"] = self.fcu_joint_screw_room
             limits["joint screw room in the spigot bore (radial)"] = None
+        # rocket-carrier round (2026-11-14): the carrier envelope boxes (tab, mated plugs, modules) keep the same limits as
+        # the board box - the bore (radial) and every bay box / tray stop / lead hole in plan; vent holes stay uncovered
+        self.carrier_box_worst: dict[str, str] = {}
+        cb = getattr(self, "carrier_boxes", {}) or {}
+        if cb:
+            def worst(fn) -> tuple:
+                return min((fn(bx), nm) for nm, bx in cb.items())
+            k = "carrier envelope boxes -> intake spigot bore (radial)"
+            cl[k], self.carrier_box_worst["bore"] = worst(lambda bx: r_bore - max(math.hypot(x, y) for x in bx[0] for y in bx[1]))
+            limits[k] = PLACEHOLDER_BORE_CLEAR_MM
+            targets = {nm: bx for nm, bx in self.avionics_bay_boxes().items() if nm != self.fcu_part}
+            if self.tray_stop_h:
+                for sy, tag in ((1.0, "+y"), (-1.0, "-y")):
+                    y_in, y_wall = sy * (self.rail_y - self.rail_depth), sy * self.body_id / 2
+                    targets[f"tray stop {tag}"] = ((self.tray_x - self.rail_gap / 2, self.tray_x + self.rail_gap / 2),
+                                                   (min(y_in, y_wall), max(y_in, y_wall)), (self.z_tray_stop_bottom, self.z_tray_bottom))
+            for tn, tb in targets.items():
+                k = f"carrier envelope boxes -> {tn}"
+                cl[k], self.carrier_box_worst[tn] = worst(lambda bx: _box_gap(bx, tb))
+                limits[k] = mc
+            for hn, poly in self.fcu_lead_holes.items():
+                k = f"carrier envelope boxes -> {hn}"
+                cl[k], self.carrier_box_worst[hn] = worst(lambda bx: _convex_gap_2d(
+                    [(bx[0][0], bx[1][0]), (bx[0][1], bx[1][0]), (bx[0][1], bx[1][1]), (bx[0][0], bx[1][1])], poly))
+                limits[k] = mc
+            for th, c in centres.items():
+                k = f"carrier envelope boxes -> vent hole {th:g} deg (plan)"
+                cl[k], self.carrier_box_worst[f"vent hole {th:g}"] = worst(lambda bx: _box_point_dist((bx[0], bx[1]), c)
+                                                                            - self.vent_hole_d / 2)
+                limits[k] = 0.0          # the tie's holes stay uncovered by the plugs / tab too
         self.fcu_limits = limits
         for nm, lim in limits.items():
             if lim is not None and cl[nm] < lim - 1e-9:
@@ -5071,7 +5532,7 @@ class Layout:
         if not self.has_fcu:
             return "FCU board: not in params (electronics.fcu absent)"
         el = self.p["electronics"][self.fcu_key]
-        lines = [f"{'carrier PCB' if self.vtol else 'FCU board'} ({el['mass_g']:g} g, {' x '.join(f'{d:g}' for d in el['dims_lwh'])} mm, on {self.fcu_foam_t:g} mm "
+        lines = [f"{'carrier PCB' if self.fcu_key == 'carrier' else 'FCU board'} ({el['mass_g']:g} g, {' x '.join(f'{d:g}' for d in el['dims_lwh'])} mm, on {self.fcu_foam_t:g} mm "
                  f"foam on the intake bulkhead top z {self.z_intake_bulkhead_top:.2f}): x {self.fcu_x[0]:.1f}..{self.fcu_x[1]:.1f}, "
                  f"y {self.fcu_y[0]:.1f}..{self.fcu_y[1]:.1f}, z {self.fcu_z[0]:.2f}..{self.fcu_z[1]:.2f}; centre z "
                  f"{self.fcu_center[2]:.2f} (vane hinge + {self.fcu_center[2] - self.vane_hinge_z:.1f} mm)",

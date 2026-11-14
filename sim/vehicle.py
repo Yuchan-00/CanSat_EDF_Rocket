@@ -1149,7 +1149,8 @@ def estimate_parts(L: Layout, p: dict) -> dict[str, Part]:
     add("edf_unit", "placeholder", edf, mass_g=e["mass_g"])
     add("battery", "placeholder", [_box_xyz(L.battery_x, L.battery_y, L.battery_z, 1.0)], mass_g=p["battery"]["mass_g"])
     add("esc", "placeholder", [_box_xyz(L.esc_x, L.esc_y, L.esc_z, 1.0)], mass_g=p["electronics"]["esc"]["mass_g"])
-    add("nav", "placeholder", [_box_xyz(L.nav_x, L.nav_y, L.nav_z, 1.0)], mass_g=p["electronics"]["nav"]["mass_g"])
+    if getattr(L, "has_nav", True):        # rocket-carrier round (2026-11-14): no NAV board with the carrier
+        add("nav", "placeholder", [_box_xyz(L.nav_x, L.nav_y, L.nav_z, 1.0)], mass_g=p["electronics"]["nav"]["mass_g"])
     add("misc_electronics", "placeholder", [
         _box_xyz(L.misc_x, L.misc_y, L.misc_z, 1.0)], mass_g=p["electronics"]["misc"]["mass_g"])
     if getattr(L, "has_com_board", False):   # v0.6: COM board (2nd ATmega128A) hanging under the payload bulkhead
@@ -1159,7 +1160,7 @@ def estimate_parts(L: Layout, p: dict) -> dict[str, Part]:
         add("radio_log", "placeholder", [_box_xyz(L.radio_log_x, L.radio_log_y, L.radio_log_z, 1.0)],
             mass_g=p["electronics"]["radio_log"]["mass_g"])
     if getattr(L, "has_fcu", False):         # v0.6.3: FCU board flat on the intake bulkhead (foam tape)
-        add("fcu", "placeholder", [_box_xyz(L.fcu_x, L.fcu_y, L.fcu_z, 1.0)], mass_g=p["electronics"]["fcu"]["mass_g"])
+        add(L.fcu_part, "placeholder", [_box_xyz(L.fcu_x, L.fcu_y, L.fcu_z, 1.0)], mass_g=L.fcu_mass_g)
     s = p["servo"]
     for i, th in enumerate(L.fin_thetas if getattr(L, "direct_drive", False) else [], start=1):   # v0.9
         add(f"servo_vane_{i}", "placeholder", [

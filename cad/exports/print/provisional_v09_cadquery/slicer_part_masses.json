@@ -1,12 +1,12 @@
 {
   "meta": {
-    "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
+    "params_sha256": "f5e6089e234f2f833a26c31345b055b43eb66edb21bf4f838c4cc721143ccffc",
     "preset": "BUDGET_90mm_6S",
     "density_g_cm3": 1.31,
     "source": "cad/exports/cadquery/stl (CadQuery twin of this params.json)",
     "slicer": "Bambu Lab P2S 0.4 nozzle / 0.20mm Standard @BBL P2S / Bambu PLA Matte @BBL P2S + class overrides",
     "part_g": "the part's own extrusion (G-code features minus Support*, Brim, Skirt, Custom / prime)",
-    "date": "2026-11-11 01:23"
+    "date": "2026-11-14 12:20"
   },
   "parts": {
     "propulsion_module": {
@@ -22,141 +22,6 @@
       "part_z_centroid_design_mm": 86.7454874371395,
       "time_s": 34656.05859375,
       "support": "none"
-    },
-    "intake_module": {
-      "part_g": 130.1470355458596,
-      "filament_g": 209.36881676334414,
-      "removed_g": 79.22175389897502,
-      "solid_volume_mm3": 104452.87443296978,
-      "solid_mass_g_at_rho": 136.83326550719042,
-      "class": "A_load_path",
-      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
-      "stl": "cad/exports/cadquery/stl/intake_module.stl",
-      "stl_sha256": "b51180cf75882265d9e7dcce0d3af1513154291c58867ea03446d3d95bc2503a",
-      "part_z_centroid_design_mm": 260.33820004596294,
-      "time_s": 17682.560546875,
-      "support": "normal(auto)"
-    },
-    "avionics_module": {
-      "part_g": 123.9174975215769,
-      "filament_g": 303.74,
-      "removed_g": 178.9200918069583,
-      "solid_volume_mm3": 96839.82398223657,
-      "solid_mass_g_at_rho": 126.86016941672992,
-      "class": "B_shell",
-      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
-      "stl": "cad/exports/cadquery/stl/avionics_module.stl",
-      "stl_sha256": "48c0eef7d4ec0ada0b12cc7c6b3191af6afcb9cabc4a0c094c70d83452955ec0",
-      "part_z_centroid_design_mm": 434.96956183168066,
-      "time_s": 60828.3876953125,
-      "support": "none",
-      "filament": "1 (white)",
-      "two_colour": {
-        "time_s": 60828.3876953125,
-        "swaps": 576,
-        "swaps_by_direction": {
-          "T0->T1": 288,
-          "T1->T0": 288
-        },
-        "swap_z_range_plate_mm": [
-          3.4,
-          124.2
-        ],
-        "filament_g_by_colour": {
-          "#FFFFFF": 228.11,
-          "#F99963": 75.63
-        },
-        "part_g_white": 122.43052185012112,
-        "part_g_orange": 0.9024106714648034,
-        "purge_g_by_tool": {
-          "0": 79.22884129316179,
-          "1": 56.592042458897986
-        },
-        "prime_tower_g_by_tool": {
-          "0": 26.448040800187087,
-          "1": 18.13214383535851
-        },
-        "purge_g": 135.82088375205979,
-        "prime_tower_g": 44.58018463554559,
-        "flush_volumes_mm3": {
-          "white_to_orange": 150.0,
-          "orange_to_white": 210.0
-        },
-        "added_time_s": 51760.53125,
-        "added_filament_g": 180.44,
-        "cli_default_flush": {
-          "time_s": 55822.7265625,
-          "purge_g": 211.2768496174503,
-          "prime_tower_g": 44.58018463554559,
-          "filament_g": 255.89,
-          "swaps": 576
-        },
-        "single_colour_control": {
-          "time_s": 9067.8564453125,
-          "filament_g": 123.3,
-          "part_g": 123.30228242715461
-        },
-        "orange_features_g": {
-          "Outer wall|T1": 0.9024106714648034,
-          "Prime tower|T1": 18.13214383535851,
-          "_e_only|T1": 4.986014631929062
-        },
-        "settings_in_project": {
-          "flush_volumes_matrix": [
-            "0",
-            "150",
-            "210",
-            "0"
-          ],
-          "flush_multiplier": [
-            "1"
-          ],
-          "enable_prime_tower": "1",
-          "filament_colour": [
-            "#FFFFFF",
-            "#F99963"
-          ],
-          "wall_generator": "classic",
-          "wall_loops": "3",
-          "detect_thin_wall": "1"
-        },
-        "inlay_print_check": {
-          "status": "PASS",
-          "orange_part_path_mm": 8148.913123143586,
-          "single_pass_path_mm": 8107.790839093692,
-          "path_ratio": 1.0050719468306475,
-          "path_ratio_max": 1.15,
-          "orange_part_g": 0.9024106714648034,
-          "solid_g": 0.8921813039338699,
-          "g_rel": 0.011465570378833778,
-          "g_rel_tol": 0.1,
-          "layer_height_mm": 0.2,
-          "inlay_depth_mm": 0.42,
-          "inlay_volume_mm3": 681.0544304838701,
-          "per_layer_info": {
-            "layers_with_part": 574,
-            "changes_in": 288,
-            "empty_layers": 2,
-            "empty_layer_z_mm": [
-              14.2,
-              124.2
-            ],
-            "dab_layers_path_lt_0.4_mm": []
-          }
-        },
-        "mass_basis": {
-          "pipeline_plain_module_g": 124.78925809861039,
-          "resolved_white_g": 122.43052185012112,
-          "resolved_orange_g": 0.9024106714648034,
-          "resolved_single_colour_control_g": 123.30228242715461,
-          "livery_delta_resolved_g": 0.030650094431322827,
-          "module_total_g": 124.81990819304171,
-          "avionics_module_g": 123.9174975215769,
-          "inlay_g": 0.9024106714648034,
-          "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
-          "pipeline_plain_module_time_s": 10485.73828125
-        }
-      }
     },
     "avionics_logo": {
       "part_g": 0.9024106714648034,
@@ -174,7 +39,7 @@
       "filament": "2 (orange)",
       "note": "printed with avionics_module (one 2-filament object); its time / purge / tower are in that entry",
       "two_colour": {
-        "time_s": 60828.3876953125,
+        "time_s": 60634.66015625,
         "swaps": 576,
         "swaps_by_direction": {
           "T0->T1": 288,
@@ -185,10 +50,10 @@
           124.2
         ],
         "filament_g_by_colour": {
-          "#FFFFFF": 228.11,
+          "#FFFFFF": 227.16,
           "#F99963": 75.63
         },
-        "part_g_white": 122.43052185012112,
+        "part_g_white": 121.48711245707753,
         "part_g_orange": 0.9024106714648034,
         "purge_g_by_tool": {
           "0": 79.22884129316179,
@@ -204,19 +69,19 @@
           "white_to_orange": 150.0,
           "orange_to_white": 210.0
         },
-        "added_time_s": 51760.53125,
-        "added_filament_g": 180.44,
+        "added_time_s": 51859.4453125,
+        "added_filament_g": 180.42999999999995,
         "cli_default_flush": {
-          "time_s": 55822.7265625,
+          "time_s": 55923.1328125,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
-          "filament_g": 255.89,
+          "filament_g": 255.88,
           "swaps": 576
         },
         "single_colour_control": {
-          "time_s": 9067.8564453125,
-          "filament_g": 123.3,
-          "part_g": 123.30228242715461
+          "time_s": 8775.21484375,
+          "filament_g": 122.36,
+          "part_g": 122.35879586809908
         },
         "orange_features_g": {
           "Outer wall|T1": 0.9024106714648034,
@@ -267,46 +132,18 @@
           }
         },
         "mass_basis": {
-          "pipeline_plain_module_g": 124.78925809861039,
-          "resolved_white_g": 122.43052185012112,
+          "pipeline_plain_module_g": 123.81252890027832,
+          "resolved_white_g": 121.48711245707753,
           "resolved_orange_g": 0.9024106714648034,
-          "resolved_single_colour_control_g": 123.30228242715461,
-          "livery_delta_resolved_g": 0.030650094431322827,
-          "module_total_g": 124.81990819304171,
-          "avionics_module_g": 123.9174975215769,
+          "resolved_single_colour_control_g": 122.35879586809908,
+          "livery_delta_resolved_g": 0.03072726044325691,
+          "module_total_g": 123.84325616072158,
+          "avionics_module_g": 122.94084548925677,
           "inlay_g": 0.9024106714648034,
           "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
-          "pipeline_plain_module_time_s": 10485.73828125
+          "pipeline_plain_module_time_s": 10034.97265625
         }
       }
-    },
-    "avionics_tray": {
-      "part_g": 36.36039540291242,
-      "filament_g": 36.410794072841135,
-      "removed_g": 0.05040582251617809,
-      "solid_volume_mm3": 31223.45133223539,
-      "solid_mass_g_at_rho": 40.90272124522836,
-      "class": "C_flat_plate",
-      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
-      "stl": "cad/exports/cadquery/stl/avionics_tray.stl",
-      "stl_sha256": "c60bbce83fe8683a4b0219d8b3dcc4cfb38b077733239a4e2c3795742fab29ba",
-      "part_z_centroid_design_mm": null,
-      "time_s": 2943.930908203125,
-      "support": "none"
-    },
-    "payload_module": {
-      "part_g": 171.137756927699,
-      "filament_g": 271.3225377912734,
-      "removed_g": 100.18475392320549,
-      "solid_volume_mm3": 143877.9322371886,
-      "solid_mass_g_at_rho": 188.48009123071705,
-      "class": "B_shell",
-      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
-      "stl": "cad/exports/cadquery/stl/payload_module.stl",
-      "stl_sha256": "4363003e5db06dae12cfb9c8dff562bd30a59b2c170e0e72d37f0c9e6a750f57",
-      "part_z_centroid_design_mm": 612.5796964862075,
-      "time_s": 22520.466796875,
-      "support": "normal(auto)"
     },
     "piston": {
       "part_g": 25.17810977393863,
@@ -432,6 +269,169 @@
       "stl_sha256": "09d5be050819e2e04de5b6d3d07de1440dede4d83573c4ebc505551f6d0ae7bc",
       "part_z_centroid_design_mm": -32.65479397546866,
       "time_s": 18777.68359375,
+      "support": "normal(auto)"
+    },
+    "intake_module": {
+      "part_g": 130.33368888155474,
+      "filament_g": 209.64770462676177,
+      "removed_g": 79.31398915140991,
+      "solid_volume_mm3": 104653.93642244865,
+      "solid_mass_g_at_rho": 137.09665671340775,
+      "class": "A_load_path",
+      "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "stl": "cad/exports/cadquery/stl/intake_module.stl",
+      "stl_sha256": "9c10c34d22a8915379d90989cc6083ccfb7de833940d6d35d86b064ed4f227a0",
+      "part_z_centroid_design_mm": 260.44062855526806,
+      "time_s": 17613.830078125,
+      "support": "normal(auto)"
+    },
+    "avionics_module": {
+      "part_g": 122.94084548925677,
+      "filament_g": 302.78999999999996,
+      "removed_g": 178.94674383927838,
+      "solid_volume_mm3": 96090.4544794463,
+      "solid_mass_g_at_rho": 125.87849536807465,
+      "class": "B_shell",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "stl": "cad/exports/cadquery/stl/avionics_module.stl",
+      "stl_sha256": "8c644a9f601ce1625e12ce11b4db59d0b8d1ee22bc7a8fab553a184cfb7e6f73",
+      "part_z_centroid_design_mm": 434.65268955619615,
+      "time_s": 60634.66015625,
+      "support": "none",
+      "filament": "1 (white)",
+      "two_colour": {
+        "time_s": 60634.66015625,
+        "swaps": 576,
+        "swaps_by_direction": {
+          "T0->T1": 288,
+          "T1->T0": 288
+        },
+        "swap_z_range_plate_mm": [
+          3.4,
+          124.2
+        ],
+        "filament_g_by_colour": {
+          "#FFFFFF": 227.16,
+          "#F99963": 75.63
+        },
+        "part_g_white": 121.48711245707753,
+        "part_g_orange": 0.9024106714648034,
+        "purge_g_by_tool": {
+          "0": 79.22884129316179,
+          "1": 56.592042458897986
+        },
+        "prime_tower_g_by_tool": {
+          "0": 26.448040800187087,
+          "1": 18.13214383535851
+        },
+        "purge_g": 135.82088375205979,
+        "prime_tower_g": 44.58018463554559,
+        "flush_volumes_mm3": {
+          "white_to_orange": 150.0,
+          "orange_to_white": 210.0
+        },
+        "added_time_s": 51859.4453125,
+        "added_filament_g": 180.42999999999995,
+        "cli_default_flush": {
+          "time_s": 55923.1328125,
+          "purge_g": 211.2768496174503,
+          "prime_tower_g": 44.58018463554559,
+          "filament_g": 255.88,
+          "swaps": 576
+        },
+        "single_colour_control": {
+          "time_s": 8775.21484375,
+          "filament_g": 122.36,
+          "part_g": 122.35879586809908
+        },
+        "orange_features_g": {
+          "Outer wall|T1": 0.9024106714648034,
+          "Prime tower|T1": 18.13214383535851,
+          "_e_only|T1": 4.986014631929062
+        },
+        "settings_in_project": {
+          "flush_volumes_matrix": [
+            "0",
+            "150",
+            "210",
+            "0"
+          ],
+          "flush_multiplier": [
+            "1"
+          ],
+          "enable_prime_tower": "1",
+          "filament_colour": [
+            "#FFFFFF",
+            "#F99963"
+          ],
+          "wall_generator": "classic",
+          "wall_loops": "3",
+          "detect_thin_wall": "1"
+        },
+        "inlay_print_check": {
+          "status": "PASS",
+          "orange_part_path_mm": 8148.913123143586,
+          "single_pass_path_mm": 8107.790839093692,
+          "path_ratio": 1.0050719468306475,
+          "path_ratio_max": 1.15,
+          "orange_part_g": 0.9024106714648034,
+          "solid_g": 0.8921813039338699,
+          "g_rel": 0.011465570378833778,
+          "g_rel_tol": 0.1,
+          "layer_height_mm": 0.2,
+          "inlay_depth_mm": 0.42,
+          "inlay_volume_mm3": 681.0544304838701,
+          "per_layer_info": {
+            "layers_with_part": 574,
+            "changes_in": 288,
+            "empty_layers": 2,
+            "empty_layer_z_mm": [
+              14.2,
+              124.2
+            ],
+            "dab_layers_path_lt_0.4_mm": []
+          }
+        },
+        "mass_basis": {
+          "pipeline_plain_module_g": 123.81252890027832,
+          "resolved_white_g": 121.48711245707753,
+          "resolved_orange_g": 0.9024106714648034,
+          "resolved_single_colour_control_g": 122.35879586809908,
+          "livery_delta_resolved_g": 0.03072726044325691,
+          "module_total_g": 123.84325616072158,
+          "avionics_module_g": 122.94084548925677,
+          "inlay_g": 0.9024106714648034,
+          "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
+          "pipeline_plain_module_time_s": 10034.97265625
+        }
+      }
+    },
+    "avionics_tray": {
+      "part_g": 36.38487814006547,
+      "filament_g": 36.43527671546631,
+      "removed_g": 0.05040582251617809,
+      "solid_volume_mm3": 31279.999999999993,
+      "solid_mass_g_at_rho": 40.9768,
+      "class": "C_flat_plate",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "stl": "cad/exports/cadquery/stl/avionics_tray.stl",
+      "stl_sha256": "ba74b578ecefca72ea69c87571faac0fc04891d894d2e5d8dd485e66a426bb8d",
+      "part_z_centroid_design_mm": null,
+      "time_s": 2886.343994140625,
+      "support": "none"
+    },
+    "payload_module": {
+      "part_g": 170.6207162535164,
+      "filament_g": 270.29473943890434,
+      "removed_g": 99.67400440590967,
+      "solid_volume_mm3": 143490.73092586506,
+      "solid_mass_g_at_rho": 187.97285751288322,
+      "class": "B_shell",
+      "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
+      "stl": "cad/exports/cadquery/stl/payload_module.stl",
+      "stl_sha256": "e78965accce151ce5a9fef679fcddc9655e224a98eff70ad91796f8d3886209e",
+      "part_z_centroid_design_mm": 612.8256338857339,
+      "time_s": 22172.962890625,
       "support": "normal(auto)"
     }
   }

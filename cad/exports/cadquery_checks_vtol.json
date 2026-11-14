@@ -1,14 +1,14 @@
 {
   "generator": "cadquery",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
+  "params_sha256": "f907c459e287d26b034c44738e875d716c9b5177655477e9cd89d616a2fa1f41",
   "tolerance_mm3": 1.0,
-  "runtime_s": 200.33280730247498,
+  "runtime_s": 314.0071346759796,
   "summary": {
     "PASS": 29,
     "WARN": 3,
     "FAIL": 0,
-    "N/A": 9
+    "N/A": 10
   },
   "checks": [
     {
@@ -645,11 +645,11 @@
       "id": "C17",
       "title": "all presets build without exceptions",
       "status": "PASS",
-      "measured": "BUDGET_90mm_6S: ok (43 parts); KAIST_90mm_12S: ok (48 parts, 2.3 s)",
+      "measured": "BUDGET_90mm_6S: ok (43 parts); KAIST_90mm_12S: ok (48 parts, 3.4 s)",
       "detail": "",
       "values": {
         "BUDGET_90mm_6S": "ok (43 parts)",
-        "KAIST_90mm_12S": "ok (48 parts, 2.3 s)"
+        "KAIST_90mm_12S": "ok (48 parts, 3.4 s)"
       }
     },
     {
@@ -1218,10 +1218,10 @@
     },
     {
       "id": "C25",
-      "title": "(v0.9 CAD-2) carrier PCB on the intake bulkhead (the FCU rules): inside the spigot bore, clear of tray / stops / rails / ESC / misc / rising lead bundles, seated on the foam tape, lead holes uncovered, a cable-tie pair of vent holes open",
+      "title": "(v0.9 CAD-2 / rocket-carrier) carrier PCB rev 3.1 on the intake bulkhead (the FCU rules, + tab / plug / module boxes): inside the spigot bore, clear of tray / stops / rails / ESC / misc / rising lead bundles, seated on the foam tape, lead holes uncovered, a cable-tie pair of vent holes open",
       "status": "PASS",
-      "measured": "clearance avionics_tray 2.00, battery 4.00, esc 4.00, misc_electronics 93.00, rails + tray stop +y 16.96, rails + tray stop -y 16.96, motor-lead bundle (C20 leg E) 6.60, servo-lead bundle (C23 leg E) 13.70 (>= 2); avionics_module 7.14, intake spigot 5.34 (>= 1), radial to spigot ID 5.34; seat: fcu x intake 0.000 mm^3, bulkhead top under the board z 324.100 (Layout 324.100), foam gap 3.000 (foam_t 3), bulkhead under the footprint 0.9409 solid (>= 0.5; Layout 0.9409); lead-hole columns motor-lead hole 0.0000, servo-lead hole 0.0000 mm^3; vent holes reachable 90, 270 deg, tie runs across the board 90/270; cable hole covered by the board",
-      "detail": "board x -38.00..38.00 y -35.00..35.00 z 327.10..342.10 (20 g) on 3 mm foam on the intake bulkhead (top z 324.10); rising bundles = C20 / C23 leg E footprints from the bulkhead up to the tray bottom z 344.10; probes inset 0.05 mm; vent holes Ø8 at r 40: 90 deg x intake 0.0000 x fcu 0.0000; 270 deg x intake 0.0000 x fcu 0.0000; cable hole Ø20: board over it 4634.3 mm^3, open through the bulkhead 0.0000 mm^3 of material; Layout box clearances: intake spigot bore (radial) 5.34, avionics_tray 2.00, battery 4.00, esc 4.00, misc_electronics 93.00, rail x16.8 y+1 16.96, rail x12.4 y+1 16.96, rail x16.8 y-1 16.96, rail x12.4 y-1 16.96, tray stop +y 16.96, tray stop -y 16.96, motor-lead hole (plan) 3.00, servo-lead hole (plan) 12.00, vent hole 90 deg (plan) 1.00, vent hole 270 deg (plan) 1.00, joint screw room in the spigot bore (radial) 7.50",
+      "measured": "clearance avionics_tray 2.00, battery 4.00, esc 4.00, misc_electronics 93.00, rails + tray stop +y 16.96, rails + tray stop -y 16.96, motor-lead bundle (C20 leg E) 6.60, servo-lead bundle (C23 leg E) 13.70 (>= 2); avionics_module 7.14, intake spigot 5.34 (>= 1), radial to spigot ID 5.34; seat: fcu x intake 0.000 mm^3, bulkhead top under the board z 324.100 (Layout 324.100), foam gap 3.000 (foam_t 3), bulkhead under the footprint 0.9409 solid (>= 0.5; Layout 0.9409); lead-hole columns motor-lead hole 0.0000, servo-lead hole 0.0000 mm^3; vent holes reachable 90, 270 deg, tie runs across the board 90/270; cable hole covered by the board; envelope boxes (tab / plugs / modules, solids): avionics_tray 2.62, battery 8.57, esc 8.92, misc_electronics 94.20, motor-lead bundle (C20 leg E) 7.00, servo-lead bundle (C23 leg E) 5.96, rails + tray stop +y 14.37, rails + tray stop -y 9.76, avionics_module 5.06, intake spigot 3.26, radial to spigot ID 3.26, overlap intake / avionics (mm^3) 0.00 (ok)",
+      "detail": "board x -38.00..38.00 y -35.00..35.00 z 327.10..342.10 (50 g) on 3 mm foam on the intake bulkhead (top z 324.10); rising bundles = C20 / C23 leg E footprints from the bulkhead up to the tray bottom z 344.10; probes inset 0.05 mm; vent holes Ø8 at r 40: 90 deg x intake 0.0000 x fcu 0.0000; 270 deg x intake 0.0000 x fcu 0.0000; cable hole Ø20: board over it 4634.3 mm^3, open through the bulkhead 0.0000 mm^3 of material; Layout box clearances: intake spigot bore (radial) 5.34, avionics_tray 2.00, battery 4.00, esc 4.00, misc_electronics 93.00, rail x16.8 y+1 16.96, rail x12.4 y+1 16.96, rail x16.8 y-1 16.96, rail x12.4 y-1 16.96, tray stop +y 16.96, tray stop -y 16.96, motor-lead hole (plan) 3.00, servo-lead hole (plan) 12.00, vent hole 90 deg (plan) 1.00, vent hole 270 deg (plan) 1.00, joint screw room in the spigot bore (radial) 7.50, carrier envelope boxes -> intake spigot bore (radial) 3.26, carrier envelope boxes -> avionics_tray 2.62, carrier envelope boxes -> battery 8.57, carrier envelope boxes -> esc 8.92, carrier envelope boxes -> misc_electronics 94.20, carrier envelope boxes -> rail x16.8 y+1 14.37, carrier envelope boxes -> rail x12.4 y+1 15.62, carrier envelope boxes -> rail x16.8 y-1 9.76, carrier envelope boxes -> rail x12.4 y-1 10.51, carrier envelope boxes -> tray stop +y 14.79, carrier envelope boxes -> tray stop -y 9.87, carrier envelope boxes -> motor-lead hole (plan) 3.40, carrier envelope boxes -> servo-lead hole (plan) 4.26, carrier envelope boxes -> vent hole 90 deg (plan) 13.91, carrier envelope boxes -> vent hole 270 deg (plan) 2.50, carrier envelope boxes -> motor-lead joint zone 4.40",
       "values": {
         "clearance": {
           "avionics_tray": 2.0,
@@ -1265,7 +1265,22 @@
           ]
         ],
         "cable_hole_covered": true,
-        "min_clear": 2.0
+        "min_clear": 2.0,
+        "envelope_boxes": {
+          "avionics_tray": 2.624880949681338,
+          "battery": 8.570297544426314,
+          "esc": 8.917628608548332,
+          "misc_electronics": 94.2019108086455,
+          "motor-lead bundle (C20 leg E)": 7.0,
+          "servo-lead bundle (C23 leg E)": 5.960000000000001,
+          "rails + tray stop +y": 14.372826918722602,
+          "rails + tray stop -y": 9.758581443009966,
+          "avionics_module": 5.062316760023974,
+          "intake spigot": 3.26231676002397,
+          "radial to spigot ID": 3.262316760023971,
+          "overlap intake / avionics (mm^3)": 0.0
+        },
+        "envelope_ok": true
       }
     },
     {
@@ -3271,6 +3286,16 @@
         },
         "collar_added_mm3": 2104.0341399627105,
         "collar_volume_mm3_layout": 2104.034140001091
+      }
+    },
+    {
+      "id": "C42",
+      "title": "(rocket-carrier) CanSat release lead to the carrier J13 + avionics-tube wall holes",
+      "status": "N/A",
+      "measured": "not applicable: mission.config 'vtol' - no CanSat release servo and no tube-wall switch holes in the VTOL configuration (top cap: C30 / C38)",
+      "detail": "",
+      "values": {
+        "applicable": false
       }
     },
     {

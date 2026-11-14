@@ -1,9 +1,9 @@
 {
   "generator": "sizing",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
+  "params_sha256": "f907c459e287d26b034c44738e875d716c9b5177655477e9cd89d616a2fa1f41",
   "structure_source": "CAD report: cadquery_report.json",
-  "cad_report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket\\cad\\exports\\cadquery_report.json",
+  "cad_report": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_rocket\\cad\\exports\\cadquery_report.json",
   "parts": {
     "propulsion_module": {
       "kind": "printed",
@@ -41,134 +41,134 @@
     "intake_module": {
       "kind": "printed",
       "group": "structure",
-      "mass_g": 130.1470355458596,
-      "mass_solid_g": 130.1470355458596,
-      "volume_mm3": 104452.87443296978,
-      "density_g_cm3": 1.2459880711983513,
+      "mass_g": 130.33368888155474,
+      "mass_solid_g": 130.33368888155474,
+      "volume_mm3": 104653.93642244865,
+      "density_g_cm3": 1.2453777978827911,
       "bbox_mm": null,
       "com_mm": [
-        1.989927959380721,
-        -1.8780306329925276e-05,
-        260.76880544322876
+        1.9861049499399965,
+        -1.8725823902491273e-05,
+        260.90546354916205
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.0006664651865885109,
-          3.242405331698173e-11,
-          1.4101823343460988e-05
+          0.0006674043376300475,
+          3.234222991496719e-11,
+          1.4130290829245391e-05
         ],
         [
-          3.242405331698173e-11,
-          0.0006820899643935565,
-          1.146909660840239e-10
+          3.234222991496719e-11,
+          0.0006834230892597719,
+          1.1353842441132026e-10
         ],
         [
-          1.4101823343460988e-05,
-          1.146909660840239e-10,
-          0.0004051435377973755
+          1.4130290829245391e-05,
+          1.1353842441132026e-10,
+          0.0004053487321607583
         ]
       ],
       "source": "CAD:cadquery",
-      "note": "CAD report (cadquery_report.json); estimate was 132.6 g"
+      "note": "CAD report (cadquery_report.json); estimate was 132.8 g"
     },
     "avionics_module": {
       "kind": "printed",
       "group": "structure",
-      "mass_g": 123.9174975215769,
-      "mass_solid_g": 123.9174975215769,
-      "volume_mm3": 96839.82398223657,
-      "density_g_cm3": 1.2796129983084978,
+      "mass_g": 122.94084548925677,
+      "mass_solid_g": 122.94084548925677,
+      "volume_mm3": 96090.4544794463,
+      "density_g_cm3": 1.2794282861421344,
       "bbox_mm": null,
       "com_mm": [
-        1.1371928122764559,
-        0.00040300543203988906,
-        434.85042303532924
+        1.490801900164191,
+        -0.04634019222860101,
+        434.5428400935813
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.0006421671355707269,
-          -1.1795248893836028e-08,
-          2.012678123645254e-06
+          0.0006384941975081288,
+          -1.9451826067879118e-08,
+          -3.015977664685762e-08
         ],
         [
-          -1.1795248893836028e-08,
-          0.0006329659356051434,
-          -3.918068504207106e-08
+          -1.9451826067879118e-08,
+          0.0006274825309736252,
+          -3.0473595660058507e-07
         ],
         [
-          2.012678123645254e-06,
-          -3.918068504207106e-08,
-          0.00043181373256178995
+          -3.015977664685762e-08,
+          -3.0473595660058507e-07,
+          0.00042851644551201485
         ]
       ],
       "source": "CAD:cadquery",
-      "note": "CAD report (cadquery_report.json); estimate was 126.6 g"
+      "note": "CAD report (cadquery_report.json); estimate was 125.8 g"
     },
     "avionics_tray": {
       "kind": "printed",
       "group": "structure",
-      "mass_g": 36.36039540291242,
-      "mass_solid_g": 36.36039540291242,
-      "volume_mm3": 31223.45133223539,
-      "density_g_cm3": 1.1645219811230028,
+      "mass_g": 36.38487814006547,
+      "mass_solid_g": 36.38487814006547,
+      "volume_mm3": 31279.999999999993,
+      "density_g_cm3": 1.1631994290302263,
       "bbox_mm": null,
       "com_mm": [
-        25.000000000000004,
-        -1.165143074153314e-16,
-        432.6749309224833
+        25.0,
+        -8.722775272758265e-17,
+        432.76572890025585
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.00010807557871867565,
-          6.831366388945178e-23,
+          0.00010818221062544576,
+          -2.020634301013826e-22,
           0.0
         ],
         [
-          6.831366388945178e-23,
-          7.830304003017126e-05,
-          1.1821444159064155e-21
+          -2.020634301013826e-22,
+          7.841163339867486e-05,
+          2.123679047384328e-21
         ],
         [
           0.0,
-          1.1821444159064155e-21,
-          2.9796778952106485e-05
+          2.123679047384328e-21,
+          2.9794833812197614e-05
         ]
       ],
       "source": "CAD:cadquery",
-      "note": "CAD report (cadquery_report.json); estimate was 40.9 g"
+      "note": "CAD report (cadquery_report.json); estimate was 41.0 g"
     },
     "payload_module": {
       "kind": "printed",
       "group": "structure",
-      "mass_g": 171.137756927699,
-      "mass_solid_g": 171.137756927699,
-      "volume_mm3": 143877.9322371886,
-      "density_g_cm3": 1.1894649461987783,
+      "mass_g": 170.6207162535164,
+      "mass_solid_g": 170.6207162535164,
+      "volume_mm3": 143490.73092586506,
+      "density_g_cm3": 1.1890713438603093,
       "bbox_mm": null,
       "com_mm": [
-        -3.299979334281146,
-        -0.7014336249029155,
-        611.2376058788383
+        -3.3088841569826504,
+        -0.7033264167747747,
+        611.4532507996653
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.0009171448807448416,
-          -3.3417611767123554e-05,
-          1.3105293224293353e-05
+          0.0009136681161711154,
+          -3.340548502945961e-05,
+          1.2979210751773584e-05
         ],
         [
-          -3.3417611767123554e-05,
-          0.0010672592708085666,
-          2.785600256094371e-06
+          -3.340548502945961e-05,
+          0.0010637280321424542,
+          2.7588008881551383e-06
         ],
         [
-          1.3105293224293353e-05,
-          2.785600256094371e-06,
-          0.0006080563074373578
+          1.2979210751773584e-05,
+          2.7588008881551383e-06,
+          0.0006074008718852559
         ]
       ],
       "source": "CAD:cadquery",
-      "note": "CAD report (cadquery_report.json); estimate was 184.1 g"
+      "note": "CAD report (cadquery_report.json); estimate was 183.6 g"
     },
     "piston": {
       "kind": "printed",
@@ -863,39 +863,6 @@
       "source": "CAD:cadquery",
       "note": "mass = electronics.esc.mass_g"
     },
-    "nav": {
-      "kind": "placeholder",
-      "group": "avionics",
-      "mass_g": 40.0,
-      "mass_solid_g": null,
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 1.0666666666666667,
-      "bbox_mm": null,
-      "com_mm": [
-        33.5,
-        -7.579122514774402e-17,
-        482.9
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          1.6666666666666667e-05,
-          3.9079850466805375e-24,
-          1.2715657552083334e-19
-        ],
-        [
-          3.9079850466805375e-24,
-          9.083333333333333e-06,
-          4.850638409455706e-23
-        ],
-        [
-          1.2715657552083334e-19,
-          4.850638409455706e-23,
-          9.083333333333333e-06
-        ]
-      ],
-      "source": "CAD:cadquery",
-      "note": "mass = electronics.nav.mass_g"
-    },
     "misc_electronics": {
       "kind": "placeholder",
       "group": "avionics",
@@ -929,137 +896,38 @@
       "source": "CAD:cadquery",
       "note": "mass = electronics.misc.mass_g"
     },
-    "com": {
+    "carrier": {
       "kind": "placeholder",
       "group": "avionics",
-      "mass_g": 20.0,
+      "mass_g": 39.4,
       "mass_solid_g": null,
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 0.5333333333333333,
+      "volume_mm3": 79800.0,
+      "density_g_cm3": 0.49373433583959897,
       "bbox_mm": null,
       "com_mm": [
-        -2.069455717901292e-16,
-        7.579122514774403e-17,
-        522.4
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          4.541666666667684e-06,
-          7.105427357601002e-24,
-          -1.1102230246250683e-23
-        ],
-        [
-          7.105427357601002e-24,
-          4.541666666667684e-06,
-          -1.0610771520684714e-23
-        ],
-        [
-          -1.1102230246250683e-23,
-          -1.0610771520684714e-23,
-          8.333333333333335e-06
-        ]
-      ],
-      "source": "CAD:cadquery",
-      "note": "mass = electronics.com.mass_g (ASSUMED in params; weigh it)"
-    },
-    "radio_log": {
-      "kind": "placeholder",
-      "group": "avionics",
-      "mass_g": 20.0,
-      "mass_solid_g": null,
-      "volume_mm3": 9000.0,
-      "density_g_cm3": 2.2222222222222223,
-      "bbox_mm": null,
-      "com_mm": [
-        -3.0845696367502266e-16,
-        -40.0,
-        525.4
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          1.0416666666666667e-06,
-          -2.872154904698013e-38,
-          -1.0732155904691465e-24
-        ],
-        [
-          -2.872154904698013e-38,
-          1.875e-06,
-          0.0
-        ],
-        [
-          -1.0732155904691465e-24,
-          0.0,
-          2.166666666666667e-06
-        ]
-      ],
-      "source": "CAD:cadquery",
-      "note": "mass = electronics.radio_log.mass_g (ASSUMED in params; weigh it)"
-    },
-    "fcu": {
-      "kind": "placeholder",
-      "group": "avionics",
-      "mass_g": 20.0,
-      "mass_solid_g": null,
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 0.5333333333333333,
-      "bbox_mm": null,
-      "com_mm": [
-        -3.364715913297308e-16,
-        1.5158245029548803e-16,
+        -4.395425822254072e-16,
+        -6.232831015439475e-16,
         343.4
       ],
       "inertia_about_com_kg_m2": [
         [
-          4.541666666666667e-06,
-          3.5527136788005004e-24,
-          1.3796371452673956e-23
+          1.682708333333333e-05,
+          2.2163012166250465e-23,
+          1.4997527029777205e-24
         ],
         [
-          3.5527136788005004e-24,
-          4.541666666666667e-06,
-          6.617444900424222e-37
+          2.2163012166250465e-23,
+          1.970328333333333e-05,
+          -4.7150120065599805e-23
         ],
         [
-          1.3796371452673956e-23,
-          6.617444900424222e-37,
-          8.333333333333335e-06
+          1.4997527029777205e-24,
+          -4.7150120065599805e-23,
+          3.5052866666666664e-05
         ]
       ],
       "source": "CAD:cadquery",
-      "note": "mass = electronics.fcu.mass_g (ASSUMED in params; weigh it)"
-    },
-    "gns": {
-      "kind": "placeholder",
-      "group": "avionics",
-      "mass_g": 26.6,
-      "mass_solid_g": null,
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 0.7093333333333334,
-      "bbox_mm": null,
-      "com_mm": [
-        -42.5,
-        -7.579122514774402e-17,
-        483.4
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          1.1083333333333335e-05,
-          -2.362554596402333e-25,
-          -8.455912272135418e-20
-        ],
-        [
-          -2.362554596402333e-25,
-          6.040416666666667e-06,
-          3.22567454228803e-23
-        ],
-        [
-          -8.455912272135418e-20,
-          3.22567454228803e-23,
-          6.040416666666667e-06
-        ]
-      ],
-      "source": "CAD:cadquery",
-      "note": "mass = electronics.gns.mass_g_ASSUMED (board + shifter + leads) + avionics_module.gns_mount.screws_g_ASSUMED (Layout.gns_mass_g; weigh it)"
+      "note": "mass = electronics.carrier.mass_g (ASSUMED in params; weigh it)"
     },
     "gps": {
       "kind": "placeholder",
@@ -1130,15 +998,15 @@
     "gps_lead": {
       "kind": "lumped",
       "group": "avionics",
-      "mass_g": 4.437382737694367,
+      "mass_g": 5.347880930974078,
       "mass_solid_g": null,
       "volume_mm3": 0.0,
       "density_g_cm3": 0.0,
       "bbox_mm": null,
       "com_mm": [
-        -72.38619817729756,
-        -13.79437887412981,
-        620.202634578542
+        -68.75097517161885,
+        -14.034034338952853,
+        578.183166816511
       ],
       "inertia_about_com_kg_m2": [
         [
@@ -1790,15 +1658,15 @@
     "servo_leads": {
       "kind": "lumped",
       "group": "actuation",
-      "mass_g": 26.770925232780154,
+      "mass_g": 26.77092523278015,
       "mass_solid_g": null,
       "volume_mm3": 0.0,
       "density_g_cm3": 0.0,
       "bbox_mm": null,
       "com_mm": [
         -19.136773652260644,
-        -1.4455706086372357,
-        209.19808212130212
+        -1.445570608637236,
+        209.19808212130218
       ],
       "inertia_about_com_kg_m2": [
         [
@@ -1852,6 +1720,138 @@
       ],
       "source": "params",
       "note": "NOT in the SPEC s6 table: the other half of hardware_mass_g.spring_piston_hardware, lumped at the piston"
+    },
+    "logic_pack": {
+      "kind": "placeholder",
+      "group": "power",
+      "mass_g": 84.0,
+      "mass_solid_g": null,
+      "volume_mm3": 39044.25,
+      "density_g_cm3": 2.1514051364797635,
+      "bbox_mm": null,
+      "com_mm": [
+        -32.75,
+        -2.2220241914317276e-16,
+        434.4
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          5.298475000000206e-05,
+          1.1135371232061273e-24,
+          0.0
+        ],
+        [
+          1.1135371232061273e-24,
+          3.2194750000002055e-05,
+          -2.714909557531129e-22
+        ],
+        [
+          0.0,
+          -2.714909557531129e-22,
+          2.2333500000000002e-05
+        ]
+      ],
+      "source": "CAD:cadquery",
+      "note": "mass = logic_power.pack.mass_g (vendor 84 g, ASSUMED - weigh it)"
+    },
+    "logic_switch": {
+      "kind": "lumped",
+      "group": "avionics",
+      "mass_g": 4.0,
+      "mass_solid_g": null,
+      "volume_mm3": 0.0,
+      "density_g_cm3": 0.0,
+      "bbox_mm": null,
+      "com_mm": [
+        -14.228342941498834,
+        49.6201286861049,
+        395.0
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "source": "params",
+      "note": "logic_power.switch.mass_g_ASSUMED at the wall switch body"
+    },
+    "logic_switch_lead": {
+      "kind": "lumped",
+      "group": "avionics",
+      "mass_g": 1.166436334868109,
+      "mass_solid_g": null,
+      "volume_mm3": 0.0,
+      "density_g_cm3": 0.0,
+      "bbox_mm": null,
+      "com_mm": [
+        -17.015668786560926,
+        36.60658629970037,
+        364.8601267204504
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "source": "params",
+      "note": "switch -> J15 lead (route + slack, ASSUMED g/m)"
+    },
+    "logic_retention": {
+      "kind": "lumped",
+      "group": "hardware",
+      "mass_g": 2.0,
+      "mass_solid_g": null,
+      "volume_mm3": 0.0,
+      "density_g_cm3": 0.0,
+      "bbox_mm": null,
+      "com_mm": [
+        -38.0,
+        0.0,
+        441.9
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "source": "params",
+      "note": "logic_power.retention.strap_tie_mass_g_ASSUMED"
     }
   },
   "ground_equipment": {
@@ -1890,66 +1890,66 @@
     }
   },
   "totals": {
-    "mass_g": 2609.2108709226136,
-    "weight_N": 25.587617787333247,
-    "printed_mass_g": 941.8990863776808,
-    "printed_mass_solid_g": 941.8990863776808,
-    "non_printed_mass_g": 1667.3117845449326,
+    "mass_g": 2612.8052488171065,
+    "weight_N": 25.622866593312278,
+    "printed_mass_g": 940.6165297440263,
+    "printed_mass_solid_g": 940.6165297440263,
+    "non_printed_mass_g": 1672.1887190730806,
     "by_group_g": {
       "actuation": 99.6383036140372,
-      "avionics": 284.5373827376944,
+      "avionics": 203.4143172658422,
       "ejection": 10.0,
-      "hardware": 53.0,
+      "hardware": 55.0,
       "payload": 350.0,
-      "power": 401.1360981932011,
+      "power": 485.1360981932011,
       "propulsion": 369.0,
       "recovery": 100.0,
-      "structure": 941.8990863776808
+      "structure": 940.6165297440263
     },
     "com_mm": [
-      1.9418921846071422,
-      -0.4920098915698082,
-      387.15294992318945
+      0.7463674658598294,
+      -0.10032378596501834,
+      383.78398025388356
     ],
     "inertia_about_com_kg_m2": [
       [
-        0.13344544662691274,
-        -9.537404725738603e-05,
-        0.0010457702530013296
+        0.13222983666066132,
+        -9.024317818529429e-05,
+        0.0011840287250313788
       ],
       [
-        -9.537404725738603e-05,
-        0.13421749127259106,
-        0.00024163632232942583
+        -9.024317818529429e-05,
+        0.13302580163961483,
+        0.00013138524378502337
       ],
       [
-        0.0010457702530013296,
-        0.00024163632232942583,
-        0.005079031646246782
+        0.0011840287250313788,
+        0.00013138524378502337,
+        0.005090674498198456
       ]
     ],
     "post_ejection": {
-      "mass_g": 2091.4244691423446,
+      "mass_g": 2095.0188470368375,
       "com_mm": [
-        2.4134181083963933,
-        -0.6138197082769601,
-        317.2194801091452
+        0.9216090456706829,
+        -0.12511892901020993,
+        313.1378488965297
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.07888315947386088,
-          -9.597937222408476e-05,
-          0.0006988975098458163
+          0.07644885781386875,
+          -9.028911364843261e-05,
+          0.0010538062684099748
         ],
         [
-          -9.597937222408476e-05,
-          0.07964650060772976,
-          0.0003314139426760795
+          -9.028911364843261e-05,
+          0.07723798796734209,
+          0.00014990346790129603
         ],
         [
-          0.0006988975098458163,
-          0.0003314139426760795,
-          0.004669408123947386
+          0.0010538062684099748,
+          0.00014990346790129603,
+          0.004683219411844862
         ]
       ],
       "excluded": [
@@ -1958,8 +1958,8 @@
         "chute_pack"
       ]
     },
-    "descent_mass_g": 2191.4244691423446,
-    "descent_mass_incl_nose_g": 2259.2108709226136
+    "descent_mass_g": 2195.0188470368375,
+    "descent_mass_incl_nose_g": 2262.8052488171065
   },
   "derived": {
     "pushrod_len_mm": 0.0,
@@ -1982,17 +1982,17 @@
     "inlet_area_ratio_outer": 6.234166402492312
   },
   "thrust": {
-    "weight_N": 25.587617787333247,
-    "mass_g": 2609.2108709226136,
-    "tw_nominal": 1.184266106827686,
-    "tw_peak": 1.4525464546527285,
-    "hover_throttle": 0.9189150192462386,
+    "weight_N": 25.622866593312278,
+    "mass_g": 2612.8052488171065,
+    "tw_nominal": 1.1826369383630613,
+    "tw_peak": 1.450548218898383,
+    "hover_throttle": 0.9195477375799388,
     "hover_possible": true,
-    "hover_power_W": 1756.7197030964187,
-    "hover_current_A": 79.13151815749634,
+    "hover_power_W": 1760.3509668508814,
+    "hover_current_A": 79.29508859688656,
     "climb_throttle": 1.0,
-    "tw_at_climb_throttle": 1.184266106827686,
-    "throttle_for_tw_1p30": 1.0477243226990627,
+    "tw_at_climb_throttle": 1.1826369383630613,
+    "throttle_for_tw_1p30": 1.0484457325941574,
     "max_mass_for_tw_1p30_g": 2376.923076923077,
     "C12": {
       "verdict": "WARN",
@@ -2009,11 +2009,11 @@
       "mass_flow_kg_s": 0.4339707091896609
     },
     "at_hover_thrust": {
-      "thrust_N": 25.587617787333247,
+      "thrust_N": 25.622866593312278,
       "A_e_m2": 0.005073475786006666,
-      "V_e_mps": 64.16439254640594,
-      "q_e_Pa": 2521.7049283951806,
-      "mass_flow_kg_s": 0.398782202587321
+      "V_e_mps": 64.20857289680238,
+      "q_e_Pa": 2525.178760484441,
+      "mass_flow_kg_s": 0.3990567838113142
     },
     "at_climb_throttle": {
       "thrust_N": 30.302548499999997,
@@ -2028,37 +2028,37 @@
       "delta_cmd_deg": 20.0,
       "S_v_m2": 0.0009599999999999999,
       "force_per_vane_N": 2.401781002670382,
-      "lever_arm_m": 0.35015294992318946,
-      "M_pitch_Nm": 1.68198140630902,
+      "lever_arm_m": 0.3467839802538836,
+      "M_pitch_Nm": 1.6657983516083967,
       "M_roll_Nm": 0.2689994722990828,
-      "I_xx_kg_m2": 0.13344544662691274,
-      "I_yy_kg_m2": 0.13421749127259106,
-      "I_zz_kg_m2": 0.005079031646246782,
-      "alpha_pitch_rad_s2": 12.604262257156735,
-      "alpha_yaw_rad_s2": 12.531760133207781,
-      "alpha_roll_rad_s2": 52.96274782967015,
-      "alpha_pitch_deg_s2": 722.1710312111177,
-      "alpha_roll_deg_s2": 3034.54192205576,
-      "moment_per_deg_pitch_Nm": 0.084099070315451,
+      "I_xx_kg_m2": 0.13222983666066132,
+      "I_yy_kg_m2": 0.13302580163961483,
+      "I_zz_kg_m2": 0.005090674498198456,
+      "alpha_pitch_rad_s2": 12.597749446543599,
+      "alpha_yaw_rad_s2": 12.522370330240694,
+      "alpha_roll_rad_s2": 52.84161703803283,
+      "alpha_pitch_deg_s2": 721.797874650217,
+      "alpha_roll_deg_s2": 3027.6016389258634,
+      "moment_per_deg_pitch_Nm": 0.08328991758041984,
       "moment_per_deg_roll_Nm": 0.013449973614954138
     },
     "at_hover_thrust": {
       "delta_cmd_deg": 20.0,
       "S_v_m2": 0.0009599999999999999,
-      "force_per_vane_N": 2.028075437457273,
-      "lever_arm_m": 0.35015294992318946,
-      "M_pitch_Nm": 1.420273194184854,
-      "M_roll_Nm": 0.22714444899521458,
-      "I_xx_kg_m2": 0.13344544662691274,
-      "I_yy_kg_m2": 0.13421749127259106,
-      "I_zz_kg_m2": 0.005079031646246782,
-      "alpha_pitch_rad_s2": 10.643099709169238,
-      "alpha_yaw_rad_s2": 10.581878566783287,
-      "alpha_roll_rad_s2": 44.721999155698505,
-      "alpha_pitch_deg_s2": 609.8046942723113,
-      "alpha_roll_deg_s2": 2562.381803009155,
-      "moment_per_deg_pitch_Nm": 0.0710136597092427,
-      "moment_per_deg_roll_Nm": 0.011357222449760729
+      "force_per_vane_N": 2.0308692589923583,
+      "lever_arm_m": 0.3467839802538836,
+      "M_pitch_Nm": 1.4085458500172503,
+      "M_roll_Nm": 0.22745735700714412,
+      "I_xx_kg_m2": 0.13222983666066132,
+      "I_yy_kg_m2": 0.13302580163961483,
+      "I_zz_kg_m2": 0.005090674498198456,
+      "alpha_pitch_rad_s2": 10.652254329194797,
+      "alpha_yaw_rad_s2": 10.588516157438347,
+      "alpha_roll_rad_s2": 44.68118263849696,
+      "alpha_pitch_deg_s2": 610.3292153628217,
+      "alpha_roll_deg_s2": 2560.043188839084,
+      "moment_per_deg_pitch_Nm": 0.07042729250086252,
+      "moment_per_deg_roll_Nm": 0.011372867850357207
     }
   },
   "roll": {
@@ -2067,12 +2067,12 @@
     "P_over_omega_Nm": 0.6716249602237672,
     "fraction_ASSUMED": 0.15,
     "tau_swirl_Nm": 0.10074374403356506,
-    "M_roll_max_hover_Nm": 0.22714444899521458,
+    "M_roll_max_hover_Nm": 0.22745735700714412,
     "M_roll_max_nominal_Nm": 0.2689994722990828,
-    "authority_over_swirl_hover": 2.2546754756259233,
+    "authority_over_swirl_hover": 2.2577814552073976,
     "authority_over_swirl_nominal": 2.6701357476793746,
-    "trim_delta_z_deg_hover": 8.870456177045954,
-    "trim_fraction_of_cmd_limit": 0.44352280885229767,
+    "trim_delta_z_deg_hover": 8.858253288364804,
+    "trim_fraction_of_cmd_limit": 0.4429126644182402,
     "roll_priority_scale": 0.5,
     "note": "swirl ~ u^2 and q_e ~ u^2 -> the trim deflection is roughly throttle-independent; omega from kv x V is the unloaded speed, so tau_swirl is a lower bound"
   },
@@ -2083,31 +2083,31 @@
         "target_m": 140.0,
         "u_climb": 1.0,
         "reached": true,
-        "liftoff_t_s": 0.6510000000000005,
-        "t_cutoff_s": 12.630999999998439,
-        "h_cutoff_m": 118.41769111565438,
-        "v_cutoff_mps": 18.788538064134222,
-        "v_max_mps": 18.797800855994183,
-        "apogee_m": 138.91608686386414,
-        "t_apogee_s": 14.677999999997304,
+        "liftoff_t_s": 0.6520000000000005,
+        "t_cutoff_s": 12.692999999998404,
+        "h_cutoff_m": 118.58144675584097,
+        "v_cutoff_mps": 18.718230669816027,
+        "v_max_mps": 18.727335756779116,
+        "apogee_m": 138.93922067113994,
+        "t_apogee_s": 14.732999999997274,
         "reason": "",
         "thrust_climb_N": 30.302548499999997,
-        "weight_N": 25.587617787333247,
-        "tw_climb": 1.184266106827686,
-        "t_end_s": 14.677999999997304,
-        "h_end_m": 138.91608686386414,
-        "energy_Wh": 7.707348092220418,
+        "weight_N": 25.622866593312278,
+        "tw_climb": 1.1826369383630613,
+        "t_end_s": 14.732999999997274,
+        "h_end_m": 138.93922067113994,
+        "energy_Wh": 7.746339203331516,
         "i_peak_A": 101.98198198198199,
-        "i_mean_A": 98.95022018613199,
-        "overshoot_m": -1.0839131361358625,
-        "powered_time_s": 12.630999999998439,
+        "i_mean_A": 98.96502907538935,
+        "overshoot_m": -1.0607793288600647,
+        "powered_time_s": 12.692999999998404,
         "label": "target_140m @ u=1.00 (sensitivity)",
         "battery": {
           "capacity_Wh": 48.84,
           "capacity_mAh": 2200,
-          "used_Wh": 7.707348092220418,
-          "used_mAh": 347.1778419919107,
-          "remaining_pct": 84.2191890003677,
+          "used_Wh": 7.746339203331516,
+          "used_mAh": 348.9341983482665,
+          "remaining_pct": 84.13935462053334,
           "c_rate_needed": 46.355446355446354,
           "c_rating": 70,
           "c_rate_ok": true,
@@ -2121,31 +2121,31 @@
         "target_m": 175.0,
         "u_climb": 1.0,
         "reached": true,
-        "liftoff_t_s": 0.6510000000000005,
-        "t_cutoff_s": 14.186999999997576,
-        "h_cutoff_m": 149.07505657751824,
-        "v_cutoff_mps": 20.58483085436387,
-        "v_max_mps": 20.592283816440226,
-        "apogee_m": 173.21549253612716,
-        "t_apogee_s": 16.403999999997065,
+        "liftoff_t_s": 0.6520000000000005,
+        "t_cutoff_s": 14.256999999997538,
+        "h_cutoff_m": 149.28110883999338,
+        "v_cutoff_mps": 20.50778980325488,
+        "v_max_mps": 20.515118080064088,
+        "apogee_m": 173.25660956609505,
+        "t_apogee_s": 16.46599999999714,
         "reason": "",
         "thrust_climb_N": 30.302548499999997,
-        "weight_N": 25.587617787333247,
-        "tw_climb": 1.184266106827686,
-        "t_end_s": 16.403999999997065,
-        "h_end_m": 173.21549253612716,
-        "energy_Wh": 8.68589920333119,
+        "weight_N": 25.622866593312278,
+        "tw_climb": 1.1826369383630613,
+        "t_end_s": 16.46599999999714,
+        "h_end_m": 173.25660956609505,
+        "energy_Wh": 8.729921425553396,
         "i_peak_A": 101.98198198198199,
-        "i_mean_A": 99.28273737471123,
-        "overshoot_m": -1.784507463872842,
-        "powered_time_s": 14.186999999997576,
+        "i_mean_A": 99.29599031169029,
+        "overshoot_m": -1.743390433904949,
+        "powered_time_s": 14.256999999997538,
         "label": "competition 체험부 175m",
         "battery": {
           "capacity_Wh": 48.84,
           "capacity_mAh": 2200,
-          "used_Wh": 8.68589920333119,
-          "used_mAh": 391.2567208707743,
-          "remaining_pct": 82.215603596783,
+          "used_Wh": 8.729921425553396,
+          "used_mAh": 393.2397038537566,
+          "remaining_pct": 82.12546800664742,
           "c_rate_needed": 46.355446355446354,
           "c_rating": 70,
           "c_rate_ok": true,
@@ -2159,31 +2159,31 @@
         "target_m": 250.0,
         "u_climb": 1.0,
         "reached": true,
-        "liftoff_t_s": 0.6510000000000005,
-        "t_cutoff_s": 17.213999999998055,
-        "h_cutoff_m": 216.05953732520905,
-        "v_cutoff_mps": 23.560696927728237,
-        "v_max_mps": 23.565330614908316,
-        "apogee_m": 246.7914385200948,
-        "t_apogee_s": 19.707000000001102,
+        "liftoff_t_s": 0.6520000000000005,
+        "t_cutoff_s": 17.296999999998157,
+        "h_cutoff_m": 216.2978020277178,
+        "v_cutoff_mps": 23.470278106647186,
+        "v_max_mps": 23.47483554610539,
+        "apogee_m": 246.81635769754246,
+        "t_apogee_s": 19.782000000001194,
         "reason": "",
         "thrust_climb_N": 30.302548499999997,
-        "weight_N": 25.587617787333247,
-        "tw_climb": 1.184266106827686,
-        "t_end_s": 19.707000000001102,
-        "h_end_m": 246.7914385200948,
-        "energy_Wh": 10.589545869999585,
+        "weight_N": 25.622866593312278,
+        "tw_climb": 1.1826369383630613,
+        "t_end_s": 19.782000000001194,
+        "h_end_m": 246.81635769754246,
+        "energy_Wh": 10.641743647777428,
         "i_peak_A": 101.98198198198199,
-        "i_mean_A": 99.75738669656799,
-        "overshoot_m": -3.2085614799051996,
-        "powered_time_s": 17.213999999998055,
+        "i_mean_A": 99.76806146148041,
+        "overshoot_m": -3.1836423024575424,
+        "powered_time_s": 17.296999999998157,
         "label": "competition 슬기부 250m",
         "battery": {
           "capacity_Wh": 48.84,
           "capacity_mAh": 2200,
-          "used_Wh": 10.589545869999585,
-          "used_mAh": 477.00657072070203,
-          "remaining_pct": 78.317883149059,
+          "used_Wh": 10.641743647777428,
+          "used_mAh": 479.35782197195624,
+          "remaining_pct": 78.2110080921838,
           "c_rate_needed": 46.355446355446354,
           "c_rating": 70,
           "c_rate_ok": true,
@@ -2197,31 +2197,31 @@
         "target_m": 350.0,
         "u_climb": 1.0,
         "reached": true,
-        "liftoff_t_s": 0.6510000000000005,
-        "t_cutoff_s": 20.87400000000253,
-        "h_cutoff_m": 307.6074496725517,
-        "v_cutoff_mps": 26.323383890116272,
-        "v_max_mps": 26.325790058875167,
-        "apogee_m": 345.0447233863546,
-        "t_apogee_s": 23.619000000005883,
+        "liftoff_t_s": 0.6520000000000005,
+        "t_cutoff_s": 20.97500000000265,
+        "h_cutoff_m": 307.9434050172384,
+        "v_cutoff_mps": 26.222674486138352,
+        "v_max_mps": 26.225040466683797,
+        "apogee_m": 345.124114825934,
+        "t_apogee_s": 23.711000000005996,
         "reason": "",
         "thrust_climb_N": 30.302548499999997,
-        "weight_N": 25.587617787333247,
-        "tw_climb": 1.184266106827686,
-        "t_end_s": 23.619000000005883,
-        "h_end_m": 345.0447233863546,
-        "energy_Wh": 12.891279203335818,
+        "weight_N": 25.622866593312278,
+        "tw_climb": 1.1826369383630613,
+        "t_end_s": 23.711000000005996,
+        "h_end_m": 345.124114825934,
+        "energy_Wh": 12.954796981113676,
         "i_peak_A": 101.98198198198199,
-        "i_mean_A": 100.1474422079524,
-        "overshoot_m": -4.955276613645424,
-        "powered_time_s": 20.87400000000253,
+        "i_mean_A": 100.15627598707887,
+        "overshoot_m": -4.875885174066013,
+        "powered_time_s": 20.97500000000265,
         "label": "competition 창작부 350m",
         "battery": {
           "capacity_Wh": 48.84,
           "capacity_mAh": 2200,
-          "used_Wh": 12.891279203335818,
-          "used_mAh": 580.6882524025143,
-          "remaining_pct": 73.60507943624934,
+          "used_Wh": 12.954796981113676,
+          "used_mAh": 583.5494135636791,
+          "remaining_pct": 73.4750266561964,
           "c_rate_needed": 46.355446355446354,
           "c_rating": 70,
           "c_rate_ok": true,
@@ -2239,37 +2239,37 @@
   },
   "recovery": {
     "post_ejection": {
-      "mass_g": 2091.4244691423446,
+      "mass_g": 2095.0188470368375,
       "target_descent_mps": 5.5,
       "cd": 0.75,
-      "area_required_m2": 1.4759448330805027,
-      "diameter_required_m": 1.3708505853394946,
+      "area_required_m2": 1.4784814312506924,
+      "diameter_required_m": 1.372028069838596,
       "diameter_params_m": 1.4,
       "area_params_m2": 1.5393804002589984,
-      "descent_with_params_chute_mps": 5.385484442405159,
-      "landing_energy_J": 30.329254854519732
+      "descent_with_params_chute_mps": 5.390110274365914,
+      "landing_energy_J": 30.433593770593525
     },
     "post_ejection_plus_chute_pack (SPEC descent_mass_g)": {
-      "mass_g": 2191.4244691423446,
+      "mass_g": 2195.0188470368375,
       "target_descent_mps": 5.5,
       "cd": 0.75,
-      "area_required_m2": 1.5465161042335922,
-      "diameter_required_m": 1.4032410557277664,
+      "area_required_m2": 1.5490527024037815,
+      "diameter_required_m": 1.4043913833327817,
       "diameter_params_m": 1.4,
       "area_params_m2": 1.5393804002589984,
-      "descent_with_params_chute_mps": 5.512732718930511,
-      "landing_energy_J": 33.29893809000748
+      "descent_with_params_chute_mps": 5.5172518630930725,
+      "landing_energy_J": 33.40826161512497
     },
     "post_ejection_plus_nose_and_chute_pack (tethered nose)": {
-      "mass_g": 2259.2108709226136,
+      "mass_g": 2262.8052488171065,
       "target_descent_mps": 5.5,
       "cd": 0.75,
-      "area_required_m2": 1.5943538296388684,
-      "diameter_required_m": 1.4247787000780703,
+      "area_required_m2": 1.5968904278090579,
+      "diameter_required_m": 1.425911652696458,
       "diameter_params_m": 1.4,
       "area_params_m2": 1.5393804002589984,
-      "descent_with_params_chute_mps": 5.597344893163848,
-      "landing_energy_J": 35.39084312044928
+      "descent_with_params_chute_mps": 5.601795778450371,
+      "landing_energy_J": 35.503545532680306
     }
   },
   "stability": {
@@ -2303,18 +2303,18 @@
     "nose_volume_mm3": 791681.3487046276,
     "cna_total_per_rad": 5.641710328270808,
     "z_cp_mm": 315.4330450380844,
-    "z_cg_full_mm": 387.15294992318945,
-    "z_cg_post_ejection_mm": 317.2194801091452,
-    "static_margin_full_cal": 0.5976658740425421,
-    "static_margin_post_ejection_cal": 0.014886958925506615,
+    "z_cg_full_mm": 383.78398025388356,
+    "z_cg_post_ejection_mm": 313.1378488965297,
+    "static_margin_full_cal": 0.5695911267983262,
+    "static_margin_post_ejection_cal": -0.019126634512955813,
     "with_boat_tail": {
       "cna_total_per_rad": 4.889910328270807,
       "z_cp_mm": 346.8132591848527,
-      "static_margin_full_cal": 0.3361640894861395
+      "static_margin_full_cal": 0.3080893422419237
     },
-    "cg_above_hinge_mm": 350.15294992318945,
-    "lever_arm_l_v_mm": 350.15294992318945,
-    "cg_lateral_offset_mm": 2.0032521034659703,
+    "cg_above_hinge_mm": 346.78398025388356,
+    "lever_arm_l_v_mm": 346.78398025388356,
+    "cg_lateral_offset_mm": 0.7530798471107685,
     "C13": {
       "verdict": "WARN",
       "cg_above_hinge_min_mm": 250.0,
@@ -2323,14 +2323,14 @@
     }
   },
   "legal": {
-    "takeoff_mass_kg": 2.6092108709226136,
+    "takeoff_mass_kg": 2.6128052488171067,
     "operator_certificate": "3종 (2 kg 초과 ~ 7 kg 이하: 필기시험)",
     "aircraft_registration_required": true,
     "registration_threshold_kg": 2.0,
     "target_altitude_m": 140.0,
     "flight_approval_required_at_target": false,
     "flight_approval_required_at_predicted_apogee": false,
-    "predicted_apogee_m": 138.91608686386414,
+    "predicted_apogee_m": 138.93922067113994,
     "approval_altitude_threshold_m": 150.0,
     "competition_altitudes_m": {
       "체험부": 175,
@@ -2376,11 +2376,11 @@
     "vtol_crossflow_cd_ASSUMED"
   ],
   "warnings": [
-    "CAD report total 2599.2 g differs from the budget sum 2609.2 g (items missing from one side, or the 10 g hardware balance)",
-    "C12 WARN: T/W at thrust_nominal = 1.184 (PASS >= 1.3, WARN >= 1.15); mass 2609 g vs 2377 g allowed for 1.30",
+    "CAD report total 2602.8 g differs from the budget sum 2612.8 g (items missing from one side, or the 10 g hardware balance)",
+    "C12 WARN: T/W at thrust_nominal = 1.183 (PASS >= 1.3, WARN >= 1.15); mass 2613 g vs 2377 g allowed for 1.30",
     "scenario competition 체험부 175m: altitude exceeds geofence_altitude_m 160 m -> ABORT by the onboard geofence interlock I5 (SPEC s8.8)",
     "scenario competition 슬기부 250m: altitude exceeds geofence_altitude_m 160 m -> ABORT by the onboard geofence interlock I5 (SPEC s8.8)",
     "scenario competition 창작부 350m: altitude exceeds geofence_altitude_m 160 m -> ABORT by the onboard geofence interlock I5 (SPEC s8.8)",
-    "C13 WARN: static margin 0.60 cal, CG above hinge 350 mm"
+    "C13 WARN: static margin 0.57 cal, CG above hinge 347 mm"
   ]
 }

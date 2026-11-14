@@ -1090,7 +1090,7 @@ class StructureEstimator:
         zc = (L.z_tray_bottom + L.z_tray_top) / 2
         sol = [box((L.tray_x, 0.0, zc), (L.tray_t, L.tray_w, L.tray_h), label="plate")]
         hole_v = -math.pi / 4 * L.fc_hole_d**2 * L.tray_t
-        for sy in (-1, 1):
+        for sy in ((-1, 1) if getattr(L, "tray_nav_holes", True) else ()):   # rocket-carrier round: no NAV holes
             for sz in (-1, 1):
                 sol.append(box((L.tray_x, sy * L.fc_hole_pattern / 2, L.nav_center_z + sz * L.fc_hole_pattern / 2),
                                (L.tray_t, L.fc_hole_d, L.fc_hole_d), volume=hole_v, label="FC hole"))
@@ -1439,7 +1439,8 @@ def placeholder_parts(lay, p: dict) -> dict[str, PartEstimate]:
 
     box_part("battery", L.battery_x, L.battery_y, L.battery_z, p["battery"]["mass_g"], "mass = battery.mass_g")
     box_part("esc", L.esc_x, L.esc_y, L.esc_z, p["electronics"]["esc"]["mass_g"], "mass = electronics.esc.mass_g")
-    box_part("nav", L.nav_x, L.nav_y, L.nav_z, p["electronics"]["nav"]["mass_g"], "mass = electronics.nav.mass_g")
+    if getattr(L, "has_nav", True):        # rocket-carrier round (2026-11-14): no NAV board with the carrier
+        box_part("nav", L.nav_x, L.nav_y, L.nav_z, p["electronics"]["nav"]["mass_g"], "mass = electronics.nav.mass_g")
     box_part("misc_electronics", L.misc_x, L.misc_y, L.misc_z,
              p["electronics"]["misc"]["mass_g"], "mass = electronics.misc.mass_g")
     if getattr(L, "has_com_board", False):   # v0.6: COM board (2nd ATmega128A) under the payload bulkhead
@@ -1449,8 +1450,8 @@ def placeholder_parts(lay, p: dict) -> dict[str, PartEstimate]:
         box_part("radio_log", L.radio_log_x, L.radio_log_y, L.radio_log_z, p["electronics"]["radio_log"]["mass_g"],
                  "mass = electronics.radio_log.mass_g (ASSUMED in params; weigh it)")
     if getattr(L, "has_fcu", False):         # v0.6.3: FCU board flat on the intake bulkhead (foam tape)
-        box_part("fcu", L.fcu_x, L.fcu_y, L.fcu_z, p["electronics"]["fcu"]["mass_g"],
-                 "mass = electronics.fcu.mass_g (ASSUMED in params; weigh it)")
+        box_part(L.fcu_part, L.fcu_x, L.fcu_y, L.fcu_z, L.fcu_mass_g,
+                 f"mass = electronics.{L.fcu_key}.mass_g (ASSUMED in params; weigh it)")
     if getattr(L, "has_gns", False):         # v0.8.1: GNS board (4th ATmega128A) on its bosses on the -x tube wall
         box_part("gns", L.gns_x, L.gns_y, L.gns_z, L.gns_mass_g,
                  "mass = electronics.gns.mass_g_ASSUMED (board + shifter + leads) + avionics_module.gns_mount.screws_g_ASSUMED "
@@ -1553,6 +1554,17 @@ def placeholder_parts(lay, p: dict) -> dict[str, PartEstimate]:
         "spring_piston_hardware_balance", (1.0 - SPRING_FRACTION_OF_HARDWARE) * hw["spring_piston_hardware"],
         (0.0, 0.0, (L.z_piston_bottom + L.z_piston_top) / 2),
         ["NOT in the SPEC s6 table: the other half of hardware_mass_g.spring_piston_hardware, lumped at the piston"])
+    if getattr(L, "lp_rocket", False) and getattr(L, "logic_in_flight", False):
+        # rocket-carrier round (2026-11-14): the 1S logic pack, the wall logic switch, its lead and the retention fly
+        # (logic_power.in_flight_mass_model, DEFAULT true - user decision pending); the CAD report carries the same parts
+        box_part("logic_pack", L.lp_pack_x, L.lp_pack_y, L.lp_pack_z, L.lp_pack_mass_g,
+                 "mass = logic_power.pack.mass_g (vendor 84 g, ASSUMED - weigh it)")
+        parts["logic_switch"] = point_mass("logic_switch", L.lp_sw_mass_g, tuple(L.lp_sw_center),
+                                           ["logic_power.switch.mass_g_ASSUMED at the wall switch body"])
+        parts["logic_switch_lead"] = point_mass("logic_switch_lead", L.lp_switch_lead_mass_g, tuple(L.lp_switch_lead_com),
+                                                ["switch -> J15 lead (route + slack, ASSUMED g/m)"])
+        parts["logic_retention"] = point_mass("logic_retention", L.lp_retention_mass_g, tuple(L.lp_retention_com),
+                                              ["logic_power.retention.strap_tie_mass_g_ASSUMED"])
     return parts
 
 

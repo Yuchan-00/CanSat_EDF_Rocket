@@ -1418,6 +1418,8 @@ def avionics_module(L: Layout, with_gps: bool = True, with_gns: bool = True, wit
         body = body.cut(gps_entry_cutter(L))
     if gns:
         body = _cut(body, gns_hole_cutters(L))
+    if getattr(L, "lp_rocket", False) or getattr(L, "has_release_lead", False):   # rocket-carrier round: wall holes
+        body = _cut(body, wall_hole_cutters(L))
     if getattr(L, "has_av_windows", False):        # v0.9 CAD-2 VTOL: hexagonal lightening / cooling windows, cut last
         body = _cut(body, avionics_window_cutters(L))
     if with_livery and getattr(L, "has_livery", False):   # livery: the 0.42 mm logo pocket (the orange part fills it)
@@ -2086,10 +2088,56 @@ def logic_switch_above(L: Layout) -> cq.Shape:
                   _cyl_z(L.lp_sw_lever_d / 2, L.lp_sw_bushing_top_z - OVERLAP, L.lp_sw_top_z, sx, sy)])
 
 
+WALL_SW_BUSHING_D, WALL_SW_ABOVE, WALL_SW_LEVER_D = 6.0, 5.0, 3.0   # as configs.vtol.logic_power.switch (ASSUMED)
+
+
+def wall_switch(L: Layout, name: str) -> cq.Shape:
+    """rocket-carrier round (2026-11-14, Layout.lp_wall_sw): one avionics-tube wall switch as mounted - inner nut (Ø nut_d
+    on the bore face, its rim on the curved bore), body and solder lugs inside the bore, the bushing (Ø 6.0) through the
+    hole (no contact), the outer nut on the skin and the lever (Ø 3) out to lever_r[1]; one solid."""
+    w = L.lp_wall_sw[name]
+    th, z, ro = w["theta"], w["z"], L.body_r
+    return _fuse([_radial_cyl(w["nut_d"], *w["r_nut"], th, z),
+                  _box_polar(*w["r_body"], -w["body_t"] / 2, w["body_t"] / 2, z - w["body_a"] / 2, z + w["body_a"] / 2, th),
+                  _box_polar(*w["r_lug"], -w["lug_t"] / 2, w["lug_t"] / 2, z - w["lug_a"] / 2, z + w["lug_a"] / 2, th),
+                  _radial_cyl(WALL_SW_BUSHING_D, w["r_nut"][0] + OVERLAP, ro + WALL_SW_ABOVE, th, z),
+                  _radial_cyl(w["nut_d"], ro, ro + 2.0, th, z),
+                  _radial_cyl(WALL_SW_LEVER_D, ro + WALL_SW_ABOVE - OVERLAP, w["lever_r"][1], th, z)])
+
+
+def wall_switch_inside(L: Layout, name: str) -> cq.Shape:
+    """Check helper: the part of a wall switch inside the bore (inner nut, body, lugs)."""
+    w = L.lp_wall_sw[name]
+    th, z = w["theta"], w["z"]
+    return _fuse([_radial_cyl(w["nut_d"], *w["r_nut"], th, z),
+                  _box_polar(*w["r_body"], -w["body_t"] / 2, w["body_t"] / 2, z - w["body_a"] / 2, z + w["body_a"] / 2, th),
+                  _box_polar(*w["r_lug"], -w["lug_t"] / 2, w["lug_t"] / 2, z - w["lug_a"] / 2, z + w["lug_a"] / 2, th)])
+
+
+def wall_hole_cutters(L: Layout) -> list[cq.Shape]:
+    """rocket-carrier round: the avionics-tube wall holes - the two switch holes (Layout.lp_wall_sw) and the release-lead
+    entry hole (Layout.rl_entry_*), radial, through the wall only (CUT)."""
+    out = [_radial_cyl(w["hole_d"], L.body_id / 2 - 2 * OVERLAP - 0.5, L.body_r + 2 * OVERLAP, w["theta"], w["z"])
+           for w in (getattr(L, "lp_wall_sw", None) or {}).values()]
+    if getattr(L, "has_release_lead", False):
+        out.append(_radial_cyl(L.rl_entry_d, L.body_id / 2 - 2 * OVERLAP, L.body_r + 2 * OVERLAP, L.rl_entry_theta, L.rl_entry_z))
+    return out
+
+
+def release_lead_keepouts(L: Layout, bay_only: bool = True) -> dict[str, cq.Shape]:
+    """Check helpers (C42): one cylinder Ø rl_od per segment of Layout.release_lead_polyline (from the bay entry when
+    bay_only), extended by its radius at both ends; names 'release lead <k>' (the last enters the carrier envelope)."""
+    r = L.rl_od / 2
+    pts = L.release_lead_polyline[L.rl_bay_start if bay_only else 0:]
+    return {f"release lead {k}": _cyl_between(L.rl_od, a, b, r, r) for k, (a, b) in enumerate(zip(pts[:-1], pts[1:]))}
+
+
 def logic_switch(L: Layout) -> cq.Shape:
     """Placeholder ``logic_switch``: the MTS-102 as mounted - below the plate (inner nut, body, lugs), the bushing through
     the lp_sw_hole_d hole (Ø lp_sw_bushing_d, no contact with the hole wall) and above the plate (outer nut, bushing top,
-    lever); one solid."""
+    lever); one solid.  rocket-carrier round: in the rocket (Layout.lp_rocket) the switch in the avionics-tube wall."""
+    if getattr(L, "lp_rocket", False):
+        return wall_switch(L, "logic")
     sx, sy = L.lp_sw_xy
     bush = _cyl_z(L.lp_sw_bushing_d / 2, L.lp_sw_inner_nut_z[0] + OVERLAP, L.lp_sw_outer_nut_z[1], sx, sy)
     return _fuse([logic_switch_below(L), bush, logic_switch_above(L)])
@@ -2151,7 +2199,10 @@ def logic_lead_keepouts(L: Layout) -> dict[str, cq.Shape]:
     '<lead> <k>' (k = segment index; the last segment of each enters its plug box inside the carrier envelope)."""
     r = L.lp_wire_od / 2
     out: dict[str, cq.Shape] = {}
-    for nm, pts in (("switch lead", L.lp_switch_lead_polyline), ("pack lead", L.lp_pack_lead_polyline)):
+    leads = [("switch lead", L.lp_switch_lead_polyline), ("pack lead", L.lp_pack_lead_polyline)]
+    if getattr(L, "lp_rocket", False):     # rocket-carrier round: the arm switch lead to J16
+        leads.append(("arm lead", L.lp_arm_lead_polyline))
+    for nm, pts in leads:
         for k, (a, b) in enumerate(zip(pts[:-1], pts[1:])):
             out[f"{nm} {k}"] = _cyl_between(L.lp_wire_od, a, b, r, r)
     return out
@@ -2172,7 +2223,8 @@ def logic_power_parts(L: Layout) -> dict[str, "Part"]:
     return {
         "logic_pack": Part("logic_pack", "placeholder", "logic_pack", logic_pack(L), "avionics_module", "",
                            COLORS["logic_pack"], mass_g=L.lp_pack_mass_g),
-        "logic_switch": Part("logic_switch", "placeholder", "logic_switch", logic_switch(L), "top_cap", "",
+        "logic_switch": Part("logic_switch", "placeholder", "logic_switch", logic_switch(L),
+                             "avionics_module" if getattr(L, "lp_rocket", False) else "top_cap", "",
                              COLORS["logic_switch"], mass_g=L.lp_sw_mass_g),
         "logic_switch_lead": Part("logic_switch_lead", "lumped", "logic_switch_lead", None, "avionics_module",
                                   mass_g=L.lp_switch_lead_mass_g, point_mm=tuple(L.lp_switch_lead_com)),
@@ -2785,14 +2837,17 @@ def build_all(L: Layout) -> dict[str, Part]:
     placeholder("edf_unit", edf_unit(L), "propulsion_module", e["mass_g"], "edf_unit")
     placeholder("battery", battery(L), "avionics_module", L.p["battery"]["mass_g"], "battery")
     placeholder("esc", esc(L), "avionics_module", el["esc"]["mass_g"], "esc")
-    placeholder("nav", nav(L), "avionics_module", el["nav"]["mass_g"], "nav")
+    if L.has_nav:          # rocket-carrier round (2026-11-14): no NAV board with the carrier
+        placeholder("nav", nav(L), "avionics_module", el["nav"]["mass_g"], "nav")
     placeholder("misc_electronics", misc_electronics(L), "avionics_module", el["misc"]["mass_g"], "misc_electronics")
     if L.has_com_board:   # v0.6: hangs under the payload bulkhead, inside the avionics spigot bore
         placeholder("com", com_board(L), "avionics_module", el["com"]["mass_g"], "com")
     if L.has_radio_log:   # v0.6.2: LoRa / OpenLog / level shifter / LDO box beside the COM board
         placeholder("radio_log", radio_log_box(L), "avionics_module", el["radio_log"]["mass_g"], "radio_log")
     if L.has_fcu:         # v0.6.3: FCU board flat on the intake bulkhead top (inside the intake spigot, below the tray)
-        placeholder("fcu", fcu_board(L), "avionics_module", el["fcu"]["mass_g"], "fcu")
+        # rocket-carrier round (2026-11-14): the carrier PCB rev 3.1 takes the spot (Layout.fcu_part 'carrier')
+        placeholder(L.fcu_part, fcu_board(L), "avionics_module", L.fcu_mass_g,
+                    "carrier" if L.fcu_part == "carrier" else "fcu")
     if getattr(L, "has_gns", False):   # v0.8.1: the GNS board on its bosses on the -x tube wall (board + 4 screws)
         placeholder("gns", gns_board(L), "avionics_module", L.gns_mass_g, "gns")
     if getattr(L, "has_gps_pod", False):   # v0.8: GPS board + patch and the ground plane in the pod
@@ -2820,6 +2875,9 @@ def build_all(L: Layout) -> dict[str, Part]:
     placeholder("chute_pack", chute_pack(L), "nose_cone",
                 rec["chute_mass_g"] + rec["lines_swivel_mass_g"] + rec["shock_cord_mass_g"], "chute_pack")
     parts += lumped_masses(L)
+    if getattr(L, "has_logic_power", False) and getattr(L, "logic_in_flight", False):
+        # rocket-carrier round (2026-11-14): the 1S logic pack, switch, switch lead and retention fly (in_flight_mass_model)
+        parts += list(logic_power_parts(L).values())
     return {p.name: p for p in parts}
 
 

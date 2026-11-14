@@ -2,7 +2,7 @@
   "generator": "cadquery",
   "generator_version": "cadquery 2.8.0",
   "preset": "BUDGET_90mm_6S",
-  "params_sha256": "3419c5fea63506dc17e5efee96887c11f583d90292e49339179ae3ced1035de6",
+  "params_sha256": "f907c459e287d26b034c44738e875d716c9b5177655477e9cd89d616a2fa1f41",
   "parts": {
     "propulsion_module": {
       "kind": "printed",
@@ -46,9 +46,9 @@
     },
     "intake_module": {
       "kind": "printed",
-      "volume_mm3": 104452.87443296978,
-      "density_g_cm3": 1.2459880711983513,
-      "mass_g": 130.1470355458596,
+      "volume_mm3": 104653.93642244865,
+      "density_g_cm3": 1.2453777978827911,
+      "mass_g": 130.33368888155474,
       "bbox_mm": [
         [
           -62.75000000000001,
@@ -62,33 +62,33 @@
         ]
       ],
       "com_mm": [
-        1.989927959380721,
-        -1.8780306329925276e-05,
-        260.76880544322876
+        1.9861049499399965,
+        -1.8725823902491273e-05,
+        260.90546354916205
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.0006664651865885109,
-          3.242405331698173e-11,
-          1.4101823343460988e-05
+          0.0006674043376300475,
+          3.234222991496719e-11,
+          1.4130290829245391e-05
         ],
         [
-          3.242405331698173e-11,
-          0.0006820899643935565,
-          1.146909660840239e-10
+          3.234222991496719e-11,
+          0.0006834230892597719,
+          1.1353842441132026e-10
         ],
         [
-          1.4101823343460988e-05,
-          1.146909660840239e-10,
-          0.0004051435377973755
+          1.4130290829245391e-05,
+          1.1353842441132026e-10,
+          0.0004053487321607583
         ]
       ]
     },
     "avionics_module": {
       "kind": "printed",
-      "volume_mm3": 96839.82398223657,
-      "density_g_cm3": 1.2796129983084978,
-      "mass_g": 123.9174975215769,
+      "volume_mm3": 96090.4544794463,
+      "density_g_cm3": 1.2794282861421344,
+      "mass_g": 122.94084548925677,
       "bbox_mm": [
         [
           -60.0000001,
@@ -102,25 +102,25 @@
         ]
       ],
       "com_mm": [
-        1.1371928122764559,
-        0.00040300543203988906,
-        434.85042303532924
+        1.490801900164191,
+        -0.04634019222860101,
+        434.5428400935813
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.0006421671355707269,
-          -1.1795248893836028e-08,
-          2.012678123645254e-06
+          0.0006384941975081288,
+          -1.9451826067879118e-08,
+          -3.015977664685762e-08
         ],
         [
-          -1.1795248893836028e-08,
-          0.0006329659356051434,
-          -3.918068504207106e-08
+          -1.9451826067879118e-08,
+          0.0006274825309736252,
+          -3.0473595660058507e-07
         ],
         [
-          2.012678123645254e-06,
-          -3.918068504207106e-08,
-          0.00043181373256178995
+          -3.015977664685762e-08,
+          -3.0473595660058507e-07,
+          0.00042851644551201485
         ]
       ]
     },
@@ -166,9 +166,9 @@
     },
     "avionics_tray": {
       "kind": "printed",
-      "volume_mm3": 31223.45133223539,
-      "density_g_cm3": 1.1645219811230028,
-      "mass_g": 36.36039540291242,
+      "volume_mm3": 31279.999999999993,
+      "density_g_cm3": 1.1631994290302263,
+      "mass_g": 36.38487814006547,
       "bbox_mm": [
         [
           24.0,
@@ -182,33 +182,33 @@
         ]
       ],
       "com_mm": [
-        25.000000000000004,
-        -1.165143074153314e-16,
-        432.6749309224833
+        25.0,
+        -8.722775272758265e-17,
+        432.76572890025585
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.00010807557871867565,
-          6.831366388945178e-23,
+          0.00010818221062544576,
+          -2.020634301013826e-22,
           0.0
         ],
         [
-          6.831366388945178e-23,
-          7.830304003017126e-05,
-          1.1821444159064155e-21
+          -2.020634301013826e-22,
+          7.841163339867486e-05,
+          2.123679047384328e-21
         ],
         [
           0.0,
-          1.1821444159064155e-21,
-          2.9796778952106485e-05
+          2.123679047384328e-21,
+          2.9794833812197614e-05
         ]
       ]
     },
     "payload_module": {
       "kind": "printed",
-      "volume_mm3": 143877.9322371886,
-      "density_g_cm3": 1.1894649461987783,
-      "mass_g": 171.137756927699,
+      "volume_mm3": 143490.73092586506,
+      "density_g_cm3": 1.1890713438603093,
+      "mass_g": 170.6207162535164,
       "bbox_mm": [
         [
           -115.54985963003885,
@@ -222,25 +222,25 @@
         ]
       ],
       "com_mm": [
-        -3.299979334281146,
-        -0.7014336249029155,
-        611.2376058788383
+        -3.3088841569826504,
+        -0.7033264167747747,
+        611.4532507996653
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.0009171448807448416,
-          -3.3417611767123554e-05,
-          1.3105293224293353e-05
+          0.0009136681161711154,
+          -3.340548502945961e-05,
+          1.2979210751773584e-05
         ],
         [
-          -3.3417611767123554e-05,
-          0.0010672592708085666,
-          2.785600256094371e-06
+          -3.340548502945961e-05,
+          0.0010637280321424542,
+          2.7588008881551383e-06
         ],
         [
-          1.3105293224293353e-05,
-          2.785600256094371e-06,
-          0.0006080563074373578
+          1.2979210751773584e-05,
+          2.7588008881551383e-06,
+          0.0006074008718852559
         ]
       ]
     },
@@ -1084,46 +1084,6 @@
         ]
       ]
     },
-    "nav": {
-      "kind": "placeholder",
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 1.0666666666666667,
-      "mass_g": 40.0,
-      "bbox_mm": [
-        [
-          26.0,
-          -25.0,
-          457.9
-        ],
-        [
-          41.0,
-          25.0,
-          507.9
-        ]
-      ],
-      "com_mm": [
-        33.5,
-        -7.579122514774402e-17,
-        482.9
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          1.6666666666666667e-05,
-          3.9079850466805375e-24,
-          1.2715657552083334e-19
-        ],
-        [
-          3.9079850466805375e-24,
-          9.083333333333333e-06,
-          4.850638409455706e-23
-        ],
-        [
-          1.2715657552083334e-19,
-          4.850638409455706e-23,
-          9.083333333333333e-06
-        ]
-      ]
-    },
     "misc_electronics": {
       "kind": "placeholder",
       "volume_mm3": 24000.0,
@@ -1164,163 +1124,43 @@
         ]
       ]
     },
-    "com": {
+    "carrier": {
       "kind": "placeholder",
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 0.5333333333333333,
-      "mass_g": 20.0,
+      "volume_mm3": 79800.0,
+      "density_g_cm3": 0.49373433583959897,
+      "mass_g": 39.4,
       "bbox_mm": [
         [
-          -25.0,
-          -25.0,
-          514.9
-        ],
-        [
-          25.0,
-          25.0,
-          529.9
-        ]
-      ],
-      "com_mm": [
-        -2.069455717901292e-16,
-        7.579122514774403e-17,
-        522.4
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          4.541666666667684e-06,
-          7.105427357601002e-24,
-          -1.1102230246250683e-23
-        ],
-        [
-          7.105427357601002e-24,
-          4.541666666667684e-06,
-          -1.0610771520684714e-23
-        ],
-        [
-          -1.1102230246250683e-23,
-          -1.0610771520684714e-23,
-          8.333333333333335e-06
-        ]
-      ]
-    },
-    "radio_log": {
-      "kind": "placeholder",
-      "volume_mm3": 9000.0,
-      "density_g_cm3": 2.2222222222222223,
-      "mass_g": 20.0,
-      "bbox_mm": [
-        [
-          -15.0,
-          -50.0,
-          517.9
-        ],
-        [
-          15.0,
-          -30.0,
-          532.9
-        ]
-      ],
-      "com_mm": [
-        -3.0845696367502266e-16,
-        -40.0,
-        525.4
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          1.0416666666666667e-06,
-          -2.872154904698013e-38,
-          -1.0732155904691465e-24
-        ],
-        [
-          -2.872154904698013e-38,
-          1.875e-06,
-          0.0
-        ],
-        [
-          -1.0732155904691465e-24,
-          0.0,
-          2.166666666666667e-06
-        ]
-      ]
-    },
-    "fcu": {
-      "kind": "placeholder",
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 0.5333333333333333,
-      "mass_g": 20.0,
-      "bbox_mm": [
-        [
-          -25.0,
-          -25.0,
+          -38.0,
+          -35.0,
           335.9
         ],
         [
-          25.0,
-          25.0,
+          38.0,
+          35.0,
           350.9
         ]
       ],
       "com_mm": [
-        -3.364715913297308e-16,
-        1.5158245029548803e-16,
+        -4.395425822254072e-16,
+        -6.232831015439475e-16,
         343.4
       ],
       "inertia_about_com_kg_m2": [
         [
-          4.541666666666667e-06,
-          3.5527136788005004e-24,
-          1.3796371452673956e-23
+          1.682708333333333e-05,
+          2.2163012166250465e-23,
+          1.4997527029777205e-24
         ],
         [
-          3.5527136788005004e-24,
-          4.541666666666667e-06,
-          6.617444900424222e-37
+          2.2163012166250465e-23,
+          1.970328333333333e-05,
+          -4.7150120065599805e-23
         ],
         [
-          1.3796371452673956e-23,
-          6.617444900424222e-37,
-          8.333333333333335e-06
-        ]
-      ]
-    },
-    "gns": {
-      "kind": "placeholder",
-      "volume_mm3": 37500.0,
-      "density_g_cm3": 0.7093333333333334,
-      "mass_g": 26.6,
-      "bbox_mm": [
-        [
-          -50.0,
-          -25.0,
-          458.4
-        ],
-        [
-          -35.0,
-          25.0,
-          508.4
-        ]
-      ],
-      "com_mm": [
-        -42.5,
-        -7.579122514774402e-17,
-        483.4
-      ],
-      "inertia_about_com_kg_m2": [
-        [
-          1.1083333333333335e-05,
-          -2.362554596402333e-25,
-          -8.455912272135418e-20
-        ],
-        [
-          -2.362554596402333e-25,
-          6.040416666666667e-06,
-          3.22567454228803e-23
-        ],
-        [
-          -8.455912272135418e-20,
-          3.22567454228803e-23,
-          6.040416666666667e-06
+          1.4997527029777205e-24,
+          -4.7150120065599805e-23,
+          3.5052866666666664e-05
         ]
       ]
     },
@@ -2128,23 +1968,23 @@
       "kind": "lumped",
       "volume_mm3": 0.0,
       "density_g_cm3": 0.0,
-      "mass_g": 26.770925232780154,
+      "mass_g": 26.77092523278015,
       "bbox_mm": [
         [
           -19.136773652260644,
-          -1.4455706086372357,
-          209.19808212130212
+          -1.445570608637236,
+          209.19808212130218
         ],
         [
           -19.136773652260644,
-          -1.4455706086372357,
-          209.19808212130212
+          -1.445570608637236,
+          209.19808212130218
         ]
       ],
       "com_mm": [
         -19.136773652260644,
-        -1.4455706086372357,
-        209.19808212130212
+        -1.445570608637236,
+        209.19808212130218
       ],
       "inertia_about_com_kg_m2": [
         [
@@ -2208,23 +2048,183 @@
       "kind": "lumped",
       "volume_mm3": 0.0,
       "density_g_cm3": 0.0,
-      "mass_g": 4.437382737694367,
+      "mass_g": 5.347880930974078,
       "bbox_mm": [
         [
-          -72.38619817729756,
-          -13.79437887412981,
-          620.202634578542
+          -68.75097517161885,
+          -14.034034338952853,
+          578.183166816511
         ],
         [
-          -72.38619817729756,
-          -13.79437887412981,
-          620.202634578542
+          -68.75097517161885,
+          -14.034034338952853,
+          578.183166816511
         ]
       ],
       "com_mm": [
-        -72.38619817729756,
-        -13.79437887412981,
-        620.202634578542
+        -68.75097517161885,
+        -14.034034338952853,
+        578.183166816511
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "logic_pack": {
+      "kind": "placeholder",
+      "volume_mm3": 39044.25,
+      "density_g_cm3": 2.1514051364797635,
+      "mass_g": 84.0,
+      "bbox_mm": [
+        [
+          -38.0,
+          -27.75,
+          400.9
+        ],
+        [
+          -27.5,
+          27.75,
+          467.9
+        ]
+      ],
+      "com_mm": [
+        -32.75,
+        -2.2220241914317276e-16,
+        434.4
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          5.298475000000206e-05,
+          1.1135371232061273e-24,
+          0.0
+        ],
+        [
+          1.1135371232061273e-24,
+          3.2194750000002055e-05,
+          -2.714909557531129e-22
+        ],
+        [
+          0.0,
+          -2.714909557531129e-22,
+          2.2333500000000002e-05
+        ]
+      ]
+    },
+    "logic_switch": {
+      "kind": "placeholder",
+      "volume_mm3": 1800.4377037776355,
+      "density_g_cm3": 2.221681978558489,
+      "mass_g": 4.0,
+      "bbox_mm": [
+        [
+          -22.114694230182412,
+          39.18059965927071,
+          388.5
+        ],
+        [
+          -8.588184295513889,
+          72.50808322909941,
+          401.5
+        ]
+      ],
+      "com_mm": [
+        -14.596056354176415,
+        50.902497752670726,
+        394.9999999999999
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          2.0415843818682433e-07,
+          4.131327770820004e-08,
+          4.138205160495805e-21
+        ],
+        [
+          4.131327770820004e-08,
+          7.192830853805224e-08,
+          0.0
+        ],
+        [
+          4.138205160495805e-21,
+          0.0,
+          1.9223283276945306e-07
+        ]
+      ]
+    },
+    "logic_switch_lead": {
+      "kind": "lumped",
+      "volume_mm3": 0.0,
+      "density_g_cm3": 0.0,
+      "mass_g": 1.166436334868109,
+      "bbox_mm": [
+        [
+          -17.015668786560926,
+          36.60658629970037,
+          364.8601267204504
+        ],
+        [
+          -17.015668786560926,
+          36.60658629970037,
+          364.8601267204504
+        ]
+      ],
+      "com_mm": [
+        -17.015668786560926,
+        36.60658629970037,
+        364.8601267204504
+      ],
+      "inertia_about_com_kg_m2": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "logic_retention": {
+      "kind": "lumped",
+      "volume_mm3": 0.0,
+      "density_g_cm3": 0.0,
+      "mass_g": 2.0,
+      "bbox_mm": [
+        [
+          -38.0,
+          0.0,
+          441.9
+        ],
+        [
+          -38.0,
+          0.0,
+          441.9
+        ]
+      ],
+      "com_mm": [
+        -38.0,
+        0.0,
+        441.9
       ],
       "inertia_about_com_kg_m2": [
         [
@@ -2246,55 +2246,55 @@
     }
   },
   "totals": {
-    "mass_g": 2599.2108709226136,
+    "mass_g": 2602.8052488171065,
     "com_mm": [
-      1.949363268259227,
-      -0.4939028118290835,
-      386.5260402257128
+      0.7486699128103307,
+      -0.09873848164442488,
+      383.1449926852912
     ],
     "inertia_about_com_kg_m2": [
       [
-        0.13317890525471596,
-        -9.538363831748851e-05,
-        0.0010425938230604202
+        0.13195288444662037,
+        -9.005077408335463e-05,
+        0.0011828000641549456
       ],
       [
-        -9.538363831748851e-05,
-        0.13395091447591206,
-        0.0002424411223915478
+        -9.005077408335463e-05,
+        0.13274823965261617,
+        0.0001314919293905625
       ],
       [
-        0.0010425938230604202,
-        0.0002424411223915478,
-        0.005078991361663135
+        0.0011828000641549456,
+        0.0001314919293905625,
+        0.005091422289110221
       ]
     ],
-    "printed_mass_g": 941.8990863776808,
+    "printed_mass_g": 940.6165297440263,
     "post_ejection": {
-      "mass_g": 2081.4244691423446,
+      "mass_g": 2085.0188470368375,
       "com_mm": [
-        2.425013139319571,
-        -0.6167687449457271,
-        316.1006284604624
+        0.9253237539655281,
+        -0.12325885614723657,
+        312.001350051734
       ],
       "inertia_about_com_kg_m2": [
         [
-          0.07833821673503012,
-          -9.599425743266223e-05,
-          0.0006932501266395476
+          0.07588537503789558,
+          -9.009617359595074e-05,
+          0.001051734008581712
         ],
         [
-          -9.599425743266223e-05,
-          0.0791015031290409,
-          0.00033285027693583336
+          -9.009617359595074e-05,
+          0.07667389279815823,
+          0.00014977563477705752
         ],
         [
-          0.0006932501266395476,
-          0.00033285027693583336,
-          0.004669345812393039
+          0.001051734008581712,
+          0.00014977563477705752,
+          0.0046839649781053325
         ]
       ],
-      "descent_mass_g": 2181.4244691423446
+      "descent_mass_g": 2185.0188470368375
     }
   },
   "derived": {
@@ -2371,189 +2371,417 @@
       76.33259936977717,
       4.185032693322549
     ],
-    "cg_above_vane_hinge_mm": 349.5260402257128,
-    "thrust_to_weight_nominal": 1.1888223593429248,
+    "cg_above_vane_hinge_mm": 346.1449926852912,
+    "thrust_to_weight_nominal": 1.187180639582738,
     "inertia_convention": "standard tensor about the part COM, I_xy = -sum(m x y); kg*m^2",
     "cadquery_version": "2.8.0",
-    "build_time_s": 8.531041622161865,
+    "build_time_s": 11.941166877746582,
     "gps": {
       "added_mass_g": {
-        "pod + raceway + pocket (in payload_module)": 19.171833967042677,
+        "pod + raceway + pocket (in payload_module)": 19.17183390875066,
         "gps_pod_lid": 5.560800942972247,
         "gps (board + patch)": 17.0,
         "gps_ground_plane": 4.5,
-        "gps_lead (lead, connector, hardware)": 4.437382737694367,
-        "avionics entry hole (removed)": -0.030934471651181374
+        "gps_lead (lead, connector, hardware)": 5.347880930974078,
+        "avionics entry hole (removed)": -0.030934459053201285
       },
-      "added_total_g": 50.63908317605811,
-      "payload_module_without_gps_mass_g": 169.3082572636744,
-      "avionics_entry_hole_mm3": 23.61410049708502,
+      "added_total_g": 51.549581323643785,
+      "payload_module_without_gps_mass_g": 168.80102360413258,
+      "avionics_entry_hole_mm3": 23.61409088030632,
       "antenna_phase_centre_mm": [
         -84.12069366310728,
         -17.880405410327317,
         694.0999999999999
       ],
       "antenna_lever_arm_from_cg_mm": [
-        -86.07005693136651,
-        -17.386502598498232,
-        307.5739597742871
+        -84.8693635759176,
+        -17.781666928682892,
+        310.9550073147087
       ],
-      "antenna_lever_arm_norm_mm": 319.8626047289852,
+      "antenna_lever_arm_norm_mm": 322.8188549738606,
       "noise_source_distance_mm": {
         "ESC (box)": 269.70540812680025,
         "logic UBEC (misc box)": 313.8259018176593,
-        "NAV board": 216.3261592430372,
         "battery": 192.85372268336104,
         "EDF motor": 577.0412863935367,
-        "COM board": 174.51904314202204,
-        "LoRa / log box": 175.81238541549658,
-        "LoRa antenna (100 mm ASSUMED, -y wall)": 198.8985338211608,
-        "FCU board": 348.2549302152188,
-        "GNS board": 188.80866435641025,
+        "carrier PCB (ESP-12F, 4 x 16 MHz)": 346.2850825316709,
         "motor leads (bulkhead hole -> ESC)": 349.4849296757752,
         "release servo (MG90S)": 154.55970529216208
       },
       "note": "phase centre ASSUMED (payload_module.gps_pod.stack.phase_centre_below_patch_top_ASSUMED); masses of the board (electronics.gps.board_mass_g), plate, lead and hardware are params values (ASSUMED until weighed)"
     },
-    "gns": {
-      "added_mass_g": {
-        "gns (board + leads ASSUMED, screws)": 26.6,
-        "bosses + tap holes (in avionics_module)": 0.8558104125475707,
-        "gps_lead: route to the GNS instead of the NAV": -0.786585732249871
-      },
-      "added_total_g": 26.669224680297702,
-      "board_box_mm": [
+    "carrier": {
+      "box_mm": [
         [
-          -50.0,
-          -35.0
+          -38.0,
+          38.0
         ],
         [
-          -25.0,
-          25.0
+          -35.0,
+          35.0
         ],
         [
-          458.4,
-          508.4
+          335.9,
+          350.9
         ]
       ],
-      "board_centre_mm": [
-        -42.5,
-        0.0,
-        483.4
+      "mass_g": 39.4,
+      "envelope_boxes_mm": {
+        "tab": [
+          [
+            17.3,
+            32.0
+          ],
+          [
+            -42.2,
+            -35.0
+          ],
+          [
+            335.9,
+            350.9
+          ]
+        ],
+        "J7": [
+          [
+            -37.8,
+            -28.25
+          ],
+          [
+            -34.79,
+            -28.1
+          ],
+          [
+            337.5,
+            346.5
+          ]
+        ],
+        "J8": [
+          [
+            -45.74,
+            -31.24
+          ],
+          [
+            14.17,
+            21.97
+          ],
+          [
+            337.2,
+            340.5
+          ]
+        ],
+        "J9": [
+          [
+            -45.74,
+            -31.24
+          ],
+          [
+            5.55,
+            13.35
+          ],
+          [
+            337.2,
+            340.5
+          ]
+        ],
+        "J10": [
+          [
+            -45.74,
+            -31.24
+          ],
+          [
+            -3.07,
+            4.73
+          ],
+          [
+            337.2,
+            340.5
+          ]
+        ],
+        "J11": [
+          [
+            -45.74,
+            -31.24
+          ],
+          [
+            -11.69,
+            -3.89
+          ],
+          [
+            337.2,
+            340.5
+          ]
+        ],
+        "J12": [
+          [
+            31.25,
+            45.75
+          ],
+          [
+            20.39,
+            28.19
+          ],
+          [
+            337.2,
+            340.5
+          ]
+        ],
+        "J14": [
+          [
+            -37.8,
+            -29.31
+          ],
+          [
+            28.8,
+            34.8
+          ],
+          [
+            337.5,
+            348.5
+          ]
+        ],
+        "J15": [
+          [
+            -37.8,
+            -30.81
+          ],
+          [
+            23.2,
+            28.8
+          ],
+          [
+            337.5,
+            348.5
+          ]
+        ],
+        "J16": [
+          [
+            19.84,
+            24.94
+          ],
+          [
+            28.25,
+            42.25
+          ],
+          [
+            337.2,
+            340.5
+          ]
+        ],
+        "J17": [
+          [
+            30.81,
+            37.79
+          ],
+          [
+            14.31,
+            19.89
+          ],
+          [
+            337.5,
+            348.5
+          ]
+        ],
+        "J18": [
+          [
+            -45.24,
+            -31.24
+          ],
+          [
+            -22.78,
+            -12.58
+          ],
+          [
+            337.2,
+            340.5
+          ]
+        ],
+        "GY-521": [
+          [
+            3.6,
+            20.0
+          ],
+          [
+            -34.59,
+            -13.39
+          ],
+          [
+            337.5,
+            342.8
+          ]
+        ],
+        "BMP280": [
+          [
+            3.58,
+            18.78
+          ],
+          [
+            10.95,
+            22.45
+          ],
+          [
+            337.5,
+            343.4
+          ]
+        ],
+        "OpenLog": [
+          [
+            21.6,
+            37.6
+          ],
+          [
+            -18.55,
+            0.45
+          ],
+          [
+            337.5,
+            343.4
+          ]
+        ]
+      },
+      "release_pad_xyz_mm": [
+        27.05,
+        33.15,
+        337.5
       ],
-      "board_mass_g": 25.0,
-      "screws_g": 1.6,
-      "theta_deg": 180.0,
-      "boss_hole_vz_mm": [
+      "vent_tie_pairs_deg": [
         [
-          22.0,
-          505.4
-        ],
-        [
-          -22.0,
-          505.4
-        ],
-        [
-          22.0,
-          461.4
-        ],
-        [
-          -22.0,
-          461.4
+          90.0,
+          270.0
         ]
       ],
-      "boss_half_diag_mm": 4.5,
-      "hole_u_mm": [
-        50.0,
-        53.8
-      ],
-      "hole_d_mm": 2.5,
-      "gps_lead_route_mm": 207.47654753887355,
-      "gps_lead_route_v08_mm": 364.7936939888477,
-      "glink_lead_len_mm": 197.1956821284036,
-      "glink_lead_mass_g_estimate": 1.985978410642018,
-      "distance_mm": {
-        "ESC (box)": 61.897092015699734,
-        "logic UBEC (misc box)": 76.23155514614666,
-        "battery": 8.0,
-        "NAV board": 61.0,
-        "GPS antenna phase centre": 188.80866435641025,
-        "LoRa antenna (100 mm ASSUMED, -y wall)": 46.622312254970794,
-        "motor leads (bulkhead hole -> ESC)": 113.31923931972011
-      },
-      "esc_target_mm": 100.0,
-      "esc_best_on_wall_mm": 61.897092015699734,
       "clearance_mm": {
-        "bore (radial, board corners)": 2.8983005625052556,
-        "board top -> avionics spigot shoulder (z)": 8.299999999999955,
-        "PCB back -> wall at the board edges": 3.2206726751926666,
-        "bosses -> GPS entry hole (wall plan)": 5.6280443591148215,
-        "bosses -> vent slots": 28.032087744809278,
-        "bosses -> joint screw axes (Ø joint_hole_outer_d)": 21.12388611131467,
-        "avionics_tray": 59.0,
-        "battery": 8.0,
-        "esc": 61.897092015699734,
-        "nav": 61.0,
-        "misc_electronics": 76.23155514614666,
-        "rail x27.2 y+1": 65.4571588100831,
-        "rail x22.8 y+1": 61.36317820556917,
-        "rail x27.2 y-1": 65.4571588100831,
-        "rail x22.8 y-1": 61.36317820556917,
-        "glink lead -> avionics_tray": 0.8000000000000005,
-        "glink lead -> battery": 8.3,
-        "glink lead -> esc": 59.999999999999986,
-        "glink lead -> nav": -1.1324274851176597e-14,
-        "glink lead -> misc_electronics": 115.38769231784286,
-        "glink lead -> fcu": 157.22818562364463,
-        "glink lead -> gns": -1.1324274851176597e-14,
-        "glink lead -> gns boss 1": 37.04264635194588,
-        "glink lead -> gns boss 2": 6.3,
-        "glink lead -> gns boss 3": 56.87056052768906,
-        "glink lead -> gns boss 4": 43.138921953516174,
-        "glink lead -> rail x27.2 y+1": 9.02067267519267,
-        "glink lead -> rail x22.8 y+1": 9.020672675192667,
-        "glink lead -> rail x27.2 y-1": 47.311063410814576,
-        "glink lead -> rail x22.8 y-1": 47.98661681034865,
-        "glink lead -> COM board": 7.523385779752366,
-        "glink lead -> radio/log box": 35.12753776407094,
-        "glink lead -> joint screw axes": 7.700000000000001
+        "intake spigot bore (radial)": 5.337634587642036,
+        "avionics_tray": 2.0,
+        "battery": 50.0,
+        "esc": 12.0,
+        "misc_electronics": 12.0,
+        "rail x27.2 y+1": 13.220672675192667,
+        "rail x22.8 y+1": 13.220672675192667,
+        "rail x27.2 y-1": 13.220672675192667,
+        "rail x22.8 y-1": 13.220672675192667,
+        "tray stop +y": 13.220672675192667,
+        "tray stop -y": 13.220672675192667,
+        "motor-lead hole (plan)": 3.0,
+        "servo-lead hole (plan)": 12.0,
+        "vent hole 90 deg (plan)": 1.0,
+        "vent hole 270 deg (plan)": 1.0,
+        "joint screw room in the spigot bore (radial)": 7.502525316941664,
+        "carrier envelope boxes -> intake spigot bore (radial)": 3.262316760023971,
+        "carrier envelope boxes -> avionics_tray": 2.0,
+        "carrier envelope boxes -> battery": 52.840667104040214,
+        "carrier envelope boxes -> esc": 14.399999999999977,
+        "carrier envelope boxes -> misc_electronics": 15.929096019548608,
+        "carrier envelope boxes -> rail x27.2 y+1": 12.058048440535138,
+        "carrier envelope boxes -> rail x22.8 y+1": 11.992036198840124,
+        "carrier envelope boxes -> rail x27.2 y-1": 6.020672675192664,
+        "carrier envelope boxes -> rail x22.8 y-1": 6.020672675192664,
+        "carrier envelope boxes -> tray stop +y": 11.992036198840124,
+        "carrier envelope boxes -> tray stop -y": 6.020672675192664,
+        "carrier envelope boxes -> motor-lead hole (plan)": 3.3999999999999986,
+        "carrier envelope boxes -> servo-lead hole (plan)": 4.259999999999998,
+        "carrier envelope boxes -> vent hole 90 deg (plan)": 13.911418145976047,
+        "carrier envelope boxes -> vent hole 270 deg (plan)": 2.4983151662565595,
+        "carrier envelope boxes -> motor-lead joint zone": 4.399999999999999
       },
-      "pod_mitigation": {
-        "params_from": {
-          "wall_t": 1.6,
-          "floor_t": 1.6,
-          "lid.t": 1.5
-        },
-        "params_now": {
-          "wall_t": 1.2,
-          "floor_t": 1.2,
-          "lid.t": 1.2
-        },
-        "mass_from_g": {
-          "payload_module": 193.8915363099295,
-          "gps_pod_lid": 6.825307323391225,
-          "gps_lead": 4.43588279917013
-        },
-        "mass_now_g": {
-          "payload_module": 171.137756927699,
-          "gps_pod_lid": 5.560800942972247,
-          "gps_lead": 4.437382737694367
-        },
-        "saved_g": 24.016785824125236,
-        "antenna_phase_centre_from_mm": [
-          -84.12069366310728,
-          -17.880405410327317,
-          693.8
-        ]
+      "limits_mm": {
+        "intake spigot bore (radial)": 1.0,
+        "avionics_tray": 2.0,
+        "battery": 2.0,
+        "esc": 2.0,
+        "misc_electronics": 2.0,
+        "rail x27.2 y+1": 2.0,
+        "rail x22.8 y+1": 2.0,
+        "rail x27.2 y-1": 2.0,
+        "rail x22.8 y-1": 2.0,
+        "tray stop +y": 2.0,
+        "tray stop -y": 2.0,
+        "motor-lead hole (plan)": 2.0,
+        "servo-lead hole (plan)": 2.0,
+        "vent hole 90 deg (plan)": null,
+        "vent hole 270 deg (plan)": null,
+        "joint screw room in the spigot bore (radial)": null,
+        "carrier envelope boxes -> intake spigot bore (radial)": 1.0,
+        "carrier envelope boxes -> avionics_tray": 2.0,
+        "carrier envelope boxes -> battery": 2.0,
+        "carrier envelope boxes -> esc": 2.0,
+        "carrier envelope boxes -> misc_electronics": 2.0,
+        "carrier envelope boxes -> rail x27.2 y+1": 2.0,
+        "carrier envelope boxes -> rail x22.8 y+1": 2.0,
+        "carrier envelope boxes -> rail x27.2 y-1": 2.0,
+        "carrier envelope boxes -> rail x22.8 y-1": 2.0,
+        "carrier envelope boxes -> tray stop +y": 2.0,
+        "carrier envelope boxes -> tray stop -y": 2.0,
+        "carrier envelope boxes -> motor-lead hole (plan)": 2.0,
+        "carrier envelope boxes -> servo-lead hole (plan)": 2.0,
+        "carrier envelope boxes -> vent hole 90 deg (plan)": 0.0,
+        "carrier envelope boxes -> vent hole 270 deg (plan)": 0.0,
+        "carrier envelope boxes -> motor-lead joint zone": 2.0
       },
-      "thrust_to_weight_nominal_cad": 1.1888223593429248,
-      "note": "board mass electronics.gns.mass_g_ASSUMED (20 g board + 2 g shifter + 3 g leads per its note) + avionics_module.gns_mount.screws_g_ASSUMED; the glink lead estimate is inside the board mass, not added again; header positions (gps_header_v / glink_header_v) ASSUMED"
+      "worst_envelope_box": {
+        "bore": "J12",
+        "avionics_tray": "tab",
+        "battery": "J17",
+        "esc": "J17",
+        "misc_electronics": "J17",
+        "rail x27.2 y+1": "J16",
+        "rail x22.8 y+1": "J16",
+        "rail x27.2 y-1": "tab",
+        "rail x22.8 y-1": "tab",
+        "tray stop +y": "J16",
+        "tray stop -y": "tab",
+        "motor-lead hole (plan)": "OpenLog",
+        "servo-lead hole (plan)": "J10",
+        "vent hole 90": "BMP280",
+        "vent hole 270": "GY-521",
+        "motor-lead joint zone": "OpenLog"
+      },
+      "gps_lead_end": "carrier J7",
+      "release_lead_clearance_mm": {
+        "lead (bay) -> avionics_tray": 1.9565310721728983,
+        "lead (bay) -> battery": 14.153689192751207,
+        "lead (bay) -> esc": 13.65,
+        "lead (bay) -> misc_electronics": 12.753859126566391,
+        "lead (bay) -> carrier": 0.5,
+        "lead (bay) -> rail x27.2 y+1": 13.601832543351609,
+        "lead (bay) -> rail x22.8 y+1": 14.480430603971236,
+        "lead (bay) -> rail x27.2 y-1": 64.17433955910862,
+        "lead (bay) -> rail x22.8 y-1": 66.09387785763333,
+        "lead (bay) -> carrier tab": 66.65,
+        "lead (bay) -> carrier J7": 81.02061863558707,
+        "lead (bay) -> carrier J8": 57.85247678067024,
+        "lead (bay) -> carrier J9": 60.06105993239557,
+        "lead (bay) -> carrier J10": 63.34921356500787,
+        "lead (bay) -> carrier J11": 67.56291117524658,
+        "lead (bay) -> carrier J12": 4.673993396371447,
+        "lead (bay) -> carrier J14": 54.86,
+        "lead (bay) -> carrier J15": 56.52328928973262,
+        "lead (bay) -> carrier J16": 0.6099999999999994,
+        "lead (bay) -> carrier J17": 11.907757812989777,
+        "lead (bay) -> carrier J18": 72.5874955711151,
+        "lead (bay) -> carrier GY-521": 45.57094751542611,
+        "lead (bay) -> carrier BMP280": 12.023420425321397,
+        "lead (bay) -> carrier OpenLog": 31.199999999999996,
+        "lead (bay) -> arm switch": 19.03402024270491,
+        "lead (bay) -> logic switch": 37.062649224079856,
+        "lead (bay) -> logic pack": 55.755218102807014,
+        "lead (bay) -> bore (radial)": 1.0,
+        "lead (bay) -> joint screw axes": 0.8621265533535936,
+        "lead (bay) -> GPS lead (bay)": 85.97085005795309,
+        "entry hole -> avionics spigot shoulder (z)": 2.2999999999999545,
+        "entry hole -> joint screw holes (skin)": 33.00083735620818,
+        "entry hole -> vent slots (skin)": 44.63273668077616,
+        "entry hole -> rail-rib roots (skin arc)": 47.94601731886018,
+        "entry hole -> GPS entry hole (skin)": 183.49555921538757,
+        "entry hole off the livery logo at 67 deg": 0.0,
+        "entry hole off the livery logo at 293 deg": 0.0,
+        "external run below the nose-separation edge (z)": 23.0
+      }
     },
     "mass_model": {
       "mode": "slicer_part_g",
       "table": "cad/exports/print/provisional_v09_cadquery/slicer_part_masses.json",
-      "printed_solid_mass_g": 1058.2262296242227,
-      "printed_mass_g": 941.8990863776808,
+      "printed_solid_mass_g": 1057.0747918187226,
+      "printed_mass_g": 940.6165297440263,
       "by_model": {
         "slicer_part_g": [
           "avionics_logo",
@@ -2584,20 +2812,20 @@
           "slicer_z_centroid_design_mm": 86.7454874371395
         },
         "intake_module": {
-          "mass_g": 130.1470355458596,
+          "mass_g": 130.33368888155474,
           "model": "slicer_part_g",
-          "solid_mass_g": 136.83326550719042,
+          "solid_mass_g": 137.09665671340775,
           "class": "A_load_path",
           "settings": "4 walls, 4 top / 4 bottom layers, 15 % gyroid",
-          "slicer_z_centroid_design_mm": 260.33820004596294
+          "slicer_z_centroid_design_mm": 260.44062855526806
         },
         "avionics_module": {
-          "mass_g": 123.9174975215769,
+          "mass_g": 122.94084548925677,
           "model": "slicer_part_g",
-          "solid_mass_g": 126.86016941672992,
+          "solid_mass_g": 125.87849536807465,
           "class": "B_shell",
           "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
-          "slicer_z_centroid_design_mm": 434.96956183168066
+          "slicer_z_centroid_design_mm": 434.65268955619615
         },
         "avionics_logo": {
           "mass_g": 0.9024106714648034,
@@ -2608,20 +2836,20 @@
           "slicer_z_centroid_design_mm": 408.37401870828364
         },
         "avionics_tray": {
-          "mass_g": 36.36039540291242,
+          "mass_g": 36.38487814006547,
           "model": "slicer_part_g",
-          "solid_mass_g": 40.90272124522836,
+          "solid_mass_g": 40.9768,
           "class": "C_flat_plate",
           "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
           "slicer_z_centroid_design_mm": null
         },
         "payload_module": {
-          "mass_g": 171.137756927699,
+          "mass_g": 170.6207162535164,
           "model": "slicer_part_g",
-          "solid_mass_g": 188.48009123071705,
+          "solid_mass_g": 187.97285751288322,
           "class": "B_shell",
           "settings": "3 walls, 4 top / 4 bottom layers, 15 % gyroid",
-          "slicer_z_centroid_design_mm": 612.5796964862075
+          "slicer_z_centroid_design_mm": 612.8256338857339
         },
         "piston": {
           "mass_g": 25.17810977393863,
@@ -2820,23 +3048,23 @@
         }
       },
       "volume_precise_mm3": {
-        "plain_module": 97520.96259248802,
-        "white_body": 96839.96972373564,
+        "plain_module": 96771.62267392108,
+        "white_body": 96090.62980515159,
         "inlay": 680.992877057407,
-        "white_plus_inlay_minus_plain": 8.305025403387845e-06
+        "white_plus_inlay_minus_plain": 8.287912351079285e-06
       },
       "mass_g": {
-        "white_body": 123.9174975215769,
+        "white_body": 122.94084548925677,
         "inlay": 0.9024106714648034,
-        "sum": 124.81990819304171,
-        "plain_solid_at_rho": 127.75246099615933,
+        "sum": 123.84325616072158,
+        "plain_solid_at_rho": 126.77082570283662,
         "models": {
           "avionics_module": "slicer_part_g",
           "avionics_logo": "slicer_part_g"
         }
       },
       "two_colour_slice": {
-        "time_s": 60829.2197265625,
+        "time_s": 60634.66015625,
         "swaps": 576,
         "swaps_by_direction": {
           "T0->T1": 288,
@@ -2847,10 +3075,10 @@
           124.2
         ],
         "filament_g_by_colour": {
-          "#FFFFFF": 228.11,
+          "#FFFFFF": 227.16,
           "#F99963": 75.63
         },
-        "part_g_white": 122.43052185012112,
+        "part_g_white": 121.48711245707753,
         "part_g_orange": 0.9024106714648034,
         "purge_g_by_tool": {
           "0": 79.22884129316179,
@@ -2866,19 +3094,19 @@
           "white_to_orange": 150.0,
           "orange_to_white": 210.0
         },
-        "added_time_s": 51761.36328125,
-        "added_filament_g": 180.44,
+        "added_time_s": 51859.4453125,
+        "added_filament_g": 180.42999999999995,
         "cli_default_flush": {
-          "time_s": 55823.58203125,
+          "time_s": 55923.1328125,
           "purge_g": 211.2768496174503,
           "prime_tower_g": 44.58018463554559,
-          "filament_g": 255.89,
+          "filament_g": 255.88,
           "swaps": 576
         },
         "single_colour_control": {
-          "time_s": 9067.8564453125,
-          "filament_g": 123.3,
-          "part_g": 123.30228242715461
+          "time_s": 8775.21484375,
+          "filament_g": 122.36,
+          "part_g": 122.35879586809908
         },
         "orange_features_g": {
           "Outer wall|T1": 0.9024106714648034,
@@ -2929,16 +3157,16 @@
           }
         },
         "mass_basis": {
-          "pipeline_plain_module_g": 124.78925809861039,
-          "resolved_white_g": 122.43052185012112,
+          "pipeline_plain_module_g": 123.81252890027832,
+          "resolved_white_g": 121.48711245707753,
           "resolved_orange_g": 0.9024106714648034,
-          "resolved_single_colour_control_g": 123.30228242715461,
-          "livery_delta_resolved_g": 0.030650094431322827,
-          "module_total_g": 124.81990819304171,
-          "avionics_module_g": 123.9174975215769,
+          "resolved_single_colour_control_g": 122.35879586809908,
+          "livery_delta_resolved_g": 0.03072726044325691,
+          "module_total_g": 123.84325616072158,
+          "avionics_module_g": 122.94084548925677,
           "inlay_g": 0.9024106714648034,
           "how": "total = pipeline slice of the plain module (white + inlay on filament 1) + (resolved 2-colour white + orange - resolved single-colour control); inlay = resolved orange; white = total - inlay (all M)",
-          "pipeline_plain_module_time_s": 10485.73828125
+          "pipeline_plain_module_time_s": 10034.97265625
         }
       },
       "note": "STEP colours: printed parts white (PRINTED_COLOR), the inlay orange (LIVERY_COLOR), the launch pad black (unchanged). The inlay is one compound of disjoint islands (2 copies x islands)."
@@ -3138,14 +3366,8 @@
         "avionics_tray": 16.0,
         "battery": 28.42534080710379,
         "esc": 7.0,
-        "nav": 79.00632886041473,
         "misc_electronics": 18.0,
-        "fcu": 17.0,
-        "gns": 110.67632989939628,
-        "gns boss 1": 152.88230767489088,
-        "gns boss 2": 152.88230767489088,
-        "gns boss 3": 120.71868123865502,
-        "gns boss 4": 120.71868123865502,
+        "carrier": 4.0,
         "rail x27.2 y+1": 38.29368689964778,
         "rail x22.8 y+1": 40.08997950072133,
         "rail x27.2 y-1": 38.29368689964778,
@@ -3394,41 +3616,65 @@
         "note": "wire09c: the EDF is clocked to ONE lead passage (blister); keyways round the circle; the factory sleeve is kept; every corner of motor_leads.generosity_box is checked by C29 (no measuring)"
       }
     },
-    "stl_files": {
-      "propulsion_module": "cad/exports/cadquery/stl/propulsion_module.stl",
-      "intake_module": "cad/exports/cadquery/stl/intake_module.stl",
-      "avionics_module": "cad/exports/cadquery/stl/avionics_module.stl",
-      "avionics_logo": "cad/exports/cadquery/stl/avionics_logo.stl",
-      "avionics_tray": "cad/exports/cadquery/stl/avionics_tray.stl",
-      "payload_module": "cad/exports/cadquery/stl/payload_module.stl",
-      "piston": "cad/exports/cadquery/stl/piston.stl",
-      "nose_cone": "cad/exports/cadquery/stl/nose_cone.stl",
-      "vane": "cad/exports/cadquery/stl/vane.stl",
-      "vane_coupler": "cad/exports/cadquery/stl/vane_coupler.stl",
-      "servo_cover": "cad/exports/cadquery/stl/servo_cover.stl",
-      "wire_cover": "cad/exports/cadquery/stl/wire_cover.stl",
-      "latch_arm": "cad/exports/cadquery/stl/latch_arm.stl",
-      "gps_pod_lid": "cad/exports/cadquery/stl/gps_pod_lid.stl",
-      "launch_pad": "cad/exports/cadquery/stl/launch_pad.stl"
+    "logic_power": {
+      "in_flight_mass_model": true,
+      "switch_mount": "tube_wall",
+      "parts_in_report": [
+        "logic_pack",
+        "logic_retention",
+        "logic_switch",
+        "logic_switch_lead"
+      ],
+      "parts_g": {
+        "logic_pack": 84.0,
+        "logic_retention": 2.0,
+        "logic_switch": 4.0,
+        "logic_switch_lead": 1.166436334868109
+      },
+      "total_g": 91.16643633486811,
+      "without_logic_power": {
+        "mass_g": 2511.6388124822383,
+        "com_mm": [
+          1.9325525128545653,
+          -0.20038959389748576,
+          381.3736302966493
+        ]
+      },
+      "wall_switches": {
+        "arm": {
+          "theta_deg": 82.0,
+          "z_mm": 365.0,
+          "hole_d": 6.2,
+          "connector": "J16"
+        },
+        "logic": {
+          "theta_deg": 106.0,
+          "z_mm": 395.0,
+          "hole_d": 6.2,
+          "connector": "J15"
+        }
+      },
+      "leads_mm": {
+        "switch -> J15 (route + slack)": 133.2872669736218,
+        "arm switch -> J16 (route + slack)": 103.2432795446931,
+        "pack -> J14 (route + slack, the pack's own lead)": 162.99398117226957
+      },
+      "arm_lead_mass_g_inside_misc": 1.0162163977234655,
+      "release_lead": {
+        "route_mm": 384.1534067244263,
+        "length_mm": 444.1534067244263,
+        "mass_g_E": 3.664920440346558,
+        "in_mass_model": false,
+        "com_mm": [
+          44.84850593225356,
+          22.927429554048057,
+          510.0274505454936
+        ]
+      }
     },
-    "stl_tolerance_mm": {
-      "propulsion_module": 0.05,
-      "intake_module": 0.05,
-      "avionics_module": 0.05,
-      "avionics_logo": 0.05,
-      "avionics_tray": 0.05,
-      "payload_module": 0.025,
-      "piston": 0.05,
-      "nose_cone": 0.05,
-      "vane": 0.05,
-      "vane_coupler": 0.05,
-      "servo_cover": 0.05,
-      "wire_cover": 0.05,
-      "latch_arm": 0.05,
-      "gps_pod_lid": 0.05,
-      "launch_pad": 0.05
-    },
-    "step_file": "cad/exports/cadquery/CanSatEDFRocket.step",
-    "total_time_s": 27.590782165527344
+    "stl_files": {},
+    "stl_tolerance_mm": null,
+    "step_file": null,
+    "total_time_s": 25.9545259475708
   }
 }

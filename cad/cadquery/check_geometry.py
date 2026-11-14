@@ -1966,7 +1966,9 @@ class Checker:
                  "misc / rails; seated on 4 solid bosses with clear blind holes")
         L = self.L
         if not L.has_com_board:
-            return Check("C22", title, NA, "not applicable: params carry no electronics.com / payload_module.com_mount", "",
+            return Check("C22", title, NA, "not applicable: params carry no electronics.com / payload_module.com_mount"
+                         + (" - the carrier PCB (C25) holds it (rocket-carrier round 2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체')"
+                 if self.L.p["electronics"].get("carrier") else ""), "",
                          {"applicable": False})
         com, pay, av = self.shape["com"], self.shape["payload_module"], self.shape["avionics_module"]
         e = COM_PROBE_INSET
@@ -2053,7 +2055,9 @@ class Checker:
                  "tray / battery / ESC / NAV / misc / rails / joint screws, hanging from the bulkhead, bulkhead holes open")
         L = self.L
         if not L.has_radio_log or "radio_log" not in self.shape:
-            return Check("C24", title, NA, "not applicable: params carry no electronics.radio_log", "", {"applicable": False})
+            return Check("C24", title, NA, "not applicable: params carry no electronics.radio_log" + (" - the carrier PCB (C25) holds it (rocket-carrier round 2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체')"
+                 if self.L.p["electronics"].get("carrier") else ""),
+                         "", {"applicable": False})
         rl, pay, av = self.shape["radio_log"], self.shape["payload_module"], self.shape["avionics_module"]
         e, mc = COM_PROBE_INSET, L.radio_log_min_clear
         near = {n: _clearance(rl, self.shape[n]) for n in ("avionics_tray", "battery", "esc", "nav", "misc_electronics", "com")
@@ -2132,8 +2136,9 @@ class Checker:
                  "misc / rising lead bundles, seated on the foam tape, lead holes uncovered, a cable-tie pair of vent holes open")
         L = self.L
         fcu_n = getattr(L, "fcu_part", "fcu")      # v0.9 CAD-2 VTOL: the carrier PCB takes the FCU spot and rules
-        if getattr(L, "vtol", False):
-            title = "(v0.9 CAD-2) carrier PCB on the intake bulkhead (the FCU rules)" + title[len("(v0.6.3) FCU board on the intake bulkhead"):]
+        if fcu_n == "carrier":     # v0.9 CAD-2 VTOL / rocket-carrier round (2026-11-14): + the rev 3.1 envelope boxes
+            title = ("(v0.9 CAD-2 / rocket-carrier) carrier PCB rev 3.1 on the intake bulkhead (the FCU rules, + tab / plug / "
+                     "module boxes)" + title[len("(v0.6.3) FCU board on the intake bulkhead"):])
         if not getattr(L, "has_fcu", False) or fcu_n not in self.shape:
             return Check("C25", title, NA, "not applicable: params carry no electronics.fcu", "", {"applicable": False})
         fcu, intake, av = self.shape[fcu_n], self.shape["intake_module"], self.shape["avionics_module"]
@@ -2193,7 +2198,33 @@ class Checker:
         tie_ok = len(reachable) >= 2 and bool(ties)
         cable_on_board = _vpos(rg._cyl_z(L.cable_hole_d / 2 - e, bb.zmin + e, bb.zmax - e), fcu)
         cable_open = _v(cols["cable hole"].intersect(_box(-big, big, -big, big, z_h0, L.z_intake_bulkhead_top - e)), intake)
-        ok = clear_ok and seat_ok and leads_ok and tie_ok
+        # rocket-carrier round (2026-11-14): the carrier envelope boxes (outline tab, mated plugs, modules) on the solids -
+        # the bore and the bay solids / rising bundles as the board box, no overlap with the intake / avionics modules
+        env: dict[str, float] = {}
+        env_ok = True
+        cbx = getattr(L, "carrier_boxes", {}) or {}
+        if cbx:
+            envs = rg._fuse([_box(*b[0], *b[1], *b[2]) for b in cbx.values()], clean=False)
+            for n in ("avionics_tray", "battery", "buffer_pack", "esc", "misc_electronics", "logic_pack"):
+                if n in self.shape:
+                    env[n] = _clearance(envs, self.shape[n])
+            for nm, shp in risers.items():
+                env[nm] = _clearance(envs, shp)
+            for sy, nm in ((+1.0, "rails + tray stop +y"), (-1.0, "rails + tray stop -y")):
+                ya, yb = (y_in - e, L.body_r + 1.0) if sy > 0 else (-L.body_r - 1.0, -y_in + e)
+                try:
+                    rib = av.intersect(_box(x_r0 - e, x_r1 + e, ya, yb, z_lo - e, L.z_rail_top + e))
+                    env[nm] = _clearance(envs, rib) if rib.Volume() > 1e-6 else 0.0
+                except Exception:  # noqa: BLE001
+                    env[nm] = 0.0
+            env_av, env_sp = _clearance(envs, av), (_clearance(envs, spig) if d_spig > 0.0 else 0.0)
+            env_bore = min(L.spigot_id / 2, L.body_id / 2) - max(math.hypot(x, y) for b in cbx.values() for x in b[0] for y in b[1])
+            env_v = max(_v(envs, intake), _v(envs, av))
+            env_ok = (all(v >= mc - 1e-6 for v in env.values()) and min(env_av, env_sp, env_bore) >= PLACEHOLDER_BORE_CLEAR_MM - 1e-6
+                      and env_v < INTERSECT_TOL_MM3)
+            env.update({"avionics_module": env_av, "intake spigot": env_sp, "radial to spigot ID": env_bore,
+                        "overlap intake / avionics (mm^3)": env_v})
+        ok = clear_ok and seat_ok and leads_ok and tie_ok and env_ok
         return Check("C25", title, PASS if ok else FAIL,
                      "clearance " + ", ".join(f"{k} {v:.2f}" for k, v in near.items())
                      + f" (>= {mc:g}); avionics_module {d_av:.2f}, intake spigot {d_spig:.2f} (>= {PLACEHOLDER_BORE_CLEAR_MM:g}), "
@@ -2204,9 +2235,11 @@ class Checker:
                                                "none (no lead holes in this preset)")
                      + f"; vent holes reachable {', '.join(f'{t:g}' for t in reachable) or 'none'} deg, tie runs across "
                        f"the board " + (", ".join(f"{a:g}/{b:g}" for a, b in ties) or "none")
-                     + f"; cable hole {'covered by the board' if cable_on_board > 1.0 else 'not covered'}",
+                     + f"; cable hole {'covered by the board' if cable_on_board > 1.0 else 'not covered'}"
+                     + ("; envelope boxes (tab / plugs / modules, solids): " + ", ".join(f"{k} {v:.2f}" for k, v in env.items())
+                        + f" ({'ok' if env_ok else 'FAIL'})" if env else ""),
                      f"board x {L.fcu_x[0]:.2f}..{L.fcu_x[1]:.2f} y {L.fcu_y[0]:.2f}..{L.fcu_y[1]:.2f} z {L.fcu_z[0]:.2f}.."
-                     f"{L.fcu_z[1]:.2f} ({L.p['electronics']['fcu']['mass_g']:g} g) on {L.fcu_foam_t:g} mm foam on the intake "
+                     f"{L.fcu_z[1]:.2f} ({L.fcu_mass_g:g} g) on {L.fcu_foam_t:g} mm foam on the intake "
                      f"bulkhead (top z {L.z_intake_bulkhead_top:.2f}); rising bundles = C20 / C23 leg E footprints from the "
                      f"bulkhead up to the tray bottom z {L.z_tray_bottom:.2f}; probes inset {e:g} mm; vent holes Ø{L.vent_hole_d:g} "
                      f"at r {L.vent_hole_r:g}: " + "; ".join(f"{t:g} deg x intake {v['intake']:.4f} x fcu {v['fcu']:.4f}"
@@ -2217,7 +2250,7 @@ class Checker:
                      {"clearance": near, "avionics_module": d_av, "intake_spigot": d_spig, "bore_radial": bore,
                       "seat_volume": v_seat, "seat_z": z_under, "foam_gap": foam, "seat_fill": fill, "lead_hole_columns": lead,
                       "vent_holes": {f"{t:g}": v for t, v in vents.items()}, "vent_reachable": reachable, "tie_pairs": ties,
-                      "cable_hole_covered": cable_on_board > 1.0, "min_clear": mc})
+                      "cable_hole_covered": cable_on_board > 1.0, "min_clear": mc, "envelope_boxes": env, "envelope_ok": env_ok})
 
     def c23_servo_leads(self) -> Check:
         """SPEC 7 C23 (v0.6, SPEC 3.8 / 5.1): ribbon proxies of every lead and of the gathered bundle clear the modules
@@ -2432,6 +2465,27 @@ class Checker:
         v["latch arm x lid"] = max(_v(self.shape["latch_arm"], lid), _v(rg.latch_arm(L, released=True), lid))
         v["release servo x lid"] = _v(self.shape["servo_release"], lid)
         ok["latch / release servo"] = max(v["latch arm x lid"], v["release servo x lid"]) < INTERSECT_TOL_MM3
+        # (9) rocket-carrier round (2026-11-14): no NAV / GNS - the lead ends at J7 on the carrier (Layout route, E): its end
+        # is J7's top face, every bay clearance of the route >= 0 (Layout), and on the solids the bay route keep-out (Ø
+        # bundle) overlaps no flight solid (the carrier envelope without the last segment, which plugs into J7)
+        if getattr(L, "gps_lead_end", "") == "carrier J7":
+            j7, end = L.carrier_boxes["J7"], L.gps_lead_polyline[-1]
+            on_j7 = (j7[0][0] <= end[0] <= j7[0][1] and j7[1][0] <= end[1] <= j7[1][1] and abs(end[2] - j7[2][1]) < 1e-6)
+            bay_cl = {k: val for k, val in L.gps_clearance.items() if k.startswith("lead (bay)")}
+            bd = float(g["lead"]["bundle_d_ASSUMED"])
+            pts = L.gps_lead_polyline[L.gps_lead_bay_start:]
+            segs = [rg._cyl_between(bd, p0, p1, bd / 2, bd / 2) for p0, p1 in zip(pts[:-1], pts[1:])]
+            ov = {}
+            for n, sol in self.shape.items():
+                if n in ("payload_module", "gps", "gps_ground_plane", "gps_pod_lid", "cansat_payload", "nose_cone", "chute_pack"):
+                    continue
+                use = segs[:-1] if n == getattr(L, "fcu_part", "fcu") else segs
+                vv = max(_v(c_, sol) for c_ in use)
+                if vv > 0.0:
+                    ov[n] = vv
+            v["J7 route overlap (max mm^3)"] = max(ov.values()) if ov else 0.0
+            v["J7 route bay clearance min (Layout)"] = min(bay_cl.values())
+            ok["lead end at carrier J7"] = on_j7 and min(bay_cl.values()) >= -1e-9 and all(x < INTERSECT_TOL_MM3 for x in ov.values())
         # antenna lever arm from the vehicle CG (report)
         cg = self.report["totals"]["com_mm"]
         arm = [a - c for a, c in zip(L.gps_antenna_xyz, cg)]
@@ -2472,7 +2526,9 @@ class Checker:
                  "four 45-deg diamond bosses, blind tap holes, GPS and glink leads clear")
         L = self.L
         if not getattr(L, "has_gns", False) or "gns" not in self.shape:
-            return Check("C27", title, NA, "not applicable: params carry no electronics.gns", "", {"applicable": False})
+            return Check("C27", title, NA, "not applicable: params carry no electronics.gns" + (" - the carrier PCB (C25) holds it (rocket-carrier round 2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체')"
+                 if self.L.p["electronics"].get("carrier") else ""),
+                         "", {"applicable": False})
         gns, av = self.shape["gns"], self.shape["avionics_module"]
         e, mc, th = COM_PROBE_INSET, L.gns_min_clear, L.gns_theta
         hd, bw = L.gns_boss_hd, L.gns_dims[1]
@@ -2603,18 +2659,22 @@ class Checker:
     def run(self) -> list[Check]:
         if getattr(self.L, "vtol", False):
             return self.run_vtol()
-        return [self.c1_bed_fit(), self.c2_envelope(), self.c3_edf(), self.c4_vanes(), self.c5_linkage(),
-                self.c6_modules(), self.c7_avionics(), self.c8_exhaust(), self.c9_inlet(), self.c10_min_feature(),
-                self.c11_nose(), self.c12_thrust_weight(), self.c13_stability(), self.c14_placeholders(),
-                self.c15_latch(), self.c16_screw_holes(), self.c17_presets(), self.c18_tab_slide(),
-                self.c19_tab_screws(), self.c20_wire_path(), self.c21_outer_skin(), self.c22_com_board(),
-                self.c23_servo_leads(), self.c24_radio_log(), self.c25_fcu_board(), self.c26_gps_pod(),
-                self.c27_gns_board(), self.c28_coupler(), self.c29_bullets(), self._guard("C33", self.c33_lateral_cg),
+        # rocket-carrier round (2026-11-14): every row guarded (an exception is that row's FAIL, never a crashed table)
+        g = self._guard
+        return [g("C1", self.c1_bed_fit), g("C2", self.c2_envelope), g("C3", self.c3_edf), g("C4", self.c4_vanes),
+                g("C5", self.c5_linkage), g("C6", self.c6_modules), g("C7", self.c7_avionics), g("C8", self.c8_exhaust),
+                g("C9", self.c9_inlet), g("C10", self.c10_min_feature), g("C11", self.c11_nose),
+                g("C12", self.c12_thrust_weight), g("C13", self.c13_stability), g("C14", self.c14_placeholders),
+                g("C15", self.c15_latch), g("C16", self.c16_screw_holes), g("C17", self.c17_presets),
+                g("C18", self.c18_tab_slide), g("C19", self.c19_tab_screws), g("C20", self.c20_wire_path),
+                g("C21", self.c21_outer_skin), g("C22", self.c22_com_board), g("C23", self.c23_servo_leads),
+                g("C24", self.c24_radio_log), g("C25", self.c25_fcu_board), g("C26", self.c26_gps_pod),
+                g("C27", self.c27_gns_board), g("C28", self.c28_coupler), g("C29", self.c29_bullets), self._guard("C33", self.c33_lateral_cg),
                 self._guard("C34", self.c34_clock_coverage), self._guard("C35", self.c35_axial_retention),
                 self._guard("C36", self.c36_livery), self._guard("C37", self.c37_logic_pack),
                 self._guard("C38", self.c38_logic_switch), self._guard("C39", self.c39_logic_reach),
-                self._guard("C40", self.c40_logic_mass), self._guard("C41", self.c41_logic_collar), self.x1_vane_pair(),
-                self.x2_pad()]
+                self._guard("C40", self.c40_logic_mass), self._guard("C41", self.c41_logic_collar),
+                self._guard("C42", self.c42_release_lead_wall_holes), g("X1", self.x1_vane_pair), g("X2", self.x2_pad)]
 
     # ---- v0.9 CAD-2 VTOL configuration ----
     VTOL_NA = {"C2": ("payload envelope does not intersect any printed body", "no CanSat payload in the VTOL configuration"),
@@ -2626,7 +2686,9 @@ class Checker:
                "C24": ("radio / logger box", "the LoRa module and OpenLog sit on the carrier PCB (C25)"),
                "C26": ("GPS pod", "no GPS pod: the GPS sits on the top cap (C30)"),
                "C27": ("GNS board", "the GNS ATmega128A is on the carrier PCB (C25)"),
-               "X2": ("launch pad", "the VTOL vehicle stands on its fins (no launch pad)")}
+               "X2": ("launch pad", "the VTOL vehicle stands on its fins (no launch pad)"),
+               "C42": ("(rocket-carrier) CanSat release lead to the carrier J13 + avionics-tube wall holes",
+                       "no CanSat release servo and no tube-wall switch holes in the VTOL configuration (top cap: C30 / C38)")}
 
     def _guard(self, cid: str, fn) -> Check:
         """Run one check; an exception becomes a FAIL row (never a silent pass, never a crashed table)."""
@@ -2650,7 +2712,8 @@ class Checker:
                  ("C30", self.c30_top_cap), ("C31", self.c31_av_windows), ("C32", self.c32_fin_legs), ("C33", self.c33_lateral_cg),
                  ("C34", self.c34_clock_coverage), ("C35", self.c35_axial_retention), ("C36", self.c36_livery),
                  ("C37", self.c37_logic_pack), ("C38", self.c38_logic_switch), ("C39", self.c39_logic_reach),
-                 ("C40", self.c40_logic_mass), ("C41", self.c41_logic_collar), ("X1", self.x1_vane_pair), ("X2", None)]
+                 ("C40", self.c40_logic_mass), ("C41", self.c41_logic_collar), ("C42", None), ("X1", self.x1_vane_pair),
+                 ("X2", None)]
         for cid, fn in order:
             if fn is None:
                 title, why = self.VTOL_NA[cid]
@@ -3179,6 +3242,8 @@ class Checker:
         na = self._logic_na("C38", title)
         if na:
             return na
+        if getattr(self.L, "lp_rocket", False):     # rocket-carrier round (2026-11-14): no top cap - the wall switch
+            return self._c38_rocket()
         L, sh = self.L, self.shape
         mf, mc = L.p["printer"]["min_feature"], float(L.p["payload_module"]["com_mount"]["min_clear_to_tray"])
         cap = sh["top_cap"]
@@ -3314,6 +3379,8 @@ class Checker:
         na = self._logic_na("C39", title)
         if na:
             return na
+        if getattr(self.L, "lp_rocket", False):     # rocket-carrier round (2026-11-14): no top cap - the wall switch
+            return self._c39_rocket()
         L, sh = self.L, self.shape
         sx, sy = L.lp_sw_xy
         fr = L.lp_finger_r
@@ -3453,6 +3520,8 @@ class Checker:
         na = self._logic_na("C40", title)
         if na:
             return na
+        if getattr(self.L, "lp_rocket", False):     # rocket-carrier round (2026-11-14): no top cap - the wall switch
+            return self._c40_rocket()
         L, rep = self.L, self.report
         lp = rep["extra"].get("logic_power")
         fails = []
@@ -3516,6 +3585,210 @@ class Checker:
                       "c33_status_full": c33_full.status})
 
 
+    # ---------------- rocket-carrier round (2026-11-14): rocket variants of C38-C41, new C42 ----------------
+    def _wall_sw_solids(self) -> dict[str, cq.Shape]:
+        L = self.L
+        return {nm: (self.logic["logic_switch"].shape if nm == "logic" else rg.wall_switch(L, nm)) for nm in L.lp_wall_sw}
+
+    def _c38_rocket(self) -> Check:
+        """rocket-carrier round (2026-11-14; avionics_module.wall_switches, DEFAULT position - user decision pending): the
+        arm (J16) and logic power (J15) switches through the avionics-tube wall, on the solids: (a) each hole is open (a
+        probe Ø hole_d - 2 x COM_PROBE_INSET through the wall meets no material) and the wall round it (hole edge out to the
+        nut's flats) is solid for the nut to bear on; (b) the switch as mounted (nut, body, lugs, bushing, outer nut,
+        lever) does not overlap the avionics module; (c) its part inside the bore keeps >= min_clear_to_tray from every
+        other flight solid and from the other switch; (d) the Layout table (nut bearing, wall ligaments, livery)."""
+        title = ("(rocket-carrier) arm / logic power switches through the avionics-tube wall: holes open, nut seat solid, no "
+                 "overlap with the tube, >= 2 mm to the bay solids and each other")
+        L, sh = self.L, self.shape
+        av = sh["avionics_module"]
+        mc = float(L.p["payload_module"]["com_mount"]["min_clear_to_tray"])
+        e = COM_PROBE_INSET
+        fails, d, v = [], {}, {}
+        sws = self._wall_sw_solids()
+        for nm, w in L.lp_wall_sw.items():
+            th, z, hd = w["theta"], w["z"], w["hole_d"]
+            probe = rg._radial_cyl(hd - 2 * e, L.body_id / 2 - 1.0, L.body_r + 1.0, th, z)
+            v[f"{nm} hole probe x avionics"] = _v(probe, av)
+            naf = float(L.p["avionics_module"]["wall_switches"][nm]["nut_af_ASSUMED"])
+            ring = rg._radial_cyl(naf, L.body_id / 2 + 0.25, L.body_r - e, th, z).cut(
+                rg._radial_cyl(hd + 2 * e, L.body_id / 2 - 1.0, L.body_r + 1.0, th, z))
+            v[f"{nm} nut seat ring fill"] = _vpos(ring, av) / ring.Volume()
+            v[f"{nm} switch x avionics"] = _v(sws[nm], av)
+            inside = rg.wall_switch_inside(L, nm)
+            for n, sol in sh.items():
+                if n in ("avionics_module", "logic_switch"):
+                    continue
+                bb = sol.BoundingBox()
+                if bb.zmax < z - 40.0 or bb.zmin > z + 40.0:
+                    continue
+                d[f"{nm} -> {n}"] = _clearance(inside, sol)
+            if v[f"{nm} hole probe x avionics"] >= COM_HOLE_CLEAR_TOL_MM3:
+                fails.append(f"{nm} hole not open ({v[f'{nm} hole probe x avionics']:.3f} mm^3)")
+            if v[f"{nm} nut seat ring fill"] < COM_FILL_MIN:
+                fails.append(f"{nm} nut seat {v[f'{nm} nut seat ring fill']:.3f} solid (< {COM_FILL_MIN:g})")
+            if v[f"{nm} switch x avionics"] >= INTERSECT_TOL_MM3:
+                fails.append(f"{nm} switch overlaps the tube {v[f'{nm} switch x avionics']:.3f} mm^3")
+        d["arm -> logic switch"] = _clearance(rg.wall_switch_inside(L, "arm"), rg.wall_switch_inside(L, "logic"))
+        short = {k: round(x, 3) for k, x in d.items() if x < mc - 1e-6}
+        if short:
+            fails.append(f"short (< {mc:g}) {short}")
+        lay = {k: x for k, x in L.lp_clearance.items() if ("switch" in k or "hole" in k) and "lead" not in k}
+        bad = {k: round(x, 3) for k, x in lay.items() if x < L.lp_limits[k] - 1e-9}
+        if bad:
+            fails.append(f"Layout {bad}")
+        near = sorted(d, key=d.get)[:5]
+        return Check("C38", title, FAIL if fails else PASS,
+                     "; ".join(f"{nm} theta {w['theta']:g} deg z {w['z']:g} Ø{w['hole_d']:g} ({w['connector']})"
+                               for nm, w in L.lp_wall_sw.items())
+                     + "; " + ", ".join(f"{k} {x:.4f}" for k, x in v.items()) + "; nearest "
+                     + ", ".join(f"{k} {d[k]:.2f}" for k in near) + f" mm (>= {mc:g})",
+                     "; ".join(fails) if fails else
+                     "Layout (E): " + ", ".join(f"{k} {x:.2f} (>= {L.lp_limits[k]:g})" for k, x in
+                                                sorted(lay.items(), key=lambda kv: kv[1] - L.lp_limits[kv[0]])[:10])
+                     + f"; nut seat sagitta on the curved bore {L.lp_wall_sw['logic']['nut_seat_sagitta_A']:.2f} mm (A); "
+                     "DEFAULT position (user decision pending); NOT_VERIFIED: the levers vs the launch pad / handling",
+                     {"probe_mm3": v, "clearance_mm": d, "layout_mm": lay})
+
+    def _c39_rocket(self) -> Check:
+        """rocket-carrier round: reach / exposure of the two wall-switch levers (E, Layout + solids): the lever (Ø 3 out to
+        lever_out over the skin) meets no flight solid; the finger circles on the skin keep clear of the other switch's nut
+        (Layout); the protrusion over the body radius is reported (aerodynamic / handling effect NOT_VERIFIED)."""
+        title = "(rocket-carrier) wall-switch levers reachable from outside: lever clear of every solid, finger circles clear"
+        L, sh = self.L, self.shape
+        fails, v = [], {}
+        for nm, w in L.lp_wall_sw.items():
+            lever = rg._radial_cyl(rg.WALL_SW_LEVER_D, L.body_r + 0.2, w["lever_r"][1], w["theta"], w["z"])
+            hit = {n: _v(lever, sol) for n, sol in sh.items() if n != "logic_switch"}
+            hit = {n: x for n, x in hit.items() if x > 0.0}
+            v[f"{nm} lever overlaps"] = hit
+            if any(x >= INTERSECT_TOL_MM3 for x in hit.values()):
+                fails.append(f"{nm} lever hits {hit}")
+        fin = {k: x for k, x in L.lp_clearance.items() if k.startswith(("arm finger", "logic finger"))}
+        bad = {k: round(x, 3) for k, x in fin.items() if x < L.lp_limits[k] - 1e-9}
+        if bad:
+            fails.append(f"finger circles {bad}")
+        prot = {nm: w["lever_r"][1] - L.body_r for nm, w in L.lp_wall_sw.items()}
+        return Check("C39", title, FAIL if fails else PASS,
+                     "levers clear of every solid; " + ", ".join(f"{k} {x:.2f}" for k, x in fin.items())
+                     + "; lever tips " + ", ".join(f"{k} {x:.1f} mm" for k, x in prot.items()) + " over the body radius (A)",
+                     "; ".join(fails) if fails else
+                     "NOT_VERIFIED: launch-pad / handling contact, drag / asymmetry of two 15 mm levers, accidental "
+                     "switching in flight",
+                     {"lever_hits": v, "finger": fin, "protrusion_mm": prot})
+
+    def _c40_rocket(self) -> Check:
+        """rocket-carrier round: logic_power.in_flight_mass_model (DEFAULT true in the rocket - user decision pending) is
+        honoured: true -> the pack, switch, switch lead and retention are report parts and in the totals; false -> none of
+        them. Reports the logic-power mass / CG effect (report extra.logic_power.without_logic_power)."""
+        title = "(rocket-carrier) logic power mass switch honoured (in_flight_mass_model) + its mass / CG effect"
+        L, rep = self.L, self.report
+        names = set(rg.logic_power_parts(L))
+        in_parts = sorted(names & set(rep["parts"]))
+        fails = []
+        if L.logic_in_flight and sorted(names - set(rep["parts"])):
+            fails.append(f"in_flight_mass_model true but {sorted(names - set(rep['parts']))} missing")
+        if not L.logic_in_flight and in_parts:
+            fails.append(f"in_flight_mass_model false but {in_parts} in the report")
+        lp = rep["extra"].get("logic_power") or {}
+        wo = lp.get("without_logic_power") or {}
+        t = rep["totals"]
+        m_lp = sum(rep["parts"][n]["mass_g"] for n in in_parts)
+        if lp and abs(lp.get("total_g", 0.0) - m_lp) > 1e-6:
+            fails.append("extra.logic_power.total_g != the parts' sum")
+        dz = t["com_mm"][2] - wo["com_mm"][2] if wo else float("nan")
+        return Check("C40", title, FAIL if fails else PASS,
+                     f"in_flight_mass_model {str(L.logic_in_flight).lower()} (DEFAULT, user decision pending): parts "
+                     f"{in_parts} {m_lp:.2f} g; vehicle {t['mass_g']:.2f} g CG ({t['com_mm'][0]:+.2f}, {t['com_mm'][1]:+.2f}, "
+                     f"{t['com_mm'][2]:.1f}); without the logic power {wo.get('mass_g', float('nan')):.2f} g, CG z shift "
+                     f"{dz:+.2f} mm",
+                     "; ".join(fails) if fails else
+                     f"arm switch + lead inside electronics.misc ({lp.get('arm_lead_mass_g_inside_misc', 0.0):.2f} g lead E); "
+                     "release lead reported only (C42)",
+                     {"in_flight_mass_model": bool(L.logic_in_flight), "parts_in_report": in_parts, "logic_mass_g": m_lp,
+                      "without": wo})
+
+    def _c41_rocket(self) -> Check:
+        title = "(2026-11-05) logic switch protective collar (top cap)"
+        return Check("C41", title, NA, "not applicable: the rocket has no top cap - its logic switch is in the avionics-tube "
+                     "wall (no collar; C38 / C39), rocket-carrier round 2026-11-14", "", {"applicable": False})
+
+    def c42_release_lead_wall_holes(self) -> Check:
+        """rocket-carrier round (2026-11-14, user decision 2026-11-13: carrier rev 3.1 with the J13 release-signal pad): (a)
+        the release-lead entry hole (avionics_module.release_entry) is open through the avionics wall (probe) with solid
+        wall round it; (b) the lead's bay route keep-out (Ø wire_od, Layout.release_lead_polyline from the entry) overlaps
+        no flight solid (the carrier envelope without the last segment, which ends on the J13 pad) and keeps >= 0 to every
+        Layout box (E); (c) the external run down the skin (from below the pod floor to the hole) overlaps no part; (d) its
+        end is the J13 pad; (e) every avionics-tube wall hole (switch holes, release entry) keeps its ligament / livery
+        rules (Layout tables).  N/A without the release lead."""
+        title = ("(rocket-carrier) CanSat release lead pod -> J13 pad and the avionics-tube wall holes (entry hole open, "
+                 "route clear, ligaments)")
+        L, sh = self.L, self.shape
+        if not getattr(L, "has_release_lead", False):
+            return Check("C42", title, NA, "not applicable: no electronics.carrier.release_lead / avionics_module.release_entry",
+                         "", {"applicable": False})
+        av = sh["avionics_module"]
+        e = COM_PROBE_INSET
+        fails, v = [], {}
+        th, z, hd = L.rl_entry_theta, L.rl_entry_z, L.rl_entry_d
+        v["entry hole probe x avionics"] = _v(rg._radial_cyl(hd - 2 * e, L.body_id / 2 - 1.0, L.body_r + 1.0, th, z), av)
+        ring = rg._radial_cyl(hd + 2.0, L.body_id / 2 + e, L.body_r - e, th, z).cut(
+            rg._radial_cyl(hd + 2 * e, L.body_id / 2 - 1.0, L.body_r + 1.0, th, z))
+        v["entry hole wall ring fill"] = _vpos(ring, av) / ring.Volume()
+        if v["entry hole probe x avionics"] >= COM_HOLE_CLEAR_TOL_MM3 or v["entry hole wall ring fill"] < COM_FILL_MIN:
+            fails.append("entry hole not open / wall round it not solid")
+        keep = rg.release_lead_keepouts(L)
+        last = f"release lead {len(keep) - 1}"
+        ov = {}
+        for n, sol in sh.items():
+            for kn, c_ in keep.items():
+                if kn == last and n == getattr(L, "fcu_part", "fcu"):
+                    continue
+                x = _v(c_, sol)
+                if x > 0.0:
+                    ov[f"{kn} x {n}"] = x
+        if any(x >= INTERSECT_TOL_MM3 for x in ov.values()):
+            fails.append(f"bay route overlaps {ov}")
+        rw = L.rl_od / 2
+        p1, p2 = L.release_lead_polyline[1], L.release_lead_polyline[2]
+        # the pod's own material under its floor (its support-free lower gusset) on the lead's line: the lead must pass the
+        # pod floor and that gusset through an exit slot that is NOT modelled (WARN, CAD follow-up); the external run is
+        # checked from the gusset's lowest point on that line down to the entry hole
+        col = rg._box_polar(L.body_r + 0.05, math.hypot(p1[0], p1[1]) + rw, -rw, rw, L.z_payload_bottom, L.release_pod_z0, th)
+        z_gb = min(_bottom_z(sh["payload_module"], col), L.release_pod_z0)
+        v["pod gusset on the lead line below the floor (mm)"] = L.release_pod_z0 - z_gb
+        ext = rg._cyl_between(L.rl_od, (p1[0], p1[1], z_gb - 0.5), p2, 0.0, rw)
+        ov_ext = {n: _v(ext, sol) for n, sol in sh.items()}
+        ov_ext = {n: x for n, x in ov_ext.items() if x > 0.0}
+        if any(x >= INTERSECT_TOL_MM3 for x in ov_ext.values()):
+            fails.append(f"external run overlaps {ov_ext}")
+        warns = [f"the lead's exit from the release pod is NOT modelled: it must pass the pod floor "
+                 f"({L.p['pod']['floor_t']:g} mm) and {v['pod gusset on the lead line below the floor (mm)']:.1f} mm of the "
+                 "pod's lower gusset on its line - add a lead slot / hole to the pod (CAD follow-up; the four-board rocket "
+                 "had the same unmodelled exit)"]
+        end = L.release_lead_polyline[-1]
+        if math.dist(end, L.carrier_release_pad) > 1e-6:
+            fails.append("the lead does not end on the J13 pad")
+        bad = {k: round(x, 3) for k, x in L.rl_clearance.items() if x < L.rl_limits[k] - 1e-9}
+        holes = {k: x for k, x in L.lp_clearance.items() if "hole" in k} if getattr(L, "lp_rocket", False) else {}
+        bad.update({k: round(x, 3) for k, x in holes.items() if x < L.lp_limits[k] - 1e-9})
+        if bad:
+            fails.append(f"Layout {bad}")
+        worst = sorted(L.rl_clearance.items(), key=lambda kv: kv[1] - L.rl_limits[kv[0]])[:6]
+        return Check("C42", title, FAIL if fails else (WARN if warns else PASS),
+                     f"entry hole theta {th:g} z {z:.1f} Ø{hd:g}: probe {v['entry hole probe x avionics']:.4f} mm^3, ring "
+                     f"{v['entry hole wall ring fill']:.3f} solid; bay route overlaps {max(ov.values()) if ov else 0.0:.3f} "
+                     f"mm^3, external run {max(ov_ext.values()) if ov_ext else 0.0:.3f} mm^3; ends on J13 "
+                     f"({end[0]:.2f}, {end[1]:.2f}, {end[2]:.2f}); route {L.rl_route_mm:.0f} mm + slack = {L.rl_len_mm:.0f} mm, "
+                     f"{L.rl_mass_g:.2f} g (E, reported, not in the mass model)",
+                     "; ".join(fails + warns) if fails else
+                     "; ".join(warns) + "; Layout (E) nearest: "
+                     + ", ".join(f"{k} {x:.2f} (>= {L.rl_limits[k]:g})" for k, x in worst)
+                     + "; switch-hole rules: " + ", ".join(f"{k} {x:.2f}" for k, x in sorted(holes.items(), key=lambda kv: kv[1])[:4])
+                     + f"; external run vs latch lug arc {L.rl_latch_lug_arc_mm:.1f} mm; NOT_VERIFIED: pod-floor exit, "
+                     "taped external run, inline connector at the avionics / payload joint, Y-lead on J12",
+                     {"probe": v, "overlap_bay_mm3": ov, "overlap_external_mm3": ov_ext, "layout_mm": dict(L.rl_clearance),
+                      "route_mm": L.rl_route_mm, "length_mm": L.rl_len_mm, "mass_g_E": L.rl_mass_g})
+
     def c41_logic_collar(self) -> Check:
         """Switch-collar round (user decision 2026-11-05, '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘';
         params configs.vtol.logic_power.collar): the collar's own rules on the solids (M) and by hand (E) - (a) FDM wall:
@@ -3544,6 +3817,8 @@ class Checker:
         na = self._logic_na("C41", title)
         if na:
             return na
+        if getattr(self.L, "lp_rocket", False):     # rocket-carrier round (2026-11-14): no top cap - the wall switch
+            return self._c41_rocket()
         L, sh = self.L, self.shape
         if not getattr(L, "has_lp_collar", False):
             return Check("C41", title, NA, "not applicable: no configs.vtol.logic_power.collar in params", "",

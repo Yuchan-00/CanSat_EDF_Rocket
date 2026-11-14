@@ -19,7 +19,16 @@
     "v09_fix_note": "v0.9 fix round (2026-10-28, reviewer defects): geometry - lip-pocket slit + strut tie anchors + bulkhead hole 20 x 11 at r 42-53 (motor leads installable and restrained off the EDF throat), coupler with a set screw on a +v D-flat (axial retention, no D-flat play) and a horn socket (no coupler screws), brass hinge bushings, foam pad spec, 22 mm slot / groove slivers removed; VTOL - solid fins (span 76.8, footprint 246.8), tray plane 25 -> 14.6 (lateral CG), side windows moved, gland at 180 deg / GPS patch at 0 deg, eye-bolt load washer + jam nut, tether kit boxes. params_gen.h is STALE after this edit until the firmware round regenerates it.",
     "v09_clock_note": "wire09c (user 2026-10-30, '알아서 여유있게 해주면 안돼?'): the motor-lead passage is made generous so the real EDF fits without measuring - propulsion_module.tab_mount 'clock_keyways' (keyways round the circle, no tab screws; the EDF is clocked to ONE lead passage at lead_passage.theta_deg that leaves the body through a blister), motor_leads.generosity_box (factory sleeve kept up to 35 mm / O12 / 12 x 5 ribbon, lead O up to 4.3, bend R 7-15, TE 0-3, protrusion 30-36, rim gap 0-2, any exit azimuth), edf.axial_retention (lip on the shelf, foam under the tabs). Before-state: history/v0.9_wire_round2/.",
     "v09_livery_note": "livery round (user decisions 2026-11-04): (1) every printed part of the vehicle changes from Bambu PLA Matte Black ('Charcoal') to WHITE - Bambu PLA Matte 'Ivory White' (#FFFFFF, code 11100; check the name at purchase); the launch pad is not part of the request and stays Black / Charcoal (printer.color_exceptions). (2-4) the word YUCHAN in Bambu PLA Matte 'Mandarin Orange' (#F99963, code 11300) as a FLUSH 2-colour inlay (one outer wall line, 0.42 mm deep, no relief) printed on the P2S with an AMS, on both sides of the avionics_module (azimuth 67 / 293 deg), rocket and vtol (battery / tether / hybrid); 'launch' concept, VERTICAL version (reads along the axis, letter tops to the left seen from outside), chosen by the user knowingly accepting the AMS cost: one swap per orange layer, 578 layers at 0.20 mm (M) -> ~578 swaps, about +14 to +15 h of print time and ~180-260 g purge + prime-tower waste (E before the slice; the sliced values are in the print plans, M). Cost reduced only by legitimate means: Bambu's measured flush pair nearest these colours (150 / 210 mm3 instead of the CLI's 280; an ASSUMED pair for white / Mandarin, A), detect_thin_wall (one orange pass instead of two, review F1), prime tower kept (quality), 0.28 mm layers NOT applied (user decision). New part avionics_logo (the orange inlay, own slicer mass); avionics_module = the white body with the logo pocket; their union is the old module (C36). Before-state: history/v0.9_pre_livery/.",
-    "v09_logic_power_note": "v0.9 logic-power round (user decisions 2026-11-05, configs.vtol.logic_power): the carrier PCB rev 2c's 1S logic pack (devicemart 16021596, 84 g) at spot A on the 6S pack's -x face, an MTS-102 toggle through the VTOL top cap (lead to J15), the leads to J14 / J15 - battery build only (tether / hybrid not maintained with it). in_flight_mass_model false (mass decision deferred by the user): the solids are for geometry / interference (C37-C39) and the pending-mass report; the mass the sim / firmware consume is unchanged (C40). params_gen.h / bridge_config_gen.h go STALE by the params sha only and are NOT regenerated in this round (user decision 4). Switch-collar round (2026-11-05, user: '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'): logic_power.collar, printed with the top cap (battery build); firmware headers / HEX again NOT regenerated (user 2026-11-05: '다음 펌웨어 작업 때 만들자')."
+    "v09_logic_power_note": "v0.9 logic-power round (user decisions 2026-11-05, configs.vtol.logic_power): the carrier PCB rev 2c's 1S logic pack (devicemart 16021596, 84 g) at spot A on the 6S pack's -x face, an MTS-102 toggle through the VTOL top cap (lead to J15), the leads to J14 / J15 - battery build only (tether / hybrid not maintained with it). in_flight_mass_model false (mass decision deferred by the user): the solids are for geometry / interference (C37-C39) and the pending-mass report; the mass the sim / firmware consume is unchanged (C40). params_gen.h / bridge_config_gen.h go STALE by the params sha only and are NOT regenerated in this round (user decision 4). Switch-collar round (2026-11-05, user: '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'): logic_power.collar, printed with the top cap (battery build); firmware headers / HEX again NOT regenerated (user 2026-11-05: '다음 펌웨어 작업 때 만들자').",
+    "rocket_carrier_note": "rocket-carrier round (2026-11-14, user decisions 2026-11-13: the carrier PCB rev 3.1 flies in the ROCKET; '로켓 기본을 캐리어로 교체' (replace the rocket baseline: the four hand-wired boards NAV / FCU / COM / GNS and the radio box go away, archived in history/v0.9_pre_rocket_carrier/, not kept as a config); the rocket intake bulkhead vent holes 4 at 45 deg -> 2 at 90 / 270 deg (as configs.vtol) so the cable tie can pass). Study evidence: rocket_fit / rocket_fit_verify (2026-11-13): mount = the rocket's FCU spot, flat on the intake bulkhead on 3 mm foam + a cable tie through the 90 / 270 deg vent holes (the same place and z-relationship as the VTOL carrier); arm switch J16 and logic power switch J15 through the avionics-tube wall (avionics_module.wall_switches); the 1S logic pack at spot A on the rocket tray (logic_power, in the flight mass); the GPS lead from the entry hole down to J7 on the carrier; the CanSat release-servo lead from the release pod to the J13 pad (electronics.carrier.release_lead, avionics_module.release_entry). Derived in cad/layout.py (Layout._fcu carrier envelope, _logic_power_rocket, _release_lead), checked by C25 / C26 / C37-C40 (rocket variants) and C42.",
+    "rocket_carrier_open_decisions": [
+      "misc box 5 V UBEC: default KEEP (electronics.misc mass unchanged 40 g) - default, user decision pending (the carrier takes its logic 5 V from the 1S pack through its TPS61023 boost, so the UBEC has no logic consumer any more; dropping it saves ~15 g, A)",
+      "1S logic pack in the rocket flight mass: default YES (logic_power.in_flight_mass_model true - it flies) - default, user decision pending",
+      "arm / logic power switch hole position: default = the study's proposal (avionics-tube wall, theta 82 / 106 deg, z 365 / 395) - default, user decision pending",
+      "rocket avionics-tube windows for the ESP-12F antenna: default NONE (the ESP-12F sits on the intake bulkhead inside the closed PLA tube; the carrier's antenna rationale assumed the VTOL windows at 90 / 112 deg) - RF range to the ~139 m apogee NOT_VERIFIED - default, user decision pending",
+      "ESC brake setting: unknown, not a CAD item - user decision pending",
+      "carrier mass: rocket uses the rev 3.1 breakdown estimate (electronics.carrier.mass_g); configs.vtol keeps its CAD-2 50 g until the VTOL is re-baselined - weigh the assembled board"
+    ]
   },
   "payload": {
     "standard": "International CanSat class: can D66 x 115 mm, <= 350 g (budget design). The KAIST classes (650-1000 g, D110 x 200 mm envelope) need the full preset KAIST_90mm_12S.",
@@ -813,7 +822,7 @@
     "bulkhead_t": 2.0,
     "cable_hole_d": 20.0,
     "vent_hole_d": 8.0,
-    "vent_hole_count": 4,
+    "vent_hole_count": 2,
     "vent_hole_r": 40.0,
     "min_inlet_area_ratio": 2.0,
     "lip_gap_below": 1.0,
@@ -865,7 +874,9 @@
         "note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'leads hang 129 mm free in the plenum, 0.8 mm inside the EDF throat radius'): printed anchors on the 0 deg strut's inner face between the gate and the bulkhead, count = the fewest that keep every free span <= motor_leads.plenum.max_free_span. Each is a block w (tangential) wide whose inner face is the leads' outer line (Layout.ml_anchor_u), h tall + a wedge_deg roof toward the bulkhead (the intake prints flipped: no support), with a tangential tunnel (tunnel_h x tunnel_t, wall from the inner face) for one cable tie round the three leads. Tie them after the intake is lowered (reach through the windows)"
       },
       "skirt_cut_note": "v0.9 fix round (2026-10-28, reviewer defects): below the skirt top the groove cutter starts at sqrt((body_id/2)^2 - (w/2)^2) - 0.3 (the skirt bore) so no sliver of the skirt is left at the groove edges"
-    }
+    },
+    "vent_hole_theta0_deg": 90.0,
+    "vent_hole_note": "rocket-carrier round (2026-11-14, user decision 2026-11-13): 4 holes at 45 / 135 / 225 / 315 deg -> 2 at 90 / 270 deg (the configs.vtol set): the 76 x 70 carrier covered all four 45-deg holes (plan gap -4.00 mm, M - Layout raised 'no cable-tie run'); at 90 / 270 the plan gap is 1.0 mm and the tie runs across the board. bulkhead_t stays 2.0. Reprint the rocket intake module"
   },
   "avionics_module": {
     "tube_h": 200.0,
@@ -899,30 +910,63 @@
       "z_below_payload_skirt": 6.0,
       "note": "v0.8: radial hole through the avionics tube wall under the GPS connector pocket (rubber grommet or a ring of tape); the lead enters the bay here.  Wire only - the connector stays in the pocket"
     },
-    "gns_mount": {
-      "theta_deg": 180.0,
-      "u_back": 50.0,
-      "top_below_entry_hole": 1.0,
-      "pattern": 44.0,
-      "boss_half_diag": 4.5,
-      "hole_d": 2.5,
-      "hole_depth": 3.8,
-      "back_clear": 1.5,
-      "min_clear": 2.0,
-      "screws": "4 x M3 x 5 self-tapping from the component side through the board into the bosses (the COM board's screws: 3.4 mm thread in a 3.8 mm blind hole)",
-      "screws_g_ASSUMED": 1.6,
-      "gps_header_v": 12.0,
-      "glink_header_v": -20.0,
-      "glink_lead": {
-        "cores": 4,
-        "awg": 28,
-        "mass_g_per_m_ASSUMED": 5.0,
-        "connector_pair_g_ASSUMED": 1.0,
-        "slack_mm": 60.0,
-        "note": "NAV USART1 <-> GNS USART0 (flight_computer.glink) + 5 V + GND from the NAV; runs over the tray top at payload_module.gps_pod.lead.bay_cross_y / bay_route_z_above_tray_top (the v0.8 GPS lead's corridor) to the NAV top.  Its mass is inside electronics.gns.mass_g_ASSUMED (whose note books 3 g of leads); Layout reports the estimate"
+    "gns_mount": null,
+    "nav_holes": false,
+    "rocket_carrier_note": "rocket-carrier round (2026-11-14): no NAV board on the tray (nav_holes false), no GNS board on the -x wall (gns_mount null: bosses gone); the GPS entry hole stays (the lead now drops to J7 on the carrier); new wall holes: wall_switches (arm J16, logic power J15) and release_entry (the CanSat release-servo lead)",
+    "wall_switches": {
+      "arm": {
+        "connector": "J16",
+        "theta_deg": 82.0,
+        "theta_note": "82 / 106 deg (near the study's 90 deg proposal; the arm hole stays off the YUCHAN livery logo sector 57..77 deg at z 335..458, Layout raised at 78 deg): at 90 / 90 the logic switch lead, dropping from its lugs to J15, ran through the arm switch body below it (Layout -1.50 mm); split in theta each lead drops on its own side (arm +x toward J16, logic -x toward J15) and the arm nut keeps >= 5 mm from the +y rail ribs",
+        "z": 365.0,
+        "hole_d": 6.2,
+        "hole_note": "6.2 (the M6 x 0.75 bushing hole of logic_power.switch, ASSUMED), not the top cap's 6.5: with a 6.5 hole the 8 AF nut's flats bear only 0.75 mm on the wall (< nut_min_bearing_w 0.8)",
+        "model": "M6 mini toggle (the arming switch, M6 x 0.75 bushing ASSUMED as the VTOL top cap's switch) - was inside the misc box with no wall hole; its mass stays inside electronics.misc",
+        "body_xyz_ASSUMED": [
+          8.0,
+          13.0,
+          12.0
+        ],
+        "lugs_h_ASSUMED": 5.0,
+        "nut_af_ASSUMED": 8.0,
+        "nut_d_ASSUMED": 9.2,
+        "nut_min_bearing_w_ASSUMED": 0.8,
+        "lever_out_ASSUMED": 15.0,
+        "lead": {
+          "wire_od_ASSUMED": 3.0,
+          "slack_mm": 60.0,
+          "mass_g_per_m_ASSUMED": 5.0,
+          "connector_g_ASSUMED": 0.5,
+          "in_mass_model": false,
+          "note": "lugs -> straight down beside the tray's +y edge -> J16's lead end (right-angle plug, lead along +y): mass inside electronics.misc (the arming switch lead existed before, not added again)"
+        }
       },
-      "esc_distance_target_mm": 100.0,
-      "note": "v0.8.1 (architect 2026-10-21: a fourth ATmega128A, the GNS board, runs the GPS receiver, UBX, gps_nav and the position controller; flight_computer.architecture_v081 / gns / glink, electronics.gns).  The board stands on the avionics tube's inner wall at theta_deg (the -x wall, outboard of the battery, both presets), PCB back face u_back from the axis on four printed bosses (diamond cross-section boss_half_diag: every face at 45 deg, support-free when the avionics module prints upright) with blind hole_d x hole_depth tap holes on the board's pattern, components facing the axis; its top is top_below_entry_hole under the GPS entry hole (avionics_module.gps_entry), so the GPS lead runs ~15 mm in the bay to the GNS header (gps_header_v, ASSUMED side) and the glink lead (glink_header_v) runs over the tray top to the NAV.  dims (electronics.gns.dims_lwh) = z length x tangential width x radial height incl. components, as electronics.nav.  back_clear = PCB back to the wall at the board edges (solder-side pin stubs, ASSUMED 1.5 mm); min_clear = board to the tray, its placeholders, the rails, the COM board / radio box / FCU (the value of payload_module.com_mount.min_clear_to_tray).  Install with the tray out (screwdriver along x from the bay); the battery slides past on the tray.  All derived in cad/layout.py (Layout._gns), checked by C27"
+      "logic": {
+        "connector": "J15",
+        "theta_deg": 106.0,
+        "z": 395.0,
+        "hole_d": 6.2,
+        "model": "MTS-102 2-position mini toggle, harness version (logic_power.switch; sizes ASSUMED as in configs.vtol)",
+        "body_xyz_ASSUMED": [
+          8.0,
+          13.0,
+          10.0
+        ],
+        "lugs_h_ASSUMED": 5.0,
+        "nut_af_ASSUMED": 8.0,
+        "nut_d_ASSUMED": 9.2,
+        "nut_min_bearing_w_ASSUMED": 0.8,
+        "lever_out_ASSUMED": 15.0
+      },
+      "finger_clear_d_ASSUMED": 20.0,
+      "min_ligament": 1.2,
+      "note": "rocket-carrier round (2026-11-14; study proposal, DEFAULT - user decision pending: '로켓에는 상단 캡이 없음'): the rocket has no top cap, so the arming switch (carrier J16) and the logic power switch (J15) go through the avionics-tube wall at theta_deg, z (vehicle z of the hole axis), radial bushings, panel nuts on the 1.2 mm wall (curvature sagitta over the 9.2 mm nut ~0.18 mm, A). body_xyz_ASSUMED = tangential x axial (z, the lever throws along z) x radial depth inside the bore; lugs_h below the body (radially inward); lever_out = lever tip outside the body OD (A). Clear of the rail ribs (+-64.8 deg), the tray, the misc box, the vent slots (60 / 120 deg z 462.9..502.9) and the intake / avionics joint (z 340.4). Layout._logic_power_rocket derives / raises; C38 / C39 / C42 check. NOT_VERIFIED: the levers vs the launch pad / handling, aerodynamic effect of the two 15 mm levers"
+    },
+    "release_entry": {
+      "theta_deg": 12.0,
+      "d": 5.0,
+      "z_below_payload_skirt": 6.0,
+      "note": "rocket-carrier round (2026-11-14): radial hole through the avionics tube wall under the release pod (payload_module.release_pod_theta_deg 12), at the GPS entry hole's height; the CanSat release-servo lead enters the bay here (grommet / tape ring as the GPS entry). The lead outside (pod floor -> along the payload / avionics skin -> this hole) is a lead route only (E): no printed raceway, no pod-floor exit hole modelled - NOT_VERIFIED"
     }
   },
   "battery": {
@@ -949,60 +993,20 @@
         9.0
       ]
     },
-    "nav": {
-      "model": "NAV board: ATmega128A minimum-system board (16 MHz crystal) + GY-521 MPU-6050 + BMP280 barometer module (TYE-BMP29, I2C 0x77; 2026-11: the bought part and the default NAV driver, flight_computer.nav.baro_sensor - the GY-63 MS5611 of v0.5 .. v0.9 stays a firmware build option) on a 4-ch level shifter (3.3 V side) - v0.6.3: the sensor computer, at the v0.5 flight-computer spot",
-      "mass_g": 40.0,
-      "dims_lwh": [
-        50.0,
-        50.0,
-        15.0
-      ],
-      "note": "dims = z length x y width x x height on the tray; 44 mm square M3 hole pattern"
-    },
-    "fcu": {
-      "model": "FCU board: ATmega128A minimum-system board (16 MHz crystal) - supervisor, attitude controller, PWM outputs, OpenLog / COM / NAV links",
-      "mass_g": 20.0,
-      "dims_lwh": [
-        50.0,
-        50.0,
-        15.0
-      ],
-      "foam_t": 3.0,
-      "note": "v0.6.3: lies flat on the intake bulkhead's top face (inside the intake spigot, below the avionics tray), edges along x / y, centred on the axis, on foam_t double-sided foam tape + a cable tie through two bulkhead vent holes. ASSUMED mass (bare board + harness) - weigh it. dims = x length x y width x z height"
-    },
-    "com": {
-      "model": "ATmega128A minimum-system board #2 (COM: vehicle radio - the ESP-12E Wi-Fi bridge since 2026-11-06, LoRa the fallback, model_note_2026_11_06 - uplink decoding, TELEM building), same board type as the FCU",
-      "mass_g": 20.0,
-      "dims_lwh": [
-        50.0,
-        50.0,
-        15.0
-      ],
-      "note": "ASSUMED mass (bare board + ilink/radio wiring) - weigh it. Mounted horizontally under the payload bulkhead on payload_module.com_mount: dims = x length x y width x z height, components hanging down (solder wires or right-angle headers: no straight pin headers on the hanging side)",
-      "model_note_2026_11_06": "the COM's radio is now the ESP8266 Wi-Fi bridge (flight_computer.link.vehicle_radio = esp_bridge, an ESP-12E on UART1 + RESET, firmware/README.md 0.10.4); LoRa (lora_uart / sx127x) stays the selectable fallback. Mass not re-estimated"
-    },
-    "radio_log": {
-      "items": "LoRa module + antenna (user-owned), OpenLog clone + microSD, 2nd BSS138 4-ch level shifter (radio signals), 2nd AMS1117-3.3 module (radio 3.3 V)",
-      "items_note_2026_11_06": "esp_bridge build (the default since 2026-11-06): an ESP-12E (PCB antenna) + 100 uF / 100 nF on the radio 3.3 V instead of the LoRa module; level shifter 2 channels per firmware/README.md 0.10.4; mass and box fit not re-estimated (user decision, A)",
-      "mass_g": 20.0,
-      "dims_lwh": [
-        30.0,
-        20.0,
-        15.0
-      ],
-      "theta_deg": -90.0,
-      "r_center": 40.0,
-      "note": "v0.6 (user, 2026-10-15): moved from the tray's misc box to the payload-bulkhead underside beside the COM board (raises the CG for static margin; the antenna hangs vertically along the avionics wall, far from the ESC and motor leads). ASSUMED mass (moved out of misc: 60 -> 40 g) - weigh it. Fixed with double-sided foam tape + a cable tie; dims = x length x y width x z height, box centred at r_center on theta_deg, hanging from the bulkhead underside"
-    },
+    "nav": null,
+    "fcu": null,
+    "com": null,
+    "radio_log": null,
     "misc": {
-      "items": "5 V logic UBEC, buzzer, arming switch, wiring (servos run from the ESC's 5 V / 7 A BEC); v0.6: the radio module (2026-11-06: an ESP-12E, LoRa the fallback), OpenLog and radio level shifter moved to electronics.radio_log",
+      "items": "5 V logic UBEC (KEPT - default, user decision pending: no logic consumer with the carrier, whose 5 V comes from the 1S logic pack through its TPS61023 boost), buzzer, arming switch (rocket-carrier round 2026-11-14: through the avionics-tube wall, avionics_module.wall_switches.arm, its lead to carrier J16 - mass still counted here), wiring (servos run from the ESC's 5 V / 7 A BEC). v0.6: the radio module, OpenLog and radio level shifter moved to electronics.radio_log (now on the carrier)",
       "mass_g": 40.0,
       "dims_lwh": [
         30.0,
         40.0,
         20.0
       ],
-      "note": "placeholder box on the tray's -x face below the battery (avionics_module.battery_above_misc)"
+      "note": "placeholder box on the tray's -x face below the battery (avionics_module.battery_above_misc)",
+      "rocket_carrier_note": "rocket-carrier round (2026-11-14): mass_g 40 and the box unchanged (DEFAULT: UBEC kept - meta.rocket_carrier_open_decisions); dropping the UBEC would make it ~25 g (A)"
     },
     "release_servo_count": 1,
     "gps": {
@@ -1018,15 +1022,288 @@
       "rf_notes": "ASSUMED / to bench-test: the pigment of the PLA Matte Ivory White pod lid (white since the livery round 2026-11-04 - white PLA is usually TiO2-pigmented, A; was the carbon-black PLA Matte Black) at 1575 MHz - effect NOT VERIFIED (A), the vehicle radio (ESP-12E 2.4 GHz 20 dBm since 2026-11-06 - its effect on the GPS front end NOT measured, A; the LoRa fallback 922 MHz 14 dBm), ESC/BEC switching noise, 16 MHz clock harmonics at 1568 / 1584 MHz - compare u-center C/N0 and satellite count with / without the lid and with the motor running before relying on it",
       "accuracy_note": "NEO-6M datasheet values the v0.8 design was made with: 2.5 m CEP horizontal (24 h static), 0.1 m/s CEP velocity, max 5 Hz; latency not specified - 0.22 s ASSUMED (ArduPilot u-blox 6 value), which the NAV latency compensation still uses (flight_computer.nav.gps.latency_s_ASSUMED). The bought NEO-7M: same class of accuracy, max 10 Hz (A - its datasheet is not on disk); the firmware runs it at 5 Hz, the sim's receiver model is the NEO-7M since the 2026-11-10 control round (sim/sim6dof.py, latency 0.12 s A); the position WANDERS ~2 m: position hold is to within a couple of metres, velocity damping is tight. GPS needs OPEN SKY - no position hold indoors."
     },
-    "gns": {
-      "model": "ATmega128A minimum-system board #4 (GNS: GPS + position hold), same board type as the FCU / COM, + the GPS level-shifter channels",
-      "mass_g_ASSUMED": 25.0,
+    "gns": null,
+    "carrier": {
+      "model": "avionics carrier PCB rev 3.1 (B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier, branch pcb-rev3, commit 4051623; read-only here): one board with 4 x ATmega128A TQFP-64 (NAV, FCU, COM, GNS roles of v0.8.1, links unchanged), GY-521 MPU-6050 + BMP280 (TYE-BMP29) modules, BSS138 level shifters, AMS1117-3.3, an ESP-12F Wi-Fi module (fitted by the user; the vehicle radio - no LoRa), a TPS61023 boost from the separate 1S logic pack (J14, switch lead J15), OpenLog on a socket, THT servo J8-J11 / ESC J12 / arm J16 / sense J18 headers (user-fitted), GPS J7 (JST-GH), and (rev 3.1) the release-servo signal pad J13 + R22 220 Ohm on U2 PE5 / OC3C; 4 layers",
+      "mass_g": 39.4,
+      "mass_g_ASSUMED": true,
       "dims_lwh": [
-        50.0,
-        50.0,
+        76.0,
+        70.0,
         15.0
       ],
-      "note": "ASSUMED 20 g board + 2 g shifter + 3 g leads - weigh it. Mass budget is tight: after the GPS pod only ~33 g remained before T/W 1.15; mitigations to evaluate in CAD: pod walls 1.6 -> 1.2 mm, a trimmed / smaller ATmega128A board, shorter leads"
+      "foam_t": 3.0,
+      "board_t": 1.6,
+      "mass_breakdown_rev3_1_g_ASSUMED": {
+        "fr4_4layer_76x70_plus_tab_1.6": 16.1,
+        "atmega128a_tqfp64_x4": 1.6,
+        "crystals_16mhz_x4": 1.2,
+        "passives_regulators_shifters_boost": 2.5,
+        "gy521_bmp280_modules": 3.8,
+        "esp12f_and_caps": 2.5,
+        "openlog_microsd": 2.3,
+        "headers_connectors": 5.4,
+        "solder_wires_heatshrink": 2.0,
+        "foam_tie": 1.0,
+        "margin": 1.0
+      },
+      "mass_note": "rocket-carrier round (2026-11-14): ESTIMATE for rev 3.1 (sum of mass_breakdown_rev3_1_g_ASSUMED = 39.4 g): FR4 (76 x 70 + the 14.7 x 7.2 tab) x 1.6 mm x 1.85 g/cm^3 incl. the 4-layer copper (E/A); the CAD-2 breakdown's 14 g LoRa module + antenna replaced by an ESP-12F + caps ~2.5 g (A, carrier_spec mass note: '~-11 g if the board is weighed'); +0.5 g for the TPS61023 boost block (A); the rest unchanged from CAD-2 (A). WEIGH the assembled board (later) and put the measured value here. configs.vtol.electronics.carrier keeps its CAD-2 50 g until the VTOL is re-baselined (meta.rocket_carrier_open_decisions)",
+      "replaces_g": {
+        "nav": 40.0,
+        "fcu": 20.0,
+        "com": 20.0,
+        "gns": 26.6,
+        "radio_log": 20.0
+      },
+      "envelope": {
+        "source": "pcb/vtol_carrier rev 3.1 out/reports/board_metrics.json cad_round_envelopes (mated plug / module boxes, ASSUMED plug sizes, z above the board's top face) + spec outline (tab) + J13 pad (kicad 127.05, 66.85)",
+        "frame_note": "vehicle x = kicad x - 100, vehicle y = 100 - kicad y (the spec frame: board origin on the vehicle axis); the outline tab kicad x 117.3..132, y 135..142.2 -> vehicle x 17.3..32, y -42.2..-35",
+        "tab": {
+          "x": [
+            17.3,
+            32.0
+          ],
+          "y": [
+            -42.2,
+            -35.0
+          ]
+        },
+        "boxes": {
+          "J7": {
+            "what": "GPS lead (JST-GH) mated vertical plug + lead bend",
+            "x": [
+              -37.8,
+              -28.25
+            ],
+            "y": [
+              -34.79,
+              -28.1
+            ],
+            "z": [
+              0.0,
+              9.0
+            ]
+          },
+          "J8": {
+            "what": "servo 1 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              14.17,
+              21.97
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J9": {
+            "what": "servo 2 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              5.55,
+              13.35
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J10": {
+            "what": "servo 3 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              -3.07,
+              4.73
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J11": {
+            "what": "servo 4 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              -11.69,
+              -3.89
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J12": {
+            "what": "ESC servo lead mated right-angle plug (+ the release-servo Y-lead, rev 3.1)",
+            "x": [
+              31.25,
+              45.75
+            ],
+            "y": [
+              20.39,
+              28.19
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J14": {
+            "what": "1S logic pack input (SPOX vertical) mated plug + lead bend",
+            "x": [
+              -37.8,
+              -29.31
+            ],
+            "y": [
+              28.8,
+              34.8
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J15": {
+            "what": "logic power-switch lead (JST-PH vertical) mated plug + lead bend",
+            "x": [
+              -37.8,
+              -30.81
+            ],
+            "y": [
+              23.2,
+              28.8
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J16": {
+            "what": "arm switch mated right-angle plug (lead along +y)",
+            "x": [
+              19.84,
+              24.94
+            ],
+            "y": [
+              28.25,
+              42.25
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J17": {
+            "what": "mated vertical plug + lead bend",
+            "x": [
+              30.81,
+              37.79
+            ],
+            "y": [
+              14.31,
+              19.89
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J18": {
+            "what": "6S sense mated right-angle plug",
+            "x": [
+              -45.24,
+              -31.24
+            ],
+            "y": [
+              -22.78,
+              -12.58
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "GY-521": {
+            "what": "GY-521 module ~21.2 x 16.4 mm",
+            "x": [
+              3.6,
+              20.0
+            ],
+            "y": [
+              -34.59,
+              -13.39
+            ],
+            "z": [
+              0.0,
+              5.3
+            ]
+          },
+          "BMP280": {
+            "what": "BMP280 module ~15.2 x 11.5 mm",
+            "x": [
+              3.58,
+              18.78
+            ],
+            "y": [
+              10.95,
+              22.45
+            ],
+            "z": [
+              0.0,
+              5.9
+            ]
+          },
+          "OpenLog": {
+            "what": "OpenLog ~19 x 16 mm",
+            "x": [
+              21.6,
+              37.6
+            ],
+            "y": [
+              -18.55,
+              0.45
+            ],
+            "z": [
+              0.0,
+              5.9
+            ]
+          }
+        },
+        "release_pad": {
+          "ref": "J13",
+          "x": 27.05,
+          "y": 33.15,
+          "d": 2.0,
+          "kicad_xy": [
+            127.05,
+            66.85
+          ],
+          "note": "one plated THT pad (2.0 mm, drill 1.0) - a soldered wire, no plug: the signal wire of the release-servo branch of a servo Y-lead on J12 (+ / - from J12 pins 2 / 3)"
+        }
+      },
+      "release_lead": {
+        "cores": 3,
+        "wire_od_ASSUMED": 3.0,
+        "mass_g_per_m_ASSUMED": 6.0,
+        "slack_mm": 60.0,
+        "inline_connector_g_ASSUMED": 1.0,
+        "skin_offset": 0.5,
+        "drop_gap_to_tray": 2.0,
+        "in_mass_model": false,
+        "note": "rocket-carrier round (2026-11-14): the CanSat release servo (MG90S in the payload release pod, theta 12 deg) -> out through the pod floor -> down the payload / avionics skin (taped, E) -> avionics_module.release_entry -> across the bay over the ESC side at the entry height -> straight down beside the tray's +x face (drop_gap_to_tray from it) -> the carrier's +x / +y corner: the signal wire to the J13 pad, + / - to the Y-lead branch on J12 (rev 3.1). An inline connector at the avionics / payload joint (screwed joint, removable payload module) as the GPS lead. Route length E (Layout.release_lead_*). in_mass_model false: the rocket's release lead ran to the FCU at the same spot before (unmodelled, inside the misc wiring allowance) - its mass is reported, not added again (A). NOT_VERIFIED: the pod-floor exit, the external run, the Y-lead"
+      },
+      "note": "rocket-carrier round (2026-11-14, user decisions 2026-11-13: the carrier PCB rev 3.1 flies in the ROCKET; '로켓 기본을 캐리어로 교체' (replace the rocket baseline: the four hand-wired boards NAV / FCU / COM / GNS and the radio box go away, archived in history/v0.9_pre_rocket_carrier/, not kept as a config); the rocket intake bulkhead vent holes 4 at 45 deg -> 2 at 90 / 270 deg (as configs.vtol) so the cable tie can pass): ONE carrier PCB instead of the four ATmega128A minimum-system boards + radio box (~127 g), flat on the intake bulkhead on foam_t foam tape + a cable tie through the two vent holes (90 / 270 deg) at the v0.6.3 FCU spot (the same place and z-relationship as the VTOL carrier). dims = the 76 x 70 main outline x 15 mm envelope height; the outline tab and the mated plug / module boxes (envelope) are checked by Layout._fcu and C25. Servo leads end on it as on the FCU; the GPS lead ends at J7; the release lead at J13. Mass is an ESTIMATE (mass_note) - weigh the assembled board"
     }
   },
   "recovery": {
@@ -1073,7 +1350,8 @@
       "hole_depth": 3.8,
       "pattern": 44.0,
       "min_clear_to_tray": 2.0,
-      "note": "M3x5 self-tapping from below through the 1.6 mm board into boss + bulkhead (3.4 mm thread in a 3.8 mm blind hole; hole_depth 3.8 leaves 1.2 mm = printer.min_feature of bulkhead over each hole on BUDGET, so the screw cannot reach the spring side). Square pattern centred on the axis, edges along x / y. min_clear_to_tray = gap from the COM placeholder to the avionics tray top / battery / NAV placeholders below it (also used as the clearance limit of the radio_log box (C24) and the FCU board (C25))"
+      "note": "M3x5 self-tapping from below through the 1.6 mm board into boss + bulkhead (3.4 mm thread in a 3.8 mm blind hole; hole_depth 3.8 leaves 1.2 mm = printer.min_feature of bulkhead over each hole on BUDGET, so the screw cannot reach the spring side). Square pattern centred on the axis, edges along x / y. min_clear_to_tray = gap from the COM placeholder to the avionics tray top / battery / NAV placeholders below it (also used as the clearance limit of the radio_log box (C24) and the FCU board (C25))",
+      "rocket_carrier_note": "rocket-carrier round (2026-11-14): no COM board (electronics.com null), so no bosses are built; min_clear_to_tray stays the bay clearance limit of the carrier, the logic pack and the switches (as in the VTOL)"
     },
     "gps_pod": {
       "theta_deg": 192.0,
@@ -1165,7 +1443,8 @@
         "slack_mm": 80.0,
         "bay_cross_y": 38.0,
         "bay_route_z_above_tray_top": 2.0,
-        "note": "GPS VCC / RX / TX / GND to the NAV (USART1 PD2/PD3 through the NAV's BSS138 shifter, electronics.gps.interface).  In the bay the lead runs along the wall at bay_route_z_above_tray_top over the tray top, crosses the tray at y = bay_cross_y (clear of the COM board and the radio box) and drops to the NAV top.  hardware_g = screws, standoffs, tape; lumped with the lead (part gps_lead)"
+        "note": "GPS VCC / RX / TX / GND to the NAV (USART1 PD2/PD3 through the NAV's BSS138 shifter, electronics.gps.interface).  In the bay the lead runs along the wall at bay_route_z_above_tray_top over the tray top, crosses the tray at y = bay_cross_y (clear of the COM board and the radio box) and drops to the NAV top.  hardware_g = screws, standoffs, tape; lumped with the lead (part gps_lead)",
+        "carrier_end_note": "rocket-carrier round (2026-11-14): no NAV / GNS board - in the bay the lead runs from the entry hole straight down the -x wall (192 deg) to just over the carrier envelope, then across to J7 (the carrier's GPS plug, -x / -y corner) and down into it (Layout._gps_pod, E; about +180 mm vs the GNS header). bay_cross_y / bay_route_z_above_tray_top are not used by this route"
       },
       "min_noise_distance_target_mm": 100.0
     }
@@ -1595,7 +1874,8 @@
           ],
           "note": "v0.6: 120 -> 100 g because 20 g of it (OpenLog, LoRa/logging parts) is now electronics.radio_log; total electronics mass unchanged"
         },
-        "nav": {
+        "nav": null,
+        "nav_pre_rocket_carrier_ASSUMED": {
           "model": "ATmega128A-AU flight-computer board (16 MHz crystal, 5 V), with GY-521 MPU-6050 IMU + a barometer module (BMP280 TYE-BMP29 since 2026-11, the GY-63 MS5611 before) on a 4-ch BSS138 I2C level shifter (3.3 V side)",
           "mass_g": 45.0,
           "dims_lwh": [
@@ -1603,7 +1883,8 @@
             50.0,
             15.0
           ]
-        }
+        },
+        "rocket_carrier_note": "rocket-carrier round (2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체'): this preset is a rocket (mission.config rocket) and follows the baseline: the carrier PCB rev 3.1 replaces the NAV board here too (electronics.nav null; the old NAV override is kept for reference as nav_pre_rocket_carrier_ASSUMED, read by nothing). Without this the preset would carry a NAV board AND the carrier (the base fcu / com / radio_log / gns are null now)"
       },
       "recovery": {
         "vehicle_chute_d_m": 1.7,
@@ -1748,7 +2029,9 @@
         "vtol_note": "v0.9 CAD-2 VTOL avionics bay: carrier PCB on the intake bulkhead (z +3..+18), tray from +20: battery (-x face) and ESC (+x face) at the tray bottom + 2, misc box (buzzer, wiring junction; the UBEC planned here is not fitted with carrier rev 2c - electronics.misc.items) above the ESC; tray top 1 mm over the battery; the top cap's skirt covers the spigot; no NAV / GNS / GPS entry / vent slots (the windows ventilate)",
         "tray_plane_x": 14.6,
         "tray_w": 107.5,
-        "tray_plane_note": "v0.9 fix round (2026-10-28, reviewer defects) (mass reviewer: 'lateral CG 3.1 mm toward +x uses 9 % of the hover pitch authority'): the tray plane moves 25 -> tray_plane_x toward the axis so the battery (-x face) balances the ESC / misc / motor leads (+x); tray_w grows so the tray keeps its 1.8 mm engagement in the rails (rail_y follows the bore at the new x); C33 checks the lateral CG"
+        "tray_plane_note": "v0.9 fix round (2026-10-28, reviewer defects) (mass reviewer: 'lateral CG 3.1 mm toward +x uses 9 % of the hover pitch authority'): the tray plane moves 25 -> tray_plane_x toward the axis so the battery (-x face) balances the ESC / misc / motor leads (+x); tray_w grows so the tray keeps its 1.8 mm engagement in the rails (rail_y follows the bore at the new x); C33 checks the lateral CG",
+        "wall_switches": null,
+        "release_entry": null
       },
       "electronics": {
         "nav": null,
@@ -1786,7 +2069,8 @@
             "gns": 26.6,
             "radio_log": 20.0
           },
-          "note": "v0.9 CAD-2 VTOL (user decision 2): ONE carrier instead of the four ATmega128A minimum-system boards (~127 g incl. the radio box today). Flat on the intake bulkhead on foam_t foam tape + a cable tie through the two vent holes (90 / 270 deg), at the v0.6.3 FCU spot (dims = x length x y width x z height incl. components; 76 x 70 keeps 4 mm to the motor-lead joint zone, 3 mm to the motor-lead hole, the vent holes uncovered and the corners 5.3 mm inside the intake spigot bore). The servo leads end on it as on the FCU. Mass is an ESTIMATE (breakdown above) - weigh the assembled board. PCB round result (2026-11-05, pcb/vtol_carrier rev 2c): 4 layers, no 5th MCU footprint (it did not fit), ESP-12E instead of the LoRa header, 1S logic pack + Pololu 5 V module instead of a buck from the 6S pack."
+          "note": "v0.9 CAD-2 VTOL (user decision 2): ONE carrier instead of the four ATmega128A minimum-system boards (~127 g incl. the radio box today). Flat on the intake bulkhead on foam_t foam tape + a cable tie through the two vent holes (90 / 270 deg), at the v0.6.3 FCU spot (dims = x length x y width x z height incl. components; 76 x 70 keeps 4 mm to the motor-lead joint zone, 3 mm to the motor-lead hole, the vent holes uncovered and the corners 5.3 mm inside the intake spigot bore). The servo leads end on it as on the FCU. Mass is an ESTIMATE (breakdown above) - weigh the assembled board. PCB round result (2026-11-05, pcb/vtol_carrier rev 2c): 4 layers, no 5th MCU footprint (it did not fit), ESP-12E instead of the LoRa header, 1S logic pack + Pololu 5 V module instead of a buck from the 6S pack.",
+          "release_lead": null
         },
         "misc": {
           "items": "buzzer, wiring junction / harness; the arming switch sits in the top cap (top_cap.switch_hole). v0.9 CAD-2 planned a 5 V logic UBEC here (or a buck on the carrier); carrier rev 2c takes its 5 V from the 1S logic pack through the Pololu S9V11F5S6CMA on the board (configs.vtol.logic_power), so no UBEC is fitted - mass_g and the box NOT re-estimated (A)",
@@ -2167,8 +2451,10 @@
             ]
           }
         },
-        "charging": "take the pack out to charge it (ASSUMED: no charge port in the docs): cap off, unplug J14, loosen the lower strap and the tie, lift the pack out; charge with a 1S Li-Po charger on its Molex 5264-type lead"
-      }
+        "charging": "take the pack out to charge it (ASSUMED: no charge port in the docs): cap off, unplug J14, loosen the lower strap and the tie, lift the pack out; charge with a 1S Li-Po charger on its Molex 5264-type lead",
+        "switch_mount": "top_cap"
+      },
+      "rocket_carrier_note": "rocket-carrier round (2026-11-14): the base (rocket) params now carry electronics.carrier (rev 3.1 estimate + envelope), logic_power (tube-wall switch) and the avionics wall holes; this block keeps the VTOL as it was: its carrier mass / breakdown / model text override the base, its logic_power (top-cap switch, in_flight_mass_model false) deep-merges over the base one, wall_switches / release_entry / release_lead are null. The envelope (tab + plug / module boxes, rev 3.1) applies to the VTOL carrier too (clearance checks only; the mass placeholder stays the 76 x 70 x 15 box)"
     }
   },
   "power": {
@@ -2602,6 +2888,80 @@
       "gns_to_nav": "50 Hz result: tilt setpoint (2 x int16), pos / vel N-E (cm, cm/s), heading cos / sin (Q15), status (fix ok, ON-gate ok, reset counter, sats, accuracy class, plausibility flags)",
       "latency_ticks_ASSUMED": 3,
       "note": "NAV sends / receives by UART ISRs (no blocking); the NAV inserts the GNS result into the nlink rotating slot (add a tilt-setpoint slot type); the 6-DOF models the extra 3-tick delay of the position loop output (the co-simulation measures it)"
+    }
+  },
+  "logic_power": {
+    "note": "rocket-carrier round (2026-11-14, user decisions 2026-11-13: the carrier PCB rev 3.1 flies in the ROCKET; '로켓 기본을 캐리어로 교체' (replace the rocket baseline: the four hand-wired boards NAV / FCU / COM / GNS and the radio box go away, archived in history/v0.9_pre_rocket_carrier/, not kept as a config); the rocket intake bulkhead vent holes 4 at 45 deg -> 2 at 90 / 270 deg (as configs.vtol) so the cable tie can pass): the carrier rev 3.1 runs from a SEPARATE 1S logic pack (J14) with its power switch lead on J15, as in the VTOL (configs.vtol.logic_power, whose user decisions 1-4 of 2026-11-05 set the pack / spot A / retention). Rocket differences: no top cap - the logic switch goes through the avionics-tube wall (switch_mount 'tube_wall', avionics_module.wall_switches.logic); the pack stands on the 6S pack's -x face at the rocket's battery z (spot A, valid because the GNS board is gone); in_flight_mass_model true (DEFAULT: it flies - user decision pending). configs.vtol.logic_power deep-merges over this block. Layout._logic_power_rocket; check_geometry C37 / C38 / C39 / C40 (rocket variants), C41 N/A",
+    "applies_to_power_sources": [
+      "battery"
+    ],
+    "in_flight_mass_model": true,
+    "in_flight_mass_model_note": "rocket-carrier round (2026-11-14): DEFAULT true (the pack, switch, switch lead and retention fly in the rocket, so they are in the report's parts / totals that sizing, the sim and the firmware headers consume) - user decision pending (meta.rocket_carrier_open_decisions). configs.vtol keeps false (its decision 4 of 2026-11-05)",
+    "switch_mount": "tube_wall",
+    "pack": {
+      "model": "DTP105565P 3.7 V 4200 mAh 1S Li-Po, built-in PCM (ASSUMED), Molex 5264-type 2.50 mm 2-pin plug, pin 1 = +",
+      "source": "devicemart no=16021596 (PCB README 9.1 / spec battery_spot_A_assumed)",
+      "dims_xyz": [
+        10.5,
+        55.5,
+        67.0
+      ],
+      "dims_note": "vendor 10.5 x 55.5 x 67 mm: thickness along x, width along y, length along z (the pack stands upright against the 6S pack's -x face) - measure the bought pack",
+      "mass_g": 84.0,
+      "mass_note": "vendor 84 g incl. the PCM and its own lead + plug (ASSUMED: the lead is part of the 84 g) - weigh it",
+      "spot": "A",
+      "spot_note": "user decision 1 (2026-11-05, '배터리는 A 위치(6S 팩 −x 면)로 해줘'): PCB spec candidate A (lateral CG offset 0.84 mm vs 1.34 mm, 3.0 mm to the tube wall, E). x: gap_to_flight_pack off the 6S pack's -x face; y centred; z from the 6S pack's bottom. The PCB workflow assumed x -48.4..-37.9, y -27.75..27.75, z 346.1..413.1 (PCB README 9.1) - Layout reproduces it",
+      "gap_to_flight_pack": 0.5,
+      "z0_from_flight_pack_bottom": 0.0,
+      "lead_exit_ASSUMED": {
+        "end": "top",
+        "y": 22.0,
+        "note": "the PCM end (lead exit) is a 55.5 x 10.5 face; CAD assumes it on TOP with the lead leaving at y = +22, brought over the +y edge and down beside the pack (PCB README 9.1 'lead end +y'); the bottom end sits 2.0 mm over the tray-bottom level (z 344.1) and 3.86 mm from the CAD servo-lead bundle (C37, M) and has no room for a lead bend - turn the pack lead-end up",
+        "pcb_round_difference_note": "review fix (2026-11-05, DP-2): the PCB round (carrier_spec battery_spot_A_assumed, README 9.1) assumed the lead end at +y with a ~6 mm plan drop to J14; this CAD routes the lead from the TOP end (ASSUMED) over the +y edge and down beside the pack: route 95.1 + slack 20 = 115.1 mm needed (Layout, E). If the bought pack's lead is shorter, make a Molex 5264-type 2-pin extension (female-male, ~60 mm, pin 1 = + kept; ~1 g, ASSUMED - not in the pending mass)"
+      },
+      "spot_note_rocket": "rocket-carrier round (2026-11-14): spot A on the rocket tray: x -38.0..-27.5, y +-27.75, z 400.9..467.9 (the rocket 6S pack bottom; E, study rocket_fit) - free because the GNS board is gone"
+    },
+    "retention": {
+      "method": "no new printed part: the 6S pack's LOWER battery strap (avionics_tray strap slots at the 6S bottom + 25, 20 mm wide, y +-(tray_w/2 - 10)) is lengthened to wrap both packs, and one cable tie (or hook-and-loop strap) binds the two packs at tie_z_below_pack_top - the same pattern as the 6S pack and the carrier (strap / cable tie)",
+      "tie_z_below_pack_top": 10.0,
+      "strap_tie_mass_g_ASSUMED": 2.0,
+      "touchdown_g_ASSUMED": 20.0,
+      "friction_mu_ASSUMED": 0.5,
+      "strap_t_ASSUMED": 1.5,
+      "tie_t_ASSUMED": 1.2,
+      "tie_path_ASSUMED": "the tie runs through the avionics tray's two lightening holes pulled to their OUTER edges (|y| = tray_hole_y[1]) and round both packs; the strap through its slots (|y| = tray_w/2 - 10)",
+      "band_note": "review fix (2026-11-05, G3 / DP-10): Layout.lp_band_leads reports in plan (E) each lead's vertical leg against the strap / tie loops (hulls of the packs' corners + the tray anchor points, band thickness strap_t / tie_t): the switch lead runs INSIDE both loops (the strap and the tie hold it against the packs' +y edge - the tie presses it slightly: strain relief), the pack lead runs OUTSIDE both (it crosses over the strap). The lengthened lower strap no longer wraps the 6S pack's -x corners (the 1S pack lies between them): at its lower end the 6S pack is held laterally by the strap's normal force through the 1S pack (friction) and by its upper strap - shake-test",
+      "note": "84 g x 20 g touchdown (sizing/vtol_strength.py TOUCHDOWN_G, ASSUMED) = 16.5 N along z: held by friction on the 6S face and under the strap / tie (mu 0.5, 2 faces) -> >= 16.5 N total normal force from the strap + tie (E); pull both tight and shake-test. The pack bottom is 2.0 mm over the tray-bottom level (z 344.1) and 3.86 mm from the CAD servo-lead bundle (C37, M): if it slips it sits on the leads, never on the fan"
+    },
+    "switch": {
+      "model": "MTS-102 2-position mini toggle, harness version (leads soldered on, Dupont ends)",
+      "source": "devicemart no=13029107 - the vendor page's dimensions are NOT on disk; every size below is ASSUMED from a common MTS-102 (M6 x 0.75 bushing) - measure the bought part before printing the cap",
+      "mass_g_ASSUMED": 4.0,
+      "wall_ref": "avionics_module.wall_switches.logic"
+    },
+    "leads": {
+      "wire_od_ASSUMED": 3.0,
+      "wire_note": "2 conductors side by side / twisted (~24-26 AWG), keep-out diameter (ASSUMED)",
+      "switch_to_J15": {
+        "connector": "JST-PH 2-pin housing (the harness's Dupont ends cut and re-crimped, PCB README 7.1)",
+        "slack_mm": 60.0,
+        "mass_g_per_m_ASSUMED": 5.0,
+        "connector_g_ASSUMED": 0.5,
+        "note": "rocket: from the switch lugs (inside the tube wall at avionics_module.wall_switches.logic) straight down to just over the carrier envelope, across to J15 and down into it; slack 60 mm (E length)"
+      },
+      "pack_to_J14": {
+        "connector": "the pack's own Molex 5264-type plug into J14 (SPOX 5267-02A vertical)",
+        "slack_mm": 20.0,
+        "vertical_x": -40.0,
+        "vertical_y": 31.8,
+        "over_pack_top": 4.0,
+        "note": "pack top (lead exit) -> up over_pack_top -> to (vertical_x, vertical_y) past the pack's +y end -> down beside it -> J14. The lead is part of the pack's 84 g (ASSUMED); its length is the vendor's (A) - measure; route + slack is what it needs"
+      }
+    },
+    "clearance": {
+      "min_to_leads_plugs": 2.0,
+      "min_to_leads_plugs_note": "PCB mech-fit review MF2-10: >= 2 mm boxes round the pack against the servo leads, the GPS lead / J7 and the J18 6S-sense plug",
+      "gps_lead_od_ASSUMED": 4.0
     }
   }
 }
