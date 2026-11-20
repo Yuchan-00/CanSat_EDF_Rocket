@@ -1,0 +1,836 @@
+{
+ "tool": "scripts/determinism.py (two full make_all.py builds in place, sha256 compared)",
+ "started": "2026-11-13T20:56:24+0900",
+ "make_all_args": [],
+ "builds": [
+  {
+   "exit": 0,
+   "minutes": 11.8,
+   "failed_checks": [],
+   "stopped_at": null,
+   "steps": [
+    [
+     "probe",
+     0,
+     1.0
+    ],
+    [
+     "sources",
+     0,
+     0.3
+    ],
+    [
+     "spec",
+     0,
+     1.0
+    ],
+    [
+     "libgate",
+     0,
+     1.2
+    ],
+    [
+     "schematic",
+     0,
+     1.1
+    ],
+    [
+     "sch_checks",
+     0,
+     12.5
+    ],
+    [
+     "place",
+     0,
+     3.6
+    ],
+    [
+     "pcb",
+     0,
+     2.3
+    ],
+    [
+     "route",
+     0,
+     299.1
+    ],
+    [
+     "routing",
+     0,
+     9.3
+    ],
+    [
+     "edge",
+     0,
+     4.9
+    ],
+    [
+     "rotation",
+     0,
+     0.8
+    ],
+    [
+     "fit",
+     0,
+     1.7
+    ],
+    [
+     "prog",
+     0,
+     4.5
+    ],
+    [
+     "prog_plot",
+     0,
+     1.0
+    ],
+    [
+     "exports",
+     0,
+     41.9
+    ],
+    [
+     "exp_files",
+     0,
+     0.2
+    ],
+    [
+     "exp_det",
+     0,
+     18.7
+    ],
+    [
+     "models",
+     0,
+     2.8
+    ],
+    [
+     "renders",
+     0,
+     175.9
+    ],
+    [
+     "d2",
+     0,
+     21.6
+    ],
+    [
+     "slides",
+     0,
+     1.7
+    ],
+    [
+     "present",
+     0,
+     97.0
+    ],
+    [
+     "docs",
+     0,
+     0.2
+    ],
+    [
+     "manifest",
+     0,
+     0.8
+    ]
+   ],
+   "stdout_tail": "rows\": 28\n },\n \"release_gate\": \"ORDERABLE (tool checks only; NOT_VERIFIED - never built)\"\n}\n\n   [docs] exit 0, 0.2 s\n>> [manifest] B:\\Claude\\.venv\\Scripts\\python.exe -B -X utf8 make_manifest.py\n{\n \"spec_sha256\": \"ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe\",\n \"prog_headers_option\": \"A\",\n \"release_gate\": \"ORDERABLE (tool checks only; NOT_VERIFIED - never built)\",\n \"kicad_cli\": \"10.0.6\",\n \"jar_sha256\": \"f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7\",\n \"rule_file\": \"PASS\",\n \"gate\": \"2026-11-13T20:26:50+09:00\",\n \"determinism\": \"NOT_VERIFIED\",\n \"on_disk_equal_build2\": null\n}\n\n   [manifest] exit 0, 0.8 s\n{\n \"exit\": 0,\n \"failed_checks\": [],\n \"stopped_at\": null,\n \"log\": \"B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/work/make_all_log.json\"\n}\n"
+  },
+  {
+   "exit": 0,
+   "minutes": 10.2,
+   "failed_checks": [],
+   "stopped_at": null,
+   "steps": [
+    [
+     "probe",
+     0,
+     0.6
+    ],
+    [
+     "sources",
+     0,
+     0.2
+    ],
+    [
+     "spec",
+     0,
+     0.6
+    ],
+    [
+     "libgate",
+     0,
+     0.5
+    ],
+    [
+     "schematic",
+     0,
+     0.8
+    ],
+    [
+     "sch_checks",
+     0,
+     8.5
+    ],
+    [
+     "place",
+     0,
+     2.2
+    ],
+    [
+     "pcb",
+     0,
+     1.4
+    ],
+    [
+     "route",
+     0,
+     255.5
+    ],
+    [
+     "routing",
+     0,
+     8.2
+    ],
+    [
+     "edge",
+     0,
+     4.4
+    ],
+    [
+     "rotation",
+     0,
+     0.7
+    ],
+    [
+     "fit",
+     0,
+     1.5
+    ],
+    [
+     "prog",
+     0,
+     4.1
+    ],
+    [
+     "prog_plot",
+     0,
+     1.0
+    ],
+    [
+     "exports",
+     0,
+     34.9
+    ],
+    [
+     "exp_files",
+     0,
+     0.2
+    ],
+    [
+     "exp_det",
+     0,
+     16.2
+    ],
+    [
+     "models",
+     0,
+     2.6
+    ],
+    [
+     "renders",
+     0,
+     143.5
+    ],
+    [
+     "d2",
+     0,
+     21.4
+    ],
+    [
+     "slides",
+     0,
+     1.7
+    ],
+    [
+     "present",
+     0,
+     98.1
+    ],
+    [
+     "docs",
+     0,
+     0.2
+    ],
+    [
+     "manifest",
+     0,
+     0.9
+    ]
+   ],
+   "stdout_tail": "rows\": 28\n },\n \"release_gate\": \"ORDERABLE (tool checks only; NOT_VERIFIED - never built)\"\n}\n\n   [docs] exit 0, 0.2 s\n>> [manifest] B:\\Claude\\.venv\\Scripts\\python.exe -B -X utf8 make_manifest.py\n{\n \"spec_sha256\": \"ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe\",\n \"prog_headers_option\": \"A\",\n \"release_gate\": \"ORDERABLE (tool checks only; NOT_VERIFIED - never built)\",\n \"kicad_cli\": \"10.0.6\",\n \"jar_sha256\": \"f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7\",\n \"rule_file\": \"PASS\",\n \"gate\": \"2026-11-13T20:26:50+09:00\",\n \"determinism\": \"NOT_VERIFIED\",\n \"on_disk_equal_build2\": null\n}\n\n   [manifest] exit 0, 0.9 s\n{\n \"exit\": 0,\n \"failed_checks\": [],\n \"stopped_at\": null,\n \"log\": \"B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/kicad/work/make_all_log.json\"\n}\n"
+  }
+ ],
+ "rules": {
+  "deterministic": [
+   "spec/carrier_spec.json",
+   "spec/SPEC_ko.md",
+   "spec/parts_sources.json",
+   "spec/library_probe.json",
+   "kicad/*.kicad_sch",
+   "kicad/vtol_carrier.kicad_pro",
+   "kicad/vtol_carrier.kicad_pcb",
+   "kicad/render_*.kicad_pcb",
+   "kicad/placement.json",
+   "kicad/schematic_manifest.json",
+   "kicad/ir/*.json",
+   "kicad/work/vtol_carrier_unrouted.kicad_pcb",
+   "kicad/work/unrouted_manifest.json",
+   "kicad/3d/*.step",
+   "kicad/3d/models_manifest.json",
+   "out/jlcpcb_bom.csv",
+   "out/jlcpcb_cpl.csv",
+   "out/jlcpcb_bom_with_mcu.csv",
+   "out/jlcpcb_cpl_with_mcu.csv",
+   "out/vtol_carrier_gerber.zip",
+   "out/vtol_carrier_gerber_with_mcu.zip",
+   "out/gerber/*",
+   "out/gerber_with_mcu/*",
+   "out/cpl_rotation_table.csv",
+   "out/vtol_carrier_bom.csv",
+   "out/off_board_purchase.csv",
+   "out/jlc_fee_estimate.csv",
+   "out/edge_distance.csv",
+   "README_ko.md",
+   "out/ORDER_ko.md",
+   "out/따로_살_부품_ko.md"
+  ],
+  "normalised": {
+   "out/vtol_carrier.step": "STEP header FILE_NAME(...) statement removed (it carries the export time)",
+   "out/vtol_carrier.net": "netlist (date \"...\") line removed",
+   "kicad/work/vtol_carrier.net": "netlist (date \"...\") line removed"
+  },
+  "evidence": [
+   "out/reports/*.json",
+   "out/reports/*.png",
+   "out/*.json",
+   "out/*.png",
+   "out/schematic/*",
+   "out/render/*.png",
+   "out/render/*.json",
+   "out/presentation/*",
+   "kicad/work/*.json"
+  ],
+  "evidence_note": "reports carry run times; kicad-cli PNG renders differ in bytes between runs with the same content (M, renders step); slides are composed from those PNGs; the schematic PDF carries a creation date. Evidence is recorded, not judged."
+ },
+ "build1_vs_build2": {
+  "deterministic": {
+   "files": 71,
+   "differing": []
+  },
+  "normalised": {
+   "files": 3,
+   "differing": []
+  },
+  "step_canonical": {
+   "files": 1,
+   "differing": []
+  },
+  "evidence": {
+   "files": 78,
+   "differing_count": 41,
+   "differing": [
+    "kicad/work/drc_clearance_fix.json",
+    "kicad/work/drc_dangling.json",
+    "kicad/work/drc_leftovers.json",
+    "kicad/work/drc_ripup.json",
+    "kicad/work/make_all_log.json",
+    "out/manifest.json",
+    "out/presentation/pcb_bottom_2400.png",
+    "out/presentation/pcb_iso_back_2400.png",
+    "out/presentation/pcb_iso_front_2400.png",
+    "out/presentation/pcb_top_2400.png",
+    "out/render/a1_as_delivered_top.png",
+    "out/render/a2_as_delivered_front.png",
+    "out/render/a3_as_delivered_bottom.png",
+    "out/render/b1_completed_top.png",
+    "out/render/b2_completed_front.png",
+    "out/render/b3_completed_back.png",
+    "out/render/b4_completed_side_limit.png",
+    "out/render/c1_gy521_on_J1.png",
+    "out/render/c2_bmp280_in_J2.png",
+    "out/render/c3_openlog_in_J5.png",
+    "out/render/c4_esp12f_keepout.png",
+    "out/render/c5_mcu_pin1.png",
+    "out/render/d1_gps_plug_J7.png",
+    "out/render/e1_delivered_vs_completed.png",
+    "out/render/e2a_gy521_J1.png",
+    "out/render/e2b_bmp280_J2.png",
+    "out/render/e2c_openlog_J5.png",
+    "out/render/e3_gps_lead_J7.png",
+    "out/render/e4_overview_callouts.png",
+    "out/render/render_report.json",
+    "out/render/slides_report.json",
+    "out/reports/drc.json",
+    "out/reports/erc.json",
+    "out/reports/rev3_checks.json",
+    "out/reports/rev3_erc.json",
+    "out/reports/rev3_fit_sets.json",
+    "out/reports/rev3_mcu_pinmap.json",
+    "out/reports/rev3_netlist_vs_spec.json",
+    "out/reports/rev3_nets.json",
+    "out/reports/rev3_u8_u9_pads.json",
+    "out/schematic/vtol_carrier_schematic.pdf"
+   ]
+  }
+ },
+ "on_disk_before_vs_build1": {
+  "deterministic": {
+   "files": 71,
+   "differing": []
+  },
+  "normalised": {
+   "files": 3,
+   "differing": []
+  }
+ },
+ "sha256_build2": {
+  "deterministic": {
+   "README_ko.md": "c6f4f22f08759be55e7c34c6e33bf6dfb2e943485152c97c2ff8b484555ec9f1",
+   "kicad/3d/bmp280_in_J2.step": "d7f468086e013ea356b82ab054a91e3c1a490c5b78cb9b2ca0146c992a4519dd",
+   "kicad/3d/gh_plug_in_J7.step": "90a660dda8810b214ac5d8da6aadd01498760cc73392b9d17103ebb8f3241cae",
+   "kicad/3d/gy521_on_J1.step": "fa168788d457128e7902c6eafd444c843e9edb3d880a7e4720f265328585195a",
+   "kicad/3d/height_limit_frame.step": "08f09a25275b1d4364ad681465e71b7e650ece44c3f878cdc12c4e5951bbdeff",
+   "kicad/3d/models_manifest.json": "b628a419819b8c03bded18fa33fe01bfae8500a38742ca029f0d429bcd092402",
+   "kicad/3d/molex_22035025_J14.step": "a3149c9feacc2e2b45848f38cc35b8218a220f9cf148acfdb5e9187093bf18c6",
+   "kicad/3d/neo7m_module.step": "92ae719495a52c5036acedcfdcdb9a085e4c7a5c96ae23d1c8bea4c483c067b5",
+   "kicad/3d/openlog_in_J5.step": "84417ea621e2bb83e2f73e36e674d43b59209a5fd026c646a38af4a06d19d889",
+   "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
+   "kicad/fcu.kicad_sch": "d279f2a3633db657223b2779f950415fe0c8bb82551b2dbb23683de7784a37c7",
+   "kicad/gns.kicad_sch": "b82c957e69f98ead5408eb6eab73c54999fdfb08b6e579a50424e496ecea8236",
+   "kicad/io.kicad_sch": "17d16293f0730fc9aba10ea797c1d086a363eee177ff097f33537ab1a4f8ed5d",
+   "kicad/ir/vtol_carrier.ir.json": "f8083ddf2a301c318aba861783868d3b5f02d31785e4606d43119047b967afe5",
+   "kicad/ir/vtol_carrier.ir_with_pcb.json": "e2f34ea9dbb4111a0120373672e4157730470f5f6a239aa6611a2bd78691f840",
+   "kicad/level_shift.kicad_sch": "80917e3cf8e8f68bde7ce11550ec714492f2b798c002bb9423c942cf292b5dd0",
+   "kicad/nav.kicad_sch": "f53cdba94d5f3b9ba0809433bedc9e370a21e0c22ff8876b7a811ec8e2663915",
+   "kicad/placement.json": "e3220c117d98c587b65f108b136acf3f755665649634c16d5776dcd7718cfd0a",
+   "kicad/power.kicad_sch": "e36be8f042bf1ffa8c0c02937bb3e261f7a4df9e893a9c33a98195c921455326",
+   "kicad/render_as_delivered.kicad_pcb": "85785c148c4a858291e839b9b2c670d8399ce56ab6a57da15e83a7f34bda2f42",
+   "kicad/render_completed.kicad_pcb": "31ec436db213209d29d925a6234571b8e4e3789303b486fa73cb86f749911de6",
+   "kicad/render_completed_limit.kicad_pcb": "c0b41f2f9239d64071b4e701bd4d72f37b9378d07d29bff9953f1a3ef3873e5c",
+   "kicad/schematic_manifest.json": "d14d0a64cb318479c207574d3a3f4bba17034518062cab19e3e1d235f28d6f84",
+   "kicad/vtol_carrier.kicad_pcb": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
+   "kicad/vtol_carrier.kicad_pro": "a64b7bfe58b8532d8f7c3c1193967f0f8ef0c2b0da35bee7bcced7a0ab273b33",
+   "kicad/vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1",
+   "kicad/work/unrouted_manifest.json": "8190bdd4d410da8b2505618d8450245664e0aed81337c59135946c8f4fe6527d",
+   "kicad/work/vtol_carrier_unrouted.kicad_pcb": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
+   "out/ORDER_ko.md": "63e3dad1431cb6379f2a08a2d1142b10e05777355da0da442954ad52ecb99706",
+   "out/cpl_rotation_table.csv": "9486a629e9ea79beedd710aed65ddcf72b1713f37ef291b237b8c11f08481d4c",
+   "out/edge_distance.csv": "19a8abec8874bc30a5b6db54f650f315b2638fcf35ee26c13d3ce5d7a2fbb9e3",
+   "out/gerber/vtol_carrier-B_Cu.gbl": "36685334a75baff0fc45368fd40e510e4d9a18850e957f82f9789451aeabf1e6",
+   "out/gerber/vtol_carrier-B_Mask.gbs": "18ee14dfaae78a12cafb54048b54cc5e3d41392aa824f3b7bb3afd4c76edc399",
+   "out/gerber/vtol_carrier-B_Paste.gbp": "20049e804c9d0b757baa9d40c22afcef5de9e558714f9131271ab6a5edb4a172",
+   "out/gerber/vtol_carrier-B_Silkscreen.gbo": "f0c628802aa32014a113c766838143810d422c0dddbc1c2a166fe3729cc7def9",
+   "out/gerber/vtol_carrier-Edge_Cuts.gm1": "86b1dafbd2da543746d39598af5e4030c4ab1608fe1adf3064caac75975acfbc",
+   "out/gerber/vtol_carrier-F_Cu.gtl": "48ae8b10573aa971793f28268957dd0e272590804fb92f4055a7f2d27c5b7b5e",
+   "out/gerber/vtol_carrier-F_Mask.gts": "dbc29e95b05847f7ad984638fb54a2343e29493fa6923600bbe5c17f18b7af7e",
+   "out/gerber/vtol_carrier-F_Paste.gtp": "aaa1845607259d5b34237361d154f489fd2d3d847d5075352ff494749c0625b0",
+   "out/gerber/vtol_carrier-F_Silkscreen.gto": "f28ed3aaf52095e96bf0ae53df4f04b0e2bf4fbfe652aa979ee512e9fc28a4a9",
+   "out/gerber/vtol_carrier-In1_Cu.g1": "b481fc34f69bc35b30f0d32c28a7cd4a16901c96dcf9fddf12ff45603e13ea52",
+   "out/gerber/vtol_carrier-In2_Cu.g2": "66aab1ce38ebf3771fcef01666a58bae13cbb0c0bdac5e171873200d708cf35a",
+   "out/gerber/vtol_carrier-job.gbrjob": "972fc41c0ec38038fec61d464eee9d2c0b1c0e88d40d7b17cfb03cdbe733883b",
+   "out/gerber/vtol_carrier.drl": "4cc1532c9a6a63fec9fd09c550df0e95dcc0da26abbce059a491bd05efb2ad90",
+   "out/gerber_with_mcu/vtol_carrier-B_Cu.gbl": "36685334a75baff0fc45368fd40e510e4d9a18850e957f82f9789451aeabf1e6",
+   "out/gerber_with_mcu/vtol_carrier-B_Mask.gbs": "18ee14dfaae78a12cafb54048b54cc5e3d41392aa824f3b7bb3afd4c76edc399",
+   "out/gerber_with_mcu/vtol_carrier-B_Paste.gbp": "20049e804c9d0b757baa9d40c22afcef5de9e558714f9131271ab6a5edb4a172",
+   "out/gerber_with_mcu/vtol_carrier-B_Silkscreen.gbo": "f0c628802aa32014a113c766838143810d422c0dddbc1c2a166fe3729cc7def9",
+   "out/gerber_with_mcu/vtol_carrier-Edge_Cuts.gm1": "86b1dafbd2da543746d39598af5e4030c4ab1608fe1adf3064caac75975acfbc",
+   "out/gerber_with_mcu/vtol_carrier-F_Cu.gtl": "48ae8b10573aa971793f28268957dd0e272590804fb92f4055a7f2d27c5b7b5e",
+   "out/gerber_with_mcu/vtol_carrier-F_Mask.gts": "dbc29e95b05847f7ad984638fb54a2343e29493fa6923600bbe5c17f18b7af7e",
+   "out/gerber_with_mcu/vtol_carrier-F_Paste.gtp": "831ace4dc2bc5c7ad485bb40f9eb054c53d1f58fb82d9b8f7688f52f5b90e9f0",
+   "out/gerber_with_mcu/vtol_carrier-F_Silkscreen.gto": "f28ed3aaf52095e96bf0ae53df4f04b0e2bf4fbfe652aa979ee512e9fc28a4a9",
+   "out/gerber_with_mcu/vtol_carrier-In1_Cu.g1": "b481fc34f69bc35b30f0d32c28a7cd4a16901c96dcf9fddf12ff45603e13ea52",
+   "out/gerber_with_mcu/vtol_carrier-In2_Cu.g2": "66aab1ce38ebf3771fcef01666a58bae13cbb0c0bdac5e171873200d708cf35a",
+   "out/gerber_with_mcu/vtol_carrier-job.gbrjob": "972fc41c0ec38038fec61d464eee9d2c0b1c0e88d40d7b17cfb03cdbe733883b",
+   "out/gerber_with_mcu/vtol_carrier.drl": "4cc1532c9a6a63fec9fd09c550df0e95dcc0da26abbce059a491bd05efb2ad90",
+   "out/jlc_fee_estimate.csv": "16679c74e154bb2c0160b0d5d99933dcf45574bb3336e9c2e3ce1305231e7e09",
+   "out/jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+   "out/jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+   "out/jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+   "out/jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+   "out/off_board_purchase.csv": "acdd164c75737180f85cf92b4470d358fcdfd748411443cc69d1e3a32e96b8ac",
+   "out/vtol_carrier_bom.csv": "4f7def4b6efcf53e0a4e8452bf8842ccdc32755c7275889e6f8dcb049678c81f",
+   "out/vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+   "out/vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c",
+   "out/따로_살_부품_ko.md": "d0fe995004645689c64cd0d104533472cad439f580c318f2c94ff684f74d88f6",
+   "spec/SPEC_ko.md": "e4437464d99d19e87c387a0a2d27e34dceb5346422cc087c44585043d9a7bae3",
+   "spec/carrier_spec.json": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
+   "spec/library_probe.json": "391aad722b77fba7c2c632b69d9e987e9db8ab6e8397c45348bc6911c655f69e",
+   "spec/parts_sources.json": "a836eb503bbafb21decd9506005592af7f1c8ea383e99662dc956fa970106778"
+  },
+  "normalised": {
+   "out/vtol_carrier.step": {
+    "raw": "927e82ba479b89543baf5b3e5022a3ad491b0b53b2f00da719461999244f48c2",
+    "normalised": "4f6d81ce2dbb7400f2a2f345844711fb96a3568b25757a0b352994fd6bc2c324",
+    "canonical": "5aedbc3fe6691b4c53940f68ee13dce155f1b12659c55327b3393d81f47c8248 (131461 entities)"
+   },
+   "out/vtol_carrier.net": {
+    "raw": "97d87adcb037f815e1974f994e33bfa93a649bd03c1eccf29c5eac17e52ea003",
+    "normalised": "3c016e9d4cd9983675fb9ccb46dee1c526914a86c41b2f98f30c38b3fc8f6afe"
+   },
+   "kicad/work/vtol_carrier.net": {
+    "raw": "3654762b8f1d4e7583028041cd5f5d9b6cc6e98aecd05105a779dd40c7bb253d",
+    "normalised": "3c016e9d4cd9983675fb9ccb46dee1c526914a86c41b2f98f30c38b3fc8f6afe"
+   }
+  }
+ },
+ "sha256_on_disk_before": {
+  "deterministic": {
+   "README_ko.md": "c6f4f22f08759be55e7c34c6e33bf6dfb2e943485152c97c2ff8b484555ec9f1",
+   "kicad/3d/bmp280_in_J2.step": "d7f468086e013ea356b82ab054a91e3c1a490c5b78cb9b2ca0146c992a4519dd",
+   "kicad/3d/gh_plug_in_J7.step": "90a660dda8810b214ac5d8da6aadd01498760cc73392b9d17103ebb8f3241cae",
+   "kicad/3d/gy521_on_J1.step": "fa168788d457128e7902c6eafd444c843e9edb3d880a7e4720f265328585195a",
+   "kicad/3d/height_limit_frame.step": "08f09a25275b1d4364ad681465e71b7e650ece44c3f878cdc12c4e5951bbdeff",
+   "kicad/3d/models_manifest.json": "b628a419819b8c03bded18fa33fe01bfae8500a38742ca029f0d429bcd092402",
+   "kicad/3d/molex_22035025_J14.step": "a3149c9feacc2e2b45848f38cc35b8218a220f9cf148acfdb5e9187093bf18c6",
+   "kicad/3d/neo7m_module.step": "92ae719495a52c5036acedcfdcdb9a085e4c7a5c96ae23d1c8bea4c483c067b5",
+   "kicad/3d/openlog_in_J5.step": "84417ea621e2bb83e2f73e36e674d43b59209a5fd026c646a38af4a06d19d889",
+   "kicad/com.kicad_sch": "602ce70f7dca4ee5a52244f8d0354e0abbee79fa262bc3ce9b05eb3898f08234",
+   "kicad/fcu.kicad_sch": "d279f2a3633db657223b2779f950415fe0c8bb82551b2dbb23683de7784a37c7",
+   "kicad/gns.kicad_sch": "b82c957e69f98ead5408eb6eab73c54999fdfb08b6e579a50424e496ecea8236",
+   "kicad/io.kicad_sch": "17d16293f0730fc9aba10ea797c1d086a363eee177ff097f33537ab1a4f8ed5d",
+   "kicad/ir/vtol_carrier.ir.json": "f8083ddf2a301c318aba861783868d3b5f02d31785e4606d43119047b967afe5",
+   "kicad/ir/vtol_carrier.ir_with_pcb.json": "e2f34ea9dbb4111a0120373672e4157730470f5f6a239aa6611a2bd78691f840",
+   "kicad/level_shift.kicad_sch": "80917e3cf8e8f68bde7ce11550ec714492f2b798c002bb9423c942cf292b5dd0",
+   "kicad/nav.kicad_sch": "f53cdba94d5f3b9ba0809433bedc9e370a21e0c22ff8876b7a811ec8e2663915",
+   "kicad/placement.json": "e3220c117d98c587b65f108b136acf3f755665649634c16d5776dcd7718cfd0a",
+   "kicad/power.kicad_sch": "e36be8f042bf1ffa8c0c02937bb3e261f7a4df9e893a9c33a98195c921455326",
+   "kicad/render_as_delivered.kicad_pcb": "85785c148c4a858291e839b9b2c670d8399ce56ab6a57da15e83a7f34bda2f42",
+   "kicad/render_completed.kicad_pcb": "31ec436db213209d29d925a6234571b8e4e3789303b486fa73cb86f749911de6",
+   "kicad/render_completed_limit.kicad_pcb": "c0b41f2f9239d64071b4e701bd4d72f37b9378d07d29bff9953f1a3ef3873e5c",
+   "kicad/schematic_manifest.json": "d14d0a64cb318479c207574d3a3f4bba17034518062cab19e3e1d235f28d6f84",
+   "kicad/vtol_carrier.kicad_pcb": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
+   "kicad/vtol_carrier.kicad_pro": "a64b7bfe58b8532d8f7c3c1193967f0f8ef0c2b0da35bee7bcced7a0ab273b33",
+   "kicad/vtol_carrier.kicad_sch": "b31b5902acdd68c700415401dd1135cd26b991a769d7f34f9abfd5b463d714e1",
+   "kicad/work/unrouted_manifest.json": "8190bdd4d410da8b2505618d8450245664e0aed81337c59135946c8f4fe6527d",
+   "kicad/work/vtol_carrier_unrouted.kicad_pcb": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
+   "out/ORDER_ko.md": "63e3dad1431cb6379f2a08a2d1142b10e05777355da0da442954ad52ecb99706",
+   "out/cpl_rotation_table.csv": "9486a629e9ea79beedd710aed65ddcf72b1713f37ef291b237b8c11f08481d4c",
+   "out/edge_distance.csv": "19a8abec8874bc30a5b6db54f650f315b2638fcf35ee26c13d3ce5d7a2fbb9e3",
+   "out/gerber/vtol_carrier-B_Cu.gbl": "36685334a75baff0fc45368fd40e510e4d9a18850e957f82f9789451aeabf1e6",
+   "out/gerber/vtol_carrier-B_Mask.gbs": "18ee14dfaae78a12cafb54048b54cc5e3d41392aa824f3b7bb3afd4c76edc399",
+   "out/gerber/vtol_carrier-B_Paste.gbp": "20049e804c9d0b757baa9d40c22afcef5de9e558714f9131271ab6a5edb4a172",
+   "out/gerber/vtol_carrier-B_Silkscreen.gbo": "f0c628802aa32014a113c766838143810d422c0dddbc1c2a166fe3729cc7def9",
+   "out/gerber/vtol_carrier-Edge_Cuts.gm1": "86b1dafbd2da543746d39598af5e4030c4ab1608fe1adf3064caac75975acfbc",
+   "out/gerber/vtol_carrier-F_Cu.gtl": "48ae8b10573aa971793f28268957dd0e272590804fb92f4055a7f2d27c5b7b5e",
+   "out/gerber/vtol_carrier-F_Mask.gts": "dbc29e95b05847f7ad984638fb54a2343e29493fa6923600bbe5c17f18b7af7e",
+   "out/gerber/vtol_carrier-F_Paste.gtp": "aaa1845607259d5b34237361d154f489fd2d3d847d5075352ff494749c0625b0",
+   "out/gerber/vtol_carrier-F_Silkscreen.gto": "f28ed3aaf52095e96bf0ae53df4f04b0e2bf4fbfe652aa979ee512e9fc28a4a9",
+   "out/gerber/vtol_carrier-In1_Cu.g1": "b481fc34f69bc35b30f0d32c28a7cd4a16901c96dcf9fddf12ff45603e13ea52",
+   "out/gerber/vtol_carrier-In2_Cu.g2": "66aab1ce38ebf3771fcef01666a58bae13cbb0c0bdac5e171873200d708cf35a",
+   "out/gerber/vtol_carrier-job.gbrjob": "972fc41c0ec38038fec61d464eee9d2c0b1c0e88d40d7b17cfb03cdbe733883b",
+   "out/gerber/vtol_carrier.drl": "4cc1532c9a6a63fec9fd09c550df0e95dcc0da26abbce059a491bd05efb2ad90",
+   "out/gerber_with_mcu/vtol_carrier-B_Cu.gbl": "36685334a75baff0fc45368fd40e510e4d9a18850e957f82f9789451aeabf1e6",
+   "out/gerber_with_mcu/vtol_carrier-B_Mask.gbs": "18ee14dfaae78a12cafb54048b54cc5e3d41392aa824f3b7bb3afd4c76edc399",
+   "out/gerber_with_mcu/vtol_carrier-B_Paste.gbp": "20049e804c9d0b757baa9d40c22afcef5de9e558714f9131271ab6a5edb4a172",
+   "out/gerber_with_mcu/vtol_carrier-B_Silkscreen.gbo": "f0c628802aa32014a113c766838143810d422c0dddbc1c2a166fe3729cc7def9",
+   "out/gerber_with_mcu/vtol_carrier-Edge_Cuts.gm1": "86b1dafbd2da543746d39598af5e4030c4ab1608fe1adf3064caac75975acfbc",
+   "out/gerber_with_mcu/vtol_carrier-F_Cu.gtl": "48ae8b10573aa971793f28268957dd0e272590804fb92f4055a7f2d27c5b7b5e",
+   "out/gerber_with_mcu/vtol_carrier-F_Mask.gts": "dbc29e95b05847f7ad984638fb54a2343e29493fa6923600bbe5c17f18b7af7e",
+   "out/gerber_with_mcu/vtol_carrier-F_Paste.gtp": "831ace4dc2bc5c7ad485bb40f9eb054c53d1f58fb82d9b8f7688f52f5b90e9f0",
+   "out/gerber_with_mcu/vtol_carrier-F_Silkscreen.gto": "f28ed3aaf52095e96bf0ae53df4f04b0e2bf4fbfe652aa979ee512e9fc28a4a9",
+   "out/gerber_with_mcu/vtol_carrier-In1_Cu.g1": "b481fc34f69bc35b30f0d32c28a7cd4a16901c96dcf9fddf12ff45603e13ea52",
+   "out/gerber_with_mcu/vtol_carrier-In2_Cu.g2": "66aab1ce38ebf3771fcef01666a58bae13cbb0c0bdac5e171873200d708cf35a",
+   "out/gerber_with_mcu/vtol_carrier-job.gbrjob": "972fc41c0ec38038fec61d464eee9d2c0b1c0e88d40d7b17cfb03cdbe733883b",
+   "out/gerber_with_mcu/vtol_carrier.drl": "4cc1532c9a6a63fec9fd09c550df0e95dcc0da26abbce059a491bd05efb2ad90",
+   "out/jlc_fee_estimate.csv": "16679c74e154bb2c0160b0d5d99933dcf45574bb3336e9c2e3ce1305231e7e09",
+   "out/jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+   "out/jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+   "out/jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+   "out/jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+   "out/off_board_purchase.csv": "acdd164c75737180f85cf92b4470d358fcdfd748411443cc69d1e3a32e96b8ac",
+   "out/vtol_carrier_bom.csv": "4f7def4b6efcf53e0a4e8452bf8842ccdc32755c7275889e6f8dcb049678c81f",
+   "out/vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+   "out/vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c",
+   "out/따로_살_부품_ko.md": "d0fe995004645689c64cd0d104533472cad439f580c318f2c94ff684f74d88f6",
+   "spec/SPEC_ko.md": "e4437464d99d19e87c387a0a2d27e34dceb5346422cc087c44585043d9a7bae3",
+   "spec/carrier_spec.json": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
+   "spec/library_probe.json": "391aad722b77fba7c2c632b69d9e987e9db8ab6e8397c45348bc6911c655f69e",
+   "spec/parts_sources.json": "a836eb503bbafb21decd9506005592af7f1c8ea383e99662dc956fa970106778"
+  },
+  "normalised": {
+   "out/vtol_carrier.step": {
+    "raw": "f94d0124697f29a1c9febdfdc47b19380a7ab9ef76b5e1fdff068fec4aae0cd1",
+    "normalised": "4f6d81ce2dbb7400f2a2f345844711fb96a3568b25757a0b352994fd6bc2c324",
+    "canonical": "5aedbc3fe6691b4c53940f68ee13dce155f1b12659c55327b3393d81f47c8248 (131461 entities)"
+   },
+   "out/vtol_carrier.net": {
+    "raw": "5ad948bafde80e871ef02769c88bbd42f1707abedafd2d7357fb053a54002cb4",
+    "normalised": "3c016e9d4cd9983675fb9ccb46dee1c526914a86c41b2f98f30c38b3fc8f6afe"
+   },
+   "kicad/work/vtol_carrier.net": {
+    "raw": "8ba82163741a66ef8d098ad0340b64b72c0f9ca1813164d8fe2aa26177b0e00b",
+    "normalised": "3c016e9d4cd9983675fb9ccb46dee1c526914a86c41b2f98f30c38b3fc8f6afe"
+   }
+  }
+ },
+ "evidence_sha256_build2": {
+  "kicad/work/cad_envelope.json": "08c7090560b0b803f5e9c8cee6d0cf6faf7c8ead0eb294e0a4b351acdf272277",
+  "kicad/work/drc_clearance_fix.json": "162f394a6a17bdb9cb059d898dd7218f25ae339bc3e050f9e3f00a36ad343853",
+  "kicad/work/drc_dangling.json": "3495a51c2b905058474d4ccf7a93821300075db695762e0387079462fbdee398",
+  "kicad/work/drc_leftovers.json": "3ce37f984020f6866636100f04315e176844105d8e02a49197ca9ea85a17d864",
+  "kicad/work/drc_ripup.json": "38451bcccde2dc2635e605d0d7b8e3a4eb013f689bb1228e55cb462019d1d6ac",
+  "kicad/work/drc_seed.json": "94997f38c12c06702a269c526867fba23545121bdf1f3dc7fbb671a67e616d77",
+  "kicad/work/drc_unrouted.json": "b63449afb02aef002280ccbdd84285663b7ea4dd96fbac9e50c1cb92693fd34e",
+  "kicad/work/make_all_log.json": "85d7681f1bef1fc1a7275749ffc3979b75db280d2073d57f910771fb1cc7b37b",
+  "kicad/work/route_log.json": "0b33134617cdfa994f695b6cb89dc6f1f1c90f4a41d211eee3294e566e0fd4d4",
+  "kicad/work/route_reuse_log.json": "6655b8320109a2d854be52953e9bd47e492d9f56169363d49611539bbcfc614b",
+  "kicad/work/ses_replay.json": "7f8a5cdb76f8fde5d28e35771084a9e0cc3f7123e63ea62118bfbf9e1869483b",
+  "out/cpl_rotation_check.png": "3df4b5056a4d8c2e75fee9835c36a2eace3bdb91b01bfc6040236277f9e5e2b6",
+  "out/fit_checks.json": "536c989535b6702567171495a70aebff1e57119e9360cafe16c6bd020a09ac00",
+  "out/jlc_gate_report.json": "810afd893e31da649b4a90ce78fe3e231f3386f277ddde43b10413931b0d8065",
+  "out/manifest.json": "9fc0f888553894c5c048735341e64efc5445e9f19c263f21e5cd234bc2d4c2d3",
+  "out/presentation/pcb_bottom_2400.png": "db67f281aca5d2e38f63039dd3032a18d42c096d589077013086ae698aac8eb3",
+  "out/presentation/pcb_iso_back_2400.png": "7293da0e95e3ec045fc21aeecf7cead9f4cf92afd9f3a6370712899a29bce5bb",
+  "out/presentation/pcb_iso_front_2400.png": "0b348f218c655127c1f34b07d55dd86d1d5219023f0662337755bb3e2e0875c0",
+  "out/presentation/pcb_top_2400.png": "e740f0c72e2302d3984139fe44825fc86c261a1da3930c7ce3ed30638a6e8027",
+  "out/presentation/presentation_log.json": "b08f16e18f48fd95dc25c61dd8ab4ce67663f515e4c65ffb6aeab12ce701a2f2",
+  "out/presentation/sch_COM.png": "771206213fd3179704908c44c99df01dfc95f543f441f0d7fb0cce40e09bda04",
+  "out/presentation/sch_FCU.png": "7f9afbce14431284b4cb62af64577e9565610fef8ca2022f9711d948d9e30dda",
+  "out/presentation/sch_GNS.png": "771c57d6f0e040ca39efc6afc21fe64269c197ee4f4feb274f3da2fc56e940f2",
+  "out/presentation/sch_IO_connectors.png": "8940f039b73bf4179dd0b2d7dca9f306b090d2744e693104bb4b5bfc6366fd18",
+  "out/presentation/sch_Level_shift.png": "da74ca6bb7d8d0941587e8a1b01873d85081c79fc6fa22c1f9b0f4e0bcdca791",
+  "out/presentation/sch_NAV.png": "c77a938028891d7e3144d2ee5128a38dae1cbca14a5e3bf98a21699ef9aa05f8",
+  "out/presentation/sch_Power.png": "926ca8cf0431224f38529af0f38724f0c737e48aac5ff9b66073ca62732d35c3",
+  "out/presentation/sch_root.png": "19bb50070710cd0a825d3ca9224f6a697b233c7c84d1fa7b1f0e1c64c8f52455",
+  "out/presentation/schematic_overview.png": "f37e0ac85af802c65fc03f3ab66b2f1a1a274c27c7e244e1d97d2fc1452263b2",
+  "out/render/a1_as_delivered_top.png": "07d921887d1ef89f3d54a57534a163f25be75067458e43332800f33895f9aeec",
+  "out/render/a2_as_delivered_front.png": "e9587b750e4ad330a089c1e75ec9c2367a2c89f7888de722300ae5de111adcca",
+  "out/render/a3_as_delivered_bottom.png": "7e8b777dbfb58a1500db71d5bb4175c964cd08ff9720bf5f48109f37aec8f2a0",
+  "out/render/b1_completed_top.png": "1aba10593c2e1a921b081af1a920de7652192bc02a6f4f3b7a9fb81c4668ffce",
+  "out/render/b2_completed_front.png": "14f2202687451bfca1af643d4610b62b3dfec24e8aa49bf73443d308fdd88d9f",
+  "out/render/b3_completed_back.png": "962c35faf8069e0dc5c44e7b74a8a178d56c61be5632bb735917b85d81d94e3b",
+  "out/render/b4_completed_side_limit.png": "545012d586ab1d2b1ab52bab93123837a52798281fd26b37c91b46aeb0fc2c59",
+  "out/render/c1_gy521_on_J1.png": "14cf20bad57616b11a5eca7b1ea2d41d986ae687823d8a46ee9f6d7f811d7386",
+  "out/render/c2_bmp280_in_J2.png": "3061e674952bb315697b54b3e7ec94eaabbd1e44632c59815d50d7d79a1553a9",
+  "out/render/c3_openlog_in_J5.png": "7e4c3c5305e03205555a3e61346b5a516d5a2fa2972f1114c6999520a9367193",
+  "out/render/c4_esp12f_keepout.png": "5875211cca25f11b13f0b0c2e0d914ec6ffd100ecec7d5a1a968a8de64de749d",
+  "out/render/c5_mcu_pin1.png": "4e4f3bb3f167732dc76b746d6f5be08ad5a4d9abdfff7e6540db35f55798a861",
+  "out/render/d1_gps_plug_J7.png": "677a1329eeac1eae79b2a5edb67db38f2518158e46f0588f45d0da4308e107fc",
+  "out/render/d2_neo7m_top_cap.json": "f6cfca6ca7cfcaafcca6f81e7954377f1738149933e8406a4bb8dbe783767e5f",
+  "out/render/d2_neo7m_top_cap.png": "23200243967d72cc65fce513ecb367d23d4923d18acfd7955d50ee4fd437aef7",
+  "out/render/e1_delivered_vs_completed.png": "336912dd2468f6dfd46347a17a63d7831daf31b4b483a47430e7bc1452042cf6",
+  "out/render/e2a_gy521_J1.png": "569ef69d46db3463c661c0bc4398c18f0aac885013bb56e3b977a5437cdad7e0",
+  "out/render/e2b_bmp280_J2.png": "c5c6ca2fffa7ec5f3011cb3f4a9e899bf3f6dd04d93272903f41a72cdb83a806",
+  "out/render/e2c_openlog_J5.png": "a11d2c5b30c2f8d7abfe933a70171a9f3477652131300a6169297b4a635f4c88",
+  "out/render/e3_gps_lead_J7.png": "97b107ce1cb5d512d238213b6bb9fb9d78521a25a1c775236c3f13e02ba2b748",
+  "out/render/e4_overview_callouts.png": "2fb479e17e61d9956e4a41168d6e7e3abe1ec9df444558e127517096de9dccb1",
+  "out/render/render_report.json": "8e96eef4f6d68085027847bf4fb83d18b523c5a5fe6b6c2c1b298737cf99ef91",
+  "out/render/slides_report.json": "0ce0d03c0346e52da7adb0483b692ea84b9b98fa12c35c9f549fa32d1a4fa0ac",
+  "out/reports/board_metrics.json": "17832f4b115e6273d3ddfa5a7d27d58d22b5a1fd4b1ccde38710eae1b0e67a27",
+  "out/reports/board_vs_ir.json": "4a12097e73dfa039132c9c25c8b89c3e77fd5ee3bd3a05a5c701a3a86a86b3aa",
+  "out/reports/cpl_rotation.json": "ca4d84ee5d899d6c812c3807fa499cf4aa032e99bff21aa738930b6484dde6d0",
+  "out/reports/drc.json": "91329b66416872b32f01c3e4e5d5b334159017e197c2b0d051c4a35d77610335",
+  "out/reports/edge_distance.json": "1a5ad17fc0af7c389c7540c0ffec580f7c2a6741b6c8687af82db143d9e22b73",
+  "out/reports/erc.json": "04a20e2ca802086421502cd333f987755ef4234e1e0cd844f853046d05dcc6b5",
+  "out/reports/gerber_check.json": "5b0f201d68a914dc0b02bb016a0951c52626e575bd180c64f9f833c7c8795254",
+  "out/reports/jlc_fee_estimate.json": "b45bd3b83775280b27b8a7f9bde12206a94e22eeaf7ee5227ef199c3d23516fa",
+  "out/reports/library_gate.json": "875c3cb13f0bd33bab74141d25732fa68a60967424c0ae9691baee3f40fa9be2",
+  "out/reports/netlist_vs_spec.json": "1742b57e26ac5c94d980e425668cb5b4b78141e6e945e94bfadb6da68ac4a8e1",
+  "out/reports/programming_access.json": "d6f21c1777c8c22cb796ebc3d6cf5b9dd0ff8f9f553c30d4dafbccd4cc77f21b",
+  "out/reports/programming_access.png": "28545f4932bc6bd05c43415cf9be06ab27ef354576506efa5523643c064de281",
+  "out/reports/rev3_checks.json": "788e85a20d9937405441b6fb9b4cbd7b57b61470e1726ba29ea2d631c8bb227b",
+  "out/reports/rev3_determinism.json": "604474e48b09da07e5d11d0c3cecbfdc65ca234eeee3a9d54a43f5b8207d1991",
+  "out/reports/rev3_erc.json": "cb5035ea1435a5783163da05f108f656b913b4e98004936d132983cd5adf63a8",
+  "out/reports/rev3_export_determinism.json": "ad0b5bd328bdc93da8d6e9e4a103862750aeb97c119d6cca8cf7801283b3e255",
+  "out/reports/rev3_export_files.json": "e06fc1e5d63b76e60a5758916dcbd968827bcc7306929f9076003e1148dfd890",
+  "out/reports/rev3_fit_sets.json": "73926d739ec2246037b917118db612ae45e88f674f9a1eddf56e437ad1fa16ae",
+  "out/reports/rev3_mcu_pinmap.json": "50abc80ef07f506ab7534f564260972b43045c0a53f22d01a54b578a64cafbb5",
+  "out/reports/rev3_netlist_vs_spec.json": "cf951913caf0f23c57fb0d2c48cbc86d2dc8c392c420e8385faf95564541036c",
+  "out/reports/rev3_nets.json": "5cf6a1dd2b3678a8e287687bd6fe0b197fa76b4547721d3ba79f31bbb20d2eae",
+  "out/reports/rev3_u8_u9_pads.json": "2914e33581f27355719d7e830ff0a5a9b33033d466084928c9a448182f7d2fc5",
+  "out/reports/routing_rules.json": "5ec06c8d8b430275d281b9c03af3278101d6ac6c288b868bccc4581c5c615de0",
+  "out/reports/routing_rules_before_redesign2.json": "042c8a8426db35dee451fc62c89e64bcd39b97aedeab00cc1284ef3b2d782406",
+  "out/reports/routing_rules_before_relayout.json": "a7c01a49b6e82151e34e01d1345d9565c8d81179023c788929240cae6380c328",
+  "out/schematic/vtol_carrier_schematic.pdf": "d0cb2db3f089556fbe504686fb4673a5b161f1b0cf258953f1907f367d658850"
+ },
+ "result_by_group": {
+  "deterministic (byte-identical)": "PASS",
+  "normalised (STEP without FILE_NAME header, netlists without date)": "PASS",
+  "step_canonical (entities without numbering / order, information)": "PASS",
+  "second folder (boards / schematic / gerbers / BOM / CPL byte-identical; files that state their folder identical after renaming)": "PASS"
+ },
+ "result": "PASS",
+ "cross_folder": {
+  "folder": "C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/rev31/install_xf/pcb/vtol_carrier",
+  "command": "make_all.py --no-renders",
+  "clone": {
+   "netlists_dropped": [
+    "out/vtol_carrier.net",
+    "kicad/work/vtol_carrier.net"
+   ],
+   "spec_step_exit": 0,
+   "clone_spec_equals_this_spec_apart_from_the_folder_name": true,
+   "jlc_gate_report_translated": true,
+   "jlc_gate_report_spec_sha256": {
+    "here": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
+    "clone": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe"
+   }
+  },
+  "build": {
+   "exit": 0,
+   "minutes": 6.1,
+   "failed_checks": [],
+   "stopped_at": null,
+   "steps": [
+    [
+     "probe",
+     0,
+     0.6
+    ],
+    [
+     "sources",
+     0,
+     0.2
+    ],
+    [
+     "spec",
+     0,
+     0.6
+    ],
+    [
+     "libgate",
+     0,
+     0.5
+    ],
+    [
+     "schematic",
+     0,
+     0.9
+    ],
+    [
+     "sch_checks",
+     0,
+     8.6
+    ],
+    [
+     "place",
+     0,
+     2.3
+    ],
+    [
+     "pcb",
+     0,
+     1.4
+    ],
+    [
+     "route",
+     0,
+     278.9
+    ],
+    [
+     "routing",
+     0,
+     8.2
+    ],
+    [
+     "edge",
+     0,
+     4.5
+    ],
+    [
+     "rotation",
+     0,
+     0.7
+    ],
+    [
+     "fit",
+     0,
+     1.5
+    ],
+    [
+     "prog",
+     0,
+     4.1
+    ],
+    [
+     "prog_plot",
+     0,
+     1.0
+    ],
+    [
+     "exports",
+     0,
+     35.9
+    ],
+    [
+     "exp_files",
+     0,
+     0.2
+    ],
+    [
+     "exp_det",
+     0,
+     16.0
+    ],
+    [
+     "docs",
+     0,
+     0.3
+    ],
+    [
+     "manifest",
+     0,
+     0.9
+    ]
+   ]
+  },
+  "renaming_rule": "every spelling of 'C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/rev31/install_xf/pcb/vtol_carrier' -> 'B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier', then of 'C:/Users/yc012/AppData/Local/Temp/claude/133067549dd2ec4c/bed4b475-b8b1-46b7-ab64-c3b11e27401e/scratchpad/pcb_rev3/rev31/install_xf' -> 'B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3'; sha256 of a differing file of the set -> this folder's sha256 of that file",
+  "compared": 60,
+  "identical": 55,
+  "identical_after_renaming": [
+   "README_ko.md",
+   "out/ORDER_ko.md",
+   "out/따로_살_부품_ko.md",
+   "spec/SPEC_ko.md",
+   "spec/parts_sources.json"
+  ],
+  "differing": [],
+  "netlists_identical_after_date_and_renaming": [
+   "kicad/work/vtol_carrier.net",
+   "out/vtol_carrier.net"
+  ],
+  "normalised_netlists_differing": [],
+  "not_rebuilt_in_the_second_folder": [
+   "kicad/3d/bmp280_in_J2.step",
+   "kicad/3d/gh_plug_in_J7.step",
+   "kicad/3d/gy521_on_J1.step",
+   "kicad/3d/height_limit_frame.step",
+   "kicad/3d/models_manifest.json",
+   "kicad/3d/molex_22035025_J14.step",
+   "kicad/3d/neo7m_module.step",
+   "kicad/3d/openlog_in_J5.step",
+   "kicad/render_as_delivered.kicad_pcb",
+   "kicad/render_completed.kicad_pcb",
+   "kicad/render_completed_limit.kicad_pcb"
+  ],
+  "order_files_boards_schematic_checked": 43,
+  "order_files_boards_schematic_not_raw_identical": [],
+  "spec_sha256_in_the_clone": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
+  "release_gate_reasons_in_the_clone": [],
+  "sha256_second_folder": {
+   "kicad/vtol_carrier.kicad_pcb": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
+   "kicad/work/vtol_carrier_unrouted.kicad_pcb": "61897a656e612d1b627dcf9c348ee599cae37f989da9db603f089deca3617509",
+   "out/vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+   "out/vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c",
+   "out/jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+   "out/jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+   "out/jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+   "out/jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+   "out/cpl_rotation_table.csv": "9486a629e9ea79beedd710aed65ddcf72b1713f37ef291b237b8c11f08481d4c"
+  },
+  "result": "PASS"
+ },
+ "finished": "2026-11-13T21:24:30+0900"
+}

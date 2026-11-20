@@ -1,0 +1,53 @@
+X3 replay (Fusion script feature calls from a mock run, rebuilt in OCC) vs the CadQuery twin - preset KAIST_90mm_12S
+script B:\0)AI_Cad\CanSat_EDF_Rocket\cad\fusion360\CanSatEDFRocket\CanSatEDFRocket.py v0.9.6; 223 recorded calls
+
+== payload_module: replay V 249865.68 mm3 (valid True, 1 solid(s)), twin V 249865.70 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== payload_module: V fusion 250037 mm3, cadquery 250037 mm3, dV -0.00 %
+   bbox fusion [[-115.55, -60.0, 500.0], [78.26, 59.99, 751.0]]
+   bbox cq     [[-115.55, -60.0, 500.0], [78.26, 59.99, 751.0]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 251 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== avionics_module: replay V 164711.85 mm3 (valid True, 1 solid(s)), twin V 164714.14 mm3, dV -0.0014 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== avionics_module: V fusion 164672 mm3, cadquery 164577 mm3, dV +0.06 %
+   bbox fusion [[-60.0, -59.98, 300.0], [60.0, 60.0, 515.0]]
+   bbox cq     [[-60.0, -59.98, 300.0], [60.0, 59.98, 515.0]]
+   sections agree at every slice
+   centroid shift 0.004 mm (<= 0.1), inertia diagonal max |d| 0.061 % (<= 1)
+   X3 PASS: |dV| 0.06 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 215 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== gps_pod_lid: replay V 4215.37 mm3 (valid True, 1 solid(s)), twin V 4215.37 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== gps_pod_lid: V fusion 4216 mm3, cadquery 4216 mm3, dV -0.00 %
+   bbox fusion [[-115.55, -49.31, 722.0], [-46.99, 15.42, 735.0]]
+   bbox cq     [[-115.55, -49.31, 722.0], [-46.99, 15.42, 735.0]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 13 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== gps: replay V 9437.40 mm3 (valid True, 2 solid(s)), twin V 9437.40 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== gps_ground_plane: replay V 1942.40 mm3 (valid True, 1 solid(s)), twin V 1942.40 mm3, dV -0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+== piston: replay V 39567.18 mm3 (valid True, 1 solid(s)), twin V 39567.18 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+
+== piston: V fusion 39551 mm3, cadquery 39551 mm3, dV +0.00 %
+   bbox fusion [[-57.5, -57.48, 532.0], [57.5, 57.48, 536.0]]
+   bbox cq     [[-57.5, -57.48, 532.0], [57.5, 57.48, 536.0]]
+   sections agree at every slice
+   centroid shift 0.000 mm (<= 0.1), inertia diagonal max |d| 0.000 % (<= 1)
+   X3 PASS: |dV| 0.00 % (<= 0.5: True); max |band dV| 0.0 mm3 (<= 250: True); bands above 20 mm3 differ by at most 0.00 % of their volume (<= 3: True); NaN slice areas 0 (= 0: True); 4 planes, step 1 mm, each >= 0.0005 mm off every vertex height
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices PASS
+
+== gns: replay V 37500.00 mm3 (valid True, 1 solid(s)), twin V 37500.00 mm3, dV +0.0000 %; boolean replay - twin 0.0000 mm3, twin - replay 0.0000 mm3
+   replay X3 PASS: boolean differences < 1 mm3 (True); slices n/a (placeholder: boolean difference only)
+
+RESULT: all replayed parts match the twin

@@ -1,0 +1,71 @@
+.venv/
+__pycache__/
+*.pyc
+sim/out/
+.pio/
+# ground station flight logs (tools/ground_station.py)
+logs/
+# Bambu Studio CLI status file written to the working directory when slicing
+/result.json
+# control-change history archives (before / after comparisons; large binaries)
+history/
+# Python profiler dumps (cProfile -o)
+prof.out
+*.prof
+# stray MSVC object from a '-o nul' typo; git on Windows cannot index a file named "nul"
+firmware/atmega128_fc/nul
+# leftover duplicate exports with a garbled name (byte-identical to the real file)
+cad/exports/print/*-----*
+# public repo (2026-11-04, user decision): keep the uncropped real photos local (README uses the cropped docs/images/edf_photo.jpg)
+docs/실물사진/
+
+# ---- 2026-11-20 user decision: GitHub holds only the latest finished outputs; tool scripts stay local ----
+# every Python script (CAD generation / checks, sim runs, sizing, PCB build, render, diagrams, tests) ...
+*.py
+# ... except the ground station, the modules it imports and the PlatformIO pre-build generators (kept by user choice)
+!tools/ground_station.py
+!cad/layout.py
+!sim/__init__.py
+!sim/controller.py
+!sim/edf.py
+!sim/estimator.py
+!sim/fc_timing.py
+!sim/ground_station_logic.py
+!sim/link_model.py
+!sim/link_proto.py
+!sim/loop_margins.py
+!sim/nlink_proto.py
+!sim/onboard.py
+!sim/quat.py
+!sim/sim6dof.py
+!sim/state_machine.py
+!sim/vehicle.py
+!firmware/*/extra_gen.py
+!firmware/*/gen_*config.py
+# Fusion 360 scripts, diagram drawing code, Blender video pipeline
+cad/fusion360/
+cad/cadquery/
+docs/diagrams/src/
+/render/
+/requirements-video.txt
+# tool folders and intermediates
+pcb/*/scripts/
+pcb/*/archive/
+pcb/*/kicad/work/
+pcb/*/kicad/ir/
+sim/validation_*/scripts/
+cad/exports/fusion_replay*/
+cad/exports/c29_clock_grid/
+# raw design / result data (params.json stays: the firmware generators and the ground station read it)
+*.csv
+*.json
+!/params.json
+# kept reports and fabrication tables (already tracked; listed so new copies are not hidden)
+!pcb/*/out/**/*.csv
+!pcb/*/out/**/*.json
+!cad/body_v2/out/*.json
+!cad/body_v2/out/print/slice_report.json
+!cad/exports/*.json
+!cad/exports/rotor/*.json
+!cad/exports/rotor/print/print_report.json
+!sim/validation_*/01_비교표/*.csv

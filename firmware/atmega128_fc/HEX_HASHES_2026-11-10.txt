@@ -1,0 +1,53 @@
+# 2026-11-10 control round (ESP-NOW link model, logic-battery TELEM v6 / v7, ESP radio_stats ok = an ESP byte since
+# boot; NAV barometer driver BMP280 = the default, MS5611 = the build option env nav_ms5611; the NAV drops a tick
+# that fired during its boot initialisation; NAV altitude-filter crossover 0.5 -> 0.4 Hz, ALT_CROSSOVER_HZ /
+# ALTV_K1..3 of params_gen.h): sha256 of every image the project builds, from this tree's
+# params.json / generated headers (PlatformIO).
+# Rebuilt 2026-11-11 after the round's last step (params.json description text and electronics.gps.price_krw
+# only): params.json sha256 3419c5fe..., so FC_PARAMS_SHA256_PREFIX / FC_PARAMS_TAG and with them every
+# ATmega128 image changed once more.  The VTOL print plan had to be re-sliced for the budget files, and the
+# Bambu slice is not bit-reproducible: on the same STL the propulsion_module part grams moved by 3.9e-5 g.
+# The three VTOL CAD reports were rebuilt from that table (VTOL mass 1653.699820 -> 1653.699781 g), so in
+# params_gen.h the VTOL constants VEH_MASS_KG, VEH_POST_EJECTION_MASS_KG, VEH_Z_CG_M, MIX_L_V_M, VEH_IXX /
+# IYY / IZZ_KG_M2 and POS_TW moved in their last float digits (relative change <= 1.3e-7) and the VTOL
+# FC_PARAMS_TAG values changed with the CAD sha.  The rocket (ballistic) set did not change in this rebuild.
+# The values below are the round's final ones.
+# Column 2: the 2026-11-06 value (HEX_HASHES_2026-11-06.txt) - '=' unchanged.  Bench-only images (fcu_bench_*) must
+# NEVER fly.  Row 21 (the *_ballistic images): 사용자 재선언 대기 - the values below are NOT declared;
+# tools/run_all_benches.py BALLISTIC_EXPECTED is not edited (it still names the 2026-10 declared hashes).
+# 24 of 30 images differ from 2026-11-06; unchanged: gns, gns_demo, gns_wired_buffer, bridge_nano, bridge_nano_oldboot, bridge_uno
+# flight images
+1436fee5a6f6a447ec2e61fb1d4f91fa06ce9d994bc6d06daa503c5611a4005f  nav.hex  was 26549866950f22ee
+65f5b5ec0dfb9540080a3eaa5f15c190e4b1b9d52a510216d2f98fe9a050b748  nav_wired.hex  was 1368e9dda64065ce
+23c8345184bedad02e5fcadad381563d32f45a13f7a569dbe226a441990491c7  nav_wired_buffer.hex  was cfb773affc5d59a2
+1c2e77f8f670bfa736b39c73f0bada0f74c04d23674cf806ee8f10d42a4dcb07  nav_ballistic.hex  was c1757ef8be3dc875
+d2c034de49b39f3c57321a6a9fe7a770e99dff8d03c7bea1b006a94ddbe238ee  gns.hex  =
+3695255e50f0ee5b4a477cd01e693b42361094c19bfb62ba2e564bca906e84b6  gns_demo.hex  =
+a491f7841afab8b6dc4aaa1dd1d239c799e45606d87178742fa547970383a124  gns_wired.hex  was acf17f99f95fd9eb
+281f1b2a492fa0c0d0a016b985921d56e397c5dab87bedca9da39fa0cde351ba  gns_wired_buffer.hex  =
+a5e7997dbb6f1e70b3a69ffbb02a2859584aa975c019280d6a60e89adc70e781  fcu.hex  was 050ac1662f98c5b0
+738ef5ed02565ebc3c226a0243bf22fbab5021a714a1dd3991bd2542fd60bd81  fcu_demo.hex  was 7ef0908c2521fb1c
+f4e1a12e014634c1354b9a36e830cd06bcccd87e90c0d584d5232d7d4c89214c  fcu_nogps.hex  was ee2cd45b5748c807
+716271ef1edcac340609e41d6e1566251f2a255f38b0d9a91ca545dcaa6ed6cd  fcu_wired.hex  was cdf04c9e3ad9f2b9
+b6c38fc9bd837563f043d9a4dbd57ab7f69db64382d4f07abcb3352dd9dae63a  fcu_wired_buffer.hex  was e5f3df3c760821c3
+ad123058230189b62f02b98e361ced05f9318bbdd6a6c72d72f8062aa8b33882  fcu_ballistic.hex  was 6c5b873c36679cf4
+a316ac672e76d8ccfb1c7417d3e251ae78238651e7b6c09cd3ae69d7afc7068b  com.hex  was defe3daf9ae16868
+28a57423093c9188ce2b5d6ca64e6d90c1c8abdcb950833be9dee93708409d0c  com_wired.hex  was ee81c6438bf11e6b
+e3a86932e091a3ee3ce657d81ed74fd1a796843a945ac18111d91608ae3ee8c8  com_wired_buffer.hex  was 3b160197d669a31b
+8c8c381504193d3e94183dd9ebf22571ed25fd49fdb5bfeeea4086eec59f281c  com_ballistic.hex  was efc294a6d1593d00
+a316ac672e76d8ccfb1c7417d3e251ae78238651e7b6c09cd3ae69d7afc7068b  com_esp_bridge.hex  was defe3daf9ae16868
+8c8c381504193d3e94183dd9ebf22571ed25fd49fdb5bfeeea4086eec59f281c  com_esp_bridge_ballistic.hex  was efc294a6d1593d00
+76973c792359cb0f0e86135534e2155ed940fc7a0dea80a0fe0cdc9adf3edc41  com_lora_uart.hex  was bdb8424da6a1d4d9
+491287eea6dd3ef666fa3c9e671e515e875791fba81cb30fa3d3c49cd254ed1c  com_sx127x.hex  was 99589cb5deb852e4
+033399b829e4bc93d5577a4fde2cd30a010fde28dd5b2067bfb3ef8a5958244f  com_lora_uart_ballistic.hex  was 0e2afca6f76faa62
+f3cd566ef5d857a2ef8a0c050b58509ee0c1365c8c9f435b786d28a4eead1c5f  com_sx127x_ballistic.hex  was 7151bc57d757beca
+# bench-only images (never fly)
+c69fe332bf61605045b897d4d69a7ed7753df942e07ddd38edab83f7d3248b79  fcu_bench_tether.hex  was e88270ba75a53bbf
+452ed27b2a3810cba2f4d5268d3fe2827a077c936bb7fa46d9e32cdc6c1f07c4  fcu_bench_hover.hex  was beebaf7726db5b82
+353bdb91cbbffe542b2ca8635db2cb17c556544c664dbd1d195282279dff80df  fcu_bench_vanes.hex  was 1d80d6a2652724b0
+# LoRa ground bridge (firmware/ground_bridge)
+407f4ac2a46aa1544c1f08df32e92a456a833aefc5f9cdbc3c8a7ad26678584c  bridge_nano.hex  =
+407f4ac2a46aa1544c1f08df32e92a456a833aefc5f9cdbc3c8a7ad26678584c  bridge_nano_oldboot.hex  =
+407f4ac2a46aa1544c1f08df32e92a456a833aefc5f9cdbc3c8a7ad26678584c  bridge_uno.hex  =
+# build option (2026-11-10, not in the 2026-11-06 list): the NAV with the MS5611 barometer driver (VTOL field)
+7d6c46bf9789b2151271267a6ec42c1fb1e1c9c1087c9e87ef41fe896f20a2c9  nav_ms5611.hex  new

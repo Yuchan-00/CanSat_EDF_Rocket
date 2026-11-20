@@ -1,0 +1,133 @@
+$ .venv\Scripts\python.exe tools/gen_firmware_params.py    [gen_firmware_params, exit 0]
+firmware/atmega128_fc/src/params_gen.h: unchanged (sha256 33cddb10c1a94b94)
+  l_v = 339.622 mm (z_cg 376.622 mm, m 2.4906 kg), A_e = 5073.5 mm^2, S_v = 960.0 mm^2, hover u = 0.8978
+  Timer2 /256 OCR2=249 -> 250 Hz; PWM /8 TOP=39999 -> 50 Hz; TWBR=12; UBRR log=34 (U2X 1, -0.79 %), link=103 (U2X 0, +0.16 %)
+  supervisor ticks: ramp 125, coast hold 125, I1 750, I1p 500, I3 5, I6 75, I7 6250, I9 25/125, release 50/125
+  radio lora_uart (vehicle id 90); sx127x FRF 0xE68666 = 922099975.6 Hz, MC1 0x72 MC2 0x74 MC3 0x04 PA 0x8C, ToA CMD 46.3 ms / TELEM 77.1 ms, SPI F_CPU/32
+  link lora_uart: up 149.2 ms, down 273.8 ms, rtt worst 491.0 ms, poll 2.00 Hz (asked 2), single-loss uplink gap 1031 ms vs I1p 2000 ms
+  link sx127x: up 64.9 ms, down 119.6 ms, rtt worst 252.4 ms, poll 2.00 Hz (asked 2), single-loss uplink gap 1000 ms vs I1p 2000 ms
+
+$ .venv\Scripts\python.exe tools/gen_gains_header.py    [gen_gains_header, exit 0]
+firmware/atmega128_fc/src/gains.h: written from sim/out/gains.json (sha256 2223c6d446a7dbe0)
+
+$ .venv\Scripts\python.exe tools/build_host_test.py --run    [build_host_test --run, exit 0]
+built firmware\atmega128_fc\host_test\build\test_core.exe
+info: AN520 example vector crc4 = 0xB
+info: flight record payload 90 bytes, frame 96 bytes, 4800 B/s at 50 Hz (link 5760 B/s)
+test_core: 8795 checks, 0 failures
+
+$ .venv\Scripts\python.exe -m platformio run -d firmware/atmega128_fc    [platformio run (all envs), exit 0]
+RAM:   [======    ]  56.8% (used 2325 bytes from 4096 bytes)
+Flash: [===       ]  30.9% (used 40538 bytes from 131072 bytes)
+========================= [SUCCESS] Took 4.93 seconds =========================
+RAM:   [======    ]  56.8% (used 2325 bytes from 4096 bytes)
+Flash: [===       ]  30.9% (used 40538 bytes from 131072 bytes)
+========================= [SUCCESS] Took 3.93 seconds =========================
+RAM:   [======    ]  56.8% (used 2326 bytes from 4096 bytes)
+Flash: [===       ]  31.3% (used 41066 bytes from 131072 bytes)
+========================= [SUCCESS] Took 3.90 seconds =========================
+RAM:   [======    ]  56.8% (used 2325 bytes from 4096 bytes)
+Flash: [===       ]  30.9% (used 40536 bytes from 131072 bytes)
+========================= [SUCCESS] Took 3.87 seconds =========================
+RAM:   [======    ]  56.8% (used 2325 bytes from 4096 bytes)
+Flash: [===       ]  30.9% (used 40542 bytes from 131072 bytes)
+========================= [SUCCESS] Took 3.89 seconds =========================
+RAM:   [======    ]  56.8% (used 2325 bytes from 4096 bytes)
+Flash: [===       ]  31.5% (used 41248 bytes from 131072 bytes)
+========================= [SUCCESS] Took 3.85 seconds =========================
+Environment      Status    Duration
+atmega128        SUCCESS   00:00:04.926
+radio_lora_uart  SUCCESS   00:00:03.933
+radio_sx127x     SUCCESS   00:00:03.898
+bench_tether     SUCCESS   00:00:03.870
+bench_hover      SUCCESS   00:00:03.893
+bench_vanes      SUCCESS   00:00:03.852
+
+$ .venv\Scripts\python.exe tools/crosscheck_controller.py    [crosscheck_controller, exit 0]
+== generators / build
+== plant: generator == sim.vehicle (l_v 339.622 mm, source cadquery_report.json (generator=cadquery))
+== recorded 6-DOF runs: rec_nominal (10727 ticks), rec_vane_fail (1790 ticks), rec_kill (2150 ticks), rec_pad_long (13523 ticks)
+== controller: 12921 vectors in 44 sequences (5760 random, 7161 recorded); max |d delta| = 1.635e-06 rad (bound 1e-04), max |d pwm| = 1.096e-03 us, max |d I| = 1.423e-07 N m, max |d M| = 8.393e-06 N m
+   coverage: 5908 saturated, 3101 thrust-floored, 3673 rate-setpoint-clamped rows; sat-flag mismatches ambiguous 0, hard 0 -> PASS
+== onboard supervisor: 505690 ticks in 124 sequences (random: 120 seq / 477500 ticks, recorded: 4 seq / 28190 ticks), 18328 uplink frames, 17330 TELEM replies; mismatching ticks 0; I10 boots 13; inputs moved out of the float32 band 2 -> PASS
+   interlocks: {'I1 link loss': 7, 'I1p link loss on the pad': 7, 'I2 tilt': 5, 'I3 spin/gyro saturation': 5, 'I4 apogee limiter': 11, 'I5 geofence': 5, 'I6 fall-safe': 10, 'I7 motor time': 18, 'I8 V_cell': 4, 'I9 IMU failure': 5, 'I9 baro failure': 4, 'arm switch opened': 7}
+   rejections: {'rejected: THROTTLE 0 on the pad': 4, 'rejected: V_cell': 32, 'rejected: arm switch open': 89, 'rejected: link not established': 111, 'rejected: nonce': 10, 'rejected: not aligned': 56, 'rejected: release already open': 125, 'rejected: release pending': 10, 'rejected: sensors': 4, 'rejected: state': 990, 'rejected: tilt': 49, 'rejected: unknown command': 57}
+   executed:   {'ARM': 121, 'CUT': 3, 'DISARM': 14, 'KILL': 384, 'LAUNCH': 38, 'RELEASE': 19, 'THROTTLE': 46}
+   transitions: {'ABORT->RELEASED': 38, 'ARMED->POWERED': 66, 'ARMED->RELEASED': 6, 'ARMED->SAFE': 45, 'POWERED->ABORT': 33, 'POWERED->UNPOWERED': 37, 'SAFE->ARMED': 121, 'UNPOWERED->ABORT': 5, 'UNPOWERED->POWERED': 7, 'UNPOWERED->RELEASED': 21}
+   recorded replay (float32 inputs) reproduces the 6-DOF run's own states: {'recorded:rec_nominal': 1.0, 'recorded:rec_vane_fail': 1.0, 'recorded:rec_kill': 1.0, 'recorded:rec_pad_long': 1.0}
+== link protocol: 3000 streams (382765 bytes, 4295 valid frames, counters {'frames': 4295, 'bad_len': 1392, 'bad_crc': 3349, 'wrong_vehicle': 4018, 'wrong_type': 2861, 'bad_payload_len': 252, 'skipped_bytes': 127164}), 4000 encodings, 200000 quantisations; mismatches 0 -> PASS
+== estimator (PadAlignGyroEstimator, N_avg 500): 14400 steps, max |d q| 1.56e-06, max |d bias| 1.44e-08 rad/s, max |d rate| 2.03e-07 rad/s -> PASS
+== altitude filter: 45000 steps (|h| up to 927 m), max |d h| 2.01e-04 m, max |d v| 5.52e-04 m/s -> PASS
+== log format round trip: 3 flight, 1 event, 1 link, 1 status records, 3 junk bytes skipped -> PASS
+crosscheck: PASS (28.8 s); report firmware\atmega128_fc\host_test\build\crosscheck_report.json
+
+$ .venv\Scripts\python.exe -m platformio run -d firmware/atmega128_fc -e simbench -e simbench_sx127x -e simbench_micro    [platformio run simbench envs, exit 0]
+========================= [SUCCESS] Took 3.87 seconds =========================
+========================= [SUCCESS] Took 4.04 seconds =========================
+========================= [SUCCESS] Took 4.59 seconds =========================
+simbench         SUCCESS   00:00:03.870
+simbench_sx127x  SUCCESS   00:00:04.040
+simbench_micro   SUCCESS   00:00:04.590
+
+$ .venv\Scripts\python.exe firmware/atmega128_fc/tools/run_simbench.py    [run_simbench, exit 0]
+simbench (12 one-second windows, states SAFE ARMED POWERED, 1888 ticks with the controller active):
+  time-critical part: pad 1646 us, flight 3046 us -> max 76.1 % of the 4000 us tick (limit 80%)
+  incl. background:   pad 3157 us, flight 3834 us; longest background step 379 us (link 379 us)
+  link: 25 uplink frames from the synthetic ground, 25 TELEM replies, uplink handled -> reply encoded <= 3 ticks
+  missed ticks 0; stack: 454 bytes deep (simbench 2687 B static, 955 B never touched) -> flight build radio_lora_uart (2325 B static) keeps 1317 B free (limit 1024) -> PASS
+      155 us  sensors (outputs, ADC, switch, IMU convert, baro bus step)
+     1193 us  estimator + tilt + altitude filter
+      309 us  onboard supervisor (commands, interlocks, reply snapshot, event records)
+     1234 us  attitude controller + mixer
+      291 us  next outputs, LED, loop-time stamp
+     1155 us  background (baro math, link, log packing, stack scan, status)
+  output pulses read back from the compare registers [us]: pad ESC [1000.0], release [1000.5], vane1 [1500.0]..[1500.0]; flight ESC [2000.0]..[2000.0], vane1 [1278.0]..[1630.5]
+simbench_sx127x (11 one-second windows, states SAFE ARMED POWERED, 1641 ticks with the controller active):
+  time-critical part: pad 1646 us, flight 3070 us -> max 76.8 % of the 4000 us tick (limit 80%)
+  incl. background:   pad 3676 us, flight 3946 us; longest background step 365 us (link 365 us)
+  link: 23 uplink frames from the synthetic ground, 23 TELEM replies, uplink handled -> reply encoded <= 3 ticks
+  missed ticks 0; stack: 456 bytes deep (simbench 2692 B static, 948 B never touched) -> flight build radio_sx127x (2326 B static) keeps 1314 B free (limit 1024) -> PASS
+      153 us  sensors (outputs, ADC, switch, IMU convert, baro bus step)
+     1198 us  estimator + tilt + altitude filter
+      309 us  onboard supervisor (commands, interlocks, reply snapshot, event records)
+     1234 us  attitude controller + mixer
+      291 us  next outputs, LED, loop-time stamp
+     1749 us  background (baro math, link, log packing, stack scan, status)
+  output pulses read back from the compare registers [us]: pad ESC [1000.0], release [1000.5], vane1 [1500.0]..[1500.0]; flight ESC [2000.0]..[2000.0], vane1 [1278.0]..[1631.5]
+per-operation cycles (avr-libc float, 32-call average; composite entries are optimistic: the compiler hoists loop-invariant work):
+    fadd                             97
+    fmul                            150
+    fdiv                            469
+    fcmp_lt                          66
+    f2i32_cast                      218
+    lroundf                         205
+    sqrtf                           501
+    sinf                           1712
+    cosf                           1734
+    atan2f                         2937
+    asinf                          2602
+    acosf                          2486
+    powf                           4878
+    quat_multiply                  4063
+    quat_integrate                 2293
+    quat_to_rotvec                 5811
+    att_est_update_pad             9080
+    att_est_update_flight          7646
+    attitude_ctrl_update           7507
+    alt_filter_predict              512
+    onboard_update_hb               675
+    onboard_update_noframe          405
+    onboard_telemetry              6312
+    lp_quantize                     619
+    lp_encode_telem_36             2123
+    lp_decoder_cmd_frame_13        4789
+    ms5611_compensate              2242
+    ms5611_pressure_altitude          0
+    log_fixed                       177
+    log_pack_flight_part0          1130
+    log_pack_flight_part1          2514
+    log_pack_flight_part2          2867
+    log_pack_flight_part3          1767
+    log_pack_flight                8305
+    log_frame_96                   3633
+-> firmware\atmega128_fc\host_test\build\simbench_report.json

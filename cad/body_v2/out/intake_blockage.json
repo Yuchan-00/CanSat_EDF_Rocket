@@ -1,0 +1,31 @@
+{
+ "r_mm": 69.5,
+ "z": [
+  229.0,
+  309.0
+ ],
+ "grid_mm": 0.5,
+ "A_open_new_M_mm2": 20503.0,
+ "A_open_new_minus_ESC_shadow_E_mm2": 19961.0,
+ "ESC_shadow_mm2": 542.0,
+ "shadow_rule": "E: inward radial line meets the ESC within 5.0 mm inside r 68",
+ "A_open_before_layout_M_mm2": 19330.0,
+ "reference": "committed intake before the 2026-11-20 layout (with the theta-20 motor trunk), same sampling",
+ "window_loss_pct_cad_E": [
+  5.96,
+  14.04
+ ],
+ "thrust_change_pct_cad_E": [
+  0.74,
+  1.76
+ ],
+ "window_loss_pct_cad_minus_shadow_E": [
+  6.28,
+  14.82
+ ],
+ "thrust_change_pct_cad_minus_shadow_E": [
+  0.42,
+  0.98
+ ],
+ "model": "spec window-loss model: loss ~ 1 / A_open^2 at fixed rpm, 6.7-15.8 % at the reference area (E)"
+}

@@ -1,0 +1,2114 @@
+{
+  "meta": {
+    "project": "CanSat EDF Rocket",
+    "version": "0.9.0",
+    "date": "2026-10-27",
+    "v09_cad1_note": "v0.9 CAD-1 round (user decisions 2026-10-27): (1) direct-drive vanes - each MG90S sits in a fin-root fairing coaxial with its vane shaft (vane_drive), fins rotated onto the vane angles (fin.theta0_deg 45 -> 0), servo pods / horns / arms / pushrods removed (vane_drive.mode 'direct'; the KAIST preset keeps 'pushrod'); (3) motor-lead path for 3 x 12 AWG with 5.5 mm bullets: 22 mm wide propulsion slot, open intake groove 22 x 11 with a printed cover (intake_module.wire_channel), bulkhead hole 22 x 11, bullet joints in the avionics bay (motor_leads); printed-part masses from the slicer with the class settings of docs/print_mass_calibration.json (printer.mass_model). params_gen.h is STALE after these edits until the firmware round regenerates it.",
+    "units": {
+      "length": "mm",
+      "mass": "g",
+      "angle": "deg",
+      "force": "N",
+      "note": "All lengths in mm. Fusion 360 API uses cm internally: divide by 10."
+    },
+    "preset": "BUDGET_90mm_6S",
+    "coordinate_system": "Vehicle axis = +Z (up, thrust direction). Z=0 at the exhaust duct exit plane. X axis points to vane 1 (theta=0 deg). theta measured from +X toward +Y.",
+    "assumed_values_note": "Keys ending in _ASSUMED must be measured on the real part before printing the mating geometry.",
+    "v09_cad2_note": "v0.9 CAD-2 round (user decisions 2 / 4 / 5 of 2026-10-27, architect mass target VTOL battery <= 1650 g, battery-less tether <= 1400 g): mission.config selects the HARDWARE configuration - 'rocket' (ballistic launch + CanSat deployment, the v0.9 CAD-1 stack, bit-identical) or 'vtol' (no CanSat / chute / payload module / piston / spring / release servo / latch / nose / GPS pod: a top cap with the GPS and the tether hardpoint on the avionics module, one avionics carrier PCB instead of the NAV / FCU / COM / GNS boards, a shorter windowed avionics module, a 1.6 mm duct, fins with a lightening hole, a 1.2 mm intake bulkhead) - its overrides are configs.vtol, applied after the preset by layout.load_params (BUDGET preset only).  power.source ('battery' | 'tether' | 'hybrid') applies to 'vtol' only. The default stays 'rocket' in this round: flipping it changes every default-layout consumer (sim, firmware headers, the pinned rocket artifacts) and belongs to the sim / firmware round together with the VTOL gain re-tune. params_gen.h is STALE after this edit until the firmware round regenerates it.",
+    "v09_wire_note": "v0.9 lead-exit round (user 2026-10-29): the motor leads start at the motor's LOWEST end (side, radial) and follow one of the EDF's own stator vanes to the housing wall - not the housing-side slot read from the drawing (edf.wire_exit.superseded_2026_10_29). edf.wire_exit.motor_exit / stator_vane / housing_exit, motor_leads.lower_route and propulsion_module.wire_slot.low_* / wide_z0_from_lip_front drive Layout._motor_lead_lower: exit -> bend up the motor can -> bend out along the stator vane's trailing edge -> under the housing's rear rim through a printed lead notch (liner + sleeve) -> bend up a lower slot beside the housing into the unchanged 22 mm slot. Everything except the motor bottom height (drawing data) is ASSUMED; C29 checks the new legs. params_gen.h / bridge_config_gen.h may be STALE after this edit. Independent review fix (2026-10-29): RTV bond to the stator trailing edge instead of a cable tie round the vane (motor_leads.lower_route.restraint), RTV / chafe tape 1.0 g ASSUMED in motor_leads, the lead drag in the jet (lower_route.jet_drag, E) in C33 and the T/W-1.3 thrust, side-by-side blockage only. | PHOTO ROUND (user photos 2026-10-29, docs/실물사진/EDF_모터선_출구_2026-10-29_1.jpg / _2.jpg; round 1 archived in history/v0.9_wire_round1): the leads leave the motor side at its FRONT ring (stator / rear-rim level), bundled in heat-shrink, straight out behind one stator vane and under the rear rim; the single leads then bend up the lower slot (one bend; round 1's climb along the can and its two bends are gone, edf.wire_exit.superseded_2026_10_29_round1). New: motor_exit.level 'front_ring' / front_ring_w_ASSUMED, motor_leads.lower_route.bundle (od / shrink length / gap / shrink mass, ASSUMED from the photos); the notch is ~3 mm deeper for the bundle; the jet drag is the bundle's (E). Everything read off the photos is ASSUMED.",
+    "v09_fix_note": "v0.9 fix round (2026-10-28, reviewer defects): geometry - lip-pocket slit + strut tie anchors + bulkhead hole 20 x 11 at r 42-53 (motor leads installable and restrained off the EDF throat), coupler with a set screw on a +v D-flat (axial retention, no D-flat play) and a horn socket (no coupler screws), brass hinge bushings, foam pad spec, 22 mm slot / groove slivers removed; VTOL - solid fins (span 76.8, footprint 246.8), tray plane 25 -> 14.6 (lateral CG), side windows moved, gland at 180 deg / GPS patch at 0 deg, eye-bolt load washer + jam nut, tether kit boxes. params_gen.h is STALE after this edit until the firmware round regenerates it.",
+    "v09_clock_note": "wire09c (user 2026-10-30, '알아서 여유있게 해주면 안돼?'): the motor-lead passage is made generous so the real EDF fits without measuring - propulsion_module.tab_mount 'clock_keyways' (keyways round the circle, no tab screws; the EDF is clocked to ONE lead passage at lead_passage.theta_deg that leaves the body through a blister), motor_leads.generosity_box (factory sleeve kept up to 35 mm / O12 / 12 x 5 ribbon, lead O up to 4.3, bend R 7-15, TE 0-3, protrusion 30-36, rim gap 0-2, any exit azimuth), edf.axial_retention (lip on the shelf, foam under the tabs). Before-state: history/v0.9_wire_round2/.",
+    "v09_livery_note": "livery round (user decisions 2026-11-04): (1) every printed part of the vehicle changes from Bambu PLA Matte Black ('Charcoal') to WHITE - Bambu PLA Matte 'Ivory White' (#FFFFFF, code 11100; check the name at purchase); the launch pad is not part of the request and stays Black / Charcoal (printer.color_exceptions). (2-4) the word YUCHAN in Bambu PLA Matte 'Mandarin Orange' (#F99963, code 11300) as a FLUSH 2-colour inlay (one outer wall line, 0.42 mm deep, no relief) printed on the P2S with an AMS, on both sides of the avionics_module (azimuth 67 / 293 deg), rocket and vtol (battery / tether / hybrid); 'launch' concept, VERTICAL version (reads along the axis, letter tops to the left seen from outside), chosen by the user knowingly accepting the AMS cost: one swap per orange layer, 578 layers at 0.20 mm (M) -> ~578 swaps, about +14 to +15 h of print time and ~180-260 g purge + prime-tower waste (E before the slice; the sliced values are in the print plans, M). Cost reduced only by legitimate means: Bambu's measured flush pair nearest these colours (150 / 210 mm3 instead of the CLI's 280; an ASSUMED pair for white / Mandarin, A), detect_thin_wall (one orange pass instead of two, review F1), prime tower kept (quality), 0.28 mm layers NOT applied (user decision). New part avionics_logo (the orange inlay, own slicer mass); avionics_module = the white body with the logo pocket; their union is the old module (C36). Before-state: history/v0.9_pre_livery/.",
+    "v09_logic_power_note": "v0.9 logic-power round (user decisions 2026-11-05, configs.vtol.logic_power): the carrier PCB rev 2c's 1S logic pack (devicemart 16021596, 84 g) at spot A on the 6S pack's -x face, an MTS-102 toggle through the VTOL top cap (lead to J15), the leads to J14 / J15 - battery build only (tether / hybrid not maintained with it). in_flight_mass_model false (mass decision deferred by the user): the solids are for geometry / interference (C37-C39) and the pending-mass report; the mass the sim / firmware consume is unchanged (C40). params_gen.h / bridge_config_gen.h go STALE by the params sha only and are NOT regenerated in this round (user decision 4). Switch-collar round (2026-11-05, user: '상단 캡과 한 몸으로 출력하는 보호 칼라를 달아줘'): logic_power.collar, printed with the top cap (battery build); firmware headers / HEX again NOT regenerated (user 2026-11-05: '다음 펌웨어 작업 때 만들자').",
+    "rocket_carrier_note": "rocket-carrier round (2026-11-14, user decisions 2026-11-13: the carrier PCB rev 3.1 flies in the ROCKET; '로켓 기본을 캐리어로 교체' (replace the rocket baseline: the four hand-wired boards NAV / FCU / COM / GNS and the radio box go away, archived in history/v0.9_pre_rocket_carrier/, not kept as a config); the rocket intake bulkhead vent holes 4 at 45 deg -> 2 at 90 / 270 deg (as configs.vtol) so the cable tie can pass). Study evidence: rocket_fit / rocket_fit_verify (2026-11-13): mount = the rocket's FCU spot, flat on the intake bulkhead on 3 mm foam + a cable tie through the 90 / 270 deg vent holes (the same place and z-relationship as the VTOL carrier); arm switch J16 and logic power switch J15 through the avionics-tube wall (avionics_module.wall_switches); the 1S logic pack at spot A on the rocket tray (logic_power, in the flight mass); the GPS lead from the entry hole down to J7 on the carrier; the CanSat release-servo lead from the release pod to the J13 pad (electronics.carrier.release_lead, avionics_module.release_entry). Derived in cad/layout.py (Layout._fcu carrier envelope, _logic_power_rocket, _release_lead), checked by C25 / C26 / C37-C40 (rocket variants) and C42.",
+    "rocket_carrier_open_decisions": [
+      "misc box 5 V UBEC: default KEEP (electronics.misc mass unchanged 40 g) - default, user decision pending (the carrier takes its logic 5 V from the 1S pack through its TPS61023 boost, so the UBEC has no logic consumer any more; dropping it saves ~15 g, A)",
+      "1S logic pack in the rocket flight mass: default YES (logic_power.in_flight_mass_model true - it flies) - default, user decision pending",
+      "arm / logic power switch hole position: default = the study's proposal (avionics-tube wall, theta 82 / 106 deg, z 365 / 395) - default, user decision pending",
+      "rocket avionics-tube windows for the ESP-12F antenna: default NONE (the ESP-12F sits on the intake bulkhead inside the closed PLA tube; the carrier's antenna rationale assumed the VTOL windows at 90 / 112 deg) - RF range to the ~139 m apogee NOT_VERIFIED - default, user decision pending",
+      "ESC brake setting: unknown, not a CAD item - user decision pending",
+      "carrier mass: rocket uses the rev 3.1 breakdown estimate (electronics.carrier.mass_g); configs.vtol keeps its CAD-2 50 g until the VTOL is re-baselined - weigh the assembled board"
+    ],
+    "vtol_removed_note": "2026-11-18 (user: 'Vtol을 제외하고 로켓 모델로만', 'git에서도 vtol 내용을 제거해줘', scope '코드까지 전부'): the VTOL vehicle is removed - configs.vtol, mission.config, the VTOL aero / tether / hybrid power keys, battery_options_ASSUMED, the VTOL CAD (top cap, windows, fin holes, tether kit), its checks / prints / exports / sizing / budget / docs, the VTOL simulations and campaigns, and the VTOL firmware builds and code. Rocket outputs are unchanged (vtol_removal before / after comparison). The older notes in meta and elsewhere are history and still mention the VTOL."
+  },
+  "payload": {
+    "standard": "International CanSat class: can D66 x 115 mm, <= 350 g (budget design). The KAIST classes (650-1000 g, D110 x 200 mm envelope) need the full preset KAIST_90mm_12S.",
+    "envelope_d": 110.0,
+    "envelope_h": 150.0,
+    "mass_g": 350.0,
+    "can_d": 66.0,
+    "can_h": 115.0,
+    "chute_pack_h": 35.0,
+    "competition_deploy_alt_m": {
+      "체험부": 175,
+      "슬기부": 250,
+      "창작부": 350
+    },
+    "competition_mass_limit_g": {
+      "체험부": 650,
+      "슬기부": 800,
+      "창작부": 1000
+    },
+    "design_accel_g": 30
+  },
+  "printer": {
+    "name": "Bambu Lab P2S",
+    "bed_x": 256.0,
+    "bed_y": 256.0,
+    "bed_z": 256.0,
+    "usable_margin": 4.0,
+    "nozzle_d": 0.4,
+    "line_w": 0.42,
+    "layer_h": 0.2,
+    "material": "Bambu Lab PLA Matte",
+    "color": "Ivory White",
+    "color_note": "user 2026-11-04 (decision 1): every printed part of the VEHICLE in Bambu Lab PLA Matte Ivory White (Bambu Studio colour table: #FFFFFF, code 11100; was PLA Matte Black / 'Charcoal' since 2026-10-20) - check the colour name at purchase (Bambu sells the PLA Matte whites as 'Ivory White' and 'Bone White'; this is Ivory White, 11100). The launch pad is not part of the request and stays Black / Charcoal (color_exceptions). The YUCHAN logo is a separate orange inlay part (livery). CadQuery STEP colour PRINTED_COLOR (white) / LIVERY_COLOR (orange); renders (tools/render_scene.py PLA_BLACK) are not updated yet",
+    "density_g_cm3": 1.31,
+    "tensile_mpa": 30.0,
+    "bending_mpa": 53.0,
+    "bending_modulus_mpa": 2360.0,
+    "hdt_c_1p8mpa": 52.0,
+    "glass_transition_c": 61.0,
+    "wall_loops": 5,
+    "top_bottom_layers": 5,
+    "infill_pct": 15,
+    "min_feature": 1.2,
+    "print_classes": {
+      "A_load_path": {
+        "wall_loops": 4,
+        "top_shell_layers": 4,
+        "bottom_shell_layers": 4,
+        "sparse_infill_density_pct": 15,
+        "sparse_infill_pattern": "gyroid",
+        "effective_density_fallback_g_cm3": 1.05
+      },
+      "B_shell": {
+        "wall_loops": 3,
+        "top_shell_layers": 4,
+        "bottom_shell_layers": 4,
+        "sparse_infill_density_pct": 15,
+        "sparse_infill_pattern": "gyroid",
+        "effective_density_fallback_g_cm3": 1.19
+      },
+      "C_flat_plate": {
+        "wall_loops": 3,
+        "top_shell_layers": 4,
+        "bottom_shell_layers": 4,
+        "sparse_infill_density_pct": 15,
+        "sparse_infill_pattern": "gyroid",
+        "effective_density_fallback_g_cm3": 1.04
+      },
+      "D_small_keep": {
+        "wall_loops": 5,
+        "top_shell_layers": 5,
+        "bottom_shell_layers": 5,
+        "sparse_infill_density_pct": 15,
+        "sparse_infill_pattern": "gyroid",
+        "effective_density_fallback_g_cm3": 1.09
+      },
+      "E_ground_equipment": {
+        "wall_loops": 3,
+        "top_shell_layers": 4,
+        "bottom_shell_layers": 4,
+        "sparse_infill_density_pct": 15,
+        "sparse_infill_pattern": "gyroid",
+        "effective_density_fallback_g_cm3": 0.52
+      }
+    },
+    "part_class": {
+      "propulsion_module": "A_load_path",
+      "intake_module": "A_load_path",
+      "nose_cone": "A_load_path",
+      "avionics_module": "B_shell",
+      "avionics_logo": "B_shell",
+      "payload_module": "B_shell",
+      "gps_pod_lid": "B_shell",
+      "wire_cover": "B_shell",
+      "avionics_tray": "C_flat_plate",
+      "piston": "C_flat_plate",
+      "servo_cover": "C_flat_plate",
+      "vane": "D_small_keep",
+      "vane_horn": "D_small_keep",
+      "vane_coupler": "D_small_keep",
+      "latch_arm": "D_small_keep",
+      "launch_pad": "E_ground_equipment",
+      "fin_tip": "A_load_path",
+      "nose_ballast_cup": "D_small_keep"
+    },
+    "mass_model": {
+      "mode": "slicer_part_g",
+      "table": "cad/exports/print/provisional_v09_cadquery/slicer_part_masses.json",
+      "fallback": "solid volume x the class effective_density_fallback_g_cm3 (flagged in the CAD report)",
+      "source": "docs/print_mass_calibration.json (v0.9 print-mass calibration: the user's ~300 g propulsion print = the Bambu default 2-wall slice of the 437.7 g solid; class settings A-E proposed there)",
+      "note": "v0.9 (user 2026-10-27, decision 2): a printed part's mass is the slicer's part grams (G-code extrusion minus supports / brim / skirt) of its current STL sliced with its part_class settings (P2S, PLA Matte at density_g_cm3 = the FILAMENT density) - not the solid volume x density_g_cm3. cad/cadquery/make_v09_print_files.py slices every printed part and writes the table (keyed by part, with the solid volume it was sliced from); build_rocket.py uses a table entry only when the part's solid volume matches it (1e-6), else the class fallback density, and records which (report parts.<name>.mass_model). The printed part keeps the solid's COM and inertia shape (scaled by mass); the slicer's extrusion centroid is reported beside it. wall_loops / top_bottom_layers / infill_pct above stay the v0.6 single-process plan values for tools/make_print_files.py's Fusion-export flow."
+    },
+    "color_hex": "#FFFFFF",
+    "color_code": "11100",
+    "color_exceptions": {
+      "launch_pad": {
+        "color": "Black",
+        "bambu_name": "Charcoal",
+        "code": "11101",
+        "hex": "#000000",
+        "note": "user 2026-11-04: the launch pad is ground equipment and not part of the white-livery request - it keeps the 2026-10-20 filament (Bambu PLA Matte Black, sold as 'Charcoal', code 11101 in Bambu Studio's colour table; check the name at purchase)"
+      }
+    }
+  },
+  "livery": {
+    "note": "user decisions 2026-11-04 (2-4): the word YUCHAN in ORANGE (Bambu PLA Matte Mandarin Orange, #F99963, code 11300) as a FLUSH 2-colour inlay (no relief) on BOTH sides of the upper body (avionics_module, azimuth 67 / 293 deg), in both hardware configurations (rocket; vtol battery / tether / hybrid). Style: the 'launch' concept, VERTICAL version (reads along the vehicle axis), picked by the user knowingly accepting its AMS cost (one filament swap per orange layer, ~578 layers). The polygons are design data made by cad/livery/make_logo.py (deterministic); Layout._livery places them, the CadQuery twin / Fusion script build the white body with a 0.42 mm pocket and the orange inlay part from Layout, check C36 re-measures them, make_v09_print_files.py slices the module as a 2-filament Bambu project.",
+    "applies_to": {
+      "configs": ["rocket"],
+      "presets": [
+        "BUDGET_90mm_6S"
+      ],
+      "note": "the clearance to windows / vent slots / holes / screws was measured on the BUDGET modules (rocket and VTOL); the KAIST full-design preset (2 mm walls, solid mass model, not sliced) keeps a plain module - add it here and re-run C36 to give it the logo"
+    },
+    "part": "avionics_module",
+    "inlay_part": "avionics_logo",
+    "logo_file": "cad/livery/yuchan_logo_polygons.json",
+    "logo_generator": "cad/livery/make_logo.py",
+    "copies_theta_deg": [
+      67.0,
+      293.0
+    ],
+    "copies_note": "the same polygons on both copies: +s is to the RIGHT seen from outside at any azimuth, so both read the same way from outside (not mirrored). 67 / 293 deg = the free zones between the joint screws (45 / 315 deg) and the vent slots / windows (scout + refine steps, M on the STLs)",
+    "z_ref": "part_bottom",
+    "z_offset_mm": 0.0,
+    "z_note": "polygon z = print z = height above the part's lower end (Layout.z_avionics_bottom; the module prints upright, bottom on the bed); the logo spans print z 3.05 - 124.07 in both configurations",
+    "inlay_depth_mm": 0.42,
+    "inlay_depth_note": "= ONE outer wall line (printer.line_w 0.42). AMS cost probe (Bambu Studio CLI, M): on this profile a 0.42 mm inlay prints as the orange outer line with 2 continuous white lines (0.78 mm) behind it; 0.84 mm drops a white line and a full-wall inlay cuts the white hoop (classic wall generator) - C36 requires depth <= line_w and wall - depth >= white_behind_min_mm",
+    "white_behind_min_mm": 0.78,
+    "colours": {
+      "body": {
+        "line": "Bambu PLA Matte",
+        "name": "Ivory White",
+        "code": "11100",
+        "hex": "#FFFFFF",
+        "ams_slot": 1
+      },
+      "logo": {
+        "line": "Bambu PLA Matte",
+        "name": "Mandarin Orange",
+        "code": "11300",
+        "hex": "#F99963",
+        "ams_slot": 2
+      },
+      "note": "hex = Bambu Studio's AMS colour table (resources/profiles/BBL/filament/filaments_color_codes.json, PLA Matte GFA01); computed contrast #F99963 on #FFFFFF 2.15:1 (hex, not a physical swatch - check a swatch)"
+    },
+    "ams": {
+      "flush_volumes_mm3": {
+        "white_to_orange": 150,
+        "orange_to_white": 210
+      },
+      "flush_source": "Bambu Studio resources/flush/flush_data_standard.txt, measured pair nearest these colours: #D1D3D5 (light grey) -> #FF6A13 (orange) 150 mm3, #FF6A13 -> #D1D3D5 210 mm3 (no white / Mandarin pair on disk; the GUI shows max(measured, its colour prediction) - if it shows more, use the GUI value). The CLI default without this table is 280 mm3 both ways (sliced too, for comparison). The pair is ASSUMED (A) for these colours: the sliced cost numbers are 'M given this A'; orange -> true white may need more than orange -> light grey - before the long print, check the GUI's own flush values or make a short 2-colour test print on the real rolls (review F10, 2026-11-04)",
+      "thin_wall_note": "detect_thin_wall = 1 in the 2-colour project (review F1, 2026-11-04, M): without it the classic wall generator made the one-line-wide orange region a collapsed outer-wall loop and ran every chord twice (orange path 1.79x the logo, 1.29 g for a 0.89 g solid: overfilled slot, a raised ridge); with it one pass (orange ~0.90 g), white body unchanged to 0.001 g. make_v09_print_files checks it on the G-code (make_print_files.inlay_print_check: path <= 1.15 x single pass, grams within 10 % of the solid)",
+      "flush_multiplier": 1.0,
+      "prime_tower": true,
+      "prime_tower_note": "kept ON (Bambu's multi-colour default): it re-primes the nozzle after every swap right before the visible orange outer line; without it the probe saved ~16 s per swap but the first orange / white of each layer would start on a freshly cut, unprimed filament (blobs, gaps in the visible outline). flush_into_infill / flush_into_objects are NOT used: the probe measured that they remove the orange (the inlay is a single outer line)",
+      "layer_height_option_note": "a 0.28 mm layer height for this one part would cut the orange layers 578 -> 412 (about -4 h, E) - not applied: coarser z steps on the letters / windows / holes and the part's mass would have to be re-sliced and re-checked (user decision)"
+    },
+    "check": {
+      "clearance_min_mm": 3.0,
+      "min_stroke_mm": 1.6,
+      "min_white_gap_mm": 1.2,
+      "min_island_mm2": 3.0,
+      "corner_sliver_k": 0.25,
+      "note": "C36: clearance from every orange point to windows / vent slots / holes / joint screws / the part's ends (user rule 3 mm); stroke / white gap / island = the logo judges' hard rules (orange >= 1.6, white >= 1.2, islands >= 3 mm2; a corner sliver is ignored when its inscribed radius <= k * d / 2, judge-print criterion); the refine step measured 2.20 / 1.84 / 8.46 (M)"
+    }
+  },
+  "body": {
+    "od": 120.0,
+    "wall": 1.2,
+    "spigot_h": 15.0,
+    "spigot_clearance_dia": 0.4,
+    "spigot_wall": 1.6,
+    "joint_screw": "M3",
+    "joint_screw_count": 4,
+    "joint_screw_theta0_deg": 45.0,
+    "joint_hole_outer_d": 3.2,
+    "joint_hole_spigot_d": 2.5,
+    "joint_screw_z_from_spigot_bottom": 7.5,
+    "prop_joint_hole_depth": 7.0
+  },
+  "edf": {
+    "model": "Hobbyocean 90mm 12-blade EDF, 6S 1450KV (AliExpress 1005007300026404)",
+    "fan_d": 90.0,
+    "housing_od": 98.0,
+    "housing_id": 91.0,
+    "lip_od": 112.0,
+    "lip_t_ASSUMED": 4.0,
+    "len_lip_top_to_housing_bottom_ASSUMED": 85.0,
+    "hub_d_ASSUMED": 40.0,
+    "mass_g": 369.0,
+    "cells": 6,
+    "voltage_nominal_V": 22.2,
+    "thrust_nominal_N": 30.302548499999997,
+    "thrust_peak_N": 37.1672035,
+    "current_nominal_A": 102.0,
+    "current_peak_A": 124.0,
+    "power_nominal_W": 2264.0,
+    "power_peak_W": 3125.0,
+    "kv": 1450,
+    "rotation": "CW (viewed from intake) - ASSUMED, verify on the unit (sets the sign of the residual swirl torque)",
+    "bore_clearance_dia": 1.5,
+    "bottom_clearance": 1.0,
+    "exit_hub_fraction": 0.45,
+    "thrust_time_constant_s": 0.15,
+    "throttle_exponent": 2.0,
+    "idle_throttle": 0.0,
+    "residual_swirl_torque_fraction_ASSUMED": 0.15,
+    "sources": [
+      "https://ko.aliexpress.com/item/1005007300026404.html",
+      "https://usa.banggood.com/Powerfun-EDF-90mm-Ducted-Fan-6S-1450KV-Brushless-Motor-12-Blades-Propeller-for-RC-Airplane-Plane-p-1612488.html"
+    ],
+    "thrust_source": "PROXY: Powerfun 90mm 6S 1450KV table (Banggood p-1612488): 3.09 kg @ 22.2 V/102 A, 3.79 kg @ 25.2 V/124 A; Hobbyocean publishes no thrust - bench test before flight",
+    "mount": "tabs",
+    "drawing_source": "Hobbyocean 90mm 12-blade dimension drawing, listing image https://ae-pic-a1.aliexpress-media.com/kf/H148512f208bc4fb9a3d1705580ffc028A.jpg (read 2026-10-13)",
+    "housing_len_from_lip_front": 81.1,
+    "lip_depth": 11.0,
+    "lip_depth_note": "bell-mouth inlet: flat front face at lip_od, curving down to housing_od over ~11 mm (read from the drawing's scale, +-1 mm; measure the unit)",
+    "overall_len": 116.4,
+    "motor_d": 35.3,
+    "motor_protrusion_rear": 30.0,
+    "spinner_protrusion_front": 5.0,
+    "tab": {
+      "count": 2,
+      "theta0_deg": 90.0,
+      "outer_r": 57.1,
+      "len": 42.3,
+      "center_from_lip_front": 46.8,
+      "t_ASSUMED": 3.0,
+      "slot_r": 52.0,
+      "slot_pitch": 11.0,
+      "slot_w": 3.5,
+      "slot_len_radial": 5.8,
+      "screw_slot_index": [
+        -1,
+        1
+      ],
+      "note": "drawing: 114.2 across the tabs (outer_r), 104.0 across the slot centres (slot_r), tab length 42.3, centre slot 34.3 from the housing rear end (81.1 - 34.3 = 46.8 from the lip front), slots 11.0 apart, 3.5 x 5.8 (read). Tab thickness is not on the drawing: ASSUMED 3.0, measure the unit."
+    },
+    "axial_retention": {
+      "type": "shelf_stop_foam_under_tabs",
+      "floor_drop": 2.4,
+      "foam_t_free": 3.5,
+      "min_compression": 0.0,
+      "max_compression": 0.5,
+      "stack_tol_ASSUMED": 0.5,
+      "foam_sigma_25pct_kpa_ASSUMED": 40.0,
+      "foam_sigma_50pct_kpa_ASSUMED": 90.0,
+      "foam_pads_g_ASSUMED": 0.05,
+      "note": "wire09c clock mount (no tab screws), A. UP: the EDF lip front face against the intake shelf (lip_stop_gap above it at rest; the shelf was the back-up thrust stop of the screw mount, now the thrust path: lip -> shelf -> intake -> joint screws). DOWN: each tab on a closed-cell foam pad (EVA, foam_t_free, the servo foam pad material; stick one under each tab before the drop) on its keyway floor, which lies floor_drop under the drawn tab bottom; landing loads bottom the foam onto the floor pad (C18 pad check). The foam never needs to close more than max_compression for the intake to seat, for the stack tolerance stack_tol_ASSUMED of the drawing-read tab -> lip distance either way (C35). The judge's concept put an EVA ring between the lip and the shelf with a 2.9 mm gap; the real gap is lip_stop_gap 0.5 (the prototype measured to the shelf TOP face), so the foam moved under the tabs (keyway floors floor_drop deeper) - same 3.5 -> 2.9 mm, 17 %, no intake / stack change. Foam stress at 25 / 50 % (ASSUMED, closed-cell EVA ~0.1 g/cm3) for C35's force estimates."
+    },
+    "wire_exit": {
+      "schema": "v0.9 motor-lead exit, PHOTO ROUND (user photos 2026-10-29, docs/실물사진/EDF_모터선_출구_2026-10-29_1.jpg, _2.jpg, EDF seen from the exhaust side): motor_exit (level 'front_ring') + stator_vane + housing_exit 'rear_rim' + motor_leads.lower_route.bundle replace both earlier models - the housing-side slot read from the drawing (superseded_2026_10_29) and round 1's climb along the motor can (superseded_2026_10_29_round1, history/v0.9_wire_round1). Layout._motor_lead_lower derives the route; params without motor_exit load the housing-side model (archived trees), round-1 params raise.",
+      "motor_exit": {
+        "theta_from_tab_deg_ASSUMED": -90.0,
+        "theta_measured": false,
+        "theta_uncertainty_deg_ASSUMED": 70.0,
+        "level": "front_ring",
+        "front_ring_w_ASSUMED": 5.0,
+        "note": "PHOTOS 2026-10-29 (read off the photos = ASSUMED): the three leads leave the motor SIDE right at the motor's purple FRONT ring next to the stator hub - at the stator / rear-rim level, NOT at the motor's rear end; there is no climb along the can. Heights from the drawing data (z measured up from the exhaust exit; lip front = z_edf_lip_top, rocket 202.0 / VTOL 194.0): rear rim = stator trailing edges = lip front - housing_len_from_lip_front 81.1 -> rocket 120.9, VTOL 112.9; motor rear end = lip front - (81.1 + motor_protrusion_rear 30.0) = lip front - 111.1 -> 90.9 / 82.9 (cross-check overall_len 116.4 - spinner_protrusion_front 5.0 = 111.4, 0.3 mm longer, inside the read tolerance); motor front ring = the first front_ring_w_ASSUMED behind the rim (the can starts at the hub, which ends at the rim): rim .. rim - 5.0 -> rocket 120.9..115.9, VTOL 112.9..107.9 (ring width 5 read from photo 1 against the 35.3 mm can OD, about 0.14 D, ASSUMED). The exit centre is the bundle centre line under the rim: rim - bundle.gap_to_te 0.4 - bundle.od / 2 4.2 = rim - 4.6 -> rocket 116.3, VTOL 108.3 (lip front - 85.7), inside the ring band +- Db/2 (Layout raises otherwise). Angle: the photos show one tab; the bundle leaves under the rim at about the azimuth of the housing's side slot, i.e. about -90 deg from a tab (the value kept from the drawing reading; tabs at 90 / 270 deg put the leads at 0 deg, the ESC (+x) side) - not readable exactly from the photos, ASSUMED +- ~20 deg.",
+        "theta_note": "Fix round (reviews 2026-10-29, G1): the two photo readings of the exit angle disagree. One reviewer projects the housing's side slot along the axis onto the bundle exit in both photos (consistent with -90 deg from a tab); the other fits the rear-rim ellipse in photo 1 and puts the bundle about 35-60 deg beyond the side-slot azimuth, about 133-158 deg from the visible tab (= 22-47 deg from the other tab). Both are photo readings (ASSUMED). theta_uncertainty_deg_ASSUMED 70 covers both; theta_measured stays false until the angle from the nearest tab is measured with a protractor on the unit. The route tolerates only Layout.ml_exit_angle_tol_deg (E, about +-9.6 deg VTOL / +-12.7 deg rocket with the 14 mm sleeve, +-7.0 / +-8.7 at 15 mm: the bonded bundle ends inside the duct, the single leads steer into the 12.4 mm notch within the straight run before the bend), so C29 WARNs while theta_measured is false and the tolerance is below the uncertainty. The tabs are symmetric (90 / 270 deg): turning the EDF 180 deg moves the exit to the opposite side, it cannot correct an exit that is not at 0 / 180 deg from the notch. Do not print the propulsion module before the angle is measured; then set theta_from_tab_deg_ASSUMED to the measured value and theta_measured true.",
+        "clock_note": "wire09c: with the clock mount (propulsion_module.tab_mount 'clock_keyways', default) the exit angle is NOT an input: the EDF is turned to the passage and the keyways cover any azimuth (C34). theta_from_tab_deg_ASSUMED / theta_measured / theta_uncertainty_deg_ASSUMED apply to tab_mount 'screws' only."
+      },
+      "stator_vane": {
+        "theta_from_tab_deg_ASSUMED": -90.0,
+        "te_inset_from_housing_rear_ASSUMED": 0.0,
+        "chord_ASSUMED": 20.0,
+        "t_ASSUMED": 2.0,
+        "note": "PHOTOS 2026-10-29: the stator vanes are thin vanes from the hub to the housing at the housing's REAR RIM (visible at the rim from the exhaust side), so te_inset 0 is now photo-based (still ASSUMED: flushness not measurable from a photo). The bundle runs radially along / behind ONE vane - the one in line with the exit (theta). Chord 20 / thickness 2 are not on the drawing and not readable from the photos (ASSUMED); the vane count is not used."
+      },
+      "housing_exit": "rear_rim",
+      "housing_exit_note": "PHOTOS 2026-10-29: the bundle reaches the housing wall at the stator vane's tip (r housing_id / 2) and leaves the EDF UNDER the housing's rear rim (z_edf_housing_bottom), then bends; the housing's side-wall oblong slot (mid-housing, superseded_2026_10_29) is NOT used. In the vehicle the bundle passes the propulsion module's lead notch (propulsion_module.wire_slot.low_*) and the single leads bend up the slot beside the housing. Round 1's open question (G1: under the rim or through the wall) is answered by the photos: under the rim.",
+      "measure_note": "v0.9 lead-exit, photo round (2026-10-29) + fix round: everything read off the photos is ASSUMED. Measure before printing the propulsion module: (1) the lead exit angle from the nearest tab with a protractor (deg; -90 ASSUMED; photo readings differ: about -90 or 22-47 deg from a tab; the route tolerates about +-9.6 deg VTOL / +-12.7 deg rocket with the 14 mm sleeve, E) - then set theta_measured true; (2) does the factory heat-shrink cover the winding-to-lead joints (if yes the re-sleeve step is not possible: stop), its length from the can (photos ~28-31) and its layers; (3) after the re-sleeve: the sleeve length from the can (14 +- 1 spec, <= 19.87 VTOL) and the bundle OD (8.4 target; Layout builds up to 11.6); (4) the three leads laid side by side across the slot after the sleeve (try the triangle -> row forming within ~7.5 mm on the unit); (5) the gap from the rear rim face to the bundle's top (0.4 ASSUMED) and the motor front ring width (5 ASSUMED); (6) the stator trailing-edge height vs the rear rim (0 ASSUMED) and the vane chord / thickness; whether the bundle lies behind the vane's trailing edge or beside the vane; (7) the stock lead length, whether edf.mass_g (369 g) includes them and whether they carry bullets already; if extended: the joint position (>= ~109 mm along the lead), diameter and mass; (8) the 12 AWG lead OD (<= 3.81 VTOL / 3.87 rocket for the 12.4 mm notch, side by side) and the smallest bend radius of a single lead (7.2 ASSUMED; <= 7.91 VTOL); (9) the rim-to-motor-rear-end distance (drawing 30.0; photos suggest >= ~35, low confidence) and the rim height below the bell front face (drawing 81.1); (10) bench thrust of the EDF AS BUILT (leads in the jet as shipped), hover and full throttle.",
+      "superseded_2026_10_29": {
+        "theta_from_tab_deg_ASSUMED": -90.0,
+        "z_from_lip_front_ASSUMED": [
+          47.4,
+          60.3
+        ],
+        "note": "oblong slot on the housing side, 90 deg from the tabs (drawing side view); tabs at 90/270 deg put the leads at 0 deg, on the ESC (+x) side of the avionics tray; turn the EDF 180 deg if its leads come out on the other side",
+        "measure_note": "v0.9 (user 2026-10-27, decision 3): READ FROM THE VENDOR DRAWING, NOT MEASURED - ASSUMED. Measure on the unit before printing the propulsion module: the angle of the lead exit from the nearest tab (deg) and the Z range of the exit slot measured from the bell's front face (mm). The propulsion motor-lead slot (propulsion_module.wire_slot) starts below_exit under the lower end of this range and is 22 mm wide around the exit angle.",
+        "superseded_by": "user 2026-10-29: the leads start at the motor's lowest end (motor_exit / stator_vane above); the 22 mm slot box keeps its old start (propulsion_module.wire_slot.wide_z0_from_lip_front = 60.3 + below_exit 2)"
+      },
+      "superseded_2026_10_29_round1": {
+        "motor_exit": {
+          "theta_from_tab_deg_ASSUMED": -90.0,
+          "z_above_motor_bottom_ASSUMED": 3.0,
+          "note": "USER 2026-10-29: the three leads leave the motor's SIDE at its LOWEST end, sideways (radially) - not from the middle of the housing. Angle from the nearest tab: ASSUMED -90 deg (the old drawing reading; tabs at 90 / 270 deg put the leads at 0 deg, the ESC (+x) side). z_above_motor_bottom_ASSUMED = the lead centre line above the motor's bottom face (OD 3.6: the lead spans 1.2 .. 4.8 above it). Motor bottom from the drawing data: lip front - housing_len_from_lip_front 81.1 - motor_protrusion_rear 30.0 = 111.1 below the lip front (rocket z 202.0 - 111.1 = 90.9, VTOL 194.0 - 111.1 = 82.9); cross-check overall_len 116.4 - spinner_protrusion_front 5.0 = 111.4 (0.3 mm longer, inside the drawing's read tolerance)"
+        },
+        "stator_vane": {
+          "theta_from_tab_deg_ASSUMED": -90.0,
+          "te_inset_from_housing_rear_ASSUMED": 0.0,
+          "chord_ASSUMED": 20.0,
+          "t_ASSUMED": 2.0,
+          "note": "USER 2026-10-29: inside the exhaust the leads follow ONE OF THE EDF's OWN stator (fixed) vanes to the housing wall - no extra printed strut. None of the stator geometry is on the vendor drawing: ASSUMED that the vane in line with the motor exit is used (theta), that the stators sit inside the housing with their trailing edge flush with the housing's rear rim (te_inset 0; the drawing shows the hub / housing ending at the rear rim and only the motor can protruding 30 mm behind it), chord 20 and thickness 2. With the motor can protruding below the rim, the leads first rise along the motor can (in the hub's shadow, parallel to the jet) to the vane's trailing edge, run radially out along that edge (in its wake) and leave the housing under its rear rim into the propulsion module's lead notch. Measure: which vane, its trailing-edge height relative to the rear rim, and whether a vane sits at the motor's bottom end instead (then the route changes - Layout raises)."
+        },
+        "housing_exit_note": "the leads reach the housing wall at the stator vane's tip (r housing_id / 2) and leave the EDF under the housing's rear rim (z_edf_housing_bottom), outward through the propulsion module's lead notch (propulsion_module.wire_slot.low_*) into the slot beside the housing; nothing passes through the housing side. ASSUMED (review 2026-10-29, G1): the user said 'along a stator vane to the housing wall' - whether the leads leave under the rear rim or through a hole in the housing wall (the drawing's side slot, superseded_2026_10_29) is a question to the user; the notch is provisional until answered",
+        "measure_note": "v0.9 lead-exit round (user 2026-10-29): exit side / height on the motor and the stator vane the leads follow are ASSUMED (only the motor bottom height comes from the drawing data). Measure before printing the propulsion module: (1) the motor bottom face height below the bell front face (mm; drawing data 111.1), (2) the lead exit angle from the nearest tab (deg) and its height above the motor bottom (mm), (3) which stator vane the leads follow and its trailing-edge height relative to the housing's rear rim (mm, + = inside the housing), its chord / thickness, (4) the free length of the stock motor leads and whether edf.mass_g (369 g) includes them (any joint >= ~125 mm along the lead from the motor exit). Review 2026-10-29 adds: (5) is there a stator vane at the motor's bottom end, or do the leads climb the motor can to the stators (G1); (6) do the leads leave under the rear rim or through the housing wall (G1); (7) the lead OD (<= 3.87 mm for the 12.4 mm notch) and the smallest bend radius (route fits <= 9.0 mm VTOL / 9.5 mm rocket centre line); (8) the stator vane angle vs the tabs and vs the thrust vanes (route tolerates about +-5 deg, E) and its trailing-edge inset (Layout raises above 1.4 mm VTOL / 2.2 mm rocket: bond gap > one OD); (9) the rotor-stator gap; (10) bench thrust with and without the leads in the jet.",
+        "superseded_by": "user photos 2026-10-29 (docs/실물사진/EDF_모터선_출구_2026-10-29_1.jpg, _2.jpg): the leads leave the motor side at its FRONT ring (stator / rim level), bundled in heat-shrink, along one stator vane and out under the rear rim - no climb along the can. Round-1 files: history/v0.9_wire_round1."
+      }
+    },
+    "thrust_v09": {
+      "t_max_kgf_seller_unverified": 3.09,
+      "design_envelope_kgf_at_22v2": [
+        2.14,
+        3.09
+      ],
+      "stress_band_kgf_at_22v2": [
+        1.9,
+        2.14
+      ],
+      "voltage_ref_V": 22.2,
+      "voltage_exponent_proxy": 1.61,
+      "end_of_pack_thrust_factor": 0.87,
+      "power_exponent": 1.5,
+      "rotor_inertia_kg_m2_ASSUMED": 4.5e-05,
+      "note": "v0.9 sim plant round (architect decisions b, d; 2026-10-28). THRUST IS UNKNOWN: the bench supply could not reach full power and the seller's 3.09 kgf (thrust_nominal_N, a PROXY table at 22.2 V) is unverified. The VTOL plant flies T_max at 22.2 V from design_envelope_kgf_at_22v2 (2.14 = T/W 1.3 for the battery VTOL, .. 3.09 seller) and the stress band 1.9 .. 2.14 (exercises the take-off check); it replaces the old thrust_scale 0.80-1.25 VTOL sampling. Thrust ~ (V_esc / voltage_ref_V)^voltage_exponent_proxy (the proxy table's 22.2 -> 25.2 V ratio gives 1.61; a 6S pack at 3.7 V/cell loaded at full throttle (18 mOhm, ~20.4 V) gives end_of_pack_thrust_factor 0.87, sizing/vtol_sizing.py, removed 2026-11-18). Electrical power P = power_nominal_W (T / T_ref)^power_exponent, P1 T_ref = thrust_nominal_N (proxy efficiency), P2 T_ref = the plant's T_max (pessimistic) - sim/tether.py FanPower, removed 2026-11-18. Rotor: omega(T) = KV voltage_nominal_V 2 pi / 60 sqrt(T / T_max_22V2) (no-load speed at T_max ASSUMED: an upper bound), angular momentum -s I omega z_b with I = rotor_inertia_kg_m2_ASSUMED (fan + motor bell, not measured): gyroscopic moment -w x h and the spool-up reaction +s I domega/dt on the body (sim/edf.py RotorModel). The controllers keep the params model (thrust_nominal_N, no voltage term); only the plant changes. Measure thrust, current, V_esc and rpm on the flight LiPo before flight."
+    }
+  },
+  "motor_leads": {
+    "count": 3,
+    "awg": 12,
+    "od_ASSUMED": 3.6,
+    "mass_g_per_m_ASSUMED": 37.0,
+    "bullet": {
+      "size_mm": 5.5,
+      "d_ASSUMED": 8.0,
+      "len_ASSUMED": 22.0,
+      "pair_g_ASSUMED": 4.0,
+      "note": "5.5 mm gold bullet with heat-shrink: OD ~8 mm, ~22 mm long per side (user 2026-10-27, ASSUMED - measure)"
+    },
+    "bullet_clearance": 1.0,
+    "wire_clearance": 0.4,
+    "generosity_box": {
+      "shrink_len_from_motor": [
+        20.0,
+        28.0,
+        35.0
+      ],
+      "sections": {
+        "round12": [
+          6.0,
+          6.0
+        ],
+        "ribbon12x5_v": [
+          6.0,
+          2.5
+        ],
+        "ribbon12x5_h": [
+          2.5,
+          6.0
+        ],
+        "ribbon12x5_turned": [
+          6.5,
+          6.5
+        ]
+      },
+      "od": [
+        3.6,
+        4.3
+      ],
+      "bend_r_centre": [
+        7.0,
+        10.0,
+        15.0
+      ],
+      "te_inset": [
+        0.0,
+        3.0
+      ],
+      "rim_gap": [
+        0.0,
+        2.0
+      ],
+      "motor_protrusion": [
+        30.0,
+        36.0
+      ],
+      "note": "wire09c (user 2026-10-30, ALL ASSUMED - the user does not measure): the lead passage (clock mount) takes every corner of this box at once. shrink_len_from_motor: the FACTORY heat-shrink kept as it is, from the can (the photos show ~28-31 mm); sections: (half height along the motor axis, half width tangential) of the sleeved bundle - round O12 stepped sleeve, or a 12 x 5 ribbon either way up (a ribbon may also turn: its half diagonal counts tangentially); od: one 12 AWG silicone lead; bend_r_centre: the single leads' bend (centre line) - no tight bend needed; te_inset: stator trailing edge inside the housing rim; rim_gap: rim face -> bundle top; motor_protrusion: can behind the rim. The leads' bend starts anywhere up to lead_passage.bend_tol before the outer wall. C29 checks every corner x exit error {-E, 0, +E}. Fix round (review F5): ribbon12x5_turned = the 12 x 5 ribbon turned to any angle, bounded by its half diagonal 6.5 both ways (C29 grid, floor, jet blockage / drag area)."
+    },
+    "slack": 60.0,
+    "joint_zone": {
+      "u": [
+        42.0,
+        54.5
+      ],
+      "z_above_bulkhead": 2.0,
+      "min_clear": 2.0,
+      "note": "the three mated bullet pairs (2 x bullet.len each) stand in the avionics bay at wire_theta between u[0] and u[1] (radial), from z_above_bulkhead over the intake bulkhead top; C29 keeps them clear of the FCU, ESC, tray, rails and bore"
+    },
+    "stock_len_in_edf_mass_ASSUMED": 0.0,
+    "note": "v0.9 (user 2026-10-27, decision 3): the ESC stays in the upper avionics bay; the motor leads are 3 x 12 AWG silicone (OD ~3.6 ASSUMED, 37 g/m ASSUMED: 3.31 mm2 copper 29.7 g/m + jacket) with 5.5 mm bullets, the bullet joints in the bay (not in a channel). Layout.motor_lead_* derives the route (v0.9 lead-exit photo round 2026-10-29: motor side exit at the front ring -> heat-shrink bundle behind a stator vane -> under the housing rim -> lead notch -> single leads up the propulsion slot (round 1's climb along the can superseded); before: housing exit -> propulsion slot -> open intake groove -> gate -> along the 0 deg strut -> bulkhead hole -> joint zone), its length and the lumped mass motor_leads (the whole route + slack at mass_g_per_m + count bullet pairs; stock_len_in_edf_mass_ASSUMED of it is taken as already inside edf.mass_g - 0 = none, conservative).",
+    "plenum": {
+      "throat_clear_min": 3.0,
+      "max_free_span": 40.0,
+      "note": "v0.9 fix round (2026-10-28, reviewer defects): between the gate and the bulkhead the leads run along the 0 deg strut at Layout.ml_u_in, tied to the tie anchors; C29 checks the lead envelope stays >= throat_clear_min outside the EDF throat radius (edf.housing_id / 2) and no free span exceeds max_free_span (gate, anchors and the bulkhead hole are the restraints)"
+    },
+    "lower_route": {
+      "bend_r_centre_ASSUMED": 7.2,
+      "restraint": "rtv_bond_stator_te",
+      "bond_gap_max_ASSUMED": 3.6,
+      "max_free_span_jet_ASSUMED": 40.0,
+      "bundle": {
+        "od_ASSUMED": 8.4,
+        "shrink_len_from_motor_ASSUMED": 14.0,
+        "gap_to_te_ASSUMED": 0.4,
+        "shrink_g_ASSUMED": 0.3,
+        "note": "PHOTOS 2026-10-29 (ASSUMED, read off the photos): the three leads are bundled in black heat-shrink from the motor exit, run as ONE bundle radially out along / behind one stator vane and under the rear rim; after the heat-shrink they are single red / blue / black silicone leads (long stock leads). FIX ROUND (reviews 2026-10-29): the FACTORY sleeve is not used as it is. The photos show it ending at about the housing's outer surface at the rim (r ~49, ~31 mm from the can; FIND-M2), stepped (two layers, the outer ~20 % thicker; G5), with the three leads leaving it stacked along the motor axis (G3 / FIND-M1: a ribbon of unknown orientation). With the triangle -> row transition the leads need before the bend (Layout.ml_transition_len, E) a 28-31 mm sleeve does not fit (Layout raises: rim corner). ASSEMBLY STEP (spec, not a reading): slit and remove the factory outer sleeve(s) - only if they do not cover the winding-to-lead joints (measure / look first; if they do, STOP: the notch must be re-designed) - and re-sleeve the first shrink_len_from_motor_ASSUMED = 14 +- 1 mm from the can surface with ONE layer of heat-shrink over the three leads laid in a triangle (round). od_ASSUMED 8.4 = three O3.6 leads in a triangle (1 + 2/sqrt 3) x 3.6 = 7.76 + 2 x 0.3 shrink wall (E) is therefore the re-sleeve target, not a photo reading (with the 14 mm sleeve the bundle ends inside the duct (r 31.65) and never enters the notch; Layout builds up to 11.6, review probe for the old 28 mm sleeve: 9.0 -> 0 mm^3, 9.6 -> 0.95 mm^3). After the sleeve, the leads go from the triangle to a row SIDE BY SIDE ACROSS the slot (tangential: black / blue / red across, not stacked along the axis) over the straight run before the bend. Limits (Layout bisection, E): shrink length <= 19.87 mm (VTOL) / 20.65 (rocket) keeps shrink + transition before the bend (C29 WARNs beyond). gap_to_te_ASSUMED = the bundle's top under the stator trailing edge / rear rim face (filled by the RTV bead). shrink_g_ASSUMED 0.3 g (pi x 8.4 x 0.3 x 28 mm^3 x ~1.3 g/cm^3, kept for the 14 mm sleeve: conservative), lumped with the RTV."
+      },
+      "rtv_g_ASSUMED": {
+        "bond": 0.8,
+        "notch_seal": 0.8,
+        "chafe_tape": 0.1
+      },
+      "jet_drag": {
+        "cd_ASSUMED": 1.0,
+        "cd_band_ASSUMED": [
+          0.8,
+          1.2
+        ],
+        "note": "v0.9 lead-exit, photo round (E): the heat-shrink BUNDLE crosses the EDF jet as one body O od behind the stator vane; drag D = Cd q A_f, A_f (Layout.ml_jet_drag) = bundle.od x (duct_r - hub radius) (inside the hub radius 20 = hub_d_ASSUMED / 2 it sits in the hub's shadow; single leads count x od only where the shrink ends inside duct_r), q = T / (2 A_exit) as in C33 / sizing. Cd 1.0 central, 0.8-1.2 band (ASSUMED): a circular cylinder at Re = V D / nu ~ 52 m/s x 8.4 mm / 1.5e-5 ~ 3e4 (subcritical, Cd ~1.0-1.2); the rounded-triangle section and the 2 mm vane directly ahead (an upstream plate lowers a cylinder's drag) are not credited. C33 adds the moment D x (centroid) to the CG trim; vtol_sizing (removed 2026-11-18) derated the thrust for T/W 1.3 by D / T. Round 1 (three leads side by side + a bend off the can): A_f 309 mm^2. FIX ROUND (reviews 2026-10-29): with the 14 mm re-sleeve the round bundle runs from the hub radius to the shrink end and the single leads from there to duct_r are counted as a full row side by side (count x od broadside, conservative over the triangle -> row transition): A_f 210 -> 242 mm^2. Cd band: the bodies in the jet are short (bundle span / OD ~1.9, row span / width ~0.9, one end on the hub / vane); for a flat plate normal to the flow Cd is ~1.2 up to aspect ratio ~5 (Hoerner) - the 2D value 2.0 applies to long plates only - so the 0.8-1.2 band also covers the row (FIND-M1's Cd 2.0 case is a 2D ribbon). C33 takes its status from the band's worst end (G4). Bench thrust: the factory routing already has the leads in the jet, so a bench thrust of THIS unit as built includes the drag - the T/W derate (vtol_sizing, removed 2026-11-18) applied only to thrust that does not come from such a test (the proxy table); the C33 moment term stays (FIND-M4)."
+      },
+      "note": "v0.9 lead-exit, PHOTO ROUND (user photos 2026-10-29, edf.wire_exit): the EDF-internal part of the route - motor side exit at the front ring (radial, heat-shrink bundle) -> straight behind ONE stator vane's trailing edge -> under the housing's rear rim into the propulsion lead notch -> the single leads (after the shrink) bend 90 deg up the slot beside the housing. One bend only (round 1: three, with a 23 mm climb along the can - superseded). bend_r_centre_ASSUMED = the smallest centre-line bend radius of a single 12 AWG silicone lead (2 x od_ASSUMED; measure by bending a lead round a 14 mm rod). The bundle itself is not bent: after the re-sleeved shrink (14 mm, bundle.note) the leads go from the triangle to a tangential row over Layout.ml_transition_len (E: S-bend of offset od / sqrt 3 at radius bend_r_centre, 7.45 mm) before the bend (Layout.ml_shrink_bend_margin = bend start - (shrink end + transition); < 0 = the bundle / unformed leads take the first part of the bend, C29 WARNs; fix round 2026-10-29, G2 / G3). Restraint 'rtv_bond_stator_te' = the bundle bonded with silicone RTV to the stator vane's trailing edge along the straight run inside the vane's span (Layout.ml_bond_u; no cable tie round the vane - it would loop over the vane's leading edge next to the rotor); the bead bridges the gap from the bundle to the trailing edge (Layout.ml_stator_te_gap <= bond_gap_max_ASSUMED, else Layout raises). Free spans exit -> bond start and bond end -> notch <= max_free_span_jet_ASSUMED (40 mm carried over from the intake plenum - ASSUMED, open issue). rtv_g_ASSUMED: bond bead along ~25 mm of the bundle (round 1 0.4 g for 12.5 mm -> 0.8), the notch seal after installation (opening ~1.5 x round 1's: 0.5 -> 0.8) and Kapton chafe tape on the rim corner / notch edges, lumped into motor_leads at the notch with the bundle's heat-shrink. No printed strut. Lead lengths and masses: the whole route + slack is still counted (stock_len_in_edf_mass_ASSUMED 0).",
+      "clock_note": "wire09c: with propulsion_module.tab_mount 'clock_keyways' (the default) the factory sleeve is KEPT as it is - the re-sleeve to 14 +- 1 mm, the triangle -> row forming and the bend radius 7.2-8.0 of this lower_route apply to tab_mount 'screws' only (bundle, bend_r_centre_ASSUMED). The clock mount uses motor_leads.generosity_box; from here it keeps rtv_g_ASSUMED (bond optional but counted, chafe tape; the notch seal is replaced by lead_passage.top_plug_g_ASSUMED), bundle.shrink_g_ASSUMED, bond_gap_max_ASSUMED (C29 WARNs when TE inset + rim gap exceed it: thicker RTV bead or a shim), max_free_span_jet_ASSUMED and jet_drag (drag area of the WORST corner, E)."
+    }
+  },
+  "propulsion_module": {
+    "duct_id": 90.0,
+    "vane_section_h": 90.0,
+    "vane_section_od": 94.8,
+    "cone_wall": 1.2,
+    "sleeve_wall": 1.6,
+    "web_count": 4,
+    "web_t": 1.6,
+    "web_theta0_deg": 45.0,
+    "hinge_boss_od": 12.0,
+    "hinge_boss_r_out": 52.0,
+    "hinge_bore_d": 5.4,
+    "edf_section_min_h": 100.0,
+    "shoulder_ring_min_h": 18.0,
+    "cyl_margin_below_tab": 3.0,
+    "tab_keyway_clearance": 0.5,
+    "tab_mount": "clock_keyways",
+    "clock_keyways": {
+      "kw": 4.0,
+      "E_cov_deg": 7.5,
+      "sleeve_min": 1.2,
+      "tooth_factor_min": 5.0,
+      "tooth_w_margin": 0.2,
+      "web_margin": 1.2,
+      "col_wall": 1.2,
+      "col_clear": 0.2,
+      "pad_t": 3.0,
+      "pad_margin": 1.2,
+      "pad_underside_chamfer_deg": 45.0,
+      "hover_clear": 0.2,
+      "plan_step_deg": 0.25,
+      "plan_gap_margin_deg": 1.0,
+      "coverage_step_deg": 0.05,
+      "note": "wire09c clock mount (user 2026-10-30: 'make the lead passage generous, I do not want to measure'; judge concept C): the EDF is turned (clocked) until its factory lead bundle points into the ONE lead passage (lead_passage); its two tabs then drop into the nearest pair of keyways cut round the circle. The keyway angles are COMPUTED by Layout._clock_seat (never typed in): a keyway kw wide (takes tabs up to kw - 0.4 = 3.6 thick; tab t 3.0 stays ASSUMED) is placed where its sleeve teeth (sleeve_min) stay out of the passage, its walls web_margin off the webs, col_clear off the servo-lead column guide walls (col_wall, U channel beside each column) and off the joint holes, gaps <= 2 x E_cov_deg; a tab may also hover in the passage. Coverage (C34): any exit azimuth is within E_cov_deg of theta_P for some seat; the passage takes E_cov_deg + the tab's play. No tab screws / lugs. pad_t: the floor pad under every keyway bridges the sleeve and the skin (JUDGE FIX 1.2 -> 3.0: one tab at the 20 g touchdown gives a bending factor 1.2 at 1.2 mm, 7.6 at 3.0 (E)), with a 45 deg corbel underneath (prints without support). Fix round (review F1, 2026-11-04): a sleeve tooth between two keyways (or a keyway and the passage) is a free pillar sleeve_r - edf_bore_r deep from the keyway floor to the deck; it must carry the full design motor torque (C35's max(1, 1.5 P / omega)) on ONE tab, fixed-fixed, uniform load, bending factor >= tooth_factor_min against printer.bending_mpa (E) - so every tooth is planned >= that width + tooth_w_margin (the 1.73 mm tooth beside the 193.55 deg hover-seat keyway had a factor ~0.6). The planner is a seat chain on the mod-180 circle (plan_step_deg grid): consecutive seats >= the tooth spacing and <= 2 E_cov_deg - plan_gap_margin_deg apart (coverage margin), fewest seats, then the smallest largest gap. C35 measures the teeth on the solid."
+    },
+    "lead_passage": {
+      "theta_deg": 0.0,
+      "fan_margin": 0.3,
+      "floor_margin": 0.7,
+      "wall": 1.2,
+      "bend_tol": 1.0,
+      "u_top": 64.5,
+      "steer_len": 30.0,
+      "z_top_gap": 2.0,
+      "blister_top_gap": 0.2,
+      "keel_deg": 45.0,
+      "keel_step": 2.0,
+      "u_start_below_duct": 3.0,
+      "arc_step_deg": 1.0,
+      "top_plug_g_ASSUMED": 0.2,
+      "theta_note": "theta_deg 0 = today's ESC (+x) side: the intake groove, bulkhead hole, bay route and servo gather stay. 180 is the user's alternative - a user decision, not the default. The judge's 'every configuration PASSes C33 at 180' is NOT reproduced (docs/v0.9_하드웨어_변경.md 17.10, E): with the whole lead route mirrored to -x and the leads up to +8.9 g longer, battery gets worse (11.8 %) and tether / hybrid stay above 10 %; at 180 the bay's bullet joint also meets the tether bus clamp (Layout refuses it). The recommended C33 fix is a CG shift toward -x (17.10).",
+      "note": "wire09c clock mount: ONE lead passage ('fan') through the propulsion module at theta_deg - in plan the union of radial rectangles from duct_r - u_start_below_duct to r_wall, half width = the largest tangential envelope half of motor_leads.generosity_box + fan_margin, turned over +-(E_cov_deg + tab play); r_wall = motor_d / 2 + the longest factory sleeve + the largest bend radius + the thickest leads stacked + bend_tol (Layout._clock_fan, about 75.5 mm: OUTSIDE the 60 mm body - two independent concept studies proved no route inside r 60 takes a 24-35 mm factory sleeve or R 15). The passage leaves the body through a BLISTER (the fan grown by wall, from floor_margin + wall under the lowest lead envelope up to blister_top_gap under the intake) with a 45 deg V keel under its floor (keel_step mm steps, prints upright without support). Assembly (fix round, review F3): bend the single leads up ~90 deg BEFORE lowering the EDF (any radius 7-15), turn the EDF until the bundle points into the passage and lower it with the leads standing in the passage, push the vertical part out against the outer wall (within ~4 mm of it in a hover seat), lay them flat at u_top in the intake groove (the steer runs steer_len up to z_top_gap under the intake). top_plug_g_ASSUMED: closed-cell foam plug round the leads at the passage top (blocks jet -> intake recirculation; the servo foam pad material). It replaces the 22 mm slot box, the 12.4 mm lead notch (wire_slot.low_*) and the tab screws / lugs when tab_mount = 'clock_keyways'. Fix round (review F8): the foam plug fills the open blister top outside r 60 round the leads (about 530 mm^2, 250 mm^2 outside the intake groove walls)."
+    },
+    "tab_screw": {
+      "size": "M3",
+      "len": 20.0,
+      "d_clear": 3.2,
+      "d_tap": 2.5,
+      "d_cbore": 6.4,
+      "t_head": 14.0,
+      "head_side": 1,
+      "min_engagement": 3.0,
+      "min_wall_to_bore": 0.6,
+      "block_margin_deg": 3.0,
+      "block_margin_z": 2.0,
+      "note": "M3 x 20 button-head from the 5-20 mm kit, driven tangentially from outside through a counterbored tunnel; self-taps the far side of the tab lug; clearance hole 3.2 (ISO 273 fine)",
+      "floor_t": 1.2,
+      "cbore_exit_margin": 1.0
+    },
+    "wire_slot": {
+      "w": 22.0,
+      "below_exit": 2.0,
+      "skin_min_wall": 0.6,
+      "note": "v0.9 (user 2026-10-27, decision 3): w 14 -> 22 (three 12 AWG leads side by side, OD 3.6 ASSUMED, 1 mm each side; the 5.5 mm bullets never enter this slot - the leads are laid in from the open top as the EDF drops in, the bullets stay above and are threaded through the intake interior and the bulkhead hole)",
+      "r_in_note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'the 22 mm slot leaves 0-0.73 mm slivers of the sleeve'): the slot's inner face sits at min(edf_bore_r, sqrt(edf_bore_r^2 - (w/2)^2)) - 0.5 (inside the EDF bore at the slot corners), so no crescent of the sleeve is left beside it",
+      "wide_z0_from_lip_front": 62.3,
+      "low_w": 12.4,
+      "low_cut_margin": 0.3,
+      "low_note": "v0.9 lead-exit round (2026-10-29), PHOTO ROUND: the leads leave the EDF under its rear rim (edf.wire_exit, user photos). The 22 mm slot box keeps its old start (wide_z0_from_lip_front = the superseded exit's 60.3 + below_exit 2) and a lead notch + lower slot is cut below it - one (u, z) polygon prism at wire_theta, low_w wide (the heat-shrink bundle O8.4 + 2 x wire_clearance = 9.2 and, after the shrink, the 3 leads side by side 3 x 3.6 + 2 x wire_clearance = 11.6; + 0.4 each side), from duct_r - 0.5 (opens the exhaust bore under the housing rim) up into the 22 mm box; its bottom low_cut_margin under the BUNDLE's envelope (photo round: ~3 mm deeper than round 1's three single leads), a 45 deg chamfer low_cut_margin outside every envelope of the route (Layout.ml_low_cut_uz). Its outer corner keeps cone_wall + skin_min_wall to the cone skin (the same rule as the 22 mm box); the leads' vertical radius in the slot (Layout.ml_u_slot) is the largest that rule allows. The bullets never enter it."
+    },
+    "liner_wall": 1.6
+  },
+  "vane": {
+    "count": 4,
+    "theta0_deg": 0.0,
+    "chord": 32.0,
+    "span_r_in": 13.0,
+    "span_r_out": 43.0,
+    "t": 3.0,
+    "hinge_z": 37.0,
+    "hinge_chord_fraction_from_le": 0.3,
+    "edge_radius": 1.4,
+    "shaft_d": 5.0,
+    "shaft_r_in": 20.0,
+    "shaft_r_out": 59.0,
+    "d_flat_r_in": 55.5,
+    "d_flat_depth": 1.0,
+    "horn_t": 3.0,
+    "horn_r_in": 55.5,
+    "horn_w": 8.0,
+    "horn_arm_len": 12.0,
+    "horn_tail_len": 5.0,
+    "horn_pin_hole_d": 1.6,
+    "max_deflection_mech_deg": 25.0,
+    "max_deflection_cmd_deg": 20.0,
+    "cl_alpha_per_rad": 2.4,
+    "stall_deg": 25.0,
+    "force_centroid_r": 28.0,
+    "direct_drive_play": {
+      "kinematics": "direct 1:1 (MG90S coaxial with the vane shaft; the v0.8 horn / pushrod linkage and its ratio are gone)",
+      "lost_motion_deg_ASSUMED": 0.65,
+      "gear_backlash_deg_ASSUMED": 1.0,
+      "sampled_lost_motion_deg": [
+        0.3,
+        1.0
+      ],
+      "sampled_gear_backlash_deg": [
+        0.5,
+        2.0
+      ],
+      "note": "v0.9 sim plant round (architect decision c): the vane follows the servo output through a play (backlash) operator of total width lost_motion + gear backlash (docs/v0.9_hardware fix round: socket fit 2 atan(slot_fit / arm_len) = 0.65 deg, MG90S gear backlash 1 deg ASSUMED; total ~1.65 deg full width); the campaign samples each per vane in the sampled_* ranges (ASSUMED tolerance). Servo rate / lag / limits unchanged (servo.*). The rocket configuration has the same direct drive (ballistic S1-S8 fly the play too)."
+    }
+  },
+  "servo": {
+    "model": "MG90S (metal gear micro servo) x5",
+    "body_l": 23.0,
+    "body_w": 12.5,
+    "ear_underside_from_bottom": 18.0,
+    "ear_t": 2.5,
+    "ear_span": 32.5,
+    "ear_hole_pitch": 28.0,
+    "ear_hole_d": 1.8,
+    "case_top_from_bottom": 22.5,
+    "boss_d": 6.0,
+    "arm_plane_bottom_from_bottom": 27.5,
+    "shaft_offset_along_l": 5.5,
+    "mass_g": 13.4,
+    "torque_kgcm_4v8": 1.8,
+    "speed_s_per_60deg": 0.1,
+    "pwm_hz": 50,
+    "pwm_center_us": 1500,
+    "pwm_us_per_deg": 11.1,
+    "time_constant_s": 0.07,
+    "rate_limit_deg_s": 600.0,
+    "stock_horn_top_from_bottom": 35.5,
+    "stock_horn_top_note": "vane fix 2026-11-17 (user: '서보는 포켓에 들어가는데 혼, 커플러가 서보모터 와 프레임 사이에 들어가지 않아. 여유 공간이 없어.'): F - the MG90S vendor drawing (components101 MG90S datasheet: 'Dimension: 22.5 x 12 x 35.5 mm approx.', drawing label 35.5 from the case bottom to the top face of the mounted stock horn). The direct drive places the case from this (Layout._direct_drive). arm_plane_bottom_from_bottom (27.5, origin unknown, never measured) put the horn's vane-side face only 29.3 mm above the case bottom - 6.2 mm short; it is kept ONLY for the release-servo pod and the KAIST pushrod pods, which still use it (NOT re-checked in this fix - see docs/v0.9_CAD_변경.md)",
+    "top_envelope_E": {
+      "spline_top_from_bottom": 32.0,
+      "tower_d": 9.9,
+      "tower_top_from_bottom": 30.1,
+      "gear_cover_top_from_bottom": 29.0,
+      "gear_cover_along_l": [-6.0, 9.1],
+      "bump_top_from_bottom": 30.65,
+      "bump_along_l": [4.7, 7.5],
+      "note": "vane fix 2026-11-17: the servo's top above the main case (case_top_from_bottom), heights from the case bottom, along_l = along the case length from the output axis toward the case centre (+Z in the fin frame, servo_body_side +1). spline_top F (protosupplies 'Motor Height (w/ shaft) 32mm'); the rest E = scaled from the components101 MG90S drawing (vertical 4.225 px/mm from its 35.5 label, horizontal 5.07 px/mm from its 22.5 / 32.5 labels; that drawing's '21' label does not match its own scale and is not used): the round output tower (the stock horn's hub sits on it), the upper gear-cover level over the output end, the small second-gear bump beside the tower. NOT measured - caliper the real servo (docs/v0.9_CAD_변경.md, list of dimensions to measure)"
+    },
+    "sources": [
+      "https://protosupplies.com/product/servo-motor-micro-mg90s/",
+      "https://components101.com/motors/mg90s-metal-gear-servo-motor (MG90S datasheet PDF + 'MG90S Dimensions' drawing)"
+    ]
+  },
+  "vane_drive": {
+    "mode": "direct",
+    "mode_note": "v0.9 (user 2026-10-27, decision 1): 'direct' = each MG90S lies in a fairing at its fin root with its output axis ON the vane hinge axis (radial) and drives the vane shaft through a coupler; fins rotated onto the vane angles; no pods, horns, arms, pushrods or clevises. 'pushrod' = the v0.2-v0.8 linkage (servo pods at vane theta + pod.theta_offset_from_vane_deg, horns, arms, pushrods) - kept for the KAIST preset. The release servo pod on the payload module keeps the pod block in both modes.",
+    "servo_body_side": 1,
+    "servo_body_side_note": "+1: the case length (servo.body_l) runs along +Z from the output shaft, i.e. the body centre is shaft_offset_along_l ABOVE the hinge axis, so the lead (servo_leads.lead_exit_ASSUMED 'far_end') leaves the case's upper end face",
+    "boss_gap": 1.0,
+    "shaft_end_gap": 1.5,
+    "d_flat_lead_in": 0.5,
+    "coupler": {
+      "hub_d": 10.0,
+      "hub_len": 6.0,
+      "hub_len_note": "vane fix 2026-11-17: 8.0 -> 6.0 (and so the vane shaft 2 mm shorter, shaft end at Layout.vane_shaft_r_out = hub end - shaft_end_gap): the binding axial constraint is the horn screw head facing the shaft end, so a shorter shaft moves the servo out 2 mm less (fairing top stays under the fin leading edge). Engagement 4.5 mm >= half the hub (C28); existing printed vanes: cut 2.0 mm off the shaft end (keep the D-flat)",
+      "flange_d": 12.0,
+      "bore_clearance_dia": 0.2,
+      "flat_past_shaft_end": 0.0,
+      "flat_past_shaft_end_note": "vane fix 2026-11-17: the bore's flat ends AT the shaft end (was 0.3 mm past it); beyond it the bore is round so the horn screw head (O4-4.5 in the O5.2 bore) can come nearer. The set screw locks shaft and coupler together, so the shaft end never moves past the flat; set a little deeper, the shaft's flat only runs into the round bore",
+      "note": "printed vane_coupler (class D): hub with a D-bore (vane shaft_d + bore_clearance_dia, flat matching vane.d_flat_depth, facing vane_drive.flat_side) on the vane shaft's D-flat, locked by set_screw; the flange (D flange_d) is a socket for the stock MG90S double-arm horn (socket). Torque only: the vane's side load goes into the hinge bushing in the boss; axially the vane + coupler are retained between the boss face (boss_gap) and the duct wall and never touch the horn (v0.9 fix round (2026-10-28, reviewer defects); v0.9 CAD-1 had 2 x M2 x 4 screws into a horn trimmed to a disc, which has no room - reviewer)",
+      "horn_axial_gap": 2.2,
+      "horn_axial_gap_note": "vane fix 2026-11-17: 2.2 (kept) = slot floor -> the stock horn's vane-side face at the design position (nominal horn). With the vane's outward travel now stopped by the bushing (bushing.protrude_into_duct, ~1.05 mm instead of 2.0 mm to the duct wall) this keeps >= 1.0 mm (C28_ASSY_CLEAR_MIN) from the slot floor and the shaft end to a horn at its upper tolerance (horn.upper_tolerance_ASSUMED) and no contact at the stops with the servo floated toward the vane (C28)",
+      "socket": {
+        "slot_fit": 0.05,
+        "over_arm_plane": 1.5,
+        "collar_relief_dia": 0.2,
+        "note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'coupler-to-horn fastening has no room'): the flange is a SOCKET for the stock horn - a slot through the flange (open at both ends along the horn arms, width = horn arm_w_ASSUMED + slot_fit, from the hub end face to over_arm_plane past the horn's arm plane, with a relief of horn collar_d + collar_relief_dia for the horn's round hub at the arm level and its spline collar). slot_fit 0.05 = print, then hand-fit the slot to the arms (each 0.1 mm of fit is ~1 deg of vane play peak to peak). Torque goes through the arm flanks (no screws); the arms can slide along the slot (they lie along v at neutral, the direction the foam pad pushes the servo), so the coupler takes no side load. The slot floor stays horn_axial_gap short of the arm face so the coupler never pushes the horn axially"
+      },
+      "set_screw": {
+        "size": "M2 x 3 set screw, cup point (0.9 mm hex key)",
+        "d_tap": 1.6,
+        "mass_g_ASSUMED": 0.05,
+        "key_d": 2.5,
+        "key_len": 30.0,
+        "note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'vane + integral shaft has no axial retention', 'D-flat lost motion'): one M2 set screw through the coupler hub (at mid shaft engagement, along -v from the +v side) onto the shaft's D-flat. It fixes the coupler on the shaft axially (the vane can move only until the hub meets the boss face, boss_gap, or the vane root meets the duct wall) and removes the D-flat rotational play. key_d x key_len = the hex-key access envelope checked in C5"
+      }
+    },
+    "horn": {
+      "type": "stock MG90S double-arm horn on the 20T spline, both arms cut to arm_len (the socket diameter)",
+      "arm_len": 8.8,
+      "arm_w_ASSUMED": 5.5,
+      "arm_t_ASSUMED": 1.5,
+      "collar_d_ASSUMED": 7.3,
+      "collar_h_ASSUMED": 3.9,
+      "screw_head_d_ASSUMED": 4.0,
+      "screw_head_h_ASSUMED": 1.3,
+      "dims_2026_11_17_note": "vane fix 2026-11-17: arm_t 1.8 -> 1.5, collar_d 7.0 -> 7.3, collar_h 3.0 -> 3.9 are E (scaled from the components101 MG90S drawing: arm plate 1.42, round hub under it 3.9-4.0 tall, 7.3 across, seated on the output tower) - still not measured (the _ASSUMED key names are kept for the code). The horn's position now comes from servo.stock_horn_top_from_bottom (F 35.5); collar_h runs from the arm plane to the tower top (Layout raises if they disagree). screw head d / h stay A",
+      "upper_tolerance_ASSUMED": {
+        "top_from_bottom_plus": 0.5,
+        "arm_t": 2.0,
+        "screw_head_h": 1.6,
+        "screw_head_d": 4.5,
+        "note": "vane fix 2026-11-17 (task: 'horn + coupler + >= 1.0 mm assembly clearance with the real horn sizes at their upper tolerance'): A - the biggest stock horn the design must take: its face 0.5 mm nearer the vane (servo.stock_horn_top_from_bottom + 0.5), arms 2.0 thick, screw head 1.6 x O4.5. C28 builds this horn and measures >= 1.0 mm axial clearance at the design position and no contact at the stops"
+      },
+      "lower_tolerance_ASSUMED": {
+        "top_from_bottom_plus": -0.5,
+        "arm_t": 1.2,
+        "note": "vane fix 2026-11-17: A - the smallest horn (face 0.5 mm further out, arms 1.2 thick): C28 checks the socket still covers its arms fully at both stops"
+      },
+      "mass_g": 1.0,
+      "note": "v0.9 fix round (2026-10-28, reviewer defects): placeholder servo_horn_k = the arm bar (arm_len along v at neutral x arm_w x arm_t, its servo-side face on the arm plane; vane fix 2026-11-17: its vane-side face at servo.stock_horn_top_from_bottom from the case bottom, no longer servo.arm_plane_bottom_from_bottom), the round hub / spline collar (collar_d, from the arms' vane-side face to collar_h past the arm plane) and the horn screw head (on the arm face, inside the coupler bore). arm_w / arm_t / collar / screw head are ASSUMED - measure the horn and set the socket slot from it (print, then hand-fit the slot to slot_fit). The 20T spline steps 18 deg: trim the neutral in firmware (+-9 deg)",
+      "arm_len_note": "v0.9 fix round: both arms of the stock double-arm horn cut to 8.8 mm tip to tip (stubs ~0.9 mm past the round hub): the socket jaw is >= printer.min_feature thick out to the arm tips (Layout.dd_jaw_at_tip); bearing at MG90S stall ~20 MPa on PLA, ~1.3 MPa at the flight hinge moment"
+    },
+    "servo_float": 0.3,
+    "print_tolerance_ASSUMED": 0.2,
+    "alignment_note": "the servo FLOATS in its pocket by servo_float (foam pad on the service side), so a pocket that prints up to print_tolerance_ASSUMED off the hinge axis does not side-load the shaft: misalignment along the horn arms is taken by the socket slot, across them by the float; torque goes horn arms -> socket -> set screw on the D-flat. C28 checks float >= tolerance, the axes, the coupler sweep, the axial retention and the foam (v0.9 fix round (2026-10-28, reviewer defects))",
+    "fairing": {
+      "wall": 1.6,
+      "floor_t": 1.6,
+      "top_t": 1.4,
+      "top_t_note": "vane fix 2026-11-17: 1.6 -> 1.4 (7 layers, >= printer.min_feature): the servo moved 4.2 mm outward, the fin leading edge drops 0.39 mm per mm there, so the fairing top at its outer face must come down to stay printer.min_feature under the leading edge (Layout.fair_le_clear)",
+      "lintel_h": 1.6,
+      "lintel_note": "the service opening stops lintel_h under the pocket ceiling: a strip of the service-side wall (lintel) carries the ceiling, so the ceiling bridges the pocket width onto it and the lintel bridges the opening length when the module prints upright - no support (with supports on, the slicer also supported the closed cavities of the duct and liner: 73 g of support, measured). The servo with its connector half slides out under the lintel.",
+      "outer_block": 4.6,
+      "keel_deg": 45.0,
+      "service_side": 1,
+      "connector_lwh_ASSUMED": [
+        26.0,
+        8.0,
+        4.5
+      ],
+      "connector_gap": 0.5,
+      "connector_from_case_bottom": 3.0,
+      "note": "fin-root fairing (part of propulsion_module, Layout.fair_*): a box around the servo pocket in the fin frame (u radial at the fin theta, v tangential, Z), from the duct surface to the case bottom + servo_float + outer_block, Z from the lower ear tab's slot floor - floor_t to the pocket top + top_t; a 45 deg keel under it down to the fin plate (prints upright with no support under the fairing). The pocket is open on the service_side (+v = +theta) face and closed by the printed servo_cover; the servo (with the coupler and horn on it) slides in along -v with its lower ear tab in a floor slot that holds it radially and vertically. The pocket's ceiling is a cantilever when the module prints upright: tree supports inside the four pockets (removed through the open side). Above the case: the lead bay (connector_lwh_ASSUMED; was the inline-connector bay until 2026-11-18 - the lead is no longer cut: it leaves through the tunnel in the pocket's side wall into the joint pod, servo_leads.joint_pod). The fin plate passes through the fairing (the pocket cuts it) and continues above and outboard of it unchanged: the fins stay the landing legs (footprint unchanged).",
+      "connector_lwh_note": "2026-11-18 (servo-lead fix): there is no inline connector any more - this box over the case (same size, the fairing is unchanged) is the lead bay: the factory lead runs from the case end over the case to the tunnel in the pocket's side wall; the plug itself passes the pocket from the open service side straight into the tunnel"
+    },
+    "cover": {
+      "t": 1.2,
+      "screw": "M2 x 8 self-tapping, 2 per cover",
+      "d_clear": 2.2,
+      "d_tap": 1.6,
+      "tap_depth": 6.0,
+      "head_d": 3.8,
+      "driver_d": 6.0,
+      "driver_len": 60.0,
+      "note": "printed servo_cover (class C, flat): a plate on the fairing's service face; two screws along -v into tap holes in the fairing's inner wall (beside the hinge boss, below the lead pipe) and outer block; C5 checks the tap material and a screwdriver path (driver_d x driver_len along +v)"
+    },
+    "hinge_moment": {
+      "cp_offset_chord_max_ASSUMED": 0.1,
+      "bearing_mu_ASSUMED": 0.3,
+      "note": "worst hinge moment = N (cp offset from the hinge, up to cp_offset_chord_max x chord: thin-airfoil centre of pressure 0.25 c, up to ~0.4 c near stall, hinge at vane.hinge_chord_fraction_from_le) + bearing friction mu N shaft_d / 2, with N = q S cl_alpha delta at thrust_peak and the commanded limit (q from the exhaust momentum, Layout.vane_hinge_moment_*). Compared with servo.torque_kgcm_4v8 in C28."
+    },
+    "hardware_g_ASSUMED": 3.0,
+    "hardware_note": "per vehicle (v0.9 fix round (2026-10-28, reviewer defects)): 4 x (2 cover screws M2 x 8 + 1 coupler set screw M2 x 3 + horn screw + foam pad) - ASSUMED, weigh them. The four brass bushings are placeholders (hinge_bushing_k)",
+    "shaft_end_gap_note": "v0.9 fix round (2026-10-28, reviewer defects): 0.5 -> 1.5 so the shaft end stays short of the horn screw head (vane_drive.horn) even at the vane's outward stop (vane root on the duct wall, ~1.75 mm out): the servo never takes the vane's axial load. Vane fix 2026-11-17: the outward stop is now the bushing end (~0.5 mm, bushing.protrude_into_duct); C28 measures shaft end -> screw head of the upper-tolerance horn",
+    "flat_side": "+v",
+    "flat_side_note": "v0.9 fix round (2026-10-28, reviewer defects): the vane shaft's D-flat and the coupler bore's flat face the service side (+v, the open pocket side) with the vane at neutral, so the coupler set screw (coupler.set_screw) is driven along -v through the open pocket with the cover off",
+    "bushing": {
+      "od": 6.0,
+      "id_ASSUMED": 5.1,
+      "density_g_cm3": 8.5,
+      "model": "brass tube 6 x 0.45 mm (K&S type), cut to the boss length + protrude_into_duct",
+      "protrude_into_duct": 0.95,
+      "protrude_note": "vane fix 2026-11-17: the bushing stands 0.95 mm proud of the duct's inner wall (7.95 mm long instead of 7.0), into the 2.0 mm gap between the vane's outer edge and the duct wall, so the vane's OUTWARD stop is its edge on the bushing end ~1.05 mm out (C28 measures it) instead of the duct wall 2.0 mm out. 0.95, not more: C8 keeps the exhaust path D(duct_id - 2) = r 44.0 free of everything but the vanes / shafts (a 1.5 mm protrusion put 3.6 mm^3 of each bushing into it - C8 FAIL, measured). The coupler's socket sits in the ~4 mm between the stock horn's arms and the servo's output tower and cannot take 2 mm of axial travel plus clearance (docs/v0.9_CAD_변경.md, vane fix). The bushing replaces the bare shaft in that gap (O6 vs O5 across the 2 mm tip gap): no change to the vane or the duct. Assembly: press it in from the duct side until 0.95 mm stands proud (a 0.95 mm gauge, cad/exports/print/vane_fit_test)",
+      "note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: '0.4 mm diametral clearance on a printed horizontal bore and a support-scarred printed shaft'): the hinge bore is opened to the bushing OD (ream to 6.0 after printing) and the brass bushing is pressed / CA-glued in, flush with the duct's inner wall and the boss face; the printed D5 journal is sanded until it turns freely in it (~0.1 mm diametral, ASSUMED). The 2.4 N side load still goes into the boss through the bushing. Placeholder hinge_bushing_k"
+    },
+    "foam_pad": {
+      "t_free": 3.0,
+      "material": "closed-cell EVA foam, Shore A 30-40",
+      "min_compression": 0.15,
+      "max_compression": 0.5,
+      "note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'servo rocks +0.79 / -1.61 deg in its float, service-side gap 1.9 / 1.5 mm'): one pad between the servo case and the cover, compressed into the case -> cover gap; its preload holds the case against the far pocket wall so the servo's torque reaction (hinge moment / half case length, ~1 N) cannot rock it. C28 checks the compression range"
+    },
+    "deadband_note": "v0.9 fix round (2026-10-28, reviewer defects): estimated vane lost motion for the sim round = the horn arm in the socket slot (slot_fit / arm_len, Layout.dd_deadband_slot_deg) + MG90S gear backlash (gear_backlash_deg_ASSUMED); the D-flat play is gone (set screw) and the case rock is held by the foam preload",
+    "gear_backlash_deg_ASSUMED": 1.0,
+    "fix_2026_11_17_note": "vane fix 2026-11-17, user report (verbatim): '현재 너가 설계했던 vane 부분에서 서보모터가 너의 생각보다 커서 조립이 제대로 되지 않는 문제가 발생했어 ... 조립이 원활하지 않은 부분은 다시 계산해서 만들어줘' / '서보는 포켓에 들어가는데 혼, 커플러가 서보모터 와 프레임 사이에 들어가지 않아. 여유 공간이 없어.' What was wrong: the case was placed from servo.arm_plane_bottom_from_bottom 27.5 (never measured), which put the stock horn's face 29.3 mm above the case bottom; the vendor drawing gives 35.5 (servo.stock_horn_top_from_bottom) - the real horn sat 6.2 mm into the coupler (110 mm^3 overlap on the solids), its screw head 3.8 mm into the vane shaft, the servo's output tower into the coupler socket, and servo + horn + coupler was 3.4 mm longer than the pocket (no insertion path at all). The CAD also modelled no output tower / gear cover (only a O6 boss) and no axial clearance budget. Fix: the case is placed from the real horn height (+4.2 mm radially outward), hub 8 -> 6 (vane shaft 2 mm shorter), slot floor -> horn face 2.2, fairing top 1.6 -> 1.4, horn dims E from the drawing, the servo's top modelled (servo.top_envelope_E), the bushing protrudes 0.95 mm into the duct as the vane's outward stop, C28 measures the assembly clearance with the upper-tolerance horn (>= 1.0 mm) and the insertion path on the solids; set the coupler with the vane on its outward stop and a set_shim_t shim (Layout.dd_set_shim) between the pocket's inner wall and the hub",
+    "set_shim_note": "vane fix 2026-11-17: assembly gauge - with the vane pulled out against the bushing end (outward stop), a Layout.dd_set_shim thick U-shim between the pocket's inner wall and the coupler hub puts the coupler at its design position when the set screw is tightened (printed with the fit test, cad/cadquery/make_vane_fit_test.py)"
+  },
+  "pod": {
+    "cavity_tangential": 23.6,
+    "cavity_radial": 13.5,
+    "wall_tangential": 4.7,
+    "wall_radial": 2.0,
+    "floor_t": 2.0,
+    "underside_chamfer_deg": 45.0,
+    "theta_offset_from_vane_deg": 24.0,
+    "arm_t": 2.0,
+    "arm_len": 14.0,
+    "arm_w": 5.0,
+    "pushrod_d": 1.5
+  },
+  "servo_leads": {
+    "note": "v0.6 vane-servo lead route (SPEC 3.8 / 5.1, edf.mount = tabs only): pod window -> outside up beside the fin -> vertical entry slot through the shoulder ring / cone skin into the sleeve-skin annulus, one straight column per lead -> deck notch -> spigot-ring rebate (under the intake skirt) round to gather_theta_deg -> intake servo channel + bulge past the EDF bell -> shelf notch -> along the strut -> bulkhead servo hole -> avionics bay. Ribbon and mass values are ASSUMED (26 AWG 3-core flat silicone servo wire): measure and weigh the wire you buy. | 2026-11-18 (servo-lead fix): factory MG90S lead + standard extension, nothing cut - see fix_2026_11_18_note.",
+    "fix_2026_11_18_note": "servo-lead fix 2026-11-18, user report 2026-11-17 (verbatim): 'intake moduel의 서보모터 배선을 진행 할 떄, 커넥터가 지나가지 못해서 배선을 잘랐다가 이어야하는 문제가 있어. 이 문제는 propulsion_module이 모듈에서도 같은 문제가 발생했어. 해당 문제를 수정해줘. 커넥터를 자르지 않아도 케이블을 통과시켜 조립할 수 있도록 말이야.' Cause (measured on the solids of b42975c, connector-envelope sweep): the route was sized for the bare ribbon (ribbon_w/t_ASSUMED + min_clearance): the O4.8 pipe tunnel, the 4.6 x 2.4 entry slot, the annulus column between its 4.6 mm guide walls, the 4.6 x 3.0 deck notch, the 9 x 3.6 intake channel and the 6 mm gate all block the 8.15 x 4.0 factory plug (overlap 39-318 mm^3), and the design assumed the MG90S lead CUT to 40 mm with an inline connector in the fairing and a hand-made extension crimped after threading. The annulus column cannot simply grow: the clock keyways sit every ~13 deg round the sleeve and every widening of the column's guide walls (even to 6 mm) breaks the keyway plan / the lead-passage fence (Layout raises). Fix (no cutting, off-the-shelf parts only): (1) the factory plug passes ONE closed passage, a short O tunnel through the fairing's side wall into (2) a joint pod on the duct below the shoulder (open outward, inside the body's shadow r <= body_r) where the plug meets a standard servo extension (joint_pod; the unused factory lead is folded there); (3) every other propulsion passage is LAID IN from outside: a keyhole slit (keyhole.slit_w) through the cone / body skin over the entry slot and the column, the ribbon pressed in edge-on and turned flat behind it; at the top it leaves through the slit, passes over the deck seat (the deck stays whole: the deck notch's through-hole is gone) and under the intake skirt through skirt_notch into the old notch groove on the spigot and the rebate; (4) intake: a lip slit (lip_slit) opens the servo channel toward the inside like the motor-lead slit, the gate is laid in from below, and the extension's socket goes STRAIGHT UP through the open interior and a connector-size bulkhead hole to J8-J11 (C43 sweeps the connector envelope through every passage it passes and checks the lengths).",
+    "lead_exit_ASSUMED": "far_end",
+    "lead_exit_note": "MG90S lead leaves the case end face opposite the output shaft, near the bottom (i.e. at +v in the pod frame, away from the vane horn / pushrod). Verify on the unit before printing: 'shaft_end' has no route (layout raises).",
+    "ribbon_w_ASSUMED": 3.6,
+    "ribbon_t_ASSUMED": 1.3,
+    "min_clearance": 0.4,
+    "mass_g_per_m_ASSUMED": 10.0,
+    "fc_connector_mass_g": 0.5,
+    "pod_window": {
+      "w": 4.6,
+      "h": 7.0
+    },
+    "outside_gap": 0.2,
+    "crossing_above_fin_le": 0.8,
+    "column_theta_from_fin_deg": 8.0,
+    "entry": {
+      "w": 4.6,
+      "radial": 2.4,
+      "gap_to_sleeve": 1.2
+    },
+    "deck_notch": {
+      "w": 4.6,
+      "radial": 3.0
+    },
+    "rebate": {
+      "depth": 3.4,
+      "h": 5.0
+    },
+    "gather_theta_deg": 180.0,
+    "channel": {
+      "w": 10.0,
+      "depth": 3.6,
+      "w_note": "2026-11-18: 9.0 -> 10.0 so the shelf notch beside the bulkhead-hole riser stays wider than the connector envelope (connector.envelope W 9.15)"
+    },
+    "bulkhead_hole_r": [
+      48.0,
+      56.0
+    ],
+    "fin_route": {
+      "column_theta_from_fin_deg": -20.0,
+      "pipe": {
+        "tunnel_d": 10.8,
+        "wall": 1.2,
+        "web_shift": 3.0,
+        "note": "2026-11-18: the pipe is now a short tunnel O tunnel_d (>= the connector envelope diagonal hypot(9.15, 5.0) = 10.43 -> 10.8: the 8.15 x 4.0 plug turns freely, 0.86 mm each side at its diagonal) from the servo pocket's -v side wall (u tunnel_u, Z under the service opening) through the fairing wall into the joint pod; the plug is pushed in from the open service side along -v",
+        "tunnel_u": 57.6
+      },
+      "note": "v0.9 (vane_drive.mode 'direct', replaces the v0.6 pod window / outside run / crossing): the MG90S lead (kept servo_lead_kept_ASSUMED from the case, its connector in the fairing's connector bay) plugs into the extension inside the fairing; the extension leaves the pocket's inner top corner through a closed pipe (Ø tunnel_d inside a Ø tunnel_d + 2 wall pipe, plus a web pipe web_shift toward the duct that ties it to the duct wall) that rises on the duct surface from the fin to the v0.6 entry slot at column theta = fin theta + column_theta_from_fin_deg (below the chamfer, Z ~ the vane-section top), then the v0.6 route unchanged: entry slot, straight annulus column, deck notch, rebate to gather_theta_deg, intake servo channel, bulkhead servo hole, FCU. The offset -20 deg keeps every column clear of the tab-screw lugs (90 / 270), the motor-lead slot (0), the webs and the joint holes (Layout raises otherwise). The pipe stays below the shoulder ring (no part of it near the EDF bore). | 2026-11-18 (servo-lead fix): the pipe ends in the joint pod (servo_leads.joint_pod); the entry slot and the column are laid in through the keyhole slit; no inline connector, no cut lead."
+    },
+    "bulkhead_hole_w": 10.0,
+    "bulkhead_hole_note": "2026-11-18: r 50..56 x 9 -> r 48..56 x 10: the extension's socket (connector envelope 9.15 x 5.0) rises straight up at the hole's inner side (r 48..53, past the shelf (r 52) through the 10 mm shelf notch) beside the ribbons already threaded (2 x 2 bundle at the outer side, r 53.0..55.6: radial 8.0 = 5.0 + 2 x 1.3 + 0.4); the inner edge keeps the FCU rule's 2 mm (plan) from the carrier's J8-J11 plug ends (x -45.74): 2.26",
+    "connector": {
+      "W_F": 7.9,
+      "T_F": 2.75,
+      "L_F": 14.0,
+      "tol_F": 0.25,
+      "ridge_A": 1.0,
+      "strain_relief_A": 2.0,
+      "clearance": 0.5,
+      "male_shroud_wtl_F": [
+        10.3,
+        4.0,
+        18.0
+      ],
+      "mated_len_E": 26.0,
+      "source": "Pololu JR connector packs: female housing drawing (item 1924, 'JR connector female housing dimensions (mm)': 7.90 / 7.70 wide, 2.75 / 2.65 thick, 14.00 long, all +-0.25) and male shroud drawing (item 1925: 10.30 x 4.00 x 18.00 +-0.25), read 2026-11-18 (F). The MG90S lead ends in a 3-pin 2.54 mm JR-style female housing (F: vendor listings). ridge_A: a latch / key ridge or a molded strain relief on the servo's own plug (Futaba-J style) - not on the drawing (A). strain_relief_A: rigid length of the wire crimp / heat-shrink behind the housing (A). mated_len_E: the servo plug inserted into the 18 mm shroud (~6 mm of the housing outside it) + the strain relief (E)",
+      "note": "design envelope (Layout.sl_conn_env): W = W_F + tol + 2 c = 9.15, T = T_F + tol + ridge + 2 c = 5.0, L = L_F + tol + strain relief + 2 c = 17.25 (single plug: the servo's own plug and the extension's socket); joint (servo plug in the extension's shroud): 10.55 + 2c x 4.25 + 2c x mated_len + 2c = 11.55 x 5.25 x 27.0. MEASURE: plug width / thickness incl. any ridge / length incl. the strain relief, the shroud of the extension you buy, the mated length"
+    },
+    "factory_lead": {
+      "len_F": 250.0,
+      "tol_F": 5.0,
+      "source": "MG90S factory lead 250 mm +-5 (vendor listing with tolerance via manuals.plus; tinytronics MG90S data sheet / several shops: 'wire length 25 cm'), read 2026-11-18 (F). Clones vary (one data sheet lists 175 mm; the route needs only Layout.sl_d_joint ~64 mm to the pod, a shorter lead just folds less): MEASURE from the case to the plug's front face",
+      "note": "the factory lead runs case -> lead bay -> tunnel -> joint pod (Layout.sl_d_joint along the route) and the rest is folded in the pod (fold length = measured length - sl_d_joint); C43 checks len_F - tol_F >= sl_d_joint and (len_F + tol_F - sl_d_joint) <= the pod's fold capacity"
+    },
+    "extension": {
+      "len_mm": 600.0,
+      "model": "standard JR servo extension lead 600 mm / 60 cm (male plug - female socket, 26 AWG 3-core flat ribbon <= ribbon_w x ribbon_t; NOT 22 AWG: its ~4.5-5 x 1.6-1.8 ribbon does not fit the 4.6 x 2.4 entry slot), off the shelf, 4 pieces - nothing is cut or crimped. Sold e.g. as '60cm Male to Female Servo Extension Cable 26AWG - JR Style' (GetFPV, 5-pack) / '60cm servo lead extension JR 26AWG' (robu.in, HobbyKing 600 mm), searched 2026-11-18 (F: such leads exist; the length definition on a listing is not stated)",
+      "len_basis": "tip_to_tip",
+      "min_slack": 50.0,
+      "threading_lift_min_A": 80.0,
+      "joint_g_ASSUMED": 1.0,
+      "price_krw_each_ASSUMED": 1500,
+      "fix_2026_11_18b_note": "verifier finding 2026-11-18 (medium): with 500 mm leads servo 1 -> J8 had only 38 / 47 mm spare (rocket / VTOL), counted as if the whole 500 mm were wire, against min_slack 20 (the removed cut-lead design carried 50 mm). Now: len_mm 500 -> 600 for all four (any servo -> J mapping, A, is covered by the longest route); len_basis 'tip_to_tip' = the listed length is taken as the WHOLE lead incl. both housings, so the usable wire is len_mm - (male shroud L + tol) - (female housing L + tol) (Layout.sl_ext_usable, conservative); min_slack 20 -> 50 (= the old slack); threading_lift_min_A: the spare + the in-bay legs must still let the intake be held >= 80 mm above the propulsion module while the socket is pushed up through it (guide step 0a.6, A: hand room) with 20 mm of socket to grab above the bulkhead (Layout.sl_thread_lift, C43)",
+      "note": "2026-11-18: replaces the hand-crimped extensions (26 AWG wire + housings): the factory lead (250 mm) reaches only the joint pod, the route from the pod to J8-J11 is 301-462 mm (Layout.sl_ext_len; rocket 310-462, VTOL 301-453) -> one 600 mm extension per servo (fix 2026-11-18b), >= min_slack spare of usable wire at the board (C43). The male plug takes the servo's socket in the joint pod; the extension's female socket is the only plug that is threaded (straight up through the intake and the bulkhead hole) and plugs onto J8-J11 (servo k -> J(7+k), A). The spare length is coiled in the avionics bay. Mass: wire at mass_g_per_m_ASSUMED along the route + the spare at the board end + joint_g_ASSUMED (shroud) at the pod + fc_connector_mass_g (socket) at the board"
+    },
+    "joint_pod": {
+      "cavity_w": 17.2,
+      "cavity_depth": 10.6,
+      "cavity_h": 36.0,
+      "wall": 1.2,
+      "floor_t": 1.2,
+      "top_t": 1.2,
+      "keel_deg": 45.0,
+      "fold_layers_max": 6,
+      "note": "2026-11-18: a box on the duct surface at each column theta, below the vane-section top (the shoulder cone starts there), from the duct to vane_section_r + cavity_depth (<= body_r: inside the body's shadow, no frontal area); the cavity (cavity_w tangential x cavity_depth radial x cavity_h) is OPEN on its outer face so the joint is made in the open; the tunnel from the servo pocket enters its fin-side wall; a 45 deg keel under the floor (prints upright without support). Inside: the joint (servo plug in the extension's shroud, envelope 11.55 x 5.25 x 27.0) upright at the far side, the unused factory lead folded beside it (<= fold_layers_max layers of cavity_h - 2 mm, 3.6 + 0.5 wide). Close the open face with tape (A); the extension leaves upward through the roof into the entry slot via the keyhole slit"
+    },
+    "keyhole": {
+      "slit_w": 2.0,
+      "note": "2026-11-18: a slit slit_w wide through the cone / body skin (and the joint pod's roof) over the entry slot and the column, from the pod cavity to the deck bottom: the ribbon (ribbon_t 1.3 thick) is pressed in edge-on and turned flat behind it (ribbon_w 3.6 > slit_w: it cannot fall out); the 4.6 mm slot / guide walls behind it are unchanged (the clock keyway plan and the lead-passage fence are untouched). C43 checks slit_w >= ribbon_t + 2 x 0.35 and <= ribbon_w - 1.0 and the slit open on the solid; tape over it after assembly (A)"
+    },
+    "skirt_notch": {
+      "w": 4.6,
+      "h": 2.4,
+      "note": "2026-11-18: a notch in the intake skirt's bottom edge at every column (w tangential x h): the ribbon leaves the keyhole slit below the deck, passes over the deck seat (which stays whole - the old deck notch's through-hole is gone) and under the skirt into the old notch groove on the spigot ring"
+    },
+    "lip_slit": {
+      "note": "2026-11-18: a vertical slit through the intake's lip-pocket wall at gather_theta, channel.w wide, from the skirt top to the lip-pocket top (as intake_module.wire_channel.lip_slit for the motor leads): with the intake held above the propulsion module the ribbons are laid into the servo channel from the inside and into the gate (shelf notch) from below; the EDF lip is still located by the rest of the wall"
+    }
+  },
+  "fin": {
+    "count": 4,
+    "theta0_deg": 0.0,
+    "theta_note": "v0.9 (user 2026-10-27, decision 1): 45 -> 0 deg, the fins lie on the vane angles so each vane servo sits in a fin-root fairing (vane_drive). The fins are the VTOL landing legs: planform, thickness and footprint unchanged (footprint_d 246.8) | v0.9 fix round: the VTOL configuration's thinner duct keeps this footprint with configs.vtol.fin.span 76.8",
+    "t": 2.4,
+    "root_overlap": 1.0,
+    "root_chord": 90.0,
+    "span": 125.0,
+    "tip_chord": 45.0,
+    "te_z": 0.0,
+    "stability_note": "2026-11-18 stability fix (user: '시뮬레이션상 안정하도록 모델을 수정해줘' - make the vehicle stable in the simulations): span 76 -> 125, tip_chord 60 -> 45, root chord 90 and the TE on the exit plane kept, straight leading edge root LE z 90 -> tip LE z 45 (aero planform = the stability study's K1: OpenRocket = RocketPy static margin >= 1.0 cal with the CanSat, and without it with the nose ballast; runs/stability/study). Why: the validation round of 2026-11-18 measured +0.29 cal with / -0.02 cal without the CanSat (OpenRocket = RocketPy), the CanSat-off vehicle aborted in OpenRocket in 3 m/s wind. The planform is aerodynamic only: the P2S slicer refuses a one-piece propulsion module wider than ~192 mm across the plate (bisected with the project's Bambu Studio CLI call, impl/slice_feasibility2.json: tip r 134.9 slices, 135.7 does not - the wrap-detection zone), so the outer part of every fin is a separate bolt-on tip panel (tip_panel). The VTOL configuration keeps its fins (configs.vtol.fin).",
+    "tip_panel": {
+      "split_span": 76.0,
+      "joint_gap": 0.2,
+      "slot_clearance": 0.2,
+      "cheek_t": 1.6,
+      "lap": 12.0,
+      "block_w": 4.0,
+      "lugs_z": [[0.0, 16.0], [30.0, 48.0]],
+      "lug_chamfer_deg": 45.0,
+      "screw": "M3 x 10 button head (ISO 7380) + M3 hex nut (ISO 4032), 1 per lug",
+      "screw_hole_d": 3.2,
+      "screw_u_from_split": -6.0,
+      "screw_mass_g": 0.75,
+      "nut_mass_g": 0.33,
+      "screw_head_d": 5.7,
+      "screw_head_h": 1.65,
+      "nut_af": 5.5,
+      "nut_h": 2.4,
+      "hardware_note": "steel M3 button head 10 mm ~0.75 g, M3 hex nut ~0.33 g (E, typical catalogue masses; weigh them)",
+      "note": "2026-11-18 stability fix: the module's printed fin ends at split_span (fin tip r 123.4 as before, the propulsion module still prints in one piece turned 45 deg on the plate); the tip panel (r 123.4 -> 172.4, chord 62.5 -> 45 on the same straight LE) is a separate part printed upright on its trailing edge (no support), joined by two forked lugs that straddle the fin plate (cheeks cheek_t, slot = fin t + 2 slot_clearance, lap mm over the fin) with one M3 screw + nut through each lug and the fin. lugs_z = chord stations (z from the exit plane) of the lugs; the upper lug's underside is chamfered at lug_chamfer_deg so it prints without support."
+    }
+  },
+  "intake_module": {
+    "lip_pocket_clearance_dia": 1.5,
+    "shelf_id": 104.0,
+    "shelf_t": 2.4,
+    "window_margin_below": 5.0,
+    "window_margin_above": 4.0,
+    "window_h": 117.0,
+    "strut_count": 4,
+    "strut_w": 18.0,
+    "window_wall_t": 3.0,
+    "window_wall_note": "v0.6 (user, 2026-10-15: the 1.2 mm struts flexed while printing and broke when the supports were removed): the windowed band from z_shelf_top to the bulkhead is window_wall_t thick (thickened inward, outer surface = body OD), the windows are radial sectors so each strut keeps strut_w (at body_r) x window_wall_t with radial side faces; strut_w 14 -> 18",
+    "window_bottom_end": {
+      "slope_deg": 45.0,
+      "bridge_w": 20.0,
+      "note": "v0.6 (user, 2026-10-15): only the LOWER end of each window (the ceiling when the intake prints flipped) is a truncated gable - flat for |y'| <= bridge_w/2 at z_window_bottom, then rising at slope_deg to the struts (y' = tangential coordinate perpendicular to the window centre direction, planar faces), so it prints without support: the 20 mm flat is bridged. The upper end (the print floor) stays square."
+    },
+    "strut_theta0_deg": 0.0,
+    "bulkhead_t": 2.0,
+    "cable_hole_d": 20.0,
+    "vent_hole_d": 8.0,
+    "vent_hole_count": 2,
+    "vent_hole_r": 40.0,
+    "min_inlet_area_ratio": 2.0,
+    "lip_gap_below": 1.0,
+    "lip_stop_gap": 0.5,
+    "wire_channel": {
+      "w": 22.0,
+      "depth": 11.0,
+      "wall": 1.2,
+      "bulkhead_hole_r": [
+        41.0,
+        53.2
+      ],
+      "bulkhead_hole_r_note": "wire09c (generosity box, 12 AWG leads up to O4.3, not measured): outer edge 53.0 -> 53.2. The plenum leads run with their outer line on the tie anchors' inner face (= this outer edge, Layout.ml_anchor_u); with O4.3 leads their inner edge came 2.80 mm outside the EDF throat radius (< motor_leads.plenum.throat_clear_min 3.0, Layout raises). +0.2 gives exactly 3.00 and leaves the anchor exactly at its tunnel-depth limit (r_band_in - wall - tunnel_t - min_feature = 53.2): both rules met with 0.0 mm margin at O4.3 (0.7 mm at O3.6). Inner edge 42.0 -> 41.0: with O4.3 leads beside it the 5.5 mm bullet, threaded straight up at the hole mid radius (C29 pass (i)), clipped the shelf beside the 14 mm gate by 0.17 mm^3 (the gate cannot widen past 14.7: the 0 deg strut); the mid radius 47.6 -> 47.1 clears it (0.000 mm^3).",
+      "gate_h": 6.0,
+      "open": true,
+      "side_wall": 4.0,
+      "side_wall_note": "4.0 = cover.pad_t: the cover-screw pads are the full side walls. With 1.6 mm walls and 2.4 mm pads the pads' top faces hung over (the intake prints flipped), the slicer grew a support column from the bed beside the 0 deg strut and the window gate found 1.4 mm of it at the window-315 top (FAIL, measured); full-height 4 mm walls have no such ledge",
+      "gate_h_motor": 6.0,
+      "gate_w_motor": 14.0,
+      "gate_note": "the gate (shelf notch over the lip) is gate_w_motor wide (the three bare leads, 11.6 with clearance) and stays inside the 0 deg strut; the 22 mm groove ends at the shelf top. A 22 mm gate let the lip-pocket wall's top edge hang beside the strut when printed flipped, the slicer supported it from the bed and the window gate found that support at the window-315 top (FAIL, measured on the sliced intake)",
+      "roof_slope_deg": 45.0,
+      "cover": {
+        "t": 1.6,
+        "gap": 0.2,
+        "pad_t": 4.0,
+        "pad_h": 6.0,
+        "screw": "M2 x 8 self-tapping, 2 per cover",
+        "d_clear": 2.2,
+        "d_tap": 1.6,
+        "tap_depth": 6.0,
+        "edge_margin": 1.6
+      },
+      "note": "v0.9 (user 2026-10-27, decision 3; was 14 x 6 closed with a 6 mm gate and a 48-56 bulkhead hole - the user could not fit the wiring): motor-lead channel past the EDF bell = an OPEN GROOVE w x depth (22 x 11, from the 1.2 mm lip-pocket wall outward) with no outer wall, open at the skirt's bottom edge, closed by the printed wire_cover (t, screwed to two pads on the side walls); the leads are LAID IN from outside. The gate above the lip (shelf notch, the bare leads step inside, laid in from outside) is gate_h_motor tall and the groove's full width; it stays below the windows' lower edge (a 10 mm gate cut into the gussets beside the 0 deg strut, and the slicer put support there, inside the window-sector probe: measured FAIL, so 6). The bullets never pass the gate: they go STRAIGHT UP through the intake interior at the bulkhead hole's radius (the 22 mm shelf notch lets them past the shelf), then the 22 x 11 bulkhead hole (r 41-52, inside the shelf opening, so the bullets also clear the shelf; measured on the sliced intake: r 45-56 put the hole's outer corners 0.07 mm into the band, r 43.7-54.7 left them 1.2 mm inside it - both gave support in the window-315 probe (FAIL); r 40-51 and 41-52 PASS). The groove's side walls are side_wall thick; its top is a roof_slope_deg wedge (the intake prints flipped: no support over the groove). wall and gate_h keep their v0.6 meaning for the lip-pocket wall and the servo-lead channel. Bullet joints sit in the avionics bay above the bulkhead (motor_leads.joint_zone). Assembly: EDF in -> leads up the propulsion slot; hold the intake above, pass the three bullets one at a time UP through its interior (skirt bore, lip pocket, shelf opening, plenum beside the 0 deg strut) and the bulkhead hole; lay the leads into the groove and through the gate from outside; lower the intake; fit the cover. | v0.9 fix round (2026-10-28, reviewer defects): lip_slit, tie_anchors, bulkhead hole 20 x 11 at r 42-53; assembly: EDF in -> leads up the propulsion slot; hold the intake above, pass the three bullets one at a time UP through its interior and the bulkhead hole; slide the bare leads out through the lip slit into the groove; lower the intake (leads in the groove, over the lip through the gate); tie the leads to the strut anchors through the windows; fit the cover",
+      "bulkhead_hole_w": 20.0,
+      "bulkhead_hole_note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'motor leads hang unrestrained over the EDF inlet throat'): 22 x 11 at r 41-52 -> 20 x 11 at r 42-53 (the user's >= ~20 x 11; corners hypot(53, 10) = 53.9, 3.1 mm inside the band - r 43.7-54.7 at 22 mm (1.2 mm) failed the window-315 support probe, r 41-52 (3.85 mm) passed): the bare leads pass at the hole's OUTER side (u = r1 - wire_clearance - od/2), on the line of the tie anchors, so they never come nearer the throat than motor_leads.plenum.throat_clear_min",
+      "lip_slit": {
+        "w": 6.0,
+        "note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'documented install sequence is topologically impossible - the 1.2 mm lip-pocket wall is a closed ring'): a vertical slit w wide through the lip-pocket wall at wire_theta, from the skirt top to the lip-pocket top (opening into the gate). With the intake held above the EDF the bullets go straight up the interior; the bare leads are then slid OUT through the slit into the groove, the intake is lowered (the leads end in the groove and over the lip through the gate) and the cover closes the groove. The EDF lip is still located by the remaining ~355 deg of wall. C29 (iv) checks the slit passes a bare lead"
+      },
+      "tie_anchors": {
+        "w": 12.0,
+        "h": 5.4,
+        "wedge_deg": 45.0,
+        "tunnel_h": 3.0,
+        "tunnel_t": 1.4,
+        "wall": 1.2,
+        "into_band": 0.6,
+        "tie": "2.5 mm nylon cable tie (one per anchor)",
+        "note": "v0.9 fix round (2026-10-28, reviewer defects) (reviewer: 'leads hang 129 mm free in the plenum, 0.8 mm inside the EDF throat radius'): printed anchors on the 0 deg strut's inner face between the gate and the bulkhead, count = the fewest that keep every free span <= motor_leads.plenum.max_free_span. Each is a block w (tangential) wide whose inner face is the leads' outer line (Layout.ml_anchor_u), h tall + a wedge_deg roof toward the bulkhead (the intake prints flipped: no support), with a tangential tunnel (tunnel_h x tunnel_t, wall from the inner face) for one cable tie round the three leads. Tie them after the intake is lowered (reach through the windows)"
+      },
+      "skirt_cut_note": "v0.9 fix round (2026-10-28, reviewer defects): below the skirt top the groove cutter starts at sqrt((body_id/2)^2 - (w/2)^2) - 0.3 (the skirt bore) so no sliver of the skirt is left at the groove edges"
+    },
+    "vent_hole_theta0_deg": 90.0,
+    "vent_hole_note": "rocket-carrier round (2026-11-14, user decision 2026-11-13): 4 holes at 45 / 135 / 225 / 315 deg -> 2 at 90 / 270 deg (the configs.vtol set): the 76 x 70 carrier covered all four 45-deg holes (plan gap -4.00 mm, M - Layout raised 'no cable-tie run'); at 90 / 270 the plan gap is 1.0 mm and the tie runs across the board. bulkhead_t stays 2.0. Reprint the rocket intake module"
+  },
+  "avionics_module": {
+    "tube_h": 200.0,
+    "tray_plane_x": 25.0,
+    "tray_t": 2.0,
+    "tray_w": 100.0,
+    "tray_h": 160.0,
+    "tray_z_from_module_bottom": 20.0,
+    "rail_w": 2.0,
+    "rail_depth": 5.0,
+    "rail_gap": 2.4,
+    "vent_slot_count": 4,
+    "vent_slot_w": 8.0,
+    "vent_slot_h": 40.0,
+    "vent_slot_thetas_deg": [
+      60,
+      120,
+      240,
+      300
+    ],
+    "vent_slot_z_from_module_bottom": 130.0,
+    "fc_hole_pattern": 44.0,
+    "fc_hole_d": 3.0,
+    "strap_slot_w": 20.0,
+    "strap_slot_h": 3.0,
+    "battery_above_misc": true,
+    "tray_stop_h": 2.0,
+    "gps_entry": {
+      "theta_deg": 192.0,
+      "d": 5.0,
+      "z_below_payload_skirt": 6.0,
+      "note": "v0.8: radial hole through the avionics tube wall under the GPS connector pocket (rubber grommet or a ring of tape); the lead enters the bay here.  Wire only - the connector stays in the pocket"
+    },
+    "gns_mount": null,
+    "nav_holes": false,
+    "rocket_carrier_note": "rocket-carrier round (2026-11-14): no NAV board on the tray (nav_holes false), no GNS board on the -x wall (gns_mount null: bosses gone); the GPS entry hole stays (the lead now drops to J7 on the carrier); new wall holes: wall_switches (arm J16, logic power J15) and release_entry (the CanSat release-servo lead)",
+    "wall_switches": {
+      "arm": {
+        "connector": "J16",
+        "theta_deg": 82.0,
+        "theta_note": "82 / 106 deg (near the study's 90 deg proposal; the arm hole stays off the YUCHAN livery logo sector 57..77 deg at z 335..458, Layout raised at 78 deg): at 90 / 90 the logic switch lead, dropping from its lugs to J15, ran through the arm switch body below it (Layout -1.50 mm); split in theta each lead drops on its own side (arm +x toward J16, logic -x toward J15) and the arm nut keeps >= 5 mm from the +y rail ribs",
+        "z": 365.0,
+        "hole_d": 6.2,
+        "hole_note": "6.2 (the M6 x 0.75 bushing hole of logic_power.switch, ASSUMED), not the top cap's 6.5: with a 6.5 hole the 8 AF nut's flats bear only 0.75 mm on the wall (< nut_min_bearing_w 0.8)",
+        "model": "M6 mini toggle (the arming switch, M6 x 0.75 bushing ASSUMED as the VTOL top cap's switch) - was inside the misc box with no wall hole; its mass stays inside electronics.misc",
+        "body_xyz_ASSUMED": [
+          8.0,
+          13.0,
+          12.0
+        ],
+        "lugs_h_ASSUMED": 5.0,
+        "nut_af_ASSUMED": 8.0,
+        "nut_d_ASSUMED": 9.2,
+        "nut_min_bearing_w_ASSUMED": 0.8,
+        "lever_out_ASSUMED": 15.0,
+        "lead": {
+          "wire_od_ASSUMED": 3.0,
+          "slack_mm": 60.0,
+          "mass_g_per_m_ASSUMED": 5.0,
+          "connector_g_ASSUMED": 0.5,
+          "in_mass_model": false,
+          "note": "lugs -> straight down beside the tray's +y edge -> J16's lead end (right-angle plug, lead along +y): mass inside electronics.misc (the arming switch lead existed before, not added again)"
+        }
+      },
+      "logic": {
+        "connector": "J15",
+        "theta_deg": 106.0,
+        "z": 395.0,
+        "hole_d": 6.2,
+        "model": "MTS-102 2-position mini toggle, harness version (logic_power.switch; sizes ASSUMED as in configs.vtol)",
+        "body_xyz_ASSUMED": [
+          8.0,
+          13.0,
+          10.0
+        ],
+        "lugs_h_ASSUMED": 5.0,
+        "nut_af_ASSUMED": 8.0,
+        "nut_d_ASSUMED": 9.2,
+        "nut_min_bearing_w_ASSUMED": 0.8,
+        "lever_out_ASSUMED": 15.0
+      },
+      "finger_clear_d_ASSUMED": 20.0,
+      "min_ligament": 1.2,
+      "note": "rocket-carrier round (2026-11-14; study proposal, DEFAULT - user decision pending: '로켓에는 상단 캡이 없음'): the rocket has no top cap, so the arming switch (carrier J16) and the logic power switch (J15) go through the avionics-tube wall at theta_deg, z (vehicle z of the hole axis), radial bushings, panel nuts on the 1.2 mm wall (curvature sagitta over the 9.2 mm nut ~0.18 mm, A). body_xyz_ASSUMED = tangential x axial (z, the lever throws along z) x radial depth inside the bore; lugs_h below the body (radially inward); lever_out = lever tip outside the body OD (A). Clear of the rail ribs (+-64.8 deg), the tray, the misc box, the vent slots (60 / 120 deg z 462.9..502.9) and the intake / avionics joint (z 340.4). Layout._logic_power_rocket derives / raises; C38 / C39 / C42 check. NOT_VERIFIED: the levers vs the launch pad / handling, aerodynamic effect of the two 15 mm levers"
+    },
+    "release_entry": {
+      "theta_deg": 12.0,
+      "d": 5.0,
+      "z_below_payload_skirt": 6.0,
+      "note": "rocket-carrier round (2026-11-14): radial hole through the avionics tube wall under the release pod (payload_module.release_pod_theta_deg 12), at the GPS entry hole's height; the CanSat release-servo lead enters the bay here (grommet / tape ring as the GPS entry). The lead outside (pod floor -> along the payload / avionics skin -> this hole) is a lead route only (E): no printed raceway, no pod-floor exit hole modelled - NOT_VERIFIED"
+    }
+  },
+  "battery": {
+    "config": "CNHL G+Plus 6S 2200mAh 70C (single pack)",
+    "cells": 6,
+    "capacity_mAh": 2200,
+    "c_rating": 70,
+    "mass_g": 349.0,
+    "dims_lwh": [
+      109.0,
+      35.0,
+      51.0
+    ],
+    "note": "dims = one CNHL G+Plus 6S 2200 70C pack (109 x 35 x 51 mm, 349 g, manufacturer); measure the actual pack",
+    "min_cell_v": 3.3
+  },
+  "electronics": {
+    "esc": {
+      "model": "Hobbywing SkyWalker 100A V2 (100 A cont / 120 A peak, 5V/7A BEC)",
+      "mass_g": 92.0,
+      "dims_lwh": [
+        85.0,
+        36.0,
+        9.0
+      ]
+    },
+    "nav": null,
+    "fcu": null,
+    "com": null,
+    "radio_log": null,
+    "misc": {
+      "items": "5 V logic UBEC (KEPT - default, user decision pending: no logic consumer with the carrier, whose 5 V comes from the 1S logic pack through its TPS61023 boost), buzzer, arming switch (rocket-carrier round 2026-11-14: through the avionics-tube wall, avionics_module.wall_switches.arm, its lead to carrier J16 - mass still counted here), wiring (servos run from the ESC's 5 V / 7 A BEC). v0.6: the radio module, OpenLog and radio level shifter moved to electronics.radio_log (now on the carrier)",
+      "mass_g": 40.0,
+      "dims_lwh": [
+        30.0,
+        40.0,
+        20.0
+      ],
+      "note": "placeholder box on the tray's -x face below the battery (avionics_module.battery_above_misc)",
+      "rocket_carrier_note": "rocket-carrier round (2026-11-14): mass_g 40 and the box unchanged (DEFAULT: UBEC kept - meta.rocket_carrier_open_decisions); dropping the UBEC would make it ~25 g (A)"
+    },
+    "release_servo_count": 1,
+    "gps": {
+      "module": "u-blox NEO-7M module SZH-NT07 (devicemart no=10895400; the part bought 2026-11 - user 2026-10-21: 'a standard Arduino GPS', then planned as a NEO-6M on a GY-NEO6MV2 board); upgrade path u-blox NEO-M8N. board_mass_g, the pod / cap dimensions and the lead below are still the GY-NEO6MV2 vendor data (A) - measure the NEO-7M board and its patch",
+      "board_mass_g": 17.0,
+      "board_mass_note": "board 36 x 25.8 x 4 mm + 25.5 x 25.5 x 8.8 mm patch, 17 g with the antenna (vendor data via the v0.8 research; weigh the real part)",
+      "pod_mass_g_ASSUMED": 22.0,
+      "mount": "option B of the v0.8 CAD study: external pod on the payload-module tube at theta 192 deg (opposite the release pod), lid top 1 mm below the nose-separation edge; antenna face +Z, 0 % sky blocked; >= 172 mm from the radio box (LoRa then, an ESP-12E since 2026-11-06) / ESC / UBEC / motor leads; no wire crosses a separation interface; antenna ~321 mm from the CG (lever-arm correction in the NAV)",
+      "interface": "NAV USART1 (PD2 RXD1 / PD3 TXD1), 38400 8N1, U2X 0, UBRR 25 (+0.16 %); BOTH lines level-shifted (GPS RX not 5 V tolerant, abs max 3.6 V; GPS TX 3.3 V leaves 0.3 V over the ATmega128A V_IH 3.0 V) - spare channels of the NAV's BSS138 shifter (verify on the board)",
+      "power": "3.3 V rail of the shifter, ~45 mA (board); backup cell keeps hot start (TTFF ~1 s) if powered within ~4 h",
+      "price_krw": 9460,
+      "price_note": "NEO-7M SZH-NT07 at devicemart, sale price incl. VAT, read 2026-11-05 and again 2026-11-11 (docs/budget); was 8000 (GY-NEO6MV2 at eleparts, excl. VAT, 2026-10-21). No code reads this key",
+      "rf_notes": "ASSUMED / to bench-test: the pigment of the PLA Matte Ivory White pod lid (white since the livery round 2026-11-04 - white PLA is usually TiO2-pigmented, A; was the carbon-black PLA Matte Black) at 1575 MHz - effect NOT VERIFIED (A), the vehicle radio (ESP-12E 2.4 GHz 20 dBm since 2026-11-06 - its effect on the GPS front end NOT measured, A; the LoRa fallback 922 MHz 14 dBm), ESC/BEC switching noise, 16 MHz clock harmonics at 1568 / 1584 MHz - compare u-center C/N0 and satellite count with / without the lid and with the motor running before relying on it",
+      "accuracy_note": "NEO-6M datasheet values the v0.8 design was made with: 2.5 m CEP horizontal (24 h static), 0.1 m/s CEP velocity, max 5 Hz; latency not specified - 0.22 s ASSUMED (ArduPilot u-blox 6 value), which the NAV latency compensation still uses (flight_computer.nav.gps.latency_s_ASSUMED). The bought NEO-7M: same class of accuracy, max 10 Hz (A - its datasheet is not on disk); the firmware runs it at 5 Hz, the sim's receiver model is the NEO-7M since the 2026-11-10 control round (sim/sim6dof.py, latency 0.12 s A); the position WANDERS ~2 m: position hold is to within a couple of metres, velocity damping is tight. GPS needs OPEN SKY - no position hold indoors."
+    },
+    "gns": null,
+    "carrier": {
+      "model": "avionics carrier PCB rev 3.1 (B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier, branch pcb-rev3, commit 4051623; read-only here): one board with 4 x ATmega128A TQFP-64 (NAV, FCU, COM, GNS roles of v0.8.1, links unchanged), GY-521 MPU-6050 + BMP280 (TYE-BMP29) modules, BSS138 level shifters, AMS1117-3.3, an ESP-12F Wi-Fi module (fitted by the user; the vehicle radio - no LoRa), a TPS61023 boost from the separate 1S logic pack (J14, switch lead J15), OpenLog on a socket, THT servo J8-J11 / ESC J12 / arm J16 / sense J18 headers (user-fitted), GPS J7 (JST-GH), and (rev 3.1) the release-servo signal pad J13 + R22 220 Ohm on U2 PE5 / OC3C; 4 layers",
+      "mass_g": 39.4,
+      "mass_g_ASSUMED": true,
+      "dims_lwh": [
+        76.0,
+        70.0,
+        15.0
+      ],
+      "foam_t": 3.0,
+      "board_t": 1.6,
+      "mass_breakdown_rev3_1_g_ASSUMED": {
+        "fr4_4layer_76x70_plus_tab_1.6": 16.1,
+        "atmega128a_tqfp64_x4": 1.6,
+        "crystals_16mhz_x4": 1.2,
+        "passives_regulators_shifters_boost": 2.5,
+        "gy521_bmp280_modules": 3.8,
+        "esp12f_and_caps": 2.5,
+        "openlog_microsd": 2.3,
+        "headers_connectors": 5.4,
+        "solder_wires_heatshrink": 2.0,
+        "foam_tie": 1.0,
+        "margin": 1.0
+      },
+      "mass_note": "rocket-carrier round (2026-11-14): ESTIMATE for rev 3.1 (sum of mass_breakdown_rev3_1_g_ASSUMED = 39.4 g): FR4 (76 x 70 + the 14.7 x 7.2 tab) x 1.6 mm x 1.85 g/cm^3 incl. the 4-layer copper (E/A); the CAD-2 breakdown's 14 g LoRa module + antenna replaced by an ESP-12F + caps ~2.5 g (A, carrier_spec mass note: '~-11 g if the board is weighed'); +0.5 g for the TPS61023 boost block (A); the rest unchanged from CAD-2 (A). WEIGH the assembled board (later) and put the measured value here. configs.vtol.electronics.carrier keeps its CAD-2 50 g until the VTOL is re-baselined (meta.rocket_carrier_open_decisions)",
+      "replaces_g": {
+        "nav": 40.0,
+        "fcu": 20.0,
+        "com": 20.0,
+        "gns": 26.6,
+        "radio_log": 20.0
+      },
+      "envelope": {
+        "source": "pcb/vtol_carrier rev 3.1 out/reports/board_metrics.json cad_round_envelopes (mated plug / module boxes, ASSUMED plug sizes, z above the board's top face) + spec outline (tab) + J13 pad (kicad 127.05, 66.85)",
+        "frame_note": "vehicle x = kicad x - 100, vehicle y = 100 - kicad y (the spec frame: board origin on the vehicle axis); the outline tab kicad x 117.3..132, y 135..142.2 -> vehicle x 17.3..32, y -42.2..-35",
+        "tab": {
+          "x": [
+            17.3,
+            32.0
+          ],
+          "y": [
+            -42.2,
+            -35.0
+          ]
+        },
+        "boxes": {
+          "J7": {
+            "what": "GPS lead (JST-GH) mated vertical plug + lead bend",
+            "x": [
+              -37.8,
+              -28.25
+            ],
+            "y": [
+              -34.79,
+              -28.1
+            ],
+            "z": [
+              0.0,
+              9.0
+            ]
+          },
+          "J8": {
+            "what": "servo 1 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              14.17,
+              21.97
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J9": {
+            "what": "servo 2 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              5.55,
+              13.35
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J10": {
+            "what": "servo 3 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              -3.07,
+              4.73
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J11": {
+            "what": "servo 4 mated right-angle plug",
+            "x": [
+              -45.74,
+              -31.24
+            ],
+            "y": [
+              -11.69,
+              -3.89
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J12": {
+            "what": "ESC servo lead mated right-angle plug (+ the release-servo Y-lead, rev 3.1)",
+            "x": [
+              31.25,
+              45.75
+            ],
+            "y": [
+              20.39,
+              28.19
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J14": {
+            "what": "1S logic pack input (SPOX vertical) mated plug + lead bend",
+            "x": [
+              -37.8,
+              -29.31
+            ],
+            "y": [
+              28.8,
+              34.8
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J15": {
+            "what": "logic power-switch lead (JST-PH vertical) mated plug + lead bend",
+            "x": [
+              -37.8,
+              -30.81
+            ],
+            "y": [
+              23.2,
+              28.8
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J16": {
+            "what": "arm switch mated right-angle plug (lead along +y)",
+            "x": [
+              19.84,
+              24.94
+            ],
+            "y": [
+              28.25,
+              42.25
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "J17": {
+            "what": "mated vertical plug + lead bend",
+            "x": [
+              30.81,
+              37.79
+            ],
+            "y": [
+              14.31,
+              19.89
+            ],
+            "z": [
+              0.0,
+              11.0
+            ]
+          },
+          "J18": {
+            "what": "6S sense mated right-angle plug",
+            "x": [
+              -45.24,
+              -31.24
+            ],
+            "y": [
+              -22.78,
+              -12.58
+            ],
+            "z": [
+              -0.3,
+              3.0
+            ]
+          },
+          "GY-521": {
+            "what": "GY-521 module ~21.2 x 16.4 mm",
+            "x": [
+              3.6,
+              20.0
+            ],
+            "y": [
+              -34.59,
+              -13.39
+            ],
+            "z": [
+              0.0,
+              5.3
+            ]
+          },
+          "BMP280": {
+            "what": "BMP280 module ~15.2 x 11.5 mm",
+            "x": [
+              3.58,
+              18.78
+            ],
+            "y": [
+              10.95,
+              22.45
+            ],
+            "z": [
+              0.0,
+              5.9
+            ]
+          },
+          "OpenLog": {
+            "what": "OpenLog ~19 x 16 mm",
+            "x": [
+              21.6,
+              37.6
+            ],
+            "y": [
+              -18.55,
+              0.45
+            ],
+            "z": [
+              0.0,
+              5.9
+            ]
+          }
+        },
+        "release_pad": {
+          "ref": "J13",
+          "x": 27.05,
+          "y": 33.15,
+          "d": 2.0,
+          "kicad_xy": [
+            127.05,
+            66.85
+          ],
+          "note": "one plated THT pad (2.0 mm, drill 1.0) - a soldered wire, no plug: the signal wire of the release-servo branch of a servo Y-lead on J12 (+ / - from J12 pins 2 / 3)"
+        }
+      },
+      "release_lead": {
+        "cores": 3,
+        "wire_od_ASSUMED": 3.0,
+        "mass_g_per_m_ASSUMED": 6.0,
+        "slack_mm": 60.0,
+        "inline_connector_g_ASSUMED": 1.0,
+        "skin_offset": 0.5,
+        "drop_gap_to_tray": 2.0,
+        "in_mass_model": false,
+        "note": "rocket-carrier round (2026-11-14): the CanSat release servo (MG90S in the payload release pod, theta 12 deg) -> out through the pod floor -> down the payload / avionics skin (taped, E) -> avionics_module.release_entry -> across the bay over the ESC side at the entry height -> straight down beside the tray's +x face (drop_gap_to_tray from it) -> the carrier's +x / +y corner: the signal wire to the J13 pad, + / - to the Y-lead branch on J12 (rev 3.1). An inline connector at the avionics / payload joint (screwed joint, removable payload module) as the GPS lead. Route length E (Layout.release_lead_*). in_mass_model false: the rocket's release lead ran to the FCU at the same spot before (unmodelled, inside the misc wiring allowance) - its mass is reported, not added again (A). NOT_VERIFIED: the pod-floor exit, the external run, the Y-lead"
+      },
+      "note": "rocket-carrier round (2026-11-14, user decisions 2026-11-13: the carrier PCB rev 3.1 flies in the ROCKET; '로켓 기본을 캐리어로 교체' (replace the rocket baseline: the four hand-wired boards NAV / FCU / COM / GNS and the radio box go away, archived in history/v0.9_pre_rocket_carrier/, not kept as a config); the rocket intake bulkhead vent holes 4 at 45 deg -> 2 at 90 / 270 deg (as configs.vtol) so the cable tie can pass): ONE carrier PCB instead of the four ATmega128A minimum-system boards + radio box (~127 g), flat on the intake bulkhead on foam_t foam tape + a cable tie through the two vent holes (90 / 270 deg) at the v0.6.3 FCU spot (the same place and z-relationship as the VTOL carrier). dims = the 76 x 70 main outline x 15 mm envelope height; the outline tab and the mated plug / module boxes (envelope) are checked by Layout._fcu and C25. Servo leads end on it as on the FCU; the GPS lead ends at J7; the release lead at J13. Mass is an ESTIMATE (mass_note) - weigh the assembled board"
+    }
+  },
+  "recovery": {
+    "vehicle_chute_d_m": 1.4,
+    "vehicle_chute_cd": 0.75,
+    "target_descent_mps": 5.5,
+    "chute_mass_g": 70.0,
+    "lines_swivel_mass_g": 15.0,
+    "shock_cord_len_m": 1.5,
+    "shock_cord_mass_g": 15.0,
+    "chute_pack_placeholder_d": 70.0,
+    "chute_pack_placeholder_h": 60.0,
+    "chute_pack_volume_L_required": 0.4
+  },
+  "payload_module": {
+    "bulkhead_t": 2.0,
+    "spring_seat_boss_d": 30.0,
+    "spring_seat_boss_h": 8.0,
+    "bulkhead_hole_d": 6.0,
+    "bulkhead_hole_count": 4,
+    "bulkhead_hole_r": 40.0,
+    "spring_od": 40.0,
+    "spring_wire_d": 1.6,
+    "spring_free_len": 60.0,
+    "spring_compressed_len": 14.0,
+    "spring_force_N_compressed": 15.0,
+    "piston_t": 2.4,
+    "piston_clearance_dia": 1.0,
+    "piston_recess_d": 41.0,
+    "piston_recess_depth": 1.0,
+    "release_pod_theta_deg": 12.0,
+    "latch_lug_theta_deg": 0.0,
+    "latch_lug_w": 10.0,
+    "latch_lug_r_out": 66.0,
+    "latch_lug_h": 4.0,
+    "latch_arm_len": 10.0,
+    "latch_arm_w": 6.0,
+    "latch_arm_t": 3.0,
+    "latch_arm_clearance_z": 0.5,
+    "com_mount": {
+      "boss_d": 7.0,
+      "boss_h": 3.0,
+      "hole_d": 2.5,
+      "hole_depth": 3.8,
+      "pattern": 44.0,
+      "min_clear_to_tray": 2.0,
+      "note": "M3x5 self-tapping from below through the 1.6 mm board into boss + bulkhead (3.4 mm thread in a 3.8 mm blind hole; hole_depth 3.8 leaves 1.2 mm = printer.min_feature of bulkhead over each hole on BUDGET, so the screw cannot reach the spring side). Square pattern centred on the axis, edges along x / y. min_clear_to_tray = gap from the COM placeholder to the avionics tray top / battery / NAV placeholders below it (also used as the clearance limit of the radio_log box (C24) and the FCU board (C25))",
+      "rocket_carrier_note": "rocket-carrier round (2026-11-14): no COM board (electronics.com null), so no bosses are built; min_clear_to_tray stays the bay clearance limit of the carrier, the logic pack and the switches (as in the VTOL)"
+    },
+    "gps_pod": {
+      "theta_deg": 192.0,
+      "note": "v0.8 GPS pod, option B of the v0.8 CAD study (scratchpad v08/report_gps-cad-feasibility.json, architect 2026-10-21): an external pod printed in one piece with the payload module at theta_deg (opposite the release pod), lid top lid.gap_below_nose_skirt under the nose-separation edge, so the patch sees open sky and no wire crosses a separation interface.  Stack from the top: PLA lid (lid.t), stack.patch_air_gap, ceramic patch face up on the ground_plane plate, the GY-NEO6MV2 board hanging stack.board_standoff_h under the plate on nylon standoffs; the plate + board hang from three lid posts, so lid + antenna + board lift out as one unit (2 lid screws into corner_boss).  Shell: wall_t side / outer walls, a floor_t floor rising at floor_slope_deg (support-free when the payload module prints upright), the tube itself is the back wall, outer vertical edges chamfered corner_chamfer in plan, flush lid, no external lugs (chute-line snags).  The lead runs down a closed raceway on the payload tube to the connector_pocket at the payload module's bottom edge (inline connector at the screwed avionics/payload joint) and enters the avionics bay through avionics_module.gps_entry.  All derived in cad/layout.py (Layout._gps_pod), checked by C26.",
+      "stack": {
+        "patch_lwh": [
+          25.5,
+          25.5,
+          8.8
+        ],
+        "board_lwh": [
+          36.0,
+          25.8,
+          4.0
+        ],
+        "board_long_side_tangential": true,
+        "patch_air_gap": 3.0,
+        "phase_centre_below_patch_top_ASSUMED": 2.0,
+        "board_standoff_h": 6.0,
+        "board_bottom_clear": 3.0,
+        "source": "GY-NEO6MV2 board 36 x 25.8 x 4 mm, ceramic patch on a u.FL lead 25.5 x 25.5 x 8.8 mm (Addicore AD231, via the v0.8 GPS research report_gps-research.json) - NOT re-measured for the NEO-7M module SZH-NT07 bought in 2026-11 (A: same class of board and patch; its vendor dimensions are not on disk); air gap 3 mm patch face -> PLA lid (detuning margin, rule of thumb of the v0.8 CAD study); phase centre 2 mm under the patch face ASSUMED.  Measure the real board and patch before printing"
+      },
+      "ground_plane": {
+        "side": 50.0,
+        "t": 0.8,
+        "corner_notch": 6.0,
+        "mass_g_ASSUMED": 4.5,
+        "material": "single-sided FR4 copper-clad 0.8 mm, copper up, cut 50 x 50 mm; the patch's metal back sits on the copper",
+        "note": "u-blox GPS antenna app note GPS-X-08014 5.1.1 (quoted in the v0.8 GPS research): a 50-70 mm square ground plane for a 25 mm patch; 50 mm is the low end, chosen to keep the pod small (side 70 would make the pod 74 mm deep).  Mass 4.5 g ASSUMED (FR4 1.85 g/cm3 x 2.0 cm3 + 35 um copper).  The two outer corners are notched corner_notch x corner_notch around the lid-screw bosses.  Bench C/N0 test with and without it before printing (see the CAD report)"
+      },
+      "cavity_clear": 1.0,
+      "wall_t": 1.2,
+      "floor_t": 1.2,
+      "mass_mitigation_v081": {
+        "from": {
+          "wall_t": 1.6,
+          "floor_t": 1.6,
+          "lid.t": 1.5
+        },
+        "note": "v0.8.1 (CAD, 2026-10-21): the GNS board (+25 g ASSUMED + 1.6 g screws + 0.86 g bosses) would take T/W below 1.155; wall_t 1.6 -> 1.2 (-3.36 g), floor_t 1.6 -> 1.2 (-2.25 g) and lid.t 1.5 -> 1.2 (-1.19 g), measured one at a time on the CadQuery twin (scratchpad v08/gns-cad/mitigations_*.json); 1.2 = printer.min_feature = the body tube wall.  build_rocket.py re-measures the combined saving against 'from' (report extra.gns.pod_mitigation).  Not applied (risk > grams): raceway 3.4 x 2.8 (-0.18 g, 0.4 mm threading clearance), corner_boss 4.5 (-0.21 g), cavity_clear 0.8 (-0.38 g, hand-cut plate), lead slack 60 (-0.10 g); ground plane 44 mm fails the board-to-floor clearance and the u-blox 50-70 mm guidance"
+      },
+      "floor_slope_deg": 45.0,
+      "floor_below_plate": 1.0,
+      "corner_chamfer": 4.0,
+      "lid": {
+        "t": 1.2,
+        "gap_below_nose_skirt": 1.0,
+        "tube_gap": 0.3,
+        "post_d": 5.0,
+        "post_hole_d": 1.7,
+        "post_hole_depth": 6.0,
+        "post_inset": 4.0,
+        "screw_clear_d": 2.4,
+        "screws": "2 x M2 x 8 flat-head self-tapping through the lid into the corner bosses (countersink the two lid holes by hand, 90 deg, to ~4 mm: the countersink is not modelled); 3 x M2 x 5 self-tapping from below through the ground plane into the lid posts",
+        "note": "1.5 mm PLA Matte Ivory White over the patch (white since the livery round 2026-11-04 - white PLA is usually TiO2-pigmented, A; was the carbon-black PLA Matte Black): its effect at 1575 MHz is NOT VERIFIED (A) - bench C/N0 test with and without the lid"
+      },
+      "corner_boss": {
+        "size": 5.0,
+        "hole_d": 1.7,
+        "hole_depth": 7.0
+      },
+      "raceway": {
+        "w": 4.0,
+        "depth": 3.0,
+        "wall": 1.2,
+        "skin_over_tube": 0.3,
+        "note": "closed vertical tunnel on the payload tube (prints upright with no support); the 4-core lead is threaded through before the connector is crimped"
+      },
+      "connector_pocket": {
+        "w": 7.0,
+        "depth": 5.0,
+        "h": 16.0,
+        "wall": 1.2,
+        "connector_lwh_ASSUMED": [
+          13.0,
+          6.3,
+          4.3
+        ],
+        "connector": "JST-GH 1.25 mm 4-pin, mated pair ~6.3 x 4.3 x 13 mm ASSUMED - measure",
+        "note": "open at the payload module's bottom edge: the avionics-side pigtail leaves downward into avionics_module.gps_entry; to separate the modules lift the payload module and unplug"
+      },
+      "lead": {
+        "cores": 4,
+        "awg": 28,
+        "bundle_d_ASSUMED": 2.4,
+        "mass_g_per_m_ASSUMED": 5.0,
+        "connector_pair_g_ASSUMED": 1.0,
+        "hardware_g_ASSUMED": 2.0,
+        "slack_mm": 80.0,
+        "bay_cross_y": 38.0,
+        "bay_route_z_above_tray_top": 2.0,
+        "note": "GPS VCC / RX / TX / GND to the NAV (USART1 PD2/PD3 through the NAV's BSS138 shifter, electronics.gps.interface).  In the bay the lead runs along the wall at bay_route_z_above_tray_top over the tray top, crosses the tray at y = bay_cross_y (clear of the COM board and the radio box) and drops to the NAV top.  hardware_g = screws, standoffs, tape; lumped with the lead (part gps_lead)",
+        "carrier_end_note": "rocket-carrier round (2026-11-14): no NAV / GNS board - in the bay the lead runs from the entry hole straight down the -x wall (192 deg) to just over the carrier envelope, then across to J7 (the carrier's GPS plug, -x / -y corner) and down into it (Layout._gps_pod, E; about +180 mm vs the GNS header). bay_cross_y / bay_route_z_above_tray_top are not used by this route"
+      },
+      "min_noise_distance_target_mm": 100.0
+    }
+  },
+  "nose": {
+    "profile": "haack",
+    "haack_c": 0.0,
+    "length": 140.0,
+    "wall": 1.2,
+    "skirt_h": 15.0,
+    "skirt_clearance_dia": 0.4,
+    "tip_blunt_r": 3.0,
+    "anchor_bar_w": 8.0,
+    "anchor_bar_h": 4.0,
+    "anchor_bar_z_above_skirt": 4.0,
+    "tether_eye_d": 4.0,
+    "ballast_pocket": {
+      "bore_d": 24.0,
+      "wall": 1.2,
+      "x_ceiling_from_tip": 16.0,
+      "x_mouth_from_tip": 50.0,
+      "column_d": 6.0,
+      "tap_d": 2.5,
+      "tap_depth": 10.0,
+      "cup_radial_clearance": 0.2,
+      "cup_wall": 1.2,
+      "cup_floor_t": 1.6,
+      "cup_top_gap": 0.4,
+      "cup_inner_tube_clearance": 0.3,
+      "screw": "M3 x 8 button head + M3 washer (DIN 125, OD 7)",
+      "screw_mass_g": 0.65,
+      "washer_mass_g": 0.25,
+      "shot_g": 35.0,
+      "shot_material": "steel shot / ball bearings O 3-5 mm (쇠구슬)",
+      "shot_packing_ASSUMED": 0.60,
+      "steel_density_g_cm3": 7.85,
+      "lead_density_g_cm3": 11.34,
+      "note": "2026-11-18 stability fix (user: '시뮬레이션상 안정하도록 모델을 수정해줘'): removable nose ballast for flights WITHOUT the CanSat (stability study K1: ~32-34 g at 45 mm from the tip gives the CanSat-off vehicle >= 1.0 cal with the new fins). The nose carries a fixed pocket in its tip (a tube bore_d / wall from x_ceiling to x_mouth, measured from the tip, and a central column column_d hanging from the ceiling with an M3 self-tap hole tap_d x tap_depth at its lower end; the nose already prints with supports for its anchor bar, the pocket's lower ends need them too). The ballast is a printed cup (nose_ballast_cup, B flights only, not in the CAD totals) filled with shot_g of shot, slid up over the column open end first and held by one M3 x 8 screw + washer through its floor into the column. CanSat flights (A) fly with the pocket empty (cup removed). shot_g is the design value; the CG of the real vehicle decides the final amount (stability.measured)."
+    }
+  },
+  "launch_pad": {
+    "plate_od": 190.0,
+    "plate_id": 102.0,
+    "plate_t": 5.0,
+    "leg_count": 4,
+    "leg_size": 20.0,
+    "leg_h": 100.0,
+    "leg_r": 80.0,
+    "leg_theta0_deg": 0.0,
+    "leg_theta_note": "v0.9: 45 -> 0 with fin.theta0_deg, so each leg stays under a fin (the fins stand on the fin-locator ribs over the legs)",
+    "foot_size": 20.0,
+    "foot_t": 5.0,
+    "fin_locator_rib_w": 3.0,
+    "fin_locator_rib_h": 4.0,
+    "fin_locator_rib_len": 36.0,
+    "fin_locator_rib_r_in": 55.0,
+    "fin_locator_gap": 3.4,
+    "note": "P2S wrap-detection zone (x 153-216, y 235-256) blocks parts that reach within ~10 mm of it: a 240 mm plate cannot be sliced; 190 mm clears it. The vehicle stands on its fin trailing edges (r 51-95 supported). Feet = leg size so the pad prints flipped without overhangs; only the 4 mm gap under the plate (it stands on the fin-locator ribs) needs build-plate supports."
+  },
+  "hardware_mass_g": {
+    "joint_screws_inserts": 40.0,
+    "pushrods_horns_clevises": 10.0,
+    "spring_piston_hardware": 20.0,
+    "note": "pushrods_horns_clevises is the vane_drive.mode 'pushrod' lump; in 'direct' mode the lump is vane_drive.hardware_g_ASSUMED (cover / coupler / horn screws)"
+  },
+  "mission": {
+    "mode": "ballistic",
+    "mode_note": "the rocket's flight program: 'ballistic' (the v0.4-v0.6.3 climb / CUT / RELEASE mission, SPEC 8.8). The VTOL program ('vtol', mission.vtol) was removed with the VTOL vehicle on 2026-11-18 (user: 'Vtol을 제외하고 로켓 모델로만', 'git에서도 vtol 내용을 제거해줘'); mission.vtol, control.vtol_overrides, power.* and the VTOL hardware keys (GNS / glink / GPS, power-monitor and logic-battery pins) followed with the code on the same day (see meta.vtol_removed_note)",
+    "target_altitude_m": 140.0,
+    "geofence_altitude_m": 160.0,
+    "climb_throttle": 1.0,
+    "throttle_ramp_s": 0.5,
+    "coast_drag_factor": 1.2,
+    "apogee_detect_vz_mps": 0.0,
+    "apogee_confirm_s": 0.3,
+    "coast_timeout_s": 6.0,
+    "deploy_servo_travel_deg": 90.0,
+    "tilt_abort_deg": 45.0,
+    "arm_tilt_max_deg": 5.0,
+    "powered_descent_enabled": false,
+    "legal_note_kr": "항공안전법: 최대이륙중량 2 kg 초과 -> 기체신고 및 3종 이상 조종자 증명(2~7 kg); 고도 150 m 초과 또는 관제권/비행금지구역 -> 비행승인 필요. 최종 확인은 드론원스톱(drone.onestop.go.kr).",
+    "coast_control_hold_s": 0.5,
+    "tilt_rate_abort_dps": 180.0,
+    "spin_rate_abort_dps": 720.0,
+    "rate_abort_persist_s": 0.02,
+    "gyro_saturation_abort": true,
+    "supervisor_note": "v0.4: onboard = attitude control + interlocks I1-I10 (SPEC 8.8); launch / throttle / cut / release are ground commands over the radio link (LoRa then; the ESP8266 Wi-Fi bridge since 2026-11-06, link.vehicle_radio); target_altitude_m, apogee_detect_vz_mps, apogee_confirm_s and coast_timeout_s are used by the ground station assist mode.",
+    "budget_note": "100 A ESC (120 A peak 10 s): full throttle on a fresh pack draws ~114 A for the first seconds (proxy table 124 A @ 25.2 V); bench-measure current before flight",
+    "apogee_limit_m": 150.0,
+    "link_loss_abort_s": 3.0,
+    "link_loss_disarm_s": 2.0,
+    "fall_deploy_vz_mps": -8.0,
+    "fall_deploy_confirm_s": 0.3,
+    "max_motor_time_s": 25.0,
+    "release_after_cut_s": 0.2,
+    "abort_release_delay_s": 0.5,
+    "assist_release_rule": "predictive",
+    "assist_release_rule_note": "ground assist auto-RELEASE: 'predictive' = release when v_z - g (t_link + release_after_cut_s + T_tel/2) <= apogee_detect_vz_mps (SPEC 8.8 v0.4); 'literal' = v_z <= apogee_detect_vz_mps for apogee_confirm_s (opens ~1.2 s late on the 2.4 kbps UART link)"
+  },
+  "control": {
+    "loop_hz": 250,
+    "imu_hz": 1000,
+    "baro_hz": 50,
+    "att_kp_xy": 6.0,
+    "att_kp_z": 3.0,
+    "rate_sp_max_xy_rad_s": 2.5,
+    "rate_sp_max_z_rad_s": 1.5,
+    "rate_kp_xy": 1.2,
+    "rate_ki_xy": 0.6,
+    "rate_kd_xy": 0.05,
+    "rate_i_max_xy": 0.6,
+    "rate_kp_z": 0.25,
+    "rate_ki_z": 0.1,
+    "rate_kd_z": 0.0,
+    "rate_i_max_z": 0.15,
+    "d_term_lpf_hz": 40.0,
+    "gyro_lpf_hz": 80.0,
+    "thrust_estimate_floor_fraction": 0.25,
+    "roll_priority_scale": 0.5,
+    "yaw_hold": true
+  },
+  "aero": {
+    "rho_kg_m3": 1.225,
+    "body_cd": 0.6,
+    "body_cn_alpha_per_rad": 2.0,
+    "fin_cn_alpha_method": "barrowman",
+    "wind_mps_default": 3.0,
+    "gust_mps_default": 5.0,
+    "gust_duration_s": 1.0
+  },
+  "stability": {
+    "target_static_margin_cal": 1.0,
+    "d_ref_mm": 120.0,
+    "mach_check": [0.0, 0.09],
+    "mach_note": "launch (M 0) and max-q (M 0.09 = 31 m/s, the fastest validation-round case, CanSat off at the measured mass; E); the EDF is electric so the mass and CG do not change in flight",
+    "method": "Barrowman as OpenRocket / RocketPy model this vehicle: nose (exact volume) + boat-tail cone + 45 deg chamfer (Layout outer skin) + N trapezoid fins on the vane section (exposed root chord at vane_section_r, body interference 1 + R/(s + R), Prandtl-Glauert on the fins) + the external pods as Barrowman area-change terms (net C_Na 0, moment -2 V_pod / A_ref: their volume outside the body radius, from the CAD solids)",
+    "measured": {
+      "B_kg": 1.80,
+      "B_label": "M (user, 2026-11-18, vehicle without the CanSat)",
+      "A_kg": 2.15,
+      "A_label": "E (B + CanSat 0.350 kg)",
+      "cg_measured": false,
+      "cg_note": "the CG of the real vehicle is NOT measured: the measured cases use the CAD-shape CG of the reference CAD and the bounds below (2026-11-18 validation round convention); measure it (hang it / balance it on an edge, with and without the CanSat) and set cg_measured + the values",
+      "cad_reference": {
+        "params_sha256": "14083c2f849977bc38e6a310661f87aabebf4923926255f0c5d1e160fe854fdb",
+        "commit": "729cd1c",
+        "A_mass_g": 2608.105,
+        "A_com_z_mm": 382.632,
+        "cansat_g": 350.0,
+        "cansat_com_z_mm": 626.3,
+        "printed_parts_com_z_mm": 326.563,
+        "note": "the CAD the measured masses were compared with (F, history/v0.9_pre_stability_fins): gap = A_mass - 1000 A_kg = 458.1 g; a design change since then adds its mass / moment difference to the measured vehicle"
+      },
+      "cg_bounds": {
+        "noseward_z_mm": 760.0,
+        "tailward_z_mm": 60.0,
+        "proportional": "printed_parts_com_z_mm",
+        "note": "where the 458 g the CAD has in excess could sit (validation round split/cases.json): removed at the nose end (z 760, worst - the CG moves aft), at the tail end (z 60) or in proportion to the printed parts (their CG)"
+      }
+    },
+    "or_rp_reference": {
+      "K1_A_cp_x_from_tip_mm": 629.4,
+      "K1_cna": 8.31,
+      "K1_margin_cal": {"A_MEAS": 1.25, "A_CAD": 1.26, "B_MEAS_bal35": 1.01, "B_CAD_bal35": 1.00},
+      "label": "M (OpenRocket 24.12 = RocketPy 1.13 Barrowman, stability study 2026-11-18, runs/stability/study/or_sweep.json F4_s125_ct45; ballast 35 g at x 45 mm)",
+      "tolerance_mm": 5.0
+    },
+    "fin_strength": {
+      "v_strength_mps": 31.4,
+      "v_strength_label": "M (fastest closed-loop 6-DOF case of the validation round: CanSat off, measured mass)",
+      "v_flutter_check_mps": 56.0,
+      "v_flutter_label": "E (stability study: upper bound of the open-loop runs without the CUT)",
+      "alpha_deg_ASSUMED": 15.0,
+      "poisson_ASSUMED": 0.36,
+      "fdm_knockdown_ASSUMED": 0.5,
+      "flutter_factor_pass": 1.25,
+      "sf_pass": 3.0,
+      "screw_shear_n_ASSUMED": 400.0,
+      "bearing_mpa_ASSUMED": 20.0,
+      "note": "C46 estimates (E): NACA TN-4197 flutter speed of the whole planform (as the stability study, sea level, G = E / (2 (1 + nu)) x knock-down), bending at the module's fin root, at the panel plate next to its lugs and in the lugs' cheek pair at the joint, the screws' shear and the PLA bearing at the holes; the fin load = slender-plate lift slope 2 pi AR / (2 + sqrt(4 + AR^2)) on the area outboard of the section at alpha_deg at v_strength. Steel M3 shear ~400 N single shear (A, conservative for 4.8-grade), PLA bearing 20 MPa (A, FDM)."
+    },
+    "note": "2026-11-18 stability fix (user: '시뮬레이션상 안정하도록 모델을 수정해줘'). Target (default, stated): static margin >= target_static_margin_cal (Barrowman, OpenRocket = RocketPy) at launch and max-q for BOTH cases (with / without the CanSat), measured masses primary incl. the CG bounds, CAD masses secondary. Checked by C45 (cad/cadquery/check_geometry.py) on the built CAD. The noseward CG bound is known NOT to reach the target (study: it needs 231 / 441 g of ballast): C45 reports it as WARN with the ballast it would need - measure the real CG."
+  },
+  "alt_presets": {
+    "KAIST_90mm_12S": {
+      "edf": {
+        "model": "JP Hobby 90mm 12-blade EDF, 12S, 4250-1080KV outrunner (JPH6007-10x family)",
+        "fan_d": 90.0,
+        "housing_od": 92.5,
+        "housing_id": 91.0,
+        "lip_od": 110.0,
+        "lip_t_ASSUMED": 4.0,
+        "len_lip_top_to_housing_bottom_ASSUMED": 110.0,
+        "hub_d_ASSUMED": 42.0,
+        "mass_g": 450.0,
+        "cells": 12,
+        "voltage_nominal_V": 44.4,
+        "thrust_nominal_N": 52.5,
+        "thrust_peak_N": 59.8,
+        "current_nominal_A": 102.0,
+        "current_peak_A": 117.0,
+        "power_nominal_W": 4530.0,
+        "power_peak_W": 5616.0,
+        "kv": 1080,
+        "rotation": "CW (viewed from intake) - verify on the unit; sets sign of residual swirl torque",
+        "sources": [
+          "https://www.gator-rc.com/products/jp-hobby-90mm-12-blade-edf-12s-power-system-w-1080kv-motor",
+          "https://motionrc.com/products/jp-hobby-90mm-12-blade-edf-6s-power-system-w-1750kv-jph6007-102"
+        ],
+        "mount": "lip_clamp"
+      },
+      "propulsion_module": {
+        "duct_id": 90.0,
+        "cone_wall": 2.0,
+        "sleeve_wall": 2.0,
+        "web_t": 2.0,
+        "vane_section_od": 98.0,
+        "edf_section_min_h": 125.0
+      },
+      "battery": {
+        "config": "2x 6S 2200mAh 75-100C LiPo in series (12S)",
+        "cells": 12,
+        "capacity_mAh": 2200,
+        "c_rating": 75,
+        "mass_g": 680.0,
+        "dims_lwh": [
+          108.0,
+          72.0,
+          50.0
+        ],
+        "min_cell_v": 3.3,
+        "note": "dims = two 6S packs (108x36x50 each) side by side; measure the actual packs"
+      },
+      "electronics": {
+        "esc": {
+          "model": "160A HV ESC (12S), e.g. Hobbywing/JP 160A HV",
+          "mass_g": 150.0,
+          "dims_lwh": [
+            100.0,
+            45.0,
+            20.0
+          ]
+        },
+        "misc": {
+          "mass_g": 100.0,
+          "items": "SBUS receiver + inverter, 6 V servo UBEC, 5 V logic UBEC, buzzer, arming switch, wiring (v0.6: the OpenLog and the LoRa parts are electronics.radio_log)",
+          "dims_lwh": [
+            40.0,
+            40.0,
+            20.0
+          ],
+          "note": "v0.6: 120 -> 100 g because 20 g of it (OpenLog, LoRa/logging parts) is now electronics.radio_log; total electronics mass unchanged"
+        },
+        "nav": null,
+        "nav_pre_rocket_carrier_ASSUMED": {
+          "model": "ATmega128A-AU flight-computer board (16 MHz crystal, 5 V), with GY-521 MPU-6050 IMU + a barometer module (BMP280 TYE-BMP29 since 2026-11, the GY-63 MS5611 before) on a 4-ch BSS138 I2C level shifter (3.3 V side)",
+          "mass_g": 45.0,
+          "dims_lwh": [
+            50.0,
+            50.0,
+            15.0
+          ]
+        },
+        "rocket_carrier_note": "rocket-carrier round (2026-11-14, user decision 2026-11-13 '로켓 기본을 캐리어로 교체'): this preset is a rocket (mission.config rocket) and follows the baseline: the carrier PCB rev 3.1 replaces the NAV board here too (electronics.nav null; the old NAV override is kept for reference as nav_pre_rocket_carrier_ASSUMED, read by nothing). Without this the preset would carry a NAV board AND the carrier (the base fcu / com / radio_log / gns are null now)"
+      },
+      "recovery": {
+        "vehicle_chute_d_m": 1.7,
+        "chute_mass_g": 160.0,
+        "lines_swivel_mass_g": 30.0,
+        "shock_cord_mass_g": 20.0,
+        "chute_pack_placeholder_d": 80.0,
+        "chute_pack_placeholder_h": 70.0,
+        "chute_pack_volume_L_required": 0.7
+      },
+      "body": {
+        "wall": 2.0,
+        "spigot_wall": 2.0
+      },
+      "fin": {
+        "t": 3.0,
+        "span": 70.0,
+        "tip_chord": 40.0,
+        "theta0_deg": 45.0,
+        "tip_panel": null
+      },
+      "vane_drive": {
+        "mode": "pushrod"
+      },
+      "launch_pad": {
+        "leg_theta0_deg": 45.0
+      },
+      "printer": {
+        "mass_model": {
+          "mode": "solid",
+          "note": "KAIST preset (2 mm walls, not sliced in the v0.9 calibration): printed mass = solid volume x density_g_cm3, as before"
+        }
+      },
+      "nose": {
+        "wall": 2.0,
+        "length": 190.0,
+        "ballast_pocket": null
+      },
+      "avionics_module": {
+        "tube_h": 215.0,
+        "tray_h": 175.0,
+        "tray_t": 3.0,
+        "rail_gap": 3.4,
+        "battery_above_misc": false
+      },
+      "payload_module": {
+        "piston_t": 4.0,
+        "bulkhead_t": 3.0,
+        "piston_recess_depth": 1.5
+      },
+      "intake_module": {
+        "bulkhead_t": 3.0,
+        "shelf_t": 3.0,
+        "window_h": 67.0,
+        "strut_theta0_deg": 45.0,
+        "window_margin_below": 4.0,
+        "lip_pocket_clearance_dia": 0.5
+      },
+      "payload": {
+        "standard": "KAIST CanSat competition (cansat.kaist.ac.kr) - rocket interior envelope",
+        "envelope_d": 110.0,
+        "envelope_h": 200.0,
+        "mass_g": 1000.0,
+        "can_d": 83.0,
+        "can_h": 115.0,
+        "chute_pack_h": 60.0
+      },
+      "mission": {},
+      "note": "Full design v0.2 (KAIST D110 x 200 mm / 1 kg payload, JP Hobby 90 mm 12S EDF, 160 A HV ESC, 2 x 6S 2200, 12S UBECs). Not priced in docs/budget; its 12S propulsion and power parts alone exceed the 200-300k KRW budget.",
+      "flight_computer": {
+        "pins": {
+          "vbat_adc": "PF0/ADC0 (divider 100k/4.7k, internal 2.56 V ref)"
+        }
+      }
+    }
+  },
+  "flight_computer": {
+    "mcu": "ATmega128A",
+    "architecture": "v0.6.3: three ATmega128A - NAV (MPU-6050 + barometer on I2C - BMP280 since 2026-11-10, MS5611 a build option, nav.baro_sensor - attitude estimator, altitude filter, pad alignment; at the end of its 250 Hz tick it pushes the navigation frame to the FCU over the nlink SPI as the SPI master, SPEC 10.5), FCU (onboard supervisor I1-I10, attitude controller, PWM outputs, OpenLog log; SPI slave, its tick starts when a complete navigation frame has arrived) and COM (radio link, SPEC 10.4: the ESP8266 Wi-Fi bridge since 2026-11-06, LoRa the fallback - link.vehicle_radio); v0.8.1 - v0.9 the VTOL builds added a 4th chip GNS (GPS + position hold; removed with the VTOL 2026-11-18). Every flight computation runs on an ATmega128A",
+    "f_cpu_hz": 16000000,
+    "vcc_V": 5.0,
+    "toolchain": "avr-gcc (PlatformIO atmelavr, MegaCore ATmega128 board), C99; ported-to-CodeVisionAVR notes in firmware/README",
+    "servo_frame_hz": 50,
+    "pwm_timer_prescaler": 8,
+    "pwm_top": 39999,
+    "control_timer": "Timer2 CTC, prescaler 256, OCR2 = 249 -> 250 Hz",
+    "i2c_hz": 400000,
+    "log_baud": 57600,
+    "log_hz": 50,
+    "fuses_note": "M103C must be unprogrammed (ATmega103 compatibility mode is ON in new chips); JTAGEN unprogrammed to free PF4..PF7",
+    "pins": {
+      "vane_1_servo": "PB5/OC1A",
+      "vane_2_servo": "PB6/OC1B",
+      "vane_3_servo": "PB7/OC1C",
+      "vane_4_servo": "PE3/OC3A",
+      "esc": "PE4/OC3B",
+      "release_servo": "PE5/OC3C",
+      "log_tx": "PE1/TXD0 (shared with ISP PDO: unplug logger to program)",
+      "vbat_adc": "PF0/ADC0 (divider 47k/4.7k, internal 2.56 V ref)",
+      "led": "PC0",
+      "buzzer": "PC1 (NPN driver)",
+      "arm_switch": "PC2 (to GND, internal pull-up)",
+      "ilink_rx": "PD2/RXD1 (from COM PE1/TXD0, direct)",
+      "ilink_tx": "PD3/TXD1 (to COM PE0/RXD0 through a 1 kOhm series resistor)",
+      "nlink_ss": "PB0/SS (SPI slave select, input from NAV PB0, low during the exchange)",
+      "nlink_sck": "PB1/SCK (input from NAV PB1; also the FCU's ISP SCK - hold the NAV in reset or unplug the nlink connector to program the FCU)",
+      "nlink_mosi": "PB2/MOSI (input: NAV -> FCU navigation frame)",
+      "nlink_miso": "PB3/MISO (output: FCU -> NAV state bytes)"
+    },
+    "nav": {
+      "role": "NAV: MPU-6050 + barometer (BMP280 by default, MS5611 as a build option - baro_sensor; I2C 400 kHz via the 3.3 V level shifter), pad alignment / gyro-only attitude estimator, tilt, altitude filter, sensor health; at the end of every tick it pushes the navigation frame to the FCU as the nlink SPI master and receives the FCU's state bytes in the same exchange. No flight decisions: commands, interlocks, control and outputs stay on the FCU",
+      "mcu": "ATmega128A",
+      "f_cpu_hz": 16000000,
+      "tick_hz": 250,
+      "baro_sensor": "bmp280",
+      "baro_sensor_note": "2026-11-10: the NAV barometer driver the plain envs build (FC_BARO_SENSOR, firmware/atmega128_fc/src/hal/baro.h): bmp280 = Bosch BMP280 on the module TYE-BMP29, I2C 0x77, forced mode, pressure x4 / temperature x1 oversampling, IIR off, one measurement per 20 ms baro cycle (datasheet BST-BMP280-DS001 3.3 / 3.6.2 / 3.8.1 - written from the published datasheet, ASSUMED until checked against the PDF and the part); ms5611 = the GY-63 driver of v0.5 .. v0.9, kept as a build option (PLATFORMIO_BUILD_FLAGS=-DFC_BARO_SENSOR=FC_BARO_MS5611 or this key). A params file without the key builds ms5611.",
+      "pins": {
+        "i2c_scl": "PD0/SCL",
+        "i2c_sda": "PD1/SDA",
+        "imu_int": "PE6/INT6 (not used, polled at the tick)",
+        "spi_ss": "PB0 (output: FCU slave select, high = idle)",
+        "spi_sck": "PB1/SCK (output to FCU PB1; NAV ISP SCK)",
+        "spi_mosi": "PB2/MOSI (output: navigation frame to FCU PB2)",
+        "spi_miso": "PB3/MISO (input from FCU PB3)",
+        "led": "PC1"
+      },
+      "schedule_note": "v0.8 NAV tick order (architect 2026-10-21, after the v0.7.1 integration measured IMU -> vane 5.2 ms > 4.71 ms and NAV tick -> vane 4.7 ms > 4.0 ms): IMU read -> gyro prediction of the quaternion -> PUBLISH the nlink frame -> then the Mahony correction / bias learning, the VTOL altitude filter and the GPS fusion; their results enter the frame of the NEXT tick (a 4 ms delay on slow corrections)."
+    },
+    "com": {
+      "role": "COM: radio driver (2026-11-06: the ESP8266 Wi-Fi bridge, LoRa as the fallback), uplink frame decoding (forwards decoded CMDs to the FCU), TELEM building from the FCU's reply snapshot, 1 Hz status to the FCU. No flight decisions: the onboard supervisor (commands, interlocks I1-I10) stays on the FCU",
+      "mcu": "ATmega128A",
+      "f_cpu_hz": 16000000,
+      "tick_hz": 250,
+      "pins": {
+        "ilink_rx": "PE0/RXD0 (from FCU PD3/TXD1 through 1 kOhm; ISP PDI: unplug the ilink connector to program the COM)",
+        "ilink_tx": "PE1/TXD0 (to FCU PD2/RXD1, direct; ISP PDO)",
+        "led": "PC0",
+        "link_uart_rx": "PD2/RXD1 (lora_uart: module TXD, direct; esp_bridge: ESP-12E TXD0 through a BSS138 channel - VTOL carrier Q11, rocket COM board firmware/README.md 0.10)",
+        "link_uart_tx": "PD3/TXD1 (to the module RXD / the ESP-12E RXD0 through a BSS138 channel; esp_bridge: + 1 kOhm on the 3.3 V side)",
+        "link_m0": "PC3 (lora_uart: low = normal mode; esp_bridge: unused)",
+        "link_m1": "PC4 (lora_uart: low = normal mode; esp_bridge: unused)",
+        "link_aux": "PC5 (lora_uart: module busy, input; esp_bridge: unused)",
+        "lora_spi_nss": "PB0 (sx127x)",
+        "lora_spi_sck": "PB1/SCK (sx127x)",
+        "lora_spi_mosi": "PB2/MOSI (sx127x)",
+        "lora_spi_miso": "PB3/MISO (sx127x)",
+        "lora_dio0": "PE7/INT7 (sx127x)",
+        "lora_reset": "PC6 (sx127x RESET; esp_bridge: ESP-12E RST through a BSS138 channel - non-inverting, low = ESP in reset; VTOL carrier Q5)"
+      }
+    },
+    "ilink": {
+      "baud": 250000,
+      "stat_hz": 1.0,
+      "series_resistor_ohm": 1000,
+      "note": "FCU USART1 <-> COM USART0, 8N1, U2X = 0 (UBRR 3: 0 % error at 16 MHz). Frame 0xC5 0x5C LEN TYPE payload CRC16-CCITT-FALSE (SPEC 10.4). Both boards on the 5 V logic UBEC, common ground"
+    },
+    "nlink": {
+      "spi_clock_hz": 2000000,
+      "spi_mode": 0,
+      "byte_gap_us": 4.0,
+      "frame_timeout_ms": 4.6,
+      "note": "NAV = SPI master (fosc/8 = 2 MHz, mode 0, MSB first) -> FCU = SPI slave (interrupt per byte); one fixed-length full-duplex exchange per NAV tick, pushed when the navigation state is ready; byte_gap_us between bytes gives the FCU's slave interrupt time to load its next return byte (SPEC 10.5, src/core/nlink_proto.h). (v0.6.3 co-simulation: the NAV frame time moves by up to 0.45 ms at the pad -> flight switch; a fallback tick that starts later than ~4.6 ms leaves the FCU background no time and drops flight records (A/B: 4.6 ms 0 dropped, 4.7 ms 1, 5.0 ms 2-4), so frame_timeout_ms = 4.6 keeps 0.15 ms of margin on both sides.) If no complete frame arrives within frame_timeout_ms of the previous tick the FCU runs the tick on its own Timer2 with the navigation data invalid (imu_ok = baro_ok = false -> I9 after the supervisor's failure time)",
+      "exchange_watchdog_us": 1000,
+      "exchange_watchdog_note": "v0.9 firmware round (fw09/spec W1): the NAV master's interrupt-paced exchange (72 Timer3 compare-B interrupts, ~632 us on the chip; measured SS low 618-621 us in single-chip simavr, 636-641 us in the 4-core co-sim with the interrupt response) is closed by the main loop when it has not ended exchange_watchdog_us after its start (Timer3 restarts at 0 each exchange): compare off, SS high, one trip counted; the FCU sees one missing frame (resync / timeout tick). Must exceed 1.5 x the exchange and stay below the tick minus the push floor (generator checks). Chosen value, not a measurement."
+    },
+    "link": {
+      "radio": "lora_uart",
+      "radio_note": "the LoRa FALLBACK link model of sim/link_model.py and the LoRa fallback backend (lora_uart or sx127x). 2026-11-10 control round: the link model follows vehicle_radio whenever sim/link_model.py has a model for it (sim.link_model.model_radio: RADIOS = lora_uart, sx127x, esp_bridge) - the sim's link timing, the ground station's reply timeout / default link delay and the generator's link budget use the esp_bridge model now; this key is used when vehicle_radio is set back to a LoRa backend (the fallback) and by the explicit LoRa studies. (2026-11-06: the model was lora_uart while sim/link_model.py had no Wi-Fi model)",
+      "vehicle_radio": "esp_bridge",
+      "vehicle_radio_note": "the COM backend the plain com / com_wired / com_wired_buffer / com_ballistic envs build (FC_LINK_RADIO; tools/gen_firmware_params.py): esp_bridge = the ESP8266 (VTOL carrier: ESP-12E U7 soldered; rocket: an ESP-12E on the hand-wired COM board, firmware/README.md 0.10) running firmware/esp_bridge, a transparent UART <-> ESP-NOW bridge - the frame protocol is unchanged. User 2026-11-05: Wi-Fi adopted for the vehicle link, the rocket uses the ESP too. Fallback: lora_uart (Ebyte) or sx127x - set this key back, regenerate, rebuild; the envs com_lora_uart / com_sx127x / com_esp_bridge always build all three",
+      "uart_baud": 9600,
+      "uart_baud_note": "2026-11-06: the LoRa backends (lora_uart, sx127x COM) and the Nano + SX1276 ground bridge only; the ESP bridge runs at link.esp_bridge.uart_baud",
+      "vehicle_id": 90,
+      "poll_hz": 2.0,
+      "lora_uart_air_rate_bps": 2400,
+      "lora_uart_note": "Ebyte E22/E220/E32-class: set channel, air rate (2.4 kbps assumed) and address with the vendor tool; M0 = M1 = 0 for normal (transparent) mode",
+      "sx127x": {
+        "freq_hz": 922100000,
+        "spreading_factor": 7,
+        "bandwidth_hz": 125000,
+        "coding_rate_denom": 5,
+        "sync_word": 18,
+        "tx_power_dbm": 14,
+        "preamble_symbols": 8
+      },
+      "esp_bridge": {
+        "uart_baud": 38400,
+        "uart_max_error": 0.002,
+        "uart_note": "the same 8N1 baud on the COM's USART1 (U2X 0: UBRR 25, +0.16 %), on both ESPs' UART0 and on the ground PC's serial port; 38400 because it is within 0.2 % on the 16 MHz AVR with U2X 0 (57600 is not: +2.1 % with U2X 0, -0.8 % with U2X 1) and well inside the BSS138 channels' 10k pull-up rise time (carrier spec level_shifting.speed_note: fine up to 115200); a 47-byte TELEM v5 is 12.2 ms on the wire (E)",
+        "reset_hold_ms": 2,
+        "boot_discard_ms": 400,
+        "boot_note": "the COM holds the ESP's RST low (PC6) from its first instructions, for reset_hold_ms in radio_init, then releases it and drops every UART byte for boot_discard_ms (the ESP8266 ROM boot log at 74880 baud; the bridge sketch is up after ~100-300 ms, A); the ESP sends no ready byte - a request before the bridge is up is a lost packet for the ground. 2026-11-06 review: only on a cold COM boot (power-on, or no reset flag); after a COM watchdog / brown-out / external reset the ESP is left running and no window opens (as the Ebyte module, which a COM reset does not touch). PC6 is open-drain: driven low to hold RST, released to input (Hi-Z) - the Q5 pull-ups raise RST, so a manual RST-GND short never shorts a driven-high pin",
+        "espnow_channel": 1,
+        "phy_mode": "11b",
+        "air_rate_bps": 1000000,
+        "air_rate_note": "2026-11-10: the ESP-NOW bit rate the link model (sim/link_model.py esp_bridge) times the frames at - 1 Mbps 802.11b DSSS, long preamble (A, as bit_rate_note: measure on the real ESPs; a higher rate only shortens the ~1 ms on air, the round trip is dominated by the two 38400-baud UART hops per direction)",
+        "bit_rate_note": "ESP-NOW frames at 1 Mbps (the ESP-NOW default, A: Espressif ESP-NOW user guide, not on disk); 802.11b PHY (WiFi.setPhyMode); sensitivity ~-98 dBm at 1 Mbps vs ~-72 dBm at 802.11n high rates (A, pcb/vtol_carrier/spec/carrier_spec.json radio_decision_2026_11_05)",
+        "tx_power_dbm_vehicle": 20.0,
+        "tx_power_dbm_ground": 20.0,
+        "tx_power_note": "WiFi.setOutputPower 0..20.5 dBm (A); a high-gain ground antenna raises the ground EIRP: check the Korean 2.4 GHz EIRP limit and lower tx_power_dbm_ground if needed (the receiving gain is not limited) - A",
+        "mac_vehicle": "02:CA:5A:00:00:01",
+        "mac_ground": "02:CA:5A:00:00:02",
+        "mac_note": "locally administered station MACs the bridge sketch sets itself (wifi_set_macaddr, A), so each end knows its peer without reading a module; 5A = link.vehicle_id 90. Unicast ESP-NOW: the MAC layer ACKs and retries each packet",
+        "idle_flush_bytes": 3,
+        "range_plan": "ground = an ESP-07S-class module (u.FL) + 8-9 dBi omni or 12-14 dBi directional 2.4 GHz antenna; link budget (E): 20 dBm - 2 dBi (vehicle, in the PLA body) + 8 dBi - free-space loss - 10 dB margin ~ -84 dBm at 1 km; ground range test >= 1 km (>= 2x the largest slant range) before flight, else fall back to LoRa (vehicle_radio)",
+        "regulatory_note": "2.4 GHz Wi-Fi is licence-exempt in Korea for certified modules: check the KC certification of the ESP-12E and the ground module (A)"
+      },
+      "sim_packet_loss": 0.05,
+      "frequency_note": "Korea: KC-certified module in the 920 MHz band (920.9-923.3 MHz used here for sx127x); 433 MHz legality not verified - check rra.go.kr"
+    },
+    "model_note": "SBUS removed in v0.4; the LoRa module is the only radio; v0.6: the radio moved to the COM ATmega128A (flight_computer.com); 2026-11-06: the vehicle radio is the ESP8266 Wi-Fi bridge (link.vehicle_radio), LoRa the fallback; 2026-11-10: the sim's link model follows link.vehicle_radio (sim/link_model.py esp_bridge), link.radio is the LoRa fallback's model"
+  },
+  "logic_power": {
+    "note": "rocket-carrier round (2026-11-14, user decisions 2026-11-13: the carrier PCB rev 3.1 flies in the ROCKET; '로켓 기본을 캐리어로 교체' (replace the rocket baseline: the four hand-wired boards NAV / FCU / COM / GNS and the radio box go away, archived in history/v0.9_pre_rocket_carrier/, not kept as a config); the rocket intake bulkhead vent holes 4 at 45 deg -> 2 at 90 / 270 deg (as configs.vtol) so the cable tie can pass): the carrier rev 3.1 runs from a SEPARATE 1S logic pack (J14) with its power switch lead on J15, as in the VTOL (configs.vtol.logic_power, whose user decisions 1-4 of 2026-11-05 set the pack / spot A / retention). Rocket differences: no top cap - the logic switch goes through the avionics-tube wall (switch_mount 'tube_wall', avionics_module.wall_switches.logic); the pack stands on the 6S pack's -x face at the rocket's battery z (spot A, valid because the GNS board is gone); in_flight_mass_model true (DEFAULT: it flies - user decision pending). configs.vtol.logic_power deep-merges over this block. Layout._logic_power_rocket; check_geometry C37 / C38 / C39 / C40 (rocket variants), C41 N/A",
+    "applies_to_power_sources": [
+      "battery"
+    ],
+    "in_flight_mass_model": true,
+    "in_flight_mass_model_note": "rocket-carrier round (2026-11-14): DEFAULT true (the pack, switch, switch lead and retention fly in the rocket, so they are in the report's parts / totals that sizing, the sim and the firmware headers consume) - user decision pending (meta.rocket_carrier_open_decisions). configs.vtol keeps false (its decision 4 of 2026-11-05)",
+    "switch_mount": "tube_wall",
+    "pack": {
+      "model": "DTP105565P 3.7 V 4200 mAh 1S Li-Po, built-in PCM (ASSUMED), Molex 5264-type 2.50 mm 2-pin plug, pin 1 = +",
+      "source": "devicemart no=16021596 (PCB README 9.1 / spec battery_spot_A_assumed)",
+      "dims_xyz": [
+        10.5,
+        55.5,
+        67.0
+      ],
+      "dims_note": "vendor 10.5 x 55.5 x 67 mm: thickness along x, width along y, length along z (the pack stands upright against the 6S pack's -x face) - measure the bought pack",
+      "mass_g": 84.0,
+      "mass_note": "vendor 84 g incl. the PCM and its own lead + plug (ASSUMED: the lead is part of the 84 g) - weigh it",
+      "spot": "A",
+      "spot_note": "user decision 1 (2026-11-05, '배터리는 A 위치(6S 팩 −x 면)로 해줘'): PCB spec candidate A (lateral CG offset 0.84 mm vs 1.34 mm, 3.0 mm to the tube wall, E). x: gap_to_flight_pack off the 6S pack's -x face; y centred; z from the 6S pack's bottom. The PCB workflow assumed x -48.4..-37.9, y -27.75..27.75, z 346.1..413.1 (PCB README 9.1) - Layout reproduces it",
+      "gap_to_flight_pack": 0.5,
+      "z0_from_flight_pack_bottom": 0.0,
+      "lead_exit_ASSUMED": {
+        "end": "top",
+        "y": 22.0,
+        "note": "the PCM end (lead exit) is a 55.5 x 10.5 face; CAD assumes it on TOP with the lead leaving at y = +22, brought over the +y edge and down beside the pack (PCB README 9.1 'lead end +y'); the bottom end sits 2.0 mm over the tray-bottom level (z 344.1) and 3.86 mm from the CAD servo-lead bundle (C37, M) and has no room for a lead bend - turn the pack lead-end up",
+        "pcb_round_difference_note": "review fix (2026-11-05, DP-2): the PCB round (carrier_spec battery_spot_A_assumed, README 9.1) assumed the lead end at +y with a ~6 mm plan drop to J14; this CAD routes the lead from the TOP end (ASSUMED) over the +y edge and down beside the pack: route 95.1 + slack 20 = 115.1 mm needed (Layout, E). If the bought pack's lead is shorter, make a Molex 5264-type 2-pin extension (female-male, ~60 mm, pin 1 = + kept; ~1 g, ASSUMED - not in the pending mass)"
+      },
+      "spot_note_rocket": "rocket-carrier round (2026-11-14): spot A on the rocket tray: x -38.0..-27.5, y +-27.75, z 400.9..467.9 (the rocket 6S pack bottom; E, study rocket_fit) - free because the GNS board is gone"
+    },
+    "retention": {
+      "method": "no new printed part: the 6S pack's LOWER battery strap (avionics_tray strap slots at the 6S bottom + 25, 20 mm wide, y +-(tray_w/2 - 10)) is lengthened to wrap both packs, and one cable tie (or hook-and-loop strap) binds the two packs at tie_z_below_pack_top - the same pattern as the 6S pack and the carrier (strap / cable tie)",
+      "tie_z_below_pack_top": 10.0,
+      "strap_tie_mass_g_ASSUMED": 2.0,
+      "touchdown_g_ASSUMED": 20.0,
+      "friction_mu_ASSUMED": 0.5,
+      "strap_t_ASSUMED": 1.5,
+      "tie_t_ASSUMED": 1.2,
+      "tie_path_ASSUMED": "the tie runs through the avionics tray's two lightening holes pulled to their OUTER edges (|y| = tray_hole_y[1]) and round both packs; the strap through its slots (|y| = tray_w/2 - 10)",
+      "band_note": "review fix (2026-11-05, G3 / DP-10): Layout.lp_band_leads reports in plan (E) each lead's vertical leg against the strap / tie loops (hulls of the packs' corners + the tray anchor points, band thickness strap_t / tie_t): the switch lead runs INSIDE both loops (the strap and the tie hold it against the packs' +y edge - the tie presses it slightly: strain relief), the pack lead runs OUTSIDE both (it crosses over the strap). The lengthened lower strap no longer wraps the 6S pack's -x corners (the 1S pack lies between them): at its lower end the 6S pack is held laterally by the strap's normal force through the 1S pack (friction) and by its upper strap - shake-test",
+      "note": "84 g x 20 g touchdown (sizing/vtol_strength.py TOUCHDOWN_G, ASSUMED) = 16.5 N along z: held by friction on the 6S face and under the strap / tie (mu 0.5, 2 faces) -> >= 16.5 N total normal force from the strap + tie (E); pull both tight and shake-test. The pack bottom is 2.0 mm over the tray-bottom level (z 344.1) and 3.86 mm from the CAD servo-lead bundle (C37, M): if it slips it sits on the leads, never on the fan"
+    },
+    "switch": {
+      "model": "MTS-102 2-position mini toggle, harness version (leads soldered on, Dupont ends)",
+      "source": "devicemart no=13029107 - the vendor page's dimensions are NOT on disk; every size below is ASSUMED from a common MTS-102 (M6 x 0.75 bushing) - measure the bought part before printing the cap",
+      "mass_g_ASSUMED": 4.0,
+      "wall_ref": "avionics_module.wall_switches.logic"
+    },
+    "leads": {
+      "wire_od_ASSUMED": 3.0,
+      "wire_note": "2 conductors side by side / twisted (~24-26 AWG), keep-out diameter (ASSUMED)",
+      "switch_to_J15": {
+        "connector": "JST-PH 2-pin housing (the harness's Dupont ends cut and re-crimped, PCB README 7.1)",
+        "slack_mm": 60.0,
+        "mass_g_per_m_ASSUMED": 5.0,
+        "connector_g_ASSUMED": 0.5,
+        "note": "rocket: from the switch lugs (inside the tube wall at avionics_module.wall_switches.logic) straight down to just over the carrier envelope, across to J15 and down into it; slack 60 mm (E length)"
+      },
+      "pack_to_J14": {
+        "connector": "the pack's own Molex 5264-type plug into J14 (SPOX 5267-02A vertical)",
+        "slack_mm": 20.0,
+        "vertical_x": -40.0,
+        "vertical_y": 31.8,
+        "over_pack_top": 4.0,
+        "note": "pack top (lead exit) -> up over_pack_top -> to (vertical_x, vertical_y) past the pack's +y end -> down beside it -> J14. The lead is part of the pack's 84 g (ASSUMED); its length is the vendor's (A) - measure; route + slack is what it needs"
+      }
+    },
+    "clearance": {
+      "min_to_leads_plugs": 2.0,
+      "min_to_leads_plugs_note": "PCB mech-fit review MF2-10: >= 2 mm boxes round the pack against the servo leads, the GPS lead / J7 and the J18 6S-sense plug",
+      "gps_lead_od_ASSUMED": 4.0
+    }
+  }
+}

@@ -1,0 +1,301 @@
+{
+ "params_sha256": "77cb698da6c9de8d9c2f27dd0e9fc4df763a1e50b0fbccb4b72bdfe6c71660c0",
+ "build_inputs_sha256": "8a1107842778e3ccf6b6e9ebac69d9b52f66e8d67cf30312cfa6f9b13c350b39",
+ "rotation_from_intake": "CW",
+ "rotor": {
+  "blades": 9,
+  "sections": [
+   {
+    "r": 17.0,
+    "construction": true,
+    "offset": 0.8398718461949128,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.0,
+    "t_mm": 4.0,
+    "stagger": 30.928826022042568,
+    "camber": 30.41385080619886
+   },
+   {
+    "r": 19.6,
+    "construction": false,
+    "offset": 0.8398718461949128,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.0,
+    "t_mm": 4.0,
+    "stagger": 30.928826022042568,
+    "camber": 30.41385080619886
+   },
+   {
+    "r": 20.0,
+    "construction": false,
+    "offset": 0.8398718461949128,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.0,
+    "t_mm": 4.0,
+    "stagger": 30.928826022042568,
+    "camber": 30.41385080619886
+   },
+   {
+    "r": 20.05,
+    "construction": false,
+    "offset": 0.6877501000800801,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.00408163265306,
+    "t_mm": 3.996326530612245,
+    "stagger": 31.07388753285605,
+    "camber": 30.266395402392053
+   },
+   {
+    "r": 20.15,
+    "construction": false,
+    "offset": 0.473217312357363,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.012244897959185,
+    "t_mm": 3.9889795918367352,
+    "stagger": 31.363276648756607,
+    "camber": 29.97247208250914
+   },
+   {
+    "r": 20.3,
+    "construction": false,
+    "offset": 0.285857157145715,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.024489795918367,
+    "t_mm": 3.9779591836734696,
+    "stagger": 31.792811033162586,
+    "camber": 29.5377085745857
+   },
+   {
+    "r": 20.5,
+    "construction": false,
+    "offset": 0.1339745962155614,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.040816326530614,
+    "t_mm": 3.963265306122449,
+    "stagger": 32.35822464407648,
+    "camber": 28.967846269164056
+   },
+   {
+    "r": 20.7,
+    "construction": false,
+    "offset": 0.04606079858305434,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.05714285714286,
+    "t_mm": 3.9485714285714284,
+    "stagger": 32.91412457599351,
+    "camber": 28.410785097012866
+   },
+   {
+    "r": 20.85,
+    "construction": false,
+    "offset": 0.011314003335740508,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.06938775510204,
+    "t_mm": 3.9375510204081627,
+    "stagger": 33.32572689749783,
+    "camber": 28.000148225650342
+   },
+   {
+    "r": 21.0,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.081632653061224,
+    "t_mm": 3.926530612244898,
+    "stagger": 33.732333356011615,
+    "camber": 27.596227147234842
+   },
+   {
+    "r": 21.6,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.13061224489796,
+    "t_mm": 3.8824489795918367,
+    "stagger": 35.31075545871428,
+    "camber": 26.04496947194555
+   },
+   {
+    "r": 22.450000000000003,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.2,
+    "t_mm": 3.82,
+    "stagger": 37.42109082918164,
+    "camber": 24.01542740342945
+   },
+   {
+    "r": 24.9,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.4,
+    "t_mm": 3.64,
+    "stagger": 42.76165381438368,
+    "camber": 19.14154164288324
+   },
+   {
+    "r": 27.349999999999998,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.6,
+    "t_mm": 3.46,
+    "stagger": 47.17792492788805,
+    "camber": 15.442730980229129
+   },
+   {
+    "r": 29.8,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 24.8,
+    "t_mm": 3.2800000000000002,
+    "stagger": 50.86693328200544,
+    "camber": 12.618277878746639
+   },
+   {
+    "r": 32.25,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 25.0,
+    "t_mm": 3.0999999999999996,
+    "stagger": 53.98395715387648,
+    "camber": 10.43850998800589
+   },
+   {
+    "r": 34.7,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 25.2,
+    "t_mm": 2.92,
+    "stagger": 56.64749752543405,
+    "camber": 8.735616777922743
+   },
+   {
+    "r": 37.150000000000006,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 25.4,
+    "t_mm": 2.7399999999999998,
+    "stagger": 58.9474305902924,
+    "camber": 7.3886198859794945
+   },
+   {
+    "r": 39.599999999999994,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 25.6,
+    "t_mm": 2.5600000000000005,
+    "stagger": 60.95227563091305,
+    "camber": 6.310246052085127
+   },
+   {
+    "r": 42.050000000000004,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 25.8,
+    "t_mm": 2.38,
+    "stagger": 62.714795186341156,
+    "camber": 5.437079452168419
+   },
+   {
+    "r": 45.3,
+    "construction": false,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 26.06530612244898,
+    "t_mm": 2.1412244897959223,
+    "stagger": 64.75818027069239,
+    "camber": 4.510110205658421
+   },
+   {
+    "r": 47.5,
+    "construction": true,
+    "offset": 0.0,
+    "z_stack": 14.556409100776142,
+    "chord_mm": 26.06530612244898,
+    "t_mm": 2.1412244897959223,
+    "stagger": 64.75818027069239,
+    "camber": 4.510110205658421
+   }
+  ],
+  "fillet_r": 1.0,
+  "fillet": "loft flare",
+  "flare_foot_h": 0.05,
+  "flare_foot_offset": 0.8398718461949128,
+  "flare_foot_angle_deg": 18.194872338766782,
+  "root_footprint_deg": [
+   -20.931140446088417,
+   20.298430118909103
+  ],
+  "root_footprint_span_deg": 41.229570564997516,
+  "pitch_deg": 40.0,
+  "hub_seam_deg": -0.3163551635896571,
+  "blade_overlap_mm3": 0,
+  "valid": true,
+  "volume_mm3": 40462.623938362645,
+  "mass_g_100pct": 50.17365368356968,
+  "bbox": [
+   -44.61368213839155,
+   -44.67164046746462,
+   -0.04007961876337737,
+   44.63552672100859,
+   44.747740784473905,
+   25.025706147889732
+  ]
+ },
+ "files": {
+  "edf_rotor_9b": {
+   "step": "edf_rotor_9b.step",
+   "stl": "edf_rotor_9b.stl",
+   "step_sha256": "48554783c9d3fb2a29c9d16b1a786f57a2cb052a176d825b8a908021bb0d743b",
+   "stl_sha256": "bdc10e57aa286aa9abbf5fe7e1885a327d05db94bffed9c90afb0ec61c9c0182",
+   "volume_mm3": 40462.623938362645,
+   "valid": true,
+   "step_roundtrip": {
+    "solids": 1,
+    "valid": true,
+    "volume_mm3": 40461.38948583244
+   },
+   "stl_dropped_coincident_tris": 2
+  },
+  "edf_balancer_stand": {
+   "step": "edf_balancer_stand.step",
+   "stl": "edf_balancer_stand.stl",
+   "step_sha256": "9c8424f1ba7670420657c8eca3f8c209a49e4dfe71603f65846a57c0bf8a56b0",
+   "stl_sha256": "2c54874325321f40263b789498099ec75f526c0117918e04a8e2114ae66e7768",
+   "volume_mm3": 103690.0,
+   "valid": true,
+   "step_roundtrip": {
+    "solids": 1,
+    "valid": true,
+    "volume_mm3": 103690.0
+   },
+   "stl_dropped_coincident_tris": 0
+  },
+  "edf_rotor_9b_print": {
+   "stl": "edf_rotor_9b_print.stl",
+   "stl_sha256": "ea9567a2c2c0b9a145861617b325b1edb994f34dd9ad992970b71ab403c26445",
+   "volume_mm3": 40462.62393836265,
+   "valid": true,
+   "orientation": "front_down",
+   "stl_dropped_coincident_tris": 2
+  },
+  "edf_rotor_9b_print_MIRRORED_opposite_rotation": {
+   "stl": "edf_rotor_9b_print_MIRRORED_opposite_rotation.stl",
+   "stl_sha256": "ccc4c7f05a86fd3d76b653d014c017edad83a3b0a77b2764ef199f64e91a8a4b",
+   "volume_mm3": 40462.62393836265,
+   "valid": true,
+   "orientation": "front_down",
+   "mirror": "YZ plane (x -> -x)",
+   "stl_dropped_coincident_tris": 2
+  }
+ }
+}

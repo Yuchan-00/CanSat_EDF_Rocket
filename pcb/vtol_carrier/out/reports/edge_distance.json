@@ -1,0 +1,599 @@
+{
+ "board": "kicad/vtol_carrier.kicad_pcb",
+ "board_sha256": "0986418f8f24d9933acf771afaad9528e17b084a3799a530b40c08e068021c1f",
+ "tool": "pcbnew 10.0.6",
+ "label": "M (bounding boxes measured on the board file)",
+ "outline_centre_lines": [
+  62.0,
+  65.0,
+  138.0,
+  135.0
+ ],
+ "edge_cuts_bbox_incl_line_width": [
+  61.975,
+  64.975,
+  138.025,
+  142.225
+ ],
+ "outline": {
+  "main_rect_kicad_mm": [
+   62.0,
+   65.0,
+   138.0,
+   135.0
+  ],
+  "corner_radius_mm": 1.0,
+  "tab_kicad_mm": {
+   "x": [
+    117.3,
+    132.0
+   ],
+   "y": [
+    135.0,
+    142.2
+   ],
+   "outer_corner_radius_mm": 1.0,
+   "inner_fillet_radius_mm": 1.0,
+   "edge_cuts_material_x": [
+    116.3,
+    133.0
+   ]
+  },
+  "bbox_kicad_mm": [
+   62.0,
+   65.0,
+   138.0,
+   142.2
+  ],
+  "area_mm2": 5425.0,
+  "tab_area_mm2": 105.8,
+  "fit_envelope": {
+   "x_min": 106.0,
+   "x_max": 134.0,
+   "y_edge_max_r1": 143.74
+  },
+  "source": "scripts/outline.py (redesign2 Layout stage)"
+ },
+ "footprints": 176,
+ "bodies_under_2p5": [
+  [
+   "U7",
+   0.15,
+   "+y",
+   "user"
+  ],
+  [
+   "J15",
+   0.29,
+   "-x",
+   "user"
+  ],
+  [
+   "J13",
+   0.325,
+   "+y",
+   "none"
+  ],
+  [
+   "R60",
+   0.537,
+   "-y",
+   "jlc"
+  ],
+  [
+   "U6",
+   0.55,
+   "+x",
+   "jlc"
+  ],
+  [
+   "U9",
+   0.589,
+   "-y",
+   "jlc"
+  ],
+  [
+   "Q3",
+   0.6,
+   "-y",
+   "none"
+  ],
+  [
+   "J12",
+   0.7,
+   "+x",
+   "user"
+  ],
+  [
+   "J14",
+   0.7,
+   "-x",
+   "user"
+  ],
+  [
+   "J16",
+   0.7,
+   "+y",
+   "user"
+  ],
+  [
+   "J17",
+   0.7,
+   "+x",
+   "user"
+  ],
+  [
+   "J8",
+   0.71,
+   "-x",
+   "user"
+  ],
+  [
+   "J9",
+   0.71,
+   "-x",
+   "user"
+  ],
+  [
+   "J10",
+   0.71,
+   "-x",
+   "user"
+  ],
+  [
+   "J11",
+   0.71,
+   "-x",
+   "user"
+  ],
+  [
+   "J18",
+   0.71,
+   "-x",
+   "user"
+  ],
+  [
+   "J5",
+   0.73,
+   "+x",
+   "user"
+  ],
+  [
+   "JP1",
+   0.775,
+   "-x",
+   "none"
+  ],
+  [
+   "J1",
+   0.8,
+   "-y",
+   "user"
+  ],
+  [
+   "J7",
+   0.805,
+   "-x",
+   "jlc"
+  ],
+  [
+   "J19",
+   0.9,
+   "-y",
+   "none"
+  ],
+  [
+   "C60",
+   0.95,
+   "-y",
+   "jlc"
+  ],
+  [
+   "R47",
+   0.95,
+   "-y",
+   "none"
+  ],
+  [
+   "R65",
+   0.95,
+   "-y",
+   "jlc"
+  ],
+  [
+   "C41",
+   1.05,
+   "-y",
+   "jlc"
+  ],
+  [
+   "D6",
+   1.25,
+   "+x",
+   "jlc"
+  ],
+  [
+   "L5",
+   1.3,
+   "-y",
+   "jlc"
+  ],
+  [
+   "R22",
+   1.688,
+   "+y",
+   "jlc"
+  ],
+  [
+   "U4",
+   1.85,
+   "-y",
+   "jlc_optional"
+  ],
+  [
+   "C57",
+   1.95,
+   "-y",
+   "jlc"
+  ],
+  [
+   "J2",
+   1.95,
+   "+y",
+   "user"
+  ],
+  [
+   "C44",
+   2.05,
+   "-y",
+   "jlc"
+  ],
+  [
+   "R59",
+   2.15,
+   "-y",
+   "jlc"
+  ]
+ ],
+ "bodies_under_0p3": [
+  [
+   "U7",
+   0.15,
+   "+y",
+   "user"
+  ],
+  [
+   "J15",
+   0.29,
+   "-x",
+   "user"
+  ]
+ ],
+ "pads_under_0p3": [],
+ "bodies_under_2p5_by_fit": {
+  "jlc": 13,
+  "with_mcu_jlc_plus_jlc_optional": 14,
+  "not_fitted_by_jlc_in_default_order": 20,
+  "refs_by_fit": {
+   "jlc": [
+    "C41",
+    "C44",
+    "C57",
+    "C60",
+    "D6",
+    "J7",
+    "L5",
+    "R22",
+    "R59",
+    "R60",
+    "R65",
+    "U6",
+    "U9"
+   ],
+   "jlc_optional": [
+    "U4"
+   ],
+   "user": [
+    "J1",
+    "J2",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "U7"
+   ],
+   "none": [
+    "J13",
+    "J19",
+    "JP1",
+    "Q3",
+    "R47"
+   ]
+  }
+ },
+ "jlc_placed_bodies": {
+  "default_order": {
+   "closest": [
+    [
+     "R60",
+     0.537,
+     "-y"
+    ],
+    [
+     "U6",
+     0.55,
+     "+x"
+    ],
+    [
+     "U9",
+     0.589,
+     "-y"
+    ],
+    [
+     "J7",
+     0.805,
+     "-x"
+    ],
+    [
+     "C60",
+     0.95,
+     "-y"
+    ]
+   ],
+   "bodies_under_0p3": [],
+   "pads_under_0p3": [],
+   "bodies_under_2p5": 13
+  },
+  "with_mcu_order": {
+   "closest": [
+    [
+     "R60",
+     0.537,
+     "-y"
+    ],
+    [
+     "U6",
+     0.55,
+     "+x"
+    ],
+    [
+     "U9",
+     0.589,
+     "-y"
+    ],
+    [
+     "J7",
+     0.805,
+     "-x"
+    ],
+    [
+     "C60",
+     0.95,
+     "-y"
+    ]
+   ],
+   "bodies_under_0p3": [],
+   "pads_under_0p3": [],
+   "bodies_under_2p5": 14
+  }
+ },
+ "copper_to_edge_mm": {
+  "label": "M (zone fills refilled in memory, tracks, vias, pads; distance to the straight outline lines, corner arcs not modelled; -y side: the y 135 line beside the tab, the tab segments exactly)",
+  "min_per_side": {
+   "-x": 0.3,
+   "+y": 0.4,
+   "+x": 0.3,
+   "-y": 0.4
+  },
+  "per_layer": {
+   "F.Cu": {
+    "-x": [
+     0.3,
+     "zone GND"
+    ],
+    "+y": [
+     0.4,
+     "zone GND"
+    ],
+    "+x": [
+     0.3,
+     "zone GND"
+    ],
+    "-y": [
+     0.4,
+     "zone GND"
+    ]
+   },
+   "In1.Cu": {
+    "-x": [
+     0.3,
+     "zone GND"
+    ],
+    "+y": [
+     0.4,
+     "zone GND"
+    ],
+    "+x": [
+     0.3,
+     "zone GND"
+    ],
+    "-y": [
+     0.4,
+     "zone GND"
+    ]
+   },
+   "In2.Cu": {
+    "-x": [
+     0.3,
+     "zone +5V"
+    ],
+    "+y": [
+     0.4,
+     "zone +5V"
+    ],
+    "+x": [
+     0.3,
+     "zone +5V"
+    ],
+    "-y": [
+     0.4,
+     "zone +5V"
+    ]
+   },
+   "B.Cu": {
+    "-x": [
+     0.3,
+     "zone GND"
+    ],
+    "+y": [
+     0.4,
+     "zone GND"
+    ],
+    "+x": [
+     0.3,
+     "zone GND"
+    ],
+    "-y": [
+     0.4,
+     "zone GND"
+    ]
+   }
+  }
+ },
+ "per_side": {
+  "-x": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "J7",
+     0.805
+    ]
+   ],
+   "count": 1,
+   "min_mm": 0.805,
+   "overhanging": []
+  },
+  "+y": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "R22",
+     1.688
+    ]
+   ],
+   "count": 1,
+   "min_mm": 1.688,
+   "overhanging": []
+  },
+  "+x": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "U6",
+     0.55
+    ],
+    [
+     "D6",
+     1.25
+    ]
+   ],
+   "count": 2,
+   "min_mm": 0.55,
+   "overhanging": []
+  },
+  "-y": {
+   "jlc_fitted_bodies_under_2p5": [
+    [
+     "R60",
+     0.537
+    ],
+    [
+     "U9",
+     0.589
+    ],
+    [
+     "C60",
+     0.95
+    ],
+    [
+     "R65",
+     0.95
+    ],
+    [
+     "C41",
+     1.05
+    ],
+    [
+     "L5",
+     1.3
+    ],
+    [
+     "J7",
+     1.75
+    ],
+    [
+     "U4",
+     1.85
+    ],
+    [
+     "C57",
+     1.95
+    ],
+    [
+     "C44",
+     2.05
+    ],
+    [
+     "R59",
+     2.15
+    ]
+   ],
+   "count": 11,
+   "min_mm": 0.537,
+   "overhanging": []
+  }
+ },
+ "rail_pairs": {
+  "-x / +x": {
+   "bodies_under_2p5_at_edges_without_rail": [
+    "C41",
+    "C44",
+    "C57",
+    "C60",
+    "J7",
+    "L5",
+    "R22",
+    "R59",
+    "R60",
+    "R65",
+    "U4",
+    "U9"
+   ],
+   "count_without_rail": 12,
+   "min_distance_at_rail_edges_mm": 0.55,
+   "overhang_at_rail_edges": []
+  },
+  "+y / -y": {
+   "bodies_under_2p5_at_edges_without_rail": [
+    "D6",
+    "J7",
+    "U6"
+   ],
+   "count_without_rail": 3,
+   "min_distance_at_rail_edges_mm": 0.537,
+   "overhang_at_rail_edges": []
+  }
+ },
+ "rail_sides_for_standard_order": {
+  "pair": "+y / -y",
+  "label": "E (chosen from this table: fewest JLC-fitted bodies under 2.5 mm at an edge without a rail)",
+  "outline_note": "redesign2: the '-y' side carries the tab, so a rail there cannot be attached by V-cut along one straight line; it needs routed tabs / mouse bites (JLC acceptance and price NOT_VERIFIED). Economic PCBA needs no rails."
+ },
+ "jlc_acceptance": "NOT_VERIFIED (only JLC's DFM result and quote after the upload decide)",
+ "csv": "out/edge_distance.csv",
+ "csv_sha256": "19a8abec8874bc30a5b6db54f650f315b2638fcf35ee26c13d3ce5d7a2fbb9e3"
+}

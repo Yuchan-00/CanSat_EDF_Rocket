@@ -1,0 +1,637 @@
+{
+ "rows": [
+  {
+   "id": "C0",
+   "check": "build report is from the current params",
+   "status": "PASS",
+   "value": "8a1107842778",
+   "limit": "sha256 of the params sections ('motor', 'duct', 'design', 'cad', 'print', 'materials')",
+   "note": ""
+  },
+  {
+   "id": "C0a",
+   "check": "neighbouring blades do not intersect (blade 0 x blade 1)",
+   "status": "PASS",
+   "value": "0.0000 mm3; root footprints 41.2 deg vs pitch 40.0 deg (overlap in angle only, at different z)",
+   "limit": "0 mm3",
+   "note": ""
+  },
+  {
+   "id": "C1",
+   "check": "STEP: one valid solid",
+   "status": "PASS",
+   "value": "1 solid(s), valid [True]",
+   "limit": "1, valid",
+   "note": ""
+  },
+  {
+   "id": "C2",
+   "check": "STL: watertight, consistent winding, one body",
+   "status": "PASS",
+   "value": "watertight True, winding True, bodies 1",
+   "limit": "True, True, 1",
+   "note": ""
+  },
+  {
+   "id": "C3",
+   "check": "STL volume = STEP volume",
+   "status": "PASS",
+   "value": "40398.6 vs 40461.4 mm3 (-0.16 %)",
+   "limit": "|diff| < 0.5 %",
+   "note": ""
+  },
+  {
+   "id": "C4",
+   "check": "tip radius",
+   "status": "PASS",
+   "value": "44.500 mm (STL vertices), STEP bbox 44.510",
+   "limit": "r_tip 44.500 +- 0.02 (housing ID 91.0 - 2 x 1.0)",
+   "note": ""
+  },
+  {
+   "id": "C5",
+   "check": "radial tip clearance to the housing (ASSUMED ID, M6)",
+   "status": "PASS",
+   "value": "1.000 mm (original rotor 0.40 mm)",
+   "limit": ">= 1.0 mm (design)",
+   "note": ""
+  },
+  {
+   "id": "C6",
+   "check": "axial envelope = hub length, rear face at z 0",
+   "status": "PASS",
+   "value": "z 0.000 .. 25.000 (STL)",
+   "limit": "0 .. 25.0 (ASSUMED hub length, M4)",
+   "note": ""
+  },
+  {
+   "id": "C7",
+   "check": "fits the P2S plate",
+   "status": "PASS",
+   "value": "88.9 x 89.0 x 25.0 mm",
+   "limit": "< 236.0 mm",
+   "note": ""
+  },
+  {
+   "id": "C8",
+   "check": "hub OD (cylinder face)",
+   "status": "PASS",
+   "value": "cylinder radii [0.75, 5.1, 20.0, 44.5]",
+   "limit": "r 20.0 (hub_d 40.0, ASSUMED M4)",
+   "note": ""
+  },
+  {
+   "id": "C9",
+   "check": "bore as printed",
+   "status": "PASS",
+   "value": "d 10.2 found: True",
+   "limit": "print 10.2, drill to 10.0 (ASSUMED M2)",
+   "note": ""
+  },
+  {
+   "id": "C10",
+   "check": "drive-slot corner reliefs",
+   "status": "PASS",
+   "value": "4 relief faces r 0.75",
+   "limit": ">= 4 (Kt 2.5 condition)",
+   "note": ""
+  },
+  {
+   "id": "C11",
+   "check": "drive slot length x width (z = depth / 2)",
+   "status": "PASS",
+   "value": "17.600 x 11.600 mm (at x 6.75); bore chord at centre 11.600",
+   "limit": "17.60 x 11.60 +- 0.05 (ASSUMED 17.0 x 11.0 + 0.3/side, M3)",
+   "note": ""
+  },
+  {
+   "id": "C12",
+   "check": "slot depth (only the bore above it)",
+   "status": "PASS",
+   "value": "hole area at z 8.1: 81.58 mm2 vs bore 81.71",
+   "limit": "depth 8.0 mm (ASSUMED M3)",
+   "note": ""
+  },
+  {
+   "id": "C13",
+   "check": "slot depth vs torque need (124 A proxy, uniform half-flank bearing)",
+   "status": "PASS",
+   "value": "8.0 mm",
+   "limit": ">= 2.02 mm (rotor_calc; the contact-patch bearing is C13b / C13c)",
+   "note": ""
+  },
+  {
+   "id": "C14",
+   "check": "blade count (section z = stack, r 30..34)",
+   "status": "PASS",
+   "value": "9",
+   "limit": "9 (rotor_calc)",
+   "note": ""
+  },
+  {
+   "id": "C15",
+   "check": "angular symmetry",
+   "status": "PASS",
+   "value": "pitch 40.00 deg, max dev 0.0181 deg, area spread 0.167 %",
+   "limit": "dev < 0.05 deg, spread < 0.5 %",
+   "note": ""
+  },
+  {
+   "id": "C16",
+   "check": "geometric static imbalance (centroid off axis)",
+   "status": "PASS",
+   "value": "e 0.0006 um, U 0.00003 g mm",
+   "limit": "<= 10 % of G6.3 at 11000 rpm (0.0279 g mm); print / material imbalance comes on top",
+   "note": ""
+  },
+  {
+   "id": "C17",
+   "check": "mass at 100 % infill vs rotor_calc",
+   "status": "PASS",
+   "value": "50.17 g (CAD, 1.24 g/cm3) vs 50.92 g",
+   "limit": "within 10 % (CAD adds fillets, round TE, removes the slot)",
+   "note": ""
+  },
+  {
+   "id": "C18",
+   "check": "section area vs rotor_calc (stations outboard of the flare)",
+   "status": "PASS",
+   "value": "max dev 7.68 %",
+   "limit": "< 8 % (round TE vs sharp NACA TE)",
+   "note": ""
+  },
+  {
+   "id": "C19",
+   "check": "stagger vs rotor_calc",
+   "status": "PASS",
+   "value": "max dev 0.22 deg",
+   "limit": "< 1.0 deg (farthest-point chord line, not the camber chord)",
+   "note": ""
+  },
+  {
+   "id": "C20",
+   "check": "chord vs rotor_calc",
+   "status": "PASS",
+   "value": "max dev 0.10 %",
+   "limit": "< 3 %",
+   "note": ""
+  },
+  {
+   "id": "C0b",
+   "check": "blade-root fillet r 1.0 (loft flare): thickness profile",
+   "status": "PASS",
+   "value": "t - (t_design + 2 x flare offset) from +0.029 to +0.083 mm over h 0.02..0.85 mm; foot angle 18.2 deg",
+   "limit": "never thinner than the r 1.0 fillet (>= -0.03) and close to it (<= +0.15) - Kt 1.5 condition, docs 3.3",
+   "note": ""
+  },
+  {
+   "id": "C0c",
+   "check": "no loft undershoot between the flare and the next station",
+   "status": "PASS",
+   "value": "min (t_CAD - t_design) +0.020 mm at r 21.05..22.45",
+   "limit": ">= -0.03 mm",
+   "note": ""
+  },
+  {
+   "id": "C21",
+   "check": "thinnest blade (max thickness at the tip) vs nozzle",
+   "status": "PASS",
+   "value": "2.23 mm = 5.3 lines of 0.42",
+   "limit": ">= 5 lines (docs 4.2)",
+   "note": ""
+  },
+  {
+   "id": "C22",
+   "check": "trailing edge (thickness at the TE circle centre) vs nozzle",
+   "status": "PASS",
+   "value": "0.798 mm",
+   "limit": ">= 2 x 0.4 mm nozzle - 0.02 (cad.te_thickness 0.8)",
+   "note": ""
+  },
+  {
+   "id": "C23a",
+   "check": "print STL = the rotor in the print frame (front_down)",
+   "status": "PASS",
+   "value": "volume 40399.5 mm3, z -0.000 .. 25.000, watertight True",
+   "limit": "same volume, bed at z 0",
+   "note": ""
+  },
+  {
+   "id": "C23b",
+   "check": "mirrored print STL (opposite rotation) = print STL mirrored x -> -x",
+   "status": "PASS",
+   "value": "volume 40399.5 vs 40399.5 mm3, watertight True, bounds mirrored True",
+   "limit": "same volume, mirrored bounds",
+   "note": ""
+  },
+  {
+   "id": "C23",
+   "check": "overhang beyond the TDS limit (print: front_down)",
+   "status": "INFO",
+   "value": "blade faces 2564 mm2 (r >= 20.0 mm, rotor_calc: stagger 55 deg at r 33.2), hub inside 0.0 mm2",
+   "limit": "55.0 deg from vertical (Bambu PLA Pure TDS)",
+   "note": ""
+  },
+  {
+   "id": "C24",
+   "check": "no downward-facing surface inside the hub (bore / slot need no support or bridge)",
+   "status": "PASS",
+   "value": "0.00 mm2",
+   "limit": "< 1 mm2 (slot printed as an open pocket at the top)",
+   "note": ""
+  },
+  {
+   "id": "C25",
+   "check": "steep blade faces reachable by plate supports",
+   "status": "PASS",
+   "value": "blocked 0.00 mm2 of 1263 mm2 (558 of 3724 triangles: trailing-edge nose next to the root, over the neighbouring blade); supports enabled 1, threshold 35 deg, plate only 1",
+   "limit": "blocked < 1 mm2; threshold >= 35 deg",
+   "note": ""
+  },
+  {
+   "id": "C26",
+   "check": "Bambu Studio CLI sliced the current print STL",
+   "status": "PASS",
+   "value": "ok True, 3.71 h, 57.5 g",
+   "limit": "result return_code 0 and same STL sha256",
+   "note": ""
+  },
+  {
+   "id": "C27",
+   "check": "slicer generated the supports and none in the bore / slot",
+   "status": "PASS",
+   "value": "support 8.40 g, support samples in slot / bore 0, inside the hub radius 0",
+   "limit": "> 0 g, 0 samples",
+   "note": ""
+  },
+  {
+   "id": "C27b",
+   "check": "slicer mass: G-code extrusion sum = slicer total, part = CAD mass",
+   "status": "PASS",
+   "value": "sum 57.5 g vs header 57.48 g; part 49.1 g vs CAD 50.2 g at 100 %",
+   "limit": "within 3 % / 10 %",
+   "note": ""
+  },
+  {
+   "id": "C28",
+   "check": "blade root stress from CAD at 11000 rpm (x Kt 1.5)",
+   "status": "PASS",
+   "value": "1.62 MPa (rotor_calc 1.68); SF vs Z low at 40 C 13.83",
+   "limit": "<= 5.60 MPa (SF 4.0)",
+   "note": ""
+  },
+  {
+   "id": "C29",
+   "check": "hub stress from the 2-D FE with CAD loads at 11000 rpm (slot section + bore section)",
+   "status": "PASS",
+   "value": "5.39 MPa at r 11.29 (smeared rim pressure); rotor_calc 5.39; bore section 1.36; blade pull 68.1 N/blade, rim pressure 0.240 MPa, root width 20.31 mm; SF vs Z low at 40 C 4.16",
+   "limit": "<= 5.60 MPa (SF 4.0)",
+   "note": ""
+  },
+  {
+   "id": "C29a",
+   "check": "hub FE vs analytic annulus (Lame bore stress, rotating disk with a hole)",
+   "status": "PASS",
+   "value": "Lame 2.1343 vs 2.1333 (+0.045 %), disk 339.21 vs 339.06 (+0.045 %), 16763 nodes",
+   "limit": "|error| < 0.5 %",
+   "note": ""
+  },
+  {
+   "id": "C29b",
+   "check": "hub FE mesh convergence (slot section, smeared case at the test rpm) and equilibrium",
+   "status": "PASS",
+   "value": "coarse 5.3958 MPa (13066 nodes), medium 5.3875 MPa (30077 nodes), fine 5.3828 MPa (59185 nodes); fine / medium -0.089 %; max reaction / load 8.0e-07",
+   "limit": "|fine / used - 1| < 1 %, reaction / load < 1e-6",
+   "note": ""
+  },
+  {
+   "id": "C29c",
+   "check": "hub FE at the CAD's actual blade-to-slot angle (envelope above sweeps the angle)",
+   "status": "INFO",
+   "value": "5.39 MPa vs envelope 5.39 MPa",
+   "limit": "info",
+   "note": ""
+  },
+  {
+   "id": "C13b",
+   "check": "slot flank bearing at 11000 rpm (aero + ramp torque, contact patch at the flank end)",
+   "status": "PASS",
+   "value": "0.61 MPa (0.0633 N m, lever 6.48 mm, patch 1.0 x 8.0 mm); uniform half-flank model 0.11 MPa",
+   "limit": "<= 5.60 MPa",
+   "note": ""
+  },
+  {
+   "id": "C13c",
+   "check": "motor torque transients at the test rpm (not a test load: ramp rule)",
+   "status": "INFO",
+   "value": "88A: 0.580 N m -> hub FE SF 2.57, contact bearing SF 4.01; 124A: 0.817 N m -> hub FE SF 2.18, contact bearing SF 2.85; SF 4.0 holds up to 0.097 N m = 14.7 A",
+   "limit": "SF 4 rule applies to the test load (aero + ramp x margin)",
+   "note": ""
+  },
+  {
+   "id": "C30",
+   "check": "speed cap recomputed from the CAD >= test limit",
+   "status": "PASS",
+   "value": "11,221 rpm (rotor_calc cap 11,221)",
+   "limit": ">= 11,000 rpm",
+   "note": ""
+  },
+  {
+   "id": "C30b",
+   "check": "rotor_calc's CAD hub-FE factor is up to date",
+   "status": "PASS",
+   "value": "params 1.0195, measured 1.0195 (FE with CAD loads / FE with strip-model loads)",
+   "limit": "|diff| < 0.2 % (else update structure.cad_hub_fe_factor and re-run rotor_calc)",
+   "note": ""
+  },
+  {
+   "id": "C31",
+   "check": "rotor_calc_results.json is from the current params",
+   "status": "PASS",
+   "value": "test 11000 rpm, 9 blades, tip D 89.00",
+   "limit": "equal to rotor_calc.analyse(params)",
+   "note": ""
+  },
+  {
+   "id": "C32",
+   "check": "rotation sense used",
+   "status": "PASS",
+   "value": "CW from the intake",
+   "limit": "ASSUMED - M9 decides; CCW = mirror",
+   "note": ""
+  },
+  {
+   "id": "C33",
+   "check": "balancer stand: watertight, rotor clears the base",
+   "status": "PASS",
+   "value": "watertight True, rotor-to-base 17.5 mm",
+   "limit": "True, > 10 mm",
+   "note": ""
+  },
+  {
+   "id": "C34",
+   "check": "deterministic rebuild (STL + STEP sha256)",
+   "status": "PASS",
+   "value": "identical (C:\\Users\\yc012\\AppData\\Local\\Temp\\rotor_det_pa1099al)",
+   "limit": "identical bytes",
+   "note": ""
+  }
+ ],
+ "sections": [
+  {
+   "r": 22.450000000000003,
+   "area": 64.54150115467719,
+   "area_calc": 63.28024069349475,
+   "stagger": 37.253484657295154,
+   "stagger_calc": 37.42109082918164,
+   "chord": 24.212283460000037,
+   "chord_calc": 24.2,
+   "t_max": 3.841577331625928,
+   "t_calc": 3.82,
+   "t_te_circle": 0.8067144855669508
+  },
+  {
+   "r": 24.9,
+   "area": 62.06113118045343,
+   "area_calc": 60.67804025038378,
+   "stagger": 42.54333277148068,
+   "stagger_calc": 42.76165381438368,
+   "chord": 24.408388726407264,
+   "chord_calc": 24.4,
+   "t_max": 3.65679663953332,
+   "t_calc": 3.64,
+   "t_te_circle": 0.802274553631315
+  },
+  {
+   "r": 27.349999999999998,
+   "area": 59.5944981349165,
+   "area_calc": 58.08111876736914,
+   "stagger": 46.98181082952107,
+   "stagger_calc": 47.17792492788805,
+   "chord": 24.604442998236124,
+   "chord_calc": 24.6,
+   "t_max": 3.4738394326444046,
+   "t_calc": 3.46,
+   "t_te_circle": 0.8005075297950109
+  },
+  {
+   "r": 29.8,
+   "area": 57.118120935610484,
+   "area_calc": 55.46629461542933,
+   "stagger": 50.74507739923619,
+   "stagger_calc": 50.86693328200544,
+   "chord": 24.79998021993738,
+   "chord_calc": 24.8,
+   "t_max": 3.2923073666879157,
+   "t_calc": 3.2800000000000002,
+   "t_te_circle": 0.8003746023995595
+  },
+  {
+   "r": 32.25,
+   "area": 54.61909144259391,
+   "area_calc": 52.82047383938002,
+   "stagger": 53.973236031592386,
+   "stagger_calc": 53.98395715387648,
+   "chord": 24.999761740940063,
+   "chord_calc": 25.0,
+   "t_max": 3.111517187785469,
+   "t_calc": 3.0999999999999996,
+   "t_te_circle": 0.7996467148134999
+  },
+  {
+   "r": 34.7,
+   "area": 52.090737863023925,
+   "area_calc": 50.13627450553358,
+   "stagger": 56.57812164320481,
+   "stagger_calc": 56.64749752543405,
+   "chord": 25.197622514930252,
+   "chord_calc": 25.2,
+   "t_max": 2.931545218607868,
+   "t_calc": 2.92,
+   "t_te_circle": 0.7992327481642219
+  },
+  {
+   "r": 37.150000000000006,
+   "area": 49.52975412878433,
+   "area_calc": 47.40947949352238,
+   "stagger": 59.034519851910325,
+   "stagger_calc": 58.9474305902924,
+   "chord": 25.398119420596274,
+   "chord_calc": 25.4,
+   "t_max": 2.751614071124992,
+   "t_calc": 2.7399999999999998,
+   "t_te_circle": 0.7980870468345005
+  },
+  {
+   "r": 39.599999999999994,
+   "area": 46.935045344460086,
+   "area_calc": 44.63763179264271,
+   "stagger": 61.01407750491425,
+   "stagger_calc": 60.95227563091305,
+   "chord": 25.598350295705984,
+   "chord_calc": 25.6,
+   "t_max": 2.5721274687562086,
+   "t_calc": 2.5600000000000005,
+   "t_te_circle": 0.798766756219719
+  },
+  {
+   "r": 42.050000000000004,
+   "area": 44.306886256636,
+   "area_calc": 41.819268155052626,
+   "stagger": 62.76175239253684,
+   "stagger_calc": 62.714795186341156,
+   "chord": 25.797814307849134,
+   "chord_calc": 25.8,
+   "t_max": 2.392839767843219,
+   "t_calc": 2.38,
+   "t_te_circle": 0.7996027166858948
+  },
+  {
+   "r": 44.2,
+   "area": 41.94640004308584,
+   "area_calc": 38.95349765906209,
+   "stagger": 64.15802253017654,
+   "stagger_calc": 64.27609981452957,
+   "chord": 25.97305747646246,
+   "chord_calc": 26.0,
+   "t_max": 2.2339914133954566,
+   "t_calc": 2.2,
+   "t_te_circle": 0.800052292990344
+  }
+ ],
+ "root": {
+  "r_cut": 21.05,
+  "A_mm2": 65.90251305365415,
+  "N_N": 65.66755588921426,
+  "M_tan_Nm": -0.002108032110708762,
+  "M_ax_Nm": 0.0015715244378806505,
+  "M_cf_tan_Nm": 0.0006538735960482141,
+  "M_cf_ax_Nm": 0.0001242562238554626,
+  "sigma_N_MPa": 0.9964347768612617,
+  "sigma_b_MPa": 0.08399068236321167,
+  "sigma_MPa": 1.0804254592244735,
+  "F_cf_N": 65.66756500475813,
+  "body_mm3": 1265.7233841202549,
+  "h_axial_mm": 20.312208100565165
+ },
+ "hub_pull": {
+  "r_cut": 20.1,
+  "A_mm2": 96.21336689795288,
+  "N_N": 67.83015361598768,
+  "M_tan_Nm": 0.026798169159683888,
+  "M_ax_Nm": 0.015190974928340234,
+  "M_cf_tan_Nm": 0.029761573749726086,
+  "M_cf_ax_Nm": 0.013623926861628388,
+  "sigma_N_MPa": 0.7049971932479051,
+  "sigma_b_MPa": 0.11787473662879053,
+  "sigma_MPa": 0.8228719298766957,
+  "F_cf_N": 67.82880683901026,
+  "body_mm3": 1330.9770665950973,
+  "h_axial_mm": 21.94706240701111
+ },
+ "sigma_root_MPa": 1.6206381888367103,
+ "sigma_hub_MPa": 5.387531290898039,
+ "hub_fe_cad": {
+  "peak": {
+   "sigma1": 5.387531290898039,
+   "section": "slot",
+   "xy": [
+    -9.42474922759891,
+    6.214949586849322
+   ],
+   "r": 11.289441809505234,
+   "torque_sense": 1,
+   "case": "smeared rim pressure",
+   "od_band_sigma1": 1.5151955135648592,
+   "min_sigma3": -0.955415966716701,
+   "nodes_evaluated": 1,
+   "bore_sigma1": 1.357285025251949,
+   "bore_case": {
+    "z": 18.5,
+    "w": 6.288025082942819
+   },
+   "bore_xy": [
+    -3.2863179125140656,
+    3.9000017885460876
+   ]
+  },
+  "actual_phase": {
+   "sigma1": 5.387531290898076,
+   "section": "slot",
+   "xy": [
+    -9.42474922759891,
+    6.214949586849322
+   ],
+   "r": 11.289441809505234,
+   "torque_sense": 1,
+   "case": "smeared rim pressure",
+   "od_band_sigma1": 1.504875883526351,
+   "min_sigma3": -0.9554159667167073,
+   "nodes_evaluated": 1,
+   "bore_sigma1": 1.357285025251949,
+   "bore_case": {
+    "z": 18.5,
+    "w": 6.288025082942819
+   },
+   "bore_xy": [
+    -3.2863179125140656,
+    3.9000017885460876
+   ]
+  },
+  "root_traction_MPa": 0.8228719298766957,
+  "rim_pressure_MPa": 0.24027699072408307,
+  "blade_pull_N": 68.14542053661408,
+  "torque_Nm": 0.0633359204161293,
+  "flank_bearing_MPa": 0.6108090433213251,
+  "selftest": {
+   "lame_fe": 2.134283624236878,
+   "lame_exact": 2.1333333333333333,
+   "lame_err": 0.0004454488610365903,
+   "disk_fe": 339.21349938980916,
+   "disk_exact": 339.0625,
+   "disk_err": 0.00044534382247851667,
+   "residual": 4.753399194313607e-08,
+   "nodes": 16763,
+   "elements": 8161,
+   "min_angle_deg": 25.93263284105312
+  },
+  "convergence": {
+   "coarse": {
+    "sigma1": 5.395797547290385,
+    "nodes": 13066,
+    "resid": 1.9966577917546882e-08
+   },
+   "medium": {
+    "sigma1": 5.3875312908980035,
+    "nodes": 30077,
+    "resid": 3.1219857385134415e-08
+   },
+   "fine": {
+    "sigma1": 5.38275768952902,
+    "nodes": 59185,
+    "resid": 1.9920262416207238e-08
+   }
+  },
+  "geometry": {
+   "r_h": 20.0,
+   "hub_len": 25.0,
+   "slot_l": 17.6,
+   "slot_w": 11.6,
+   "slot_depth": 8.0,
+   "relief_r": 0.75,
+   "bore_r": 5.1,
+   "nu": 0.35,
+   "blades": 9,
+   "a_c": 1.0,
+   "lever": 6.48074069840786
+  },
+  "flank_lever_mm": {
+   "rectangular_head": 8.05,
+   "double_d_head": 6.48074069840786,
+   "used": 6.48074069840786
+  }
+ },
+ "n_cap_cad": 11221.139634606465,
+ "mass_g": 50.17212125209184,
+ "imbalance_gmm": 3.2146222511595555e-05
+}

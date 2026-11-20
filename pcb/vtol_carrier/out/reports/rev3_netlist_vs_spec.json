@@ -1,0 +1,46 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_netlist_vs_spec.json",
+ "result": "PASS",
+ "tool": "kicad-cli netlist export + scripts/rev3_checks.py netlist-vs-spec",
+ "netlist": {
+  "file": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier.net",
+  "sha256": "e4b2ab19a59091dc9db7e4e290226a22301291931d1afa9efb563494e1671ae4",
+  "sha256_is": "of the file as it was when this check read it (it carries the export time; a later build step exports it again)",
+  "sha256_without_date_line": "412017f811492e6379aa97e1979b6ce85a8e5e9a2f34c3b7201c7b1a01dc1067",
+  "tool": "Eeschema 10.0.6",
+  "export_date_in_file": "2026-11-13T21:08:21",
+  "components": 176,
+  "named_nets": 107,
+  "unconnected_single_pin_nets": 182
+ },
+ "spec": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/spec/carrier_spec.json",
+ "spec_sha256": "ac6aa5da1b6c466d201c496eece0b86e6dab7f6643cc3210c4f3dc93a273a4fe",
+ "parts": 176,
+ "pins_compared": 692,
+ "pins_connected": 510,
+ "pins_no_connect": 182,
+ "pin_differences": [],
+ "component_fields_compared": [
+  "value",
+  "footprint",
+  "symbol",
+  "dnp == not populated"
+ ],
+ "component_differences": [],
+ "spec_nets": 107,
+ "netlist_named_nets": 107,
+ "nets_only_in_spec": [],
+ "nets_only_in_netlist": [],
+ "dnp_parts_in_netlist": [
+  "J3",
+  "J19",
+  "J20",
+  "J21",
+  "J22",
+  "J24",
+  "J25",
+  "J26",
+  "Q3",
+  "R47"
+ ]
+}

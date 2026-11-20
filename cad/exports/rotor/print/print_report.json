@@ -1,0 +1,121 @@
+{
+ "ok": true,
+ "stl": "edf_rotor_9b_print.stl",
+ "stl_sha256": "ea9567a2c2c0b9a145861617b325b1edb994f34dd9ad992970b71ab403c26445",
+ "attempts": [
+  {
+   "profiles": "flattened profiles",
+   "ok": true,
+   "error": null,
+   "log": {
+    "cmd": "C:\\Program Files\\Bambu Studio\\bambu-studio.exe --slice 0 --arrange 1 --orient 0 --load-settings C:\\Users\\yc012\\AppData\\Local\\Temp\\rotor_slice_ei98urpx\\tmp3uvttrvd\\resolved_machine_Bambu_Lab_P2S_0_4_nozzle.json;C:\\Users\\yc012\\AppData\\Local\\Temp\\rotor_slice_ei98urpx\\tmp3uvttrvd\\resolved_process_0_12mm_High_Quality_BBL_P2S.json --load-filaments C:\\Users\\yc012\\AppData\\Local\\Temp\\rotor_slice_ei98urpx\\tmp3uvttrvd\\resolved_filament_Bambu_PLA_Pure_BBL_P2S_0_4_nozzle.json --outputdir C:\\Users\\yc012\\AppData\\Local\\Temp\\rotor_slice_ei98urpx\\tmp3uvttrvd\\out --export-3mf plate.3mf B:\\0)AI_Cad\\CanSat_EDF_Rocket_rotor\\cad\\exports\\rotor\\edf_rotor_9b_print.stl",
+    "exit": 0,
+    "stdout_tail": "",
+    "stderr_tail": ""
+   }
+  }
+ ],
+ "settings": {
+  "_about": "Bambu Studio settings used by build_rotor.py's slice (P2S, 0.4 nozzle). Every key is a Bambu process / filament key.",
+  "orientation": {
+   "value": "front_down",
+   "status": "DESIGN",
+   "src": "axis vertical, FRONT (intake) face on the bed. Changed from the design doc's 'slot face on the bed' (2026-11-18): rear-down makes the drive-slot ceiling a sagging bridge over the bore and puts elephant foot into the slot flanks - the slot is the governing stress location and its floor sets the adapter engagement; front-down prints the slot as an open pocket at the top (no bridge, no elephant foot) and the nut / spinner face flat on the plate"
+  },
+  "machine": {
+   "value": "Bambu Lab P2S 0.4 nozzle",
+   "status": "SOURCED",
+   "src": "Bambu Studio system profile"
+  },
+  "process": {
+   "value": "0.12mm High Quality @BBL P2S",
+   "status": "DESIGN",
+   "src": "0.12 mm layers: the blade faces lean up to 64.3 deg from vertical; finer steps print them smoother"
+  },
+  "filament": {
+   "value": "Bambu PLA Pure @BBL P2S 0.4 nozzle",
+   "status": "SOURCED",
+   "src": "the filament the user has (governing material); system profile, not renamed"
+  },
+  "overrides": {
+   "value": {
+    "wall_loops": "3",
+    "top_shell_layers": "6",
+    "bottom_shell_layers": "6",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "enable_support": "1",
+    "support_type": "tree(auto)",
+    "support_threshold_angle": "35",
+    "support_on_build_plate_only": "1",
+    "bridge_no_support": "1",
+    "brim_type": "auto_brim",
+    "elefant_foot_compensation": "0.15",
+    "seam_position": "back"
+   },
+   "status": "DESIGN",
+   "src": "100 % infill (TDS strengths are 100 % bars); supports where the blade underside is steeper than 55 deg from vertical (Bambu PLA Pure TDS max overhang 55 deg -> threshold 35 deg from horizontal), from the plate only; bridge_no_support for small flat ceilings; elephant-foot compensation for the bore entry on the bed"
+  },
+  "max_overhang_from_vertical_deg": {
+   "value": 55.0,
+   "status": "SOURCED",
+   "src": "Bambu PLA Pure TDS (local copy sim_tools/runs/rotor/web/tds)"
+  },
+  "nozzle_d": {
+   "value": 0.4,
+   "unit": "mm",
+   "status": "SOURCED",
+   "src": "P2S 0.4 nozzle"
+  }
+ },
+ "time_s": 13370.3251953125,
+ "time_h": 3.7139792209201388,
+ "filament_g": 57.48023393902945,
+ "part_g": 49.07644557352099,
+ "support_g": 8.40378836550846,
+ "feature_g": {
+  "Bottom surface": 0.221,
+  "Floating vertical shell": 3.658,
+  "Gap infill": 0.381,
+  "Inner wall": 9.823,
+  "Internal solid infill": 1.448,
+  "Outer wall": 5.128,
+  "Overhang wall": 0.033,
+  "Sparse infill": 28.217,
+  "Support": 8.404,
+  "Top surface": 0.168
+ },
+ "gcode_total_weight_g": 57.48,
+ "settings_in_gcode": {
+  "layer_height": "0.12",
+  "wall_loops": "3",
+  "sparse_infill_density": "100%",
+  "sparse_infill_pattern": "zig-zag",
+  "enable_support": "1",
+  "support_type": "tree(auto)",
+  "support_threshold_angle": "35",
+  "support_on_build_plate_only": "1",
+  "bridge_no_support": "1",
+  "brim_type": "auto_brim",
+  "elefant_foot_compensation": "0.15",
+  "filament_settings_id": "\"Bambu PLA Pure @BBL P2S 0.4 nozzle\"",
+  "print_settings_id": "0.12mm High Quality @BBL P2S",
+  "printer_settings_id": "Bambu Lab P2S 0.4 nozzle",
+  "nozzle_temperature": "220",
+  "filament_density": "1.24"
+ },
+ "support_in_slot_or_bore": 0,
+ "support_check": {
+  "count": 0,
+  "support_samples": 189293,
+  "support_r_min_mm": 20.123031406084024,
+  "support_samples_inside_hub_r": 0,
+  "arrange_rotation_z_deg": 51.541,
+  "model_to_plate_shift": [
+   128.0,
+   127.922,
+   0.0
+  ],
+  "mesh_vs_model_bounds_mm": 0.0
+ }
+}

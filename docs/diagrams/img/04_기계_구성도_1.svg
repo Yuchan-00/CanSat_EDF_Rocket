@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="595.275591pt" height="841.889764pt" viewBox="0 0 595.275591 841.889764" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>tbdraw</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 841.889764 
+L 595.275591 841.889764 
+L 595.275591 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="line2d_1">
+    <path d="M 255.11811 102.047244 
+L 255.11811 141.732283 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 255.11811 175.748031 
+L 255.11811 215.433071 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 255.11811 249.448819 
+L 255.11811 289.133858 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 255.11811 396.850394 
+L 255.11811 436.535433 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 255.11811 680.314961 
+L 255.11811 720 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_6">
+    <path d="M 255.11811 323.149606 
+L 255.11811 362.834646 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_7">
+    <path d="M 255.11811 470.551181 
+L 255.11811 510.23622 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_8">
+    <path d="M 255.11811 544.251969 
+L 255.11811 583.937008 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_9">
+    <path d="M 340.15748 232.440945 
+L 396.850394 232.440945 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #707070; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_10">
+    <path d="M 340.15748 379.84252 
+L 396.850394 379.84252 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #707070; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_11">
+    <path d="M 340.15748 608.031496 
+L 396.850394 608.031496 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #707070; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_12">
+    <path d="M 340.15748 656.220472 
+L 396.850394 656.220472 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #707070; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_2">
+    <path d="M 170.07874 68.031496 
+L 340.15748 68.031496 
+L 340.15748 102.047244 
+L 170.07874 102.047244 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 170.07874 141.732283 
+L 340.15748 141.732283 
+L 340.15748 175.748031 
+L 170.07874 175.748031 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 170.07874 215.433071 
+L 340.15748 215.433071 
+L 340.15748 249.448819 
+L 170.07874 249.448819 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 170.07874 289.133858 
+L 340.15748 289.133858 
+L 340.15748 323.149606 
+L 170.07874 323.149606 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 170.07874 362.834646 
+L 340.15748 362.834646 
+L 340.15748 396.850394 
+L 170.07874 396.850394 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 170.07874 436.535433 
+L 340.15748 436.535433 
+L 340.15748 470.551181 
+L 170.07874 470.551181 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ededed; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 170.07874 510.23622 
+L 340.15748 510.23622 
+L 340.15748 544.251969 
+L 170.07874 544.251969 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 170.07874 583.937008 
+L 340.15748 583.937008 
+L 340.15748 680.314961 
+L 170.07874 680.314961 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 170.07874 720 
+L 340.15748 720 
+L 340.15748 754.015748 
+L 170.07874 754.015748 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 396.850394 209.76378 
+L 538.582677 209.76378 
+L 538.582677 255.11811 
+L 396.850394 255.11811 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 396.850394 357.165354 
+L 538.582677 357.165354 
+L 538.582677 402.519685 
+L 396.850394 402.519685 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ededed; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 396.850394 591.023622 
+L 538.582677 591.023622 
+L 538.582677 625.03937 
+L 396.850394 625.03937 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ededed; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 396.850394 639.212598 
+L 538.582677 639.212598 
+L 538.582677 673.228346 
+L 396.850394 673.228346 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="83.643276" transform="rotate(-0 255.11811 83.643276)">노즈콘 Nose cone</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="94.412495" transform="rotate(-0 255.11811 94.412495)">z 800 → 660</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="156.628439" transform="rotate(-0 255.11811 156.628439)">낙하산 팩 Chute pack</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="168.113282" transform="rotate(-0 255.11811 168.113282)">z 750 → 683.4</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="230.302664" transform="rotate(-0 255.11811 230.302664)">페이로드 모듈 Payload</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="241.81407" transform="rotate(-0 255.11811 241.81407)">z 660 → 535.4</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="304.772201" transform="rotate(-0 255.11811 304.772201)">페이로드 격벽</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="315.514857" transform="rotate(-0 255.11811 315.514857)">z 552.0 → 550.4</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="378.497207" transform="rotate(-0 255.11811 378.497207)">항공전자 모듈 Avionics</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="389.215645" transform="rotate(-0 255.11811 389.215645)">z 550.4 → 350.4</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="452.173776" transform="rotate(-0 255.11811 452.173776)">캐리어 PCB rev 3.1</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="462.916432" transform="rotate(-0 255.11811 462.916432)">z 355.0 → 353.4</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="525.930813" transform="rotate(-0 255.11811 525.930813)">흡입구 모듈 Intake</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="536.632844" transform="rotate(-0 255.11811 536.632844)">z 370.4 → 195</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="630.756453" transform="rotate(-0 255.11811 630.756453)">꼬리 V Tail</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="641.514734" transform="rotate(-0 255.11811 641.514734)">z 210 → 0</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="255.11811" y="734.869593" transform="rotate(-0 255.11811 734.869593)">꼬리 링 Tail ring</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="255.11811" y="746.380999" transform="rotate(-0 255.11811 746.380999)">z 0 → -90</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="467.716535" y="225.871414" transform="rotate(-0 467.716535 225.871414)">페이로드 내부</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="467.716535" y="236.80532" transform="rotate(-0 467.716535 236.80532)">분리 서보 · GPS</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="467.716535" y="247.25782" transform="rotate(-0 467.716535 247.25782)">사출 스프링 · 코드 앵커</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="467.716535" y="373.272988" transform="rotate(-0 467.716535 373.272988)">베이 내부</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="467.716535" y="384.206895" transform="rotate(-0 467.716535 384.206895)">6S · ESC · 1S 로직 팩</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="467.716535" y="394.606895" transform="rotate(-0 467.716535 394.606895)">스위치 J16 · J15</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="467.716535" y="605.418996" transform="rotate(-0 467.716535 605.418996)">EDF Hobbyocean 90 mm</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="467.716535" y="616.980871" transform="rotate(-0 467.716535 616.980871)">12날 · 369 g</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="467.716535" y="654.87516" transform="rotate(-0 467.716535 654.87516)">일체형 핀 4장</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #333333" x="467.716535" y="665.784847" transform="rotate(-0 467.716535 665.784847)">넥 퓨즈</text>
+   </g>
+   <g id="text_29">
+    <g id="patch_15">
+     <path d="M 146.477785 353.392126 
+L 252.916535 353.392126 
+L 252.916535 332.592126 
+L 146.477785 332.592126 
+z
+" style="fill: #ffffff"/>
+    </g>
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif" transform="translate(147.677785 341.509001)">결합부 페이로드 ↔ 항공전자</text>
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif" transform="translate(218.099035 350.465251)">M3x8 x 4</text>
+   </g>
+   <g id="text_30">
+    <g id="patch_16">
+     <path d="M 130.942785 505.393701 
+L 252.916535 505.393701 
+L 252.916535 475.393701 
+L 130.942785 475.393701 
+z
+" style="fill: #ffffff"/>
+    </g>
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif" transform="translate(132.142785 484.303076)">FJ-1 항공전자 ↔ 흡입구 · z 357.9</text>
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif" transform="translate(190.869035 493.458076)">M3x8 x 7 + 너트</text>
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif" transform="translate(144.195285 502.191201)">θ45/90/132/176/228/270/315</text>
+   </g>
+   <g id="text_31">
+    <g id="patch_17">
+     <path d="M 151.376535 574.494488 
+L 252.916535 574.494488 
+L 252.916535 553.694488 
+L 151.376535 553.694488 
+z
+" style="fill: #ffffff"/>
+    </g>
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif" transform="translate(152.576535 562.611363)">흡입구 ↔ 꼬리 결합 · z 210</text>
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif" transform="translate(152.892785 571.458238)">M3x10 x 8 + 너트 (z 204.5)</text>
+   </g>
+   <g id="patch_18">
+    <path d="M 435.628346 62.362205 
+L 544.251969 62.362205 
+L 544.251969 185.952756 
+L 435.628346 185.952756 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #707070" x="255.11811" y="45.283435" transform="rotate(-0 255.11811 45.283435)">노즈 (위)</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle; fill: #707070" x="255.11811" y="773.787372" transform="rotate(-0 255.11811 773.787372)">배기 (아래)</text>
+   </g>
+   <g id="text_34">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="125.163204" y="808.97062" transform="rotate(-0 125.163204 808.97062)">그림 4-1.</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 10px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="172.178637" y="808.53312" transform="rotate(-0 172.178637 808.53312)">기계 적층 순서 (노즈 → 배기, 새 본체 rev 3.4.2, V 꼬리, 단위 mm)</text>
+   </g>
+   <g id="patch_19">
+    <path d="M 340.15748 62.645669 
+C 341.585818 62.645669 342.955847 63.213154 343.965835 64.223141 
+C 344.975822 65.233129 345.543307 66.603158 345.543307 68.031496 
+C 345.543307 69.459834 344.975822 70.829863 343.965835 71.839851 
+C 342.955847 72.849838 341.585818 73.417323 340.15748 73.417323 
+C 338.729142 73.417323 337.359113 72.849838 336.349126 71.839851 
+C 335.339138 70.829863 334.771654 69.459834 334.771654 68.031496 
+C 334.771654 66.603158 335.339138 65.233129 336.349126 64.223141 
+C 337.359113 63.213154 338.729142 62.645669 340.15748 62.645669 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 340.15748 136.346457 
+C 341.585818 136.346457 342.955847 136.913941 343.965835 137.923929 
+C 344.975822 138.933916 345.543307 140.303946 345.543307 141.732283 
+C 345.543307 143.160621 344.975822 144.530651 343.965835 145.540638 
+C 342.955847 146.550626 341.585818 147.11811 340.15748 147.11811 
+C 338.729142 147.11811 337.359113 146.550626 336.349126 145.540638 
+C 335.339138 144.530651 334.771654 143.160621 334.771654 141.732283 
+C 334.771654 140.303946 335.339138 138.933916 336.349126 137.923929 
+C 337.359113 136.913941 338.729142 136.346457 340.15748 136.346457 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 340.15748 210.047244 
+C 341.585818 210.047244 342.955847 210.614729 343.965835 211.624716 
+C 344.975822 212.634704 345.543307 214.004733 345.543307 215.433071 
+C 345.543307 216.861409 344.975822 218.231438 343.965835 219.241425 
+C 342.955847 220.251413 341.585818 220.818898 340.15748 220.818898 
+C 338.729142 220.818898 337.359113 220.251413 336.349126 219.241425 
+C 335.339138 218.231438 334.771654 216.861409 334.771654 215.433071 
+C 334.771654 214.004733 335.339138 212.634704 336.349126 211.624716 
+C 337.359113 210.614729 338.729142 210.047244 340.15748 210.047244 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 538.582677 204.377953 
+C 540.011015 204.377953 541.381044 204.945437 542.391032 205.955425 
+C 543.401019 206.965412 543.968504 208.335442 543.968504 209.76378 
+C 543.968504 211.192117 543.401019 212.562147 542.391032 213.572134 
+C 541.381044 214.582122 540.011015 215.149606 538.582677 215.149606 
+C 537.154339 215.149606 535.78431 214.582122 534.774323 213.572134 
+C 533.764335 212.562147 533.19685 211.192117 533.19685 209.76378 
+C 533.19685 208.335442 533.764335 206.965412 534.774323 205.955425 
+C 535.78431 204.945437 537.154339 204.377953 538.582677 204.377953 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 340.15748 283.748031 
+C 341.585818 283.748031 342.955847 284.315516 343.965835 285.325504 
+C 344.975822 286.335491 345.543307 287.70552 345.543307 289.133858 
+C 345.543307 290.562196 344.975822 291.932225 343.965835 292.942213 
+C 342.955847 293.9522 341.585818 294.519685 340.15748 294.519685 
+C 338.729142 294.519685 337.359113 293.9522 336.349126 292.942213 
+C 335.339138 291.932225 334.771654 290.562196 334.771654 289.133858 
+C 334.771654 287.70552 335.339138 286.335491 336.349126 285.325504 
+C 337.359113 284.315516 338.729142 283.748031 340.15748 283.748031 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_24">
+    <path d="M 340.15748 357.448819 
+C 341.585818 357.448819 342.955847 358.016304 343.965835 359.026291 
+C 344.975822 360.036278 345.543307 361.406308 345.543307 362.834646 
+C 345.543307 364.262984 344.975822 365.633013 343.965835 366.643 
+C 342.955847 367.652988 341.585818 368.220472 340.15748 368.220472 
+C 338.729142 368.220472 337.359113 367.652988 336.349126 366.643 
+C 335.339138 365.633013 334.771654 364.262984 334.771654 362.834646 
+C 334.771654 361.406308 335.339138 360.036278 336.349126 359.026291 
+C 337.359113 358.016304 338.729142 357.448819 340.15748 357.448819 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_25">
+    <path d="M 538.582677 351.779528 
+C 540.011015 351.779528 541.381044 352.347012 542.391032 353.357 
+C 543.401019 354.366987 543.968504 355.737016 543.968504 357.165354 
+C 543.968504 358.593692 543.401019 359.963722 542.391032 360.973709 
+C 541.381044 361.983696 540.011015 362.551181 538.582677 362.551181 
+C 537.154339 362.551181 535.78431 361.983696 534.774323 360.973709 
+C 533.764335 359.963722 533.19685 358.593692 533.19685 357.165354 
+C 533.19685 355.737016 533.764335 354.366987 534.774323 353.357 
+C 535.78431 352.347012 537.154339 351.779528 538.582677 351.779528 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_26">
+    <path d="M 340.15748 431.149606 
+C 341.585818 431.149606 342.955847 431.717091 343.965835 432.727078 
+C 344.975822 433.737066 345.543307 435.107095 345.543307 436.535433 
+C 345.543307 437.963771 344.975822 439.3338 343.965835 440.343788 
+C 342.955847 441.353775 341.585818 441.92126 340.15748 441.92126 
+C 338.729142 441.92126 337.359113 441.353775 336.349126 440.343788 
+C 335.339138 439.3338 334.771654 437.963771 334.771654 436.535433 
+C 334.771654 435.107095 335.339138 433.737066 336.349126 432.727078 
+C 337.359113 431.717091 338.729142 431.149606 340.15748 431.149606 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_27">
+    <path d="M 340.15748 504.850394 
+C 341.585818 504.850394 342.955847 505.417878 343.965835 506.427866 
+C 344.975822 507.437853 345.543307 508.807883 345.543307 510.23622 
+C 345.543307 511.664558 344.975822 513.034588 343.965835 514.044575 
+C 342.955847 515.054563 341.585818 515.622047 340.15748 515.622047 
+C 338.729142 515.622047 337.359113 515.054563 336.349126 514.044575 
+C 335.339138 513.034588 334.771654 511.664558 334.771654 510.23622 
+C 334.771654 508.807883 335.339138 507.437853 336.349126 506.427866 
+C 337.359113 505.417878 338.729142 504.850394 340.15748 504.850394 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_28">
+    <path d="M 340.15748 577.632756 
+C 341.829387 577.632756 343.433043 578.297012 344.61526 579.479229 
+C 345.797477 580.661445 346.461732 582.265101 346.461732 583.937008 
+C 346.461732 585.608915 345.797477 587.21257 344.61526 588.394787 
+C 343.433043 589.577004 341.829387 590.24126 340.15748 590.24126 
+C 338.485573 590.24126 336.881918 589.577004 335.699701 588.394787 
+C 334.517484 587.21257 333.853228 585.608915 333.853228 583.937008 
+C 333.853228 582.265101 334.517484 580.661445 335.699701 579.479229 
+C 336.881918 578.297012 338.485573 577.632756 340.15748 577.632756 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_29">
+    <path d="M 538.582677 584.71937 
+C 540.254584 584.71937 541.85824 585.383626 543.040456 586.565843 
+C 544.222673 587.74806 544.886929 589.351715 544.886929 591.023622 
+C 544.886929 592.695529 544.222673 594.299184 543.040456 595.481401 
+C 541.85824 596.663618 540.254584 597.327874 538.582677 597.327874 
+C 536.91077 597.327874 535.307115 596.663618 534.124898 595.481401 
+C 532.942681 594.299184 532.278425 592.695529 532.278425 591.023622 
+C 532.278425 589.351715 532.942681 587.74806 534.124898 586.565843 
+C 535.307115 585.383626 536.91077 584.71937 538.582677 584.71937 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_30">
+    <path d="M 538.582677 632.908346 
+C 540.254584 632.908346 541.85824 633.572602 543.040456 634.754819 
+C 544.222673 635.937036 544.886929 637.540691 544.886929 639.212598 
+C 544.886929 640.884506 544.222673 642.488161 543.040456 643.670378 
+C 541.85824 644.852595 540.254584 645.51685 538.582677 645.51685 
+C 536.91077 645.51685 535.307115 644.852595 534.124898 643.670378 
+C 532.942681 642.488161 532.278425 640.884506 532.278425 639.212598 
+C 532.278425 637.540691 532.942681 635.937036 534.124898 634.754819 
+C 535.307115 633.572602 536.91077 632.908346 538.582677 632.908346 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_31">
+    <path d="M 340.15748 713.695748 
+C 341.829387 713.695748 343.433043 714.360004 344.61526 715.542221 
+C 345.797477 716.724438 346.461732 718.328093 346.461732 720 
+C 346.461732 721.671907 345.797477 723.275562 344.61526 724.457779 
+C 343.433043 725.639996 341.829387 726.304252 340.15748 726.304252 
+C 338.485573 726.304252 336.881918 725.639996 335.699701 724.457779 
+C 334.517484 723.275562 333.853228 721.671907 333.853228 720 
+C 333.853228 718.328093 334.517484 716.724438 335.699701 715.542221 
+C 336.881918 714.360004 338.485573 713.695748 340.15748 713.695748 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_36">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="442.714961" y="77.113194" transform="rotate(-0 442.714961 77.113194)">범례</text>
+   </g>
+   <g id="line2d_13">
+    <path d="M 442.714961 91.559055 
+L 473.896063 91.559055 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 0.8"/>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="479.565354" y="94.65468" transform="rotate(-0 479.565354 94.65468)">적층 순서 연결</text>
+   </g>
+   <g id="line2d_14">
+    <path d="M 442.714961 107.433071 
+L 473.896063 107.433071 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #000000; stroke-width: 1.8"/>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="479.565354" y="110.549946" transform="rotate(-0 479.565354 110.549946)">볼트 결합부</text>
+   </g>
+   <g id="line2d_15">
+    <path d="M 442.714961 123.307087 
+L 473.896063 123.307087 
+" clip-path="url(#p2db7bb23e1)" style="fill: none; stroke: #707070; stroke-width: 0.8"/>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="479.565354" y="126.406462" transform="rotate(-0 479.565354 126.406462)">내부 구성 · 부착</text>
+   </g>
+   <g id="patch_32">
+    <path d="M 442.714961 133.511811 
+L 473.896063 133.511811 
+L 473.896063 144.850394 
+L 442.714961 144.850394 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.7; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="479.565354" y="142.245477" transform="rotate(-0 479.565354 142.245477)">기계 부품</text>
+   </g>
+   <g id="patch_33">
+    <path d="M 442.714961 149.385827 
+L 473.896063 149.385827 
+L 473.896063 160.724409 
+L 442.714961 160.724409 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ededed; stroke: #000000; stroke-width: 0.7; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="479.565354" y="158.119493" transform="rotate(-0 479.565354 158.119493)">전기 · 전원 부품</text>
+   </g>
+   <g id="patch_34">
+    <path d="M 458.305512 165.543307 
+C 459.73385 165.543307 461.103879 166.110792 462.113866 167.120779 
+C 463.123854 168.130767 463.691339 169.500796 463.691339 170.929134 
+C 463.691339 172.357472 463.123854 173.727501 462.113866 174.737488 
+C 461.103879 175.747476 459.73385 176.314961 458.305512 176.314961 
+C 456.877174 176.314961 455.507145 175.747476 454.497157 174.737488 
+C 453.48717 173.727501 452.919685 172.357472 452.919685 170.929134 
+C 452.919685 169.500796 453.48717 168.130767 454.497157 167.120779 
+C 455.507145 166.110792 456.877174 165.543307 458.305512 165.543307 
+z
+" clip-path="url(#p2db7bb23e1)" style="fill: #ffffff; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: start" x="479.565354" y="173.993509" transform="rotate(-0 479.565354 173.993509)">주석 번호</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="70.968996" transform="rotate(-0 340.15748 70.968996)">1</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="144.654158" transform="rotate(-0 340.15748 144.654158)">2</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="218.306196" transform="rotate(-0 340.15748 218.306196)">3</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="538.582677" y="212.63878" transform="rotate(-0 538.582677 212.63878)">4</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="291.960108" transform="rotate(-0 340.15748 291.960108)">5</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="365.707771" transform="rotate(-0 340.15748 365.707771)">6</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="538.582677" y="360.040354" transform="rotate(-0 538.582677 360.040354)">7</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="439.408558" transform="rotate(-0 340.15748 439.408558)">8</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="513.109345" transform="rotate(-0 340.15748 513.109345)">9</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="586.825758" transform="rotate(-0 340.15748 586.825758)">10</text>
+   </g>
+   <g id="text_53">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="538.582677" y="593.961122" transform="rotate(-0 538.582677 593.961122)">11</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="538.582677" y="642.150098" transform="rotate(-0 538.582677 642.150098)">12</text>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="340.15748" y="722.88875" transform="rotate(-0 340.15748 722.88875)">13</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', NanumGothic, sans-serif; text-anchor: middle" x="458.305512" y="173.866634" transform="rotate(-0 458.305512 173.866634)">1</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2db7bb23e1">
+   <rect x="0" y="0" width="595.275591" height="841.889764"/>
+  </clipPath>
+ </defs>
+</svg>

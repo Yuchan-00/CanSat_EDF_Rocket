@@ -1,0 +1,1724 @@
+{
+ "classes": {
+  "S1": {
+   "bottom_shell_layers": 4,
+   "sparse_infill_density": 15,
+   "sparse_infill_pattern": "gyroid",
+   "top_shell_layers": 4,
+   "wall_loops": 3,
+   "what": "skin: the 2-3 loops are the whole wall"
+  },
+  "S2": {
+   "bottom_shell_layers": 5,
+   "sparse_infill_density": 40,
+   "sparse_infill_pattern": "gyroid",
+   "top_shell_layers": 5,
+   "wall_loops": 4,
+   "what": "frame: rings, bulkheads, bosses, lattice"
+  },
+  "S3": {
+   "bottom_shell_layers": 5,
+   "sparse_infill_density": 100,
+   "sparse_infill_pattern": "zig-zag",
+   "top_shell_layers": 5,
+   "wall_loops": 4,
+   "what": "solid"
+  },
+  "S4": {
+   "bottom_shell_layers": 4,
+   "sparse_infill_density": 15,
+   "sparse_infill_pattern": "gyroid",
+   "top_shell_layers": 4,
+   "wall_loops": 3,
+   "what": "fin: 3 walls, 4 + 4 shells, 15 % gyroid"
+  }
+ },
+ "generator": "cad/body_v2/build_body_v2.py",
+ "params_expected_sha256": "3fc32e0fb9032aef5e7ca23853f3d2589501a937f2e24b4116d3060ca3c5f89f",
+ "params_sha256": "3fc32e0fb9032aef5e7ca23853f3d2589501a937f2e24b4116d3060ca3c5f89f",
+ "parts": {
+  "V_fin_45": {
+   "I_com_mm5": [
+    [
+     55741932.48833734,
+     -38808412.33783692,
+     12940094.277492158
+    ],
+    [
+     -38808412.33783692,
+     56295904.49250454,
+     12864218.048345938
+    ],
+    [
+     12940094.277492158,
+     12864218.048345938,
+     77712096.30260849
+    ]
+   ],
+   "bbox": [
+    48.295,
+    49.142,
+    -40.002,
+    178.034,
+    178.035,
+    70.714
+   ],
+   "build_s": 0.1,
+   "com_mm": [
+    116.12181400815358,
+    116.30680966410648,
+    9.464911249396245
+   ],
+   "export_s": 0.1,
+   "group": "tail",
+   "kind": "installed",
+   "mass_g_1.24": 45.211,
+   "mass_g_1.31": 47.764,
+   "n_solids": 1,
+   "note": "the printed fin as installed at theta 45",
+   "step": "V_fin_45.step",
+   "step_sha256": "a360c429c98b9c32aadd4d0b162d46e099b1496ebfdd662796ae523c0e5eeea0",
+   "stl": "V_fin_45.stl",
+   "stl_sha256": "dd5042cfc7c23166234e99f988db4a21eedabaf82decbc4d46394a4e264ddd82",
+   "valid": true,
+   "volume_mm3": 36460.86693598193
+  },
+  "V_fin_print": {
+   "I_com_mm5": [
+    [
+     17210506.15258392,
+     -18246404.22945572,
+     276986.0020838325
+    ],
+    [
+     -18246404.22945572,
+     77712096.30260795,
+     53652.596160145884
+    ],
+    [
+     276986.0020838325,
+     53652.596160145884,
+     94827330.82825755
+    ]
+   ],
+   "bbox": [
+    -89.852,
+    -55.359,
+    -0.002,
+    89.853,
+    55.358,
+    4.801
+   ],
+   "build_s": 0.1,
+   "cls": "S4",
+   "com_mm": [
+    3.2018559405112654,
+    5.890743148948184,
+    1.9308117828143825
+   ],
+   "export_s": 0.1,
+   "group": "tail",
+   "kind": "printed",
+   "mass_g_1.24": 45.211,
+   "mass_g_1.31": 47.764,
+   "modifiers": [
+    "V_fin_print_modifier_100pct"
+   ],
+   "n_solids": 1,
+   "note": "flat, bed face flat (root step on top); 4 + 2 spares; 100 % modifier r 100-126",
+   "print_frame": true,
+   "qty": 6,
+   "rots": [],
+   "step": "V_fin_print.step",
+   "step_sha256": "3f856c9a5253eb50f54962c260e278b026252699045603c4a85e1fa847c3ecff",
+   "stl": "V_fin_print.stl",
+   "stl_sha256": "2444289cbcbfb6f8248929bf9b37b797b0856e845de769559ab4849cdbfd6903",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 36460.866935981896
+  },
+  "V_fin_print_modifier_100pct": {
+   "I_com_mm5": [
+    [
+     71174826.66666669,
+     9.313225746154785e-10,
+     -9.313225746154785e-10
+    ],
+    [
+     9.313225746154785e-10,
+     2052266.6666666418,
+     8.09086486697197e-09
+    ],
+    [
+     -9.313225746154785e-10,
+     8.09086486697197e-09,
+     72872106.66666664
+    ]
+   ],
+   "bbox": [
+    -61.15,
+    -84.644,
+    -2.2,
+    -35.15,
+    75.356,
+    5.8
+   ],
+   "build_s": 0.1,
+   "com_mm": [
+    -48.14999999999999,
+    -4.644345601655574,
+    1.8000001000000072
+   ],
+   "export_s": 0.1,
+   "group": "tail",
+   "kind": "modifier",
+   "mass_g_1.24": 41.267,
+   "mass_g_1.31": 43.597,
+   "n_solids": 1,
+   "note": "slicer 100 % zone r 100-126 (bed frame)",
+   "step": "V_fin_print_modifier_100pct.step",
+   "step_sha256": "1e32bfc1d6545a9fb39909d5ae0d42e393abddc1c975ce4bcaa57dd70d4eebc6",
+   "stl": "V_fin_print_modifier_100pct.stl",
+   "stl_sha256": "84ae0285b9d71921aa8ac20876838fa995d3ffc8b9f9daef403dd826cb3c8605",
+   "valid": true,
+   "volume_mm3": 33279.99999999999
+  },
+  "V_lip_spacer": {
+   "I_com_mm5": [
+    [
+     12896297.284048915,
+     2.0884268127880673e-08,
+     7.517065410920028e-08
+    ],
+    [
+     2.0884268127880673e-08,
+     12896297.284048915,
+     -1.207622773647295e-09
+    ],
+    [
+     7.517065410920028e-08,
+     -1.207622773647295e-09,
+     25549272.702906772
+    ]
+   ],
+   "bbox": [
+    -57.96,
+    -57.95,
+    194.99,
+    57.96,
+    57.95,
+    210.01
+   ],
+   "build_s": 0.0,
+   "cls": "S3",
+   "com_mm": [
+    1.3257249234169712e-13,
+    -5.131186147805352e-14,
+    202.70642126693542
+   ],
+   "export_s": 0.1,
+   "group": "tail",
+   "kind": "printed",
+   "mass_g_1.24": 10.344,
+   "mass_g_1.31": 10.928,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "skirt end z 195 on the bed (4.75 mm land overhang = spec test-print item)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "V_lip_spacer.step",
+   "step_sha256": "0ab286c44bc054218319a647c3689c9f95a29e5955a3ff298cd3e7c08f0c31ef",
+   "stl": "V_lip_spacer.stl",
+   "stl_sha256": "2c210731a713ab99d0c887bde26e420b7549ebd430d3508117c623e457e937bb",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 8342.194808447719
+  },
+  "V_prop_module": {
+   "I_com_mm5": [
+    [
+     1835986895.0197725,
+     696686.1043645755,
+     1539392.0413543521
+    ],
+    [
+     696686.1043645755,
+     1883559377.9425201,
+     628641.3052723394
+    ],
+    [
+     1539392.0413543521,
+     628641.3052723394,
+     1349011872.75471
+    ]
+   ],
+   "bbox": [
+    -85.277,
+    -85.277,
+    -0.016,
+    85.277,
+    85.277,
+    210.016
+   ],
+   "build_s": 9.1,
+   "cls": "S1",
+   "com_mm": [
+    -0.1410427230053316,
+    -0.07837912434722226,
+    105.10641628700212
+   ],
+   "export_s": 1.2,
+   "group": "tail",
+   "kind": "printed",
+   "mass_g_1.24": 337.144,
+   "mass_g_1.31": 356.176,
+   "modifiers": [
+    "V_prop_module_modifier_100pct"
+   ],
+   "n_solids": 1,
+   "note": "upright, base ring z 0 on the bed, turned 45 deg on the plate; no support",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     45.0
+    ]
+   ],
+   "step": "V_prop_module.step",
+   "step_sha256": "5c0ec1072dda9a53f891c5a2a2540b30a88451c5679641f1e5668bee99076358",
+   "stl": "V_prop_module.stl",
+   "stl_sha256": "52a02367a551bef2d0849bb351ca9a7eca52964cd4fd90272080d2101675f294",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 271890.01531935716
+  },
+  "V_prop_module_modifier_100pct": {
+   "I_com_mm5": [
+    [
+     1131506385.0410552,
+     3594573.124999835,
+     1.363466415050999e-07
+    ],
+    [
+     3594573.124999835,
+     1133432710.9730072,
+     9.474354253549926e-08
+    ],
+    [
+     1.363466415050999e-07,
+     9.474354253549926e-08,
+     898636488.7082273
+    ]
+   ],
+   "bbox": [
+    -86.267,
+    -86.267,
+    -0.0,
+    86.267,
+    86.267,
+    210.0
+   ],
+   "build_s": 0.2,
+   "com_mm": [
+    -5.482146980578862e-15,
+    1.1112199392891817e-14,
+    126.65487654772656
+   ],
+   "export_s": 0.2,
+   "group": "tail",
+   "kind": "modifier",
+   "mass_g_1.24": 175.374,
+   "mass_g_1.31": 185.274,
+   "n_solids": 17,
+   "note": "slicer 100 % zones",
+   "step": "V_prop_module_modifier_100pct.step",
+   "step_sha256": "15342fa303fefddfb8294135abe869c0825da299416f2dd65bcad60a785e2123",
+   "stl": "V_prop_module_modifier_100pct.stl",
+   "stl_sha256": "b8b17f57607b2f351cc04df2822159a8cec7253bee4fadf2633b5514be47ca1e",
+   "valid": true,
+   "volume_mm3": 141430.76353263925
+  },
+  "V_tail_extension": {
+   "I_com_mm5": [
+    [
+     143614726.29229534,
+     -2.3818302005262406e-08,
+     -0.0028897332847355518
+    ],
+    [
+     -2.3818302005262406e-08,
+     143614726.29616457,
+     -8.854038222779247e-08
+    ],
+    [
+     -0.0028897332847355518,
+     -8.854038222779247e-08,
+     218481147.8804155
+    ]
+   ],
+   "bbox": [
+    -71.011,
+    -71.011,
+    -90.011,
+    71.011,
+    71.011,
+    0.01
+   ],
+   "build_s": 0.1,
+   "cls": "S1",
+   "com_mm": [
+    1.6405929727698718e-09,
+    -1.0862902018652403e-13,
+    -46.38501092528361
+   ],
+   "export_s": 0.1,
+   "group": "tail",
+   "kind": "printed",
+   "mass_g_1.24": 54.842,
+   "mass_g_1.31": 57.938,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "upside down (joint face z 0 + tabs on the bed)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "step": "V_tail_extension.step",
+   "step_sha256": "aa7bcfd4989296930c79d38eff3eaa222864834445c6de9aa7c74a84b3bb9c26",
+   "stl": "V_tail_extension.stl",
+   "stl_sha256": "d0b48dce993e9059435458bdf7212018fb640cb38725f69f43ed62d836b7177d",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 44227.64518971059
+  },
+  "V_tunnel_plug_200": {
+   "I_com_mm5": [
+    [
+     39014.15608519316,
+     12110.883101842483,
+     0.0
+    ],
+    [
+     12110.883101842483,
+     10147.779192980379,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     46494.67237774376
+    ]
+   ],
+   "bbox": [
+    -68.498,
+    -34.555,
+    190.194,
+    -52.346,
+    -9.433,
+    194.806
+   ],
+   "build_s": 0.0,
+   "cls": "S3",
+   "com_mm": [
+    -59.89737852138902,
+    -21.800862892361344,
+    192.50000000000006
+   ],
+   "export_s": 0.0,
+   "group": "tail",
+   "kind": "printed",
+   "mass_g_1.24": 0.938,
+   "mass_g_1.31": 0.991,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "2026-11-20 seal plug over the servo-lead tunnel (theta 200), flat",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "V_tunnel_plug_200.step",
+   "step_sha256": "3b60d539b370896317b51ed837c48c6cb76419feca2edd0f9017ec3b2fcd71f2",
+   "stl": "V_tunnel_plug_200.stl",
+   "stl_sha256": "83a58bc8d07a448ad439c435bfd79457aee25be427792264fc5caaedd5755db4",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 756.3127316959007
+  },
+  "V_tunnel_plug_262": {
+   "I_com_mm5": [
+    [
+     8017.834043998271,
+     -3461.093244022515,
+     -2.3283064365386963e-10
+    ],
+    [
+     -3461.093244022515,
+     42594.33380161226,
+     -1.862645149230957e-09
+    ],
+    [
+     -2.3283064365386963e-10,
+     -1.862645149230957e-09,
+     47799.33035126934
+    ]
+   ],
+   "bbox": [
+    -21.239,
+    -67.928,
+    190.192,
+    3.822,
+    -54.308,
+    194.808
+   ],
+   "build_s": 0.0,
+   "cls": "S3",
+   "com_mm": [
+    -10.616898588362629,
+    -59.93164414155032,
+    192.50000000000006
+   ],
+   "export_s": 0.1,
+   "group": "tail",
+   "kind": "printed",
+   "mass_g_1.24": 0.989,
+   "mass_g_1.31": 1.045,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "2026-11-20 seal plug over the motor-lead tunnel (theta 262), flat",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "V_tunnel_plug_262.step",
+   "step_sha256": "2676bf030e00878c6b24897c21626f0ecd84e9434b09b50fbf3f49be4ad02cc9",
+   "stl": "V_tunnel_plug_262.stl",
+   "stl_sha256": "6a3e55ef79a8ad2069a16543cbd0013e0906052bce7f688925738d9f91c56a96",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 797.5909719400016
+  },
+  "avionics_bay_hardware_envelope": {
+   "I_com_mm5": [
+    [
+     314934771.1608429,
+     1497448.329375078,
+     -4813889.425671816
+    ],
+    [
+     1497448.329375078,
+     299010176.64904785,
+     15643577.550316334
+    ],
+    [
+     -4813889.425671816,
+     15643577.550316334,
+     125293755.29388356
+    ]
+   ],
+   "bbox": [
+    -32.5,
+    -12.801,
+    422.0,
+    24.0,
+    47.5,
+    536.5
+   ],
+   "build_s": 0.0,
+   "com_mm": [
+    -1.7503514157248026,
+    12.236415732121943,
+    479.4678139238719
+   ],
+   "export_s": 0.1,
+   "group": "avionics",
+   "kind": "reference",
+   "mass_g_1.24": 309.633,
+   "mass_g_1.31": 327.113,
+   "n_solids": 3,
+   "note": "6S, ESC, misc box, 1S logic pack boxes (F)",
+   "step": "avionics_bay_hardware_envelope.step",
+   "step_sha256": "436a1ffd24bf489f20d657e56b92fb4a4b387c4502ca72bd68e45a0eb7f9bb10",
+   "stl": "avionics_bay_hardware_envelope.stl",
+   "stl_sha256": "f815c6e5eb60f7afc97afec7ea45580f00762799012dcb2ff94bc4b51c74499b",
+   "valid": true,
+   "volume_mm3": 249704.25
+  },
+  "avionics_boss_modifier_100pct": {
+   "I_com_mm5": [
+    [
+     211838365.2587452,
+     494694.1211953148,
+     -5796355.641677767
+    ],
+    [
+     494694.1211953148,
+     199376453.63789177,
+     869817.3687027618
+    ],
+    [
+     -5796355.641677767,
+     869817.3687027618,
+     85458324.79336126
+    ]
+   ],
+   "bbox": [
+    -60.5,
+    -60.5,
+    350.391,
+    51.148,
+    60.5,
+    550.409
+   ],
+   "build_s": 0.1,
+   "com_mm": [
+    -4.681314965146365,
+    0.7024912404914926,
+    411.89934235464483
+   ],
+   "export_s": 0.1,
+   "group": "local",
+   "kind": "modifier",
+   "mass_g_1.24": 31.987,
+   "mass_g_1.31": 33.793,
+   "n_solids": 11,
+   "note": "print_plan: avionics bosses 100 % (lower 7 + upper 4)",
+   "step": "avionics_boss_modifier_100pct.step",
+   "step_sha256": "95274d202bd1da2fd98149cb697239991f18df8d53dccf1f33cde6059b8d267a",
+   "stl": "avionics_boss_modifier_100pct.stl",
+   "stl_sha256": "5731d72b2bb144a189aef0ac860d0a0892f0d33600cd908b7d7af3c578f568fd",
+   "valid": true,
+   "volume_mm3": 25795.970707799297
+  },
+  "avionics_door": {
+   "I_com_mm5": [
+    [
+     271036.7919149399,
+     75920.69150825008,
+     1989.545420523733
+    ],
+    [
+     75920.69150825008,
+     465385.045943439,
+     5778.395117074251
+    ],
+    [
+     1989.545420523733,
+     5778.395117074251,
+     251913.61958037503
+    ]
+   ],
+   "bbox": [
+    -38.47,
+    -60.01,
+    378.19,
+    2.384,
+    -44.826,
+    425.299
+   ],
+   "build_s": 0.1,
+   "cls": "S3",
+   "com_mm": [
+    -18.97099722407349,
+    -55.0957638376571,
+    396.95095612513774
+   ],
+   "export_s": 0.0,
+   "group": "avionics",
+   "kind": "printed",
+   "mass_g_1.24": 2.348,
+   "mass_g_1.31": 2.481,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "2026-11-20 power-train door: upright as in the rocket (1.2 curved wall, bottom edge on the bed)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "avionics_door.step",
+   "step_sha256": "288e99abbf791f768beaf91d92a8ffbfc728452a6fe7cbd26c345ae81ef17888",
+   "stl": "avionics_door.stl",
+   "stl_sha256": "169e898e5923e018275da974cbfd36910020a522bfdec3d021ac33e09a1cbd34",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 1893.6762022692044
+  },
+  "avionics_hole_plug_gps": {
+   "I_com_mm5": [
+    [
+     134.1492929533124,
+     11.958710416249232,
+     0.0001474639866501093
+    ],
+    [
+     11.958710416249232,
+     80.43057127669454,
+     -0.0001645633310545236
+    ],
+    [
+     0.0001474639866501093,
+     -0.0001645633310545236,
+     75.02226807565603
+    ]
+   ],
+   "bbox": [
+    -59.151,
+    -15.436,
+    526.098,
+    -56.436,
+    -8.912,
+    532.702
+   ],
+   "build_s": 0.0,
+   "cls": "S3",
+   "com_mm": [
+    -57.80624356591121,
+    -12.287091373536423,
+    529.4000016964027
+   ],
+   "export_s": 0.1,
+   "group": "avionics",
+   "kind": "printed",
+   "mass_g_1.24": 0.044,
+   "mass_g_1.31": 0.047,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "flat on its inner face",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     -192.0
+    ],
+    [
+     "y",
+     -90.0
+    ]
+   ],
+   "step": "avionics_hole_plug_gps.step",
+   "step_sha256": "5d1e4079246f788380e13140fd55935e7c9cd21b725b7b255f5f90591577c37b",
+   "stl": "avionics_hole_plug_gps.stl",
+   "stl_sha256": "f7d857ced921ad7a5271ca89e722cf78053704999fdd611374fbb826f5a2741c",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 35.52509796233874
+  },
+  "avionics_hole_plug_release": {
+   "I_com_mm5": [
+    [
+     134.14929295517504,
+     11.958710417133261,
+     -0.00014746305532753468
+    ],
+    [
+     11.958710417133261,
+     80.43057127483189,
+     0.00016456283628940582
+    ],
+    [
+     -0.00014746305532753468,
+     0.00016456283628940582,
+     75.02226808166597
+    ]
+   ],
+   "bbox": [
+    56.436,
+    8.912,
+    526.098,
+    59.151,
+    15.436,
+    532.702
+   ],
+   "build_s": 0.0,
+   "cls": "S3",
+   "com_mm": [
+    57.8062435659053,
+    12.287091373502092,
+    529.4000016964401
+   ],
+   "export_s": 0.1,
+   "group": "avionics",
+   "kind": "printed",
+   "mass_g_1.24": 0.044,
+   "mass_g_1.31": 0.047,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "flat on its inner face",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     -12.0
+    ],
+    [
+     "y",
+     -90.0
+    ]
+   ],
+   "step": "avionics_hole_plug_release.step",
+   "step_sha256": "8af62f05174c233878b21170a924e89203de87db9fc3d4b802d5c28c422d1212",
+   "stl": "avionics_hole_plug_release.stl",
+   "stl_sha256": "69e3aceb974730fdaa8d3670f7b9dfe30b360d5221141fb027f7eda2b9e422bf",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 35.52509796442127
+  },
+  "avionics_joint_hardware": {
+   "I_com_mm5": [
+    [
+     16509716.885739982,
+     56093.04926313271,
+     -391317.3998291576
+    ],
+    [
+     56093.04926313271,
+     15047067.344587862,
+     58722.185471082106
+    ],
+    [
+     -391317.3998291576,
+     58722.185471082106,
+     8550922.853804613
+    ]
+   ],
+   "bbox": [
+    -61.666,
+    -61.707,
+    355.048,
+    50.586,
+    61.707,
+    545.752
+   ],
+   "build_s": 0.3,
+   "com_mm": [
+    -5.360292991075465,
+    0.8043805855265028,
+    385.3863070382222
+   ],
+   "export_s": 0.3,
+   "group": "avionics",
+   "kind": "reference",
+   "mass_g_1.24": 3.293,
+   "mass_g_1.31": 3.479,
+   "n_solids": 32,
+   "note": "14 + 4 M3x8 and 14 nuts of the avionics joints",
+   "step": "avionics_joint_hardware.step",
+   "step_sha256": "9f326342509cf2de4a07f88522078b3682359f717bb563127516fae009dbc81b",
+   "stl": "avionics_joint_hardware.stl",
+   "stl_sha256": "53bd95f5425e8800b8089855f4e02eba4450a793f3cbc9ae8cf57237da2c80ca",
+   "valid": true,
+   "volume_mm3": 2655.976554134461
+  },
+  "avionics_logo": {
+   "I_com_mm5": [
+    [
+     2674067.2903867513,
+     31956.678537206644,
+     8.001916707493365
+    ],
+    [
+     31956.678537206644,
+     645531.1007112712,
+     1812.6030873200943
+    ],
+    [
+     8.001916707493365,
+     1812.6030873200943,
+     2066079.7239440426
+    ]
+   ],
+   "bbox": [
+    14.559,
+    -58.173,
+    353.44,
+    31.613,
+    58.166,
+    474.47
+   ],
+   "build_s": 1.2,
+   "cls": "S3",
+   "com_mm": [
+    23.255172383452678,
+    0.36444713943363904,
+    425.8122687697047
+   ],
+   "export_s": 2.1,
+   "group": "avionics",
+   "kind": "inlay",
+   "mass_g_1.24": 0.844,
+   "mass_g_1.31": 0.892,
+   "modifiers": [],
+   "n_solids": 20,
+   "note": "orange inlay, printed in the same object as avionics_module (2 filaments)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "avionics_logo.step",
+   "step_sha256": "2f76eef879e8b7ff3b6fde032af3d707636db90e40514106cf2063cd57d32a7e",
+   "stl": "avionics_logo.stl",
+   "stl_sha256": "5d903a36c1fede4cfce7704b8fe60540bcdd6416c4ad8dda52cb1b009fb2af2c",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 680.9928770573624
+  },
+  "avionics_module": {
+   "I_com_mm5": [
+    [
+     579405803.8007355,
+     -514999.2047142202,
+     -6738250.657261606
+    ],
+    [
+     -514999.2047142202,
+     567213946.4637108,
+     -1940980.7401549928
+    ],
+    [
+     -6738250.657261606,
+     -1940980.7401549928,
+     363767322.6044417
+    ]
+   ],
+   "bbox": [
+    -60.094,
+    -60.094,
+    350.306,
+    60.094,
+    60.092,
+    550.41
+   ],
+   "build_s": 4.9,
+   "cls": "S2",
+   "com_mm": [
+    0.550652877082397,
+    -0.3659282207016142,
+    446.08178702615277
+   ],
+   "export_s": 2.5,
+   "group": "avionics",
+   "kind": "printed",
+   "mass_g_1.24": 130.229,
+   "mass_g_1.31": 137.58,
+   "modifiers": [
+    "avionics_boss_modifier_100pct"
+   ],
+   "n_solids": 1,
+   "note": "upright as rocket-carrier (z 350.4 on the bed); no support; YUCHAN logo = 2nd filament (orange)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "avionics_module.step",
+   "step_sha256": "4ff90d330a67b52a355ea97e2b8ac74e47ff1466ab59ede3fbd514040adf3f48",
+   "stl": "avionics_module.stl",
+   "stl_sha256": "c13be4ed38ea3d07d5e920dcb6f824a40f87c7ee7e11bab7f87e0a82b4fb2e1d",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 105023.17361470891
+  },
+  "avionics_pcb_foam_seat": {
+   "I_com_mm5": [
+    [
+     6990667.035204887,
+     296012.6525026592,
+     -4.190951585769653e-09
+    ],
+    [
+     296012.6525026592,
+     7885505.311195612,
+     1.30385160446167e-08
+    ],
+    [
+     -4.190951585769653e-09,
+     1.30385160446167e-08,
+     14851759.929505875
+    ]
+   ],
+   "bbox": [
+    -38.001,
+    -42.201,
+    350.399,
+    38.001,
+    35.001,
+    353.401
+   ],
+   "build_s": 0.4,
+   "com_mm": [
+    0.48091509228510637,
+    -0.7525416621545209,
+    351.90000000000003
+   ],
+   "export_s": 0.1,
+   "group": "avionics",
+   "kind": "reference",
+   "mass_g_1.24": 20.181,
+   "mass_g_1.31": 21.32,
+   "n_solids": 1,
+   "note": "3 mm foam under the PCB",
+   "step": "avionics_pcb_foam_seat.step",
+   "step_sha256": "3ee16b47398f6dcce836d1ac93902b23d15b69ffd4fa889ebd26ca8ff68948bf",
+   "stl": "avionics_pcb_foam_seat.stl",
+   "stl_sha256": "2c6f87403d8dc5852025a53400534c810969fcf1290e3dd8a3af11c9b9358b89",
+   "valid": true,
+   "volume_mm3": 16274.944597169531
+  },
+  "avionics_tray": {
+   "I_com_mm5": [
+    [
+     92867057.36479378,
+     29756.550236460054,
+     -100302.94158113003
+    ],
+    [
+     29756.550236460054,
+     67005833.86868858,
+     757910.0704087457
+    ],
+    [
+     -100302.94158113003,
+     757910.0704087457,
+     25938955.664083153
+    ]
+   ],
+   "bbox": [
+    14.0,
+    -50.002,
+    370.4,
+    26.002,
+    50.002,
+    530.402
+   ],
+   "build_s": 0.2,
+   "cls": "S2",
+   "com_mm": [
+    24.873579150437347,
+    -0.3885980858814787,
+    448.96186372353475
+   ],
+   "export_s": 0.1,
+   "group": "avionics",
+   "kind": "printed",
+   "mass_g_1.24": 39.502,
+   "mass_g_1.31": 41.732,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "flat (2 mm plate on the bed)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "y",
+     90.0
+    ]
+   ],
+   "step": "avionics_tray.step",
+   "step_sha256": "0a2a0b23651bccef3888f37e20c106a232a75cc25f878c2f2a859a932f135f53",
+   "stl": "avionics_tray.stl",
+   "stl_sha256": "77eefb2f25db6a28eb8c99fa18753da72f19db85649c8f117bda65fa7fbffd72",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 31856.776833882323
+  },
+  "cansat_dummy_sleeve": {
+   "I_com_mm5": [
+    [
+     16848655.962830544,
+     5.952567861306102e-08,
+     -1.7633284740895063e-07
+    ],
+    [
+     5.952567861306102e-08,
+     16848655.96282959,
+     7.615800323031277e-07
+    ],
+    [
+     -1.7633284740895063e-07,
+     7.615800323031277e-07,
+     6993391.944300721
+    ]
+   ],
+   "bbox": [
+    -33.01,
+    -33.0,
+    564.6,
+    33.01,
+    33.0,
+    683.41
+   ],
+   "build_s": 0.6,
+   "cls": "S3",
+   "com_mm": [
+    -1.0081639759721502e-12,
+    2.147410973759433e-12,
+    631.1163160951021
+   ],
+   "export_s": 0.3,
+   "group": "front",
+   "kind": "printed",
+   "mass_g_1.24": 9.269,
+   "mass_g_1.31": 9.792,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "chute end z 683.4 on the bed; hoops bridge ~31 mm (test print)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "step": "cansat_dummy_sleeve.step",
+   "step_sha256": "d9aa6d883af8a83f05d2496e5bd62043ddfd6fd51b7ea6c5bb128181942b9342",
+   "stl": "cansat_dummy_sleeve.stl",
+   "stl_sha256": "e693ca2793ce7f9b49e6b4960be52464a52ebbff89a508de63decdd5018f797b",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 7474.821462399895
+  },
+  "carrier_pcb_rev31_envelope": {
+   "I_com_mm5": [
+    [
+     9775612.153515816,
+     1794077.11255977,
+     -161787.37410735711
+    ],
+    [
+     1794077.11255977,
+     13029650.519294262,
+     226261.79456158727
+    ],
+    [
+     -161787.37410735711,
+     226261.79456158727,
+     22452535.616135206
+    ]
+   ],
+   "bbox": [
+    -45.74,
+    -42.2,
+    353.399,
+    45.75,
+    42.25,
+    368.4
+   ],
+   "build_s": 0.7,
+   "com_mm": [
+    1.765459344339871,
+    -3.6526668424149484,
+    356.5428004582866
+   ],
+   "export_s": 0.2,
+   "group": "avionics",
+   "kind": "reference",
+   "mass_g_1.24": 23.838,
+   "mass_g_1.31": 25.183,
+   "n_solids": 1,
+   "note": "carrier PCB rev 3.1 as ordered (frozen), outline from pcb-rev3",
+   "step": "carrier_pcb_rev31_envelope.step",
+   "step_sha256": "cef07f516dbba557f6327e20a96e004e668c3085b62242ce2b21d182505c2c85",
+   "stl": "carrier_pcb_rev31_envelope.stl",
+   "stl_sha256": "9374d8ffed9fcde224bacd866347eec45cd9acc01c926b01f6acefaf2b769267",
+   "valid": true,
+   "volume_mm3": 19223.827409499645
+  },
+  "intake_module": {
+   "I_com_mm5": [
+    [
+     835323556.6974545,
+     2759701.002461414,
+     4142330.8537226915
+    ],
+    [
+     2759701.002461414,
+     803848859.7555866,
+     12552351.03824374
+    ],
+    [
+     4142330.8537226915,
+     12552351.03824374,
+     644954351.9973572
+    ]
+   ],
+   "bbox": [
+    -71.419,
+    -71.417,
+    194.882,
+    71.419,
+    71.419,
+    370.411
+   ],
+   "build_s": 255.5,
+   "cls": "S2",
+   "com_mm": [
+    -3.3394775348174743,
+    -3.6814386692211643,
+    282.0281095536538
+   ],
+   "export_s": 208.7,
+   "group": "intake",
+   "kind": "printed",
+   "mass_g_1.24": 202.811,
+   "mass_g_1.31": 214.26,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "INVERTED (spigot top z 370.4 on the bed); support only inside the upper spigot bore (spec 3)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "step": "intake_module.step",
+   "step_sha256": "6ee31bc7051bcf1a36dc7848efe7e83b30557149c7b9fcd7a0184b2d80ae453f",
+   "stl": "intake_module.stl",
+   "stl_sha256": "793ee05b4450abc4608ac870077a596814e4eeeca908eb22170f0c2d97bfbc9f",
+   "supports": "build_plate_only",
+   "valid": true,
+   "volume_mm3": 163557.29771588612
+  },
+  "nose_ballast_cap": {
+   "I_com_mm5": [
+    [
+     62563.27747642994,
+     7.500245966757744e-12,
+     2.1715597989175647e-10
+    ],
+    [
+     7.500245966757744e-12,
+     62563.27747666836,
+     -6.223651870168853e-13
+    ],
+    [
+     2.1715597989175647e-10,
+     -6.223651870168853e-13,
+     120714.65411323728
+    ]
+   ],
+   "bbox": [
+    -11.811,
+    -11.811,
+    749.992,
+    11.811,
+    11.811,
+    754.011
+   ],
+   "build_s": 0.0,
+   "cls": "S3",
+   "com_mm": [
+    4.172274885988458e-16,
+    -4.891104468285356e-16,
+    752.0202774623053
+   ],
+   "export_s": 0.1,
+   "group": "front",
+   "kind": "printed",
+   "mass_g_1.24": 2.069,
+   "mass_g_1.31": 2.186,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "flat, column face on the bed, head counterbore up; no support",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "step": "nose_ballast_cap.step",
+   "step_sha256": "dd630d8bbd5691aaf69bb1ad57fee64ab3588d20a9c4db4e1fb7c9d8c032b197",
+   "stl": "nose_ballast_cap.stl",
+   "stl_sha256": "3df59d3334adcffc1a43fd19b52af84d0a2cccade58c3911f71703ef97a3a7c7",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 1668.9501532685554
+  },
+  "nose_cone": {
+   "I_com_mm5": [
+    [
+     127317349.72303772,
+     922297.5820823192,
+     562514.3784631342
+    ],
+    [
+     922297.5820823192,
+     127249716.47974396,
+     1379235.2163623478
+    ],
+    [
+     562514.3784631342,
+     1379235.2163623478,
+     86673214.76768638
+    ]
+   ],
+   "bbox": [
+    -60.004,
+    -60.007,
+    644.987,
+    60.007,
+    60.007,
+    799.671
+   ],
+   "build_s": 0.5,
+   "cls": "S1",
+   "com_mm": [
+    0.19529759499343155,
+    0.5184584996597491,
+    715.1362365871988
+   ],
+   "export_s": 0.6,
+   "group": "front",
+   "kind": "printed",
+   "mass_g_1.24": 52.417,
+   "mass_g_1.31": 55.376,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "tip up (skirt bottom z 645 on the bed); supports only in the ballast-pocket mouth (spec 3)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "nose_cone.step",
+   "step_sha256": "7fb0dfd171b94c53d932611b292254db7c064540850b33b79fa9f59432443b92",
+   "stl": "nose_cone.stl",
+   "stl_sha256": "ea498228cf70d27dd8c578b84bc06ac523bb6bff1440ae45f1eaeece680a4c50",
+   "supports": "build_plate_only",
+   "valid": true,
+   "volume_mm3": 42271.77826519596
+  },
+  "payload_bulkhead": {
+   "I_com_mm5": [
+    [
+     11234652.34986782,
+     51745.8229912433,
+     707.0164365684614
+    ],
+    [
+     51745.8229912433,
+     11010151.708250046,
+     220.16508568950667
+    ],
+    [
+     707.0164365684614,
+     220.16508568950667,
+     21821400.82235044
+    ]
+   ],
+   "bbox": [
+    -58.6,
+    -58.6,
+    539.19,
+    58.608,
+    58.608,
+    552.01
+   ],
+   "build_s": 0.3,
+   "cls": "S2",
+   "com_mm": [
+    -0.019435227344993814,
+    -0.006360009682999417,
+    549.0676248920206
+   ],
+   "export_s": 0.2,
+   "group": "front",
+   "kind": "printed",
+   "mass_g_1.24": 18.232,
+   "mass_g_1.31": 19.262,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "top face z 552.0 on the bed, ribs up (0.8 disc = 4 layers, test print)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "step": "payload_bulkhead.step",
+   "step_sha256": "cc1de5b2d46c8c0d1030fd87315a83dc9148d9e758b7adb44dd3c51b4364d82f",
+   "stl": "payload_bulkhead.stl",
+   "stl_sha256": "b2fe2acf0e7c91223ccd948c4920df2edc8a863e3ee6a261faf0f44f681edd75",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 14703.455658233019
+  },
+  "payload_cord_lug_modifier_100pct": {
+   "I_com_mm5": [
+    [
+     4663566.073805809,
+     -1.921856040025332e-11,
+     7.239577826112525e-10
+    ],
+    [
+     -1.921856040025332e-11,
+     4911964.948219299,
+     -5.960464477539063e-08
+    ],
+    [
+     7.239577826112525e-10,
+     -5.960464477539063e-08,
+     620741.6854167432
+    ]
+   ],
+   "bbox": [
+    -10.515,
+    -60.509,
+    599.991,
+    10.515,
+    -47.262,
+    661.009
+   ],
+   "build_s": 0.0,
+   "com_mm": [
+    1.5116959910872345e-15,
+    -54.213792942883074,
+    630.5000000000001
+   ],
+   "export_s": 0.0,
+   "group": "local",
+   "kind": "modifier",
+   "mass_g_1.24": 17.905,
+   "mass_g_1.31": 18.916,
+   "n_solids": 1,
+   "note": "print_plan rev 3.4.2: 100 % r 48-60 z 600-661 at the cord lug (A)",
+   "step": "payload_cord_lug_modifier_100pct.step",
+   "step_sha256": "e1d3fc4ed5df29fd895caadd8a89fa114090dc0ec98e757e46aad61bd166ae20",
+   "stl": "payload_cord_lug_modifier_100pct.stl",
+   "stl_sha256": "0442c1f990d8b1522c402bb9dff3da2181fbabe8469d9e596b0c94f54d613334",
+   "valid": true,
+   "volume_mm3": 14439.327067905593
+  },
+  "payload_module": {
+   "I_com_mm5": [
+    [
+     185359088.45428848,
+     -170793.08402381546,
+     -3461710.8823547587
+    ],
+    [
+     -170793.08402381546,
+     177830881.37020493,
+     9452917.172484651
+    ],
+    [
+     -3461710.8823547587,
+     9452917.172484651,
+     206062050.93145362
+    ]
+   ],
+   "bbox": [
+    -60.0,
+    -60.007,
+    535.387,
+    60.01,
+    60.007,
+    660.01
+   ],
+   "build_s": 1.7,
+   "cls": "S1",
+   "com_mm": [
+    -0.7788370020978698,
+    -2.6736827852469722,
+    600.6030496757745
+   ],
+   "export_s": 0.5,
+   "group": "front",
+   "kind": "printed",
+   "mass_g_1.24": 76.081,
+   "mass_g_1.31": 80.376,
+   "modifiers": [
+    "payload_cord_lug_modifier_100pct"
+   ],
+   "n_solids": 1,
+   "note": "upright, skirt z 535.4 on the bed; no support (45 deg rule, teardrop holes); 100 % over the cord lug",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "payload_module.step",
+   "step_sha256": "aeaafac6f1245575b76b18b6d9fcbd7076bc1a7f62dc1fb27c527478847f3734",
+   "stl": "payload_module.stl",
+   "stl_sha256": "b3736ad054b98b040bd80d83f91ba36102d2ce7fcac55671c6cbfc031c5995cf",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 61355.420320721925
+  },
+  "power_hardware_envelope": {
+   "I_com_mm5": [
+    [
+     39382411.113657475,
+     526210.5446028933,
+     -1900988.4053729177
+    ],
+    [
+     526210.5446028933,
+     40830944.47356367,
+     -5850640.7195776105
+    ],
+    [
+     -1900988.4053729177,
+     -5850640.7195776105,
+     4332835.645716533
+    ]
+   ],
+   "bbox": [
+    -37.133,
+    -67.159,
+    249.452,
+    3.067,
+    -27.246,
+    385.663
+   ],
+   "build_s": 0.0,
+   "com_mm": [
+    -16.440820318966402,
+    -50.5996420333393,
+    302.2362811699787
+   ],
+   "export_s": 0.1,
+   "group": "intake",
+   "kind": "reference",
+   "mass_g_1.24": 39.289,
+   "mass_g_1.31": 41.506,
+   "n_solids": 4,
+   "note": "2026-11-20: ESC in the intake column, XT60 pair, fitted seat fork (F / E)",
+   "step": "power_hardware_envelope.step",
+   "step_sha256": "e55ccf2c3a83b913b17d5d87b6d9d282adc9f12bbfae2d1919773ef8542d30cd",
+   "stl": "power_hardware_envelope.stl",
+   "stl_sha256": "9a65b8a464146e6c2669703618fff357ed6755f5216b893a61cd3fa686570075",
+   "valid": true,
+   "volume_mm3": 31684.28882758622
+  },
+  "pusher_plate": {
+   "I_com_mm5": [
+    [
+     1148285.231266737,
+     2.528868980108639e-10,
+     -207.2586745984736
+    ],
+    [
+     2.528868980108639e-10,
+     1140979.2914352417,
+     -4.94469190670569e-11
+    ],
+    [
+     -207.2586745984736,
+     -4.94469190670569e-11,
+     2282894.2703048396
+    ]
+   ],
+   "bbox": [
+    -33.01,
+    -33.01,
+    563.999,
+    33.01,
+    33.01,
+    568.41
+   ],
+   "build_s": 0.2,
+   "cls": "S2",
+   "com_mm": [
+    -0.08870707268768772,
+    1.730369801374236e-14,
+    566.9259136586077
+   ],
+   "export_s": 0.1,
+   "group": "front",
+   "kind": "printed",
+   "mass_g_1.24": 3.991,
+   "mass_g_1.31": 4.216,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "top face z 568.4 on the bed, spokes up",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "step": "pusher_plate.step",
+   "step_sha256": "a96510e80e7f750194c8cf6eb7aa27416e3f22fa9d5ba2674cbbf2a268e4c99b",
+   "stl": "pusher_plate.stl",
+   "stl_sha256": "de8aef77f2e8e8bd864c00f5fcf4d40d77225ccd5a9a90f664fe12651de8fe20",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 3218.618480951964
+  },
+  "spring_seat": {
+   "I_com_mm5": [
+    [
+     132851.39147657156,
+     7.343401120227603e-11,
+     1.9548675122761038e-10
+    ],
+    [
+     7.343401120227603e-11,
+     132851.39147645235,
+     1.5908276593985383e-12
+    ],
+    [
+     1.9548675122761038e-10,
+     1.5908276593985383e-12,
+     252808.923654021
+    ]
+   ],
+   "bbox": [
+    -19.6,
+    -19.607,
+    551.99,
+    19.61,
+    19.607,
+    560.01
+   ],
+   "build_s": 0.0,
+   "cls": "S2",
+   "com_mm": [
+    -1.7014561675695016e-14,
+    -4.659538756766352e-15,
+    554.5821075762678
+   ],
+   "export_s": 0.1,
+   "group": "front",
+   "kind": "printed",
+   "mass_g_1.24": 1.259,
+   "mass_g_1.31": 1.33,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "flange on the bed",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "spring_seat.step",
+   "step_sha256": "18a121b7783d2faf2e7c97b8a354399e2714f255524864fc71975ab4eb8c17fd",
+   "stl": "spring_seat.stl",
+   "stl_sha256": "00bcfef38030e25434e7566d74d0e4ee33aa9e94b449b5326ef188c307297706",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 1015.6241261489777
+  },
+  "xt60_grip_collar": {
+   "I_com_mm5": [
+    [
+     211239.12055832148,
+     -101.82575114397332,
+     30655.482771887444
+    ],
+    [
+     -101.82575114397332,
+     247798.11960050464,
+     36989.59692455083
+    ],
+    [
+     30655.482771887444,
+     36989.59692455083,
+     107746.65958934324
+    ]
+   ],
+   "bbox": [
+    -25.067,
+    -52.016,
+    359.526,
+    4.035,
+    -30.459,
+    398.0
+   ],
+   "build_s": 0.7,
+   "cls": "S3",
+   "com_mm": [
+    -12.395354997463171,
+    -43.95296439746207,
+    370.8500647359687
+   ],
+   "export_s": 0.1,
+   "group": "intake",
+   "kind": "printed",
+   "mass_g_1.24": 1.973,
+   "mass_g_1.31": 2.085,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "review N3: collar + fin on the ESC-side XT60 (M3x10 + nut); ring end down, fin up; review round 4: the -y skirt stands on the bed, supports under the ring 3 mm up (scrape the seat faces flat)",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     -72.0
+    ],
+    [
+     "y",
+     -19.0
+    ]
+   ],
+   "step": "xt60_grip_collar.step",
+   "step_sha256": "6a73f5ddde10c61bc62ce7016b8728a46c572bdc843fba7cdfdc5dd2fd4d6e01",
+   "stl": "xt60_grip_collar.stl",
+   "stl_sha256": "04cb94d316b09679e2d3c6d808ba4d21947359f8e85a7517e71517fefe1d1e1b",
+   "supports": "build_plate_only",
+   "valid": true,
+   "volume_mm3": 1591.334952773848
+  },
+  "xt60_seat_forks": {
+   "I_com_mm5": [
+    [
+     20886.676583035503,
+     -10436.236770403164,
+     -20978.090885403843
+    ],
+    [
+     -10436.236770403164,
+     2079752.0937335622,
+     -410.5722643320087
+    ],
+    [
+     -20978.090885403843,
+     -410.5722643320087,
+     2098848.816777069
+    ]
+   ],
+   "bbox": [
+    -9.0,
+    -10.0,
+    -0.0,
+    153.0,
+    4.6,
+    3.5
+   ],
+   "build_s": 0.4,
+   "cls": "S3",
+   "com_mm": [
+    94.3502786942417,
+    -4.035722607649718,
+    1.185123983284337
+   ],
+   "export_s": 0.2,
+   "group": "intake",
+   "kind": "printed",
+   "mass_g_1.24": 1.427,
+   "mass_g_1.31": 1.508,
+   "modifiers": [],
+   "n_solids": 1,
+   "note": "2026-11-20: 7 seat forks 0.5-3.5 mm on a breakaway sprue, flat; fit the one the lead table gives",
+   "print_frame": false,
+   "qty": 1,
+   "rots": [],
+   "step": "xt60_seat_forks.step",
+   "step_sha256": "0555e76ba600b3154e8b68cf5d106d605aa8438a554cab438063976b9cb3a273",
+   "stl": "xt60_seat_forks.stl",
+   "stl_sha256": "ba43ebefc81a393c1f553824eb79302d7934b60f4dae3879ed5b3e65626a073c",
+   "supports": "none",
+   "valid": true,
+   "volume_mm3": 1150.9337931034481
+  }
+ },
+ "rho_check_g_cm3": 1.24,
+ "rho_spec_g_cm3": 1.31,
+ "runtime_s": 0.7,
+ "spec": "rev 3.4.4"
+}

@@ -1,0 +1,196 @@
+{
+ "part_group": "intake",
+ "params_sha256": "3fc32e0fb9032aef5e7ca23853f3d2589501a937f2e24b4116d3060ca3c5f89f",
+ "exports": {
+  "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\intake_module.step",
+  "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\intake_module.stl",
+  "step_sha256": "6ee31bc7051bcf1a36dc7848efe7e83b30557149c7b9fcd7a0184b2d80ae453f",
+  "stl_sha256": "793ee05b4450abc4608ac870077a596814e4eeeca908eb22170f0c2d97bfbc9f"
+ },
+ "check": {
+  "solid": {
+   "n_solids": 1,
+   "valid": true,
+   "volume_mm3": 163559.52521857174,
+   "bbox": [
+    -71.0,
+    -71.0,
+    195.0,
+    71.0,
+    71.0,
+    370.4
+   ]
+  },
+  "mesh": {
+   "watertight": true,
+   "n_bodies": 1,
+   "volume_mm3": 163544.74841532414,
+   "winding_consistent": true
+  },
+  "mass": {
+   "cad_volume_mm3": 163559.5,
+   "cad_g_at_1.24": 202.8,
+   "cad_g_at_1.31_spec_basis": 214.3,
+   "spec_massing_volume_mm3": 160350.1,
+   "spec_g_at_1.31": 210.06,
+   "spec_g_at_1.24_same_volume": 198.8,
+   "spec_table_rev3_4_1_g": 210.0,
+   "budget_parts_entry": 210.1,
+   "delta_volume_pct": 2.0,
+   "label": "M CAD BRep volume x density (solid, no infill accounting); spec = massing.json intake_module (E)"
+  },
+  "bbox": {
+   "z_min": 195.0,
+   "z_max": 370.4,
+   "r_max_xy": 71.0,
+   "expect": {
+    "z_min": 195.0,
+    "z_max": 370.4,
+    "r_max": 71.0
+   },
+   "print_height_inverted_mm": 175.4,
+   "fits_P2S_252": true
+  },
+  "probes": {
+   "expected_solid_ok": 44,
+   "expected_solid_n": 44,
+   "expected_void_ok": 79,
+   "expected_void_n": 79,
+   "failed": []
+  },
+  "pcb_keepout_1mm_overlap_mm3": 0.0,
+  "trunk_straight_lead_overlap_mm3": {
+   "servo d4.5": 0.0,
+   "servo d5.0": 0.031
+  },
+  "neighbour_overlap_mm3": {
+   "avionics_module": 0.0,
+   "avionics_joint_hardware": 0.0,
+   "carrier_pcb_rev31_envelope": 0.0,
+   "avionics_pcb_foam_seat": 0.0,
+   "avionics_tray": 0.0,
+   "V_prop_module": 0.0,
+   "V_lip_spacer": 0.0
+  },
+  "isogrid": {
+   "n_openings": 431,
+   "n_skipped_slivers": 9,
+   "max_inscribed_d_mm": 6.772,
+   "min_fillet_r": 0.372,
+   "open_area_mm2_at_r71": 21781.768,
+   "bar_w_mm_at_r68_r71": [
+    1.37,
+    1.43
+   ],
+   "node_row_pitch": 12.073,
+   "hoops_z": [
+    241.07,
+    253.15,
+    265.22,
+    277.29,
+    289.37,
+    301.44
+   ]
+  },
+  "key_dims_params": {
+   "OD_aft": 142.0,
+   "spigot_up_od_id": [
+    117.19999999999999,
+    113.99999999999999
+   ],
+   "spigot_top": 370.4,
+   "spigot_down_r": [
+    68.0,
+    69.6
+   ],
+   "bulkhead_z": [
+    349.2,
+    350.4
+   ],
+   "fj1_screws": 14,
+   "fj1_cages": 7,
+   "lower_joint_screws": 8,
+   "lower_screw_z": 204.5,
+   "window_band_z": [
+    229.0,
+    309.0
+   ],
+   "fod_max_inscribed_spec_mm": 6.7,
+   "fod_open_area_spec_mm2": 19643.0
+  }
+ },
+ "deviations": [
+  {
+   "item": "2026-11-20 power train: motor trunk",
+   "spec": "closed motor trunk theta 20 + bulkhead hole theta 0 (spec 8)",
+   "cad": "deleted; strip / notch / pad refilled",
+   "why": "the ESC stands in the intake above the EDF (power_layout): the 220 mm motor run (M) cannot reach the bay; the trunk cost 7.8-18.3 % window loss"
+  },
+  {
+   "item": "2026-11-20 power train: ESC column",
+   "spec": "-",
+   "cad": "column theta 252 (passage, box, 2 x M3x12 stops, cup, funnel, webs)",
+   "why": "power_layout TH_E / TILT 7.0 / BOX / CUP"
+  },
+  {
+   "item": "2026-11-20 power train: XT60 junction",
+   "spec": "-",
+   "cad": "bulkhead pass + 3 mm boss + tilted socket (19 deg) with fork grooves",
+   "why": "power_layout GAMMA / SOCKET: ESC stub and 6S lead nearly straight (R >= 3 x OD, lead_shape)"
+  },
+  {
+   "item": "2026-11-20 power train: rib",
+   "spec": "bulkhead rib theta 247.5",
+   "cad": "theta 233",
+   "why": "crossed the XT60 pass"
+  },
+  {
+   "item": "2026-11-20 review: cup support",
+   "spec": "-",
+   "cad": "shelf lip -> flare (frame z -2..2.5), short walls 3.0 + webs to the flare and the plate, inner wall 2.8",
+   "why": "the cup hung only from the funnel loft into the plate; power_layout.CUP_SUPPORT, esc_mount_strength (E)"
+  },
+  {
+   "item": "2026-11-20 review: column screen",
+   "spec": "-",
+   "cad": "inner screen u 53.55-54.75 z 210.3-238 + between the fingers to z 253.8",
+   "why": "the column under the ESC was open to the plenum (bullet pairs / slack upstream of the rotor); power_layout.SCREEN"
+  },
+  {
+   "item": "2026-11-20 review: JR notch",
+   "spec": "-",
+   "cad": "notch x -11..-8.35, y +-2.4 at the -x end of the bulkhead pass, through the -x socket short wall (open slot, review N1), boss hood to x -12.6",
+   "why": "XT60 and the JR ribbon never fit the closed pass side by side; power_layout.JR_NOTCH"
+  },
+  {
+   "item": "2026-11-20 review N1: JR slot open from the top",
+   "spec": "notch zj -12..1.5 = closed window in the -x short wall",
+   "cad": "notch zj -14..6 through the wall top (open slot)",
+   "why": "a ribbon pulled through the pass could not be laid sideways into a window closed above; cable_pass checks the lay-in section by section"
+  },
+  {
+   "item": "2026-11-20 review N2: wide funnel",
+   "spec": "funnel cavity y 9.6-10.0 (XT60 + ribbon on a face: 0.06)",
+   "cad": "y 11.0 up to zj -9, lead-in to the pass zj -9..-7.5, outer wall +0.8",
+   "why": "ribbon on any XT60 face keeps >= 0.5 below zj -9 (power_layout.FUNNEL)"
+  },
+  {
+   "item": "2026-11-20 review N3: socket walls",
+   "spec": "walls to the bed plane z 370.4 (over the whole ESC half)",
+   "cad": "walls end at the junction plane zj 4.0",
+   "why": "the ESC half's upper 12 mm free for a finger pinch through the enlarged avionics door (finger_access.py)"
+  },
+  {
+   "item": "2026-11-20 FJ-1 notch",
+   "spec": "notch 14.6 (16.6 key)",
+   "cad": "16.0 (18.0 key), cage cheeks 1.7 -> 1.0",
+   "why": "avionics FJ-1 boss 14 -> 15.4 so its net section with the spot faces is >= the spec 34.96 mm2"
+  }
+ ],
+ "source": "group_checks.py on the build-report files",
+ "print": {
+  "orient": "INVERTED (z 370.4 spigot top + cage tops on the bed)",
+  "support": "inside the upper spigot bore under the bulkhead only (spec 3)",
+  "class": "S2 rings / bulkhead, isogrid bars + 2-loop walls solid"
+ }
+}

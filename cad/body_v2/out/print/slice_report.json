@@ -1,0 +1,1776 @@
+{
+ "generator": "cad/body_v2/make_print_files_v2.py",
+ "label": "M (Bambu Studio CLI: result.json, slice_info.config, G-code)",
+ "params_sha256": "3fc32e0fb9032aef5e7ca23853f3d2589501a937f2e24b4116d3060ca3c5f89f",
+ "parts": {
+  "V_fin_print": {
+   "class": "S4",
+   "class_settings": {
+    "bottom_shell_layers": "4",
+    "enable_support": "0",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "extents_mm": [
+    179.7,
+    110.7,
+    4.8
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 2.178,
+    "Bridge|T0": 2.887,
+    "Floating vertical shell|T0": 0.327,
+    "Gap infill|T0": 0.006,
+    "Inner wall|T0": 2.275,
+    "Internal solid infill|T0": 11.959,
+    "Outer wall|T0": 1.119,
+    "Overhang wall|T0": 0.001,
+    "Sparse infill|T0": 8.717,
+    "Top surface|T0": 2.407
+   },
+   "feature_time_s": {
+    "Bottom surface": 249.68504333496094,
+    "Bridge": 356.0585021972656,
+    "Custom": 403.7002868652344,
+    "Flush": 26.0,
+    "Gap infill": 4.3153486251831055,
+    "Inner wall": 118.44197082519531,
+    "Internal solid infill": 610.316650390625,
+    "Outer wall": 141.77854919433594,
+    "Overhang wall": 0.1293794959783554,
+    "Sparse infill": 582.9281616210938,
+    "Top surface": 159.18267822265625,
+    "Travel": 117.17684173583984,
+    "Undefined": 109.45087432861328
+   },
+   "filament_g_total": 31.88,
+   "filament_used_g": {
+    "1": 31.88
+   },
+   "filament_used_m": {
+    "1": 10.12
+   },
+   "modifiers": [
+    "V_fin_print_modifier_100pct"
+   ],
+   "note": "flat, bed face flat (root step on top); 4 + 2 spares; 100 % modifier r 100-126",
+   "ok": true,
+   "part_g": 31.876,
+   "part_g_by_tool": {
+    "T0": 31.876
+   },
+   "placement_problems": [],
+   "project": "out/print/V_fin_print.3mf",
+   "project_sha256": "7e8df712e6c23557cf34ebf4710b187b4aa00c9c7706c230153747303b740089",
+   "qty": 6,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "4",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "sliced": "out/print/V_fin_print.gcode.3mf",
+   "stl_sha256": "2444289cbcbfb6f8248929bf9b37b797b0856e845de769559ab4849cdbfd6903",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 2313.92431640625,
+   "two_colour": false,
+   "wall_s": 2.2
+  },
+  "V_lip_spacer": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    115.9,
+    115.9,
+    15.0
+   ],
+   "feature_g": {
+    "Bridge|T0": 0.258,
+    "Gap infill|T0": 2.581,
+    "Inner wall|T0": 0.97,
+    "Internal solid infill|T0": 0.991,
+    "Outer wall|T0": 5.185,
+    "Overhang wall|T0": 0.181,
+    "Top surface|T0": 0.467
+   },
+   "feature_time_s": {
+    "Bridge": 55.29337692260742,
+    "Custom": 403.34783935546875,
+    "Flush": 26.0,
+    "Gap infill": 100.01164245605469,
+    "Inner wall": 33.92963790893555,
+    "Internal solid infill": 39.866764068603516,
+    "Outer wall": 280.5242614746094,
+    "Overhang wall": 168.31907653808594,
+    "Top surface": 45.048851013183594,
+    "Travel": 72.30609893798828,
+    "Undefined": 65.09013366699219
+   },
+   "filament_g_total": 10.63,
+   "filament_used_g": {
+    "1": 10.63
+   },
+   "filament_used_m": {
+    "1": 3.37
+   },
+   "modifiers": [],
+   "note": "skirt end z 195 on the bed (4.75 mm land overhang = spec test-print item)",
+   "ok": true,
+   "part_g": 10.632,
+   "part_g_by_tool": {
+    "T0": 10.632
+   },
+   "placement_problems": [],
+   "project": "out/print/V_lip_spacer.3mf",
+   "project_sha256": "dffc68767bdb6c1466b7cbb7c8392822801eca7f7a0c01911bfb4cd5e3f41e81",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/V_lip_spacer.gcode.3mf",
+   "stl_sha256": "2c210731a713ab99d0c887bde26e420b7549ebd430d3508117c623e457e937bb",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 769.315673828125,
+   "two_colour": false,
+   "wall_s": 2.1
+  },
+  "V_prop_module": {
+   "class": "S1",
+   "class_settings": {
+    "bottom_shell_layers": "4",
+    "enable_support": "0",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "extents_mm": [
+    225.2,
+    225.2,
+    210.0
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 2.158,
+    "Bridge|T0": 0.849,
+    "Floating vertical shell|T0": 1.703,
+    "Gap infill|T0": 34.364,
+    "Inner wall|T0": 59.202,
+    "Internal solid infill|T0": 14.255,
+    "Outer wall|T0": 172.195,
+    "Overhang wall|T0": 0.159,
+    "Sparse infill|T0": 55.305,
+    "Top surface|T0": 3.781
+   },
+   "feature_time_s": {
+    "Bottom surface": 288.229736328125,
+    "Bridge": 139.41685485839844,
+    "Custom": 397.5380554199219,
+    "Flush": 26.0,
+    "Gap infill": 2542.763916015625,
+    "Inner wall": 3583.4033203125,
+    "Internal solid infill": 1168.1405029296875,
+    "Outer wall": 11823.4423828125,
+    "Overhang wall": 77.01853942871094,
+    "Sparse infill": 5594.56884765625,
+    "Top surface": 306.1184997558594,
+    "Travel": 5435.154296875,
+    "Undefined": 5433.5849609375
+   },
+   "filament_g_total": 343.97,
+   "filament_used_g": {
+    "1": 343.97
+   },
+   "filament_used_m": {
+    "1": 109.17
+   },
+   "modifiers": [
+    "V_prop_module_modifier_100pct"
+   ],
+   "note": "upright, base ring z 0 on the bed, turned 45 deg on the plate; no support",
+   "ok": true,
+   "part_g": 343.971,
+   "part_g_by_tool": {
+    "T0": 343.971
+   },
+   "placement_problems": [],
+   "project": "out/print/V_prop_module.3mf",
+   "project_sha256": "134c247da425ee3af9e4f3b573ec0c9100aeef046d1037054b56c7303aa845fa",
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     45.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "4",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "sliced": "out/print/V_prop_module.gcode.3mf",
+   "stl_sha256": "52a02367a551bef2d0849bb351ca9a7eca52964cd4fd90272080d2101675f294",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 30933.3125,
+   "two_colour": false,
+   "wall_s": 29.1
+  },
+  "V_tail_extension": {
+   "class": "S1",
+   "class_settings": {
+    "bottom_shell_layers": "4",
+    "enable_support": "0",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "extents_mm": [
+    142.0,
+    142.0,
+    90.0
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.054,
+    "Bridge|T0": 0.101,
+    "Floating vertical shell|T0": 0.019,
+    "Gap infill|T0": 10.079,
+    "Inner wall|T0": 4.564,
+    "Internal solid infill|T0": 0.399,
+    "Outer wall|T0": 39.945,
+    "Sparse infill|T0": 0.063,
+    "Top surface|T0": 0.09
+   },
+   "feature_time_s": {
+    "Bottom surface": 20.65045166015625,
+    "Bridge": 12.74022102355957,
+    "Custom": 399.61492919921875,
+    "Flush": 26.0,
+    "Gap infill": 819.1065063476562,
+    "Inner wall": 193.16107177734375,
+    "Internal solid infill": 45.30469512939453,
+    "Outer wall": 2109.6767578125,
+    "Sparse infill": 7.618559837341309,
+    "Top surface": 10.704172134399414,
+    "Travel": 364.6769104003906,
+    "Undefined": 361.2109069824219
+   },
+   "filament_g_total": 55.31,
+   "filament_used_g": {
+    "1": 55.31
+   },
+   "filament_used_m": {
+    "1": 17.55
+   },
+   "modifiers": [],
+   "note": "upside down (joint face z 0 + tabs on the bed)",
+   "ok": true,
+   "part_g": 55.314,
+   "part_g_by_tool": {
+    "T0": 55.314
+   },
+   "placement_problems": [],
+   "project": "out/print/V_tail_extension.3mf",
+   "project_sha256": "f75df7047ecdd23ee79ce548b0d1500fe40e35e9a6af60c0cc273fcf71c3863f",
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "4",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "sliced": "out/print/V_tail_extension.gcode.3mf",
+   "stl_sha256": "d0b48dce993e9059435458bdf7212018fb640cb38725f69f43ed62d836b7177d",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 3557.82470703125,
+   "two_colour": false,
+   "wall_s": 11.2
+  },
+  "V_tunnel_plug_200": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    16.1,
+    25.1,
+    4.6
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.01,
+    "Floating vertical shell|T0": 0.015,
+    "Inner wall|T0": 0.461,
+    "Internal solid infill|T0": 0.106,
+    "Outer wall|T0": 0.164,
+    "Sparse infill|T0": 0.203,
+    "Top surface|T0": 0.036
+   },
+   "feature_time_s": {
+    "Bottom surface": 5.26322603225708,
+    "Custom": 403.7947082519531,
+    "Flush": 26.0,
+    "Inner wall": 47.285621643066406,
+    "Internal solid infill": 14.865460395812988,
+    "Outer wall": 19.847484588623047,
+    "Sparse infill": 28.314054489135742,
+    "Top surface": 4.139227867126465,
+    "Travel": 26.859222412109375,
+    "Undefined": 19.123254776000977
+   },
+   "filament_g_total": 1.0,
+   "filament_used_g": {
+    "1": 1.0
+   },
+   "filament_used_m": {
+    "1": 0.32
+   },
+   "modifiers": [],
+   "note": "2026-11-20 seal plug over the servo-lead tunnel (theta 200), flat",
+   "ok": true,
+   "part_g": 0.996,
+   "part_g_by_tool": {
+    "T0": 0.996
+   },
+   "placement_problems": [],
+   "project": "out/print/V_tunnel_plug_200.3mf",
+   "project_sha256": "065c5f000e5529288bc2382f8b0e878cfa966516e203bac5cdc42b26239dc6aa",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/V_tunnel_plug_200.gcode.3mf",
+   "stl_sha256": "83a58bc8d07a448ad439c435bfd79457aee25be427792264fc5caaedd5755db4",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 120.57470703125,
+   "two_colour": false,
+   "wall_s": 1.0
+  },
+  "V_tunnel_plug_262": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    25.1,
+    13.6,
+    4.6
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.013,
+    "Floating vertical shell|T0": 0.018,
+    "Inner wall|T0": 0.457,
+    "Internal solid infill|T0": 0.124,
+    "Outer wall|T0": 0.163,
+    "Sparse infill|T0": 0.239,
+    "Top surface|T0": 0.038
+   },
+   "feature_time_s": {
+    "Bottom surface": 5.8808417320251465,
+    "Custom": 403.7844543457031,
+    "Flush": 26.0,
+    "Inner wall": 43.73057174682617,
+    "Internal solid infill": 16.707801818847656,
+    "Outer wall": 18.315656661987305,
+    "Sparse infill": 31.409093856811523,
+    "Top surface": 4.199470520019531,
+    "Travel": 24.94854736328125,
+    "Undefined": 17.21257972717285
+   },
+   "filament_g_total": 1.05,
+   "filament_used_g": {
+    "1": 1.05
+   },
+   "filament_used_m": {
+    "1": 0.33
+   },
+   "modifiers": [],
+   "note": "2026-11-20 seal plug over the motor-lead tunnel (theta 262), flat",
+   "ok": true,
+   "part_g": 1.051,
+   "part_g_by_tool": {
+    "T0": 1.051
+   },
+   "placement_problems": [],
+   "project": "out/print/V_tunnel_plug_262.3mf",
+   "project_sha256": "888734a078f493f1810391ace9aa6936d7b925a0e8377fcd5ecd80cdf437ea0a",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/V_tunnel_plug_262.gcode.3mf",
+   "stl_sha256": "6a3e55ef79a8ad2069a16543cbd0013e0906052bce7f688925738d9f91c56a96",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 119.19110107421875,
+   "two_colour": false,
+   "wall_s": 1.1
+  },
+  "avionics_door": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    40.8,
+    15.2,
+    47.1
+   ],
+   "feature_g": {
+    "Brim|T0": 0.156,
+    "Gap infill|T0": 0.782,
+    "Outer wall|T0": 1.594,
+    "Overhang wall|T0": 0.0
+   },
+   "feature_time_s": {
+    "Brim": 27.58066749572754,
+    "Custom": 401.67071533203125,
+    "Flush": 26.0,
+    "Gap infill": 262.3563537597656,
+    "Outer wall": 536.7500610351562,
+    "Overhang wall": 0.08603611588478088,
+    "Travel": 58.80975341796875,
+    "Undefined": 53.18378829956055
+   },
+   "filament_g_total": 2.53,
+   "filament_used_g": {
+    "1": 2.53
+   },
+   "filament_used_m": {
+    "1": 0.8
+   },
+   "modifiers": [],
+   "note": "2026-11-20 power-train door: upright as in the rocket (1.2 curved wall, bottom edge on the bed)",
+   "ok": true,
+   "part_g": 2.376,
+   "part_g_by_tool": {
+    "T0": 2.376
+   },
+   "placement_problems": [],
+   "project": "out/print/avionics_door.3mf",
+   "project_sha256": "a1cf7e3fecde41a50f210b3374278f03b4b3dd6cf099e8beabf9bea2c4ebeb58",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/avionics_door.gcode.3mf",
+   "stl_sha256": "169e898e5923e018275da974cbfd36910020a522bfdec3d021ac33e09a1cbd34",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 859.5877075195312,
+   "two_colour": false,
+   "wall_s": 2.0
+  },
+  "avionics_hole_plug_gps": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    6.6,
+    6.6,
+    1.6
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.002,
+    "Gap infill|T0": 0.0,
+    "Inner wall|T0": 0.02,
+    "Internal solid infill|T0": 0.003,
+    "Outer wall|T0": 0.013,
+    "Top surface|T0": 0.009
+   },
+   "feature_time_s": {
+    "Bottom surface": 0.7292046546936035,
+    "Custom": 403.931640625,
+    "Flush": 26.0,
+    "Gap infill": 0.5429615378379822,
+    "Inner wall": 8.954448699951172,
+    "Internal solid infill": 1.5924956798553467,
+    "Outer wall": 11.06990909576416,
+    "Top surface": 3.7190043926239014,
+    "Travel": 12.821900367736816,
+    "Undefined": 4.9359331130981445
+   },
+   "filament_g_total": 0.05,
+   "filament_used_g": {
+    "1": 0.05
+   },
+   "filament_used_m": {
+    "1": 0.01
+   },
+   "modifiers": [],
+   "note": "flat on its inner face",
+   "ok": true,
+   "part_g": 0.046,
+   "part_g_by_tool": {
+    "T0": 0.046
+   },
+   "placement_problems": [],
+   "project": "out/print/avionics_hole_plug_gps.3mf",
+   "project_sha256": "135a1439f398bb30afdd2f17113272a9d3c214177f3b7a56bb6095b2438cc8fb",
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     -192.0
+    ],
+    [
+     "y",
+     -90.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/avionics_hole_plug_gps.gcode.3mf",
+   "stl_sha256": "f7d857ced921ad7a5271ca89e722cf78053704999fdd611374fbb826f5a2741c",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 13.42974853515625,
+   "two_colour": false,
+   "wall_s": 1.0
+  },
+  "avionics_hole_plug_release": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    6.6,
+    6.6,
+    1.6
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.002,
+    "Gap infill|T0": 0.0,
+    "Inner wall|T0": 0.02,
+    "Internal solid infill|T0": 0.003,
+    "Outer wall|T0": 0.013,
+    "Top surface|T0": 0.009
+   },
+   "feature_time_s": {
+    "Bottom surface": 0.7292069792747498,
+    "Custom": 403.931640625,
+    "Flush": 26.0,
+    "Gap infill": 0.5429615378379822,
+    "Inner wall": 8.954448699951172,
+    "Internal solid infill": 1.5924474000930786,
+    "Outer wall": 11.06990909576416,
+    "Top surface": 3.7190043926239014,
+    "Travel": 12.821916580200195,
+    "Undefined": 4.935949325561523
+   },
+   "filament_g_total": 0.05,
+   "filament_used_g": {
+    "1": 0.05
+   },
+   "filament_used_m": {
+    "1": 0.01
+   },
+   "modifiers": [],
+   "note": "flat on its inner face",
+   "ok": true,
+   "part_g": 0.046,
+   "part_g_by_tool": {
+    "T0": 0.046
+   },
+   "placement_problems": [],
+   "project": "out/print/avionics_hole_plug_release.3mf",
+   "project_sha256": "76fd9f2949331348d82801158ef026d89f9417257851b3bfcc8793a2ade28e05",
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     -12.0
+    ],
+    [
+     "y",
+     -90.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/avionics_hole_plug_release.gcode.3mf",
+   "stl_sha256": "69e3aceb974730fdaa8d3670f7b9dfe30b360d5221141fb027f7eda2b9e422bf",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 13.4296875,
+   "two_colour": false,
+   "wall_s": 1.0
+  },
+  "avionics_module": {
+   "class": "S2",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    120.0,
+    120.0,
+    200.0
+   ],
+   "feature_g": {
+    "Bridge|T0": 0.029,
+    "Floating vertical shell|T0": 0.054,
+    "Gap infill|T0": 32.82,
+    "Inner wall|T0": 21.655,
+    "Internal solid infill|T0": 0.869,
+    "Outer wall|T0": 76.332,
+    "Outer wall|T1": 0.901,
+    "Overhang wall|T0": 0.16,
+    "Prime tower|T0": 26.448,
+    "Prime tower|T1": 18.132,
+    "Sparse infill|T0": 1.086,
+    "Top surface|T0": 0.366
+   },
+   "feature_time_s": {
+    "Bridge": 5.970865249633789,
+    "Custom": 397.582763671875,
+    "Flush": 41898.07421875,
+    "Gap infill": 1907.8712158203125,
+    "Inner wall": 1800.481201171875,
+    "Internal solid infill": 105.9658432006836,
+    "Outer wall": 5095.654296875,
+    "Overhang wall": 143.62344360351562,
+    "Prime tower": 6279.85888671875,
+    "Sparse infill": 172.43325805664062,
+    "Top surface": 62.42137908935547,
+    "Travel": 6567.37353515625,
+    "Undefined": 6565.80419921875
+   },
+   "filament_g_total": 314.68,
+   "filament_used_g": {
+    "1": 239.05,
+    "2": 75.63
+   },
+   "filament_used_m": {
+    "1": 75.87,
+    "2": 24.0
+   },
+   "modifiers": [
+    "avionics_boss_modifier_100pct"
+   ],
+   "note": "upright as rocket-carrier (z 350.4 on the bed); no support; YUCHAN logo = 2nd filament (orange)",
+   "ok": true,
+   "part_g": 134.272,
+   "part_g_by_tool": {
+    "T0": 133.371,
+    "T1": 0.901
+   },
+   "placement_problems": [],
+   "project": "out/print/avionics_module.3mf",
+   "project_sha256": "3d2dcb6da4036fb3fd52c20f78179ad5f75cbb92589b56a6bb7d1b3638019ad0",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/avionics_module.gcode.3mf",
+   "stl_sha256": "c13be4ed38ea3d07d5e920dcb6f824a40f87c7ee7e11bab7f87e0a82b4fb2e1d",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 15824.9921875,
+   "tower_xy": [
+    15.0,
+    15.0
+   ],
+   "two_colour": true,
+   "wall_s": 18.4
+  },
+  "avionics_tray": {
+   "class": "S2",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    160.0,
+    100.0,
+    12.0
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 3.671,
+    "Bridge|T0": 0.034,
+    "Gap infill|T0": 0.177,
+    "Inner wall|T0": 3.065,
+    "Internal solid infill|T0": 30.029,
+    "Outer wall|T0": 1.142,
+    "Sparse infill|T0": 0.008,
+    "Top surface|T0": 4.038
+   },
+   "feature_time_s": {
+    "Bottom surface": 421.30126953125,
+    "Bridge": 4.314291000366211,
+    "Custom": 403.5025329589844,
+    "Flush": 26.0,
+    "Gap infill": 32.50668716430664,
+    "Inner wall": 264.32122802734375,
+    "Internal solid infill": 1423.213134765625,
+    "Outer wall": 136.6184539794922,
+    "Sparse infill": 1.1500324010849,
+    "Top surface": 239.86343383789062,
+    "Travel": 112.47370147705078,
+    "Undefined": 105.10773468017578
+   },
+   "filament_g_total": 42.16,
+   "filament_used_g": {
+    "1": 42.16
+   },
+   "filament_used_m": {
+    "1": 13.38
+   },
+   "modifiers": [],
+   "note": "flat (2 mm plate on the bed)",
+   "ok": true,
+   "part_g": 42.164,
+   "part_g_by_tool": {
+    "T0": 42.164
+   },
+   "placement_problems": [],
+   "project": "out/print/avionics_tray.3mf",
+   "project_sha256": "713286317c25fe739a880e19f9e72064db4f81effe0b951f845f45a73ca41b03",
+   "qty": 1,
+   "rots": [
+    [
+     "y",
+     90.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/avionics_tray.gcode.3mf",
+   "stl_sha256": "77eefb2f25db6a28eb8c99fa18753da72f19db85649c8f117bda65fa7fbffd72",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 2609.9501953125,
+   "two_colour": false,
+   "wall_s": 1.1
+  },
+  "cansat_dummy_sleeve": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    66.0,
+    66.0,
+    118.8
+   ],
+   "feature_g": {
+    "Bridge|T0": 0.002,
+    "Gap infill|T0": 0.773,
+    "Inner wall|T0": 3.894,
+    "Internal solid infill|T0": 0.012,
+    "Outer wall|T0": 4.22,
+    "Overhang wall|T0": 0.29,
+    "Top surface|T0": 0.36
+   },
+   "feature_time_s": {
+    "Bridge": 0.39131200313568115,
+    "Custom": 398.0718994140625,
+    "Flush": 26.0,
+    "Gap infill": 300.0852966308594,
+    "Inner wall": 729.9782104492188,
+    "Internal solid infill": 3.054405689239502,
+    "Outer wall": 1245.692626953125,
+    "Overhang wall": 268.6971130371094,
+    "Top surface": 61.90026092529297,
+    "Travel": 1037.3648681640625,
+    "Undefined": 1035.3388671875
+   },
+   "filament_g_total": 9.55,
+   "filament_used_g": {
+    "1": 9.55
+   },
+   "filament_used_m": {
+    "1": 3.03
+   },
+   "modifiers": [],
+   "note": "chute end z 683.4 on the bed; hoops bridge ~31 mm (test print)",
+   "ok": true,
+   "part_g": 9.55,
+   "part_g_by_tool": {
+    "T0": 9.55
+   },
+   "placement_problems": [],
+   "project": "out/print/cansat_dummy_sleeve.3mf",
+   "project_sha256": "279d3f312ede8092c1142be0318659e51f11d1cabc52092b250900bc374fdcec",
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/cansat_dummy_sleeve.gcode.3mf",
+   "stl_sha256": "e693ca2793ce7f9b49e6b4960be52464a52ebbff89a508de63decdd5018f797b",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 3620.95068359375,
+   "two_colour": false,
+   "wall_s": 4.4
+  },
+  "intake_module": {
+   "class": "S2",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "1",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "1",
+    "support_threshold_angle": "30",
+    "support_type": "normal(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    142.0,
+    142.0,
+    175.4
+   ],
+   "feature_g": {
+    "Bridge|T0": 3.084,
+    "Floating vertical shell|T0": 0.605,
+    "Gap infill|T0": 22.153,
+    "Inner wall|T0": 76.057,
+    "Internal solid infill|T0": 13.955,
+    "Outer wall|T0": 80.464,
+    "Overhang wall|T0": 1.54,
+    "Sparse infill|T0": 3.557,
+    "Support interface|T0": 2.795,
+    "Support transition|T0": 1.4,
+    "Support|T0": 45.98,
+    "Top surface|T0": 5.643
+   },
+   "feature_time_s": {
+    "Bridge": 594.4559936523438,
+    "Custom": 397.5354309082031,
+    "Flush": 26.0,
+    "Gap infill": 1687.470703125,
+    "Inner wall": 5500.72900390625,
+    "Internal solid infill": 803.8272094726562,
+    "Outer wall": 8525.0966796875,
+    "Overhang wall": 1329.0345458984375,
+    "Sparse infill": 565.5712280273438,
+    "Support": 3651.739501953125,
+    "Support interface": 367.2506103515625,
+    "Support transition": 283.2206726074219,
+    "Top surface": 587.4102172851562,
+    "Travel": 8248.9697265625,
+    "Undefined": 8247.4013671875
+   },
+   "filament_g_total": 257.23,
+   "filament_used_g": {
+    "1": 257.23
+   },
+   "filament_used_m": {
+    "1": 81.64
+   },
+   "modifiers": [],
+   "note": "INVERTED (spigot top z 370.4 on the bed); support only inside the upper spigot bore (spec 3)",
+   "ok": true,
+   "part_g": 207.057,
+   "part_g_by_tool": {
+    "T0": 207.057
+   },
+   "placement_problems": [],
+   "project": "out/print/intake_module.3mf",
+   "project_sha256": "e1948ca458590d155ce2df50fd118ebdfbce3ed63ec1534d5ea5973c5741e4a7",
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "1",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "1",
+    "support_type": "normal(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/intake_module.gcode.3mf",
+   "stl_sha256": "793ee05b4450abc4608ac870077a596814e4eeeca908eb22170f0c2d97bfbc9f",
+   "support_g": 50.175,
+   "supports": "build_plate_only",
+   "time_s": 32114.396484375,
+   "two_colour": false,
+   "wall_s": 45.1
+  },
+  "nose_ballast_cap": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    23.6,
+    23.6,
+    4.0
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.066,
+    "Floating vertical shell|T0": 0.168,
+    "Gap infill|T0": 0.001,
+    "Inner wall|T0": 0.55,
+    "Internal solid infill|T0": 0.514,
+    "Outer wall|T0": 0.178,
+    "Sparse infill|T0": 0.62,
+    "Top surface|T0": 0.11
+   },
+   "feature_time_s": {
+    "Bottom surface": 15.344452857971191,
+    "Custom": 403.8166198730469,
+    "Flush": 26.0,
+    "Gap infill": 0.6619533896446228,
+    "Inner wall": 27.43113899230957,
+    "Internal solid infill": 57.20015335083008,
+    "Outer wall": 14.832883834838867,
+    "Sparse infill": 49.56380844116211,
+    "Top surface": 9.851591110229492,
+    "Travel": 36.611610412597656,
+    "Undefined": 28.845643997192383
+   },
+   "filament_g_total": 2.21,
+   "filament_used_g": {
+    "1": 2.21
+   },
+   "filament_used_m": {
+    "1": 0.7
+   },
+   "modifiers": [],
+   "note": "flat, column face on the bed, head counterbore up; no support",
+   "ok": true,
+   "part_g": 2.207,
+   "part_g_by_tool": {
+    "T0": 2.207
+   },
+   "placement_problems": [],
+   "project": "out/print/nose_ballast_cap.3mf",
+   "project_sha256": "ec4ae18203076773606459d1881dad0943db3acfc9904cde8b43ead7222e2aab",
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/nose_ballast_cap.gcode.3mf",
+   "stl_sha256": "3df59d3334adcffc1a43fd19b52af84d0a2cccade58c3911f71703ef97a3a7c7",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 185.50314331054688,
+   "two_colour": false,
+   "wall_s": 1.1
+  },
+  "nose_cone": {
+   "class": "S1",
+   "class_settings": {
+    "bottom_shell_layers": "4",
+    "enable_support": "1",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "1",
+    "support_threshold_angle": "30",
+    "support_type": "normal(auto)",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "extents_mm": [
+    120.0,
+    120.0,
+    154.7
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.003,
+    "Bridge|T0": 0.091,
+    "Floating vertical shell|T0": 0.353,
+    "Gap infill|T0": 4.392,
+    "Inner wall|T0": 2.865,
+    "Internal solid infill|T0": 1.038,
+    "Outer wall|T0": 42.097,
+    "Overhang wall|T0": 0.105,
+    "Sparse infill|T0": 0.268,
+    "Support interface|T0": 0.575,
+    "Support transition|T0": 0.303,
+    "Support|T0": 22.609,
+    "Top surface|T0": 0.051
+   },
+   "feature_time_s": {
+    "Bottom surface": 1.6315224170684814,
+    "Bridge": 14.169572830200195,
+    "Custom": 397.73876953125,
+    "Flush": 26.0,
+    "Gap infill": 586.4920654296875,
+    "Inner wall": 214.6748046875,
+    "Internal solid infill": 183.63294982910156,
+    "Outer wall": 2460.9052734375,
+    "Overhang wall": 97.9964370727539,
+    "Sparse infill": 37.97818374633789,
+    "Support": 1914.75048828125,
+    "Support interface": 64.1591567993164,
+    "Support transition": 49.121700286865234,
+    "Top surface": 6.678946495056152,
+    "Travel": 1113.599609375,
+    "Undefined": 1111.900634765625
+   },
+   "filament_g_total": 74.75,
+   "filament_used_g": {
+    "1": 74.75
+   },
+   "filament_used_m": {
+    "1": 23.72
+   },
+   "modifiers": [],
+   "note": "tip up (skirt bottom z 645 on the bed); supports only in the ballast-pocket mouth (spec 3)",
+   "ok": true,
+   "part_g": 51.263,
+   "part_g_by_tool": {
+    "T0": 51.263
+   },
+   "placement_problems": [],
+   "project": "out/print/nose_cone.3mf",
+   "project_sha256": "70503fe7a6088f2be08e43b7cbc816d3aaabb3a89a4b3b18b3235392c6beba19",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "4",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "1",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "1",
+    "support_type": "normal(auto)",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "sliced": "out/print/nose_cone.gcode.3mf",
+   "stl_sha256": "ea498228cf70d27dd8c578b84bc06ac523bb6bff1440ae45f1eaeece680a4c50",
+   "support_g": 23.487,
+   "supports": "build_plate_only",
+   "time_s": 6720.013671875,
+   "two_colour": false,
+   "wall_s": 14.3
+  },
+  "payload_bulkhead": {
+   "class": "S2",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    117.2,
+    117.2,
+    12.8
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 2.577,
+    "Gap infill|T0": 1.495,
+    "Inner wall|T0": 2.193,
+    "Internal solid infill|T0": 5.237,
+    "Outer wall|T0": 4.79,
+    "Top surface|T0": 2.848
+   },
+   "feature_time_s": {
+    "Bottom surface": 266.01153564453125,
+    "Custom": 403.39971923828125,
+    "Flush": 26.0,
+    "Gap infill": 104.2966079711914,
+    "Inner wall": 118.5959701538086,
+    "Internal solid infill": 233.73150634765625,
+    "Outer wall": 329.783935546875,
+    "Top surface": 171.10231018066406,
+    "Travel": 224.3748779296875,
+    "Undefined": 217.04891967773438
+   },
+   "filament_g_total": 19.14,
+   "filament_used_g": {
+    "1": 19.14
+   },
+   "filament_used_m": {
+    "1": 6.07
+   },
+   "modifiers": [],
+   "note": "top face z 552.0 on the bed, ribs up (0.8 disc = 4 layers, test print)",
+   "ok": true,
+   "part_g": 19.139,
+   "part_g_by_tool": {
+    "T0": 19.139
+   },
+   "placement_problems": [],
+   "project": "out/print/payload_bulkhead.3mf",
+   "project_sha256": "1b14f8619c3518645209ff3058bd8b3405ade5b997b1a1a588c47966b5a0e171",
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/payload_bulkhead.gcode.3mf",
+   "stl_sha256": "b2fe2acf0e7c91223ccd948c4920df2edc8a863e3ee6a261faf0f44f681edd75",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 1422.0152587890625,
+   "two_colour": false,
+   "wall_s": 2.1
+  },
+  "payload_module": {
+   "class": "S1",
+   "class_settings": {
+    "bottom_shell_layers": "4",
+    "enable_support": "0",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "extents_mm": [
+    120.0,
+    120.0,
+    124.6
+   ],
+   "feature_g": {
+    "Bridge|T0": 0.037,
+    "Floating vertical shell|T0": 0.02,
+    "Gap infill|T0": 6.339,
+    "Inner wall|T0": 10.216,
+    "Internal solid infill|T0": 1.342,
+    "Outer wall|T0": 54.378,
+    "Overhang wall|T0": 0.001,
+    "Sparse infill|T0": 2.688,
+    "Top surface|T0": 0.207
+   },
+   "feature_time_s": {
+    "Bridge": 4.650643348693848,
+    "Custom": 397.7176208496094,
+    "Flush": 26.0,
+    "Gap infill": 428.7188720703125,
+    "Inner wall": 855.548828125,
+    "Internal solid infill": 185.41439819335938,
+    "Outer wall": 3532.152587890625,
+    "Overhang wall": 0.8406928181648254,
+    "Sparse infill": 379.50445556640625,
+    "Top surface": 34.72845458984375,
+    "Travel": 1954.3707275390625,
+    "Undefined": 1952.634765625
+   },
+   "filament_g_total": 75.23,
+   "filament_used_g": {
+    "1": 75.23
+   },
+   "filament_used_m": {
+    "1": 23.88
+   },
+   "modifiers": [
+    "payload_cord_lug_modifier_100pct"
+   ],
+   "note": "upright, skirt z 535.4 on the bed; no support (45 deg rule, teardrop holes); 100 % over the cord lug",
+   "ok": true,
+   "part_g": 75.228,
+   "part_g_by_tool": {
+    "T0": 75.228
+   },
+   "placement_problems": [],
+   "project": "out/print/payload_module.3mf",
+   "project_sha256": "695910d9dd55779d513a0c8bfddf67885324c9e532c63bc6769612bd5773e518",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "4",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "4",
+    "wall_loops": "3"
+   },
+   "sliced": "out/print/payload_module.gcode.3mf",
+   "stl_sha256": "b3736ad054b98b040bd80d83f91ba36102d2ce7fcac55671c6cbfc031c5995cf",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 7350.81298828125,
+   "two_colour": false,
+   "wall_s": 11.9
+  },
+  "pusher_plate": {
+   "class": "S2",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    66.0,
+    66.0,
+    4.4
+   ],
+   "feature_g": {
+    "Gap infill|T0": 0.472,
+    "Inner wall|T0": 2.417,
+    "Outer wall|T0": 1.045,
+    "Top surface|T0": 0.237
+   },
+   "feature_time_s": {
+    "Custom": 403.8416442871094,
+    "Flush": 26.0,
+    "Gap infill": 44.356170654296875,
+    "Inner wall": 158.20693969726562,
+    "Outer wall": 92.46372985839844,
+    "Top surface": 33.024497985839844,
+    "Travel": 142.1411895751953,
+    "Undefined": 134.39523315429688
+   },
+   "filament_g_total": 4.17,
+   "filament_used_g": {
+    "1": 4.17
+   },
+   "filament_used_m": {
+    "1": 1.32
+   },
+   "modifiers": [],
+   "note": "top face z 568.4 on the bed, spokes up",
+   "ok": true,
+   "part_g": 4.171,
+   "part_g_by_tool": {
+    "T0": 4.171
+   },
+   "placement_problems": [],
+   "project": "out/print/pusher_plate.3mf",
+   "project_sha256": "f9899b56309925b2a5c0dbafb9a5e67e5234bb049833dc31147f6061d74b67c2",
+   "qty": 1,
+   "rots": [
+    [
+     "x",
+     180.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/pusher_plate.gcode.3mf",
+   "stl_sha256": "de8aef77f2e8e8bd864c00f5fcf4d40d77225ccd5a9a90f664fe12651de8fe20",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 444.20697021484375,
+   "two_colour": false,
+   "wall_s": 2.1
+  },
+  "spring_seat": {
+   "class": "S2",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    39.2,
+    39.2,
+    8.0
+   ],
+   "feature_g": {
+    "Bottom surface|T0": 0.045,
+    "Gap infill|T0": 0.001,
+    "Inner wall|T0": 0.214,
+    "Internal solid infill|T0": 0.123,
+    "Outer wall|T0": 0.747,
+    "Top surface|T0": 0.128
+   },
+   "feature_time_s": {
+    "Bottom surface": 19.343658447265625,
+    "Custom": 403.623779296875,
+    "Flush": 26.0,
+    "Gap infill": 0.5788013935089111,
+    "Inner wall": 18.061758041381836,
+    "Internal solid infill": 5.478352069854736,
+    "Outer wall": 153.30979919433594,
+    "Top surface": 12.865641593933105,
+    "Travel": 33.1982307434082,
+    "Undefined": 25.63226318359375
+   },
+   "filament_g_total": 1.26,
+   "filament_used_g": {
+    "1": 1.26
+   },
+   "filament_used_m": {
+    "1": 0.4
+   },
+   "modifiers": [],
+   "note": "flange on the bed",
+   "ok": true,
+   "part_g": 1.258,
+   "part_g_by_tool": {
+    "T0": 1.258
+   },
+   "placement_problems": [],
+   "project": "out/print/spring_seat.3mf",
+   "project_sha256": "96f4617146f5cf9c06d997f974680d1cbce2ac93e080b1e2320e8528877eade0",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "40%",
+    "sparse_infill_pattern": "gyroid",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/spring_seat.gcode.3mf",
+   "stl_sha256": "00bcfef38030e25434e7566d74d0e4ee33aa9e94b449b5326ef188c307297706",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 216.83544921875,
+   "two_colour": false,
+   "wall_s": 2.1
+  },
+  "xt60_grip_collar": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "1",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "1",
+    "support_threshold_angle": "30",
+    "support_type": "normal(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    28.3,
+    26.0,
+    36.6
+   ],
+   "feature_g": {
+    "Brim|T0": 0.298,
+    "Gap infill|T0": 0.093,
+    "Inner wall|T0": 1.116,
+    "Outer wall|T0": 0.781,
+    "Overhang wall|T0": 0.034,
+    "Support interface|T0": 0.09,
+    "Support transition|T0": 0.051,
+    "Support|T0": 0.268,
+    "Top surface|T0": 0.034
+   },
+   "feature_time_s": {
+    "Brim": 54.95562744140625,
+    "Custom": 402.22576904296875,
+    "Flush": 26.0,
+    "Gap infill": 13.353391647338867,
+    "Inner wall": 266.8618469238281,
+    "Outer wall": 201.46783447265625,
+    "Overhang wall": 31.571805953979492,
+    "Support": 45.4212532043457,
+    "Support interface": 9.784482955932617,
+    "Support transition": 8.451017379760742,
+    "Top surface": 5.618988037109375,
+    "Travel": 88.93306732177734,
+    "Undefined": 82.78710174560547
+   },
+   "filament_g_total": 2.76,
+   "filament_used_g": {
+    "1": 2.76
+   },
+   "filament_used_m": {
+    "1": 0.88
+   },
+   "modifiers": [],
+   "note": "review N3: collar + fin on the ESC-side XT60 (M3x10 + nut); ring end down, fin up; review round 4: the -y skirt stands on the bed, supports under the ring 3 mm up (scrape the seat faces flat)",
+   "ok": true,
+   "part_g": 2.058,
+   "part_g_by_tool": {
+    "T0": 2.058
+   },
+   "placement_problems": [],
+   "project": "out/print/xt60_grip_collar.3mf",
+   "project_sha256": "3c8db47c99e2ade504dce4fa4e97eba8c56d6e4c3635ed43f95bc30d180e865e",
+   "qty": 1,
+   "rots": [
+    [
+     "z",
+     -72.0
+    ],
+    [
+     "y",
+     -19.0
+    ]
+   ],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "1",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "1",
+    "support_type": "normal(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/xt60_grip_collar.gcode.3mf",
+   "stl_sha256": "04cb94d316b09679e2d3c6d808ba4d21947359f8e85a7517e71517fefe1d1e1b",
+   "support_g": 0.408,
+   "supports": "build_plate_only",
+   "time_s": 700.4348754882812,
+   "two_colour": false,
+   "wall_s": 1.1
+  },
+  "xt60_seat_forks": {
+   "class": "S3",
+   "class_settings": {
+    "bottom_shell_layers": "5",
+    "enable_support": "0",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "extents_mm": [
+    162.0,
+    14.6,
+    3.5
+   ],
+   "feature_g": {
+    "Gap infill|T0": 0.129,
+    "Inner wall|T0": 0.623,
+    "Internal solid infill|T0": 0.004,
+    "Outer wall|T0": 0.662,
+    "Top surface|T0": 0.083
+   },
+   "feature_time_s": {
+    "Custom": 403.8348693847656,
+    "Flush": 26.0,
+    "Gap infill": 22.322694778442383,
+    "Inner wall": 73.3682861328125,
+    "Internal solid infill": 1.103820562362671,
+    "Outer wall": 79.58100128173828,
+    "Top surface": 15.775940895080566,
+    "Travel": 118.63880920410156,
+    "Undefined": 110.84284210205078
+   },
+   "filament_g_total": 1.5,
+   "filament_used_g": {
+    "1": 1.5
+   },
+   "filament_used_m": {
+    "1": 0.48
+   },
+   "modifiers": [],
+   "note": "2026-11-20: 7 seat forks 0.5-3.5 mm on a breakaway sprue, flat; fit the one the lead table gives",
+   "ok": true,
+   "part_g": 1.501,
+   "part_g_by_tool": {
+    "T0": 1.501
+   },
+   "placement_problems": [],
+   "project": "out/print/xt60_seat_forks.3mf",
+   "project_sha256": "a585ef1e8cd9691610a3570bb4d05df46e6e934a389fabc710921802c2803629",
+   "qty": 1,
+   "rots": [],
+   "settings_seen_in_gcode": {
+    "bottom_shell_layers": "5",
+    "curr_bed_type": "Textured PEI Plate",
+    "enable_support": "0",
+    "filament_density": "1.31,1.31",
+    "layer_height": "0.2",
+    "printable_area": "0x0,256x0,256x256,0x256",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "support_on_build_plate_only": "0",
+    "support_type": "tree(auto)",
+    "top_shell_layers": "5",
+    "wall_loops": "4"
+   },
+   "sliced": "out/print/xt60_seat_forks.gcode.3mf",
+   "stl_sha256": "ba43ebefc81a393c1f553824eb79302d7934b60f4dae3879ed5b3e65626a073c",
+   "support_g": 0,
+   "supports": "none",
+   "time_s": 284.78131103515625,
+   "two_colour": false,
+   "wall_s": 1.1
+  }
+ },
+ "profiles": {
+  "bed": "Textured PEI Plate",
+  "filament": "Bambu PLA Matte @BBL P2S",
+  "filament_density": 1.31,
+  "flattened": true,
+  "machine": "Bambu Lab P2S 0.4 nozzle",
+  "process": "0.20mm Standard @BBL P2S"
+ },
+ "totals": {
+  "filament_g_one_set": 1410.5,
+  "n_parts": 21,
+  "n_sliced": 21,
+  "note": "one flight set: V fins counted x6 (4 + 2 spares) - qty from the registry",
+  "part_g_one_set": 1155.6,
+  "time_h_one_set": 33.82
+ }
+}

@@ -1,0 +1,170 @@
+{
+ "copper_layers": 4,
+ "layers": "F.Cu,In1.Cu,In2.Cu,B.Cu,F.Paste,B.Paste,F.SilkS,B.SilkS,F.Mask,B.Mask,Edge.Cuts",
+ "sets": {
+  "main": {
+   "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber.zip",
+   "zip_sha256": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+   "files": [
+    "vtol_carrier-B_Cu.gbl",
+    "vtol_carrier-B_Mask.gbs",
+    "vtol_carrier-B_Paste.gbp",
+    "vtol_carrier-B_Silkscreen.gbo",
+    "vtol_carrier-Edge_Cuts.gm1",
+    "vtol_carrier-F_Cu.gtl",
+    "vtol_carrier-F_Mask.gts",
+    "vtol_carrier-F_Paste.gtp",
+    "vtol_carrier-F_Silkscreen.gto",
+    "vtol_carrier-In1_Cu.g1",
+    "vtol_carrier-In2_Cu.g2",
+    "vtol_carrier-job.gbrjob",
+    "vtol_carrier.drl"
+   ],
+   "gerber_check": {
+    "status": "PASS",
+    "message": "12 files, 4 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Copper,L3', 'Copper,L4', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+   },
+   "drill_check": {
+    "status": "PASS",
+    "message": "1 drill file(s)"
+   },
+   "f_paste_flashes": 322
+  },
+  "with_mcu": {
+   "zip": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/vtol_carrier_gerber_with_mcu.zip",
+   "zip_sha256": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c",
+   "files": [
+    "vtol_carrier-B_Cu.gbl",
+    "vtol_carrier-B_Mask.gbs",
+    "vtol_carrier-B_Paste.gbp",
+    "vtol_carrier-B_Silkscreen.gbo",
+    "vtol_carrier-Edge_Cuts.gm1",
+    "vtol_carrier-F_Cu.gtl",
+    "vtol_carrier-F_Mask.gts",
+    "vtol_carrier-F_Paste.gtp",
+    "vtol_carrier-F_Silkscreen.gto",
+    "vtol_carrier-In1_Cu.g1",
+    "vtol_carrier-In2_Cu.g2",
+    "vtol_carrier-job.gbrjob",
+    "vtol_carrier.drl"
+   ],
+   "gerber_check": {
+    "status": "PASS",
+    "message": "12 files, 4 copper layers, functions: ['Copper,L1', 'Copper,L2', 'Copper,L3', 'Copper,L4', 'Legend,Bot', 'Legend,Top', 'Paste,Bot', 'Paste,Top', 'Profile,NP', 'Soldermask,Bot', 'Soldermask,Top']"
+   },
+   "drill_check": {
+    "status": "PASS",
+    "message": "1 drill file(s)"
+   },
+   "f_paste_flashes": 578
+  }
+ },
+ "paste_variant": {
+  "main": {
+   "mode": "main",
+   "fits_without_paste": [
+    "jlc_optional",
+    "user",
+    "none"
+   ],
+   "refs": [
+    "J1",
+    "J2",
+    "J3",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J13",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U1",
+    "U2",
+    "U3",
+    "U4",
+    "U7"
+   ],
+   "pads_changed": 283,
+   "pads_changed_per_ref": {
+    "Q3": 3,
+    "R47": 2,
+    "U1": 64,
+    "U2": 64,
+    "U3": 64,
+    "U4": 64,
+    "U7": 22
+   },
+   "pads_with_paste_before": 605,
+   "pads_with_paste_after": 322,
+   "paste_pads_left_on_parts_not_fitted_by_jlc": 0
+  },
+  "with_mcu": {
+   "mode": "with_mcu",
+   "fits_without_paste": [
+    "user",
+    "none"
+   ],
+   "refs": [
+    "J1",
+    "J2",
+    "J3",
+    "J5",
+    "J8",
+    "J9",
+    "J10",
+    "J11",
+    "J12",
+    "J13",
+    "J14",
+    "J15",
+    "J16",
+    "J17",
+    "J18",
+    "J19",
+    "J20",
+    "J21",
+    "J22",
+    "J24",
+    "J25",
+    "J26",
+    "JP1",
+    "NT1",
+    "Q3",
+    "R47",
+    "U7"
+   ],
+   "pads_changed": 27,
+   "pads_changed_per_ref": {
+    "Q3": 3,
+    "R47": 2,
+    "U7": 22
+   },
+   "pads_with_paste_before": 605,
+   "pads_with_paste_after": 578,
+   "paste_pads_left_on_parts_not_fitted_by_jlc": 0
+  }
+ },
+ "date_fields_normalised": {
+  "lines": 121,
+  "value": "2026-11-11T00:00:00+09:00"
+ },
+ "variant_layers_other_than_f_paste_differing": [],
+ "paste_decision": "default zip: no paste apertures on U1..U4 (the user hand-solders the MCUs on clean pads); both zips: no paste on the user-soldered ESP-12F U7 (user decision 2026-11-12) and on unpopulated footprints (fit none); with_mcu zip: paste on U1..U4, upload it ONLY together with the *_with_mcu BOM / CPL. Whether JLC would itself leave unplaced parts without paste is NOT_VERIFIED, so the two zips are kept.",
+ "paste_flash_difference": 256
+}

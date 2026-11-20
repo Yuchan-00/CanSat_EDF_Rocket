@@ -1,0 +1,61 @@
+{
+ "report": "B:/0)AI_Cad/CanSat_EDF_Rocket_pcb_rev3/pcb/vtol_carrier/out/reports/rev3_export_determinism.json",
+ "result": "PASS",
+ "tool": "scripts/rev3_checks.py export-determinism",
+ "files": [
+  "jlcpcb_bom.csv",
+  "jlcpcb_cpl.csv",
+  "jlcpcb_bom_with_mcu.csv",
+  "jlcpcb_cpl_with_mcu.csv",
+  "vtol_carrier_gerber.zip",
+  "vtol_carrier_gerber_with_mcu.zip"
+ ],
+ "sha256_out": {
+  "jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+  "jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+  "jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+  "jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+  "vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+  "vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c"
+ },
+ "runs": [
+  {
+   "run": 1,
+   "exit": 0,
+   "sha256": {
+    "jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+    "jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+    "jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+    "jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+    "vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+    "vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c"
+   }
+  },
+  {
+   "run": 2,
+   "exit": 0,
+   "sha256": {
+    "jlcpcb_bom.csv": "2f4827ad0b5fe97ccb839d78bead556da1726b3a38cba955de1f8840dd969561",
+    "jlcpcb_cpl.csv": "9cf2527f4505e3095bae1c14ae668e6e9bf4f097d069af4e2b593082ec14c88d",
+    "jlcpcb_bom_with_mcu.csv": "a00f1407a2825cd1843340b2a162109d732f56b5c5781725d11bbb7a24b0aa67",
+    "jlcpcb_cpl_with_mcu.csv": "fa780830e806c36cb52b273cb6e473b71ede547991a3e2ac4edfe7063c4f1fed",
+    "vtol_carrier_gerber.zip": "6a1e22caf6ce1ae45902239ddff0f22e77c7cbfb00c5ee4dc8069f29fe36b7ac",
+    "vtol_carrier_gerber_with_mcu.zip": "b9246444b0348e2a43bdc32c9f5a8f362c1186a5b472601ae8b3dce44ac5376c"
+   }
+  }
+ ],
+ "cpl_rotation_outputs": {
+  "before": {
+   "out/cpl_rotation_table.csv": "9486a629e9ea79beedd710aed65ddcf72b1713f37ef291b237b8c11f08481d4c",
+   "out/reports/cpl_rotation.json": "ca4d84ee5d899d6c812c3807fa499cf4aa032e99bff21aa738930b6484dde6d0",
+   "out/cpl_rotation_check.png": "3df4b5056a4d8c2e75fee9835c36a2eace3bdb91b01bfc6040236277f9e5e2b6"
+  },
+  "after": {
+   "out/cpl_rotation_table.csv": "9486a629e9ea79beedd710aed65ddcf72b1713f37ef291b237b8c11f08481d4c",
+   "out/reports/cpl_rotation.json": "ca4d84ee5d899d6c812c3807fa499cf4aa032e99bff21aa738930b6484dde6d0",
+   "out/cpl_rotation_check.png": "3df4b5056a4d8c2e75fee9835c36a2eace3bdb91b01bfc6040236277f9e5e2b6"
+  }
+ },
+ "problems": [],
+ "note": "the gerber / drill / job files carry KiCad's export time; checks_exports.py writes the fixed RELEASE_STAMP into those fields (comment / attribute lines only), so the zips are comparable"
+}

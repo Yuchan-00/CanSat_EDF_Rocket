@@ -1,0 +1,1152 @@
+{
+ "generator": "cad/body_v2/parts/front.py",
+ "params_sha256": "3fc32e0fb9032aef5e7ca23853f3d2589501a937f2e24b4116d3060ca3c5f89f",
+ "params_rev": "spec_params.json rev 3.4.4",
+ "rho_check_g_cm3": 1.24,
+ "rho_spec_g_cm3": 1.31,
+ "parts": {
+  "nose_cone": {
+   "step": "out/nose_cone.step",
+   "stl": "out/nose_cone.stl",
+   "step_sha256": "7fb0dfd171b94c53d932611b292254db7c064540850b33b79fa9f59432443b92",
+   "stl_sha256": "ea498228cf70d27dd8c578b84bc06ac523bb6bff1440ae45f1eaeece680a4c50",
+   "deterministic": true,
+   "solid": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 42271.77826519596,
+    "bbox": [
+     -60.004,
+     -60.007,
+     644.987,
+     60.007,
+     60.007,
+     799.671
+    ]
+   },
+   "mesh": {
+    "watertight": true,
+    "n_bodies": 1,
+    "volume_mm3": 42260.94427342961,
+    "winding_consistent": true
+   },
+   "single_solid": true,
+   "mass_g_1_24": 52.42,
+   "mass_g_1_31": 55.38,
+   "spec_mass_g_1_31": 52.9,
+   "delta_vs_spec_g_1_31": 2.48,
+   "print": "tip up (skirt bottom z 645 on the bed); supports only in the ballast-pocket mouth (pocket tube rim + column)",
+   "fits_bed": true
+  },
+  "nose_ballast_cap": {
+   "step": "out/nose_ballast_cap.step",
+   "stl": "out/nose_ballast_cap.stl",
+   "step_sha256": "dd630d8bbd5691aaf69bb1ad57fee64ab3588d20a9c4db4e1fb7c9d8c032b197",
+   "stl_sha256": "3df59d3334adcffc1a43fd19b52af84d0a2cccade58c3911f71703ef97a3a7c7",
+   "deterministic": true,
+   "solid": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 1668.9501532685554,
+    "bbox": [
+     -11.811,
+     -11.811,
+     749.992,
+     11.811,
+     11.811,
+     754.011
+    ]
+   },
+   "mesh": {
+    "watertight": true,
+    "n_bodies": 1,
+    "volume_mm3": 1667.3941988376466,
+    "winding_consistent": true
+   },
+   "single_solid": true,
+   "mass_g_1_24": 2.07,
+   "mass_g_1_31": 2.19,
+   "spec_mass_g_1_31": null,
+   "delta_vs_spec_g_1_31": null,
+   "print": "flat, column face on the bed (counterbore up); no support",
+   "fits_bed": true
+  },
+  "payload_module": {
+   "step": "out/payload_module.step",
+   "stl": "out/payload_module.stl",
+   "step_sha256": "aeaafac6f1245575b76b18b6d9fcbd7076bc1a7f62dc1fb27c527478847f3734",
+   "stl_sha256": "b3736ad054b98b040bd80d83f91ba36102d2ce7fcac55671c6cbfc031c5995cf",
+   "deterministic": true,
+   "solid": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 61355.420320721925,
+    "bbox": [
+     -60.0,
+     -60.007,
+     535.387,
+     60.01,
+     60.007,
+     660.01
+    ]
+   },
+   "mesh": {
+    "watertight": true,
+    "n_bodies": 1,
+    "volume_mm3": 61294.33663510034,
+    "winding_consistent": true
+   },
+   "single_solid": true,
+   "mass_g_1_24": 76.08,
+   "mass_g_1_31": 80.38,
+   "spec_mass_g_1_31": 80.4,
+   "delta_vs_spec_g_1_31": -0.02,
+   "print": "upright, skirt (z 535.4) on the bed; no support (45 deg rule; teardrop holes)",
+   "fits_bed": true
+  },
+  "payload_bulkhead": {
+   "step": "out/payload_bulkhead.step",
+   "stl": "out/payload_bulkhead.stl",
+   "step_sha256": "cc1de5b2d46c8c0d1030fd87315a83dc9148d9e758b7adb44dd3c51b4364d82f",
+   "stl_sha256": "b2fe2acf0e7c91223ccd948c4920df2edc8a863e3ee6a261faf0f44f681edd75",
+   "deterministic": true,
+   "solid": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 14703.455658233019,
+    "bbox": [
+     -58.6,
+     -58.6,
+     539.19,
+     58.608,
+     58.608,
+     552.01
+    ]
+   },
+   "mesh": {
+    "watertight": true,
+    "n_bodies": 1,
+    "volume_mm3": 14701.573556220268,
+    "winding_consistent": true
+   },
+   "single_solid": true,
+   "mass_g_1_24": 18.23,
+   "mass_g_1_31": 19.26,
+   "spec_mass_g_1_31": 20.2,
+   "delta_vs_spec_g_1_31": -0.94,
+   "print": "flat, top face (z 552.0) on the bed, ribs up; no support",
+   "fits_bed": true
+  },
+  "spring_seat": {
+   "step": "out/spring_seat.step",
+   "stl": "out/spring_seat.stl",
+   "step_sha256": "18a121b7783d2faf2e7c97b8a354399e2714f255524864fc71975ab4eb8c17fd",
+   "stl_sha256": "00bcfef38030e25434e7566d74d0e4ee33aa9e94b449b5326ef188c307297706",
+   "deterministic": true,
+   "solid": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 1015.6241261489777,
+    "bbox": [
+     -19.6,
+     -19.607,
+     551.99,
+     19.61,
+     19.607,
+     560.01
+    ]
+   },
+   "mesh": {
+    "watertight": true,
+    "n_bodies": 1,
+    "volume_mm3": 1015.2447924677302,
+    "winding_consistent": true
+   },
+   "single_solid": true,
+   "mass_g_1_24": 1.26,
+   "mass_g_1_31": 1.33,
+   "spec_mass_g_1_31": null,
+   "delta_vs_spec_g_1_31": null,
+   "print": "flange on the bed; no support",
+   "fits_bed": true
+  },
+  "pusher_plate": {
+   "step": "out/pusher_plate.step",
+   "stl": "out/pusher_plate.stl",
+   "step_sha256": "a96510e80e7f750194c8cf6eb7aa27416e3f22fa9d5ba2674cbbf2a268e4c99b",
+   "stl_sha256": "de8aef77f2e8e8bd864c00f5fcf4d40d77225ccd5a9a90f664fe12651de8fe20",
+   "deterministic": true,
+   "solid": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 3218.618480951964,
+    "bbox": [
+     -33.01,
+     -33.01,
+     563.999,
+     33.01,
+     33.01,
+     568.41
+    ]
+   },
+   "mesh": {
+    "watertight": true,
+    "n_bodies": 1,
+    "volume_mm3": 3217.710005022902,
+    "winding_consistent": true
+   },
+   "single_solid": true,
+   "mass_g_1_24": 3.99,
+   "mass_g_1_31": 4.22,
+   "spec_mass_g_1_31": 4.3,
+   "delta_vs_spec_g_1_31": -0.08,
+   "print": "top face (z 568.4) on the bed, spokes up; no support",
+   "fits_bed": true
+  },
+  "cansat_dummy_sleeve": {
+   "step": "out/cansat_dummy_sleeve.step",
+   "stl": "out/cansat_dummy_sleeve.stl",
+   "step_sha256": "d9aa6d883af8a83f05d2496e5bd62043ddfd6fd51b7ea6c5bb128181942b9342",
+   "stl_sha256": "e693ca2793ce7f9b49e6b4960be52464a52ebbff89a508de63decdd5018f797b",
+   "deterministic": true,
+   "solid": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 7474.821462399895,
+    "bbox": [
+     -33.01,
+     -33.0,
+     564.6,
+     33.01,
+     33.0,
+     683.41
+    ]
+   },
+   "mesh": {
+    "watertight": true,
+    "n_bodies": 1,
+    "volume_mm3": 7474.25244103499,
+    "winding_consistent": true
+   },
+   "single_solid": true,
+   "mass_g_1_24": 9.27,
+   "mass_g_1_31": 9.79,
+   "spec_mass_g_1_31": 9.6,
+   "delta_vs_spec_g_1_31": 0.19,
+   "print": "chute end (z 683.4) on the bed; hoops bridge ~31 mm (test print), bayonet feet 1.8 mm overhang",
+   "fits_bed": true
+  }
+ },
+ "deviations": [
+  "D1 holes use the body_v2 print tolerances (task rule): M3 through 3.3 (spec 3.2), M3 tap in PLA 2.8 (spec 2.5 for the nose column), M2x8 pilots 1.7 (A); horizontal holes are teardrops (45 deg roof) for the upright prints",
+  "D2 nose: base flange r 57.76-60 x 1.8 joins the skirt (r 57.76-58.6) to the shell (r >= 59.16) - the massing touched nowhere there (0.56 mm radial gap); its outer 1.4 mm is a flat overhang ring in the tip-up print (P2S prints it, not 45 deg)",
+  "D3 the payload_bulkhead spring boss (d 30 x 8, r 14.16-15) cannot be printed with 'flat, ribs up' (it stands on the bed face) -> separate flanged spring_seat ring (flange under the first coil, spring force keeps it); the pusher tether ties to 2 x D1.8 holes in the bulkhead plate instead of the boss",
+  "D4 nose ballast pocket: closed by a 45 deg cone (r 12 at z 784 -> r 3 at z 793) instead of the massing's open-topped tube (it floated 0.9 mm off the shell); capacity +1.5 cm3; the pocket tube and column still need the supports in the pocket mouth the spec allows",
+  "D5 GPS mount: the two 45 deg ledges (rev 3 F3) are replaced by two slotted side ribs whose slot floors carry the ground plane (z 580) and whose free inner fingers carry the 2 printed snap lips (spec: 'slotted cradle + 2 snap hooks')",
+  "D6 raceways = continuous helical tunnels with the spec cross-sections (release 5 x 2.5, GPS 4 x 3, walls 0.84) and a 1.5 mm lead slit on the inner face (the factory plugs 8.15 x 4 / 7.5 x 4.3 cannot be threaded through a closed 5 x 2.5 / 4 x 3 tunnel); GPS tunnel 62 deg from vertical gets a 45 deg web to the skin; both ends clipped by a 45 deg cone",
+  "D7 release-servo cradle: 2 pillars (t 11.7-17.5, r 47-59.6) under the ears at the F hole pitch 28.0 + a back web r 56.7 behind the case (massing: bosses at +-13.75 and a top plate r 53-59.3 that overlapped the MG90S case r 44-56.5)",
+  "D8 sleeve 'snaps onto the pusher' drawn as a 3-lug bayonet (20 deg twist) - a plain snap hook on the 2.4 ring strains PLA ~5 %; the pusher outer ring gets 3 notches (r 29.5-31.9, 6 wide)",
+  "D9 nose shell is blunted with the F tip radius 3.0 (tangent sphere): apex lies below z 800 by the value in the check",
+  "D10 rail tops get a 3 mm 45 deg lead-in on the inner edge (CanSat / sleeve insertion); nose skirt 0.6 lead-in chamfer"
+ ],
+ "print": {
+  "nose_cone": "tip up (skirt bottom z 645 on the bed); supports only in the ballast-pocket mouth (pocket tube rim + column)",
+  "nose_ballast_cap": "flat, column face on the bed (counterbore up); no support",
+  "payload_module": "upright, skirt (z 535.4) on the bed; no support (45 deg rule; teardrop holes)",
+  "payload_bulkhead": "flat, top face (z 552.0) on the bed, ribs up; no support",
+  "spring_seat": "flange on the bed; no support",
+  "pusher_plate": "top face (z 568.4) on the bed, spokes up; no support",
+  "cansat_dummy_sleeve": "chute end (z 683.4) on the bed; hoops bridge ~31 mm (test print), bayonet feet 1.8 mm overhang"
+ },
+ "fillets": {
+  "cord_hole_R1.5": true
+ },
+ "build_s": 3.4,
+ "total_g": {
+  "spec": 167.4,
+  "g124": 163.32,
+  "g131": 172.54
+ },
+ "total_note": "spec total = the 5 parts of spec sec. 3; the 1.24 / 1.31 totals include nose_ballast_cap + spring_seat (new parts)",
+ "key_dims": [
+  {
+   "part": "nose_cone",
+   "what": "apex z (tip blunt r 3 + 0.3 flat, D9)",
+   "got": 799.671,
+   "want": "800.0 - 0.323",
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "skirt bottom z",
+   "got": 644.987,
+   "want": 645.0,
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "max OD (mesh vertices)",
+   "got": 120.0,
+   "want": 120.0,
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "skirt r at z 652 theta 0 (OD 117.2 x 0.84)",
+   "got": [
+    [
+     57.76,
+     58.6
+    ]
+   ],
+   "want": [
+    57.76,
+    58.6
+   ],
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "shell at z 700 (outer = Haack, radial wall ~0.84 normal)",
+   "got": [
+    [
+     51.578,
+     52.45
+    ]
+   ],
+   "want": 52.452,
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "pocket at z 765: column r 3 (tap 1.4) / bore r 12 / tube r 13.2 / shell",
+   "got": [
+    [
+     1.4,
+     3.0
+    ],
+    [
+     12.0,
+     13.2
+    ],
+    [
+     25.575,
+     26.528
+    ]
+   ],
+   "want": "[1.4,3] [12,13.2] [..]",
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "latch lug theta 30 z 647 r from 53.4",
+   "got": [
+    [
+     53.4,
+     58.6
+    ]
+   ],
+   "want": [
+    53.4,
+    57.76
+   ],
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "skirt notch theta 270 (no skirt at z 652)",
+   "got": [],
+   "want": [],
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "cord eye theta 120.0 hole at z 656.0 (D4 at r 54.6: material r 51.8-52.6 / 56.6-58.6)",
+   "got": [
+    [
+     51.8,
+     52.193
+    ],
+    [
+     56.193,
+     58.6
+    ]
+   ],
+   "want": [
+    51.8,
+    57.9
+   ],
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "what": "cord eye theta 300.0 hole at z 656.0 (D4 at r 54.6: material r 51.8-52.6 / 56.6-58.6)",
+   "got": [
+    [
+     51.8,
+     52.193
+    ],
+    [
+     56.193,
+     58.6
+    ]
+   ],
+   "want": [
+    51.8,
+    57.9
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "z range",
+   "got": [
+    535.387,
+    660.01
+   ],
+   "want": [
+    535.4,
+    660.0
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "max OD (mesh vertices)",
+   "got": 120.0,
+   "want": 120.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "skin 0.84 at z 600 theta 60",
+   "got": [
+    [
+     59.16,
+     60.0
+    ]
+   ],
+   "want": [
+    59.16,
+    60.0
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "bottom skirt 1.2 at z 545 theta 0",
+   "got": [
+    [
+     58.8,
+     60.0
+    ]
+   ],
+   "want": [
+    58.8,
+    60.0
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "top rim 1.2 at z 655 theta 180",
+   "got": [
+    [
+     58.8,
+     60.0
+    ]
+   ],
+   "want": [
+    58.8,
+    60.0
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "pad theta 135 z 547.5 (r 58.0 - skirt)",
+   "got": [
+    [
+     58.0,
+     60.0
+    ]
+   ],
+   "want": [
+    58.0,
+    60.0
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "joint hole theta 225 z 542.9 (3.3 through skirt + pad)",
+   "got": [],
+   "want": [],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "rail theta 90 at z 602 inner edge r 34.5",
+   "got": [
+    [
+     34.5,
+     60.0
+    ]
+   ],
+   "want": [
+    34.5,
+    59.16
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "cord lug theta 270 z 650: hole d 4.5 at r 56 (gap 53.75-58.25)",
+   "got": [
+    [
+     50.0,
+     53.75
+    ],
+    [
+     58.25,
+     60.0
+    ]
+   ],
+   "want": "[50, 53.75] [58.25, 60]",
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "cord hole below z 644: saddle fills its outboard 0.29 (opening r 53.75-57.96, spec as-built)",
+   "got": [
+    [
+     50.0,
+     53.75
+    ],
+    [
+     57.96,
+     60.0
+    ]
+   ],
+   "want": "[50,53.75] [57.96,60]",
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "what": "GPS: theta 150 z 625 clear to the skin (patch view)",
+   "got": [
+    [
+     59.16,
+     60.0
+    ]
+   ],
+   "want": [
+    59.16,
+    60.0
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_bulkhead",
+   "what": "z range (rib bottom 539.2, top 552.0)",
+   "got": [
+    539.19,
+    552.01
+   ],
+   "want": [
+    539.2,
+    552.0
+   ],
+   "ok": true
+  },
+  {
+   "part": "payload_bulkhead",
+   "what": "OD 117.2 (mesh vertices)",
+   "got": 117.2,
+   "want": 117.2,
+   "ok": true
+  },
+  {
+   "part": "pusher_plate",
+   "what": "z range (spokes 2.0 below, top 568.4)",
+   "got": [
+    563.999,
+    568.41
+   ],
+   "want": [
+    564.0,
+    568.4
+   ],
+   "ok": true
+  },
+  {
+   "part": "pusher_plate",
+   "what": "OD 66 (mesh vertices)",
+   "got": 66.0,
+   "want": 66.0,
+   "ok": true
+  },
+  {
+   "part": "cansat_dummy_sleeve",
+   "what": "z top 683.4 / body bottom 568.4 (lugs to 564.6)",
+   "got": [
+    564.6,
+    683.41
+   ],
+   "want": [
+    564.6,
+    683.4
+   ],
+   "ok": true
+  },
+  {
+   "part": "cansat_dummy_sleeve",
+   "what": "OD 66 (mesh vertices)",
+   "got": 66.044,
+   "want": 66.0,
+   "ok": true
+  }
+ ],
+ "interference": [
+  {
+   "pair": [
+    "nose_cone",
+    "payload_module"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "pair": [
+    "payload_bulkhead",
+    "payload_module"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "pair": [
+    "spring_seat",
+    "payload_bulkhead"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "pair": [
+    "pusher_plate",
+    "cansat_dummy_sleeve"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "pair": [
+    "pusher_plate",
+    "payload_module"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "pair": [
+    "cansat_dummy_sleeve",
+    "payload_module"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "pair": [
+    "nose_ballast_cap",
+    "nose_cone"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "pair": [
+    "cansat_dummy_sleeve",
+    "nose_cone"
+   ],
+   "overlap_mm3": 0.0,
+   "ok": true
+  }
+ ],
+ "hardware_clearance": [
+  {
+   "part": "payload_module",
+   "hardware": "MG90S release servo",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "hardware": "GPS ground plane",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "hardware": "GPS patch",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "hardware": "GPS board",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "hardware": "CanSat D66 x 115",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "hardware": "cord knot envelope D12 x 14",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "hardware": "ejection spring (compressed)",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_module",
+   "hardware": "upper-joint M3x8 shanks",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "payload_bulkhead",
+   "hardware": "ejection spring (compressed)",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "pusher_plate",
+   "hardware": "ejection spring (compressed)",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "spring_seat",
+   "hardware": "ejection spring (compressed)",
+   "overlap_mm3": 0.0,
+   "ok": true
+  },
+  {
+   "part": "nose_cone",
+   "hardware": "CanSat D66 x 115",
+   "overlap_mm3": 0.0,
+   "ok": true
+  }
+ ],
+ "lead_channels": [
+  {
+   "channel": "release",
+   "probes": 41,
+   "blocked_fractions": [],
+   "ok": true
+  },
+  {
+   "channel": "gps",
+   "probes": 41,
+   "blocked_fractions": [],
+   "ok": true
+  }
+ ],
+ "overhangs_print_orientation": {
+  "nose_cone": {
+   "overhang_area_mm2": 590.5,
+   "regions_ge_1mm2": [
+    [
+     "th 300-330 r 55-60 z 660-665",
+     44.9
+    ],
+    [
+     "th 120-150 r 55-60 z 660-665",
+     44.2
+    ],
+    [
+     "th 210-240 r 55-60 z 660-665",
+     44.0
+    ],
+    [
+     "th 90-120 r 55-60 z 660-665",
+     44.0
+    ],
+    [
+     "th 180-210 r 55-60 z 660-665",
+     43.3
+    ],
+    [
+     "th 150-180 r 55-60 z 660-665",
+     43.3
+    ],
+    [
+     "th 330-360 r 55-60 z 660-665",
+     43.3
+    ],
+    [
+     "th 60-90 r 55-60 z 660-665",
+     43.3
+    ],
+    [
+     "th 0-30 r 55-60 z 660-665",
+     43.3
+    ],
+    [
+     "th 30-60 r 55-60 z 660-665",
+     43.3
+    ],
+    [
+     "th 270-300 r 55-60 z 660-665",
+     38.5
+    ],
+    [
+     "th 240-270 r 55-60 z 660-665",
+     38.0
+    ],
+    [
+     "th 210-240 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 240-270 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 180-210 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 270-300 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 150-180 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 300-330 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 120-150 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 330-360 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 90-120 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 60-90 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 0-30 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 30-60 r 10-15 z 750-755",
+     4.0
+    ],
+    [
+     "th 120-150 r 0-5 z 765-770",
+     2.2
+    ],
+    [
+     "th 210-240 r 0-5 z 750-755",
+     1.8
+    ],
+    [
+     "th 240-270 r 0-5 z 750-755",
+     1.8
+    ],
+    [
+     "th 180-210 r 0-5 z 750-755",
+     1.8
+    ],
+    [
+     "th 270-300 r 0-5 z 750-755",
+     1.8
+    ],
+    [
+     "th 150-180 r 0-5 z 750-755",
+     1.8
+    ]
+   ]
+  },
+  "nose_ballast_cap": {
+   "overhang_area_mm2": 22.6,
+   "regions_ge_1mm2": [
+    [
+     "th 210-240 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 240-270 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 180-210 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 270-300 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 150-180 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 120-150 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 300-330 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 90-120 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 330-360 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 0-30 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 60-90 r 0-5 z 750-755",
+     1.9
+    ],
+    [
+     "th 30-60 r 0-5 z 750-755",
+     1.9
+    ]
+   ]
+  },
+  "payload_module": {
+   "overhang_area_mm2": 191.6,
+   "regions_ge_1mm2": [
+    [
+     "th 150-180 r 55-60 z 565-570",
+     37.5
+    ],
+    [
+     "th 150-180 r 55-60 z 570-575",
+     36.5
+    ],
+    [
+     "th 180-210 r 55-60 z 555-560",
+     23.9
+    ],
+    [
+     "th 150-180 r 55-60 z 575-580",
+     22.7
+    ],
+    [
+     "th 180-210 r 55-60 z 560-565",
+     19.1
+    ],
+    [
+     "th 150-180 r 55-60 z 560-565",
+     18.4
+    ],
+    [
+     "th 150-180 r 50-55 z 570-575",
+     4.3
+    ],
+    [
+     "th 150-180 r 50-55 z 560-565",
+     3.8
+    ],
+    [
+     "th 150-180 r 50-55 z 565-570",
+     3.6
+    ],
+    [
+     "th 240-270 r 50-55 z 610-615",
+     3.4
+    ],
+    [
+     "th 270-300 r 50-55 z 605-610",
+     3.4
+    ],
+    [
+     "th 270-300 r 50-55 z 610-615",
+     3.3
+    ],
+    [
+     "th 240-270 r 50-55 z 605-610",
+     3.1
+    ],
+    [
+     "th 180-210 r 50-55 z 555-560",
+     2.0
+    ],
+    [
+     "th 150-180 r 50-55 z 575-580",
+     2.0
+    ],
+    [
+     "th 0-30 r 55-60 z 550-555",
+     1.8
+    ]
+   ]
+  },
+  "payload_bulkhead": {
+   "overhang_area_mm2": 0.0,
+   "regions_ge_1mm2": []
+  },
+  "spring_seat": {
+   "overhang_area_mm2": 0.0,
+   "regions_ge_1mm2": []
+  },
+  "pusher_plate": {
+   "overhang_area_mm2": 0.0,
+   "regions_ge_1mm2": []
+  },
+  "cansat_dummy_sleeve": {
+   "overhang_area_mm2": 1289.3,
+   "regions_ge_1mm2": [
+    [
+     "th 210-240 r 30-35 z 570-575",
+     41.4
+    ],
+    [
+     "th 90-120 r 30-35 z 570-575",
+     41.4
+    ],
+    [
+     "th 330-360 r 30-35 z 570-575",
+     41.4
+    ],
+    [
+     "th 180-210 r 30-35 z 570-575",
+     40.9
+    ],
+    [
+     "th 300-330 r 30-35 z 570-575",
+     40.9
+    ],
+    [
+     "th 60-90 r 30-35 z 570-575",
+     40.9
+    ],
+    [
+     "th 270-300 r 30-35 z 570-575",
+     40.6
+    ],
+    [
+     "th 150-180 r 30-35 z 570-575",
+     40.6
+    ],
+    [
+     "th 30-60 r 30-35 z 570-575",
+     40.6
+    ],
+    [
+     "th 240-270 r 30-35 z 570-575",
+     39.6
+    ],
+    [
+     "th 120-150 r 30-35 z 570-575",
+     39.6
+    ],
+    [
+     "th 0-30 r 30-35 z 570-575",
+     39.6
+    ],
+    [
+     "th 30-60 r 30-35 z 645-650",
+     31.9
+    ],
+    [
+     "th 30-60 r 30-35 z 605-610",
+     31.9
+    ],
+    [
+     "th 300-330 r 30-35 z 645-650",
+     31.9
+    ],
+    [
+     "th 300-330 r 30-35 z 605-610",
+     31.9
+    ],
+    [
+     "th 120-150 r 30-35 z 645-650",
+     31.9
+    ],
+    [
+     "th 120-150 r 30-35 z 605-610",
+     31.9
+    ],
+    [
+     "th 210-240 r 30-35 z 645-650",
+     31.9
+    ],
+    [
+     "th 210-240 r 30-35 z 605-610",
+     31.9
+    ],
+    [
+     "th 150-180 r 30-35 z 645-650",
+     31.9
+    ],
+    [
+     "th 150-180 r 30-35 z 605-610",
+     31.9
+    ],
+    [
+     "th 330-360 r 30-35 z 645-650",
+     31.1
+    ],
+    [
+     "th 0-30 r 30-35 z 645-650",
+     31.1
+    ],
+    [
+     "th 330-360 r 30-35 z 605-610",
+     31.1
+    ],
+    [
+     "th 0-30 r 30-35 z 605-610",
+     31.1
+    ],
+    [
+     "th 60-90 r 30-35 z 645-650",
+     30.3
+    ],
+    [
+     "th 60-90 r 30-35 z 605-610",
+     30.3
+    ],
+    [
+     "th 270-300 r 30-35 z 645-650",
+     30.3
+    ],
+    [
+     "th 270-300 r 30-35 z 605-610",
+     30.3
+    ]
+   ]
+  }
+ },
+ "all_ok": true,
+ "runtime_s": 11.7
+}

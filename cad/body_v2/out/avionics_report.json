@@ -1,0 +1,958 @@
+{
+ "generator": "cad/body_v2/group_checks.py -> parts/avionics.py self_check",
+ "params_sha256": "3fc32e0fb9032aef5e7ca23853f3d2589501a937f2e24b4116d3060ca3c5f89f",
+ "files": {
+  "avionics_module": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_module.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_module.stl",
+   "step_sha256": "4ff90d330a67b52a355ea97e2b8ac74e47ff1466ab59ede3fbd514040adf3f48",
+   "stl_sha256": "c13be4ed38ea3d07d5e920dcb6f824a40f87c7ee7e11bab7f87e0a82b4fb2e1d"
+  },
+  "avionics_logo": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_logo.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_logo.stl",
+   "step_sha256": "2f76eef879e8b7ff3b6fde032af3d707636db90e40514106cf2063cd57d32a7e",
+   "stl_sha256": "5d903a36c1fede4cfce7704b8fe60540bcdd6416c4ad8dda52cb1b009fb2af2c"
+  },
+  "avionics_tray": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_tray.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_tray.stl",
+   "step_sha256": "0a2a0b23651bccef3888f37e20c106a232a75cc25f878c2f2a859a932f135f53",
+   "stl_sha256": "77eefb2f25db6a28eb8c99fa18753da72f19db85649c8f117bda65fa7fbffd72"
+  },
+  "avionics_door": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_door.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_door.stl",
+   "step_sha256": "288e99abbf791f768beaf91d92a8ffbfc728452a6fe7cbd26c345ae81ef17888",
+   "stl_sha256": "169e898e5923e018275da974cbfd36910020a522bfdec3d021ac33e09a1cbd34"
+  },
+  "avionics_hole_plug_release": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_hole_plug_release.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_hole_plug_release.stl",
+   "step_sha256": "8af62f05174c233878b21170a924e89203de87db9fc3d4b802d5c28c422d1212",
+   "stl_sha256": "69e3aceb974730fdaa8d3670f7b9dfe30b360d5221141fb027f7eda2b9e422bf"
+  },
+  "avionics_hole_plug_gps": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_hole_plug_gps.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_hole_plug_gps.stl",
+   "step_sha256": "5d1e4079246f788380e13140fd55935e7c9cd21b725b7b255f5f90591577c37b",
+   "stl_sha256": "f7d857ced921ad7a5271ca89e722cf78053704999fdd611374fbb826f5a2741c"
+  },
+  "carrier_pcb_rev31_envelope": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\carrier_pcb_rev31_envelope.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\carrier_pcb_rev31_envelope.stl",
+   "step_sha256": "cef07f516dbba557f6327e20a96e004e668c3085b62242ce2b21d182505c2c85",
+   "stl_sha256": "9374d8ffed9fcde224bacd866347eec45cd9acc01c926b01f6acefaf2b769267"
+  },
+  "avionics_pcb_foam_seat": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_pcb_foam_seat.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_pcb_foam_seat.stl",
+   "step_sha256": "3ee16b47398f6dcce836d1ac93902b23d15b69ffd4fa889ebd26ca8ff68948bf",
+   "stl_sha256": "2c6f87403d8dc5852025a53400534c810969fcf1290e3dd8a3af11c9b9358b89"
+  },
+  "avionics_bay_hardware_envelope": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_bay_hardware_envelope.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_bay_hardware_envelope.stl",
+   "step_sha256": "436a1ffd24bf489f20d657e56b92fb4a4b387c4502ca72bd68e45a0eb7f9bb10",
+   "stl_sha256": "f815c6e5eb60f7afc97afec7ea45580f00762799012dcb2ff94bc4b51c74499b"
+  },
+  "avionics_joint_hardware": {
+   "step": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_joint_hardware.step",
+   "stl": "B:\\0)AI_Cad\\CanSat_EDF_Rocket_body\\cad\\body_v2\\out\\avionics_joint_hardware.stl",
+   "step_sha256": "9f326342509cf2de4a07f88522078b3682359f717bb563127516fae009dbc81b",
+   "stl_sha256": "53bd95f5425e8800b8089855f4e02eba4450a793f3cbc9ae8cf57237da2c80ca"
+  }
+ },
+ "check": {
+  "parts": {
+   "avionics_module": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 105023.17361470891,
+    "bbox": [
+     -60.0,
+     -60.0,
+     350.4,
+     60.0,
+     60.0,
+     550.4
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 1,
+     "volume_mm3": 104940.25203396859,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": -0.079,
+    "mass_g_rho_1.24": 130.23,
+    "mass_g_rho_1.31": 137.58,
+    "printed": true,
+    "step_sha256": "4ff90d330a67b52a355ea97e2b8ac74e47ff1466ab59ede3fbd514040adf3f48",
+    "stl_sha256": "c13be4ed38ea3d07d5e920dcb6f824a40f87c7ee7e11bab7f87e0a82b4fb2e1d",
+    "spec_mass_g": 132.70000000000002,
+    "spec_mass_label": "F 122.9 (rocket-carrier slicer) + E 10.5 joint bosses - E 0.7 spigot recesses (massing.log rev 3.4.4, BRep x 1.31)",
+    "delta_vs_spec_g_rho_1.24": -2.47,
+    "delta_vs_spec_g_rho_1.31": 4.88,
+    "overhang_upright": {
+     "area_mm2": 1310.05,
+     "largest_by_z_mm2": [
+      [
+       534.0,
+       318.25
+      ],
+      [
+       535.0,
+       249.98
+      ],
+      [
+       359.0,
+       108.81
+      ],
+      [
+       373.0,
+       78.95
+      ],
+      [
+       368.0,
+       63.44
+      ],
+      [
+       360.0,
+       47.62
+      ],
+      [
+       376.0,
+       40.73
+      ],
+      [
+       520.0,
+       40.44
+      ],
+      [
+       382.0,
+       35.8
+      ],
+      [
+       384.0,
+       32.95
+      ],
+      [
+       533.0,
+       31.66
+      ],
+      [
+       351.0,
+       27.11
+      ]
+     ]
+    }
+   },
+   "avionics_logo": {
+    "n_solids": 20,
+    "valid": true,
+    "volume_mm3": 680.9928770573624,
+    "bbox": [
+     14.57,
+     -58.162,
+     353.451,
+     31.602,
+     58.162,
+     474.466
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 20,
+     "volume_mm3": 681.0090774838591,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": 0.0024,
+    "mass_g_rho_1.24": 0.84,
+    "mass_g_rho_1.31": 0.89,
+    "printed": true,
+    "step_sha256": "2f76eef879e8b7ff3b6fde032af3d707636db90e40514106cf2063cd57d32a7e",
+    "stl_sha256": "5d903a36c1fede4cfce7704b8fe60540bcdd6416c4ad8dda52cb1b009fb2af2c",
+    "spec_mass_g": 0.9,
+    "spec_mass_label": "F rocket-carrier slicer",
+    "delta_vs_spec_g_rho_1.24": -0.06,
+    "delta_vs_spec_g_rho_1.31": -0.01
+   },
+   "avionics_tray": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 31856.776833882323,
+    "bbox": [
+     14.0,
+     -50.0,
+     370.4,
+     26.0,
+     50.0,
+     530.4
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 1,
+     "volume_mm3": 31856.75640087055,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": -0.0001,
+    "mass_g_rho_1.24": 39.5,
+    "mass_g_rho_1.31": 41.73,
+    "printed": true,
+    "step_sha256": "0a2a0b23651bccef3888f37e20c106a232a75cc25f878c2f2a859a932f135f53",
+    "stl_sha256": "77eefb2f25db6a28eb8c99fa18753da72f19db85649c8f117bda65fa7fbffd72",
+    "spec_mass_g": 36.4,
+    "spec_mass_label": "F rocket-carrier slicer (2026-11-20 reprint: slots moved + pack ledge, E +1)",
+    "delta_vs_spec_g_rho_1.24": 3.1,
+    "delta_vs_spec_g_rho_1.31": 5.33
+   },
+   "avionics_door": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 1893.6762022692044,
+    "bbox": [
+     -38.46,
+     -60.0,
+     378.2,
+     2.374,
+     -44.836,
+     425.289
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 1,
+     "volume_mm3": 1893.3121090210361,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": -0.0192,
+    "mass_g_rho_1.24": 2.35,
+    "mass_g_rho_1.31": 2.48,
+    "printed": true,
+    "step_sha256": "288e99abbf791f768beaf91d92a8ffbfc728452a6fe7cbd26c345ae81ef17888",
+    "stl_sha256": "169e898e5923e018275da974cbfd36910020a522bfdec3d021ac33e09a1cbd34",
+    "spec_mass_g": 2.0,
+    "spec_mass_label": "E 2026-11-20 door 31 x 27 x 1.2",
+    "delta_vs_spec_g_rho_1.24": 0.35,
+    "delta_vs_spec_g_rho_1.31": 0.48
+   },
+   "avionics_hole_plug_release": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 35.52509796442127,
+    "bbox": [
+     56.438,
+     8.914,
+     526.1,
+     59.149,
+     15.434,
+     532.7
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 1,
+     "volume_mm3": 35.500119356778214,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": -0.0703,
+    "mass_g_rho_1.24": 0.04,
+    "mass_g_rho_1.31": 0.05,
+    "printed": true,
+    "step_sha256": "8af62f05174c233878b21170a924e89203de87db9fc3d4b802d5c28c422d1212",
+    "stl_sha256": "69e3aceb974730fdaa8d3670f7b9dfe30b360d5221141fb027f7eda2b9e422bf",
+    "spec_mass_g": 0.1,
+    "spec_mass_label": "E spec common.avionics_module.unused_holes",
+    "delta_vs_spec_g_rho_1.24": -0.06,
+    "delta_vs_spec_g_rho_1.31": -0.05
+   },
+   "avionics_hole_plug_gps": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 35.52509796233874,
+    "bbox": [
+     -59.149,
+     -15.434,
+     526.1,
+     -56.438,
+     -8.914,
+     532.7
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 1,
+     "volume_mm3": 35.50011981608926,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": -0.0703,
+    "mass_g_rho_1.24": 0.04,
+    "mass_g_rho_1.31": 0.05,
+    "printed": true,
+    "step_sha256": "5d1e4079246f788380e13140fd55935e7c9cd21b725b7b255f5f90591577c37b",
+    "stl_sha256": "f7d857ced921ad7a5271ca89e722cf78053704999fdd611374fbb826f5a2741c",
+    "spec_mass_g": 0.1,
+    "spec_mass_label": "E spec common.avionics_module.unused_holes",
+    "delta_vs_spec_g_rho_1.24": -0.06,
+    "delta_vs_spec_g_rho_1.31": -0.05
+   },
+   "carrier_pcb_rev31_envelope": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 19223.827409499645,
+    "bbox": [
+     -45.74,
+     -42.2,
+     353.4,
+     45.75,
+     42.25,
+     368.4
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 1,
+     "volume_mm3": 19223.846027643915,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": 0.0001,
+    "mass_g_rho_1.24": 23.84,
+    "mass_g_rho_1.31": 25.18,
+    "printed": false,
+    "step_sha256": "cef07f516dbba557f6327e20a96e004e668c3085b62242ce2b21d182505c2c85",
+    "stl_sha256": "9374d8ffed9fcde224bacd866347eec45cd9acc01c926b01f6acefaf2b769267"
+   },
+   "avionics_pcb_foam_seat": {
+    "n_solids": 1,
+    "valid": true,
+    "volume_mm3": 16274.944597169531,
+    "bbox": [
+     -38.0,
+     -42.2,
+     350.4,
+     38.0,
+     35.0,
+     353.4
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 1,
+     "volume_mm3": 16274.935853876435,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": -0.0001,
+    "mass_g_rho_1.24": 20.18,
+    "mass_g_rho_1.31": 21.32,
+    "printed": false,
+    "step_sha256": "3ee16b47398f6dcce836d1ac93902b23d15b69ffd4fa889ebd26ca8ff68948bf",
+    "stl_sha256": "2c6f87403d8dc5852025a53400534c810969fcf1290e3dd8a3af11c9b9358b89"
+   },
+   "avionics_bay_hardware_envelope": {
+    "n_solids": 3,
+    "valid": true,
+    "volume_mm3": 249704.25,
+    "bbox": [
+     -32.5,
+     -12.801,
+     422.0,
+     24.0,
+     47.5,
+     536.5
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 3,
+     "volume_mm3": 249704.25530147552,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": 0.0,
+    "mass_g_rho_1.24": 309.63,
+    "mass_g_rho_1.31": 327.11,
+    "printed": false,
+    "step_sha256": "436a1ffd24bf489f20d657e56b92fb4a4b387c4502ca72bd68e45a0eb7f9bb10",
+    "stl_sha256": "f815c6e5eb60f7afc97afec7ea45580f00762799012dcb2ff94bc4b51c74499b"
+   },
+   "avionics_joint_hardware": {
+    "n_solids": 32,
+    "valid": true,
+    "volume_mm3": 2655.976554134461,
+    "bbox": [
+     -61.664,
+     -61.705,
+     355.05,
+     50.584,
+     61.705,
+     545.75
+    ],
+    "mesh": {
+     "watertight": true,
+     "n_bodies": 32,
+     "volume_mm3": 2654.323040525857,
+     "winding_consistent": true
+    },
+    "mesh_vs_brep_pct": -0.0623,
+    "mass_g_rho_1.24": 3.29,
+    "mass_g_rho_1.31": 3.48,
+    "printed": false,
+    "step_sha256": "9f326342509cf2de4a07f88522078b3682359f717bb563127516fae009dbc81b",
+    "stl_sha256": "53bd95f5425e8800b8089855f4e02eba4450a793f3cbc9ae8cf57237da2c80ca"
+   }
+  },
+  "probes": {
+   "n": 187,
+   "n_ok": 187,
+   "failed": []
+  },
+  "clearances_mm": {
+   "module_to_pcb_envelope": 4.163,
+   "fj1_screws_nuts_to_pcb_envelope (rule >= 1.0, spec 1.36)": 1.713,
+   "lower_bosses_to_pcb_envelope (spec 2.94)": 4.163,
+   "fj1_bosses_and_heads_to_logo (spec 7.9)": 5.42,
+   "fj1_bosses_and_heads_to_J16_hole (spec 4.7)": 3.026,
+   "tray_to_module (0 = seated on the stops)": 0.0,
+   "switch_arm_inside_parts_to_lower_bosses": 1.691,
+   "switch_logic_inside_parts_to_lower_bosses": 30.061,
+   "switch lead arm_J16 to lower / upper bosses": [
+    9.634,
+    152.542
+   ],
+   "switch lead logic_J15 to lower / upper bosses": [
+    12.598,
+    121.951
+   ],
+   "switch lead pack_J14 to lower / upper bosses": [
+    6.441,
+    41.739
+   ],
+   "GPS lead (frozen bay route, d 3.0 A) to lower / upper bosses": [
+    6.797,
+    25.252
+   ],
+   "release lead (frozen bay route) to lower / upper bosses": [
+    10.089,
+    10.34
+   ]
+  },
+  "interference_mm3": {
+   "module_x_logo": 0.0,
+   "module_x_intake_spigot_proxy": 0.0,
+   "module_+5_x_intake_spigot_proxy": 0.0,
+   "module_+10_x_intake_spigot_proxy": 0.0,
+   "module_+15_x_intake_spigot_proxy": 0.0,
+   "module_+20_x_intake_spigot_proxy": 0.0,
+   "module_x_intake_cages_proxy": 0.0,
+   "module_+5_x_intake_cages_proxy": 0.0,
+   "module_+10_x_intake_cages_proxy": 0.0,
+   "module_+15_x_intake_cages_proxy": 0.0,
+   "module_+20_x_intake_cages_proxy": 0.0,
+   "module_x_pcb_envelope": 0.0,
+   "tray_x_module": 0.0,
+   "fj1_screws_x_module": 0.0,
+   "fj1_nuts_x_module": 0.0,
+   "top_screws_x_module": 9.1106,
+   "avionics_hole_plug_release_x_module": 0.0,
+   "avionics_hole_plug_gps_x_module": 0.0,
+   "battery_x_module": 0.0,
+   "logic_pack_1S_x_module": 0.0,
+   "misc_electronics_x_module": 0.0,
+   "switch_arm_as_mounted_x_module": 0.0,
+   "switch_logic_as_mounted_x_module": 0.0
+  },
+  "pcb": {
+   "source": "git show pcb-rev3:pcb/vtol_carrier/kicad/vtol_carrier.kicad_pcb",
+   "commit": "4051623c76a548d3ece4f8644fa4adf6dc32c20f",
+   "blob": "92dd1142c5dda169344771a31d2545af6339bbd8",
+   "mounting_holes_in_board": [],
+   "outline_bbox": [
+    -38.0,
+    -42.2,
+    38.0,
+    35.0
+   ],
+   "params_bbox": [
+    -38.0,
+    -42.2,
+    38.0,
+    35.0
+   ],
+   "outline_bbox_ok": true,
+   "tab_x": [
+    17.3,
+    32.0
+   ],
+   "board_area_mm2": 5424.98,
+   "connectors_vs_params_boxes": {
+    "J7": {
+     "origin_xy": [
+      -33.02,
+      -31.45
+     ],
+     "rot": 0.0,
+     "lib": "Connector_JST:JST_GH_BM04B-GHS-TBT_1x04-1MP_P1.25mm_Vertical",
+     "origin_to_box_mm": 0.0
+    },
+    "J8": {
+     "origin_xy": [
+      -27.2,
+      15.53
+     ],
+     "rot": 180.0,
+     "lib": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+     "origin_to_box_mm": 4.04
+    },
+    "J9": {
+     "origin_xy": [
+      -27.2,
+      6.91
+     ],
+     "rot": 180.0,
+     "lib": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+     "origin_to_box_mm": 4.04
+    },
+    "J10": {
+     "origin_xy": [
+      -27.2,
+      -1.71
+     ],
+     "rot": 180.0,
+     "lib": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+     "origin_to_box_mm": 4.04
+    },
+    "J11": {
+     "origin_xy": [
+      -27.2,
+      -10.33
+     ],
+     "rot": 180.0,
+     "lib": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+     "origin_to_box_mm": 4.04
+    },
+    "J12": {
+     "origin_xy": [
+      27.21,
+      26.83
+     ],
+     "rot": 0.0,
+     "lib": "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
+     "origin_to_box_mm": 4.04
+    },
+    "J13": {
+     "xy": [
+      27.05,
+      33.15
+     ],
+     "params_xy": [
+      27.05,
+      33.15
+     ],
+     "dist_mm": 0.0
+    },
+    "J14": {
+     "origin_xy": [
+      -34.8,
+      31.15
+     ],
+     "rot": 0.0,
+     "lib": "Connector_Molex:Molex_SPOX_5267-02A_1x02_P2.50mm_Vertical",
+     "origin_to_box_mm": 0.0
+    },
+    "J15": {
+     "origin_xy": [
+      -35.3,
+      26.55
+     ],
+     "rot": 0.0,
+     "lib": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+     "origin_to_box_mm": 0.0
+    },
+    "J16": {
+     "origin_xy": [
+      21.12,
+      24.21
+     ],
+     "rot": 90.0,
+     "lib": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal",
+     "origin_to_box_mm": 4.04
+    },
+    "J17": {
+     "origin_xy": [
+      33.3,
+      17.65
+     ],
+     "rot": 0.0,
+     "lib": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+     "origin_to_box_mm": 0.0
+    },
+    "J18": {
+     "origin_xy": [
+      -27.2,
+      -21.49
+     ],
+     "rot": 180.0,
+     "lib": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal",
+     "origin_to_box_mm": 4.04
+    }
+   }
+  },
+  "key_dims": {
+   "OD_mm_mesh": 120.0,
+   "OD_spec": 120.0,
+   "z_range": [
+    350.4,
+    550.4
+   ],
+   "z_range_spec": [
+    350.4,
+    550.4
+   ],
+   "lower_boss_t_at_screw_mm": 4.6,
+   "n_fj1_holes": 14,
+   "n_top_holes": 4,
+   "fj1_hole_d": 3.3,
+   "top_hole_d": 2.8,
+   "fj1_z": 357.9,
+   "top_z": 542.9,
+   "boss_thetas": [
+    45.0,
+    90.0,
+    128.3,
+    176.0,
+    231.7,
+    270.0,
+    318.7
+   ],
+   "screw_thetas": [
+    41.3,
+    48.7,
+    86.3,
+    93.7,
+    124.6,
+    132.0,
+    172.3,
+    179.7,
+    228.0,
+    235.4,
+    266.3,
+    273.7,
+    315.0,
+    322.4
+   ]
+  },
+  "logo_islands": 20,
+  "nut_seat": {
+   "rows": [
+    {
+     "screw": 41.3,
+     "boss": 45.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 48.7,
+     "boss": 45.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 86.3,
+     "boss": 90.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 93.7,
+     "boss": 90.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 124.6,
+     "boss": 128.3,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 132.0,
+     "boss": 128.3,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 172.3,
+     "boss": 176.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 179.7,
+     "boss": 176.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 228.0,
+     "boss": 231.7,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 235.4,
+     "boss": 231.7,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 266.3,
+     "boss": 270.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 273.7,
+     "boss": 270.0,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 315.0,
+     "boss": 318.7,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    },
+    {
+     "screw": 322.4,
+     "boss": 318.7,
+     "tilt_deg": 3.7,
+     "seat_x_along_screw": 55.789,
+     "ring_points_in_material": "12/12",
+     "seat_gap_mm": 0.0,
+     "seat_offset_from_plane_mm": 0.0,
+     "spot_face_depth_mm": [
+      0.05,
+      0.496
+     ],
+     "boss_t_on_screw_axis_mm": 4.211,
+     "nut_hex_in_cage_plate_mm_E": 1.926
+    }
+   ],
+   "spot_face_R": 3.45,
+   "net_section_method": "slab z 357.9 +- 0.05 of the REAL avionics_module solid (as built, M); the reconstructed ring (tube + lower_bosses - holes - spot faces) only for the spot-face ratio and a cross-check",
+   "net_section_with_spot_min_mm2": 36.789,
+   "net_section_spec_mm2": 34.96,
+   "net_section_ok": true,
+   "all_ring_points_in_material": true,
+   "max_seat_gap_mm": 0.0,
+   "min_boss_t_on_axis_mm": 4.211,
+   "min_nut_hex_in_cage_plate_mm_E": 1.926,
+   "net_section_beside_holes": {
+    "45": {
+     "net_mm2_as_built": 44.862,
+     "net_mm2_reconstructed_no_spot": 46.828,
+     "net_mm2_reconstructed_with_spot": 44.862,
+     "ratio_spot": 0.958,
+     "as_built_minus_reconstructed_mm2": 0.0
+    },
+    "90": {
+     "net_mm2_as_built": 36.789,
+     "net_mm2_reconstructed_no_spot": 38.756,
+     "net_mm2_reconstructed_with_spot": 36.789,
+     "ratio_spot": 0.9493,
+     "as_built_minus_reconstructed_mm2": -0.0
+    },
+    "128.3": {
+     "net_mm2_as_built": 36.789,
+     "net_mm2_reconstructed_no_spot": 38.756,
+     "net_mm2_reconstructed_with_spot": 36.789,
+     "ratio_spot": 0.9493,
+     "as_built_minus_reconstructed_mm2": 0.0
+    },
+    "176": {
+     "net_mm2_as_built": 36.789,
+     "net_mm2_reconstructed_no_spot": 38.756,
+     "net_mm2_reconstructed_with_spot": 36.789,
+     "ratio_spot": 0.9493,
+     "as_built_minus_reconstructed_mm2": -0.0
+    },
+    "231.7": {
+     "net_mm2_as_built": 36.789,
+     "net_mm2_reconstructed_no_spot": 38.756,
+     "net_mm2_reconstructed_with_spot": 36.789,
+     "ratio_spot": 0.9493,
+     "as_built_minus_reconstructed_mm2": 0.0
+    },
+    "270": {
+     "net_mm2_as_built": 36.789,
+     "net_mm2_reconstructed_no_spot": 38.756,
+     "net_mm2_reconstructed_with_spot": 36.789,
+     "ratio_spot": 0.9493,
+     "as_built_minus_reconstructed_mm2": -0.0
+    },
+    "318.7": {
+     "net_mm2_as_built": 36.789,
+     "net_mm2_reconstructed_no_spot": 38.756,
+     "net_mm2_reconstructed_with_spot": 36.789,
+     "ratio_spot": 0.9493,
+     "as_built_minus_reconstructed_mm2": -0.0
+    }
+   },
+   "net_section_ratio_min": 0.9493,
+   "spec_margins_scaled_E": {
+    "net section L3b no CanSat / with CanSat (spec 2.08 / 1.62 on 34.96 mm2)": [
+     2.19,
+     1.7
+    ]
+   },
+   "rule": "every ring point in material and seat gap <= 0.01 mm (spec 0-AC-3 / assembly step 4: no light between nut and boss)",
+   "ok": true
+  },
+  "frozen_crosscheck": {
+   "od/2": 60.0,
+   "id/2": 58.8,
+   "z_bottom": 350.4,
+   "z_spigot_root": 535.4,
+   "z_top": 550.4,
+   "spigot_od": 117.2,
+   "spigot_id": 114.0,
+   "spigot_wall": 1.6,
+   "wall": 1.2,
+   "vent_w": 8.0,
+   "vent_h": 40.0,
+   "vent_z0": 480.4,
+   "tray_x_mid": 25.0,
+   "tray_t": 2.0,
+   "tray_w": 100.0,
+   "tray_z0": 370.4,
+   "tray_z1": 530.4,
+   "rails_z0": 368.4,
+   "rails_z1": 533.4,
+   "rail_x_hi": 28.2,
+   "rail_y_in": 48.220673,
+   "arm_theta": 82.0,
+   "arm_z": 382.5,
+   "arm_d": 6.2,
+   "logic_theta": 106.0,
+   "logic_z": 412.5,
+   "logic_d": 6.2,
+   "release_theta": 12.0,
+   "release_z": 529.4,
+   "release_d": 5.0,
+   "gps_theta": 192.0,
+   "gps_z": 529.4,
+   "gps_d": 5.0,
+   "battery_z0": 418.4,
+   "esc_z1": 465.4
+  }
+ }
+}
